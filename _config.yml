@@ -9,7 +9,7 @@ description: ''
 keywords:
 author: Yan Zhong
 language: en
-timezone: Asia/Guangzhou
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
