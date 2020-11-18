@@ -1,16 +1,9 @@
 ---
 title: hexo建站，github发布，多终端同步markdown
-date: 2020-11-18
+date: 2020-11-18 18:50:30
 type: "categories"
 comments: false
 categories: blog
-tags:
-    - 建站
-    - blog
-    - github
-    - git
-    - hexo
-    - 多终端同步
 ---
 
 - **markdown**是一种适用撰写文本的语法和文件格式，后缀是.md
