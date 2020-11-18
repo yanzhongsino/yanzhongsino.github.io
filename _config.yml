@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Yan Zhong's blog #网站标题
-subtitle: '' #网站副标题
-description: '' #网站描述（主要用于SEO）
-keywords: 
-author: Yan Zhong #作者
-language: en #网站使用语言
-timezone: Asia/Shanghai #网站时区，要在时区列表中选取，Hexo默认使用您电脑的时区
+title: Yan Zhong's blog
+subtitle: ''
+description: ''
+keywords:
+author: Yan Zhong
+language: en
+timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
@@ -103,23 +103,6 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: git
-  repository: https://github.com/yanzhongsino/yanzhongsino.github.io.git
-  branch: master
-
-
-# word count
-# Dependencies: https://github.com/theme-next/hexo-symbols-count-time
-symbols_count_time:
-  symbols: true
-  time: true
-  total_symbols: false
-  total_time: false
-
-
-leancloud_counter_security:
-  enable_sync: true
-  app_id: <<your app id>>
-  app_key: <<your app key>>
-  username: <<your username>> # Will be asked while deploying if is left blank
-  password: <<your password>> # Recommmended to be left blank. Will be asked while deploying if is left blank
+    type: git
+    repository: https://github.com/username/username.github.io.git
+    branch: master

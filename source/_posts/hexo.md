@@ -66,10 +66,10 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 2. 安装hexo
         
-    在选定位置创建并进入hexo目录，打开git bash，输入`npm install hexo-cli -g`，`npm install hexo --save`
+   `npm install hexo-cli -g`命令安装hexo-cli
 
 3. 初始化目录`hexo init`
-        
+    选定位置hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。   
     即生成一系列建站需要的文件：
     - _config.yml：站点配置文件
     - node_modules目录:安装的模块，用npm install会重新生成
