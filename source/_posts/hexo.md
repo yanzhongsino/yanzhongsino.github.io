@@ -196,7 +196,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
    
    在hexo部署目录下通过git三步命令同步hexo部署目录到github端的hexo分支。
    
-   以后有修改新增blog或更改配置都用这三步同步hexo分支。
+   以后有修改新增blog或更改配置都用这三步同步hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
 
     + git add .        
         
@@ -238,7 +238,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 - blog备份
    
    只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。
-   用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。
+   用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
 
 - blog发布
     
