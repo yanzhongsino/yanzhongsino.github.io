@@ -1,4 +1,17 @@
-# hexo建站，github发布，多终端同步markdown
+---
+title: hexo建站，github发布，多终端同步markdown
+date: 2020-11-18
+type: "categories"
+comments: false
+categories: blog
+tags:
+    - 建站
+    - blog
+    - github
+    - git
+    - hexo
+    - 多终端同步
+---
 
 - **markdown**是一种适用撰写文本的语法和文件格式，后缀是.md
 - **hexo**是把写的markdown文件生成blog网站的工具，hexo是不仅是博客引擎驱动，还是一个快速、简洁高效的博客框架，可生成静态网页。
@@ -11,7 +24,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 **部署和发布blog有很多方法。这里介绍的是markdown撰写博客，hexo建立博客网站，通过git管理博客网站，发布博客网站到github平台和多终端同步的操作。**
 
-### 新用户部署本地blog的写作环境（git+hexo），并用github.io网站发布blog
+部署本地blog的写作环境（git+hexo），并用github.io网站发布blog
 
 1. git和github的配置
    新终端搭建博客撰写环境都需要配置
@@ -22,7 +35,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 日常blog撰写和备份操作
 
 
-#### 1. git和github的配置
+# git和github的配置
 
 *notes：username和useremail替换成自己的github用户名和邮箱。*
 
@@ -53,7 +66,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
      在git bash下运行`ssh -T git@github.com`。
      输出You've successfully suthenicated.则代表github账户成功授权你当前使用的终端，本机可连接上github了。
 
-#### 2. hexo的安装和配置
+# hexo的安装和配置
 1. 下载安装node.js（建议官网下载）
         
     使用git bash或者cmd终端检测node的安装，`node -v`和`npm -v`出现版本号即node和npm 安装成功
@@ -125,7 +138,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
             timezone: Asia/Shanghai #网站时区，要在时区列表中选取，Hexo默认使用您电脑的时区
         ```
 
-#### 3. 撰写与发布blog
+# 撰写与发布blog
 
 1. 撰写blog
    
@@ -152,7 +165,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     
 每次修改blog或新增blog内容后，可用hexo clean & g -d快速部署到github端master分支，从而实现github.io网站博客的更新。
 
-#### 4. github两个分支实现多终端同步【推荐配置】
+# github两个分支实现多终端同步【推荐配置】
 在进行hexo的安装和配置后，可以通过命令`hexo clean & g -d`发布博客网站到github.io网站，但需要备份博客源文件和多终端协作时，便有一些问题。
 
 - 单终端配置hexo的问题：
@@ -169,7 +182,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     github网站新建hexo分支，并把hexo分支设为默认分支，`git clone`克隆hexo分支到本地终端，把克隆的目录下的.git文件夹移动到hexo配置好的建站目录hexo下。
     用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`同步.git文件夹所在目录到github端hexo分支，这样操作之后克隆github端hexo分支便包含了hexo部署文件和md源文件，从而实现多端共享，github端的master分支只用于发布blog（同步生成的public目录）。
 
-##### 多终端同步配置
+## 多终端同步配置
 多终端同步配置具体步骤如下：
 
 1. 安装node.js
@@ -212,7 +225,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
    blog撰写与发布单终端和多终端是一样的操作。
    撰写在source/_posts下进行，推荐使用markdown语法撰写博客；发布使用`hexo clean & g -d`命令。
 
-##### 配置后新终端使用同步功能
+## 配置后新终端使用同步功能
 按照以上进行多终端同步配置后，在新的终端或者本地文件丢失后，可以通过以下步骤快速搭建博客撰写环境并同步博客数据。
 
 1. git和github的安装配置同上
@@ -225,7 +238,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 进行日常blog撰写和备份
 
 
-#### 5. 日常blog撰写和备份操作
+# 日常blog撰写和备份操作
 - blog撰写
    
    在本地source/_posts下添加和修改md文档实现blog的日常撰写。
@@ -239,3 +252,13 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     
     可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用``hexo clean & g -d``命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
 
+
+
+**小记**
+学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。
+
+前几天拾起来，建站知识已忘得精光，原来应该是配置好了hexo的多端同步，但由于两年的荒废，遗忘导致我把hexo和master分支合并了，博客的原始文件有没备份，所以一切从头开始。
+
+学了几天，博客搭建初步捡回来了。可不能再忘，这次笔记记得很精细，下次如果需要看看笔记应该可以捡回来。
+
+2020.11.18 Yan Zhong in Guangzhou
