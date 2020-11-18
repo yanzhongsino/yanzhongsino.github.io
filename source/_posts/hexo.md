@@ -1,6 +1,6 @@
 ---
-title: hexo建站，github发布，多终端同步markdown
-date: 2020-11-18 18:50:30
+title: hexo建站，github发布，多终端同步
+date: 
 type: "categories"
 comments: false
 categories: blog
@@ -62,14 +62,14 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 # hexo的安装和配置
 1. 下载安装node.js（建议官网下载）
         
-    使用git bash或者cmd终端检测node的安装，`node -v`和`npm -v`出现版本号即node和npm 安装成功
+    使用git bash或者cmd终端检查node的安装，`node -v`和`npm -v`出现版本号即node和npm 安装成功
 
 2. 安装hexo
         
    `npm install hexo-cli -g`命令安装hexo-cli
 
 3. 初始化目录`hexo init`
-    选定位置hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。   
+    选定位置通过git bash进入，创建hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。   
     即生成一系列建站需要的文件：
     - _config.yml：站点配置文件
     - node_modules目录:安装的模块，用npm install会重新生成
@@ -80,7 +80,6 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     - theme目录：网站主题
 
     - .gitignore：记录提交时忽略的文件，即以下文件
-    - public目录：使用hexo g命令时会重新生成
     - .deploy_git目录：hexo d命令时会重新生成
     db.json
 
@@ -147,7 +146,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
         INFO  Deleted public folder.
         清除缓存文件（db.json\)和已生成的静态文件（public目录）
     + `hexo generate`
-        生成静态页面，静态网页会根据source>\_posts目录下所有markdown文件编译成静态网页（html），生成的静态文件会在博客网站文件夹下生成的public文件夹中。
+        生成静态页面，静态网页会根据source>\_posts目录下所有markdown文件编译成静态网页（html），并生成public目录存储生成的静态文件。
         
         生成静态文件后，可以使用`hexo serve`命令启动本地服务器来查看博客网站。
 
