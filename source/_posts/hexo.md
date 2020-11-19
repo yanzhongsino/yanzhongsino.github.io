@@ -138,7 +138,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 2. 发布blog
 
-    使用git bash进入博客建站所在位置hexo目录下，使用`hexo clean & g -d` 合并三条命令实现发布blog，或者一步一步实现
+    使用git bash进入博客建站所在位置hexo目录下，使用`hexo clean & hexo g -d` 合并三条命令实现发布blog，或者一步一步实现
 
     + `hexo clean` 【optional】
         INFO  Validating config
@@ -158,11 +158,11 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 每次修改blog或新增blog内容后，可用hexo clean & g -d快速部署到github端master分支，从而实现github.io网站博客的更新。
 
 # github两个分支实现多终端同步【推荐配置】
-在进行hexo的安装和配置后，可以通过命令`hexo clean & g -d`发布博客网站到github.io网站，但需要备份博客源文件和多终端协作时，便有一些问题。
+在进行hexo的安装和配置后，可以通过命令`hexo clean & hexo g -d`发布博客网站到github.io网站，但需要备份博客源文件和多终端协作时，便有一些问题。
 
 - 单终端配置hexo的问题：
     
-    hexo建站部署文件框架为：blog原始md文件存放在hexo建站位置的/source/_posts下，发布blog的命令`hexo clean & g -d`会生成/public并把它部署到github端的master分支，但在source/_posts下的原始md文件和hexo建站部署文件只在当前电脑存放。
+    hexo建站部署文件框架为：blog原始md文件存放在hexo建站位置的/source/_posts下，发布blog的命令`hexo clean & hexo g -d`会生成/public并把它部署到github端的master分支，但在source/_posts下的原始md文件和hexo建站部署文件只在当前电脑存放。
 - 多终端同步的意义：
     
     把博客md源文件和hexo部署文件备份到github，实现多端共享，共享md源文件可以避免单终端md博客文件丢失，共享hexo部署文件可以在不同电脑上写blog，并部署到github终端，保持一致。
@@ -215,7 +215,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 6. blog撰写与发布
    
    blog撰写与发布单终端和多终端是一样的操作。
-   撰写在source/_posts下进行，推荐使用markdown语法撰写博客；发布使用`hexo clean & g -d`命令。
+   撰写在source/_posts下进行，推荐使用markdown语法撰写博客；发布使用`hexo clean & hexo g -d`命令。
 
 ## 配置后新终端使用同步功能
 按照以上进行多终端同步配置后，在新的终端或者本地文件丢失后，可以通过以下步骤快速搭建博客撰写环境并同步博客数据。
@@ -234,22 +234,31 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 
 # 日常blog撰写和备份操作
-- blog同步
+
+1. blog同步
   
-  养成习惯，每次开始撰写blog前都进行`git pull`命令把github端的hexo分支的更新同步到本地
-- blog撰写
+  养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
+
+2. blog撰写
    
    在本地source/_posts下添加和修改md文档实现blog的日常撰写。
 
-- blog备份
+3. blog备份
    
    只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。
    用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
 
-- blog发布
+4. blog发布
     
-    可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用``hexo clean & g -d``命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
+    可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用`hexo clean & hexo g -d`命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
 
+
+总结一下，在配置好写作环境后的任意一台终端的日常工作流应该是：
+1. `git pull`同步远程github库的更新
+2. 在source/_posts/下添加md格式的blog，或者修改已有的blog
+3. `git add .`,`git commit -m "commit notes"`,`git push`把修改备份到github端
+4. 下次写作重复以上三个步骤
+5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
 
 
 **小记**
