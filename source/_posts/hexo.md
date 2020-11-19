@@ -32,9 +32,9 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 *notes：username和useremail替换成自己的github用户名和邮箱。*
 
-1. 下载安装[git](https://git-scm.com/)，[node.js](https://nodejs.org/zh-cn/)
+1. 下载安装[git](https://git-scm.com/)
      
-     使用git bash或者cmd终端检测node的安装，node -v和npm -v出现版本号即安装成功
+     
 
 2. 注册github网站
      
@@ -60,13 +60,13 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
      输出You've successfully suthenicated.则代表github账户成功授权你当前使用的终端，本机可连接上github了。
 
 # hexo的安装和配置
-1. 下载安装node.js（建议官网下载）
+1. 下载安装[node.js](https://nodejs.org/zh-cn/)
         
     使用git bash或者cmd终端检查node的安装，`node -v`和`npm -v`出现版本号即node和npm 安装成功
 
 2. 安装hexo
         
-   `npm install hexo-cli -g`命令安装hexo-cli
+   `npm install hexo-cli -g`命令安装hexo-cli（hexo的cli命令行模块）
 
 3. 初始化目录`hexo init`
     选定位置通过git bash进入，创建hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。   
@@ -223,10 +223,13 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 1. git和github的安装配置同上
 2. 安装node.js
 3. 克隆hexo分支到本地
-    
+
     在git bash下进入想创建存储blog文件的位置，运行`git clone git@github.com:username/username.github.io.git`，在当前目录克隆github的github.io仓库的默认分支（应为hexo）。
+
 4. 安装组件
-   通过git bash进入本地github.io文件夹下依次执行`npm install hexo`,`npm install`,`npm install hexo-deployer-git`（注意不要 hexo init）安装hexo和需要的组件
+   
+   通过git bash进入本地github.io文件夹下依次执行 `npm install hexo-cli -g`命令安装hexo-cli（hexo的cli命令行模块）,`npm install`命令安装依赖的模块,`npm install hexo-deployer-git`命令安装部署模块hexo-deployer-git（注意不要 hexo init）。
+
 5. 进行日常blog撰写和备份
 
 
@@ -247,6 +250,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 
 **小记**
+
 学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。
 
 前几天拾起来，建站知识已忘得精光，原来应该是配置好了hexo的多端同步，但由于两年的荒废，遗忘导致我把hexo和master分支合并了，博客的原始文件有没备份，所以一切从头开始。
