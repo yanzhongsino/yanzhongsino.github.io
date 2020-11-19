@@ -234,6 +234,9 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 
 # 日常blog撰写和备份操作
+- blog同步
+  
+  养成习惯，每次开始撰写blog前都进行`git pull`命令把github端的hexo分支的更新同步到本地
 - blog撰写
    
    在本地source/_posts下添加和修改md文档实现blog的日常撰写。
