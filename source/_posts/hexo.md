@@ -261,7 +261,8 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
 
 
-20201121添加
+# next主题同步和更新
+
 - Issue
     建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
 
@@ -283,10 +284,10 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
     当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件，为了避免这种不便，next开发者提供了两种[解决方案](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)。
     这里介绍第二种NexT方式的解决方案。
+    
     把主题配置修改的任务转移到新建的位置：复制一份主题配置文件/themes/next/_config.yml到新建的位置/source/_data/next.yml，并且维持/themes/next/_config.yml的默认值，在/source/_data/next.yml中修改主题配置。当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件/source/_data/next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。
 
-
-    将本地_config.yml的修改推送给子项目（github端fork的hexo-theme-next项目）`git subtree push --prefix=themes/next next master`，对github端fork的hexo-theme-next项目进行pull、push操作需要使用`git subtree`命令。
+    将本地的修改推送给子项目（github端fork的hexo-theme-next项目）`git subtree push --prefix=themes/next next master`，对github端fork的hexo-theme-next项目进行pull、push操作需要使用`git subtree`命令。
 
    
 平常使用同步同前面介绍的一致。`git add .`,`git commit -m "commit notes"`,`git push`命令同步hexo项目和blog源文件到github端的hexo分支，`hexo clean & hexo g -d`命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。
@@ -295,9 +296,8 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 - next主题更新
     当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。
-    通过git bash进入next主题子项目，更新子项目：`git fetch next master`,`git subtree pull --prefix=themes/next next master --squash`命令拉取next项目源更新的仓库。
-
-    
+    通过git bash进入next主题子项目，更新子项目：`git fetch next master`,`git pull https://github.com/example/hexo-theme-next.git`命令拉取next项目源更新的仓库到本地。
+    然后`git add .`,`git commit -m "commit notes"`,`git push`命令推送本地更改到主项目，`git subtree push --prefix=themes/next next master`推送本地更改到子项目。    
 
 
 
@@ -310,3 +310,6 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 学了几天，博客搭建初步捡回来了。可不能再忘，这次笔记记得很精细，下次如果需要看看笔记应该可以捡回来。
 
 2020.11.18 Yan Zhong in Guangzhou
+
+next主题的同步稍微有点麻烦，在理解git的各种命令的含义的基础上理解各种操作实现了什么目的会更有帮助。
+2020.11.22 Yan Zhong in Guangzhou
