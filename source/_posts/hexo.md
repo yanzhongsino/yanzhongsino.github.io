@@ -261,6 +261,46 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
 
 
+20201121添加
+- Issue
+    建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
+
+- Solution A 把next主题的git项目改为普通文件进行同步
+    删除themes/next目录（删除前备份next目录到其他位置），然后`git add .`,`git commit -m "delete theme next"`,`git push`命令同步到github端的hexo分支。
+    把备份的next目录移回themes下，并把next目录下的.git目录删除，然后后`git add .`,`git commit -m "commit notes"`,`git push`命令同步到github端的hexo分支。此时next目录不作为git项目被同步到github的hexo端，而是普通文件。
+    优点是操作简单，缺点是next主题的更新较为麻烦。
+
+- Solution B fork+subtree同步next主题
+    删除themes/next目录（删除前备份next目录下修改过的文件，比如主题配置文件_config.yml），然后`git add .`,`git commit -m "delete theme next"`,`git push`命令同步到github端的hexo分支。
+
+    fork主题项目，访问[next](https://github.com/theme-next/hexo-theme-next)主题，点击右上角fork，表示把next这个git项目完整的复制一份到自己的github下，你的github账号下会有一个hexo-theme-next的新仓库。
+
+    `git remote add -f next git@github.com:yanzhongsino/hexo-theme-next.git` #添加远程仓库hexo-theme-next到本地，仓库名设置为next，远程仓库网址粘贴你的github账号下fork的hexo-theme-next的网址。
+
+    `git subtree add --prefix=themes/next next master --squash` #添加subtree，把本地next仓库作为子仓库添加到本地themes/next目录下，分支为master，--squash的意思是把subtree的改动合并成一次commit提交。
+
+    ~~在本地替换themes/next目录下的主题配置文件_config.yml，把删除前修改好的放进themes/next目录~~，用`git add .`,`git commit -m "add theme next"`,`git push`命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。
+
+    当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件，为了避免这种不便，next开发者提供了两种[解决方案](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)。
+    这里介绍第二种NexT方式的解决方案。
+    把主题配置修改的任务转移到新建的位置：复制一份主题配置文件/themes/next/_config.yml到新建的位置/source/_data/next.yml，并且维持/themes/next/_config.yml的默认值，在/source/_data/next.yml中修改主题配置。当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件/source/_data/next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。
+
+
+    将本地_config.yml的修改推送给子项目（github端fork的hexo-theme-next项目）`git subtree push --prefix=themes/next next master`，对github端fork的hexo-theme-next项目进行pull、push操作需要使用`git subtree`命令。
+
+   
+平常使用同步同前面介绍的一致。`git add .`,`git commit -m "commit notes"`,`git push`命令同步hexo项目和blog源文件到github端的hexo分支，`hexo clean & hexo g -d`命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。
+当next主题项目下文件更改时，增加了`git subtree push --prefix=themes/next next master`推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。
+
+
+- next主题更新
+    当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。
+    通过git bash进入next主题子项目，更新子项目：`git fetch next master`,`git subtree pull --prefix=themes/next next master --squash`命令拉取next项目源更新的仓库。
+
+    
+
+
+
 **小记**
 
 学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。
