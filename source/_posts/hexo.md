@@ -1,8 +1,6 @@
 ---
 title: hexo建站，github发布，多终端同步
-date: 2020-11-22 15:53:00
-comments: false
-tags: hexo,github,sync,blog.website
+date: 2018-06-04 15:53:00
 categories: blog
 ---
 
