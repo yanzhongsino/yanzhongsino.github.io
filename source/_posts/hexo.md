@@ -261,8 +261,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 # next主题同步和更新
 
-- Issue
-    建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
+#### Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
 
 - Solution A 把next主题的git项目改为普通文件进行同步
     删除themes/next目录（删除前备份next目录到其他位置），然后`git add .`,`git commit -m "delete theme next"`,`git push`命令同步到github端的hexo分支。
@@ -283,17 +282,19 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     ~~在本地替换themes/next目录下的主题配置文件_config.yml，把删除前修改好的放进themes/next目录~~，用`git add .`,`git commit -m "add theme next"`,`git push`命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。
 
     
-- Isssue
-    当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。
+#### Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。
     
 ~~- Solution A 使用source/_data/next.yml进行主题配置和同步~~
     使用source/_data/next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】
+    
     ~~为了避免这种不便，next开发者提供了两种[解决方案](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)。~~
     ~~这里介绍第二种NexT方式的解决方案。~~
     
     ~~把主题配置修改的任务转移到新建的位置：复制一份主题配置文件/themes/next/_config.yml到新建的位置/source/_data/next.yml，并且维持/themes/next/_config.yml的默认值，在/source/_data/next.yml中修改主题配置。当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件/source/_data/next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。~~
 
 - Solution B 使用_config.next.yml进行主题配置和同步【需要>hexo5.0】
+    [next官方指导doc](https://theme-next.js.org/docs/getting-started/configuration.html)
+
     在本地的github.io的工作目录下，创建一个_config.next.yml的文件，把需要更改的主题设置从next/_config.yml复制到_config.next.yml并进行更改，用_config.next.yml进行主题配置和同步。
 
     当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个文件_config.next.yml中，实现主题的配置和同步。
@@ -320,8 +321,10 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 学了几天，博客搭建初步捡回来了。可不能再忘，这次笔记记得很精细，下次如果需要看看笔记应该可以捡回来。
 
-2020.11.18 Yan Zhong in Guangzhou
+——2020.11.18 Yan Zhong in Guangzhou
+
 
 next主题的同步稍微有点麻烦，在理解git的各种命令的含义的基础上理解各种操作实现了什么目的会更有帮助。
+目前版本号 hexo 5.2.0, next 8.0.2。
 
-2020.11.22 Yan Zhong in Guangzhou
+——2020.11.22 Yan Zhong in Guangzhou

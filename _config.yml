@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Yan Zhong's blog
-subtitle: ''
-description: ''
+title: Yan Zhong's notebook
+subtitle: 'record'
+description: be brave, be humble, be confident
 keywords:
 author: Yan Zhong
-language: en
+language: zh-CN
 timezone: ''
 
 # URL
