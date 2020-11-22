@@ -1,6 +1,6 @@
 ---
 title: hexo建站，github发布，多终端同步
-date: 2018-06-04 11:00:00
+date: 2020-11-22 15:53:00
 comments: false
 tags: hexo,github,sync,blog.website
 categories: blog
@@ -296,7 +296,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 当next主题项目下文件更改时，增加了`git subtree push --prefix=themes/next next master`推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。
 
 
-- next主题更新
+- next主题更新【还未验证】
     当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。
     通过git bash进入本地next主题子项目，更新子项目：`git fetch next master`,`git pull https://github.com/example/hexo-theme-next.git`命令拉取next项目源更新的仓库到本地。
     然后`git add .`,`git commit -m "commit notes"`,`git push`命令推送本地更改到主项目，`git subtree push --prefix=themes/next next master`推送本地更改到子项目。    
@@ -314,4 +314,5 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 2020.11.18 Yan Zhong in Guangzhou
 
 next主题的同步稍微有点麻烦，在理解git的各种命令的含义的基础上理解各种操作实现了什么目的会更有帮助。
+
 2020.11.22 Yan Zhong in Guangzhou
