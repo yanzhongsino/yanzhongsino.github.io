@@ -276,7 +276,9 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
     fork主题项目，访问[next](https://github.com/theme-next/hexo-theme-next)主题，点击右上角fork，表示把next这个git项目完整的复制一份到自己的github下，你的github账号下会有一个hexo-theme-next的新仓库。
 
-    `git remote add -f next git@github.com:yanzhongsino/hexo-theme-next.git` #添加远程仓库hexo-theme-next到本地，仓库名设置为next，远程仓库网址粘贴你的github账号下fork的hexo-theme-next的网址。
+    *notes：注意fork的next版本与hexo版本相匹配，next V8与hexo v5，否则githubpages为空白（过来人踩过的坑~~）*
+
+    `git remote add -f next git@github.com:yanzhongsino/hexo-theme-next.git` #添加远程仓库hexo-theme-next到本地，仓库名设置为next，远程仓库网址粘贴你的github账号下fork的hexo-theme-next的网址。`git remote`显示所有添加的远程仓库，此时便能看见next。
 
     `git subtree add --prefix=themes/next next master --squash` #添加subtree，把本地next仓库作为子仓库添加到本地themes/next目录下，分支为master，--squash的意思是把subtree的改动合并成一次commit提交。
 
