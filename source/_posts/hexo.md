@@ -1,6 +1,6 @@
 ---
 title: hexo建站，github发布，多终端同步
-date: 2018-06-04 15:53:00
+date: 2018-06-05 15:53:00
 categories: blog
 ---
 
