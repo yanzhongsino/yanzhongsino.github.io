@@ -1,7 +1,21 @@
 ---
-title: hexo建站，github发布，多终端同步
+title: hexo建站，github.io发布，多终端同步
 date: 2018-06-05 15:53:00
-categories: blog
+categories: 
+- tutorial
+- blog
+- web
+
+tags: 
+- hexo
+- github
+- sync
+- build website
+- deploy website
+
+description: 这篇教程的目的是指导小白建立和管理自己的网站。
+- 用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。
+- build website with hexo, deploy with github.io, sync at multiple terminals.
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
@@ -349,6 +363,29 @@ markdown用法：`{% img http://www.viemu.com/vi-vim-cheat-sheet.gif 600 600 "�
     通过git bash进入本地next主题子项目，更新子项目：`git fetch next master`,`git pull https://github.com/example/hexo-theme-next.git`命令拉取next项目源更新的仓库到本地。
     然后`git add .`,`git commit -m "commit notes"`,`git push`命令推送本地更改到主项目，`git subtree push --prefix=themes/next next master`推送本地更改到子项目。    
 
+
+#### Issue 3:hexo deploy时报错Authentication failed
+报错信息如下
+```
+fatal: 发送请求时出错。
+fatal: 基础连接已经关闭: 连接被意外关闭。
+yLogon failed, use ctrl+c to cancel basic credential prompt.
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/yanzhongsino/yanzhongsino.github.io.git/'
+FATAL {
+  err: Error: Spawn failed
+      at ChildProcess.<anonymous> (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)
+      at ChildProcess.emit (events.js:315:20)
+      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) {
+    code: 128
+  }
+} Something's wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html
+```
+
+是因为github的认证信息过期了，用以下两条命令可以解决这个问题。
+git config --global --unset credential.helper
+git config credential.helper store
 
 
 **小记**

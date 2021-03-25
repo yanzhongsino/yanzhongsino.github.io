@@ -1,7 +1,11 @@
 ---
 title: bootstrap
 date: 2018-06-11 15:53:00
-categories: web
+categories: 
+- web
+tags: 
+- bootstrap
+description: bootstrap基础知识
 ---   
 
 # bootstrap
