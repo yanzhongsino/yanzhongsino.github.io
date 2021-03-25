@@ -4,6 +4,8 @@ date: 2018-06-05 15:53:00
 categories: blog
 ---
 
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
+
 - **markdown**是一种适用撰写文本的语法和文件格式，后缀是.md
 - **hexo**是把写的markdown文件生成blog网站的工具，hexo是不仅是博客引擎驱动，还是一个快速、简洁高效的博客框架，可生成静态网页。
 - **git**是目前世界上最先进的分布式版本控制系统，用于对开发程序或者其他需要长期追踪版本变更的项目/文件的版本控制。
@@ -31,8 +33,6 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 *notes：username和useremail替换成自己的github用户名和邮箱。*
 
 1. 下载安装[git](https://git-scm.com/)
-     
-     
 
 2. 注册github网站
      
@@ -259,6 +259,44 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
 
 
+# 攥写blog时插入图片或背景音乐
+## 插入图片
+若是本地图片，就放在特定位置，然后在blog中引用；若是网络图片，就直接复制图片的url地址引用；
+### 绝对路径本地引用
+当Hexo项目中只用到少量图片时，可以将图片统一放在source/images文件夹中，在blog中通过markdown语法访问它们，即`![](/images/image.jpg)`。
+
+图片既可以在首页内容中访问到，也可以在文章正文中访问到。
+
+### 相对路径本地引用
+图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置_config.yml来生成。
+- 将_config.yml文件中的配置项post_asset_folder设为true`post_asset_folder: true`;
+- 执行命令`hexo new postname`，在source/_posts中会生成文章postname.md和同名文件夹postname;
+- 将图片资源放在post_name中，文章就可以使用相对路径引用图片资源了。
+- 在文章中添加代码`![](image.jpg)`，markdown的引用方式。
+
+图片只能在文章中显示，但无法在首页中正常显示。
+
+### CDN引用
+1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
+2. 把代码`<div align="middle">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中；
+
+### 标签插件语法引用
+如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。
+- 本地图片资源，不限制图片尺寸，使用 `{% asset_img image.jpg This is an image %}`；
+- 网络图片资源，限制图片显示尺寸，`{% img http://www.something.gif 200 400 vi-vim-cheat-sheet %}` 
+
+### HTML语法引用
+`<img src="SpellCheck.png" width="50%" height="50%" title="拼写检查工具Grammarly." alt="拼写检查工具Grammarly."/>`
+启用fancybox：点击查看图片大图
+我使用的是Hexo的NexT主题，NexT主题中提供了fancybox的方便接口。
+Usage：https://github.com/theme-next/theme-next-fancybox3
+markdown用法：`{% img http://www.viemu.com/vi-vim-cheat-sheet.gif 600 600 "点击查看大图:vi/vim-cheat-sheet" %}`
+
+## 插入背景音乐
+1. 打开网易云网页版，找到想听的歌曲，然后点击**生成外链播放器**，然后复制网易云音乐的插件页面的HTML代码；
+2. 把代码`<div align="middle">这里粘贴刚刚复制的代码</div>`粘贴到文章中即可；align为了美观设置成居中；
+
+
 # next主题同步和更新
 
 #### Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
@@ -328,3 +366,7 @@ next主题的同步稍微有点麻烦，在理解git的各种命令的含义的�
 目前版本号 hexo 5.2.0, next 8.0.2。
 
 ——2020.11.22 Yan Zhong in Guangzhou
+
+添加了攥写blog时插入图片或背景音乐教程的小节，并添加了BGM
+
+——2021.03.25 Yan Zhong in Guangzhou
