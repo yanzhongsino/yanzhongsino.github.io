@@ -12,10 +12,7 @@ tags:
 - build website
 - deploy website
 
-description: 
-- 这篇教程的目的是指导小白建立和管理自己的网站。
-- 用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。
-- build website with hexo, deploy with github.io, sync at multiple terminals.
+description: 这篇教程的目的是指导小白建立和管理自己的网站。用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。build website with hexo, deploy with github.io, sync at multiple terminals.
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
