@@ -4,15 +4,12 @@ date: 2021-03-25 16:50:00
 categories:
 - bio
 - biosoft
-
 tags:
 - divergence time
 - paml
 - mcmctree
 - phylogeny
-
 description: 用paml的mcmctree模块估算物种分歧时间的教程。
-
 ---  
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=27853347&auto=1&height=66"></iframe></div>
