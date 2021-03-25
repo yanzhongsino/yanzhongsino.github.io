@@ -1,8 +1,8 @@
 ---
 title: caculateDivergenceTimeWithPamlmcmctree
 date: 2021-03-25 16:50:00
-categories: bio， note
-tags: paml， mcmctree， 分歧时间，系统发育树
+categories: bio
+
 
 ---  
 
