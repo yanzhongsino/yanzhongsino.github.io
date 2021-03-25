@@ -5,7 +5,6 @@ categories:
 - tutorial
 - blog
 - web
-
 tags: 
 - hexo
 - github
@@ -13,7 +12,8 @@ tags:
 - build website
 - deploy website
 
-description: 这篇教程的目的是指导小白建立和管理自己的网站。
+description: 
+- 这篇教程的目的是指导小白建立和管理自己的网站。
 - 用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。
 - build website with hexo, deploy with github.io, sync at multiple terminals.
 ---
