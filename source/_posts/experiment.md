@@ -9,8 +9,7 @@ tags:
 - molecular experiment
 - PCR
 
-discription: 记录分子生物学实验常用数据
-
+description: 记录分子生物学实验常用数据
 ---  
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=36307139&auto=1&height=32"></iframe></div>

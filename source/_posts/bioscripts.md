@@ -4,7 +4,6 @@ date: 2021-04-01 10:56:00
 categories: 
 - bio
 - script
-
 tags: 
 
 description: store some scripts using in biology and bioinformatics
