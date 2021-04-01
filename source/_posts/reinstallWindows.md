@@ -13,6 +13,9 @@ tags:
 description: 这篇教程的目的是指导小白重装windows系统。
 ---  
 
+
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
+
 # 小白就一键重装
 自己用过黑鲨装机软件，360装机软件等，都有绑定，需要重装之后卸载绑定的软件。
 

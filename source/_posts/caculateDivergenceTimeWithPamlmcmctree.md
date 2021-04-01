@@ -41,7 +41,6 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 - r8s：非常快
 
 ## paml的mcmctree估算分歧时间
-ref:[mcmctree manual](http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf); [陈连福的教程](http://www.chenlianfu.com/?p=2974)
 
 mcmctree通过调用baseml(核苷酸数据)、codeml（密码子或者氨基酸数据）估算模型参数，之后估算分歧时间；
 
@@ -168,12 +167,22 @@ wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用�
 
 在当前目录下，生成几个主要结果：
 
-FigTree.tre    生成含有分歧时间的超度量树文件，分歧时间的95%HPD区间。
-mcmc.txt       MCMC取样信息，包含各内部节点分歧时间、平均进化速率、sigma2值等信息，可以在Tracer软件中打开。通过查看各参数的ESS值，若ESS值大于200，则从一定程度上表示MCMC过程能收敛，结果可靠。
-out.txt        包含由较多信息的结果文件。例如，各碱基频率、节点命名信息。
+- FigTree.tre    生成含有枝长（分歧时间）的超度量树文件，分歧时间和分歧时间的95%HPD区间。
+```FigTree.tre文件的一个例子
+#NEXUS
+BEGIN TREES;
+
+        UTREE 1 = (((B: 0.408365, (A1: 0.107333, A2: 0.107333) [&95%={0.0749432, 0.126365}]: 0.301032) [&95%={0.285365, 0.478163}]: 0.362000, C: 0.770366) [&95%={0.53864, 0.90012}]: 0.047786, D: 0.818151) [&95%={0.572406, 0.958116}];
+
+END;
+```
+FigTree.tre文件的解释：其中A1或A2冒号:后的0.107333为A1和A2的枝长，代表A1和A2分歧时间，单位是亿年，(A1,A2)外的[&95%={0.0749432, 0.126365}]为A1和A2分歧时间的95%置信区间；A1或A2的枝长0.107333加上(A1,A2)之后的祖先枝长0.301032之和等于B的枝长0.408363，即B与A1和A2祖先种的分歧时间为0.408363亿年，95%置信区间为[&95%={0.285365, 0.478163}]；依此类推。
+
+- mcmc.txt       MCMC取样信息，包含各内部节点分歧时间、平均进化速率、sigma2值等信息，可以在Tracer软件中打开。通过查看各参数的ESS值，若ESS值大于200，则从一定程度上表示MCMC过程能收敛，结果可靠。
+- out.txt        包含由较多信息的结果文件。例如，各碱基频率、节点命名信息。
 
 ## 一些注意事项
-以下参考[陈连福的教程](http://www.chenlianfu.com/?p=2974)。
+以下来自[陈连福的教程](http://www.chenlianfu.com/?p=2974)。
 
 1. 如何设置burnin、sampfreq和nsample值？
 
@@ -208,3 +217,10 @@ FixedDsClock23.txt 文件内容示例：
 ```
 运行infinitesites命令进行分歧时间估算：`infinitesites mcmctree.ctl`
 使用infinitesites进行分歧时间估算时，程序要求输入多序列比对文件。虽然程序读取了序列信息，但在估算时会忽略其序列信息。
+
+
+ref:
+
+[mcmctree manual](http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf); 
+
+[陈连福的教程](http://www.chenlianfu.com/?p=2974)
