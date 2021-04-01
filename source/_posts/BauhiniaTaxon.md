@@ -6,14 +6,16 @@ categories:
 - taxon
 tags: 
 - Bauhinia
+discription: 羊蹄甲属常见三种类群的分类特征
 
 ---  
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=430 height=86 src="//music.163.com/outchain/player?type=2&id=189259&auto=1&height=66"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=26090155&auto=1&height=32"></iframe></div>
 
 羊蹄甲属（Bauhinia）的羊蹄甲（B. purpurea）、宫粉羊蹄甲（B. variegata ）和红花羊蹄甲（B. blakeana）是华南地区三种园林植物，广泛应用于城市的园林绿化中。
 
 **羊蹄甲属常见三种类群的分类特征**
+
 |羊蹄甲属（Bauhinia）学名|B. purpurea|B. variegata|Bauhinia purpurea x variegata 'Blakeana', cv. nov.|
 |---|---|---|---|
 |中文正名|羊蹄甲|宫粉羊蹄甲|红花羊蹄甲|

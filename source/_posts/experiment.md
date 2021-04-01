@@ -1,5 +1,5 @@
 ---
-title: 生物分子实验常用参数
+title: 分子生物学实验
 date: 2021-03-27 16:50:00
 categories: 
 - bio
@@ -9,9 +9,11 @@ tags:
 - molecular experiment
 - PCR
 
+discription: 记录分子生物学实验常用数据
+
 ---  
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1830718509&auto=1&height=66"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=36307139&auto=1&height=32"></iframe></div>
 
 
 ### 常用PCR参数
