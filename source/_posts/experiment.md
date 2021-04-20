@@ -3,7 +3,7 @@ title: 分子生物学实验
 date: 2021-03-27 16:50:00
 categories: 
 - bio
-    - experiment
+- experiment
 
 tags: 
 - molecular experiment

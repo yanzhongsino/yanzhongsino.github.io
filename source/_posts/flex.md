@@ -3,7 +3,7 @@ title: flex
 date: 2018-06-12 14:53:00
 categories: 
 - computer
-    - web
+- web
 tags: 
 - flex
 description: flex基础知识

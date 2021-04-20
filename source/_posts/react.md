@@ -3,7 +3,7 @@ title: react
 date: 2018-06-14 14:53:00
 categories: 
 - computer
-  - web
+- web
 tags: react
 description: react基础知识
 ---     

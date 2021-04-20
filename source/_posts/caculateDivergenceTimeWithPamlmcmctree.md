@@ -3,7 +3,7 @@ title: 用paml的mcmctree模块估算物种分歧时间
 date: 2021-03-25 16:50:00
 categories:
 - bio
-  - biosoft
+- biosoft
 tags:
 - divergence time
 - paml
