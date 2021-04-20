@@ -15,7 +15,60 @@ description: 这篇博客是记录日常博客撰写过程中的一些技巧，m
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
 
+# blog的categories和tags
+categories和tags的记录
 
+```
+---
+title: blog
+date: 2021-04-20 16:50:00
+categories: 
+
+- bio
+	- taxon
+	- biosoftware
+	- experiment
+	- theory
+
+- omics
+	- genome
+	- transcriptome
+	- plastome
+	- mitochondrion
+
+
+
+- computer
+	- system
+		- Windows
+		- Linux
+	- programming language
+		- python
+		- R
+		- perl
+		- java
+		- C
+	- IDE
+		- vim
+		- VScode
+		- git
+	- script
+	- web
+
+- blog
+
+
+tags: 
+- genome assemble
+- genome annotation
+- phylogeny
+- divergence time
+- WGD
+- HGT
+- molecular experiment
+
+---  
+```
 
 # 日常blog撰写和备份操作
 在做好blog搭建后，blog撰写和日常管理可参考这部分内容。
