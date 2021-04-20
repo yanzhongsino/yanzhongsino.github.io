@@ -2,7 +2,8 @@
 title: ES6
 date: 2018-06-12 14:53:00
 categories: 
-- web
+- computer
+    - web
 tags: 
 - ES6
 description: ES6基础知识

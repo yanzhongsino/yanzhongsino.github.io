@@ -2,7 +2,9 @@
 title: PATH
 date: 2021-04-20 16:20:15
 categories:
-- Linux
+- computer
+    - system
+        - Linux
 
 tags:
 - PATH

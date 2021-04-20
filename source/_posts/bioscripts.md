@@ -1,9 +1,9 @@
 ---
-title: bioscripts
+title: scripts
 date: 2021-04-01 10:56:00
 categories: 
-- bio
-- script
+- computer
+    - script
 tags: 
 
 description: store some scripts using in biology and bioinformatics

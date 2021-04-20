@@ -2,13 +2,15 @@
 title: 重装windows系统
 date: 2020-12-29 21:05:00
 categories: 
-- tutorial
-- windows
+- computer
+    - system
+        - Windows
 
 tags: 
 - reinstall
 - windows
 - system
+- tutorial
 
 description: 这篇教程的目的是指导小白重装windows系统。
 ---  

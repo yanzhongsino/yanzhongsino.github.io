@@ -1,7 +1,9 @@
 ---
 title: jquery
 date: 2018-06-05 14:53:00
-categories: web
+categories: 
+- computer
+    - web
 tags: jquery
 description: jquery基础知识
 ---
