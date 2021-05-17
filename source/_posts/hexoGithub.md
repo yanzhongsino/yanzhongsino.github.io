@@ -247,6 +247,8 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 1. blog同步
   
   养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
+  但如果本地有未提交的更新，则千万不要用`git pull`，否则会覆盖本地更新；直接进入下一步；直到使用`git add .`，`git commit -m "submit"`，`git push origin hexo`提交备份本地更新到github端的hexo分支后才可以使用`git pull`(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。
+
 
 2. blog撰写
    

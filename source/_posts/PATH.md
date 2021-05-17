@@ -39,9 +39,9 @@ PATH是环境变量，一个存放有（可执行）命令和程序的目录集�
 但这种设置方式只在当前shell有效，关掉shell就失效。
 
 ### 当前用户永久设置
-登录服务器时，会自动运行当前用户下~/.bashrc和~/.bash_profile文件内的命令。
+登录服务器时，会自动运行当前用户下`~/.bashrc`和`~/.bash_profile`文件内的命令。
 
-所以把`export PATH=$PATH:/home/software/`写入~/.bashrc或者~/.bash_profile文件就可以使目录`/home/software/`对于当前用户永久生效。
+所以把`export PATH=$PATH:/home/software/`写入`~/.bashrc`或者`~/.bash_profile`文件就可以使目录`/home/software/`对于当前用户永久生效。
 
 第一次写入后需要用命令`source ~/.bashrc`运行~/.bashrc文件来刷新环境变量，之后就不再需要。
 
