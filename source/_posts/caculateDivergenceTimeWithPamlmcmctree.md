@@ -14,12 +14,11 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=27853347&auto=1&height=66"></iframe></div>
 
-# paml的mcmctree估算分歧时间
 估算分歧时间是在已经建好物种的系统发育树，根据系统发育树上已知类群间分化时间（一般来自化石或者其他研究的标定），或者根据权威研究中对特定类群的碱基替换速率的估计（例如蕨类4.79e-9 subst./syn. site/year，水稻2.5e-8 subst./syn. site/year)进行估算系统发育树上其他类群的分歧时间。
 
 一般来说，我们尽量使用化石证据的时间（更可靠），可以在网站[timetree](http://www.timetree.org/)搜索化石或者其他文章标定的类群分化时间；实在没有化石可用时，则使用碱基替换速率常数。
 
-## 原理
+# 1.1. 原理
 尝试用数学思维讲讲估算分歧时间的原理：即路程=速度*时间，经过多长**时间**（地质时间），通过多大的**速度**（碱基替换速率），完成从祖先物种的DNA到现在物种的DNA的变化，总体上的碱基替换积累即**路程**。
 
 假设下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D;是有枝长有根树，A1-A4都是现在的物种（代表时间也已知），目的是要估算B和C节点的时间。
@@ -35,23 +34,23 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 
 以上解释是非常简化的理解这个估算过程，实际情况复杂得多，物种不会匀速进行碱基替换，所以软件会使用算法进行精细化估算。
 
-## 估算分歧时间常用软件
+# 1.2. 估算分歧时间常用软件
 - beast：Linux也调用图形界面
 - paml的mcmctree：推荐
 - r8s：非常快
 
-## paml的mcmctree估算分歧时间
+# 1.3. paml的mcmctree估算分歧时间
 
 mcmctree通过调用baseml(核苷酸数据)、codeml（密码子或者氨基酸数据）估算模型参数，之后估算分歧时间；
 
 **指南一和指南二只适用于核苷酸数据；氨基酸数据看指南三**
 
-### 指南一：paml常规方法估算分歧时间
+## 1.3.1. 指南一：paml常规方法估算分歧时间
 paml常规方法只适用于核苷酸数据；
-#### input files
+1. input files
 准备3个输入文件
 
-1. input.tre - 带有校准点的有根树文件
+- input.tre - 带有校准点的有根树文件
 把iqtree/raxml-ng等建树软件中得到的树文件中的支持率和枝长信息删除，添加化石校准点时间信息（格式是时间范围'>0.23<0.26'或者时间点'@0.245')；再在首行添加两个数字（物种数量和树的数量），空格隔开，可得到input.tre文件。
 
 ```newick #cat input.tre
@@ -60,14 +59,14 @@ paml常规方法只适用于核苷酸数据；
 ```
 文件内容分两行：第一行表述树中有n个物种，共计1个树，两个数值之间用空分割；第二行则是Newick格式树信息，其中包含有校准点信息。校准点信息一般指95%HPD（Highest Posterior Density）对应的置信区间；校准点单位是100MYA（软件说明文档中使用该单位，也推荐使用该单位，若使用其它单位，后续配置文件中的相关参数也需要对应修改）。此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。
 
-2. input.phy - 多序列比对文件（phylip格式）
+- input.phy - 多序列比对文件（phylip格式）
 PAML要求输入的Phylip格式，其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。
 python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
 推荐用`echo $(cat input.align.fa) |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g" >input.phy`手动转化align好的fas格式文件；再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。
 
 如果有多个区域的序列，比如exon和intron，LSC、SSC和IR，不同的基因，密码子的第一二三位，需要不同的模型分开估算，那可以把各自区域分别align之后制作多个phy文件，再合并到一起，用空行隔开，组成input.phy文件。（此时mcmctree.ctl的ndata值为区域的个数）。
 
-3. mcmctree.ctl - mcmctree程序的配置文件
+- mcmctree.ctl - mcmctree程序的配置文件
 ```mcmctree.ctl
           seed = -1 *设置随机数作为seed，-1代表使用系统当前时间作为随机数
        seqfile = input.phy *输入多序列比对文件
@@ -110,51 +109,51 @@ python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
 *** Note: Make your window wider (100 columns) when running this program.
 ```
 
-#### mcmctree运行
+2. mcmctree运行
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
 
-### 指南二：用approximate likelihood calculation估算分歧时间【推荐】
+## 1.3.2. 指南二：用approximate likelihood calculation估算分歧时间【推荐】
 approximate likelihood法比常规方法快很多，而且可以选择更复杂的GTR模型（model = 7）；推荐使用。
-#### input files
+1. input files
 输入文件和指南一一致，只是mcmctree.ctl的usedata需要修改为，usedata = 3【一定要改】；建议model修改为model = 7【建议改】。
 
-#### mcmctree usedata = 3运行
+2. mcmctree usedata = 3运行
 运行`mcmctree mcmctree.ctl`；用Maximum Likelihood方法估算枝长和Hessian信息；
-1. 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
+- 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
 
-2. 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用baseml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
+- 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用baseml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
 手动并行多个区域的操作：
-- mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
-- 对每个区域的tmp文件分别放置一个单独的目录，并在单独目录内运行`baseml tmp*.ctl`，从而实现多区域并行运行
-- 所有区域的baseml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
+  - mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
+  - 对每个区域的tmp文件分别放置一个单独的目录，并在单独目录内运行`baseml tmp*.ctl`，从而实现多区域并行运行
+  - 所有区域的baseml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
 
-#### mcmctree usedata = 2运行
+3. mcmctree usedata = 2运行
 把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
-### 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
+## 1.3.3. 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
 氨基酸数据不能用usedata = 1这种模式，只能用approximate likelihood calculation估算分歧时间；方法与指南二类似。
-#### input files
+1. input files
 输入文件和指南一一致，mcmctree.ctl的参数修改：usedata = 3，model = 2，seqtype = 2；增加一行aaRatefile = wag.dat；
 同时把paml软件安装位置下的wag.dat复制一份到当前目录；
 wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用其他的氨基酸替换率数据，就用其他的替换率文件(*.dat)；
 
-#### mcmctree usedata = 3运行
+2. mcmctree usedata = 3运行
 运行`mcmctree mcmctree.ctl`；用Maximum Likelihood方法估算枝长和Hessian信息；
-1. 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
+- 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
 
-2. 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用codeml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
+- 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用codeml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
 手动并行多个区域的操作：
-- mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
-- 对每个区域的tmp文件分别放置一个单独的目录，修改所有tmp*.ctl内的aaRatefile = wag.dat为wag.dat的相对位置或绝对，如aaRatefile = ../wag.dat，然后在每一个单独目录内运行`codeml tmp*.ctl`；
-- 所有区域的codeml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
+  - mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
+  - 对每个区域的tmp文件分别放置一个单独的目录，修改所有tmp*.ctl内的aaRatefile = wag.dat为wag.dat的相对位置或绝对，如aaRatefile = ../wag.dat，然后在每一个单独目录内运行`codeml tmp*.ctl`；
+  - 所有区域的codeml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
 
-#### mcmctree usedata = 2运行
+3. mcmctree usedata = 2运行
 把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
-### 结果文件
+## 1.3.4. 结果文件
 
 程序在运行过程中，会在屏幕生生成一些信息。比较耗时间的步骤主要在于取样的百分比进度：
 
@@ -181,7 +180,7 @@ FigTree.tre文件的解释：其中A1或A2冒号:后的0.107333为A1和A2的枝�
 - mcmc.txt       MCMC取样信息，包含各内部节点分歧时间、平均进化速率、sigma2值等信息，可以在Tracer软件中打开。通过查看各参数的ESS值，若ESS值大于200，则从一定程度上表示MCMC过程能收敛，结果可靠。
 - out.txt        包含由较多信息的结果文件。例如，各碱基频率、节点命名信息。
 
-## 一些注意事项
+# 1.4. 一些注意事项
 以下来自[陈连福的教程](http://www.chenlianfu.com/?p=2974)。
 
 1. 如何设置burnin、sampfreq和nsample值？
@@ -219,8 +218,6 @@ FixedDsClock23.txt 文件内容示例：
 使用infinitesites进行分歧时间估算时，程序要求输入多序列比对文件。虽然程序读取了序列信息，但在估算时会忽略其序列信息。
 
 
-ref:
-
+# ref
 [mcmctree manual](http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf); 
-
 [陈连福的教程](http://www.chenlianfu.com/?p=2974)

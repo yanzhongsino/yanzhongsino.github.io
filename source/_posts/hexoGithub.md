@@ -37,7 +37,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 日常blog撰写和备份操作
 
 
-# git和github的配置
+# 1. git和github的配置
 
 *notes：username和useremail替换成自己的github用户名和邮箱。*
 
@@ -66,7 +66,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
      在git bash下运行`ssh -T git@github.com`。
      输出You've successfully suthenicated.则代表github账户成功授权你当前使用的终端，本机可连接上github了。
 
-# hexo的安装和配置
+# 2. hexo的安装和配置
 1. 下载安装[node.js](https://nodejs.org/zh-cn/)
         
     使用git bash或者cmd终端检查node的安装，`node -v`和`npm -v`出现版本号即node和npm 安装成功
@@ -137,7 +137,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
             timezone: Asia/Shanghai #网站时区，要在时区列表中选取，Hexo默认使用您电脑的时区
         ```
 
-# 撰写与发布blog
+# 3. 撰写与发布blog
 
 1. 撰写blog
    
@@ -166,7 +166,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     
 每次修改blog或新增blog内容后，可用hexo clean & g -d快速部署到github端master分支，从而实现github.io网站博客的更新。
 
-# github两个分支实现多终端同步【推荐配置】
+# 4. github两个分支实现多终端同步【推荐配置】
 在进行hexo的安装和配置后，可以通过命令`hexo clean & hexo g -d`发布博客网站到github.io网站，但需要备份博客源文件和多终端协作时，便有一些问题。
 
 - 单终端配置hexo的问题：
@@ -183,7 +183,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     github网站新建hexo分支，并把hexo分支设为默认分支，`git clone`克隆hexo分支到本地终端，把克隆的目录下的.git文件夹移动到hexo配置好的建站目录hexo下。
     用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`同步.git文件夹所在目录到github端hexo分支，这样操作之后克隆github端hexo分支便包含了hexo部署文件和md源文件，从而实现多端共享，github端的master分支只用于发布blog（同步生成的public目录）。
 
-## 多终端同步配置
+## 4.1. 多终端同步配置
 多终端同步配置具体步骤如下：
 
 1. 安装node.js
@@ -226,7 +226,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
    blog撰写与发布单终端和多终端是一样的操作。
    撰写在source/_posts下进行，推荐使用markdown语法撰写博客；发布使用`hexo clean & hexo g -d`命令。
 
-## 配置后新终端使用同步功能
+## 4.2. 配置后新终端使用同步功能
 按照以上进行多终端同步配置后，在新的终端或者本地文件丢失后，可以通过以下步骤快速搭建博客撰写环境并同步博客数据。
 
 1. git和github的安装配置同上
@@ -242,7 +242,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 进行日常blog撰写和备份
 
 
-# 日常blog撰写和备份操作
+# 5. 日常blog撰写和备份操作
 
 1. blog同步
   
@@ -274,9 +274,10 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
 
 
-# next主题同步和更新
+# 6. next主题同步和更新
 
-#### Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
+# 7. Issue&Solution
+### 7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
 
 - Solution A 把next主题的git项目改为普通文件进行同步
     删除themes/next目录（删除前备份next目录到其他位置），然后`git add .`,`git commit -m "delete theme next"`,`git push`命令同步到github端的hexo分支。
@@ -297,7 +298,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     ~~在本地替换themes/next目录下的主题配置文件_config.yml，把删除前修改好的放进themes/next目录~~，用`git add .`,`git commit -m "add theme next"`,`git push`命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。
 
     
-#### Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。
+### 7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。
     
 ~~- Solution A 使用source/_data/next.yml进行主题配置和同步~~
     使用source/_data/next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】
@@ -327,7 +328,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     然后`git add .`,`git commit -m "commit notes"`,`git push`命令推送本地更改到主项目，`git subtree push --prefix=themes/next next master`推送本地更改到子项目。    
 
 
-#### Issue 3:hexo deploy时报错Authentication failed
+### 7.0.3. Issue 3:hexo deploy时报错Authentication failed
 报错信息如下
 ```
 fatal: 发送请求时出错。

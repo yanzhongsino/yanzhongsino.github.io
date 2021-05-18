@@ -9,20 +9,18 @@ tags:
 description: bootstrap基础知识
 ---   
 
-# bootstrap
-
-## bootstrap简介
+# 1. bootstrap简介
 
 bootstrap是一个用于快速开发web应用和网站的前端框架。  
 它能用于开发响应式布局、移动设备优先的web项目。
 
-## bootstrap的安装
+# 2. bootstrap的安装
 
 需要在html的link标签引入bootstrap的css插件bootstrap.css，并在script标签中引用bootstrap的js插件bootstrap.js(bootstrap的js插件使用需要先引入jQuery)，有两种方式：
 
-#### 通过CDN（内容分发网络）引用bootstrap，多个CDN可以使用。比如[bootCDN](http://www.bootcdn.cn/bootstrap/)。
+#### 2.0.0.1. 通过CDN（内容分发网络）引用bootstrap，多个CDN可以使用。比如[bootCDN](http://www.bootcdn.cn/bootstrap/)。
 
-#### 在[bootstrap中文网](http://v3.bootcss.com/)下载bootstrap，是一个文件夹，下有css、js、fonts三个目录。
+#### 2.0.0.2. 在[bootstrap中文网](http://v3.bootcss.com/)下载bootstrap，是一个文件夹，下有css、js、fonts三个目录。
 
 在link标签中引入文件夹的css目录下的bootstrap.min.css文件
 
@@ -30,7 +28,7 @@ bootstrap是一个用于快速开发web应用和网站的前端框架。
 
 在script标签中引用文件夹的js目录下的bootstrap.min.js文件(bootstrap的js插件使用需要先引入jQuery)
 
-## bootstrap的css
+# 3. bootstrap的css
 
 1.  使用`<img src="" class="img-responsive">`使图像对响应式布局更友好地支持。
 
@@ -45,4 +43,4 @@ bootstrap是一个用于快速开发web应用和网站的前端框架。
 
 4.  .container 类用于固定宽度并支持响应式布局的容器。.container-fluid 类用于 100\% 宽度，占据全部视口（viewport）的容器。
 
-## 网格系统
+# 4. 网格系统
