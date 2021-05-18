@@ -106,7 +106,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     ```
     deploy:
         type: git
-        repository: https://github.com/username/username.github.io.git
+        repository: git@github.com:username/username.github.io.git
         branch: master
     ```
 
@@ -351,6 +351,35 @@ FATAL {
 git config --global --unset credential.helper
 git config credential.helper store
 
+### Issue 4:hexo deploy报错unable to access 20210518
+报错信息如下
+```
+On branch master
+nothing to commit, working tree clean
+fatal: unable to access 'https://github.com/yanzhongsino/yanzhongsino.github.io.git/': OpenSSL SSL_read: Connection was reset, errno 10054
+FATAL {
+  err: Error: Spawn failed
+      at ChildProcess.<anonymous> (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)
+      at ChildProcess.emit (events.js:315:20)
+      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) {
+    code: 128
+  }
+} Something's wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html
+```
+
+- Solution
+可能是git的协议问题，修改hexo下的站点配置文件_config.yml中deploy参数，地址如果是http协议的修改成ssh协议的。
+把deploy的type修改成git，repository若是`https://github.com/yanzhongsino/yanzhongsino.github.io.git`格式修改成`git@github.com:yanzhongsino/yanzhongsino.github.io.git`格式，如下。
+    
+```
+deploy:
+    type: git
+    repository: git@github.com:yanzhongsino/yanzhongsino.github.io.git
+    branch: master
+```
+
+也可能是网络之类的问题，就隔一段时间试试`hexo deploy`。
 
 **小记**
 
