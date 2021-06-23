@@ -25,10 +25,12 @@ date: 2021-04-20 16:50:00
 categories: 
 
 - bio
+	- concept
 	- taxon
 	- biosoftware
 	- experiment
 	- theory
+	- knowledge
 
 - omics
 	- genome
@@ -66,7 +68,14 @@ tags:
 - WGD
 - HGT
 - molecular experiment
-
+- homolog
+- ortholog
+- paralog
+- xenolog
+- analog
+- orthology
+- orthogroup
+- gene family
 ---  
 ```
 
@@ -75,23 +84,23 @@ tags:
 
 ## 2.1. blog同步
   
-  养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
-  但如果本地有未提交的更新，则千万不要用`git pull`，否则会覆盖本地更新；直接进入下一步；直到使用`git add .`，`git commit -m "submit"`，`git push origin hexo`提交备份本地更新到github端的hexo分支后才可以使用`git pull`(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。
+养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
+但如果本地有未提交的更新，则千万不要用`git pull`，否则会覆盖本地更新；直接进入下一步；直到使用`git add .`，`git commit -m "submit"`，`git push origin hexo`提交备份本地更新到github端的hexo分支后才可以使用`git pull`(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。
 
 ## 2.2. blog撰写
     
-    在本地source/_posts下添加和修改md文档实现blog的日常撰写和修改。
+在本地source/_posts下添加和修改md文档实现blog的日常撰写和修改。
 
-    使用命令`hexo new "newpostname"`可以在hexo/source/_posts下新建一个newpostname.md的文件，这个文件以scaffolds/post.md为模板，修改scaffolds/post.md文件可以修改hexo new命令生成的新blog文件样式。
+使用命令`hexo new "newpostname"`可以在hexo/source/_posts下新建一个newpostname.md的文件，这个文件以scaffolds/post.md为模板，修改scaffolds/post.md文件可以修改hexo new命令生成的新blog文件样式。
 
 ## 2.3. blog备份
    
-   只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。
-   用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
+只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。
+用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
 
 ## 2.4. blog发布
     
-    可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用`hexo clean & hexo g -d`命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
+可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用`hexo clean & hexo g -d`命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
 
 
 总结一下，在配置好写作环境后的任意一台终端的日常工作流应该是：
