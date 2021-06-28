@@ -26,7 +26,7 @@ description: 这篇教程的目的是指导小白重装windows系统。
 但强烈不建议一键重装，除非纯小白，建议在正常运行的电脑上制作启动U盘，然后使用U盘启动和安装需要更换系统的电脑：
 
 ## 【推荐】微软官方工具
-可用微软官方的制作工具，https://www.microsoft.com/zh-cn/software-download/windows10，速度比msdn网站快。
+可用微软官方的制作工具，[微软官方工具](https://www.microsoft.com/zh-cn/software-download/windows10)，速度比msdn网站快。
 
 ### 创建启动U盘的步骤
 进入网站，根据**使用该工具创建安装介质(USB闪存驱动器、DVD或ISO文件），以在其他电脑上安装Windows10**指引操作，用一个>=8G的空U盘制作U盘启动盘。
