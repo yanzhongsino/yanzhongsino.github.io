@@ -3,16 +3,16 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Yan Zhong's notebook
-subtitle: recorder
-description: be brave, be humble, be confident.
+title: 南方枝叶
+subtitle: 生信笔记本
+description: 生物信息学学习过程的笔记。
 keywords:
 - biosoftware
 - skills
 - tools
 author: Yan Zhong
-language: en
-timezone: ''
+language: zh-CN
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'

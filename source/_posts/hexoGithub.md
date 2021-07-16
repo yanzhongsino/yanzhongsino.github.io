@@ -237,7 +237,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 4. 安装组件
    
-   通过git bash进入本地github.io文件夹下依次执行 `npm install hexo-cli -g`命令安装hexo-cli（hexo的cli命令行模块）,`npm install`命令安装依赖的模块,`npm install hexo-deployer-git`命令安装部署模块hexo-deployer-git（注意不要 hexo init）。
+   通过git bash进入本地github.io文件夹下依次执行 `npm install hexo-cli -g`命令安装hexo-cli（hexo的cli命令行模块）,`npm install`命令安装依赖的模块,`npm install hexo-server --save`安装hexo-server以使用服务器，`npm install hexo-deployer-git`命令安装部署模块hexo-deployer-git（注意不要 hexo init）。
 
 5. 进行日常blog撰写和备份
 
