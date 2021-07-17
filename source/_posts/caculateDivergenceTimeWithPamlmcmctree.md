@@ -18,7 +18,7 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 
 一般来说，我们尽量使用化石证据的时间（更可靠），可以在网站[timetree](http://www.timetree.org/)搜索化石或者其他文章标定的类群分化时间；实在没有化石可用时，则使用碱基替换速率常数。
 
-# 1.1. 原理
+# 1. 原理
 尝试用数学思维讲讲估算分歧时间的原理：即路程=速度*时间，经过多长**时间**（地质时间），通过多大的**速度**（碱基替换速率），完成从祖先物种的DNA到现在物种的DNA的变化，总体上的碱基替换积累即**路程**。
 
 假设下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D;是有枝长有根树，A1-A4都是现在的物种（代表时间也已知），目的是要估算B和C节点的时间。
@@ -34,18 +34,18 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 
 以上解释是非常简化的理解这个估算过程，实际情况复杂得多，物种不会匀速进行碱基替换，所以软件会使用算法进行精细化估算。
 
-# 1.2. 估算分歧时间常用软件
+# 2. 估算分歧时间常用软件
 - beast：Linux也调用图形界面
 - paml的mcmctree：推荐
 - r8s：非常快
 
-# 1.3. paml的mcmctree估算分歧时间
+# 3. paml的mcmctree估算分歧时间
 
 mcmctree通过调用baseml(核苷酸数据)、codeml（密码子或者氨基酸数据）估算模型参数，之后估算分歧时间；
 
 **指南一和指南二只适用于核苷酸数据；氨基酸数据看指南三**
 
-## 1.3.1. 指南一：paml常规方法估算分歧时间
+## 3.1. 指南一：paml常规方法估算分歧时间
 paml常规方法只适用于核苷酸数据；
 1. input files
 准备3个输入文件
@@ -75,7 +75,8 @@ python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
       mcmcfile = mcmc.txt *输出的mcmc信息文件，可用Tracer软件查看
 
        seqtype = 0  * 设置多序列比对数据类型；0：核酸数据；1：密码子比对数据；2：氨基酸数据；
-	   usedata = 1    * 是否利用多序列比对数据；
+	   usedata = 1
+     * 是否利用多序列比对数据；
 	   * 0: no data不使用，不会进行likelihood估算，会快速得到mcmc树，但分歧时间不可用; 
 	   * 1:seq like，使用多序列比对数据进行likelihood估算，正常进行mcmc; usedata=1时model无法选择；
 	   * 2:normal 进行正常的approximation likelihood分析，不读取多序列比对数据，直接读取当前目录的in.BV文件，in.BV是由usedata = 3时生成的out.BV重命名得来；此外，由于程序BUG，当设置usedata = 2时，一定要在改行参数后加 *，否则程序报错 Error: file name empty..；
@@ -86,7 +87,13 @@ python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
 *       TipDate = 1 100  *当外部节点由取样时间时使用该参数进行设置，同时该参数也设置了时间单位。具体数据示例请见examples/TipData文件夹。
         RootAge = '<10'  * constraint on root age, used if no fossil for root.设置root节点的分歧时间，一般设置一个最大值。
 
-         model = 4    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85；*设置碱基替换模型；当设置usedata = 1时，model不能使用超过4的模型，所以usedata = 1时用model = 4；usedata不等于1时，用model = 7，即GTR模型；
+         model = 4    * models for DNA:
+                        * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85；*设置碱基替换模型；当设置usedata = 1时，model不能使用超过4的模型，所以usedata = 1时用model = 4；usedata不等于1时，用model = 7，即GTR模型；
+                      * models for codons:
+                        * 0:one 恒定速率模型, 1:b 中性模型, 2:2 or more dN/dS ratios for branches 选择模型。
+                      * models for AAs or codon-translated AAs:
+                        * 0:poisson, 1:proportional, 2:Empirical, 3:Empirical+F
+                        * 6:FromCodon, 7:AAClasses, 8:REVaa_0, 9:REVaa(nr=189)
          alpha = 0.5   * alpha for gamma rates at sites；*核酸序列中不同位点，其进化速率不一致，其变异速率服从GAMMA分布。一般设置GAMMA分布的alpha值为0.5。若该参数值设置为0，则表示所有位点的进化速率一致。此外，当userdata = 2时，alpha、ncatG、alpha_gamma、kappa_gamma这4个GAMMA参数无效。因为userdata = 2时，不会利用到多序列比对的数据。
          ncatG = 5    * No. categories in discrete gamma；设置离散型GAMMA分布的categories值。
 
@@ -113,7 +120,7 @@ python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
 
-## 1.3.2. 指南二：用approximate likelihood calculation估算分歧时间【推荐】
+## 3.2. 指南二：用approximate likelihood calculation估算分歧时间【推荐】
 approximate likelihood法比常规方法快很多，而且可以选择更复杂的GTR模型（model = 7）；推荐使用。
 1. input files
 输入文件和指南一一致，只是mcmctree.ctl的usedata需要修改为，usedata = 3【一定要改】；建议model修改为model = 7【建议改】。
@@ -132,7 +139,8 @@ approximate likelihood法比常规方法快很多，而且可以选择更复杂�
 把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
-## 1.3.3. 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
+## 3.3. 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
+
 氨基酸数据不能用usedata = 1这种模式，只能用approximate likelihood calculation估算分歧时间；方法与指南二类似。
 1. input files
 输入文件和指南一一致，mcmctree.ctl的参数修改：usedata = 3，model = 2，seqtype = 2；增加一行aaRatefile = wag.dat；
@@ -153,7 +161,13 @@ wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用�
 把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
-## 1.3.4. 结果文件
+## 3.4. 指南四：codons数据处理方式
+如果是密码子codons数据，实测设置文件里seqtype = 1 会报错 “Error: dN/dS ratios among branches not implemented for gamma.”。
+有两个方案处理codons数据。
+1. 转化codons成第一、第二、第三密码子的三组数据之后，并设置ndata=3与seqtype = 0结合用核苷酸模式使用codons数据。
+2. 把codons翻译成氨基酸数据，用氨基酸模型分析codons数据。
+
+## 3.5. 结果文件
 
 程序在运行过程中，会在屏幕生生成一些信息。比较耗时间的步骤主要在于取样的百分比进度：
 
@@ -180,7 +194,7 @@ FigTree.tre文件的解释：其中A1或A2冒号:后的0.107333为A1和A2的枝�
 - mcmc.txt       MCMC取样信息，包含各内部节点分歧时间、平均进化速率、sigma2值等信息，可以在Tracer软件中打开。通过查看各参数的ESS值，若ESS值大于200，则从一定程度上表示MCMC过程能收敛，结果可靠。
 - out.txt        包含由较多信息的结果文件。例如，各碱基频率、节点命名信息。
 
-# 1.4. 一些注意事项
+# 4. 一些注意事项
 以下来自[陈连福的教程](http://www.chenlianfu.com/?p=2974)。
 
 1. 如何设置burnin、sampfreq和nsample值？
@@ -218,6 +232,6 @@ FixedDsClock23.txt 文件内容示例：
 使用infinitesites进行分歧时间估算时，程序要求输入多序列比对文件。虽然程序读取了序列信息，但在估算时会忽略其序列信息。
 
 
-# ref
+# 5. ref
 [mcmctree manual](http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf); 
 [陈连福的教程](http://www.chenlianfu.com/?p=2974)
