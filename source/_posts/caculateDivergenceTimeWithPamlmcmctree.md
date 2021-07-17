@@ -82,6 +82,17 @@ python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
 推荐用`echo $(cat input.align.fa) |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g" >input.phy`手动转化align好的fas格式文件；再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。
 
 如果有多个区域的序列，比如exon和intron，LSC、SSC和IR，不同的基因，密码子的第一二三位，需要不同的模型分开估算，那可以把各自区域分别align之后制作多个phy文件，再合并到一起，用空行隔开，组成input.phy文件。（此时mcmctree.ctl的ndata值为区域的个数）。
+写了一个脚本来制作多区域的phylip文件，其中OG.length包含两列，一列OGID，一列比对后序列长度。
+```shell ## cat fa2phylip.sh
+cat ./OG.length | while read line
+do
+        sample_id=$(echo $line |awk '{print $1}') #获取OG.ID
+        sample_a=$(echo $line |awk '{print $2}') #获取序列长度
+        sed "s/_.*//g" ../singlegenetree/${sample_id}/${sample_id}.mafft.pep|seqkit seq -w 0|sed -E ":a;N;s/\n/ /g;ta" |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g"|sed "1i\5  ${sample_a}" |sed '1i\ ' > ./phy/${sample_id}.phy #把上一步获取的${sample_id}.mafft.pep改为phylip格式，并在首行添加空格行（为了合并后每个OG用空行隔开）
+
+done
+cat ./phy/*phy >Ane.phy #合并所有phy文件为一个Ane.phy
+```
 
 - mcmctree.ctl - mcmctree程序的配置文件
 ```mcmctree.ctl
