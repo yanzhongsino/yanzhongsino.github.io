@@ -40,6 +40,23 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 - r8s：非常快
 
 # 3. paml的mcmctree估算分歧时间
+## paml介绍
+PAML (Phylogenetic Analysis by Maximum Likelihood)，是杨子恒开发的一款利用DNA或Protein数据使用最大似然法进行系统发育分析的软件。
+
+注意事项：
+1. PAML要求的输入文件是多序列比对结果。PAML软件不能进行多序列比对，需要使用其他软件进行分析。
+2. PAML软件进行基于密码子的分析要求输入的序列必须是去除了Introns等非编码区的DNA序列，且其长度是3的整数倍，且第一个核酸位点是密码子的第一位。PAML软件不能进行基因预测，密码子的比对结果需要自行编写程序分析得到。
+3. 对于较大数据（物种数>=10）量的分析，输入的树文件最好使用其他软件计算。
+
+## paml软件包含的程序
+- baseml 用于对核酸序列进行最大似然法分析。
+- codeml 用于对密码子和蛋白序列进行最大似然法分析。该程序整合了以前的两支程- 序codonml和aaml，前者用于对密码子序列进行分析，后者对蛋白序列进行分析。在新的codeml程序的配置文件中设置seqtype=1，表示使用codonml命令，设置- seqtype=2，表示使用aaml命令。
+- evolver 用于模拟核酸、密码子或蛋白序列。
+- basemlg 相比于baseml，该程序应用了连续的gamma模型。当数据中的物种数多于6- 到7个时，该程序运行非常慢以至得不到结果。这时，需要使用设置离散gamma模型的- baseml命令。
+- mcmctree 该程序应用Bayesian MCMC算法计算物种分歧时间。
+- pamp  用于简约法分析。
+- yn00  用于对两条编码蛋白的DNA序列进行比较并计算dnds。
+- chi2  用于在likelihood ratio test中计算卡方临界值和p值。
 
 mcmctree通过调用baseml(核苷酸数据)、codeml（密码子或者氨基酸数据）估算模型参数，之后估算分歧时间；
 
