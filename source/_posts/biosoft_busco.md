@@ -1,6 +1,6 @@
 ---
 title: busco的安装与使用
-date: 2021-06-23 16:50:00
+date: 2021-07-24 11:20:00
 categories: 
 - bio
 - biosoftware
