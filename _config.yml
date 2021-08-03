@@ -3,14 +3,14 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 南方枝叶
-subtitle: 生信笔记本
-description: 生物信息学学习过程的笔记。
+title: 生信技工
+subtitle: 
+description: 生物信息学学习过程的笔记本。
 keywords:
 - biosoftware
 - skills
 - tools
-author: Yan Zhong
+author: 南方枝叶
 language: zh-CN
 timezone: Asia/Shanghai
 
