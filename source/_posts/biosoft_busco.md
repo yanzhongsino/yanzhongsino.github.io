@@ -3,7 +3,7 @@ title: busco的安装与使用
 date: 2021-07-24 11:20:00
 categories: 
 - bio
-- biosoftware
+- biosoft
 tags: 
 - genome assessment
 description: 记录评估基因组组装和注释完整性的工具busco的安装使用。
