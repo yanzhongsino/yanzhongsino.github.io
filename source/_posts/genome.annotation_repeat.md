@@ -34,13 +34,13 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 <table>
 	<caption><h4>转座子(transposable elements,TEs)的分类</h4></caption>
 	<tr>
-		<td><h6>转座子(transposable elements,TEs)</h6></td>
+		<td><h6>转座子</br>(transposable elements,TEs)</h6></td>
 		<td><h6>功能</h6></td>
 		<td colspan="2"><h6>分类</h6></td>
 		<td><h6>结构特征</h6></td>
 	</tr>
 	<tr>
-		<td rowspan="5"><h6>I 类元件/逆转录转座子(retrotransposons)</h6></td>
+		<td rowspan="5"><h6>I 类元件</br>/逆转录转座子(retrotransposons)</h6></td>
 		<td rowspan="5">在“复制和粘贴”转座机制中作为RNA中间体</td>
 		<td rowspan="3">长末端重复(long terminal repeat, LTR)逆转录转座子</td>
 		<td>Ty3-gypsy类</td>
@@ -56,14 +56,14 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 	</tr>
 	<tr>
 		<td rowspan="2">非长末端重复(non-LTR)逆转录转座子</td>
-		<td>长散布核元件(LINEs,long interspersed nuclear element)</td>
+		<td>长散布核元件</br>(LINEs,long interspersed nuclear element)</td>
 		<td rowspan="2">non-LTR 具有可变长度的 TSD 或完全缺乏 TSD，而是与插入时侧翼序列的缺失相关。non-LTR 通常在元件的 3' 末端有一个末端 poly-A 尾</td>
 	</tr>
 	<tr>
-		<td>短散布核元件(SINEs,short interspersed nuclear element)</td>
+		<td>短散布核元件</br>(SINEs,short interspersed nuclear element)</td>
 	</tr>
 	<tr>
-		<td rowspan="3"><h6>II 类元件，也称为 DNA 转座子(DNA transposons)</h6></td>
+		<td rowspan="3"><h6>II 类元件</br>/DNA 转座子(DNA transposons)</h6></td>
 		<td rowspan="3">在“剪切和粘贴”转座机制中作为DNA中间体</td>
 		<td colspan="2">TIR元件</br>(TIR末端反向重复序列,这里指具有TIRs结构的DNA转座子，包括微型反向转座元件MITEs)</td>
 		<td>---</td>
@@ -73,7 +73,7 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 		<td>通过滚环机制复制，因此不产生 TSD 序列，也没有 TIR，但具有特征 5'-TC…CTRR-3' 末端序列，通常在元素的 3' 端附近有一个富含 GC 的短茎环结构。</td>
 	</tr>
 	<tr>
-		<td colspan="2">非TE重复序列(non-TE repeat sequence)</td>
+		<td colspan="2">非TE重复序列</br>(non-TE repeat sequence)</td>
 		<td>---</td>
 	</tr>
 </table>
