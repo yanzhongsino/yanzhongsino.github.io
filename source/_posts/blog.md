@@ -130,14 +130,14 @@ tags:
 
 ### 3.1.3. CDN引用
 1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
-2. 把代码`<div align="middle">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中；
+2. 【实测这种方法不生效】把代码`<div align="middle">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中；
 
 ### 3.1.4. 标签插件语法引用
 如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。
 - 本地图片资源，不限制图片尺寸，使用 `{% asset_img image.jpg This is an image %}`；
 - 网络图片资源，限制图片显示尺寸，`{% img http://www.something.gif 200 400 vi-vim-cheat-sheet %}` 
 
-### 3.1.5. HTML语法引用
+### 3.1.5. 【推荐】HTML语法引用
 `<img src="SpellCheck.png" width="50%" height="50%" title="拼写检查工具Grammarly." alt="拼写检查工具Grammarly."/>`
 启用fancybox：点击查看图片大图
 我使用的是Hexo的NexT主题，NexT主题中提供了fancybox的方便接口。
