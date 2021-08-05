@@ -210,7 +210,7 @@ consensi.fa.classified文件即为训练结果，重复序列数据库，用作�
 ## 3.1. EDTA介绍
 [EDTA](https://github.com/oushujun/EDTA#quick-installation-using-conda-linux64)是一个用于自动化全基因组的转座元件(transposable elements,TE)从头注释(de-novo)注释和评估TE注释的综合软件。
 
-<img src="https://github.com/oushujun/EDTA/raw/master/development/EDTA%20workflow.png?raw=true" title="EDTA流程图" />
+<img src="https://github.com/oushujun/EDTA/raw/master/development/EDTA%20workflow.png?raw=true" title="EDTA流程图" width="90%" height="90%" />
 
 **EDTA运行和调用软件的流程：**
 1. LTR预测

@@ -15,7 +15,7 @@ description: 记录了冠群和干群及在古生物学和进化生物学上应�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
 
-<img src="https://en.wikipedia.org/wiki/Crown_group#/media/File:Stemgroups_Rev.png" title="冠群干群示意图" width="50%" height="50%" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Stemgroups_Rev.png" title="冠群干群示意图" width="50%" height="50%" />
 
 **泛群(pan-group)=冠群(crown groups)+干群(stem groups)**
 
