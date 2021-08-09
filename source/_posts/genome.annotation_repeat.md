@@ -136,10 +136,10 @@ perl ./configure
 #### 2.3.2.2. RepeatModeler使用
 1. 建库
 
-生成Bauhinia.variegata.nhr,.nin,.nnd,.nni,.nog,.nsq,.translation 7个文件
+生成sample.nhr,.nin,.nnd,.nni,.nog,.nsq,.translation 7个文件
 
 `mkdir db && cd db`
-`BuildDatabase -name Bauhinia.variegata -engine ncbi sample.fa`
+`BuildDatabase -name sample -engine ncbi sample.fa`
 
 2. self-training
 
@@ -163,9 +163,9 @@ consensi.fa.classified文件即为训练结果，重复序列数据库，用作�
 
 如果想要更加可信的结果，可以把标记为Unknown的去除，留下的保存为ModelerID.lib，作为后续使用。
 
-`seqkit grep -r -i -p "Unknown" -v ./RM_21945.SatAug11650032020/consensi.fa.classified > ModelerID.lib`  #从consensi.fa.classified 文件提取可以被识别（就是序列id不含Unknown的序列）
+- `seqkit grep -r -i -p "Unknown" -v ./RM_21945.SatAug11650032020/consensi.fa.classified > ModelerID.lib`  #从consensi.fa.classified 文件提取可以被识别（就是序列id不含Unknown的序列）
 
-`seqkit grep -r -i -p "Unknown"  ./RM_21945.SatAug11650032020/consensi.fa.classified > Modelerunknown.lib`  #从consensi.fa.classified 文件提取不能被识别（就是序列id含Unknown的序列）
+- `seqkit grep -r -i -p "Unknown"  ./RM_21945.SatAug11650032020/consensi.fa.classified > Modelerunknown.lib`  #从consensi.fa.classified 文件提取不能被识别（就是序列id含Unknown的序列）
 
 ### 2.3.3. RepeatMasker运行
 `RepeatMasker sample.fa -species "Arachis ipaensis" -pa 12 -lib consensi.fa.classified -poly -html -gff -dir repeatmasker`
