@@ -18,6 +18,9 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=365639&auto=1&height=32"></iframe></div>
 
+**防坑指南**
+1. 基因组在组装后，注释前。`seqkit seq -u lower.geno >upper.geno`改为碱基全部大写的形式，因为小写碱基有些软件是识别成soft-masked的形式，影响注释预测，edta的TIR预测和geta软件都有可能报错。（这个坑我已经踩两次了，唉~）
+
 **写在前面**
 
 多种参数和条件用下来推荐的方案是：
@@ -73,8 +76,8 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 		<td>通过滚环机制复制，因此不产生 TSD 序列，也没有 TIR，但具有特征 5'-TC…CTRR-3' 末端序列，通常在元素的 3' 端附近有一个富含 GC 的短茎环结构。</td>
 	</tr>
 	<tr>
-		<td colspan="2">非TE重复序列</br>(non-TE repeat sequence)</td>
-		<td>---</td>
+		<td colspan="2">Mavericks</br>非TE重复序列</br>(non-TE repeat sequence)</td>
+		<td>大尺寸，15-40 kbp</br>包含长的TIRs(几百对碱基)</br>包含保守的5'-AG...TC-3'末端</td>
 	</tr>
 </table>
 
