@@ -27,7 +27,7 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 多种参数和条件用下来推荐的方案是：
 1. RepeatModeler自我训练
 2. RepeatMasker加载Repbase数据库，并用-species参数指定近缘种，参考RepeatModeler自我训练结果做重复序列预测
-3. EDTA参考RepeatModeler自我训练结果，提供CDS序列做过滤，实现Denovo的TE预测。
+3. EDTA，提供转录组组装的CDS序列做过滤，实现Denovo的TE预测。
 4. 结合RepeatMasker和EDTA的结果作为最终基因组的重复序列注释。
 
 # 1. 重复序列注释
