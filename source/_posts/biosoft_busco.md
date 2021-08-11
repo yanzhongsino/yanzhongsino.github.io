@@ -12,7 +12,7 @@ description: 记录评估基因组组装和注释完整性的工具busco的安�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=3986241&auto=1&height=32"></iframe></div>
 
-# busco简介
+# 1. busco简介
 Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组装和注释的完整性的工具。通过与已有单拷贝直系同源数据库的比较，得到有多少比例的数据库能够有比对，比例越高代表基因组完整度越好。
 
 可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。
@@ -20,10 +20,10 @@ Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组�
 [busco官网](https://busco.ezlab.org)
 [busco v5数据库](https://busco-data.ezlab.org/v5/data/lineages/)
 
-# busco安装
+# 2. busco安装
 `conda install -c bioconda busco=5.1.3` #安装版本是5.1.3
 
-# busco数据库下载
+# 3. busco数据库下载
 `busco --list-datasets` #查看busco可用的数据库。
 
 下载对应的busco数据库(wget + 数据库网址）；目前有v1-v5版本，根据需要评估的物种，尽量选用最新版本的最多基因的数据库。
@@ -38,8 +38,8 @@ Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组�
 |真双子叶植物|[eudicots_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/eudicots_odb10.2020-09-10.tar.gz)|2326|
 |豆目|[fabales_odb10.2020-08-05.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/fabales_odb10.2020-08-05.tar.gz)|5366|
 
-# busco使用
-## 直接在命令中设定参数【需设置的参数较少时】
+# 4. busco使用
+## 4.1. 直接在命令中设定参数【需设置的参数较少时】
 `nohup busco -i genome.fa -c 10 -o busco -m geno -l busco_downloads/eudicots_odb10 --offline &`
 - -i：指定需要分析的数据，组装的genome或者注释的蛋白序列或者组装的转录组dna序列;
 - -m：geno/prot/tran模式；
@@ -50,7 +50,7 @@ Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组�
 
 非常不建议用busco的--auto-lineage模式，这个模式在运行busco时下载数据库，网络不好时连接的失败率非常高。推荐用`-l busco_downloads/eudicots_odb10 --offline`指定下载好的本地数据库，并使用离线模式。
 
-## 在设置文件中给出参数【需设置的参数较多时】
+## 4.2. 在设置文件中给出参数【需设置的参数较多时】
 `nohup busco --config config.ini`
 通过conda安装的这config.ini配置文件在/path/to/miniconda3/envs/busco5/config/目录下；直接复制一份到工作目录，修改使用即可。
 
@@ -168,7 +168,7 @@ path = /usr/local/bin/
 command = prodigal
 ```
 
-# busco结果
+# 5. busco结果
 结果在short_summary.txt后缀文件中。
 
 一个例子
@@ -190,12 +190,12 @@ command = prodigal
 
 通常用完整比对上的占总共的BUSCO groups的比例作为BUSCO的重要结果，越高越好，这里是92.9%=2162/2326。
 
-# busco结果画图
+# 6. busco结果画图
 在执行完毕之后，可以使用generate_plot.py画条形图，可以多个物种间比较。
 
 首先把所有的经过BUSCO检测的物种结果short_summary.txt后缀文件放到一个文件夹（result）下；然后运行`python busco/scripts/generate_plot.py –wd result`
 
-# 调用augustus【optional】
+# 7. 调用augustus【optional】
 AUGUSTUS运行的时候需要额外设定2个环境变量，AUGUSTUS_CONFIG_PATH和BUSCO_CONFIG_FILE, 通过conda安装的这两个配置文件都在/path/to/miniconda3/envs/busco5/config目录下。
 
 所以需要在.bashrc或.zshrc中加入下面这一行
@@ -205,6 +205,6 @@ export BUSCO_CONFIG_FILE="/path/to/anaconda3/envs/busco5/config/config.ini
 ```
 实现AUGUSTUS和BUSCO的设置。
 
-# notes
+# 8. notes
 2021年06月23日开始写，07月24日今天终于完结。
 

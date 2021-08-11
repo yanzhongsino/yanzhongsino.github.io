@@ -305,7 +305,7 @@ notes: 网页版的结果，注意需要把进度条拉到最下面再复制保�
 从Mercator4 annotated fasta file中以"not annotated"作为关键词搜索，可以获取未被注释到的基因。
 
 
-# references
+# 3. references
 1. https://www.jianshu.com/p/67dbafa86334
 2. https://www.jianshu.com/p/e646c0fa6443
 3. [徐洲更文章](http://xuzhougeng.top/archives/Function-anotation-with-swiss-prot-database)

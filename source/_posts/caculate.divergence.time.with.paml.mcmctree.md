@@ -42,7 +42,7 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 - r8s：非常快
 
 # 3. paml的mcmctree估算分歧时间
-## paml介绍
+## 3.1. paml介绍
 PAML (Phylogenetic Analysis by Maximum Likelihood)，是杨子恒开发的一款利用DNA或Protein数据使用最大似然法进行系统发育分析的软件。
 
 注意事项：
@@ -50,7 +50,7 @@ PAML (Phylogenetic Analysis by Maximum Likelihood)，是杨子恒开发的一款
 2. PAML软件进行基于密码子的分析要求输入的序列必须是去除了Introns等非编码区的DNA序列，且其长度是3的整数倍，且第一个核酸位点是密码子的第一位。PAML软件不能进行基因预测，密码子的比对结果需要自行编写程序分析得到。
 3. 对于较大数据（物种数>=10）量的分析，输入的树文件最好使用其他软件计算。
 
-## paml软件包含的程序
+## 3.2. paml软件包含的程序
 - baseml 用于对核酸序列进行最大似然法分析。
 - codeml 用于对密码子和蛋白序列进行最大似然法分析。该程序整合了以前的两支程- 序codonml和aaml，前者用于对密码子序列进行分析，后者对蛋白序列进行分析。在新的codeml程序的配置文件中设置seqtype=1，表示使用codonml命令，设置- seqtype=2，表示使用aaml命令。
 - evolver 用于模拟核酸、密码子或蛋白序列。
@@ -64,7 +64,7 @@ mcmctree通过调用baseml(核苷酸数据)、codeml（密码子或者氨基酸�
 
 **指南一和指南二只适用于核苷酸数据；氨基酸数据看指南三**
 
-## 3.1. 指南一：paml常规方法估算分歧时间
+## 3.3. 指南一：paml常规方法估算分歧时间
 paml常规方法只适用于核苷酸数据；
 1. input files
 准备3个输入文件
@@ -150,7 +150,7 @@ cat ./phy/*phy >Ane.phy #合并所有phy文件为一个Ane.phy
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
 
-## 3.2. 指南二：用approximate likelihood calculation估算分歧时间【推荐】
+## 3.4. 指南二：用approximate likelihood calculation估算分歧时间【推荐】
 approximate likelihood法比常规方法快很多，而且可以选择更复杂的GTR模型（model = 7）；推荐使用。
 1. input files
 输入文件和指南一一致，只是mcmctree.ctl的usedata需要修改为，usedata = 3【一定要改】；建议model修改为model = 7【建议改】。
@@ -170,7 +170,7 @@ approximate likelihood法比常规方法快很多，而且可以选择更复杂�
 把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
-## 3.3. 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
+## 3.5. 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
 
 氨基酸数据不能用usedata = 1这种模式，只能用approximate likelihood calculation估算分歧时间；方法与指南二类似。
 1. input files
@@ -193,13 +193,13 @@ wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用�
 把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
-## 3.4. 指南四：codons数据处理方式
+## 3.6. 指南四：codons数据处理方式
 如果是密码子codons数据，实测设置文件里seqtype = 1 会报错 “Error: dN/dS ratios among branches not implemented for gamma.”。
 有两个方案处理codons数据。
 1. 转化codons成第一、第二、第三密码子的三组数据之后，并设置ndata=3与seqtype = 0结合用核苷酸模式使用codons数据。
 2. 把codons翻译成氨基酸数据，用氨基酸模型分析codons数据。
 
-## 3.5. 结果文件
+## 3.7. 结果文件
 
 程序在运行过程中，会在屏幕生生成一些信息。比较耗时间的步骤主要在于取样的百分比进度：
 

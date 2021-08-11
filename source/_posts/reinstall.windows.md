@@ -19,17 +19,17 @@ description: 这篇教程的目的是指导小白重装windows系统。
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
 
-# 小白就一键重装
+# 1. 小白就一键重装
 自己用过黑鲨装机软件，360装机软件等，都有绑定，需要重装之后卸载绑定的软件。
 一键重装只能在电脑正常可进入桌面和使用软件的情况下进行，许多情况下不适用。
 
-# U盘重装
+# 2. U盘重装
 但强烈不建议一键重装，除非纯小白，建议在正常运行的电脑上制作启动U盘，然后使用U盘启动和安装需要更换系统的电脑：
 
-## 【推荐】微软官方工具
+## 2.1. 【推荐】微软官方工具
 可用微软官方的制作工具，[微软官方工具](https://www.microsoft.com/zh-cn/software-download/windows10)，速度比msdn网站快。
 
-### 创建启动U盘的步骤
+### 2.1.1. 创建启动U盘的步骤
 进入网站，根据**使用该工具创建安装介质(USB闪存驱动器、DVD或ISO文件），以在其他电脑上安装Windows10**指引操作，用一个>=8G的空U盘制作U盘启动盘。
 
 1. 插上>=8G的空白U盘（U盘会被格式化）
@@ -40,7 +40,7 @@ description: 这篇教程的目的是指导小白重装windows系统。
 6. 选择介质类型（USB闪存驱动器或ISO文件，其中ISO文件用于创建启动DVD），选择USB闪存驱动器。
 7. 等待创建完成
 
-### U盘启动安装
+### 2.1.2. U盘启动安装
 根据网站上接下来的**使用您所创建的安装介质**，为电脑安装新的Window10系统，步骤如下
 1. 需要安装系统的电脑的所有硬盘需要备份。
 2. 把制作好的启动U盘连接到等待安装系统的电脑上
@@ -51,7 +51,7 @@ description: 这篇教程的目的是指导小白重装windows系统。
 7. 选择**安装Windows**。
 
 
-## msdn下载系统镜像+rufus制作启动U盘
+## 2.2. msdn下载系统镜像+rufus制作启动U盘
 这里可以替代上一步中的**创建启动U盘的步骤**；制作完成后**U盘启动安装**与上一步一致。
 
 在[msdn网站](https://msdn.itellyou.cn/)下载需要的操作系统版本的ISO文件；然后用[Rufus](https://rufus.ie/)软件制作U盘。
@@ -63,7 +63,7 @@ description: 这篇教程的目的是指导小白重装windows系统。
 - 用软件Rufus制作U盘启动盘（大约30-60分钟），制作完成后插入需装系统的电脑（台式机建议插后面的USB接口）
 
 
-## notes：
+## 2.3. notes：
 - 不同电脑主板进入BIOS界面的快捷键不一样，需要查询。
 - 进入BIOS界面后，有些主板不显示U盘，可以UEFI设置的“Secure Boot”选项disable掉。
 - 有些主板不支持U盘是NTFS文件格式使用UEFI启动，但FAT32最大支持4G文件，所以网上有建议U盘分区，把系统文件放在NTFS区，启动文件放在FAT32区，但我亲试用Rufus制作的NTFS格式U盘可以在Dell inspire 3881上使用（UltraISO制作的就不行）。

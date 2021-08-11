@@ -353,7 +353,7 @@ FATAL {
 git config --global --unset credential.helper
 git config credential.helper store
 
-### Issue 4:hexo deploy报错unable to access 20210518
+### 7.0.4. Issue 4:hexo deploy报错unable to access 20210518
 报错信息如下
 ```
 On branch master
