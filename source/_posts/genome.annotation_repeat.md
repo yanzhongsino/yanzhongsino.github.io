@@ -278,13 +278,17 @@ singularity和docker安装我没用过，参考开发者说明吧。
 **参数解释：**
 - --genome 基因组文件
 - --cds 提供这个种或近缘种的CDS序列（不能包括introns和UTR），用于最终过滤。
-- --rmout 提供其他软件做的同源TE注释（比如repeatmasker的.out文件），如果不提供则默认使用EDTA - library用于masking。
+- --rmout 提供其他软件做的同源TE注释（比如repeatmasker的.out文件），如果不提供则默认使用EDTA - library用于masking。有看到说提供了repeatmasker的文件，预测结果反而变少了很多。
 - --species [Rice|Maize|others]三种可选
 - --step	[all|filter|final|anno]
 - -sensitive: 是否用RepeatModeler分析剩下的TE，默认是0，不要。RepeatModeler会增加运行时间。
 - -anno: 是否在构建TE文库后进行全基因组预测，默认是0.
-- -evalues: 默认是0，需要同时设置-anno 1才能使用。能够评估注释质量，但会增加分析时间。
+- -evalues: 默认是0，需要同时设置-anno 1才能使用。能够评估注释质量，但会显著增加分析时间。
 - --overwrite默认是0，设定为1会删除已有结果重新运行，建议保持默认，运行中断可以继续运行。
+
+简化推荐版：
+`nohup EDTA.pl --genome sample.fa --cds sample.cds --species others --step all --anno 1 -t 36 &`
+
 
 ## 3.4. 结果文件
 - genome.mod.EDTA.TElib.fa：最终结果，非冗余的TE库。如果在输入文件中用--curatedlib指定的修正版TE库，则该文件中也将包含这部分序列。
