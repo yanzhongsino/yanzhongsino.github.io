@@ -7,6 +7,8 @@ categories:
 - Linux
 
 tags:
+- tutorial
+- Linux
 - PATH
 
 description: 这篇博客记录了Linux系统下环境变量PATH的设置。

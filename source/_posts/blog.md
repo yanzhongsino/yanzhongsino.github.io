@@ -4,12 +4,14 @@ date: 2021-04-20 16:22:52
 categories: 
 - blog
 tags: 
+- tutorial
+- blog
 - hexo
 - github
 - sync
 - website maintenance
 - markdown
-- tutorial
+
 description: 这篇博客是记录日常博客撰写过程中的一些技巧，markdown的使用，github.io搭建网站的维护，hexo的使用等。
 ---
 

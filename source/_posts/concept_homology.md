@@ -5,6 +5,7 @@ categories:
 - bio
 - concept
 tags: 
+- concept
 - homolog
 - ortholog
 - paralog

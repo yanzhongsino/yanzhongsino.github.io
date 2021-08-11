@@ -5,7 +5,8 @@ categories:
 - omics
 - genome
 tags: 
-- annotation
+- tutorial
+- genome annotation
 - functional annotation
 
 description: 记录对基因组的基因进行功能注释的方法。

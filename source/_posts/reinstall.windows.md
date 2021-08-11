@@ -7,10 +7,11 @@ categories:
 - Windows
 
 tags: 
+- tutorial
 - reinstall
 - windows
 - system
-- tutorial
+
 
 description: 这篇教程的目的是指导小白重装windows系统。
 ---  

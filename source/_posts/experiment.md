@@ -6,6 +6,7 @@ categories:
 - experiment
 
 tags: 
+- experiment
 - molecular experiment
 - PCR
 

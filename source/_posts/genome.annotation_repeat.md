@@ -5,6 +5,7 @@ categories:
 - omics
 - genome
 tags:
+- tutorial
 - genome annotation
 - repeat sequences
 - TE

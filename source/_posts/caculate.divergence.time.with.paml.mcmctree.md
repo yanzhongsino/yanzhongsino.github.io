@@ -5,6 +5,8 @@ categories:
 - bio
 - biosoft
 tags:
+- tutorial
+- biosoft
 - divergence time
 - paml
 - mcmctree

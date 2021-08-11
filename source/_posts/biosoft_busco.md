@@ -5,6 +5,7 @@ categories:
 - bio
 - biosoft
 tags: 
+- biosoft
 - genome assessment
 description: 记录评估基因组组装和注释完整性的工具busco的安装使用。
 ---
