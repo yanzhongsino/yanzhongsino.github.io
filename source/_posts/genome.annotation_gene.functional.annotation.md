@@ -284,7 +284,9 @@ tsv格式文件每一列含义：
 - *.DE_prediction.txt是注释到DE（functional description）的序列的注释信息。
 - *.GO_prediction.txt是注释到GO的序列的注释信息。
 
-notes: 网页版的结果，注意需要把进度条拉到最下面再复制保存文本，否则没有显示完全，ctrl+a全选只会选中已显示的内容，未显示的未被选中。
+notes: 
+- 网页版的结果，注意需要把进度条拉到最下面再复制保存文本，否则没有显示完全，ctrl+a全选只会选中已显示的内容，未显示的未被选中。
+- (20210813)今天发现不需要拉进度条这么繁琐，在网页右键另存为可以报错文本格式的结果。
 
 ## 2.5. Mercator4——植物基因组功能注释
 网站注释：https://www.plabipd.de/portal/web/guest/mercator4/-/wiki/Mercator4/FrontPage
