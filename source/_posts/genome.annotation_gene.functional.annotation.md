@@ -160,7 +160,7 @@ python2 /home/leon/software/3.Function/eggnog-mapper.orginal/emapper.py -i Tov.f
 
 ### 2.2.2. eggNOG-mapper网页版注释
 
-#### 注释原理
+#### 2.2.2.1. 注释原理
 
 注释分为三步：
 1. 序列比对
@@ -171,12 +171,12 @@ python2 /home/leon/software/3.Function/eggnog-mapper.orginal/emapper.py -i Tov.f
 3. 功能注释
 用于搜索的蛋白序列对应的直系同源基因的功能描述就是最终的注释结果。比如说GO, KEGG, COG等。
 
-#### 注释
+#### 2.2.2.2. 注释
 推荐使用[eggnog-mapper网页版](http://eggnog-mapper.embl.de/)注释，避免下载数据库的繁琐。限制10万条蛋白序列，数量超过可以切分后分开注释。
 
 只需要上传氨基酸序列，点击提交；然后**在收到的邮件里点击链接，开始任务**即可。
 
-#### 注释结果
+#### 2.2.2.3. 注释结果
 eggnog-mapper会生成五个文件:
 - [project_name].emapper.gff: gff注释文件。
 - [project_name].emapper.orthologs: 搜索匹配到的物种和orthologs的信息。
@@ -207,13 +207,13 @@ eggnog-mapper会生成五个文件:
 20. BiGG_Reaction: BiGG代谢反应的预测结果
 21. PFAMs:注释到PFAM数据
 
-#### 结果整理
-- `cat eggnog.web/*.emapper.annotations.tsv |cut -f1,8,9,10,12 >eggnog.anno` 提取信息列：1（query），8（Description），9（Preferred name），10（GOs），12（KEGG_ko）列。因为eggnog注释是每个基因一行信息，所以eggnog.anno的行数就是注释到的基因数量。
+#### 2.2.2.4. 结果整理
+- `cat eggnog.web/*.emapper.annotations.tsv |cut -f1,8,9,10,12|awk -F"\t" '{print $1"\t"$3": "$2"\t"$4"\t"$5"\t"$6}'|sort -k 1.3n >eggnog.anno` 提取信息列：1（query），8（Description），9（Preferred name），10（GOs），12（KEGG_ko）列。因为eggnog注释是每个基因一行信息，所以eggnog.anno的行数就是注释到的基因数量。
 - `cat eggnog.anno|awk -F"\t" '$4 ~ "GO" {print $0}'|wc -l` 统计GO注释数量。
 - `cat eggnog.anno|awk -F"\t" '$5 ~ "ko" {print $0}'|wc -l` 统计KEGG注释数量。
 
 ## 2.3. InterProScan
-### Interproscan
+### 2.3.1. Interproscan
 interpro是数据库，interproscan是可以使用interpro的注释软件。
 如果序列少，可以使用[interproscan网页版](http://www.ebi.ac.uk/interpro/search/sequence/)注释，避免下载数据库的繁琐。限制一次注释一条，长度小于40000个蛋白序列，超过可以切分后分开注释。
 
@@ -225,17 +225,17 @@ interproscan可实现多个数据库同时注释，包括：
 - Reactome通路注释，不同于KEGG
 还有很多数据库。
 
-### 2.3.1. Interproscan的安装和数据库下载
+### 2.3.2. Interproscan的安装和数据库下载
 
 如果注释的文件比较大或者比较多，可以下载本地版注释，下载过程非常慢。根据你的linux版本和发布日期来选择最适版本，软件很大最近版大约9.1G。建议下载对应的md5文件，用 md5sum -c *.md5来检查下载的是否完全。
 
-#### Interproscan安装
+#### 2.3.2.1. Interproscan安装
 interproscan软件地址：ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/, 选择最新版本，比如5.47-82.0，则`wget ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.47-82.0/*`，版本号目录下有两个文件，一个软件的tar.gz压缩文件，一个对应的md5文件，都下下来。
 
-#### 软件自带数据库
+#### 2.3.2.2. 软件自带数据库
 软件本身自带了很多数据库，不需要安装，5.47-82.0版本带有CDD-3.17,Coils-2.2.1,Gene3D-4.2.0,Hamap-2020_01,MobiDBLite-2.0,PANTHER-15.0,Pfam-33.1,PIRSF-3.10,PRINTS-42.0,ProSitePatterns-2019_11,ProSiteProfiles-2019_11,SFLD-4,SMART-7.1,SUPERFAMILY-1.75,TIGRFAM-15.0数据库。
 
-#### 关于PANHTER数据库
+#### 2.3.2.3. 关于PANHTER数据库
 PANHTER(Protein ANalysis THrough Evolutionary Relationships) 数据库是Gene Ontology Phylogenetic Annotation Project的一部分。
 1. 发现interproscan 5.47-82.0软件自带PANHTER数据库，所以不用单独下载啦。
 2. 若是没有带PANHTER数据库，则下载构建本地PANHTER数据库，需要下载并解压到软件安装目录下的 /path of interproscan/data/。
@@ -243,17 +243,17 @@ PANHTER(Protein ANalysis THrough Evolutionary Relationships) 数据库是Gene On
 - 选择最新版本，比如14.1，则`wget ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/panther-data-14.1.tar.gz*`，下载14.1和对应的md5文件。
 - md5验证两个文件下载完全后，tar zxf解压缩，并把PANHTER数据库放进interproscan的data目录下。
 
-#### java和python版本检查
+#### 2.3.2.4. java和python版本检查
 软件的运行依赖java11和python3，`java -version`和`python --version`检查版本是否正确。
 
-#### 测试安装
+#### 2.3.2.5. 测试安装
 解压缩后运行 interproscan.sh 测试是否成功安装，弹出help界面就是成功安装，用测试文件运行下，`interproscan.sh -i test_proteins.fasta`，没报错则软件可正常运行。
 
-#### tips
+#### 2.3.2.6. tips
 - 如果本地化运行，可以把interproscan.properties文件里的[这行代码](precalculated.match.lookup.service.url=http://www.ebi.ac.uk/interpro/match-lookup)注释掉，就不进行match.lookup检查，这个应该是更新数据库的检查。
 - 如果不注释，在运行时存储interproscan数据库端网络慢时（大部分情况下）会输出一些Connection timed out和ERROR - Lookup version check failed的报错信息，但the analysis will continue to run locally.本地运行仍在继续。
 
-### 2.3.2. Interproscan运行
+### 2.3.3. Interproscan运行
 常用运行参数
 `interproscan -i pep.fa -b out.iprscan -goterms -iprlookup -pa -dp -cpu 24`
 
@@ -270,7 +270,7 @@ interproscan的参数：
 
 - -dp 关闭precalculated match lookup service，默认的是开启。根据md5值来快速检验这上传的数据是否已经被注释了，如果是已经注释了就直接出结果。
 
-### 2.3.3. Interproscan结果解释
+### 2.3.4. Interproscan结果解释
 
 生成的out.tsv和out.gff3等是不同格式的注释文件，这里使用tsv格式。
 
@@ -294,7 +294,7 @@ tsv格式文件每一列含义：
 每行是一条蛋白序列注释到的每个数据库的每一个匹配，所以每个基因会有多行。
 根据第四列-数据库名称来提取不同数据库的注释结果。这里提取pfam和PANTHER两个数据库的结果。
 
-### Interproscan结果整理
+### 2.3.5. Interproscan结果整理
 1. 提取interpro数据库注释内容并转化成单基因单行格式
 `cat *.iprscan.tsv |cut -f1,12,13|grep "IPR"|awk '{print $1"\t"$2": "$3}'|sort -k 1.3n|uniq |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n >iprscanpro.anno`
 
@@ -312,7 +312,7 @@ notes：
 `cat *.iprscan.tsv |awk '$4 == "PANTHER" {print $1"\t"$5": "$6}'|sort -k 1.3n|uniq |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n>interproscan.panther`
 
 ## 2.4. PANNZER(Protein ANNotation with Z-scoRE) 
-### PANNZER
+### 2.4.1. PANNZER
 网站注释：http://ekhidna2.biocenter.helsinki.fi/sanspanz/
 
 - 用于原核和真核蛋白序列的功能注释。
@@ -321,7 +321,7 @@ notes：
 
 注释速度：7万条序列4个小时。
 
-### 结果文件
+### 2.4.2. 结果文件
 notes: 
 - 网页版的结果，注意需要把进度条拉到最下面再复制保存文本，否则没有显示完全，ctrl+a全选只会选中已显示的内容，未显示的未被选中。
 - (20210813)今天发现不需要拉进度条这么繁琐，在网页右键另存为可以报错文本格式的结果。
@@ -341,7 +341,7 @@ notes:
 3. *.GO_prediction.txt是注释到GO的序列的注释信息。
 重要的是第一列（qpid）：基因id；第二列（ontology）：GO类别，BP/MF/CC三个类别；第三列（goid）：GO ID；第四列（desc）：GO描述信息。
 
-### 结果整理
+### 2.4.3. 结果整理
 1. 用`cat pannzer2/anno.out.txt |awk '$2 == "DE" {print $1"\t"$6}' >pannzer2.uniprot`把Uniprot数据库功能注释信息提取出来。
 
 2. 用`cat pannzer2/GO.out.txt |awk '{print $1"\tGO:"$3,$4}' |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort >pannzer2.go`把Uniprot数据库的GO注释提取出来并转化成单基因单行信息。
@@ -350,14 +350,14 @@ notes:
 ## 2.5. Mercator4——植物基因组功能注释
 网站注释：https://www.plabipd.de/portal/web/guest/mercator4/-/wiki/Mercator4/FrontPage
 
-### 注释原理
+### 2.5.1. 注释原理
 - 针对植物基因组的功能注释，以整个植物界的高质量带注释基因组为种子，找直系同源蛋白。
 - 基于隐马尔可夫模型（HMM），用HMMER3软件的hmmscan对每条蛋白做HMM测试，然后被分到Bin-50类别下。
 - 其余未被分类的蛋白与Swiss-Prot数据库做blastp比较，然后注释。
 
 注释速度：7万条蛋白3min注释完，神速！
 
-### 注释结果
+### 2.5.2. 注释结果
 两个文件，点击即可下载。
 1. Mercator4 annotation results
 一共有五列，每列信息都在单引号内：
@@ -369,7 +369,7 @@ notes:
 
 2. Mercator4 annotated fasta file
 
-### 结果整理
+### 2.5.3. 结果整理
 1. 从Mercator4 annotation results提取注释结果出来并转化成单基因单行信息格式，其中geneIDprefix根据基因名的前缀替换：
 
 `cat Mercator4V3.0/*.annotations.results.txt |awk -F"\t" '$3 ~ "geneIDprefix" {print $3"\t"$2": "$4}' |sed "s/'//g" |sort -k 1.3|grep -v "no hits"|awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort >mercator.anno`
@@ -378,10 +378,13 @@ notes:
 
 
 
-## 基因功能注释的整合
+## 2.6. 基因功能注释的整合
 不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成第一列为基因ID，后面列为基因功能注释的描述信息，每个注释软件/数据库的描述信息单独为一列。
 
+
 需要整合所有注释软件/数据库的信息，只需根据第一列进行文件的合并，用join命令可以实现。
+
+合并前先将需要合并文件的标题行修改规范，第一列的标题统一都为geneID，后面列的标题要能标记注释来源。
 
 1. 实现合并a.anno和b.anno的方法：a.anno和b.anno都只有两列的情况
 ```
@@ -389,6 +392,7 @@ join -t $'\t' -j 1 a.anno b.anno >ab.tem #合并两个注释文件都注释到�
 join -t $'\t' -j 1 -v 1 a.anno b.anno |awk -F"\t" '{print $1"\t"$2"\t-"}' >a.tem #提取a.anno单独注释到基因的行
 join -t $'\t' -j 1 -v 2 a.anno b.anno |awk -F"\t" '{print $1"\t-\t"$2}' >b.tem #提取b.anno单独注释到基因的行
 cat ab.tem a.tem b.tem |sort -k 1.3n >ab.anno #合并注释文件
+rm ab.tem a.tem b.tem # 删除临时文件
 ```
 
 2. 实现合并ab.anno和c.anno的方法：ab.anno有三列，c.anno有两列的情况
@@ -397,10 +401,14 @@ join -t $'\t' -j 1 ab.anno c.anno >abc.tem #合并两个注释文件都注释到
 join -t $'\t' -j 1 -v 1 ab.anno c.anno |awk -F"\t" '{print $1"\t"$2"\t"$3"\t-"}' >ab.tem #提取ab.anno单独注释到基因的行
 join -t $'\t' -j 1 -v 2 ab.anno c.anno |awk -F"\t" '{print $1"\t-\t-\t"$2}' >c.tem #提取c.anno单独注释到基因的行
 cat abc.tem ab.tem c.tem |sort -k 1.3n >abc.anno #合并注释文件
+rm abc.tem ab.tem c.tem # 删除临时文件
 ```
 
 如果多个文件，则两两依次合并。还没想到什么更简单的方法，就这样用join手动合并所有注释软件/数据库的功能注释到一个文件吧。
 
+请大佬写了个合并功能注释的程序，merge_file_key_property.cpp，可以一次合并任意多个文件。
+
+如果文件多且特征复杂，还是琢磨一下python或者R的merge功能吧。
 
 # 3. references
 1. https://www.jianshu.com/p/67dbafa86334
