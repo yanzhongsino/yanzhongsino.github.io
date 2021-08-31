@@ -208,9 +208,9 @@ eggnog-mapper会生成五个文件:
 21. PFAMs:注释到PFAM数据
 
 #### 2.2.2.4. 结果整理
-- `cat eggnog.web/*.emapper.annotations.tsv |cut -f1,8,9,10,12|awk -F"\t" '{print $1"\t"$3": "$2"\t"$4"\t"$5"\t"$6}'|sort -k 1.3n >eggnog.anno` 提取信息列：1（query），8（Description），9（Preferred name），10（GOs），12（KEGG_ko）列。因为eggnog注释是每个基因一行信息，所以eggnog.anno的行数就是注释到的基因数量。
-- `cat eggnog.anno|awk -F"\t" '$4 ~ "GO" {print $0}'|wc -l` 统计GO注释数量。
-- `cat eggnog.anno|awk -F"\t" '$5 ~ "ko" {print $0}'|wc -l` 统计KEGG注释数量。
+- `cat eggnog.web/*.emapper.annotations.tsv |sed '/#.*/d' |cut -f1,8,9 |awk -F"\t" '{print $1"\t"$3": "$2}' |sed '/-: -/d'|sort -k 1.3n |uniq |sed '1i\gene\teggnog.preferred.name: description' >eggnog.anno` 提取信息列：1（query），8（Description），9（Preferred name），10（GOs），12（KEGG_ko）列。然后提取1（query），8（Description），9（Preferred name）注释信息。eggnog注释是每个基因一行信息，所以eggnog.anno的行数就是注释到的基因数量。
+- `cat eggnog.web/*.emapper.annotations.tsv |sed '/#.*/d' |cut -f1,10 |sed '/\t-$/d' |sort -k 1.3n |uniq |sed '1i\gene\teggnog.go' >eggnog.go.anno` 提取信息列：1（query），10（GOs）的eggnog的GO注释信息。
+- `cat eggnog.web/*.emapper.annotations.tsv |sed '/#.*/d' |cut -f1,12 |sed '/\t-$/d' |sort -k 1.3n |uniq |sed '1i\gene\teggnog.kegg' >eggnog.kegg.anno` 提取信息列：1（query），12（KEGG_ko）的eggnog的KEGG注释信息。
 
 ## 2.3. InterProScan
 ### 2.3.1. Interproscan
@@ -296,7 +296,7 @@ tsv格式文件每一列含义：
 
 ### 2.3.5. Interproscan结果整理
 1. 提取interpro数据库注释内容并转化成单基因单行格式
-`cat *.iprscan.tsv |cut -f1,12,13|grep "IPR"|awk '{print $1"\t"$2": "$3}'|sort -k 1.3n|uniq |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n >iprscanpro.anno`
+`cat *.iprscan.tsv |cut -f1,12,13|grep "IPR"|awk '{print $1"\t"$2": "$3}'|sort -k 1.3n|uniq |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n |sed '1i\gene\tinterpro' >iprs.interpro.anno`
 
 notes：
 - 注意排序和去重。
@@ -306,10 +306,10 @@ notes：
 - 用grep搜索IPR是因为直接用awk匹配第12列不能匹配完全，比如SUPERFAMILY数据库的比对就匹配不了。
 
 2. 提取Pfam数据库注释结果并转化成单基因单行格式
-`cat *.iprscan.tsv  |awk '$4 == "Pfam" {print $1"\t"$5": "$6}' |sort -k 1.3n |uniq|awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){printi"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n >interproscan.pfam`
+`cat *.iprscan.tsv  |awk '$4 == "Pfam" {print $1"\t"$5": "$6}' |sort -k 1.3n |uniq|awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n |sed '1i\gene\tinterproscan.pfam'>iprs.pfam.anno`
 
 3. 提取PANTHER数据库注释结果并转化成单基因单行格式
-`cat *.iprscan.tsv |awk '$4 == "PANTHER" {print $1"\t"$5": "$6}'|sort -k 1.3n|uniq |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n>interproscan.panther`
+`cat *.iprscan.tsv |awk '$4 == "PANTHER" {print $1"\t"$5": "$6}'|sort -k 1.3n|uniq |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n |sed '1i\gene\tinterproscan.panther'>iprs.panther.anno`
 
 ## 2.4. PANNZER(Protein ANNotation with Z-scoRE) 
 ### 2.4.1. PANNZER
@@ -342,9 +342,9 @@ notes:
 重要的是第一列（qpid）：基因id；第二列（ontology）：GO类别，BP/MF/CC三个类别；第三列（goid）：GO ID；第四列（desc）：GO描述信息。
 
 ### 2.4.3. 结果整理
-1. 用`cat pannzer2/anno.out.txt |awk '$2 == "DE" {print $1"\t"$6}' >pannzer2.uniprot`把Uniprot数据库功能注释信息提取出来。
+1. `cat pannzer2/anno.out.txt |awk '$2 == "DE" {print $1"\t"$6}' |sort -k 1.3n |uniq |sed '1i\gene\tpannzer2.uniprot' >pannzer2.uniprot.anno`把Uniprot数据库功能注释信息提取出来。
 
-2. 用`cat pannzer2/GO.out.txt |awk '{print $1"\tGO:"$3,$4}' |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort >pannzer2.go`把Uniprot数据库的GO注释提取出来并转化成单基因单行信息。
+2. `cat pannzer2/GO.out.txt |awk '{print $1"\tGO:"$3,$4}' |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n |uniq |sed "1s/.*/gene\tpannzer2.go/" >pannzer2.go.anno`把Uniprot数据库的GO注释提取出来并转化成单基因单行信息。
 
 
 ## 2.5. Mercator4——植物基因组功能注释
@@ -372,19 +372,35 @@ notes:
 ### 2.5.3. 结果整理
 1. 从Mercator4 annotation results提取注释结果出来并转化成单基因单行信息格式，其中geneIDprefix根据基因名的前缀替换：
 
-`cat Mercator4V3.0/*.annotations.results.txt |awk -F"\t" '$3 ~ "geneIDprefix" {print $3"\t"$2": "$4}' |sed "s/'//g" |sort -k 1.3|grep -v "no hits"|awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort >mercator.anno`
+`cat mercator4v3/*.annotations.results.txt |awk -F"\t" '$3 ~ "geneIDprefix" {print $3"\t"$2": "$4}' |sed "s/'//g" |sort -k 1.3n |uniq |grep -v "no hits"|awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n |sed "s/not assigned.annotated/-/g" |sed "1i\gene\tmercator">mercator.anno`
+
+注意检查是否还有no hits或者not assigned.annotated，有的话都替换掉。
 
 2. 从Mercator4 annotated fasta file中以"not annotated"作为关键词搜索，可以获取未被注释到的基因。
 
 
 
 ## 2.6. 基因功能注释的整合
-不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成第一列为基因ID，后面列为基因功能注释的描述信息，每个注释软件/数据库的描述信息单独为一列。
+### 基因功能注释整理
+不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成两列的格式，首行为表头，第一列为基因ID（gene），第二列为基因功能注释的描述信息（标明注释来源），每个注释软件/数据库的描述信息单独为一列。
 
+目前共有9个文件被整理出来。
 
-需要整合所有注释软件/数据库的信息，只需根据第一列进行文件的合并，用join命令可以实现。
+1. eggnog.anno
+2. eggnog.go.anno
+3. eggnog.kegg.anno
+4. iprs.interpro.anno
+5. iprs.panther.anno
+6. iprs.pfam.anno
+7. mercator.anno
+8. pannzer2.go.anno
+9. pannzer2.uniprot.anno
 
-合并前先将需要合并文件的标题行修改规范，第一列的标题统一都为geneID，后面列的标题要能标记注释来源。
+### 基因功能注释整合
+
+需要整合所有注释软件/数据库的信息，只需根据第一列进行文件的合并。
+
+#### join命令
 
 1. 实现合并a.anno和b.anno的方法：a.anno和b.anno都只有两列的情况
 ```
@@ -406,8 +422,17 @@ rm abc.tem ab.tem c.tem # 删除临时文件
 
 如果多个文件，则两两依次合并。还没想到什么更简单的方法，就这样用join手动合并所有注释软件/数据库的功能注释到一个文件吧。
 
-请大佬写了个合并功能注释的程序，merge_file_key_property.cpp，可以一次合并任意多个文件。
+#### merge_file_key_property.title.cpp程序
+请大佬写了个合并功能注释的程序，merge_file_key_property.title.cpp，可以一次合并任意多个文件。
 
+1. 编译
+`g++ -std=c++11 ./merge_file_key_property.cpp -o merge_file_key_property.o`生成执行文件*.o
+2. 执行
+` ./merge_file_key_property.o -h`查看参数
+
+`./merge_file_key_property.o -a .anno -n 7 -p mc -q gene -o merged` 使用示范：-a指定合并的文件类型（比如.anno）；-n指定第一列字段长度（比如sp00001长度为7）；-p指定第一列关键词的前缀（基因名前缀，比如sp）；-q指定第一列关键词的标题（比如gene），作为表头；-o指定合并文件名的前缀。
+
+#### waiting...
 如果文件多且特征复杂，还是琢磨一下python或者R的merge功能吧。
 
 # 3. references
