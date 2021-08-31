@@ -381,7 +381,7 @@ notes:
 
 
 ## 2.6. 基因功能注释的整合
-### 基因功能注释整理
+### 2.6.1. 基因功能注释整理
 不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成两列的格式，首行为表头，第一列为基因ID（gene），第二列为基因功能注释的描述信息（标明注释来源），每个注释软件/数据库的描述信息单独为一列。
 
 目前共有9个文件被整理出来。
@@ -396,11 +396,11 @@ notes:
 8. pannzer2.go.anno
 9. pannzer2.uniprot.anno
 
-### 基因功能注释整合
+### 2.6.2. 基因功能注释整合
 
 需要整合所有注释软件/数据库的信息，只需根据第一列进行文件的合并。
 
-#### join命令
+#### 2.6.2.1. join命令
 
 1. 实现合并a.anno和b.anno的方法：a.anno和b.anno都只有两列的情况
 ```
@@ -422,7 +422,7 @@ rm abc.tem ab.tem c.tem # 删除临时文件
 
 如果多个文件，则两两依次合并。还没想到什么更简单的方法，就这样用join手动合并所有注释软件/数据库的功能注释到一个文件吧。
 
-#### merge_file_key_property.title.cpp程序
+#### 2.6.2.2. merge_file_key_property.title.cpp程序
 请大佬写了个合并功能注释的程序，merge_file_key_property.title.cpp，可以一次合并任意多个文件。
 
 1. 编译
@@ -432,7 +432,7 @@ rm abc.tem ab.tem c.tem # 删除临时文件
 
 `./merge_file_key_property.o -a .anno -n 7 -p mc -q gene -o merged` 使用示范：-a指定合并的文件类型（比如.anno）；-n指定第一列字段长度（比如sp00001长度为7）；-p指定第一列关键词的前缀（基因名前缀，比如sp）；-q指定第一列关键词的标题（比如gene），作为表头；-o指定合并文件名的前缀。
 
-#### waiting...
+#### 2.6.2.3. waiting...
 如果文件多且特征复杂，还是琢磨一下python或者R的merge功能吧。
 
 # 3. references
