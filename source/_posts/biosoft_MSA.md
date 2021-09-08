@@ -3,7 +3,7 @@ title: 多序列比对(Multiple Sequence Alignment,MSA)
 date: 2021-09-06 18:00:00
 categories: 
 - bio
-- biosoftware
+- biosoft
 tags:
 - Multiple Sequence Alignment
 - MSA
@@ -23,10 +23,10 @@ description: 记录了多序列比对(Multiple Sequence Alignment,MSA)及比对�
 
 **写在前面**：
 
-- 比对软件的选择
-	要是是基因组大数据的序列做比对，优先选择MAFFT；要是少量序列比对，优先选择PRANK（准确）；要是极少数序列比对，哪个方便选哪个，一般Clustal和MUSCLE会整合到许多软件里，会更方便使用。
+- 比对软件的选择：
+	要是是基因组大数据的序列做比对，优先选择**MAFFT**（快速且兼顾准确）；要是少量序列比对，优先选择**PRANK**（准确）；要是极少数序列比对，哪个方便选哪个，一般**Clustal和MUSCLE**（方便）会整合到许多软件里，会更方便使用。
 - 过滤软件的选择：
-	目前暂时优先选trimAl。
+	目前暂时优先选**trimAl**。
 
 # 1. 多序列比对(Multiple Sequence Alignment,MSA)
 ## 1.1. 概念
@@ -59,15 +59,16 @@ Blackburner和Whelan在2013年发表在MBE上的文章《Class of Multiple Seque
 - 将一个二维的动态规划矩阵扩展到三维或多维，即可用于多序列比对。
 - 比对序列超过3个，需要的存储空间和运算时间都使得比对应用无法实现。
 ### 2.1.1. 基于全局比对的算法：Needleman-Wunsch算法
-**全局比对**：全局比对是指将参与比对的两条序列里面的所有字符进行比对。全局比对在全局范围内对两条序列进行比对打分，找出最佳比对，主要被用来寻找关系密切的序列。其可以用来鉴别或证明新序列与已知序列家族的同源性，是进行分子进化分析的重要前提。其代表是Needleman-Wunsch算法。
+1. **全局比对**
+	全局比对是指将参与比对的两条序列里面的所有字符进行比对。全局比对在全局范围内对两条序列进行比对打分，找出最佳比对，主要被用来寻找关系密切的序列。其可以用来鉴别或证明新序列与已知序列家族的同源性，是进行分子进化分析的重要前提。其代表是Needleman-Wunsch算法。
 
-全局比对算法特点：
-1. 打分矩阵：罚分分值不同，比对结果不同。
-2. 计算比对最高得分的算法：常用Needleman-Wunsch算法。
-3. 打印出最高得分相应的序列比对结果：根据得分矩阵回溯，找到最高得分结果。
+2. 全局比对算法特点：
+- 打分矩阵：罚分分值不同，比对结果不同。
+- 计算比对最高得分的算法：常用Needleman-Wunsch算法。
+- 打印出最高得分相应的序列比对结果：根据得分矩阵回溯，找到最高得分结果。
 
 ### 2.1.2. 基于局部比对的算法：Smith-Waterman算法
-1. 局部比对
+1. **局部比对**
 	与全局比对不同，局部比对不必对两个完整的序列进行比对，而是在每个序列中使用某些局部区域片段进行比对。其产生的需求在于、人们发现有的蛋白序列虽然在序列整体上表现出较大的差异性，但是在某些局部区域能独立的发挥相同的功能，序列相当保守。这时候依靠全局比对明显不能得到这些局部相似序列的。其次，在真核生物的基因中，内含子片段表现出了极大变异性，外显子区域却较为保守，这时候全局比对表现出了其局限性，无法找出这些局部相似性序列。其代表是Smith-Waterman局部比对算法。BLAST是局部比对的一种推广。
 
 2. Smith-Waterman算法特点
@@ -95,7 +96,7 @@ Blackburner和Whelan在2013年发表在MBE上的文章《Class of Multiple Seque
 # 3. 序列选择和比对前处理
 一般来说，同源序列、同一家族的序列才会进行比对。
 
-通用的序列选择标准：
+**通用的序列选择标准**：
 - 如果是编码区序列，优先选蛋白序列。因为蛋白序列短且含有20种氨基酸信息，比DNA的4种核苷酸信息更多。
 - 如果是数据库里选序列，尽量选择有详细注释的，可以在后续分析中提供更多信息。
 - 多序列比对选用10-15条开始比对。如果比对结果不错，再加其他序列比对；如果比对结果不好，对现有序列处理（比如删除，剪辑等）。比对序列数量不是越多越好，多了可能增加比对软件出错概率。
@@ -110,19 +111,19 @@ Blackburner和Whelan在2013年发表在MBE上的文章《Class of Multiple Seque
 - 经典渐进式比对(progressive alignment)软件：ClustalW
 - 现代渐进式比对软件：DIALIGN-TX, MUSCLE
 - 一致性比对软件(Consistency methods)：MUMMALS,ProbAlign,ProbCons,MAFFT,T-Coffee。
-2. 基于进化关系的必读
+2. 基于进化关系的比对
 - PRANK
 - BAli-Phy
 - StatAlign
 3. 其他
 - MACSE
-- 基于隐马尔可夫模型(Profile HMM Methods)的比对:SEPP, TIPP, UPP, HIPPI)
+- 基于隐马尔可夫模型(Profile HMM Methods)的比对：SEPP, TIPP, UPP, HIPPI
 
 ## 4.2. 基于相似性的比对(similarity-MSAMs)
 ### 4.2.1. Clustal(1994)
 Clustal版本有X、W系列，目前最新的Omega表现最好。
 
-基于渐进式比对(progressive alignment)，由引导树(guide tree)确定将序列添加到不断增长的MSA中的顺序，此算法通过成对的序列-序列，序列-剖面(profile)，剖面-剖面的比对实现。
+基于渐进式比对(progressive alignment)，由引导树(guide tree)确定将序列添加到不断增长的MSA中的顺序，此算法通过成对的序列(sequence)-序列，序列-剖面(profile)，剖面-剖面的比对实现。
 
 1. 算法流程
 - 先进行序列两两比对，构建距离矩阵；
@@ -170,7 +171,7 @@ Clustal版本有X、W系列，目前最新的Omega表现最好。
 ### 4.3.4. StatAlign(2008)
 
 ## 4.4. MACSE
-了解得不多，摘录在这里。
+了解得不多，先摘录在这里。
 - 第一个可以用于自动调整含有移码变异以及假基因的蛋白编码序列，而不破坏潜在密码子结构。
 - 在核苷酸水平上对DNA序列进行比对，但有可能包括不是三个碱基倍数的间隙长度（即产生移码），同时基于其氨基酸翻译对产生的核苷酸比对进行评分。
 - 这可以产生保留潜在密码子结构的核苷酸比对，同时受益于氨基酸序列的更高相似性。
@@ -196,9 +197,9 @@ Clustal版本有X、W系列，目前最新的Omega表现最好。
 
 ## 5.2. 多序列比对后过滤软件
 ### 5.2.1. 常见过滤软件
-1. block-filtering: trimAl,Gblocks
-2. segment filtering: HmmCleaner,PREQUAL（基于隐马尔可夫模型的算法）
-3. sliding window analysis: FasParser2
+1. **block-filtering**: trimAl,Gblocks
+2. **segment filtering**: HmmCleaner,PREQUAL（基于隐马尔可夫模型的算法）
+3. **sliding window analysis**: FasParser2
 
 ### 5.2.2. Gblocks(2000)
 - 删除大片段非保守性或非同源性片段（6-10bp的非同源片段识别得不好），还对block(即一段连续不含Gap的列)的长度进行了限制。
