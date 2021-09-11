@@ -432,10 +432,10 @@ savefig =  all_ks.pdf #保存的拟合图
 
 得到all_ks.pdf拟合图
 
-
-
-ref:
+# 4. references
 [WGDI's documentation](https://WGDI.readthedocs.io/en/latest/)
 [WGDI's github](https://github.com/SunPengChuan/wgdi)
-[xuzhougeng's WGDI上中下](https://www.jianshu.com/p/a50548e81ac0)
+[xuzhougeng's WGDI上](https://www.jianshu.com/p/a50548e81ac0)
+[xuzhougeng's WGDI中](https://www.jianshu.com/p/0e4a2807468d)
+[xuzhougeng's WGDI下](https://www.jianshu.com/p/28a4c3045919)
 [xuzhougeng's WGDI blockinfo blog](https://www.jianshu.com/p/e97fdcf5d06f)
