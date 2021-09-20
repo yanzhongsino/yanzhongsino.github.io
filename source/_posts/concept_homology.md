@@ -1,5 +1,5 @@
 ---
-title: homology相关概念
+title: 同源性(homology)相关概念
 date: 2021-06-23 16:50:00
 categories: 
 - bio
