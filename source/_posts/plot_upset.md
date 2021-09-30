@@ -33,10 +33,40 @@ View(movies) # 弹出窗口，可查看数据。
 head(mutations) # 大致浏览一下该数据集,数据集太长，就只看前几列
 View(mutations) # 弹出窗口，可查看数据。
 ```
-
-<img src="movies.png" width=50% height=50% title="movies" align=center/>
 <br>
-<img src="mutations.png" width=50% hseight=50% title="mutations" align=center/>
+
+```
+> head(movies)
+                                Name ReleaseDate Action Adventure Children Comedy Crime Documentary Drama Fantasy Noir Horror Musical Mystery Romance SciFi Thriller War Western AvgRating Watches
+1                   Toy Story (1995)        1995      0         0        1      1     0           0     0       0    0      0       0       0       0     0        0   0       0      4.15    2077
+2                     Jumanji (1995)        1995      0         1        1      0     0           0     0       1    0      0       0       0       0     0        0   0       0      3.20     701
+3            Grumpier Old Men (1995)        1995      0         0        0      1     0           0     0       0    0      0       0       0       1     0        0   0       0      3.02     478
+4           Waiting to Exhale (1995)        1995      0         0        0      1     0           0     1       0    0      0       0       0       0     0        0   0       0      2.73     170
+5 Father of the Bride Part II (1995)        1995      0         0        0      1     0           0     0       0    0      0       0       0       0     0        0   0       0      3.01     296
+6                        Heat (1995)        1995      1         0        0      0     1           0     0       0    0      0       0       0       0     0        1   0       0      3.88     940
+> head(mutations)
+  Identifier TTN PTEN TP53 EGFR MUC16 FLG RYR2 PCLO PIK3R1 PIK3CA NF1 MUC17 HMCN1 SPTA1 USH2A RB1 PKHD1 OBSCN AHNAK2 RYR3 RELN FRAS1 GPR98 DNAH5 ATRX APOB TCHH SYNE1 LRP2 KEL HRNR DNAH3 COL6A3 MUC5B LAMA1 DSP
+1    02-0003   0    0    1    1     0   0    0    0      1      0   0     1     0     0     0   0     0     0      0    0    0     0     0     1    0    0    0     0    0   0    0     0      0     0     0   0
+2    02-0033   0    0    1    0     0   0    0    0      0      1   1     0     0     0     0   1     0     0      0    0    0     0     0     0    0    0    0     0    0   0    0     0      0     0     0   0
+3    02-0047   0    0    0    0     0   0    1    0      0      1   0     0     0     0     0   0     0     0      0    1    0     0     0     0    0    0    0     0    0   0    0     0      0     0     0   0
+4    02-0055   1    1    1    0     0   0    0    0      0      0   0     0     0     0     0   0     0     1      0    0    0     0     0     0    0    0    0     0    0   0    0     0      1     0     0   0
+5    02-2470   0    1    0    0     0   0    1    0      0      0   0     0     0     0     0   0     0     0      0    0    0     0     0     0    0    0    0     0    0   0    0     0      0     0     0   0
+6    02-2483   0    0    1    0     0   0    0    1      0      0   0     0     0     0     0   0     0     0      0    0    0     0     0     0    1    1    0     0    0   0    0     0      0     0     0   0
+  DNAH8 CNTNAP2 SDK1 NBPF10 DNAH2 NLRP5 MLL3 IDH1 HCN1 FCGBP DOCK5 RIMS2 PCDHA1 MXRA5 HEATR7B2 GRIN2A FGD5 TMEM132D STAG2 SEMA3C SCN9A PRDM9 POM121L12 PIK3CG PDGFRA GABRA6 FLG2 FBN3 FBN2 FAT2 DNAH11 DMD COL1A2
+1     0       0    0      0     0     1    0    0    0     0     0     0      0     0        0      0    0        0     0      0     0     0         0      0      0      0    0    0    0    0      0   0      0
+2     0       0    0      0     0     0    0    0    0     0     0     0      1     0        0      0    0        0     0      1     0     0         0      0      0      0    0    0    0    0      0   0      0
+3     0       0    0      1     0     0    0    0    0     0     0     0      0     0        0      0    0        0     0      0     0     0         0      0      1      0    0    0    0    0      0   0      0
+4     0       0    0      0     0     0    0    0    0     0     0     0      0     0        0      0    1        0     0      0     0     0         0      0      0      0    0    0    0    0      0   0      0
+5     0       1    0      0     0     0    1    0    0     0     0     0      0     0        0      0    0        0     0      0     0     0         0      0      0      0    0    0    0    0      0   0      0
+6     0       0    0      0     0     0    0    1    0     0     0     0      0     0        0      0    0        0     0      1     0     0         0      0      0      0    0    0    0    0      0   0      0
+  ABCC9 XIRP2 TSHZ2 TEX15 SLIT3 RBM47 PIK3C2G PCDH11X MYH2 MACF1 KSR2 DNAH9 DCHS2 CSMD3 CDH18 BCOR AHNAK ZAN TRRAP THSD7B TAF1L SPAG17 SLCO5A1 SCN10A RYR1 RIMBP2 PLEKHG4B PCDHB7 NPTX2 NOS1 LZTR1
+1     0     0     1     0     0     0       0       0    0     0    0     0     0     0     0    0     0   0     0      0     0      0       0      0    0      0        0      0     0    0     0
+2     0     0     0     0     0     0       0       0    0     0    0     0     0     0     0    0     0   0     0      0     0      0       0      0    0      0        0      0     0    0     0
+3     0     0     0     0     0     0       0       0    0     0    0     0     0     0     0    0     0   0     0      0     0      0       0      0    0      0        0      0     0    0     0
+4     0     0     0     0     0     0       0       0    0     0    0     0     0     0     0    0     0   0     0      0     0      0       0      0    0      0        1      0     0    1     0
+5     0     0     0     0     0     0       0       0    0     0    0     0     1     0     0    0     0   0     0      0     0      0       0      0    0      1        0      0     0    0     0
+6     0     0     0     0     0     0       0       0    0     0    0     0     0     0     0    0     0   0     0      0     0      0       1      0    0      0        0      0     0    0     0
+```
 
 ### 1.2.2. orthofinder数据
 从orthofinder的结果文件Results_Aug14/Orthogroups/Orthogroups.GeneCount.tsv稍加处理就可以作为输入文件，展示不同物种的orthogroups集合的共享情况。
