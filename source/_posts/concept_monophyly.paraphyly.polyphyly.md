@@ -1,13 +1,13 @@
 ---
-title: 单系、并系和复系及相关定义
+title: 单系(monophyly)、并系(paraphyly)和复系(polyphyly)及相关定义
 date: 2021-09-20 18:30:00
 categories: 
 - bio
 - concept
 tags:
 - monophyly
-- polyphyly
 - paraphyly
+- polyphyly
 - cladistics
 
 description: 记录了单系、复系和并系在进化生物学上的相关概念。

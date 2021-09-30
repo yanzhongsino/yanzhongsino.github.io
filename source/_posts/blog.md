@@ -29,7 +29,7 @@ categories:
 - bio
 	- concept
 	- taxon
-	- biosoftware
+	- biosoft
 	- experiment
 	- theory
 	- knowledge
@@ -40,7 +40,8 @@ categories:
 	- plastome
 	- mitochondrion
 
-
+- plot
+	- R
 
 - computer
 	- system
