@@ -10,7 +10,7 @@ tags:
 - polyphyly
 - cladistics
 
-description: 记录了单系、复系和并系在进化生物学上的相关概念。
+description: 记录了单系、并系和复系在进化生物学上的相关概念。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
