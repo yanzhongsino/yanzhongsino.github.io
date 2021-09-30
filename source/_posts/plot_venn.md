@@ -28,9 +28,7 @@ description: 记录了制作韦恩图(Venn Diagram)展示多集合共享关系�
 cat Orthogroups.GeneCount.tsv |awk '$2 != 0 {print $1}' |sed "1s/.*/Athaliana/" >Athaliana.txt #第二列（Athaliana所在列）不为0时，输出第一列内容。
 cat Orthogroups.GeneCount.tsv |awk '$3 != 0 {print $1}' |sed "1s/.*/Csativus/" >Csativus.txt
 cat Orthogroups.GeneCount.tsv |awk '$4 != 0 {print $1}' |sed "1s/.*/Csinensis/" > Csinensis.txt
-cat Orthogroups.GeneCount.tsv |awk '$5 != 0 {print $1}' |sed "1s/.*/Egrandis/" > Egrandis.txt
 cat Orthogroups.GeneCount.tsv |awk '$6 != 0 {print $1}' |sed "1s/.*/Graimondii/" > Graimondii.txt
-cat Orthogroups.GeneCount.tsv |awk '$7 != 0 {print $1}' |sed "1s/.*/Mcandidum/" > Mcandidum.txt
 cat Orthogroups.GeneCount.tsv |awk '$8 != 0 {print $1}' |sed "1s/.*/Mguttatus/" > Mguttatus.txt
 cat Orthogroups.GeneCount.tsv |awk '$9 != 0 {print $1}' |sed "1s/.*/Mtruncatula/" > Mtruncatula.txt
 cat Orthogroups.GeneCount.tsv |awk '$10 != 0 {print $1}' |sed "1s/.*/Ppersica/" > Ppersica.txt
@@ -58,22 +56,24 @@ library(gplots) #载入gplots包
 data <- read.table("orthogroups.txt", header = T, sep = "\t") #读入数据文件
 head(data) #查看数据文件
 attach(data) #把数据用于全局
-venn(data = list(Athaliana,Egrandis,Mcandidum,Mtruncatula,Vvinifera)) #画韦恩图，需要几维就填入几列数据，黑白无填充图
+venn(data = list(Athaliana,Graimondii,Ppersica,Mtruncatula,Vvinifera)) #画韦恩图，需要几维就填入几列数据，黑白无填充图
 ```
 
 #### 1.3.2.2. R包VennDiagram
 R包VennDiagram画韦恩图参数较多，适合做用于发表的韦恩图。
 
+1. 准备工作
 ```
-- 准备工作
 install.packages("VennDiagram") #安装VennDiagram包
 library(VennDiagram) #载入VennDiagram包
 library(grid) #载入grid包
 data <- read.table("orthogroups.txt", header = T, sep = "\t") #读入数据文件
 head(data) #查看数据文件
 attach(data) #把数据用于全局
+```
 
-# 一维韦恩图
+2. 一维韦恩图
+```
 grid.newpage(); #清除已有图形，开始新的空白页
 venn.single.plot <- venn.diagram(
   x = list(Athaliana=Athaliana), #等号前面是图上显示的数据名称，等号后面是数据源。
@@ -88,11 +88,13 @@ venn.single.plot <- venn.diagram(
   cat.fontface = "bold",
 ); #一维韦恩图
 grid.draw(venn.single.plot); #用venn.plot绘图
+```
 
-# 二维韦恩图
+3. 二维韦恩图
+```
 grid.newpage(); #清除已有图形，开始新的空白页
 venn.pairwise.plot <- venn.diagram(
-  x = list(Mcandidum=Mcandidum, Egrandis=Egrandis), #等号前面是图上显示的数据名称，等号后面是数据源。
+  x = list(Graimondii=Graimondii, Ppersica=Ppersica), #等号前面是图上显示的数据名称，等号后面是数据源。
   filename = NULL,
   lwd = 4,
   fill = c("cornflowerblue", "darkorchid1"), #填充色
@@ -109,11 +111,13 @@ venn.pairwise.plot <- venn.diagram(
   cat.pos = c(-20,14)
 ); #二维韦恩图
 grid.draw(venn.pairwise.plot); #用venn.plot绘图
+```
 
-# 三维韦恩图
+4. 三维韦恩图
+```
 grid.newpage(); #清除已有图形，开始新的空白页
 venn.triple.plot <- venn.diagram(
-  x = list(Athaliana=Athaliana, Egrandis=Egrandis, Mcandidum=Mcandidum), #等号前面是图上显示的数据名称，等号后面是数据源。
+  x = list(Athaliana=Athaliana, Ppersica=Ppersica, Graimondii=Graimondii), #等号前面是图上显示的数据名称，等号后面是数据源。
   filename = NULL,
   col = "transparent",
   fill = c("red", "blue", "green"),
@@ -131,11 +135,13 @@ venn.triple.plot <- venn.diagram(
   cat.pos = 0
 );
 grid.draw(venn.triple.plot); #用venn.plot绘图
+```
 
-# 四维韦恩图
+5. 四维韦恩图
+```
 grid.newpage(); #清除已有图形，开始新的空白页
 venn.quad.plot <- venn.diagram(
-  x = list(Mtruncatula=Mtruncatula, Vvinifera=Vvinifera, Mcandidum=Mcandidum, Egrandis=Egrandis), #等号前面是图上显示的数据名称，等号后面是数据源，数据顺序与图上顺序一致。
+  x = list(Mtruncatula=Mtruncatula, Vvinifera=Vvinifera, Graimondii=Graimondii, Ppersica=Ppersica), #等号前面是图上显示的数据名称，等号后面是数据源，数据顺序与图上顺序一致。
   filename = NULL,
   col = "black",
   lty = "dotted", #边框线类型
@@ -153,11 +159,13 @@ venn.quad.plot <- venn.diagram(
   cat.fontfamily = "serif"
 ); # 四维韦恩图
 grid.draw(venn.quad.plot); #用venn.plot绘图
+```
 
-# 五维韦恩图
+6. 五维韦恩图
+```
 grid.newpage(); #清除已有图形，开始新的空白页
 venn.quintuple.plot <- venn.diagram(
-  x = list(Athaliana=Athaliana, Egrandis=Egrandis, Mcandidum=Mcandidum, Mtruncatula=Mtruncatula, Vvinifera=Vvinifera),
+  x = list(Athaliana=Athaliana, Ppersica=Ppersica, Graimondii=Graimondii, Mtruncatula=Mtruncatula, Vvinifera=Vvinifera),
   filename = NULL, # 韦恩图结果文件保存路径和名称
   col = "black", #指定图形的圆周边缘颜色，transparent透明
   fill = c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3", "orchid3"), # 填充颜色
