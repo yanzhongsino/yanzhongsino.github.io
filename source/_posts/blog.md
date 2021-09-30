@@ -117,35 +117,65 @@ tags:
 # 3. 攥写blog
 ## 3.1. 插入图片
 若是本地图片，就放在特定位置，然后在blog中引用；若是网络图片，就直接复制图片的url地址引用；
-### 3.1.1. 绝对路径本地引用
-当Hexo项目中只用到少量图片时，可以将图片统一放在source/images文件夹中，在blog中通过markdown语法访问它们，即`![](/images/image.jpg)`。
+
+### 3.1.1. markdown语法
+1. 统一放在images目录下
+当Hexo项目中只用到少量图片时，可以将图片统一放在source/images文件夹中，在blog中通过markdown语法访问它们，即`![图片注释](/images/image.jpg "图片标题")`。
 
 图片既可以在首页内容中访问到，也可以在文章正文中访问到。
 
-### 3.1.2. 相对路径本地引用
+2. 放在文章各自目录下
 图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置_config.yml来生成。
 - 将_config.yml文件中的配置项post_asset_folder设为true`post_asset_folder: true`;
 - 执行命令`hexo new postname`，在source/_posts中会生成文章postname.md和同名文件夹postname;
 - 将图片资源放在post_name中，文章就可以使用相对路径引用图片资源了。
-- 在文章中添加代码`![](image.jpg)`，markdown的引用方式。
+- 在文章中添加markdown语法代码`![图片注释](image.jpg "图片标题")`即可。
 
 图片只能在文章中显示，但无法在首页中正常显示。
 
-### 3.1.3. CDN引用
-1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
-2. 【实测这种方法不生效】把代码`<div align="middle">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中；
+### 3.1.2. HTML语法【推荐】
+用markdown语法无法指定图片的尺寸和对齐方式，建议用HTML语法插入图片，以实现更好的控制。
+`<img src="/images/image.png" width=50% height=50% title="picture" alt="picture" align=center/>`
 
-### 3.1.4. 标签插件语法引用
+### 3.1.3. 标签插件语法引用
 如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。
 - 本地图片资源，不限制图片尺寸，使用 `{% asset_img image.jpg This is an image %}`；
 - 网络图片资源，限制图片显示尺寸，`{% img http://www.something.gif 200 400 vi-vim-cheat-sheet %}` 
 
-### 3.1.5. 【推荐】HTML语法引用
-`<img src="SpellCheck.png" width="50%" height="50%" title="拼写检查工具Grammarly." alt="拼写检查工具Grammarly."/>`
-启用fancybox：点击查看图片大图
-我使用的是Hexo的NexT主题，NexT主题中提供了fancybox的方便接口。
+### 3.1.4. CDN引用
+1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
+2. 【实测这种方法不生效】把代码`<div align="middle">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中；
+
+### 3.1.5. fancybox
+1. 启用fancybox
+启用fancybox：点击查看图片大图。
+
+Hexo的NexT主题中提供了fancybox的方便接口。
+
 Usage：https://github.com/theme-next/theme-next-fancybox3
 markdown用法：`{% img http://www.viemu.com/vi-vim-cheat-sheet.gif 600 600 "点击查看大图:vi/vim-cheat-sheet" %}`
+
+2. Hexo部分图片禁用fancybox
+
+hexo在使用fancybox插件时，图片的效果还是很可观的，但是我们往往是不需要所有的图片都用fancybox；
+例如：hexo next主题下，添加某些图片的时候，有些事不需要可点击的
+修改theme\next\source\js\src\utils.js 红色字体部分；
+
+```
+diff --git a/source/js/src/utils.js b/source/js/src/utils.js
+index 0f3704e..8516665 100644
+--- a/source/js/src/utils.js
++++ b/source/js/src/utils.js
+@@ -11,6 +11,7 @@ NexT.utils = NexT.$u = {
+       .not('.group-picture img, .post-gallery img')
+       .each(function() {
+         var $image = $(this);
++        if ($(this).hasClass('nofancybox')) return;
+         var imageTitle = $image.attr('title');
+         var $imageWrapLink = $image.parent('a');
+```
+
+在img标签使用的时候加上class=”nofancybox”即可。`<img src="http://www.viemu.com/vi-vim-cheat-sheet.gif" class="nofancybox" />`
 
 ## 3.2. 插入背景音乐
 1. 打开网易云网页版，找到想听的歌曲，然后点击**生成外链播放器**，然后复制网易云音乐的插件页面的HTML代码；

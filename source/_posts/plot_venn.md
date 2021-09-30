@@ -67,7 +67,7 @@ R包VennDiagram画韦恩图参数较多，适合做用于发表的韦恩图。
 install.packages("VennDiagram") #安装VennDiagram包
 library(VennDiagram) #载入VennDiagram包
 library(grid) #载入grid包
-data <- read.table("orthogroups.txt", header = T, sep = "\t") #读入数据文件
+data <- read.table("orthogroups.venn", header = T, sep = "\t") #读入数据文件
 head(data) #查看数据文件
 attach(data) #把数据用于全局
 ```
@@ -107,11 +107,12 @@ venn.pairwise.plot <- venn.diagram(
   cat.cex = 3,
   cat.fontfamily = "serif",
   cat.fontface = "bold",
-  cat.dist = c(0.03, 0.03),  ·
+  cat.dist = c(0.03, 0.03),
   cat.pos = c(-20,14)
 ); #二维韦恩图
 grid.draw(venn.pairwise.plot); #用venn.plot绘图
 ```
+<img src="venn_2.png" width=50% height=50% title="venn_2" align=center/>
 
 4. 三维韦恩图
 ```
@@ -136,6 +137,7 @@ venn.triple.plot <- venn.diagram(
 );
 grid.draw(venn.triple.plot); #用venn.plot绘图
 ```
+<img src="venn_3.png" width=50% height=50% title="venn_3" align=center/>
 
 5. 四维韦恩图
 ```
@@ -161,6 +163,8 @@ venn.quad.plot <- venn.diagram(
 grid.draw(venn.quad.plot); #用venn.plot绘图
 ```
 
+<img src="venn_4.png" width=50% height=50% title="venn_4" align=center/>
+
 6. 五维韦恩图
 ```
 grid.newpage(); #清除已有图形，开始新的空白页
@@ -175,14 +179,15 @@ venn.quintuple.plot <- venn.diagram(
   cat.col = c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3", "orchid3"), #分类颜色
   cat.cex = 1.5, #每个分类名称大小
   cat.dist = 0.07, #分类名称距离边的距离
-  cat.just = list(c(-1,1),c(1,1)), #分类名称的位置，圈内或圈外
+  cat.just = list(c(-1,1),c(1,1),c(1,-1),c(-1,-1),c(-1,-1)), #分类名称的位置，圈内或圈外
   cat.fontface = "bold",
   cat.fontfamily = "serif", # 分类字体
   margin = 0.05
 ); # 五维韦恩图
 grid.draw(venn.quintuple.plot); #用venn.plot绘图
-
 ```
+
+<img src="venn_5.png" width=50% height=50% title="venn_5" align=center/>
 
 #### 1.3.2.3. 保存R生成的图
 在RStudio里作图，选择Export-Save as PDF

@@ -27,9 +27,16 @@ UpSetR的输入文件是表格形式，第一列是数据分类信息，后面�
 movies <- read.csv(system.file("extdata", "movies.csv", package = "UpSetR"), header = T, sep=";") # 载入UpSetR包提供的电影数据用作示例。第一行是电影的类别名称，第一列是电影名，第二列是电影上映年度，后面列中的1/0是代表电影是否属于相应的类别。
 mutations <- read.csv(system.file("extdata", "mutations.csv", package = "UpSetR"), header = T, sep = ",") # 载入UpsetR包提供的突变数据用作示例。第一行是不同的基因简称，第一列是基因特征ID，数据中的1/0是代表基因是否有对应的特征。
 
+head(movies) # 大致浏览一下该数据集,数据集太长，就只看前几列
+View(movies) # 弹出窗口，可查看数据。
+
 head(mutations) # 大致浏览一下该数据集,数据集太长，就只看前几列
 View(mutations) # 弹出窗口，可查看数据。
 ```
+
+<img src="movies.png" width=50% height=50% title="movies" align=center/>
+<br>
+<img src="mutations.png" width=50% hseight=50% title="mutations" align=center/>
 
 ### 1.2.2. orthofinder数据
 从orthofinder的结果文件Results_Aug14/Orthogroups/Orthogroups.GeneCount.tsv稍加处理就可以作为输入文件，展示不同物种的orthogroups集合的共享情况。
@@ -45,7 +52,7 @@ require(ggplot2); require(plyr); require(gridExtra); require(grid); # 载入包
 
 ## 1.4. UpSetR包使用
 ### 1.4.1. upset函数
-1. `upset(mutations)`可以看到upset图的效果如下：
+1. `upset(mutations)`可以看到upset图的效果
 
 2. 调整参数做指定数据显示
 
@@ -63,6 +70,8 @@ point.size = 2, line.size = 1, # 点和线的大小
 mainbar.y.label = "Genre Intersections", sets.x.label = "Movies PerGenre", # 坐标轴名称
 text.scale = c(1.3, 1.3, 1, 1, 1.5, 1)) # 六个数字，分别控制c(intersectionsize title, intersection size tick labels, set size title, set size ticklabels, set names, numbers above bars)
 ```
+
+<img src="upset_mutations.png" width=50% height=50% title="upset_mutations" align=center/>
 
 ### 1.4.2. queries参数
 upset函数中可以添加queries参数，用于突出显示（上色）部分数据。
@@ -91,6 +100,8 @@ query.name = "share EGFR and TP53"), # 添加query图例
 list(query = intersects, params=list("TTN"), color="red", active=T)))
 ```
 
+<img src="upset_movies.png" width=50% height=50% title="upset_movies" align=center/>
+
 - 把同属Drama和Thriller的电影突出显示，把1970-1980的电影标红。
 ```
 between <- function(row, min, max){
@@ -102,10 +113,14 @@ upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary
                      list(query = between, params=list(1970,1980), color="red", active=TRUE)))
 ```
 
+<img src="upset_movies2.png" width=50% height=50% title="upset_movies2" align=center/>
+
 ### 1.4.3. 添加属性图
 1. 添加箱线图
 每次最多添加两个箱线图
 `upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate")) `
+
+<img src="upset_boxplot.png" width=50% height=50% title="upset_boxplot" align=center/>
 
 #### 1.4.3.1. attribute.plots参数
 attribute.plots参数用于添加属性图，内置有柱形图，散点图，热图等。
@@ -115,17 +130,18 @@ attribute.plots参数用于添加属性图，内置有柱形图，散点图，�
 ```
 upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary"),
       queries = list(list(query = intersects, params = list("Drama", "Thriller")),
-                     list(query = between, params=list(1970,1980), color="red", active=TRUE)))
-
-    attribute.plots=list(gridrows=60, # 添加属性图
-    plots=list(
+                     list(query = between, params=list(1970,1980), color="red", active=TRUE)),
+      attribute.plots=list(gridrows=60, # 添加属性图
+      plots=list(
         list(plot=scatter_plot, # 散点图
-        x="ReleaseDate", y="AvgRating" # 指定横纵坐标
+        x="ReleaseDate", y="AvgRating", # 指定横纵坐标
         queries = T), # T表示显示queries定义的颜色
         list(plot= histogram, x="ReleaseDate", queries = F)), # 直方图
         ncols = 2), # 添加的图分两列
-        query.legend = "top") # query图例放在上方
+      query.legend = "top") # query图例放在上方
 ```
+
+<img src="upset_scatter_histogram.png" width=50% height=50% title="upset_scatter_histograms" align=center/>
 
 2. 添加密度曲线图
 
@@ -140,7 +156,8 @@ another.plot <- function(data, x, y) {
 ```
 
 ```
-upset(data, main.bar.color = "black", mb.ratio = c(0.5, 0.5), queries = list(list(query = intersects, 
+library(plyr)
+upset(movies, main.bar.color = "black", mb.ratio = c(0.5, 0.5), queries = list(list(query = intersects, 
     params = list("Drama"), color = "red", active = F), list(query = intersects, 
     params = list("Action", "Drama"), active = T), list(query = intersects, 
     params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), 
@@ -150,6 +167,7 @@ upset(data, main.bar.color = "black", mb.ratio = c(0.5, 0.5), queries = list(lis
         y = "ReleaseDate", queries = F)), ncols = 3))
 ```
 
+<img src="upset_density.png" width=50% height=50% title="upset_density" align=center/>
 
 # 2. references
 https://github.com/hms-dbmi/UpSetR
