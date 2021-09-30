@@ -59,6 +59,8 @@ attach(data) #把数据用于全局
 venn(data = list(Athaliana,Graimondii,Ppersica,Mtruncatula,Vvinifera)) #画韦恩图，需要几维就填入几列数据，黑白无填充图
 ```
 
+<img src="data_orthogroups.png" width=50% height=50% title="data_orthogroups" align=center/>
+
 #### 1.3.2.2. R包VennDiagram
 R包VennDiagram画韦恩图参数较多，适合做用于发表的韦恩图。
 
