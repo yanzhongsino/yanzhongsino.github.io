@@ -27,8 +27,6 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 
 <img src="phylogeny.jpg" width=80% height=80% title="phylogeny示意图(A4,(A3,(A2,A1)B)C)D" align=center/>
 
-![phylogeny示意图(A4,(A3,(A2,A1)B)C)D](phylogeny.jpg "phylogeny")
-
 - 第一种情况，当已知D节点时间时，求B节点时间（C节点同理）
 
 由于A1的时间点已知（即现在），那么从D到A1的时间跨度是已知的；从D到A1的枝长是已知的，枝长代表的是这个过程的碱基替换数量，即路程；时间和路程已知，我们可以算出速度；同时，从D到B的路程也是已知的（因为枝长已知），那么在假设匀速的前提下，我们也可以算出从D到B的时间，这样即可标定B（即A1和A2分歧时间）的时间。
