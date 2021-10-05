@@ -124,7 +124,8 @@ venn.pairwise.plot <- venn.diagram(
 ); #二维韦恩图
 grid.draw(venn.pairwise.plot); #用venn.plot绘图
 ```
-<img src="venn_2.png" width=50% height=50% title="venn_2" align=center/>
+
+<img src="venn_2.png" width=80% height=80% title="venn_2" align=center/>
 
 4. 三维韦恩图
 ```

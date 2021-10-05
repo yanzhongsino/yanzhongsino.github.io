@@ -135,7 +135,7 @@ tags:
 
 ### 3.1.2. HTML语法【推荐】
 用markdown语法无法指定图片的尺寸和对齐方式，建议用HTML语法插入图片，以实现更好的控制。
-`<img src="/images/image.png" width=50% height=50% title="picture" alt="picture" align=center/>`
+`<img src="/images/image.png" width=80% height=80% title="picture" alt="picture" align=center/>`
 
 ### 3.1.3. 标签插件语法引用
 如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。

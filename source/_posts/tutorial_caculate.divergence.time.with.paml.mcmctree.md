@@ -25,7 +25,9 @@ description: 用paml的mcmctree模块估算物种分歧时间的教程。
 
 假设下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D;是有枝长有根树，A1-A4都是现在的物种（代表时间也已知），目的是要估算B和C节点的时间。
 
-<div align="middle">![phylogeny示意图(A4,(A3,(A2,A1)B)C)D;](phylogeny.jpg)</div>
+<img src="phylogeny.jpg" width=80% height=80% title="phylogeny示意图(A4,(A3,(A2,A1)B)C)D" align=center/>
+
+![phylogeny示意图(A4,(A3,(A2,A1)B)C)D](phylogeny.jpg "phylogeny")
 
 - 第一种情况，当已知D节点时间时，求B节点时间（C节点同理）
 
