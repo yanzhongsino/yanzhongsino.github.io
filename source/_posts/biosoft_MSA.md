@@ -28,6 +28,8 @@ description: 记录了多序列比对(Multiple Sequence Alignment,MSA)及比对�
 - 过滤软件的选择：
 	目前暂时优先选**trimAl**。
 
+update-20211006:今天发现PRANK这个软件比对过后序列的顺序会被打乱，后续处理要小心。
+
 # 1. 多序列比对(Multiple Sequence Alignment,MSA)
 ## 1.1. 概念
 多序列比对(Multiple Sequence Alignment,MSA)是对三个以上的生物学序列（biological sequence），如蛋白质序列、DNA序列或RNA序列所作的序列比对。目的是在不改变序列顺序的前提下，尽可能地把不同序列的相同碱基或者氨基酸排在同一列，并认为同一列的序列在进化上是同源的，有共同的祖先。
@@ -167,6 +169,8 @@ Clustal版本有X、W系列，目前最新的Omega表现最好。
 - 可以重新构建祖先序列，有DNA翻译(DNA translation)和回译(back-translation)选项；
 - 对完全统计对齐的启发式(heuristic)方法；
 - 准确度高，但非常耗时，不适合基因组数据；
+
+p.s.：PRANK比对过后序列顺序会被打乱，与比对前不一致，做后续处理时要小心。
 
 ### 4.3.4. StatAlign(2008)
 
