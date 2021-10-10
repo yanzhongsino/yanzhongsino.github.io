@@ -3,7 +3,7 @@ title: 多序列比对(Multiple Sequence Alignment,MSA)
 date: 2021-09-06 18:00:00
 categories: 
 - bio
-- biosoft
+- bioinfo
 tags:
 - Multiple Sequence Alignment
 - MSA
