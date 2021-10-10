@@ -12,15 +12,15 @@ tags:
 description: 从按照密码子规则（即三个三个对齐）比对的cds序列中提取四倍简并位点(fourfold degenerate codons, 4dtv)。
 ---
 
-# 从condon比对的cds序列中提取四倍简并位点
+# 1. 从condon比对的cds序列中提取四倍简并位点
 输入文件是根据密码子规则（即三个三个对齐）比对好的cds序列，输出文件是以其中一个物种的4dtv为标准提取所有物种的4dtv位点，提取的也是按照比对前的顺序排列，结果保存在4dtv.aln文件中。
 
-## 输入数据和变量定义
+## 1.1. 输入数据和变量定义
 1. `cds=/path/to/cds.aln` # 定义变量cds为codon模式比对好的cds序列
 2. `species=Athaliana` #以哪个物种的4dtv为标准提取，就定义变量species为那个物种的序列ID
 
-## 三种方案【选择一种】
-### 一步生成【推荐】
+## 1.2. 三种方案【选择一种】
+### 1.2.1. 一步生成【推荐】
 1. 一步生成运行文件，生成从cds获取4dtv的命令，很长，所以储存在文件4dtv.sh中。运行4dtv.sh就可以获取
 `seqkit locate -V 0 -i -d -p GCN -p CGN -p GGN -p CTN -p CCN -p TCN -p ACN -p GTN ${cds} |awk -v awka="${species}" '{if ($1 == awka && $6%3== 0) print $6}'|sort -k 1n |uniq |awk -v awkb="${cds}" '{print "<(seqkit subseq -r "$1":"$1" "awkb")"}' |sed -e '1i\seqkit concat' -e '$a\> 4dtv.aln'|xargs echo >4dtv.sh`
 
@@ -29,7 +29,7 @@ description: 从按照密码子规则（即三个三个对齐）比对的cds序�
 2. 运行生成的4dtv.sh，获得4dtv.aln结果
 `sh 4dtv.sh`
 
-### 分布运行
+### 1.2.2. 分布运行
 如果一步生成运行文件占用内存，运行较慢，可以分步骤进行。
 1. 生成临时文件4dtv.temp
 `seqkit locate -V 0 -i -d -p GCN -p CGN -p GGN -p CTN -p CCN -p TCN -p ACN -p GTN ${cds} |awk -v awka="${species}" '{if ($1 == awka && $6%3== 0) print $6}' >4dtv.temp`
@@ -38,7 +38,7 @@ description: 从按照密码子规则（即三个三个对齐）比对的cds序�
 3. 运行生成的4dtv.sh，获得4dtv.aln结果
 `sh 4dtv.sh`
 
-### 分物种运行【不推荐】
+### 1.2.3. 分物种运行【不推荐】
 一开始没发现seqkit concat这个工具，然后自己写的合并，有时会有aln的问题，不建议用。
 1. 定义数组sps为物种列表
 `sps=($(seqkit seq -n ${cds}|xargs))`
