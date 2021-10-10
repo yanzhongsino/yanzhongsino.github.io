@@ -2,13 +2,12 @@
 title: PATH
 date: 2021-04-20 16:20:15
 categories:
-- computer
-- system
-- Linux
+- linux
+- basics
 
 tags:
 - tutorial
-- Linux
+- linux
 - PATH
 
 description: 这篇博客记录了Linux系统下环境变量PATH的设置。

@@ -29,10 +29,12 @@ categories:
 - bio
 	- concept
 	- taxon
-	- biosoft
+	- bioinfo
 	- experiment
 	- theory
 	- knowledge
+
+- biosoft
 
 - omics
 	- genome
@@ -45,9 +47,9 @@ categories:
 
 - computer
 	- system
-		- Windows
-		- Linux
-	- programming language
+		- windows
+		- linux
+	- program language
 		- python
 		- R
 		- perl
@@ -59,6 +61,12 @@ categories:
 		- git
 	- script
 	- web
+
+- linux
+	- basics
+	- shell
+	- text processing
+	- operation and maintenance
 
 - blog
 
