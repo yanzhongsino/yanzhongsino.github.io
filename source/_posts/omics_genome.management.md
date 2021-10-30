@@ -1,5 +1,5 @@
 ---
-title: 基因组整理
+title: 基因组组装和注释结果的整理
 date: 2021-08-10 16:30:00
 categories: 
 - omics

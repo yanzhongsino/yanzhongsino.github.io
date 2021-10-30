@@ -1,5 +1,5 @@
 ---
-title: CAFE
+title: CAFE5分析基因家族扩张和收缩
 date: 2021-10-29 16:50:00
 categories:
 - bio
@@ -7,9 +7,9 @@ categories:
 tags:
 - tutorial
 - biosoft
-- cafe
+- CAFE
 - phylogeny
-description: 记录了分析基因家族收缩扩张的软件CAFE5的安装与使用。
+description: 记录了分析基因家族扩张收缩的软件CAFE5的安装与使用。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=17059176&auto=1&height=32"></iframe></div>

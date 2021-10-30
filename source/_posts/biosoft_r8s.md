@@ -1,5 +1,5 @@
 ---
-title: biosoft_r8s
+title: r8s估算系统发育时间
 date: 2021-10-29 16:50:00
 categories:
 - bio
@@ -10,7 +10,7 @@ tags:
 - divergence time
 - r8s
 - phylogeny
-description: 记录系统发育时间标定软件r8s的安装和使用
+description: 记录系统发育时间估算软件r8s的安装和使用
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=17059176&auto=1&height=32"></iframe></div>

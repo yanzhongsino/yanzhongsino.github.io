@@ -1,5 +1,5 @@
 ---
-title: busco的安装与使用
+title: BUSCO评估基因组组装和注释完整性
 date: 2021-07-24 11:20:00
 categories: 
 - bio
@@ -7,8 +7,8 @@ categories:
 tags: 
 - biosoft
 - genome assessment
-- busco
-description: 记录评估基因组组装和注释完整性的工具busco的安装使用。
+- BUSCO
+description: 记录评估基因组组装和注释完整性的工具BUSCO的安装使用。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=3986241&auto=1&height=32"></iframe></div>
@@ -18,8 +18,8 @@ Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组�
 
 可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。
 
-[busco官网](https://busco.ezlab.org)
-[busco v5数据库](https://busco-data.ezlab.org/v5/data/lineages/)
+[BUSCO官网](https://busco.ezlab.org)
+[BUSCO v5数据库](https://busco-data.ezlab.org/v5/data/lineages/)
 
 # 2. busco安装
 `conda install -c bioconda busco=5.1.3` #安装版本是5.1.3
@@ -31,13 +31,13 @@ Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组�
 
 植物相关的数据库有：
 
-|类群|数据库|BUSCO groups数量|
-|---|---|---|
-|真核生物|[eukaryota_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/eukaryota_odb10.2020-09-10.tar.gz)|255|
-|绿色植物|[viridiplantae_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/viridiplantae_odb10.2020-09-10.tar.gz)|425|
-|有胚植物|[embryophyta_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/embryophyta_odb10.2020-09-10.tar.gz)|1614|
-|真双子叶植物|[eudicots_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/eudicots_odb10.2020-09-10.tar.gz)|2326|
-|豆目|[fabales_odb10.2020-08-05.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/fabales_odb10.2020-08-05.tar.gz)|5366|
+| 类群         | 数据库                                                                                                                       | BUSCO groups数量 |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| 真核生物     | [eukaryota_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/eukaryota_odb10.2020-09-10.tar.gz)         | 255              |
+| 绿色植物     | [viridiplantae_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/viridiplantae_odb10.2020-09-10.tar.gz) | 425              |
+| 有胚植物     | [embryophyta_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/embryophyta_odb10.2020-09-10.tar.gz)     | 1614             |
+| 真双子叶植物 | [eudicots_odb10.2020-09-10.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/eudicots_odb10.2020-09-10.tar.gz)           | 2326             |
+| 豆目         | [fabales_odb10.2020-08-05.tar.gz](https://busco-data.ezlab.org/v5/data/lineages/fabales_odb10.2020-08-05.tar.gz)             | 5366             |
 
 # 4. busco使用
 ## 4.1. 直接在命令中设定参数【需设置的参数较少时】

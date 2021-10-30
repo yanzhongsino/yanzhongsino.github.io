@@ -1,5 +1,5 @@
 ---
-title: WGDI的安装和使用
+title: WGDI分析基因组共线性、计算Ks和鉴定WGD
 date: 2021-09-11 14:30:00
 categories: 
 - bio

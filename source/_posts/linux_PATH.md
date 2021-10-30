@@ -1,5 +1,5 @@
 ---
-title: PATH
+title: 在Linux系统中设置环境变量PATH
 date: 2021-04-20 16:20:15
 categories:
 - linux

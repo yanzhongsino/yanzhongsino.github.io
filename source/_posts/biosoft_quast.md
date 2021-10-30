@@ -1,5 +1,5 @@
 ---
-title: QUAST的安装和使用
+title: QUAST评估基因组组装
 date: 2021-08-23 14:30:00
 categories: 
 - bio
