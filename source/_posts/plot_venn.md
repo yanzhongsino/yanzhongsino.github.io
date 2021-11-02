@@ -185,10 +185,10 @@ venn.quintuple.plot <- venn.diagram(
   cat.col = c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3", "orchid3"), #分类颜色
   cat.cex = 1.5, #每个分类名称大小
   cat.dist = 0.07, #分类名称距离边的距离
-  cat.just = list(c(-1,1),c(1,1),c(1,-1),c(-1,-1),c(-1,-1)), #分类名称的位置，圈内或圈外
+  cat.just = list(c(-1,-1),c(2,-1),c(2,1),c(0,4),c(-0.5,-1)), #分类名称的位置，圈内或圈外
   cat.fontface = "bold",
   cat.fontfamily = "serif", # 分类字体
-  margin = 0.05
+  margin = 0.2 #图距离边缘的距离
 ); # 五维韦恩图
 grid.draw(venn.quintuple.plot); #用venn.plot绘图
 ```
