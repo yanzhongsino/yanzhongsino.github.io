@@ -2,7 +2,13 @@
 title: 用MCscan做基因组间的同线性分析
 date: 2021-11-05 15:10:00
 categories: 
-tags: 
+- bio
+- bioinfo
+tags:
+- MCscan
+- synteny
+- colinearity
+
 description: 用MCscan pipeline做两个基因组间的同线性分析，包括制作同线性点图(dotplot)，同线性深度直方图，同线性染色体图。
 ---
 
@@ -110,12 +116,18 @@ seqkit grep -f <(cut -f 4 sampleB.uniq.bed ) sampleB.pep.fa.gz | seqkit seq -i  
 - sampleA.sampleB.lifted.anchors:增加了额外的锚点，形成最终的同线性区块
 - sampleA.sampleB.pdf:同线性点图
 
+同线性点图结果示例：
+{% img https://camo.githubusercontent.com/efdb6702eac5a03f96bfd4634b0a621242a2d489442d090b3e5b0f28626a8aa1/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f3334687162637374706638687931702f67726170652e70656163682e706e673f7261773d31 200 400 vi-vim-cheat-sheet %}
+
 ## 2.4. 同线性深度直方图
 1. 在同线性点图运行成功获得sampleA.sampleB.anchors结果文件的前提下
 2. 运行`python -m jcvi.compara.synteny depth --histogram sampleA.sampleB.anchors`
 3. 生成sampleA.sampleB.depth.pdf，显示了同线性深度比例。
 
-## 2.5. 同线性双染色体图
+同线性深度直方图示例：
+{% img https://camo.githubusercontent.com/9fdbd61bbf389b65dbc12166fb02e4a46ffff2ef1b465af817bd3dff9e695e13/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f686878326474727972756d3267796f2f67726170652e70656163682e64657074682e706e673f7261773d31 200 400 vi-vim-cheat-sheet %}
+
+## 2.5. 同线性染色体图
 ### 2.5.1. 输入文件
 1. seqids文件
 - 指定展示的染色体ID，两行对应两个物种，每行的染色体之间逗号隔开，不能有空行。
@@ -147,6 +159,10 @@ e, 0, 1, sampleA.sampleB.anchors.simple
 `python -m jcvi.graphics.karyotype seqids layout`
 
 生成karyotype.pdf文件，为同线性双染色体图
+
+同线性染色体图示例：
+{% img https://camo.githubusercontent.com/6d343c2958de0eb6596c75cfeca3cc24a19617ab420d07249cf37c2813480370/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f35316b386a756a797a616765336f612f67726170652e70656163682e6b6172796f747970652e706e673f7261773d31 200 400 vi-vim-cheat-sheet %}
+
 
 ### 2.5.3. tips
 - 运行虽然报错`ERROR    savefig failed. Reset usetex to False.`，但还是生成了图文件。
