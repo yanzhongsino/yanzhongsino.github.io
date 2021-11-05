@@ -6,6 +6,7 @@ categories:
 - bioinfo
 tags:
 - MCscan
+- jcvi
 - synteny
 - colinearity
 
