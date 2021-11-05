@@ -103,7 +103,30 @@ tree.txt是二叉的（binary），有根的（rooted），超度量(时间树�
 k值的结果比较：
 查看k2p，k3p，k5p，k6p等不同的结果文件Gamma_results.txt文件中的第一行信息，Model Gamma Final Likelihood (-lnL)值，挑选最大的为最优结果。
 
-## 3.4. 把每个节点收缩扩张的基因数量画在树上。
+### 结果整理
+
+对特定物种扩张和收缩基因的提取
+```
+cat Gamma_change.tab |cut -f1,15|grep "+[1-9]" >sample.expanded #提取Gamma_change.tab第15列代表物种sample的扩张的orthogroupsID
+cat Gamma_change.tab |cut -f1,15|grep "-" >sample.contracted  #提取Gamma_change.tab第15列代表物种sample的收缩的orthogroupsID
+cat Gamma_family_results.txt |grep "y"|cut -f1 >p0.05.significant #提取显著扩张或收缩的orthogroupsID
+grep -f p0.05.significant sample.expanded |cut -f1>sample.expanded.significant #提取显著扩张的sample物种的orthogroupsID
+grep -f p0.05.significant sample.contracted |cut -f1 >sample.contracted.significant #提取显著收缩的sample物种的orthogroupsID
+
+grep -f sample.contracted.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed -E -e "s/: [^b]+bv/ bv/g" -e "s/ [^b]+//g" >sample.contracted.significant.ortho #提取显著收缩的基因
+grep -f sample.expanded.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed -E -e "s/: [^b]+bv/ bv/g" -e "s/ [^b]+//g" >sample.expanded.significant.ortho #提取显著扩张的基因
+
+cat sample.expanded.significant.ortho |sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.expanded.significant.genes
+cat sample.contracted.significant.ortho |sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.contracted.significant.genes
+
+seqkit grep -f sample.expanded.significant.genes sample.pep.fa >sample.expanded.significant.pep.fa
+seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contracted.significant.pep.fa
+```
+
+提取出指定物种的显著扩张和收缩的蛋白序列之后，就可以拿去做GO注释和基因富集分析。
+
+
+## 3.4. 把每个节点收缩扩张的基因数量画在树上
 有看到一个画图脚本。
 ```sh
 python python_scripts/cafetutorial_draw_tree.py -i reports/summary_run1_node.txt
