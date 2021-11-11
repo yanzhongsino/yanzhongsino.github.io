@@ -117,6 +117,8 @@ seqkit grep -f <(cut -f 4 sampleB.uniq.bed ) sampleB.pep.fa.gz | seqkit seq -i  
 - sampleA.sampleB.lifted.anchors:增加了额外的锚点，形成最终的同线性区块
 - sampleA.sampleB.pdf:同线性点图
 
+同线性点图一般可以看点连成的比较长的线，在同一横坐标范围有几根线，或者在同一纵坐标范围有几根线，从而判断两个基因组的倍数关系。
+
 同线性点图结果示例：
 {% img https://camo.githubusercontent.com/efdb6702eac5a03f96bfd4634b0a621242a2d489442d090b3e5b0f28626a8aa1/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f3334687162637374706638687931702f67726170652e70656163682e706e673f7261773d31 800 800 vi-vim-cheat-sheet %}
 
