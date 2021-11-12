@@ -5,10 +5,10 @@ categories:
 - bio
 - bioinfo
 tags: 
-gene set enrichment analysis
-GSEA
-KOBAS-i
-topGO
+- gene set enrichment analysis
+- GSEA
+- KOBAS-i
+- topGO
 description: 介绍了基因富集分析和分析软件，包括KOBAS-i，topGO。
 ---
 
