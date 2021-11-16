@@ -12,34 +12,34 @@ description: 记录了绘制圈图的软件Circos的使用逻辑和参数。
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=4278314&auto=1&height=32"></iframe></div>
 
 
-# 介绍circos圈图
+# 1. 介绍circos圈图
 介绍基因组的文章里常常出现下面的circos圈图，这篇博客记录了如何绘制这种圈图。
 
-<img src="https://www.google.com/imgres?imgurl=http%3A%2F%2Fcircos.ca%2Fsupport%2Fgetting_started%2Fimg%2Fcircos-example.png&imgrefurl=http%3A%2F%2Fcircos.ca%2Fsupport%2F&tbnid=82YZgLFKB8ZdaM&vet=10CAMQxiAoAGoXChMIyOaUtK6S9AIVAAAAAB0AAAAAEAc..i&docid=NtFeQm6a4jXlPM&w=600&h=600&itg=1&q=circos&ved=0CAMQxiAoAGoXChMIyOaUtK6S9AIVAAAAAB0AAAAAEAc" width=80% height=80% title="Circos圈图" alt="Circos圈图" align=center/>
+<img src="https://lh3.googleusercontent.com/proxy/pKQ89TcbZGbW-unpMg8x7PUyB5SDqZm9mw1xPLIMmdIYOSY8DnmzXWRxtD0M7mrzzOyzEkKH0PPNTuOxoLNr3d2YOsEtBsTv_uEoKxQ0uAWmc26kWmNG" width=80% height=80% title="Circos圈图" alt="Circos圈图" align=center/>
 
 circos圈图的内核是把矩形掰弯成环状，矩形信息的展示以行和列为基础，环形除了行和列，还可以增加环的不同位置之间的关系，比如基因组特征的Circos图中间常见的染色体共线性关系的展示。
 
-# 绘制circos圈图的软件和包
+# 2. 绘制circos圈图的软件和包
 有许多可以绘制circos圈图的软件和包。常见的有[Circos软件](http://circos.ca/),TBtools，R包circlize，python版本的Circos等。
 
-## Circos —— 从名字就可以看出是circos绘制软件的霸王
+## 2.1. Circos —— 从名字就可以看出是circos绘制软件的霸王
 [Circos软件](http://circos.ca/)是2009年Michael Smith Genome Sciences Centre的Martin Krzywinski开发的一款基于perl的做比较基因组Circos圈图绘制的软件，功能完备，被文章里使用的非常多。Martin Krzywinski是生物信息学家和专业摄影师双重身份，所以Circos软件的审美设计是非常可靠的（当然得在合理的配色和布局下，我就用过同一套数据生成两个美学差异极大的图）。
 
 Circos有在线版本[Circos Online](http://mkweb.bcgsc.ca/tableviewer/)，在线使用时是把表格转为圈图，不过只允许最大75行和75列。
 
 下面记录了用Circos绘制基因组圈图的基础操作。
 
-### Circos安装
+### 2.1.1. Circos安装
 `conda create -c bioconda -n circos circos` #单独环境安装
 
 `circos -V` #确认版本
 
-### Circos运行
+### 2.1.2. Circos运行
 `circos -conf circos.conf`
 
 会生成circos.png和circos.svg两个文件。
 
-### Circos模块化绘制
+### 2.1.3. Circos模块化绘制
 Circos是模块化绘制的方式，即通过增添数据和设置来实现每个部分的绘制。
 
 基因组圈图中的几个基础模块：染色体模块，特征图模块，共线性模块。
@@ -47,7 +47,7 @@ Circos是模块化绘制的方式，即通过增添数据和设置来实现每�
 - 特征图模块可以有多圈，可以是折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)等。通常用直方图或者热图展示基因密度，重复序列密度，GC占比等信息。
 - 共线性模块通常放在中心，代表不同染色体间的共线性关系。如果有多个物种，则可以体现物种间的共线性关系。
 
-### Circos输入文件
+### 2.1.4. Circos输入文件
 输入文件包括数据文件和配置文件。
 
 需要展示的模块数据都保存在单独的数据文件中，然后在配置文件circos.conf中调用数据文件。
@@ -70,14 +70,14 @@ Circos是模块化绘制的方式，即通过增添数据和设置来实现每�
 
 但如果不是设置特别复杂，直接使用circos.conf一个配置文件即可，所有设置都可以写在circos.conf。
 
-#### 主配置文件circos.conf
-##### circos.conf由几个部分组成
+#### 2.1.4.1. 主配置文件circos.conf
+##### 2.1.4.1.1. circos.conf由几个部分组成
 - <ideogram>绘制染色体
 - <ticks>绘制染色体刻度
 - <links>绘制染色体间连线（通常代表共线性）
 - <plots>绘制图形
 
-##### circos.conf示例 
+##### 2.1.4.1.2. circos.conf示例 
 
 ```circos.conf
 
@@ -279,7 +279,7 @@ color = pastel1-5-qual-1
 </links>
 ```
 
-##### circos.conf参数详解
+##### 2.1.4.1.3. circos.conf参数详解
 1. 颜色选择
 Circos的颜色用的是[colorbrewer2网站](https://colorbrewer2.org/)的颜色，也可以参考[circos的colors网址](http://circos.ca/documentation/tutorials/configuration/colors/images)。
 
@@ -297,22 +297,22 @@ Circos中颜色的命名格式为PALETTE-NUMCOLORS-TYPE-IDX：
 - r(relative), 相对大小；会随着最终图形大小而发生变换。
 - u(chromosome unit)，定义chromosome unit之后使用；一般在显示刻度时使用。。
 
-#### 数据文件 —— 染色体文件karyotype.txt
+#### 2.1.4.2. 数据文件 —— 染色体文件karyotype.txt
 染色体文件karyotype.txt用于生成染色体模块。
 
-##### 染色体文件karyotype.txt的获取
+##### 2.1.4.2.1. 染色体文件karyotype.txt的获取
 从genome.fa.fai里生成karyotype.txt文件`head -12 genome.fa.fai |awk '{print "chr - "$1" "$1" 0 "$2" set3-12-qual-12"}' >karyotype.txt`，取前12条染色体。
 
 修改最后一列来定义染色体颜色，推荐`set3-12-qual`系列，一共12种，可以依次给到12条染色体。
 
-#### 数据文件 —— 线性关系文件_link.txt
+#### 2.1.4.3. 数据文件 —— 线性关系文件_link.txt
 线性关系文件_link.txt用于生成共线性模块。
 
 格式是六列数据，用tab分隔，每行都代表一条线，由具有共线性的两组染色体ID、起始位置和终止位置组成。
 
 `contig003  7719    355757  contig014   3459    349346`
 
-##### 线性关系文件_link.txt的获取
+##### 2.1.4.3.1. 线性关系文件_link.txt的获取
 可以用jcvi生成simple文件，然后用脚本simple2links.py转换成_link.txt文件。
 
 `pip install jcvi`安装jcvi，可以参考博文[MCscan](https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/)。
@@ -384,10 +384,10 @@ for line in open(simple_file):
 fo.close()
 ```
 
-#### 数据文件 —— 特征图文件
+#### 2.1.4.4. 数据文件 —— 特征图文件
 特征图文件用于生成折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)等特征图模块。
 
-##### 获取特征图文件
+##### 2.1.4.4.1. 获取特征图文件
 特征图文件格式相同，由四列组成，染色体ID(chr)，起始位置(start)，终止位置(end)，特征数据(value[options])。
 
 前三列是bed格式，最后一列是特征数据，比如在这个位置有几个基因。通常用法是展示染色体的基因密度信息、重复序列密度和GC含量等信息。
@@ -417,7 +417,7 @@ grep -f col.list Bauhinia.variegata.gene.gff3 |awk '$3 == "gene" {print $1"\t"$4
 bedtools coverage -a genome.windows -b col.bed |cut -f 1-4 >col.txt #统计共线性基因密度
 ```
 
-# references
+# 3. references
 [Circos paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752132/)
 [xuzhougeng 1](https://www.jianshu.com/p/3a31ceef711b)
 [xuzhougeng 2](https://www.jianshu.com/p/4b3d3809ac07)
