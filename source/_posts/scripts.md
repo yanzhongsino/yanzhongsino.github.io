@@ -17,17 +17,16 @@ description: store some scripts using in biology and bioinformatics
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=476751845&auto=1&height=32"></iframe></div>
 
-# 我写的脚本
-1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测
+# 1. 我写的脚本
+## 1.1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测
 [multi-transcriptome_assembly_with_ref.sh](https://github.com/yanzhongsino/bioscripts/blob/main/myscripts/multi-transcriptome_assembly_with_ref.sh)
 
-# 我修改的脚本（其他人写的）
-1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息
+# 2. 我修改的脚本（其他人写的）
+## 2.1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息
 [extract_intron_info.pl](https://github.com/yanzhongsino/bioscripts/blob/main/modifiedscripts/extract_intron_info.pl)
 
-
-# 保存的脚本
-## batch_run.sh —— 多线程并行运行批量化命令
+# 3. 保存的脚本
+## 3.1. batch_run.sh —— 多线程并行运行批量化命令
 [batch_run.sh](https://github.com/yanzhongsino/bioscripts/blob/main/saved_scripts/batch_run.sh)
 
 ```shell
@@ -71,7 +70,7 @@ exec 3<&-                       #关闭文件描述符的读
 exec 3>&-                       #关闭文件描述符的写
 ```
 
-## ROUSFinder2.0.py —— 植物线粒体基因组重复序列注释脚本
+## 3.2. ROUSFinder2.0.py —— 植物线粒体基因组重复序列注释脚本
 1. 背景
 文章[Repeats of Unusual Size in plant mitochondrial genomes: identification, incidence and evolution](https://academic.oup.com/g3journal/article/9/2/549/6026745)总结了植物线粒体基因组的重复序列的特征。研究表明，植物线粒体基因组比动物的要大，包含大量的非编码DNA，突变率低，重排率高。
 
@@ -407,10 +406,10 @@ print binascii.unhexlify(quote_dict[z])+'\n'
 3. 运行
 `python2 ROUSFinder2.0.py mito.genome.fa`
 
--m参数指定注释重复序列的最小长度，默认是50bp
--b参数指定blastn的所在路径
--o指定输出文件
--gb生成GenBank格式文件
+- -m参数指定注释重复序列的最小长度，默认是50bp
+- -b参数指定blastn的所在路径
+- -o指定输出文件
+- -gb生成GenBank格式文件
 
 4. 输出文件
 输出文件有四个，mito.genome.fa_binned.txt, mito.genome.fa_rep.fasta, mito.genome.fa_rep_counts.txt, mito.genome.fa_rep_table.txt。

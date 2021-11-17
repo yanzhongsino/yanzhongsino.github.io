@@ -424,4 +424,3 @@ bedtools coverage -a genome.windows -b col.bed |cut -f 1-4 >col.txt #统计共�
 [xuzhougeng 3](https://www.jianshu.com/p/ea3a8933ace9)
 [xuzhougeng 4](https://www.jianshu.com/p/1658e702ba17)
 [xuzhougeng 5](https://www.jianshu.com/p/31f26d1e5974)
-[TBtools](https://www.jianshu.com/p/13c25157219b)
