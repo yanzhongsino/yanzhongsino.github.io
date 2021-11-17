@@ -15,7 +15,7 @@ description: 记录了绘制圈图的软件Circos的使用逻辑和参数。
 # 1. 介绍circos圈图
 介绍基因组的文章里常常出现下面的circos圈图，这篇博客记录了如何绘制这种圈图。
 
-<img src="https://lh3.googleusercontent.com/proxy/pKQ89TcbZGbW-unpMg8x7PUyB5SDqZm9mw1xPLIMmdIYOSY8DnmzXWRxtD0M7mrzzOyzEkKH0PPNTuOxoLNr3d2YOsEtBsTv_uEoKxQ0uAWmc26kWmNG" width=80% height=80% title="Circos圈图" alt="Circos圈图" align=center/>
+<img src="http://circos.ca/intro/genomic_data/img/circos-conde-nast.png" width=80% height=80% title="Circos圈图" alt="Circos圈图" align=center/>
 
 circos圈图的内核是把矩形掰弯成环状，矩形信息的展示以行和列为基础，环形除了行和列，还可以增加环的不同位置之间的关系，比如基因组特征的Circos图中间常见的染色体共线性关系的展示。
 
