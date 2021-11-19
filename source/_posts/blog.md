@@ -145,6 +145,8 @@ tags:
 用markdown语法无法指定图片的尺寸和对齐方式，建议用HTML语法插入图片，以实现更好的控制。
 `<img src="/images/image.png" width=80% height=80% title="picture" alt="picture" align=center/>`
 
+`<img src="url" title="title" width="80%" height="80%" />`
+
 ### 3.1.3. 标签插件语法引用
 如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。
 - 本地图片资源，不限制图片尺寸，使用 `{% asset_img image.jpg This is an image %}`；
@@ -152,7 +154,7 @@ tags:
 
 ### 3.1.4. CDN引用
 1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
-2. 【实测这种方法不生效】把代码`<div align="middle">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中；
+2. 【实测这种方法不生效】把代码`<div align="middle" style="width:200px; margin:auto">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中。
 
 ### 3.1.5. fancybox
 1. 启用fancybox
