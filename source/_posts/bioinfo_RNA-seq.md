@@ -78,7 +78,7 @@ RNA-seq分析的第一步通常是转录本的鉴定，需要把RNA-seq reads比
 - SOAPdenovo-Trans：组装到转录本数量多，准确性最高，对于高表达的转录本有明显的组装偏好性；花费的内存和CPU最低。
 - Oases：在所有样品中都有较好的N10-N50长度的表现，鉴定长转录本有优势；能够较好地涵盖到低表达的基因。
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/YLibyVOL43WvVR0Rg3rpcuypc9h02rm7GW5Ix0pO7djZlXACgF8UUXbdFCvcicOy86p0GwSrBiaATX70TcOITbiaKA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" title="从头组装工具比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig4_HTML.jpg?as=webp" title="从头组装工具比较结果" width="80%" height="80%" />
 
 ## 3.4. 三代测序错误纠正工具
 LoRDEC在纠错质量和速度上更有优势，LSC在纠正后reads比对率的改善上表现更好。
