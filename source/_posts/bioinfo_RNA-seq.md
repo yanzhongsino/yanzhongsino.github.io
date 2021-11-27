@@ -1,5 +1,5 @@
 ---
-title: RNA-sequencing数据分析工具比对
+title: RNA-sequencing数据分析工具比较
 date: 2021-11-19 20:50:00
 categories: 
 - bio

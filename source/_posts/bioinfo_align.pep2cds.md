@@ -70,10 +70,10 @@ ParaAT2.0目录下有两个脚本，ParaAT.pl用于成对比对的转换（可�
 
 其他参数：
 
-- -n好像可以包含多核苷酸序列比对；
-- -g移除比对的gaps；
-- -t移除mismatched codons；
-- -k用KaKs_Calculator计算(需要输出axt格式)Ka和Ks，获得axt文件后自动计算kaks值，使用MA模型，比YN模型慢，推荐输出axt后自己用KaKs_Calculator计算并用YN模型。
+- -n：好像可以包含多核苷酸序列比对；
+- -g：移除比对后包含gap的密码子；
+- -t：移除mismatched codons；
+- -k：用KaKs_Calculator计算(需要输出axt格式)Ka和Ks，获得axt文件后自动计算kaks值，使用MA模型，比YN模型慢，推荐输出axt后自己用KaKs_Calculator计算并用YN模型。
 
 ## 2.2. 多序列比对(multiple sequence alignment)
 ### 2.2.1. 应用场景

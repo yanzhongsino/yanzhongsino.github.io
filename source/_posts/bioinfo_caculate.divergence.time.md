@@ -67,25 +67,30 @@ mcmctree通过调用baseml(核苷酸数据)、codeml（密码子或者氨基酸�
 
 ## 3.3. 指南一：paml常规方法估算分歧时间
 paml常规方法只适用于核苷酸数据；
-1. input files
+### 3.3.1. input files
 准备3个输入文件
 
-- input.tre - 带有校准点的有根树文件
+#### 3.3.1.1. input.tre - 带有校准点的有根树文件
 把iqtree/raxml-ng等建树软件中得到的树文件中的支持率和枝长信息删除，添加化石校准点时间信息（格式是时间范围'>0.23<0.26'或者时间点'@0.245')，单位时百万年前100Ma；再在首行添加两个数字（物种数量和树的数量），空格隔开，可得到input.tre文件。
 
 ```newick #cat input.tre
 5 1
 ((((A,B),C),D)'>0.23<0.26',E);
 ```
-文件内容分两行：第一行表述树中有n个物种，共计1个树，两个数值之间用空分割；第二行则是Newick格式树信息，其中包含有校准点信息。校准点信息一般指95%HPD（Highest Posterior Density）对应的置信区间；校准点单位是100MYA（软件说明文档中使用该单位，也推荐使用该单位，若使用其它单位，后续配置文件中的相关参数也需要对应修改）。此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。
 
-- input.phy - 多序列比对文件（phylip格式）
-PAML要求输入的Phylip格式，其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。
-python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
-推荐用`echo $(cat input.align.fa) |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g" >input.phy`手动转化align好的fas格式文件；再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。
+- 文件内容包含两行：第一行表述树中有n个物种，共计1个树，两个数值之间用空分割；第二行则是Newick格式树信息。
+- 其中第二行包含有校准点信息。校准点信息一般指95%HPD（Highest Posterior Density）对应的置信区间；校准点单位是100MYA（软件说明文档中使用该单位，也推荐使用该单位，若使用其它单位，后续配置文件中的相关参数也需要对应修改）。
+- 此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。
 
-如果有多个区域的序列，比如exon和intron，LSC、SSC和IR，不同的基因，密码子的第一二三位，需要不同的模型分开估算，那可以把各自区域分别align之后制作多个phy文件，再合并到一起，用空行隔开，组成input.phy文件。（此时mcmctree.ctl的ndata值为区域的个数）。
+#### 3.3.1.2. input.phy - 多序列比对文件（phylip格式）
+- PAML要求输入的Phylip格式，其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。
+- python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
+- 推荐用`echo $(cat input.align.fa) |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g" >input.phy`手动转化align好的fas格式文件；再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。
+
+如果有**多个区域的序列**，比如exon和intron，LSC、SSC和IR，不同的基因，密码子的第一二三位，需要不同的模型分开估算，那可以把各自区域分别align之后制作多个phy文件，再合并到一起，用空行隔开，组成input.phy文件。（此时mcmctree.ctl的ndata值为区域的个数）。
+
 写了一个脚本来制作多区域的phylip文件，其中OG.length包含两列，一列OGID，一列比对后序列长度。
+
 ```shell ## cat fa2phylip.sh
 cat ./OG.length | while read line
 do
@@ -94,10 +99,10 @@ do
         sed "s/_.*//g" ../singlegenetree/${sample_id}/${sample_id}.mafft.pep|seqkit seq -w 0|sed -E ":a;N;s/\n/ /g;ta" |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g"|sed "1i\5  ${sample_a}" |sed '1i\ ' > ./phy/${sample_id}.phy #把上一步获取的${sample_id}.mafft.pep改为phylip格式，并在首行添加空格行（为了合并后每个OG用空行隔开）
 
 done
-cat ./phy/*phy >Ane.phy #合并所有phy文件为一个Ane.phy
+cat ./phy/*phy >input.phy #合并所有phy文件为一个Ane.phy
 ```
 
-- mcmctree.ctl - mcmctree程序的配置文件
+#### 3.3.1.3. mcmctree.ctl - mcmctree程序的配置文件
 ```mcmctree.ctl
           seed = -1 *设置随机数作为seed，-1代表使用系统当前时间作为随机数
        seqfile = input.phy *输入多序列比对文件
@@ -147,52 +152,50 @@ cat ./phy/*phy >Ane.phy #合并所有phy文件为一个Ane.phy
 *** Note: Make your window wider (100 columns) when running this program.
 ```
 
-2. mcmctree运行
+### 3.3.2. mcmctree运行
 运行`mcmctree mcmctree.ctl`即可获得结果。
 
 
 ## 3.4. 指南二：用approximate likelihood calculation估算分歧时间【推荐】
 approximate likelihood法比常规方法快很多，而且可以选择更复杂的GTR模型（model = 7）；推荐使用。
-1. input files
+### 3.4.1. input files
 输入文件和指南一一致，只是mcmctree.ctl的usedata需要修改为，usedata = 3【一定要改】；建议model修改为model = 7【建议改】。
 
-2. mcmctree usedata = 3运行
-运行`mcmctree mcmctree.ctl`；用Maximum Likelihood方法估算枝长和Hessian信息；
-- 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
+### 3.4.2. 运行`mcmctree mcmctree3.ctl`，（mcmctree usedata = 3）
+运行`mcmctree mcmctree3.ctl`；用Maximum Likelihood方法估算枝长和Hessian信息；
+1. 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
+2. 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用baseml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
+3. 手动并行多个区域的操作：
+- mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
+- 对每个区域的tmp文件分别放置一个单独的目录，并在单独目录内运行`baseml tmp*.ctl`，从而实现多区域并行运行。
+- 所有区域的baseml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
+- 或者用命令`for i in $(ls tmp*.ctl);do baseml ${i} ; mv rst2 ${i}.rst2; done`调用codeml进行多次分析（每次codeml都生成rst2文件，所以每次生成后把rst2改名，否则rst2被覆盖）；然后`cat *rst2 >out.BV`合并所有rst2文件到out.BV文件；
 
-- 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用baseml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
-手动并行多个区域的操作：
-  - mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
-  - 对每个区域的tmp文件分别放置一个单独的目录，并在单独目录内运行`baseml tmp*.ctl`，从而实现多区域并行运行。
-  - 所有区域的baseml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
-  - 或者用命令`for i in $(ls tmp*.ctl);do baseml ${i} ; mv rst2 ${i}.rst2; done`调用codeml进行多次分析（每次codeml都生成rst2文件，所以每次生成后把rst2改名，否则rst2被覆盖）；然后`cat *rst2 >out.BV`合并所有rst2文件到out.BV文件；
-
-3. mcmctree usedata = 2运行
-把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
-运行`mcmctree mcmctree.ctl`即可获得结果。
+### 3.4.3. 运行`mcmctree mcmctree2.ctl`，（mcmctree usedata = 2）
+- 把input.phy，input.tre，mcmctree3.ctl，out.BV四个文件复制到新建目录下，mcmctree3.ctl的usedata改为usedata = 2并重命名为mcmctree2.ctl，out.BV重命名为in.BV；
+- 运行`mcmctree mcmctree2.ctl`即可获得结果。
 
 ## 3.5. 指南三：用approximate likelihood calculation估算氨基酸数据的分歧时间
 
 氨基酸数据不能用usedata = 1这种模式，只能用approximate likelihood calculation估算分歧时间；方法与指南二类似。
-1. input files
-输入文件和指南一一致，mcmctree.ctl的参数修改：usedata = 3，model = 2，seqtype = 2；增加一行aaRatefile = wag.dat；
-同时把paml软件安装位置下的wag.dat复制一份到当前目录；
-wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用其他的氨基酸替换率数据，就用其他的替换率文件(*.dat)；
+### 3.5.1. input files
+- 输入文件和指南一一致，mcmctree.ctl的参数修改：usedata = 3，model = 2，seqtype = 2；增加一行aaRatefile = wag.dat；
+- 同时把paml软件安装位置下的wag.dat复制一份到当前目录；
+- wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用其他的氨基酸替换率数据，就用其他的替换率文件(*.dat)；
 
-2. mcmctree usedata = 3运行
-运行`mcmctree mcmctree.ctl`；用Maximum Likelihood方法估算枝长和Hessian信息；
-- 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
+### 3.5.2. 运行`mcmctree mcmctree3.ctl`，（mcmctree usedata = 3）
+运行`mcmctree mcmctree3.ctl`；用Maximum Likelihood方法估算枝长和Hessian信息；
+1. 若比对数据只有一个区域，即ndata = 1，则等待运行完成，生成out.BV；
+2. 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用codeml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
+3. 手动并行多个区域的操作：
+- mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
+- 对每个区域的tmp文件分别放置一个单独的目录，修改所有tmp*.ctl内的aaRatefile = wag.dat为wag.dat的相对位置或绝对，如aaRatefile = ../wag.dat，然后在每一个单独目录内运行`codeml tmp*.ctl`；
+- 所有区域的codeml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
+- 或者用命令`for i in $(ls tmp*.ctl);do codeml ${i} ; mv rst2 ${i}.rst2; done`调用codeml进行多次分析（每次codeml都生成rst2文件，所以每次生成后把rst2改名，否则rst2被覆盖）；然后`cat *rst2 >out.BV`合并所有rst2文件到out.BV文件；
 
-- 若比对数据多于一个区域，即ndata > 1，mcmctree会多次调用codeml依次处理每个区域，可等待运行完成，也可以做手动并行运行，以加快分析速度；
-手动并行多个区域的操作：
-  - mcmctree运行起来后，从第一区域开始，生成一套tmp0001文件(包括tmp0001.ctl,tmp0001.txt,tmp0001.trees），ctrl+C切断程序，会自动进入下一区域分析，生成一套tmp0002文件，继续ctrl+C切断程序，直到最后一个区域的tmp文件也生成。
-  - 对每个区域的tmp文件分别放置一个单独的目录，修改所有tmp*.ctl内的aaRatefile = wag.dat为wag.dat的相对位置或绝对，如aaRatefile = ../wag.dat，然后在每一个单独目录内运行`codeml tmp*.ctl`；
-  - 所有区域的codeml运行结束后，会在各自目录生成rst2文件，把所有目录的rst2文件cat合并，就是out.BV文件；
-  - 或者用命令`for i in $(ls tmp*.ctl);do codeml ${i} ; mv rst2 ${i}.rst2; done`调用codeml进行多次分析（每次codeml都生成rst2文件，所以每次生成后把rst2改名，否则rst2被覆盖）；然后`cat *rst2 >out.BV`合并所有rst2文件到out.BV文件；
-
-3. mcmctree usedata = 2运行
-把input.phy，input.tre，mcmctree.ctl，out.BV四个文件复制到新建目录下，mcmctree.ctl的usedata改为usedata = 2，out.BV重命名为in.BV；
-运行`mcmctree mcmctree.ctl`即可获得结果。
+### 3.5.3. 运行`mcmctree mcmctree2.ctl`，（mcmctree usedata = 2）
+- 把input.phy，input.tre，mcmctree3.ctl，out.BV四个文件复制到新建目录下，mcmctree3.ctl的usedata改为usedata = 2并重命名为mcmctree2.ctl，out.BV重命名为in.BV；
+- 运行`mcmctree mcmctree2.ctl`即可获得结果。
 
 ## 3.6. 指南四：codons数据处理方式
 如果是密码子codons数据，实测设置文件里seqtype = 1 会报错 “Error: dN/dS ratios among branches not implemented for gamma.”。
@@ -204,11 +207,12 @@ wag.dat是氨基酸替换速率的数据，与model = 2对应，也可以选用�
 
 程序在运行过程中，会在屏幕生生成一些信息。比较耗时间的步骤主要在于取样的百分比进度：
 
-第一列：取样的百分比进度。
-第2-6列：参数的接受比例。一般，其值应该在30%左右。20-40%是很好的结果，15-70%是可以接受的范围。若这些值在开始时变动较大，则表示burnin数设置太小。
-第7-x列：各内部节点的平均分歧时间，第7列则是root节点的平均分歧时间。若有y个物种，则总共有y-1个内部节点，从第7列开始后的y-1列对应这些内部节点。
-倒数第3-x列：r_left值。若输入3各多序列比对结果，则有3列。x列的前一列是中划线 - 。
-倒数第1-2列：likelihood值和时间消耗。
+- 第一列：取样的百分比进度。
+- 第2-6列：参数的接受比例。一般，其值应该在30%左右。20-40%是很好的结果，15-70%是可以接受的范围。若这些值在开始时变动较大，则表示burnin数设置太小。
+- 第7-x列：各内部节点的平均分歧时间，第7列则是root节点的平均分歧时间。若有y个物种，则总共有y-1个内部节点，从第7列开始后的y-1列对应这些内部节点。
+- 倒数第3-x列：r_left值。若输入3各多序列比对结果，则有3列。x列的前一列是中划线 - 。
+- 倒数第1-2列：likelihood值和时间消耗。
+
 屏幕信息最后，给出各个内部节点的分歧时间(t)、平均变异速率(mu)、变异速率方差(sigma2)和r_left的Posterior信息：均值(mean)、95%双侧置信区间(95% Equal-tail CI)和95% HPD置信区间(95% HPD CI)等信息。此外，倒数第二列给出了各个内部节点的Posterior mean time信息，可以用于收敛分析。
 
 在当前目录下，生成几个主要结果：
