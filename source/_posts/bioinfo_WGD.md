@@ -35,7 +35,7 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 ```
 
 ## 2.2. 运行MCScanX
-`MCScanX sample` 在有sample.gff和sample.blast两个文件的目录下，指定前缀sample允许MCScanX。
+在有sample.gff和sample.blast两个文件的目录下，指定前缀sample运行`MCScanX sample`。
 
 重要参数解释：
 - -s MATCH_SIZE,default: 5。每个共线性区块包含的基因数量的下限。
@@ -74,6 +74,8 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 478-  3:	bv35517	bv35522	      0
 478-  4:	bv35518	bv35521	 1e-115
 478-  5:	bv35519	bv35520	      0
+... ...
+... ...
 ```
 
 # 3. MCScanX下游分析
