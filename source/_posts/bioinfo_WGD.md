@@ -12,7 +12,7 @@ tags:
 - KaKs_Calculator2.0
 - ggplot2
 - paml
-description: 用MCScanX对基因组进行同线性分析，计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，估算WGD的发生时间。
+description: 用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=29808885&auto=1&height=32"></iframe></div>
