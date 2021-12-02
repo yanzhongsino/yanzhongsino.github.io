@@ -37,12 +37,15 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 
 <table>
 	<caption><h4>转座子(transposable elements,TEs)的分类</h4></caption>
+	<thead>
 	<tr>
-		<td><h6>转座子</br>(transposable elements,TEs)</h6></td>
-		<td><h6>功能</h6></td>
-		<td colspan="2"><h6>分类</h6></td>
-		<td><h6>结构特征</h6></td>
+		<th>转座子</br>(transposable elements,TEs)</th>
+		<th>功能</th>
+		<th colspan="2">分类</th>
+		<th>结构特征</th>
 	</tr>
+	</thead>
+	<tbody>
 	<tr>
 		<td rowspan="5"><h6>I 类元件</br>/逆转录转座子(retrotransposons)</h6></td>
 		<td rowspan="5">在“复制和粘贴”转座机制中作为RNA中间体</td>
@@ -80,6 +83,7 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 		<td colspan="2">Mavericks</br>非TE重复序列</br>(non-TE repeat sequence)</td>
 		<td>大尺寸，15-40 kbp</br>包含长的TIRs(几百对碱基)</br>包含保守的5'-AG...TC-3'末端</td>
 	</tr>
+	</tbody>
 </table>
 
 # 2. RepeatMasker
