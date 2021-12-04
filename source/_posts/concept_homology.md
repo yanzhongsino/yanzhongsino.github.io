@@ -37,18 +37,18 @@ description: 解释了同源性(homology)在进化生物学应用的相关概念
 ## 3. 扩展概念
 - 直系同源基因：单数形式ortholog=orthologous gene；复数形式orthologs=orthologous genes。
 - 直系同源(orthology)：一个名词，代表直系同源基因的直系同源属性；相应地，有旁系同源(paralogy)。
-- 纯正并交群(orthogroup)：在一群物种中，起源于这群物种的最近共同祖先(last common ancestor, LCA)的一个基因的一组基因，是这群物种中具有直系同源性的基因家族(gene family)的合集。
+- 直系同源群(orthogroup)：在一群物种中，起源于这群物种的最近共同祖先(last common ancestor, LCA)的一个基因的一组基因，是这群物种中具有直系同源性的基因家族(gene family)的合集。
 
 按照逻辑，应该有一套完整的单词：
 
-|\*log 特指基因|\*logy 属性|\*logous 形容词|\*group|
-|---|---|---|---|
-|ortholog|orthology|orthologous|orthogroup|
-|paralog|paralogy|paralogous|paragroup|
-|homolog|homology|homologous|homogroup|
+| \*log 特指基因 | \*logy 属性 | \*logous 形容词 | \*group    |
+| -------------- | ----------- | --------------- | ---------- |
+| ortholog       | orthology   | orthologous     | orthogroup |
+| paralog        | paralogy    | paralogous      | paragroup  |
+| homolog        | homology    | homologous      | homogroup  |
 
 但我查了下，paragroup,homogroup这两个词是不存在的。
-按照orthogrop的定义，个人觉得用homogroup代替orthogroup好像更好，因为纯正并交群内包括orthologs和paralogs，即包括所有homologs。
+按照orthogrop的定义，个人觉得用homogroup代替orthogroup好像更好，因为直系同源群内包括orthologs和paralogs，即包括所有homologs。
 
 ## 4. 相关概念
 - 异同源基因(xenolog)：水平基因转移(horizontal/lateral gene transfer)导致，来源于寄生，腐生，共生或病毒侵染等途径转移产生的异同源基因；一般具有相似功能，但如果新环境差异巨大，功能可能出现分化。xenolog一词最早在1970年由Walter Fitch创造。由于异同源基因不是来自共同祖先，而是拥有独立起源。
