@@ -11,7 +11,7 @@ tags:
 description: 记录了直系同源推断(orthology inference)，以及软件OrthoFinder的原理和使用。
 ---
 
-<div align="middle"><iframe width="560" height="315" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div align="middle"><iframe width="298" height="52" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 # 1. 直系同源(orthology)推断
 ## 1.1. 直系同源推断
@@ -140,7 +140,7 @@ OrthoFinder 允许您从以前的分析中删除物种。
 #### 2.3.2.6. 结果文件
 OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根基因树，解析基因树，无根物种树、有根物种树，基因重复事件以及相关的统计数据。
 
-1. Phylogenetic_Hierarchical_Orthogroups 文件夹
+1. **Phylogenetic_Hierarchical_Orthogroups 文件夹**
     
     从 2.4.0 版本开始，主要文件储存在这个目录下面，orthogroups目录被弃用。
     
@@ -154,12 +154,12 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
 - N0.tsv是制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。附加列给出了 HOG（分层正交群）ID 和基因树中确定 HOG 的节点（注意，这可能位于包含基因的进化枝的根上方）。该文件有效地替换了使用 MCL 进行马尔可夫聚类的Orthogroups/Orthogroups.tsv 中的正交群。
 - N1.txt, N2.tsv, ... : Orthogroups 从对应物种树 N1、N2 等物种进化枝的基因树推断出来。现在可以在分析中包含外群物种，然后使用 HOG 文件获取为物种树中所选进化枝定义的正交群。
 
-2. Orthologues 文件夹
+2. **Orthologues 文件夹**
 - Orthologues 目录包含每个物种的一个子目录，该子目录又包含每个成对物种比较的文件，列出该物种对之间的直向同源物。
 - 直向同源物可以是一对一、一对多或多对多，这取决于直向同源物分化后的基因复制事件。
 - 文件中的每一行都包含一个物种中的基因，这些基因是另一个物种中基因的直向同源物，并且每一行都与包含这些基因的直向群交叉引用。
 
-3. Orthogroups 文件夹【2.4.0版本后弃用】
+3. **Orthogroups 文件夹【2.4.0版本后弃用】**
 从 2.4.0 版本开始，主要文件储存在Phylogenetic_Hierarchical_Orthogroups目录下面，orthogroups目录被弃用。
 - Orthogroups.tsv【2.4.0版本后弃用】：制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。应改用 Phylogenetic_Hierarchical_Orthogroups/N0.tsv 中的正交群。
 - Orthogroups.txt【旧格式】：包含 Orthogroups.tsv 文件内容的 OrthoMCL 输出格式文件。
@@ -167,18 +167,18 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
 - Orthogroups.GeneCount.tsv：是一个制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含每个正交群中每个物种的基因数计数，可用于基因收缩扩张分析。
 - Orthogroups_SingleCopyOrthologues.txt：是一个正交群列表，每个物种只包含一个基因，即它们包含一对一的直向同源物（单拷贝直系同源基因）。它们非常适合物种间比较和物种树推断。
 
-4. Gene_Trees 文件夹
+4. **Gene_Trees 文件夹**
 - 记录了每个 orthogroup（gene_num >= 4）的有根基因树结构。
 
-5. Resolved Gene Trees文件夹
+5. **Resolved Gene Trees文件夹**
 - 为具有 4 个或更多序列的每个正交群推断出有根的系统发育树，并使用OrthoFinder的杂种-重叠/重复-丢失溯祖模型(hybrid species-overlap/duplication-loss coalescent model)进行解析。
 
-6. Species_Tree 文件夹
+6. **Species_Tree 文件夹**
 - SpeciesTree_rooted.txt：STAG物种树从所有orthogroups推断，含有内部节点STAG支持值，并使用STRIDE生根，计算出的有根物种树结构。
 - SpeciesTree_rooted_node_labels.txt：与上述相同的树，但节点被赋予标签(N0,N1, . . . , N m N_0,N_1,...,N_mN0,N1,...,Nm)（而不是支持值）以允许其他结果文件交叉引用物种树中的分支/节点（例如基因复制事件的位置）。
 - Orthogroups_for_concatenated_alignment.txt：仅在 -M msa 模式下输出，列出了所有串联起来用于推断物种树的 orthogroup ID。
 
-7. Comparative_Genomics_Statistics 文件夹
+7. **Comparative_Genomics_Statistics 文件夹**
 - Duplications_per_Orthogroup.tsv：是一个制表符分隔的文本文件，它给出了每个正交群中标识的重复数。此数据的主文件是 Gene_Duplication_Events/Duplications.tsv。
 - Duplications_per_Species_Tree_Node.tsv：是一个制表符分隔的文本文件，它给出了识别为沿着物种树的每个分支发生的重复数。此数据的主文件是 Gene_Duplication_Events/Duplications.tsv。
 - Orthogroups_SpeciesOverlaps.tsv：是一个制表符分隔的文本文件，其中包含作为方阵的每个物种对之间共享的正交群的数量。
@@ -199,27 +199,27 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
 - 单拷贝正群：每个物种只有一个基因（并且没有更多）的正群。这些正交群是推断物种树和许多其他分析的理想选择。
 - 未分配基因：未与任何其他基因放在同一个群中的基因。
 
-8. Gene_Duplication_Events 文件夹
+8. **Gene_Duplication_Events 文件夹**
 - Duplications.tsv：是一个制表符分隔的文本文件，它列出了通过检查每个正群基因树的每个节点识别出的所有基因复制事件。列是“Orthogroup”，“Species Tree node”（发生复制的物种树的分支，参见Species_Tree/SpeciesTree_rooted_node_labels.txt），“Gene tree node”（与基因复制事件对应的节点，参见相应的orthogroup Resolved_Gene_Trees/) 中的树；"Support"（存在复制基因的两个副本的预期物种的比例）；“Type”（"Terminal"：物种树终端分支上的重复，"Non-Terminal"：物种树内部分支上的重复，因此被多个物种共享，"Non-Terminal"：STRIDE检查基因树的拓扑结构在复制后应该是什么）；“Genes 1”（基因列表来自复制基因的一个副本），“Genes 2”（基因列表来自复制基因的另一个副本）。
 - SpeciesTree_Gene_Duplications_0.5_Support.txt：提供了物种树分支上的上述重复的总和。它是一个 newick 格式的文本文件。每个节点或物种名称后面的数字是在导致节点/物种的分支上发生的具有至少 50% 支持度的基因复制事件的数量。分支长度是标准分支长度，如 Species_Tree/SpeciesTree_rooted.txt 中给出的。
 
-9. Orthogroup_Sequences 文件夹
+9. **Orthogroup_Sequences 文件夹**
 - FASTA格式文件，每个正交群的 FASTA 文件给出了正交群中每个基因的氨基酸序列。
 
-10. Single_Copy_Orthologue_Sequences 文件夹
+10. **Single_Copy_Orthologue_Sequences 文件夹**
 - FASTA格式文件，包含每个单拷贝 Orthogroup 所包含的氨基酸的序列信息。
 
-11.  WorkingDirectory 文件夹
+11. **WorkingDirectory 文件夹**
 - OrthoFinder 运行所需的必需中间文件，如 DIAMOND 比对结果，STAG 输出的无根物种树等。
 
-12. MultipleSequenceAlignments 文件夹
+12. **MultipleSequenceAlignments 文件夹**
 - 此文件夹仅在 -M msa 模式下输出，均为 FASTA 格式文件。
 - 记录了每个 orthogroup 中序列间的多序列比对结果。
 - 记录了程序通过 CMSA 算法过滤后的 orthogroup 中各序列串联后的多序列比对结果，同时比对结果中空位数 > 50% 的列已被删除。
 
 # 3. references
-[tutorial](https://davidemms.github.io/)
-[github](https://github.com/davidemms/OrthoFinder)
-[paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1832-y)
-[xuzhougeng's blog](https://xuzhougeng.top/archives/OrthoFinder2-fast-and-accurate-phylogenomic-orthology-analysis-from-gene-sequences)
-[website](https://blog.csdn.net/weixin_44614936/article/details/101640473)
+1. [tutorial](https://davidemms.github.io/)
+2. [github](https://github.com/davidemms/OrthoFinder)
+3. [paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1832-y)
+4. [xuzhougeng's blog](https://xuzhougeng.top/archives/OrthoFinder2-fast-and-accurate-phylogenomic-orthology-analysis-from-gene-sequences)
+5. [website](https://blog.csdn.net/weixin_44614936/article/details/101640473)
