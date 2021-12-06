@@ -1,11 +1,14 @@
 ---
-title: orthofinder
-date: 2021-11-19 15:10:00
+title: 用OrthoFinder做直系同源推断
+date: 2021-12-06 17:20:00
 categories: 
 - bio
 - bioinfo
 tags: 
-description: 
+- OrthoFinder
+- orthology
+- OrthoMCL 
+description: 记录了直系同源推断(orthology inference)，以及软件OrthoFinder的原理和使用。
 ---
 
 <div align="middle"><iframe width="560" height="315" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
@@ -14,7 +17,7 @@ description:
 ## 1.1. 直系同源推断
 直系同源(orthology)是指直系同源基因的直系同源这种属性，相关的概念可以参考[博文-同源性相关概念](https://yanzhongsino.github.io/2021/06/23/concept_homology/)。
 
-直系同源属性的推断常常在多个物种间进行，通常是获取多个物种的直系同源群(orthogroups)和直系同源群间的关系。
+直系同源推断(orthology inference)常常在多个物种间进行，通常是获取多个物种的直系同源群(orthogroups)和直系同源群间的关系。
 
 直系同源基因判定的方法有两种：
 - 一种是将物种的直系同源基因两两比较，不同物种的每一对都是直系同源，但存在基因重复，使得用这种方法找到的同源关系是不具有传递性的（A和B是同源的，B和C是同源的，但是A和C不是同源的）。multiparanoid和OMA方法都是这个原理。所以需要每个同源基因都在多个集合中存在才行，进行两两比较。
