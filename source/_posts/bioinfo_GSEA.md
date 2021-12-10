@@ -8,8 +8,10 @@ tags:
 - gene set enrichment analysis
 - GSEA
 - KOBAS-i
+- GOEAST
 - topGO
-description: 介绍了基因富集分析和分析软件，包括KOBAS-i，topGO。
+- clusterProfiler
+description: 介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=108151&auto=1&height=32"></iframe></div>
@@ -165,10 +167,9 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 - 富集模块给出了关于哪些通路和 GO 术语与输入基因列表或表达在统计上显着相关的结果。有两种不同的富集分析可用，命名为基因列表富集和 exp-data 富集。
 4. KOBAS-i有网页版，也有本地版。
 
-### 3.7.2. KOBAS-i网页版
+### 3.7.2. KOBAS-i网页版【推荐】
 给了两个可用的网址：http://kobas.cbi.pku.edu.cn/，http://bioinfo.org/kobas。
 [KOBAS-i](http://kobas.cbi.pku.edu.cn/)。
-
 #### 3.7.2.1. 注释(annotation)和富集(Enrichment)的步骤
 1. 输入
 注释只有三个输入项：
@@ -188,223 +189,16 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 运行结束后，点击右上角的Download total terms就可以下载到结果。
 富集分析还可以点击Visualization得到结果的可视化图。
 
+## 3.8. GOEAST
+在线工具[GOEAST](http://omicslab.genetics.ac.cn/GOEAST/index.php)
+
 # 4. 富集分析的R包
-常见的有topGO，clusterProfiler，有许多进行富集分析的程序使用了这些包，所以建议直接用富集程序。
+常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。
 
 ## 4.1. topGO
 topGO是一个R包，用于半自动的GO terms的基因富集分析。
 
-GO term分为三大类：cellular component(CC)-细胞成分（其中基因产物位于细胞内部）,molecular function(MF)-分子功能（基因产物的功能是什么）和biology process(BP)-生物过程（即基因产物参与的一系列事件）。
-三类都可以用topGO做富集分析。
-
-### 4.1.1. 统计检验方法
-topGO包默认算法用的是weight01，是elim和权重算法的混合。
-
-| topGO支持的统计方法 | fisher | ks  | t   | globaltest | sum |
-| ------------------- | ------ | --- | --- | ---------- | --- |
-| classic             | Y      | Y   | Y   | Y          | Y   |
-| elim                | Y      | Y   | Y   | Y          | Y   |
-| weight              | Y      | N   | N   | N          | N   |
-| weight01            | Y      | Y   | Y   | Y          | Y   |
-| lea                 | Y      | Y   | Y   | Y          | Y   |
-| parentchild         | Y      | N   | N   | N          | N   |
-
-### 4.1.2. 安装topGO
-
-```R
-# 安装topGO软件包
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-
-BiocManager::install("topGO", version = "3.14")
-BiocManager::install("Rgraphviz", version = "3.8")
-BiocManager::install("GO.db")
-BiocManager::install("biomaRt")
-```
-
-或者
-
-```R
-source("https://bioconductor.org/biocLite.R")
-biocLite("topGO")
-biocLite("GO.db")
-biocLite("biomaRt")
-biocLite("Rgraphviz")
- 
-# Load the required R packages
-library(topGO)
-library(GO.db)
-library(biomaRt)
-library(Rgraphviz)
-```
-
-### 4.1.3. topGO做基因富集分析(GSEA)
-#### 4.1.3.1. 输入文件
-两个输入文件
-- genes.list：需要做富集分析的geneID的list，一个基因ID一行
-- sample.anno：基因及GO注释信息，第一列是geneID，第二列是GO注释，空格分隔，GO注释可以有多个，格式为GO:0000428,GO:0003677,GO:0005506,
-
-#### 4.1.3.2. GSEA分析
-```R
-# 设置工作目录，后面读取文件什么的就可以直接读取不需要那么长的路径
-setwd('D:/test_data')
-
-# 加载包
-rm(list=ls())
-library(topGO)
-library(Rgraphviz)
-
-# 设置输入文件
-input="genes.list"  #待分析基因名称的列表
-mapfile="sample.anno"    #所有基因GO注释结果
-
-# 开始分析
-gene_id = readMappings(file = mapfile) #如果是读取其他文件格式，后面参数还需要修改
-gene_names = names(gene_id)
-my_genes = read.table(input)[,1]
-
-gene_list = rep(1,length(gene_id))
-names(gene_list) = names(gene_id)
-
-gene_list[match(my_genes,names(gene_list))] = 0
-top_diff_genes = function(allScore){return(allScore<0.01)}
-
-
-# 1. BP 富集分析
-## new() 创建一个 topGO 的对象，然后对这个对象做检验
-bp_go = new("topGOdata",
-                   nodeSize = 6,
-                   ontology="BP",
-                   allGenes = gene_list,
-                   annot = annFUN.gene2GO,
-                   gene2GO = gene_id,
-                   geneSel=top_diff_genes)
-
-## 做显著性检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值
-result_KS.elim = runTest(bp_go,
-                         algorithm = "elim",
-                         statistic = "ks")
-
-## 提取基因 table
-allres = GenTable(bp_go,
-                  KS = result_KS.elim,
-                  ranksOf = "classic",
-                  topNodes = attributes(result_KS.elim)$geneData[4])
-
-## 生成文件，后面画图都可以用这个表
-write.table(allres,
-            file = paste(input,".BP.xls",sep=""),
-            sep="\t", quote=FALSE, col.names=TRUE, row.names=FALSE)
-
-## 输出矢量图
-pdf(paste(input,".BP.pdf",sep=""))
-showSigOfNodes(bp_go,
-               score(result_KS.elim),
-               firstSigNodes = 10,
-               useInfo = "all") #设置节点数量，10个或者20个更多都可以
-dev.off()
-
-## 输出像素图
-png(paste(input,".BP.png",sep=""))
-showSigOfNodes(bp_go, score(result_KS.elim), firstSigNodes = 10, useInfo = "all")
-dev.off()
-
-# 2. MF 富集分析（同理）
-## 创建一个 topGO 的对象
-mf_go = new("topGOdata",
-                    nodeSize = 6,
-                    ontology="MF",
-                    allGenes = gene_list,
-                    annot = annFUN.gene2GO,
-                    gene2GO = gene_id,
-                    geneSel=top_diff_genes)
-
-## 做检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值
-result_KS.elim = runTest(mf_go,
-                         algorithm = "elim",
-                         statistic = "ks")
-
-## 提取基因 table
-allres = GenTable(mf_go ,
-                  KS = result_KS.elim,
-                  ranksOf = "classic",
-                  topNodes = attributes(result_KS.elim)$geneData[4])
-
-## 生成文件，后面画图都可以用这个表
-write.table(allres,
-            file = paste(input,".MF.xls",sep=""),
-            sep="\t", quote=FALSE, col.names=TRUE, row.names=FALSE)
-
-## 输出矢量图
-pdf(paste(input,".MF.pdf",sep=""))
-showSigOfNodes(mf_go,
-               score(result_KS.elim),
-               firstSigNodes = 10,
-               useInfo = "all") #设置节点数量，10个或者20个更多都可以
-dev.off()
-
-## 输出像素图
-png(paste(input,".MF.png",sep=""))
-showSigOfNodes(mf_go, score(result_KS.elim), firstSigNodes = 10, useInfo = "all")
-dev.off()
-
-
-# 3. CC节点的富集分析(同理)
-## 创建一个 topGO 的对象
-cc_go = new("topGOdata",
-                    nodeSize = 6,
-                    ontology="CC",
-                    allGenes = gene_list,
-                    annot = annFUN.gene2GO,
-                    gene2GO = gene_id,
-                    geneSel=top_diff_genes)
-
-## 做检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值
-result_KS.elim = runTest(cc_go,
-                         algorithm = "elim",
-                         statistic = "ks")
-
-## 提取基因 table
-allres = GenTable(cc_go,
-                  KS = result_KS.elim,
-                  ranksOf = "classic",
-                  topNodes = attributes(result_KS.elim)$geneData[4])
-
-## 生成文件，后面画图都可以用这个表
-write.table(allres,
-            file = paste(input,".CC.xls",sep=""),
-            sep="\t", quote=FALSE, col.names=TRUE, row.names=FALSE)
-
-## 输出矢量图
-pdf(paste(input,".CC.pdf",sep=""))
-showSigOfNodes(cc_go,
-               score(result_KS.elim),
-               firstSigNodes = 10,
-               useInfo = "all") #设置节点数量，10个或者20个更多都可以
-dev.off()
-
-## 输出像素图
-png(paste(input,".CC.png",sep=""))
-showSigOfNodes(cc_go, score(result_KS.elim), firstSigNodes = 10, useInfo = "all")
-dev.off()
-```
-
-#### 4.1.3.3. 结果解释
-1. .xls结果文件中每一列的含义
-- GO.ID：富集的GO ID
-- Term：GO ID的描述
-- Annotated : number of genes in go.db which are annotated with the GO-term.在go.db中被注释到GO-term的基因数量。
-- Significant : number of genes belonging to your input which are annotated with the GO-term. GO-term被注释到的基因中包含输入的基因的数量
-- Expected : show an estimate of the number of genes a node of size Annotated would have if the significant genes were to be randomly selected from the gene universe. 对节点基因数量的预期
-- KS：用KS（Kolmogorov-Smirnov）算法计算得到的p-value值。
-  
-  KS全称是：Kolmogorov-Smirnov，KS值是通过KS检验所得，KS检验是一种算法。统计方法如下：
-  - 首先计算每个go节点对应的gene个数，
-  - 如果某个节点的子节点也有gene比对上，那么父节点对应的gene个数也要加上子节点的基因数
-  - 使用KS统计检验进行p值的计算，文件中的KS值，就是常说的p value，叫KS值的原因，是体现使用的KS检验方法。
-
-2. DAG图（矢量图/像素图）
-topGO有向无环图(Directed acyclic graph, DAG)能直观展示差异表达基因富集的GO节点（Term）及其层级关系，是差异表达基因GO富集分析的结果图形化展示，分支代表包含关系，从上至下所定义的功能描述范围越来越具体。在有向无环图中，箭头代表包含关系，即该节点的所有基因同样注释到其上级节点中。
+topGO的结果可以展示为有向无环图：
 
 一个DAG图的示例：
 
@@ -412,8 +206,30 @@ topGO有向无环图(Directed acyclic graph, DAG)能直观展示差异表达基�
 
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
 
+## 4.2. clusterProfiler
+### 4.2.1. clusterProfiler
+clusterProfiler是一个R包，是一个解释组学数据的通用富集工具，支持Gene Ontology(GO), Kyoto Encyclopedia of Genes and Genomes(KEGG), Disease Ontology(DO), Disease Gene Network(DisGeNET), Molecular Signatures Database(MSigDb), wikiPathways和许多其他的基因集的功能注释和富集分析，以及富集分析结果的可视化。2021年07月发布了clusterProfiler 4.0版本。
+
+### 4.2.2. clusterProfiler支持的基因集(gene sets)
+1. Gene Ontology(GO)
+2. Kyoto Encyclopedia of Genes and Genomes(KEGG)
+3. Disease Ontology(DO)
+4. Disease Gene Network(DisGeNET)
+5. Molecular Signatures Database(MSigDb)
+6. wikiPathways
+
+### 4.2.3. clusterProfiler功能 —— enrichment analysis
+1. Over Representation Analysis, ORA
+ORA是用于判断已知的生物功能或过程在实验产生的基因列表（例如差异表达基因列表, differentially expressed genes, DEGs）中是否过表达(over-represented=enriched)的常用方法。
+
+2. Gene Set Enrichment Analysis, GSEA
+
+3. Leading edge analysis and core enriched genes
+
+
 # 5. references
 [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
+[GOEAST introduction](https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect)
 [topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
 [topGO blog](https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/)
 [R topGO](https://www.codenong.com/cs105162324/)
@@ -421,3 +237,6 @@ topGO有向无环图(Directed acyclic graph, DAG)能直观展示差异表达基�
 [GO explanation](https://www.jianshu.com/p/7177c372243f)
 [GO overview](http://geneontology.org/docs/ontology-documentation/)
 [KEGG](https://en.wikipedia.org/wiki/KEGG)
+[clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
+[universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
+[clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
