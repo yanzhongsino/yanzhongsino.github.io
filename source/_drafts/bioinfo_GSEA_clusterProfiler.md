@@ -75,6 +75,13 @@ clusterProfiler支持对许多ontology/pathway的hypergeometric test和gene set 
 ## GO富集分析
 先准备好需要做富集分析的基因list，保存为内容为一列数据的文本文件gene.list，数据内容可以是OrgDb支持的任意ID类型（常用的都支持，ENSEMBL，ENTREZID，GENETYPE，GO，PFAM，具体参考[ID](http://yulab-smu.top/biomedical-knowledge-mining-book/useful-utilities.html#id-convert)）。
 
+GO分析(包括groupGO(),enrichGO(),gseGO())支持具有OrgDb数据库的生物物种。
+
+Bioconductor自带20个物种的OrgDb数据库。
+还可以通过AnnotationHub包在线获取OrgDb
+
+### GO分类
+groupGO()函数可以基于在指定水平范围内的GO分布做基因分类。
 
 ```
 genes <- read.table("gene.list",header=F)
