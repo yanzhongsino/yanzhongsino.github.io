@@ -73,6 +73,7 @@ clusterProfiler支持对许多ontology/pathway的hypergeometric test和gene set 
 分析前，先用命令`library(clusterProfiler)`载入clusterProfiler包。
 
 ## GO富集分析
+
 先准备好需要做富集分析的基因list，保存为内容为一列数据的文本文件gene.list，数据内容可以是OrgDb支持的任意ID类型（常用的都支持，ENSEMBL，ENTREZID，GENETYPE，GO，PFAM，具体参考[ID](http://yulab-smu.top/biomedical-knowledge-mining-book/useful-utilities.html#id-convert)）。
 
 GO分析(包括groupGO(),enrichGO(),gseGO())支持具有OrgDb数据库的生物物种。
@@ -81,31 +82,120 @@ Bioconductor自带20个物种的OrgDb数据库。
 还可以通过AnnotationHub包在线获取OrgDb
 
 ### GO分类
-groupGO()函数可以基于在指定水平范围内的GO分布做基因分类。
+groupGO()函数可以基于GO在指定水平范围内的分布进行基因分类。
 
 ```
 genes <- read.table("gene.list",header=F)
 ggo <- groupGO(gene = genes, OrgDb = org.Hs.eg.db, ont = "CC", level = 3, readable = TURE)
+head(ggo,3)
+                   ID       Description Count GeneRatio geneID
+GO:0000003 GO:0000003      reproduction     0     0/929       
+GO:0008152 GO:0008152 metabolic process     0     0/929       
+GO:0001906 GO:0001906      cell killing     0     0/929
 ```
 
 ### GO的ORA分析
+#### 输入文件
+ORA分析需要一个基因列表作为输入，比如差异表达分析(DESeq2)获得的差异表达基因列表，分析的是列表中基因在GO/KEGG各个子分类单元是否被过度代表还是代表不足。
 
-任意类型的gene ID list都可以直接用于GO的ORA分析，需要用keyType参数指定输入的gene ID list类型，就可以用enrichGO函数获得ORA分析结果。
+enrichGO函数做ORA分析支持许多类型的gene ID list，用keyType参数指定输入的gene ID list类型，可以在网站查看支持的ID类型。
 
+#### bitr格式转换
+如果需要，也可以用bitr功能函数实现各种ID格式的转换。
+```R
+data <- read.table("gene",header=FALSE) #单列基因名文件
+data$V1 <- as.character(data$V1) #需要character格式，然后进行ID转化
+#将SYMBOL格式转为ENSEMBL和ENTERZID格式 
+test1 = bitr(data$V1, fromType="SYMBOL", toType=c("ENSEMBL", "ENTREZID"), OrgDb="org.Hs.eg.db")
+head(test1,2)
+
+    SYMBOL         ENSEMBL ENTREZID
+1    AASDH ENSG00000157426   132949
+2   ABCB11 ENSG00000073734     8647
 ```
-genes <- read.table("gene.list",header=F)
+
+#### 分析
+```
+data <- read.table("gene.list",header=F) #读取gene ID list，内容为一列ENSEMBL格式的基因ID名称
+genes <- as.character(data$V1) #转换成字符格式
 ego <- enrichGO(gene          = genes, # list of entrez gene id
                 OrgDb         = org.At.tair.db, # 背景使用拟南芥的数据库
                 keyType       = 'ENSEMBL', # 输入基因的类型
                 ont           = "CC", # "BP", "MF", "CC", "ALL"。GO三个子类里选
-                pAdjustMethod = "BH", # "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
+                pAdjustMethod = "BH", # 选项包含 "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
                 pvalueCutoff  = 0.01, # 富集分析的pvalue
-                qvalueCutoff  = 0.05, # 复习分析显著性的qvalue
+                qvalueCutoff  = 0.05, # 富集分析显著性的qvalue
                 readable      = TRUE ) # 是否mapping gene ID到 gene Name
+head(ego,2)
+     ONTOLOGY         ID                                                Description
+GO:0002887       BP GO:0002887 negative regulation of myeloid leukocyte mediated immunity
+GO:0033004       BP GO:0033004                negative regulation of mast cell activation
+           GeneRatio  BgRatio      pvalue  p.adjust    qvalue                   geneID Count
+GO:0002887     2/121 10/11461 0.004706555 0.7796682 0.7796682              CD300A/CD84     2
+GO:0033004     2/121 10/11461 0.004706555 0.7796682 0.7796682              CD300A/CD84     2
 ```
 
+#### 结果文件解释
+ego结果文件中；
+- ONTOLOGY：CC  BP  MF 
+- GO ID: Gene Ontology数据库中唯一的标号信息
+-Description ：Gene Ontology功能的描述信息
+- GeneRatio：差异基因中与该Term相关的基因数与整个差异基因总数的比值
+- BgRation：所有（ bg）基因中与该Term相关的基因数与所有（ bg）基因的比值
+- pvalue: 富集分析统计学显著水平，一般情况下， P-value < 0.05 该功能为富集项
+- p.adjust 矫正后的P-Value
+- qvalue：对p值进行统计学检验的q值
+- geneID：与该Term相关的基因
+- Count：与该Term相关的基因数
+
+#### 结果可视化
+1. 输出结果到enrich.csv
+`write.csv(summary(ego),"enrich.csv",row.names =FALSE)`
+2. 可视化——点图
+`dotplot(ego,title="EnrichmentGO_MF_dot")#点图，按富集的数从大到小的`
+3. 可视化——条形图
+`barplot(ego, showCategory=20,title="EnrichmentGO_MF")#条状图，按p从小到大排，绘制前20个Term`
+4. 可视化——有向无环图
+`plotGOgraph(ego)`
+
+
 ### GO的GSEA分析
-geneList
+#### GSEA的输入文件
+1. GSEA分析的输入文件是一个基因排序列表，有三个要点：
+- numeric vector：倍数变化或者其他类型的数字变量，比如差异表达分析里的logFC值
+- named vector：每个数字倍对应的gene ID命名
+- sorted vector；数字应该以降序排序
+即包含两列，一列基因ID名称，一列数据，并以数据降序排序。
+
+2. 获取输入文件的示例：
+
+```R
+d <- read.csv(your_csv_file)
+## assume that 1st column is ID (no duplicated allowed)
+## 2nd column is fold change
+## feature 1: numeric vector
+geneList <- d[,2]
+## feature 2: named vector
+names(geneList) <- as.character(d[,1])
+## feature 3: decreasing order
+geneList <- sort(geneList, decreasing = TRUE)
+```
+
+```R
+> head(mydata,3)
+  gene_name     female     male    logFC
+1   CG32548 0.02310383 72.43205 11.61428
+2   CG15892 0.02624160 57.22716 11.09063
+3   CR43803 0.02474626 34.09726 10.42823
+> #GSEA的基因排序列表
+> FCgenelist <- mydata$logFC #numeric vector
+> names(FCgenelist) <- as.character(mydata$gene_name) #named vector
+> FCgenelist <- sort(FCgenelist,decreasing=T) #decreasing order
+> head(FCgenelist)
+ CG32548  CG15892  CR43803  CG15136   CG4983  CG13989 
+11.61428 11.09063 10.42823 10.34305 10.29130 10.00569
+```
+
 
 ```
 ego2 <- gseGO(geneList     = geneList,
