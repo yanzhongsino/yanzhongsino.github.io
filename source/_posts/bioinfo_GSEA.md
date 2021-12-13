@@ -196,6 +196,7 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。
 
 ## 4.1. topGO
+用topGO做GSEA分析的具体教程可以查看博文[topGO]()
 topGO是一个R包，用于半自动的GO terms的基因富集分析。
 
 topGO的结果可以展示为有向无环图：
