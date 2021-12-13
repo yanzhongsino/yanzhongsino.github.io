@@ -14,7 +14,7 @@ tags:
 description: 介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=108151&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe width="298" height="52" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 # 1. 基因富集分析(gene set enrichment analysis, GSEA)
 ## 1.1. 定义
@@ -196,10 +196,9 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。
 
 ## 4.1. topGO
-用topGO做GSEA分析的具体教程可以查看博文[topGO]()
-topGO是一个R包，用于半自动的GO terms的基因富集分析。
+用topGO做GSEA分析的具体教程可以查看博文[blog_topGO](https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/)。
 
-topGO的结果可以展示为有向无环图：
+topGO是一个R包，用于半自动的GO terms的基因富集分析。topGO的结果可以展示为有向无环图。
 
 一个DAG图的示例：
 
@@ -208,6 +207,7 @@ topGO的结果可以展示为有向无环图：
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
 
 ## 4.2. clusterProfiler
+clusterProfiler包的具体使用参考博文[blog_clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)。
 ### 4.2.1. clusterProfiler
 clusterProfiler是一个R包，是一个解释组学数据的通用富集工具，支持Gene Ontology(GO), Kyoto Encyclopedia of Genes and Genomes(KEGG), Disease Ontology(DO), Disease Gene Network(DisGeNET), Molecular Signatures Database(MSigDb), wikiPathways和许多其他的基因集的功能注释和富集分析，以及富集分析结果的可视化。2021年07月发布了clusterProfiler 4.0版本。
 
@@ -222,11 +222,8 @@ clusterProfiler是一个R包，是一个解释组学数据的通用富集工具�
 ### 4.2.3. clusterProfiler功能 —— enrichment analysis
 1. Over Representation Analysis, ORA
 ORA是用于判断已知的生物功能或过程在实验产生的基因列表（例如差异表达基因列表, differentially expressed genes, DEGs）中是否过表达(over-represented=enriched)的常用方法。
-
 2. Gene Set Enrichment Analysis, GSEA
-
 3. Leading edge analysis and core enriched genes
-
 
 # 5. references
 [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
