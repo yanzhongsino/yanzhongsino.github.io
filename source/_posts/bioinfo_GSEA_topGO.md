@@ -1,6 +1,6 @@
 ---
 title: 基因富集分析(gene set enrichment analysis, GSEA)—— topGO
-date: 2021-11-12 16:00:00
+date: 2021-11-13 16:00:00
 categories: 
 - bio
 - bioinfo
