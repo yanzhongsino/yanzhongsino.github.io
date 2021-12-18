@@ -1,6 +1,6 @@
 ---
 title: 绘制进化树
-date: 2021-11-22 19:50:00
+date: 2021-12-18 17:00:00
 categories: 
 - bio
 - bioinfo
@@ -9,19 +9,25 @@ tags:
 - biosoft
 - phylogeny
 - evolutionary tree
+- itol
+- ggtree
 description: 
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
 
+# 进化树
+进化树的相关知识可以参考[博文进化树相关知识](https://yanzhongsino.github.io/2021/11/20/bio_evolution.tree/)。
+
 # 进化树的绘制
-进化树的绘制有许多软件可以使用。
+进化树的绘制是指把newick格式的树文件转换成树图形，有许多软件可以使用，在线网页版（itol，EvolView），也有R包（ggtree），或者软件figtree。
+如果是简单的树绘制，推荐在线网页**itol**；如果需要精细的注释，推荐R包**ggtree**。
 
 ## 在线绘制进化树
-[itol](https://itol.embl.de/)
-[EvolView](https://www.evolgenius.info/evolview/#login)
+1. [itol](https://itol.embl.de/)
+2. [EvolView](https://www.evolgenius.info/evolview/#login)
 
-## ggtree【推荐】
+## R包ggtree【推荐】
 R包ggtree绘制进化树
 treeio包用于解析各种格式的进化树
 ggtree用于绘制进化树
@@ -77,5 +83,5 @@ ggtree(mtree, size=0.8, branch.length='none', mrsd="2021-10-01") \ #画树，siz
 
 
 
-ref
+# reference
 https://yulab-smu.top/treedata-book/index.html

@@ -28,7 +28,7 @@ library(ggpmisc)
 data <- read.table("all.results",header=T)
 p <- ggplot(data, aes(Ks)) + geom_density(size=1,color="black")+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+theme(panel.grid=element_blank())+theme(panel.border = element_blank())+theme(axis.line = element_line(size=0.8, colour = "black"))+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+xlim(0,3)
 pb <- ggplot_build(p)
-pic <- p + stat_peaks(data = pb[['data']][[1]], aes(x=x, y=density), geom= 'text', color="red", ,vjust=-0.5)
+pic <- p + stat_peaks(data = pb[['data']][[1]], aes(x=x, y=density), geom= 'text', color="darkblue", ,vjust=-0.5)
 ggsave(file="Ks.pdf",plot=pic,width=10,height=5)
 ```
 
@@ -36,7 +36,17 @@ ggsave(file="Ks.pdf",plot=pic,width=10,height=5)
 library(ggplot2)
 library(ggpmisc)
 data <- read.table("all.results",header=T)
-ggplot(data,aes(Ks))+geom_density(size=1,color="white",fill="lightblue",alpha=0.8)+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+geom_vline(xintercept = 0.25,linetype="dashed",color="darkblue")+geom_vline(xintercept = 1.74,linetype="dashed",color="darkblue")+xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 13, face = "bold"),axis.title.y = element_text(size = 12, face = "bold"),axis.text.x = element_text(size = 10, face = "bold"),axis.text.y = element_text(size = 10, face = "bold"))
+ggplot(data,aes(Ks))+geom_density(size=1,color="white",fill="lightblue",alpha=0.8,adjust=2)+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")
++geom_vline(xintercept = 0.25,linetype="dashed",color="darkblue")+annotate(geom="text",x=0.45,y=2,label="0.25",color="darkblue",size=5)
++geom_vline(xintercept = 1.74,linetype="dashed",color="darkblue")+annotate(geom="text",x=2,y=2,label="1.74",color="darkblue",size=5)
++xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 14, face = "bold"),axis.title.y = element_text(size = 14, face = "bold"),axis.text.x = element_text(size = 11, face = "bold"),axis.text.y = element_text(size = 11, face = "bold"))
+# adjust用于调整曲线平滑度
+
+ggplot(data,aes(Ks))+geom_histogram(size=0.5,color="black",fill="lightblue",alpha=0.8,bins=100)+xlab("Synonymous substitution rate(Ks)")+ylab("Number of gene pairs")
++geom_vline(xintercept = 0.25,linetype="dashed",color="darkblue")+annotate(geom="text",x=0.45,y=2,label="0.25",color="darkblue",size=5)
++geom_vline(xintercept = 1.74,linetype="dashed",color="darkblue")+annotate(geom="text",x=2,y=2,label="1.74",color="darkblue",size=5)
++xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 14, face = "bold"),axis.title.y = element_text(size = 14, face = "bold"),axis.text.x = element_text(size = 11, face = "bold"),axis.text.y = element_text(size = 11, face = "bold"))
+# bins用于调整直方图数量
 
 
 +geom_vline(xintercept = 0.25,linetype="dashed",color="darkblue") #添加垂直x轴的线条，xintercept定义x轴值。垂直y轴的用geom_hline()
