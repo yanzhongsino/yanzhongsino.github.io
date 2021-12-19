@@ -28,20 +28,16 @@ description:
 2. [EvolView](https://www.evolgenius.info/evolview/#login)
 
 ## R包ggtree【推荐】
-R包ggtree绘制进化树
-treeio包用于解析各种格式的进化树
-ggtree用于绘制进化树
+R包treeio用于解析各种格式的进化树文件，ggtree用于绘制进化树和注释
 
-
-treeio用于解析各种格式的进化树文件，ggtree用于绘制进化树和注释
-
+```R
 library(treeio)
 library(ggtree)
-mtree <- read.newick("mel.tre")
+tree <- read.newick("sample.tre")
 ggtree(mtree) + geom_tiplab(color="black",size = 4,hjust = -0.2)+geom_point(color="#6FE1F8", size=5, alpha=0.7) + geom_text(aes(label=node),size=3) + geom_highlight(node=15,fill="firebrick",alpha=0.6)
+```
 
-
-mc
+如果进化树的物种数量不多，可以直接把newick格式进化树按文本输入R，然后用read.nhx
 
 treetext<-"((((Mcandidum:0.418672[&&NHX:I=+5728:D=-1170:G=Malvids],Egrandis:0.201388[&&NHX:I=+1420:D=-2519:G=Malvids])[&&NHX:C=1]:0.148853,((Ptrichocarpa:0.219587[&&NHX:I=+5355:D=-1003:G=Fabids],(Csinensis:0.209405[&&NHX:I=+1026:D=-3516:G=Malvids],(Graimondii:0.224188[&&NHX:I=+4875:D=-998:G=Malvids],Athaliana:0.492461[&&NHX:I=+1776:D=-2891:G=Malvids]):0.027774[&&NHX:C=2]):0.012564[&&NHX:C=3]):0.019343[&&NHX:C=4],(Ppersica:0.194515[&&NHX:I=+1159:D=-2949:G=Fabids],(Mtruncatula:0.354580[&&NHX:I=+3310:D=-1984:G=Fabids],Csativus:0.338644[&&NHX:I=+794:D=-3735:G=Fabids]):0.022063[&&NHX:C=5]):0.019111[&&NHX:C=6]):0.011710[&&NHX:C=7]):0.029914[&&NHX:C=8],Vvinifera:0.169100[&&NHX:I=+1522:D=-3045:G=Vitales]):0.241611[&&NHX:C=9],Mguttatus:0.241611[&&NHX:I=+2278:D=-1909:G=Asterids])[&&NHX:C=10];"
 mtree <- read.nhx(textConnection(treetext))
