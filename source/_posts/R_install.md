@@ -17,6 +17,8 @@ description: 记录了R及相关软件RStudio，Rtools的安装，R包的安装�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=27853350&auto=1&height=32"></iframe></div>
 
+[TOC]
+
 # 1. R
 R是常用于统计和画图的计算机语言。
 
@@ -28,6 +30,7 @@ R 语言可以通过各种宏包来拓展功能，一般通过中央软件存储
 - RStudio 是 R 的集成开发环境 (IDE)。
 - 它包括一个控制台、支持直接代码执行的语法高亮编辑器，以及用于绘图、历史、调试和工作区管理的工具。
 - 有两种格式：RStudio Desktop 是一个常规的桌面应用程序，而 RStudio Server 运行在远程服务器上，并允许使用Web 浏览器访问 RStudio。
+
 ### 1.2.2. Rtools
 - Rtools是 Windows 上从源代码构建 R 包所需的一组程序。
 - Rtools为 Windows 平台提供了一个与 R 兼容的工具链，使得Windows平台R的使用与UNIX-ish平台R的使用许多命令一致。它主要包括 GNU make、GNU gcc 和其他在 UNIX-ish 平台上常用的实用程序。
@@ -140,8 +143,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 `conda install r-rbokeh`,`conda install r-rjava`
 
 ## 3.4. 更新和卸载R包
-- 更新：`update.packages()`；conda更新R包caret`conda update r-caret`
-- 卸载：`remove.packages()`。
+1. 更新：`update.packages()`；conda更新R包caret`conda update r-caret`
+2. 卸载：`remove.packages()`。
 
 # 4. R包载入
 1. library(packagename)
