@@ -2,11 +2,12 @@
 title: 集合可视化 —— upset图
 date: 2021-09-29 15:56:36
 categories:
-- plot
+- computer language
 - R
 tags:
 - plot
 - R
+- R package
 - UpSetR
 description: 记录了用R包UpSetR制作upset图展示多集合共享关系的方法。
 ---

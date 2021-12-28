@@ -2,15 +2,15 @@
 title: Circos圈图绘制
 date: 2021-11-16 10:10:00
 categories: 
-- plot
+- biosoft
 - circos
 tags: 
 - Circos
+- plot
 description: 记录了绘制圈图的软件Circos的使用逻辑和参数。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=4278314&auto=1&height=32"></iframe></div>
-
 
 # 1. 介绍circos圈图
 介绍基因组的文章里常常出现下面的circos圈图，这篇博客记录了如何绘制这种圈图。
