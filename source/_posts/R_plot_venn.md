@@ -1,5 +1,5 @@
 ---
-title: 集合可视化 —— 韦恩图(Venn Diagram)
+title: 集合可视化 —— 文氏图/韦恩图(Venn Diagram)
 date: 2021-09-29 15:56:36
 categories:
 - computer language
@@ -16,8 +16,12 @@ description: 记录了制作韦恩图(Venn Diagram)展示多集合共享关系�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
 
-# 1. 韦恩图(Venn Diagram) —— 5个集合内的可视化
-韦恩Venn图和UpSet图都可用于展示多集合直接的共享关系。当集合数量少于等于5个时，多用韦恩图，当集合数量大于5个时，多用upset图。
+# 1. 文氏图/韦恩图(Venn Diagram) —— 5个集合内的可视化
+当有多个群组（集合）的数据，想要展示在不同的事物群组（集合）之间的数学或逻辑联系时，可使用韦恩Venn图和UpSet图展示多集合直接的共享关系和各自的独享关系。
+
+当集合数量少于等于5个时，多用韦恩图；当集合数量大于5个时，多用upset图。
+
+韦恩图的绘制推荐使用R包gplots；upset图的绘制推荐使用R包UpSetR，参考博文[upset图](https://yanzhongsino.github.io/2021/09/29/R_plot_upset/)。
 
 ## 1.1. 应用场景
 1. 利用orthofinder找到的不同物种的orthogroups的结果来绘制Venn Diagram韦恩图或者UpSet plot图，查看不同物种间共享的orthogroups的数量关系。

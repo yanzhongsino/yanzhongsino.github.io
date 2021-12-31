@@ -15,7 +15,11 @@ description: 记录了用R包UpSetR制作upset图展示多集合共享关系的�
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
 
 # 1. 多集合展示UpSet图
-韦恩Venn图和UpSet图都可用于展示多集合直接的共享关系。当集合数量少于等于5个时，多用韦恩图，当集合数量大于5个时，多用upset图。
+当有多个群组（集合）的数据，想要展示在不同的事物群组（集合）之间的数学或逻辑联系时，可使用韦恩Venn图和UpSet图展示多集合直接的共享关系和各自的独享关系。
+
+当集合数量少于等于5个时，多用韦恩图；当集合数量大于5个时，多用upset图。
+
+韦恩图的绘制推荐使用R包gplots，参考博文[韦恩图](https://yanzhongsino.github.io/2021/09/29/R_plot_venn/)；upset图的绘制推荐使用R包UpSetR，参考博文。
 
 ## 1.1. 应用场景
 1. 利用orthofinder找到的不同物种的orthogroups的结果来绘制Venn Diagram韦恩图或者UpSet plot图，查看不同物种间共享的orthogroups的数量关系。

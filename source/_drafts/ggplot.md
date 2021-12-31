@@ -39,13 +39,18 @@ data <- read.table("all.results",header=T)
 ggplot(data,aes(Ks))+geom_density(size=1,color="white",fill="lightblue",alpha=0.8,adjust=2)+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")
 +geom_vline(xintercept = 0.25,linetype="dashed",color="darkblue")+annotate(geom="text",x=0.45,y=2,label="0.25",color="darkblue",size=5)
 +geom_vline(xintercept = 1.74,linetype="dashed",color="darkblue")+annotate(geom="text",x=2,y=2,label="1.74",color="darkblue",size=5)
-+xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 14, face = "bold"),axis.title.y = element_text(size = 14, face = "bold"),axis.text.x = element_text(size = 11, face = "bold"),axis.text.y = element_text(size = 11, face = "bold"))
++xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 15, face = "bold"),axis.title.y = element_text(size = 15, face = "bold"),axis.text.x = element_text(size = 13, face = "bold"),axis.text.y = element_text(size = 13, face = "bold"))
+
 # adjust用于调整曲线平滑度
 
-ggplot(data,aes(Ks))+geom_histogram(size=0.5,color="black",fill="lightblue",alpha=0.8,bins=100)+xlab("Synonymous substitution rate(Ks)")+ylab("Number of gene pairs")
+pic <- ggplot(data,aes(Ks))+geom_histogram(size=0.5,color="black",fill="lightblue",alpha=0.8,bins=100)+xlab("Synonymous substitution rate(Ks)")+ylab("Number of gene pairs")
 +geom_vline(xintercept = 0.25,linetype="dashed",color="darkblue")+annotate(geom="text",x=0.45,y=2,label="0.25",color="darkblue",size=5)
 +geom_vline(xintercept = 1.74,linetype="dashed",color="darkblue")+annotate(geom="text",x=2,y=2,label="1.74",color="darkblue",size=5)
-+xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 14, face = "bold"),axis.title.y = element_text(size = 14, face = "bold"),axis.text.x = element_text(size = 11, face = "bold"),axis.text.y = element_text(size = 11, face = "bold"))
++xlim(0,3)+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+ theme_classic()+theme(axis.title.x = element_text(size = 15, face = "bold"),axis.title.y = element_text(size = 15, face = "bold"),axis.text.x = element_text(size = 13, face = "bold"),axis.text.y = element_text(size = 13, face = "bold"))
+ggsave(file="Ks.pdf",plot=pic,width=6,height=6)
+保存成6*6inches的图片，label的字体大小size=5，xy轴的字体大小size=15比较合适。
+
+
 # bins用于调整直方图数量
 
 

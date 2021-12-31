@@ -80,6 +80,7 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 
 # 3. MCScanX下游分析
 ## 3.1. 计算共线性区块Ks
+tips:需要检查得到的结果中Ks值是否有负值或NA等无效数据，并过滤无效数据。
 ### 3.1.1. 方案一：MCScanX的downstream_analyses目录包含一些下游脚本，其中有计算kaks的脚本add_ka_and_ks_to_collinearity.pl
 `add_ka_and_ks_to_collinearity.pl -i sample.collinearity -d sample.cds.fa -o sample.kaks > out.log 2>&1` #注意算出的部分kaks值为-2的问题，未找到解决方案
 
@@ -132,7 +133,7 @@ for i in `ls *.axt`;do axt2one-line.py $i ${i}.one-line;done #多行axt文件转
 ls *.axt.one-line|while read id;do calculate_4DTV_correction.pl $id > ${id%%one-line}4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv
 for i in `ls *.4dtv`;do awk 'NR>1{print $1"\t"$3}' $i >>../all.4dtv;done #合并4dtv值到all.4dtv
 cd ..
-join all.kaks all.4dtv |sed '1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected' |sed "s/ /\t/g" >all.results #以gene对为基准，合并kaks和4dtv值到一个文件。
+join all.kaks all.4dtv |sed "s/ /\t/g" |awk '$3 != "NA" {print $0}' |sed '1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected' >all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。
 rm all.kaks* all.4dtv* #删除中间文件
 ```
 

@@ -17,8 +17,6 @@ description: 记录了R及相关软件RStudio，Rtools的安装，R包的安装�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=27853350&auto=1&height=32"></iframe></div>
 
-[TOC]
-
 # 1. R
 R是常用于统计和画图的计算机语言。
 
