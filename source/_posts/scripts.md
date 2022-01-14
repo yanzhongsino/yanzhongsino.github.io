@@ -11,6 +11,7 @@ tags:
 - ROUSFinder2.0.py
 - extract_intron_info.pl
 - multi-transcriptome_assembly_with_ref.sh
+- extract_single_copy_genes.sh
 
 description: store some scripts using in biology and bioinformatics
 ---
@@ -20,6 +21,9 @@ description: store some scripts using in biology and bioinformatics
 # 1. 我写的脚本
 ## 1.1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测
 [multi-transcriptome_assembly_with_ref.sh](https://github.com/yanzhongsino/bioscripts/blob/main/myscripts/multi-transcriptome_assembly_with_ref.sh)
+
+## 1.2. 提取，合并，和比对单拷贝基因和蛋白
+[extract_single_copy_genes.sh](https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/extract_single_copy_genes.sh)
 
 # 2. 我修改的脚本（其他人写的）
 ## 2.1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息

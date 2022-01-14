@@ -305,10 +305,12 @@ gsego <- GSEA(genes, TERM2GENE = go2gene, TERM2NAME = go2name)
 - rank
 - leading_edge
 - core_enrichment
+
 ### 6.1.4. GO富集结果可视化
 `goplot(ego)`简单可视化结果为有向无环图。
+
 ## 6.2. KEGG富集分析
-clusterProfiler通过[KEGG数据库的API](https://www.kegg.jp/kegg/rest/keggapi.html)来获取KEGG的注释信息，包括一个物种所有基因对应的pathway注释文件，比如人的：http://rest.kegg.jp/link/hsa/pathway；pathway对应的描述信息，比如人的：http://rest.kegg.jp/list/pathway/hsa。
+clusterProfiler通过[KEGG数据库的API](https://www.kegg.jp/kegg/rest/keggapi.html)来获取KEGG的注释信息，包括一个物种所有基因对应的pathway注释文件，比如人的：http://rest.kegg.jp/link/hsa/pathway；和pathway对应的描述信息，比如人的：http://rest.kegg.jp/list/pathway/hsa。
 
 ### 6.2.1. 支持的物种
 1. clusterProfiler包支持的物种
