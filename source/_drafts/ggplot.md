@@ -50,7 +50,7 @@ pic <- ggplot(data,aes(Ks))+geom_histogram(size=0.5,color="black",fill="lightblu
 ggsave(file="Ks.pdf",plot=pic,width=6,height=6)
 保存成6*6inches的图片，label的字体大小size=5，xy轴的字体大小size=15比较合适。
 
-
+   
 # bins用于调整直方图数量
 
 
