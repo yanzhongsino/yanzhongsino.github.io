@@ -10,8 +10,15 @@ tags:
 - phylogeny
 - evolutionary tree
 - itol
+- treeio
 - ggtree
-description: 记录进化树的绘制，软件的使用。
+- facet_plot
+- ggstance
+- 系统发育网
+- geom_taxalink
+- multiPhylo
+- ggdensitree
+description: 记录进化树的绘制，软件的使用，详细介绍了ggtree绘制树和注释树。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
@@ -36,7 +43,7 @@ R包treeio用于解析各种格式的进化树文件，ggtree用于绘制进化�
 2. 建树软件
 有许多建树软件可以生成树文件。包括RAxML，iqtree，BEAST，MrBayes，PAML(BASEML,CODEML)，r8s，MEGA，HyPhy，Phylip，以及生成Jplace格式树的EPA和PPLACER。
 
-#### 2.2.1.2. 导入树文件
+#### 2.2.1.2. treeio导入树文件
 1. 文本输入
 - 如果进化树的物种数量不多，内容比较简单，可以直接把进化树编辑成Newick格式，文本输入R，用read.newick读取。
 ```R
@@ -67,16 +74,18 @@ library(treeio)
 tree <- read.newick("sample.tre") #读取newick格式的树文件
 ```
 
-### 2.2.2. 画树
+### 2.2.2. ggtree画树
+ggtree函数是ggplot()的扩展，ggtree()相当于`ggplot() + geom_tree() + xlab(NA) + ylab(NA) + theme_tree()`的简单组合。ggplot2可添加的图层都可以直接应用于ggtree。
 #### 2.2.2.1. 基础画树
+
 ```R
 library(ggtree)
 ggtree(tree) #默认参数画树
 ```
 
-#### 2.2.2.2. 添加注释美化
+#### 2.2.2.2. 添加注释和美化
+##### 2.2.2.2.1. 基础注释
 1. 简单设置
-ggplot可以添加的图层都可以用在ggtree上。
 
 ```R
 ggtree(tree)
@@ -108,32 +117,101 @@ ggtree(tree) + coord_flip() #置换x轴和y轴
 ggtree(tree) + 
 ```
 
-#### 各种类型的树
-1. 时序树(chronogram)
-画时间标尺，在ggtree里指定mrsd参数为最近的采样日期，用于画时间尺度轴。
+##### 2.2.2.2.2. 可视化数据并与系统发育树关联 —— facet_plot
+可能有不同的数据类型，并希望将它们可视化并与树关联对齐，可用facet_plot函数来处理。
 
-待补充内容
+可视化图的类型：点图dotplot/直方图barplot/堆叠图stacked barplot/热图/箱线图boxplot。
 
-2. 添加热图
+ggtree中定义了操作符%<+%，来添加数据。添加之后，用户的数据对ggplot是可见的。可以用于树的注释。
 
-待补充内容
-
-3. multiPhylo图
-
-待补充内容
+1. 可视化点图dotplot —— geom_point
 
 ```R
-raxml_file <- system.file("extdata/RAxML", "RAxML_bipartitionsBranchLabels.H3", package="ggtree")
-raxml <- read.raxml(raxml_file)
-ggtree(raxml) + geom_text(aes(label=bootstrap, color=bootstrap)) +
-scale_color_gradient(high='red', low='darkgreen') + theme(legend.position='right') #分面同时画100棵bootstrap树
+tr <- rtree(30) # 用treeio的rtree函数生成30个tip的随机树
+p <- ggtree(tr)
+d1 <- data.frame(id=tr$tip.label, location=sample(c("GZ", "HK", "CZ"), 30, replace=TRUE)) #从("GZ", "HK", "CZ")中随机生成30个采样地点location数据
+p1<- p %<+% d1 + geom_tippoint(aes(color=location)) #给树的端点根据location着色
 
-btree_file <- system.file("extdata/RAxML", "RAxML_bootstrap.H3", package="ggtree")
-btree = read.tree(btree_file)
-ggtree(btree) + facet_wrap(~.id, ncol=10) #不分面画，重叠100棵树。bootstrap值高的线条一致性好，低的线条较乱。
+d2 <- data.frame(id=tr$tip.label, val=rnorm(30, sd=3)) #生成两列数据，分别是tip.label和随机生成的30个sd为3的数据值，均值mean默认为0
+p2 <- facet_plot(p1, panel="dot", data=d2, geom=geom_point, aes(x=val), color='firebrick') + theme_tree2() #用ggtree的facet_plot的geom_point函数画点图
 ```
 
-#### 2.2.2.3. 一个生成树的例子
+**p2 dotplot**
+<img src="[url](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png)" title="facet_plot_p2.png" width="80%" height="80%" />
+
+2. 可视化堆叠直方图stacked barplot —— geom_barh
+大多ggplot2的geom绘制垂直版本的图形对象，通过ggstance包可以制作水平版本的数据图geom，方便画直方图/堆叠直方图/热图/箱线图与系统发育树对应。
+包括geom_barh()，geom_histogramh()，geom_linerangeh()，geom_pointrangeh()，geom_errorbarh()，geom_crossbarh()，geom_boxploth()，geom_violinh()。
+
+```R
+library(ggstance)
+d3 <- data.frame(id = rep(tr$tip.label, each=2),
+					value = abs(rnorm(60, mean=100, sd=50)),
+					category = rep(LETTERS[1:2], 30)) #随机生成3列数据，分别是tip.label,随机值,代表category的A/B
+p3 <- facet_plot(p2, panel = 'Stacked Barplot', data = d3, 
+				geom = geom_barh, #用geom_barh画水平版本的堆叠直方图
+				mapping = aes(x = value, fill = as.factor(category)), 
+				stat='identity' ) 
+```
+
+**p3 barplot**
+<img src="[url](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png)" title="facet_plot_p3.png" width="80%" height="80%" />
+
+3. 可视化箱线图boxplot —— geom_boxploth
+```R
+d4 = data.frame(id=rep(tr$tip.label, each=20), 
+				val=as.vector(sapply(1:30, function(i) 
+								rnorm(20, mean=i)))
+				)				
+p4 <- facet_plot(p3, panel="Boxplot", data=d4, geom_boxploth, 
+			mapping = aes(x=val, group=label, color=location)) #用geom_boxploth画水平版本的箱线图
+```
+
+**p4 boxplot**
+<img src="[url](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png)" title="facet_plot_p4.png" width="80%" height="80%" />
+
+#### 2.2.2.3. 各种类型的树
+##### 2.2.2.3.1. 时序树(chronogram)
+画时间标尺，在ggtree里指定mrsd参数为最近的采样日期，用于画时间尺度轴。
+
+```R
+ggtree(tree, mrsd="2022-01-01")+ theme_tree2() #mrsd代表most recent sampling date,指定采样时间，指定mrsd参数后会添加时间标尺
+ 
+tree <- read.mega(system.file("extdata/MEGA7", "mtCDNA_timetree.nex", package = "treeio")) #读取系统自带的树
+ggtree(tree) + geom_range('reltime_0.95_CI', color='red', size=3, alpha=.3, center='reltime') + scale_x_range() + theme_tree2() #用geom_range显示时间节点的95%置信区间，'reltime_0.95_CI'，让中心点位于评估的时间点'reltime'，scale_x_range()添加x轴尺度
+```
+
+##### 2.2.2.3.2. 系统发育网 —— geom_taxalink
+系统发育网一般是在系统发育树绘制的基础上添加物种间的杂交和基因流关系。
+
+```R
+ggtree(tree) + geom_tiplab()
++ geom_taxalink('A', 'E') #在tipA和E之间添加关联线，默认是黑色实线。
++ geom_taxalink('F', 'K', color='red', linetype = 'dashed', arrow=grid::arrow(length=grid::unit(0.02, "npc"))) #在tipF和K之间添加关联线，红色虚线，并添加F到K的箭头，箭头大小为0.02npc。
+```
+
+##### 2.2.2.3.3. 多棵图共同展示
+1. multiPhylo图
+多棵树并列展示。
+
+```R
+trees <- lapply(c(10, 20, 40), rtree) #随机生成3棵树，节点分别为10，20，40
+class(trees) <- "multiPhylo"
+ggtree(trees) + facet_wrap(~.id, scale="free") + geom_tiplab() #分面展示3棵树
+
+btrees = read.tree(system.file("extdata/RAxML", "RAxML_bootstrap.H3", package="ggtree")) #读取系统的100棵树
+ggtree(btrees) + facet_wrap(~.id, ncol=10) #分面展示100棵树，每行10棵。
+```
+
+2. DensityTree图
+多棵树重叠展示。
+
+```R
+trees <- read.tree(system.file("extdata/RAxML", "RAxML_bootstrap.H3", package="treeio")) #读取系统自带树文件RAxML_bootstrap.H3，包含100棵树。
+ggdensitree(trees, alpha=.3, colour='steelblue') + geom_tiplab(size=3) + xlim(0, 45) #重叠多棵树。bootstrap值高的线条一致性，低的线条较乱。
+```
+
+#### 2.2.2.4. 一个生成树的例子
 
 ```R
 library(treeio)
@@ -157,5 +235,7 @@ p2+geom_strip(10,10,label="Vitales",offset = 0.14, offset.text =0.01,color = "#D
 ```
 
 # 3. reference
-1. https://yulab-smu.top/treedata-book/index.html
-2. https://its401.com/article/woodcorpse/105570274
+1. [ggtree paper](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12628)
+2. https://yulab-smu.top/treedata-book/index.html
+3. [facet_plot](https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/)
+4. [不同树的绘制](https://www.codenong.com/js9fda2b82cedb/)
