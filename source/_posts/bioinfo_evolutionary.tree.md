@@ -1,11 +1,12 @@
 ---
 title: 绘制进化树
-date: 2022-01-15 17:00:00
+date: 2022-01-24 17:00:00
 categories: 
 - bio
 - bioinfo
 tags:
 - tutorial
+- R
 - biosoft
 - phylogeny
 - evolutionary tree
@@ -21,7 +22,7 @@ tags:
 description: 记录进化树的绘制，软件的使用，详细介绍了ggtree绘制树和注释树。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
 
 # 1. 进化树
 进化树的相关知识可以参考[博文进化树相关知识](https://yanzhongsino.github.io/2021/11/20/bio_evolution.tree/)。
