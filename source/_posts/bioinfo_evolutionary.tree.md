@@ -15,7 +15,7 @@ tags:
 - ggtree
 - facet_plot
 - ggstance
-- 系统发育网
+- phylogenetic reticulum
 - geom_taxalink
 - multiPhylo
 - ggdensitree
@@ -25,7 +25,7 @@ description: 记录进化树的绘制，软件的使用，详细介绍了ggtree�
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
 
 # 1. 进化树
-进化树的相关知识可以参考[博文进化树相关知识](https://yanzhongsino.github.io/2021/11/20/bio_evolution.tree/)。
+进化树的相关知识可以参考[博文进化树相关知识](https://yanzhongsino.github.io/2021/11/20/bio_evolutionary.tree/)。
 
 # 2. 进化树的绘制
 进化树的绘制是指把newick格式的树文件转换成树图形，有许多软件可以使用，在线网页版（itol，EvolView），也有R包（ggtree），或者软件figtree。
@@ -170,7 +170,7 @@ tree <- read.mega(system.file("extdata/MEGA7", "mtCDNA_timetree.nex", package = 
 ggtree(tree) + geom_range('reltime_0.95_CI', color='red', size=3, alpha=.3, center='reltime') + scale_x_range() + theme_tree2() #用geom_range显示时间节点的95%置信区间，'reltime_0.95_CI'，让中心点位于评估的时间点'reltime'，scale_x_range()添加x轴尺度  
 ```
 
-##### 2.2.2.3.2. 系统发育网 —— geom_taxalink
+##### 2.2.2.3.2. 系统发育网(phylogenetic reticulum) —— geom_taxalink
 系统发育网一般是在系统发育树绘制的基础上添加物种间的杂交和基因流关系。
 ```R
 ggtree(tree) + geom_tiplab()  
@@ -198,7 +198,7 @@ ggdensitree(trees, alpha=.3, colour='steelblue') + geom_tiplab(size=3) + xlim(0,
 ```
 
 #### 2.2.2.4. 一个生成树的例子
-
+ 
 ```R
 library(treeio)
 library(ggtree)
