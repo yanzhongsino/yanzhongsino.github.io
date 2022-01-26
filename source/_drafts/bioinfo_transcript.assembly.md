@@ -1,5 +1,5 @@
 ---
-title: 冠群(crown groups)和干群(stem groups)及相关定义
+title: transcript assembly
 date: 2021-07-16 14:30:00
 categories: 
 - bio
