@@ -11,29 +11,38 @@ description: 羊蹄甲属常见三种类群的分类特征
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=26090155&auto=1&height=32"></iframe></div>
 
-羊蹄甲属（Bauhinia）的羊蹄甲（B. purpurea）、宫粉羊蹄甲（B. variegata ）和红花羊蹄甲（B. blakeana）是华南地区三种园林植物，广泛应用于城市的园林绿化中。
+羊蹄甲属（Bauhinia）的羊蹄甲（B. purpurea）、洋紫荆（B. variegata ）和红花羊蹄甲（B. blakeana）是华南地区三种园林植物，在广州尤为普遍，常植为行道树。
 
 **羊蹄甲属常见三种类群的分类特征**
 
 |羊蹄甲属（Bauhinia）学名|B. purpurea|B. variegata|Bauhinia purpurea x variegata 'Blakeana', cv. nov.|
 |---|---|---|---|
-|中文正名|羊蹄甲|宫粉羊蹄甲|红花羊蹄甲|
-|香港常用名|红花羊蹄甲|宫粉羊蹄甲|洋紫荆|
-|台湾常用名|洋紫荆（台湾）|羊蹄甲（台湾）|艶/豔（yan4）紫荆（台湾）|
-|雄蕊|雄蕊3|雄蕊5(7)|雄蕊5(7)，假雄蕊5(7)|
-|花期|花期在秋天（11月前后）|花期在春天（3月前后）|花期在10月-3月|
-|花色|花色粉白，中国发现一棵白花|花色紫红、粉红、白|花色紫红|
+|中文正名/中国大陆常用俗名|羊蹄甲|洋紫荆|红花羊蹄甲|
+|香港常用俗名|红花羊蹄甲|宫粉羊蹄甲|洋紫荆|
+|台湾常用俗名|洋紫荆|羊蹄甲|艶/豔/艳（yan4）紫荆|
+|主要区别|雄蕊3，花瓣较狭窄，具长柄|雄蕊5，落叶后盛花，花色粉红，无退化雄蕊，总状花序极短缩，正常结果|雄蕊5，花叶同期，花色紫红，总状花序开展，不结果|
+|雄蕊|雄蕊3，退化雄蕊5-6|雄蕊5(7)，无退化雄蕊|雄蕊5(7)，退化雄蕊2-5|
+|花期|花期在秋天（9-11月）|花期全年（3月盛花期）|花期全年（3-4月盛花期）|
+|花色|花色桃红，中国发现一棵白花|花色粉红到淡紫，有白花、黄花变种|花色紫红|
 |花着生|集中顶生|分散腋生|集中顶生|
 |花瓣形态|窄而相互分离|宽而相互重叠|稍宽而分离|
-|其他||开花时几乎无叶|香港市花，红花羊蹄甲是羊蹄甲和洋紫荆的杂种，不结果。|
+|物候||落叶后盛花|花叶同期|
+|其他|树皮、花和根可药用外用，根皮剧毒|花芽、嫩叶和幼果可食，云南有白花变种的花瓣食用史|香港市花，红花羊蹄甲是羊蹄甲和洋紫荆杂交起源的杂交种，不结果。|
 
 如果同时和台湾人香港人讨论香港市花，一定很有趣。
 
-- 台湾的羊蹄甲=大陆的宫粉羊蹄甲
-- 大陆的羊蹄甲=台湾的洋紫荆
+- 羊蹄甲=台湾的洋紫荆
+- 洋紫荆=台湾的羊蹄甲
+- 红花羊蹄甲=香港的洋紫荆
 - 台湾的洋紫荆=香港的红花羊蹄甲
-- 大陆的红花羊蹄甲=香港的洋紫荆
 
 你记住了吗？
 
 课后习题，香港市花是什么？
+
+reference
+1. [wiki: Bauhinia](https://zh.wikipedia.org/wiki/%E7%BE%8A%E8%B9%84%E7%94%B2%E5%B1%9E#%E5%90%8D%E7%A8%B1%E6%B7%B7%E6%B7%86)
+2. [paper: Hybrid origin of Bauhinia blakeana](https://bsapubs.onlinelibrary.wiley.com/doi/full/10.3732/ajb.92.3.525)
+3. [Bauhinia purpuprea: 羊蹄甲](http://www.iplant.cn/info/Bauhinia%20purpurea?t=z)
+4. [Bauhinia variegata： 洋紫荆](http://www.iplant.cn/info/Bauhinia%20variegata?t=z)
+5. [Bauhinia × blakeana: 红花羊蹄甲](http://www.iplant.cn/info/Bauhinia%20%C3%97%20blakeana)
