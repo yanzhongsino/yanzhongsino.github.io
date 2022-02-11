@@ -76,7 +76,7 @@ View(mutations) # 弹出窗口，可查看数据。
 ### 1.2.2. orthofinder数据
 从orthofinder的结果文件Results_Aug14/Orthogroups/Orthogroups.GeneCount.tsv稍加处理就可以作为输入文件，展示不同物种的orthogroups集合的共享情况。
 
-`sed -E "s/\t[1-9][0-9]*/\t1/g" Orthogroups.GeneCount.tsv >orthogroups.upset` # 把Orthogroups.GeneCount.tsv中的非零数字替换成1。
+`sed -E "s/\t[1-9][0-9]*/\t1/g" Orthogroups.GeneCount.tsv |sed "s/\.pep//g" >orthogroups.upset` # 把Orthogroups.GeneCount.tsv中的非零数字替换成1。
 
 ## 1.3. UpSetR包安装
 ```
