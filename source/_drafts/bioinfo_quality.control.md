@@ -5,21 +5,22 @@ categories:
 - bio
 - bioinfo
 tags:
--
+- genome survey
 
-description: 记录基因组调查的方法，利用k-mer分析来调查基因组大小，杂合度。
+description: 记录基因组调查(genome survey)的方法，利用k-mer分析来估计基因组大小，杂合度等基本信息。
 ---
 
 <div align="middle"><music URL></div>
 
 ## 基因组survey
-在基因组大规模测序或者正式组装之前，首先构建DNA小片段文库进行中低深度的二代测序，使用PE文库测序所得的reads信息进行基因组Survey分析以初步评估基因组特征,包括基因组大小genome size，杂合度heterozygosity，重复序列比例，GC含量等。
-* 基因组大小：基因组越大，测序花的钱越多
-* 简单基因组: 杂合度低于0.5%, GC含量在35%~65%, 重复序列低于50%
-* 二倍体普通基因组: 杂合度在0.5%~1.2%中间，重复序列低于50%；或杂合度低于0.5%，重复序列低于65%
-* 高复杂基因组: 杂合度>1.2% 或 重复率大于65%
+在进行基因组denovo测序和正式组装之前，首先构建DNA小片段文库进行中低深度的二代测序，使用PE文库测序所得的reads信息进行基因组Survey分析以初步评估基因组特征，包括基因组大小(genome size)，杂合度(heterozygosity)，重复序列比
+例，GC含量等。
+- 基因组大小：基因组越大，测序花的钱越多
+- 简单基因组: 杂合度低于0.5%, GC含量在35%~65%, 重复序列低于50%
+- 二倍体普通基因组: 杂合度在0.5%~1.2%中间，重复序列低于50%；或杂合度低于0.5%，重复序列低于65%
+- 高复杂基因组: 杂合度>1.2% 或 重复率大于65%。
 
-基因组survey分析核心是**k-mer分析。**
+基因组survey分析核心是**k-mer分析**。
 
 ### k-mer分析前数据处理
 #### 质控和过滤
@@ -33,6 +34,7 @@ $fastp -c -l 50 -w 8 -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.cle
 [Duplication占比问题的解释](http://blog.sciencenet.cn/blog-3406804-1215719.html)
 
 *p.s. 去重一般操作比对到基因组上并排序完成的bam文件，利用基因组的位置信息进行去重，效率较高。若没有参考基因组的情况，比如这里的genome survey分析前去重，可以直接比对fq文件实现。*
+
 ```
 $cat input_list.txt
 path_to_sample_1.clean.fq
@@ -75,10 +77,14 @@ $kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 > sample.log1.txt 
 生成各k-mer取值下的频数分布表*.histo和对应的频数分布图*.histo.pdf，以及所有k-mer取值的总计*.dat和*.dat.pdf
 
 3. [gce](http://blog.sciencenet.cn/blog-3406804-1161524.html)
+
 ```
-$kmer_freq_hash -k 17 -L 150 -l fastq_list.txt -t 4 -o 0 -p sample &> sample.kmer.log
+kmer_freq_hash -k 17 -L 150 -l fastq_list.txt -t 4 -o 0 -p sample &> sample.kmer.log
+
+kmerfreq -k 17 -t 24 -p k17 path.txt
 # k-mer长度为17，设定统计用的reads最大长度150bp，线程4，为节省时间不输出k-mer序列，结果文件前缀名sample
 ```
+
 结果文件k-mer频数分布表“sample.freq.stat”和运行log文件“sample.kmer.log”
 sample.freq.stat文件只统计到第255行，第255行之后的数据合并至第255行，表示k-mer出现频数>=255的片段总数。
 

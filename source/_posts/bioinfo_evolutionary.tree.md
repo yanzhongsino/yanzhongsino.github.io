@@ -210,14 +210,14 @@ p1 <- ggtree(tree,size=0.8) #画树，size指定线条粗细
 + geom_tiplab(color="black",size = 4.5,hjust = -0.1, align=TRUE, linesize=0.7) #添加tiplab-物种名  
 + geom_nodepoint(color="#DCDCDC", size=6, alpha=0.9) #节点处添加圆点，指定颜色灰色和尺寸6  
 + geom_nodelab(aes(label=C), size=3.5, hjust = 1) #在注释了标签C的节点处添加C的值，这里的标签C用于注释节点序号  
-+ geom_label2(aes(x=0.79,label=D),color="black",vjust=-0.2,fill="#7FFF00",alpha=0.6) # 在注释了D的位置添加D的值，这里的标签D用于注释收缩基因的数量，x的值用于指定添加位置。  
-+ geom_label2(aes(x=0.73,label=I),color="black",vjust=-0.2,fill="#FF7D40",alpha=0.6) # 在注释了I的位置添加I的值，这里的标签I用于注释扩张基因的数量，x的值用于指定添加位置。  
++ geom_label2(aes(x=0.79,label=D),color="black",vjust=-0.2,fill="lightgreen",alpha=0.6) # 在注释了D的位置添加D的值，这里的标签D用于注释收缩基因的数量，x的值用于指定添加位置。  
++ geom_label2(aes(x=0.73,label=I),color="black",vjust=-0.2,fill="pink",alpha=0.6) # 在注释了I的位置添加I的值，这里的标签I用于注释扩张基因的数量，x的值用于指定添加位置。  
 + xlim(NA,1.1) # 如果物种名或者其他标签超出显示范围，用xlim增大x轴显示。  
 
 p2<- ggtree::rotate(p1,13) #旋转节点13的上下分支clade  
 p2<- p1 %>% rotate(node=14) %>% rotate(node=16) # 旋转节点14和节点16  
 
-p2+geom_strip(10,10,label="Vitales",offset = 0.14, offset.text =0.01,color = "#D2691E",barsize = 1.5,fontsize = 5)+geom_strip(3,7,label="Fabids",offset = 0.14, offset.text =0.01,color = "#D2691E",barsize = 1.5,fontsize = 5)+geom_strip(1,4,label="Fabids",offset = 0.14, offset.text =0.01,color = "#D2691E",barsize = 1.5,fontsize = 5) # 给图加上分支clade的条带和文字注释  
+p2+geom_strip(10,10,label="Vitales",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5)+geom_strip(3,7,label="Fabids",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5)+geom_strip(1,4,label="Malvids",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5) # 给图加上分支clade的条带和文字注释  
 ```
 
 # 3. reference

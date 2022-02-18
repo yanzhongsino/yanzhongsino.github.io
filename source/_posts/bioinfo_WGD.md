@@ -117,7 +117,7 @@ chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor
 3. 用ParaAT.pl获取共线性基因对比对序列
 ```shell
 cat sample.collinearity |grep -v "^#"|cut -f2,3 >sample.homolog #提取blocks的同源gene对
-echo "12" >proc #指定ParaAT.pl使用线程
+echo "24" >proc #指定ParaAT.pl使用线程
 ParaAT.pl -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -g -k -o sample.paraat 2> paraat.log & #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子；-o指定生成目录；加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢，推荐手动用KaKs_Calculator的YN模型，生成sample.axt.kaks文件。
 ```
 
@@ -126,14 +126,15 @@ ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果
 
 ```shell
 cd sample.paraat
-for i in `ls *.axt`;do KaKs_Calculator -i $i -o ${i}.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks
-for i in `ls *.kaks`;do awk 'NR>1{print $1"\t"$3"\t"$4"\t"$5}' $i >>../all.kaks;done #合并kaks到all.kaks文件
+for i in `ls |grep "axt"`;do KaKs_Calculator -i $i -o ${i}.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks
+for i in `ls |grep "kaks"`;do awk 'NR>1{print $1"\t"$3"\t"$4"\t"$5}' $i >>../all.kaks;done #合并kaks到all.kaks文件
 - 计算4dtv
-for i in `ls *.axt`;do axt2one-line.py $i ${i}.one-line;done #多行axt文件转换成单行
-ls *.axt.one-line|while read id;do calculate_4DTV_correction.pl $id > ${id%%one-line}4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv
-for i in `ls *.4dtv`;do awk 'NR>1{print $1"\t"$3}' $i >>../all.4dtv;done #合并4dtv值到all.4dtv
+for i in `ls |grep "axt"`;do axt2one-line.py $i ${i}.one-line;done #多行axt文件转换成单行
+ls |grep "axt.one-line"|while read id;do calculate_4DTV_correction.pl $id > ${id%%one-line}4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv
+for i in `ls |grep "4dtv"`;do awk 'NR>1{print $1"\t"$3}' $i >>../all.4dtv;done #合并4dtv值到all.4dtv
 cd ..
 join all.kaks all.4dtv |sed "s/ /\t/g" |awk '$3 != "NA" {print $0}' |sed '1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected' >all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。
+
 rm all.kaks* all.4dtv* #删除中间文件
 ```
 

@@ -64,8 +64,9 @@ pip install -e .
 其中`--primary_only`是用于去除多个转录本的，只保留一个。（原文是多个isoforms）一般不去也不影响后续步骤，加上更好吧。
 
 4. 整理一下，获得CDS文件
-python -m jcvi.formats.fasta format Vvinifera_145_Genoscope.12X.cds.fa.gz grape.cds
-python -m jcvi.formats.fasta format Ppersica_298_v2.1.cds.fa.gz peach.cds
+`python -m jcvi.formats.fasta format Vvinifera_145_Genoscope.12X.cds.fa.gz grape.cds`
+
+`python -m jcvi.formats.fasta format Ppersica_298_v2.1.cds.fa.gz peach.cds`
 
 
 ### 2.2.2. 自己的数据
@@ -100,7 +101,7 @@ seqkit grep -f <(cut -f 4 sampleB.uniq.bed ) sampleB.pep.fa.gz | seqkit seq -i  
 
 `--cpu=1`是因为conda安装的lastal不支持多线程，所以用单线程。
 
-3. 运行时如果报错`ERROR    savefig failed. Reset usetex to False`没关系，看看结果文件还是完整生成了。
+3. 运行时如果报错`ERROR savefig failed. Reset usetex to False`是缺少dvipng包没能生成png格式图，但看看结果文件sampleA.sampleB.anchors还是完整生成了就可以进行下一步。
 
 ### 2.3.2. 蛋白的同线性点图
 与CDS一样，cds数据换成pep数据，在运行参数里加上数据类型`--dbtype prot`即可。
@@ -168,7 +169,7 @@ e, 0, 1, sampleA.sampleB.anchors.simple
 
 
 ### 2.5.3. tips
-- 运行虽然报错`ERROR    savefig failed. Reset usetex to False.`，但还是生成了图文件。
+- 运行虽然报错`ERROR    savefig failed. Reset usetex to False.`，应该是没能生成png图，但还是生成了pdf图文件。
 - 当label用的名称过长时，label和图容易重叠，没有好的办法解决，最好用短一点的label。
 
 ### 2.5.4. 个性化

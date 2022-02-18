@@ -78,6 +78,8 @@ View(mutations) # 弹出窗口，可查看数据。
 
 `sed -E "s/\t[1-9][0-9]*/\t1/g" Orthogroups.GeneCount.tsv |sed "s/\.pep//g" >orthogroups.upset` # 把Orthogroups.GeneCount.tsv中的非零数字替换成1。
 
+在R中用`mutations <- read.csv("orthogroups.upset", header=TRUE, sep = "\t")`读取orthogroups.upset。
+
 ## 1.3. UpSetR包安装
 ```
 install.packages("UpSetR"); # 安装
@@ -102,11 +104,11 @@ keep.order = TRUE, # keep.order按照sets参数的顺序排序
 decreasing = c(TRUE,FALSE), # 变量如何排序；对应order.by参数。这里表示freq降序，degree升序。
 number.angles = 30, # 调整柱形图上数字角度
 point.size = 2, line.size = 1, # 点和线的大小
-mainbar.y.label = "Genre Intersections", sets.x.label = "Movies PerGenre", # 坐标轴名称
+mainbar.y.label = "Intersection size of gene family",sets.x.label = "genome size", # 坐标轴名称
 text.scale = c(1.3, 1.3, 1, 1, 1.5, 1)) # 六个数字，分别控制c(intersectionsize title, intersection size tick labels, set size title, set size ticklabels, set names, numbers above bars)
 ```
 
-<img src="upset_mutations.png" width=80% height=80% title="upset_mutations" align=center/>
+<img src="upset_movies.png" width=80% height=80% title="upset_movies" align=center/>
 
 ### 1.4.2. queries参数
 upset函数中可以添加queries参数，用于突出显示（上色）部分数据。
@@ -135,7 +137,7 @@ query.name = "share EGFR and TP53"), # 添加query图例
 list(query = intersects, params=list("TTN"), color="red", active=T)))
 ```
 
-<img src="upset_movies.png" width=80% height=80% title="upset_movies" align=center/>
+<img src="upset_mutations.png" width=80% height=80% title="upset_mutations" align=center/>
 
 - 把同属Drama和Thriller的电影突出显示，把1970-1980的电影标红。
 ```
