@@ -13,6 +13,22 @@ description: 介绍生物信息学数据库。
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=108151&auto=1&height=32"></iframe></div>
 
+# 生物信息学数据库
+
+GenBank(美国)：NCBI下属
+
+EMBL(欧洲)
+
+DDBJ(日本)
+
+
+NGDC：CNCB下属
+
+国家基因组科学数据中心(National Genomics Data Center, NGDC)。
+
+
+CNCB(China National Center for Bioinformation)
+
 
 ## 2.2. GO term
 GO term分为三大类：

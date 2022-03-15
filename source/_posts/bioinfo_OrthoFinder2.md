@@ -148,8 +148,6 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
     
     根据 Orthobench 基准，这些新的正交群比 OrthoFinder 2 正交群 (Orthogroups/Orthogroups.tsv) 准确 12%。通过包括外群物种，可以进一步提高准确度（在 Orthobench 上准确度提高 20%），这有助于解释有根基因树。
 
-    由于复制本在进化之间存在突变速率的异质性，所以在研究同源基因时更希望所研究的同源基因来自相同的复制本。Hierarchical Orthogroups（HOG）就是为这一目的而设立的概念，HOG 指由最近共同祖先中某一基因进化而来的一组直系同源基因，进化过程中不涉及基因复制，所以 HOG 中不包含旁系同源。
-
 - 参阅“Species_Tree/SpeciesTree_rooted_node_labels.txt”以确定哪个 N?.tsv 文件包含您需要的正交群。
 - N0.tsv是制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。附加列给出了 HOG（分层正交群）ID 和基因树中确定 HOG 的节点（注意，这可能位于包含基因的进化枝的根上方）。该文件有效地替换了使用 MCL 进行马尔可夫聚类的Orthogroups/Orthogroups.tsv 中的正交群。
 - N1.txt, N2.tsv, ... : Orthogroups 从对应物种树 N1、N2 等物种进化枝的基因树推断出来。现在可以在分析中包含外群物种，然后使用 HOG 文件获取为物种树中所选进化枝定义的正交群。

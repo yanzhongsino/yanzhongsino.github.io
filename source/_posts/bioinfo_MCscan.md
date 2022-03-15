@@ -135,7 +135,7 @@ seqkit grep -f <(cut -f 4 sampleB.uniq.bed ) sampleB.pep.fa.gz | seqkit seq -i  
 ### 2.5.1. 输入文件
 1. seqids文件
 - 指定展示的染色体ID，两行对应两个物种，每行的染色体之间逗号隔开，不能有空行。
-- 染色体的顺序对应图上染色体的顺序。
+- seqids文件染色体的顺序对应同线性染色体图的顺序，可以根据前面得到的同线性点图来调整顺序使两个基因组的同线性对应，使图更清晰。
 
 ```
 scaf001,scaf002,scaf003,scaf004,scaf005,scaf006,scaf007,scaf008,scaf009,scaf010,scaf011,scaf012,scaf013,scaf014

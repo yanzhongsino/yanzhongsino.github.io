@@ -61,7 +61,7 @@ ggsave(file="Ks.pdf",plot=pic,width=6,height=6)
 
 
 ## 多个密度图放一起
-可以把数据放在一起，添加一个分类标签列，颜色指定这个分类标签列，则可以实现一张图上展示多个密度图。
+可以把数据放在一起，添加一个分类标签列，颜色指定这个分类标签列，则可以实现一张图上展示多个密度图，每个密度图纵坐标（即密度值）是单独计算的。
 ggplot(da)+geom_density(aes(x=V3,colour=V5),adjust=2)+xlim(0,0.5)+theme_classic()
 
 
@@ -82,12 +82,23 @@ ggplot2提供一些主题，包括默认的theme_grey()，白色背景的theme_b
 - theme_stata()
 - theme_tufte()
 
+图例的位置
+theme(legend.position = c(0.8,0.6)) #数字代表图例在图中的横坐标比例，在0-1之间，如果超出图的范围可能消失
+
 
 ## 坐标轴
 +theme(axis.title.x = element_text(size = 13, face = "bold", family = "myFont", color = "black", vjust = 0.5, hjust = 0.5, angle = 45), #设置x轴标签格式，大小size，加粗/斜体face(plain普通,bold加粗,italic斜体,bold.italic斜体加粗)，位置调整vjust&hjust，角度angle
 axis.title.y = element_text(size = 12, face = "bold"), #设置y轴标签格式
 axis.text.x = element_text(size = 10, face = "bold"), #设置x轴刻度标签格式
 axis.text.y = element_text(size = 10, face = "bold")) #设置y轴刻度标签格式
+
+
+## 对数变化
+
+- scale_x_log10() #把x轴值转换成对数比例
+
+## 分面分组
+facet_wrap(~group)
 
 
 # references

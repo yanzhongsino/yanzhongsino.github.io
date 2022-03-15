@@ -1,17 +1,23 @@
 ---
-title: genome submit
-date: 2022-01-30 14:30:00
+title: 提交基因组到GenBank
+date: 2022-03-30 21:30:00
 categories:
 - bio
 - bioinfo
 tags:
+- genome
 - genome submit
+- GenBank
 
-description: 记录基因组提交到NCBI的genebank的步骤和注意事项。
+description: 此文记录提交基因组到Genbank数据库的步骤，常见错误和修改，以及注意事项。
 ---
 
 <div align="middle"><music URL></div>
 
+# 基因组提交
+提交基因组组装的数据到公共数据库以实现共享，在发表提供基因组数据文章时需要在文章内提供基因组的accession number。
+
+常用的公共数据库包括GenBank(美国), EMBL(欧洲), DDBJ(日本)，NGDC(日本)，以及中国的国家基因组科学数据中心(National Genomics Data Center, NGDC)。
 
 
 # gff文件准备
@@ -53,22 +59,32 @@ nohup table2asn -t template.sbt -indir ./ -M n -Z -locus-tag-prefix L6164 -gaps-
 
 -i sample.fsa -f sample.gff参数有基因组的最大限制（大概是2G内），如果超出限制可以用-indir ./指定存放目录（需要sample.fsa和sample.gff有相同前缀且存放在同一目录下）来代替-i -f指定两个文件便可以运行了。
 
-可以在[MODULE valid](https://github.com/genome-vendor/sequin/blob/master/errmsg/valid.msg)查看具体报错的含义。
+
 
 - 当gff的CDS位置有中间终止密码子时，sample.stats种报错**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**。可以修改CDS序列位置，去除中间终止密码子。如果无法去除中间终止密码子，可以在sample.gff文件对应的gene(第三列为gene的那行)的第九列添加`pseudo=true`属性值代表序列无法被翻译。
 - - 当gff的CDS位置无终止密码子时，sample.stats种报错**SEQ_FEAT.NoStop**。可以延长CDS序列位置，直至出现终止密码子。如果无法找到终止密码子，可以在sample.gff文件对应的gene(第三列为gene的那行)的第九列添加`pseudo=true`属性值代表序列无法被翻译。
 
 添加属性值的命令行`sed -i '/ID=Ane00639;/ {s/$/pseudo=true;/g}' sample.gff`
 
-- 当gff的第9列的属性值attributes中包含不符合规定的字符，例如"|"符号时，sample.stats中报错**SEQ_FEAT.BadInternalCharacter**。
-- 当gff的第9列的属性值attributes中以连字符"-"结尾时，sample.stats中报错**SEQ_FEAT.BadTrailingHyphen**。
-- 当gff的第9列的属性值attributes中以连字符":"结尾时，sample.stats中报错**SEQ_FEAT.BadTrailingCharacter**。
+
+table2asn运行结束后要根据输出文件的报错进行调整，并重新运行直至没有报错再提交给NCBI。
+1. sample.stats/sample.val文件
+报错ERROR
+- **SEQ_FEAT.BadInternalCharacter**：表示gff的第9列的属性值attributes中包含不符合规定的字符，例如"|"符号。
+- **SEQ_FEAT.BadTrailingHyphen**：当gff的第9列的属性值attributes中以连字符"-"结尾时。
+- **SEQ_FEAT.BadTrailingCharacter**：当gff的第9列的属性值attributes中以连字符":"结尾时。
 - 当gff的product属性不符合蛋白产物名称规定时，会生成Adiantum.nelumboides.fixedproducts文件，记录把不符合规定的product属性值改为**hypothetical protein**。可以提取不符合规定的product属性值用于product的filter。
-- 当gff注释的一个基因的exons位置相邻时，sample.stats中报错**SEQ_FEAT.AbuttingIntervals**。可以合并两个相邻的exons，更改位置。
-- 当gff的exon位置有重叠时，sample.stats种报错**SEQ_FEAT.SeqLocOrder**。可以参考mRNA和CDS序列的位置更改重叠的exon位置；exons的边界和mRNA一致，数量和CDS一致。
-- 当gff注释CDS和exon的位置或数量不一致时，sample.stats中报错**SEQ_FEAT.CDSmRNAXrefLocationProblem**或者**SEQ_FEAT.CDSwithMultipleMRNAs**，可以更改exon或CDS位置和数量。
-- 当gff在同样的位置注释了多个gene时，sample.stats中WARNING-level messages报错**SEQ_FEAT.DuplicateFeat**，需要删除一个。
-- SEQ_FEAT.ShortIntron表示含有短于11bp的内含子，可以修正intron的位置使它长于11bp，或者在gene那行第九列添加`pseudo=true`属性值，或者在table2asn的命令中中加上参数`-c s`代表标记为"LOW QUALITY PROTEIN"。
+- **SEQ_FEAT.AbuttingIntervals**：当gff注释的一个基因的exons位置相邻时。可以合并两个相邻的exons，更改位置。
+- **SEQ_FEAT.SeqLocOrder**：当gff的exon位置有重叠时。可以参考mRNA和CDS序列的位置更改重叠的exon位置；exons的边界和mRNA一致，数量和CDS一致。
+- **SEQ_FEAT.CDSmRNAXrefLocationProblem**或**SEQ_FEAT.CDSwithMultipleMRNAs**：当gff注释CDS和exon的位置或数量不一致时，可以更改exon或CDS位置和数量。
+- **SEQ_FEAT.ShortIntron**表示含有短于11bp的内含子，可以修正intron的位置使它长于11bp，或者在gene那行第九列添加`pseudo=true`属性值，或者在table2asn的命令中中加上参数`-c s`代表标记为"LOW QUALITY PROTEIN"。
+- **SEQ_FEAT.TransLen**：表示蛋白质长度与预测的蛋白质长度不匹配，运行错误，建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(genomes@ncbi.nlm.nih.gov)让帮忙修改这个错误。
+
+1. sample.stats/sample.val文件中的报警**WARNING**
+- **SEQ_FEAT.SeqFeatXrefNotReciprocal**：exon和CDS的位置或数量不一致且有中间终止密码子导致，可以调整exon和CDS的位置和数量，并在gene行的第九列添加`pseudo=true`属性值；
+- **SEQ_FEAT.DuplicateFeat**：当gff在同样的位置注释了多个gene时，sample.stats中WARNING-level messages报错，需要删除一个。
+
+3. sample.dr文件中的报错FATAL
 
 
 
@@ -124,4 +140,6 @@ product的一些规则
 [table2asn](https://www.ncbi.nlm.nih.gov/genbank/table2asn/)
 [table2asn documentation](https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/table2asn/DOCUMENTATION/)
 [Validation Error Explanations](https://www.ncbi.nlm.nih.gov/genbank/genome_validation/#NoStop)
-[annotating genomes with gff3 or gtf files](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
+[Discrepancy Report](https://www.ncbi.nlm.nih.gov/genbank/asndisc/)
+[MODULE valid](https://github.com/genome-vendor/sequin/blob/master/errmsg/valid.msg)
+[annotating genomes with gff3](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
