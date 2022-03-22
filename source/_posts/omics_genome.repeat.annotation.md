@@ -13,7 +13,6 @@ tags:
 - RepeatModeler
 - EDTA
 
-
 description: 记录了基因组注释的第一步，重复序列的注释，转座子的相关知识，注释常用软件和用法。
 ---
 

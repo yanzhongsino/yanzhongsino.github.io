@@ -8,6 +8,9 @@ tags:
 - tutorial
 - genome annotation
 - functional annotation
+- eggnog-mapper
+- interproscan
+- PANNZER2
 
 description: 记录对基因组的基因进行功能注释的方法。
 ---
@@ -22,7 +25,6 @@ description: 记录对基因组的基因进行功能注释的方法。
 功能注释的一般流程：1.选择数据库并下载，2.构建blastp索引，3.用blastp比对蛋白序列到数据库，4.结果整理。
 
 有些软件集成了数据库和功能注释的多个流程，甚至提供服务器用于网页版注释，例如eggNOG-mapper和interproscan分别集成了eggNOG和interpro数据库，PANNZER2使用最新的UniProt数据库实现网页注释。
-
 
 # 1. 数据库概述
 根据数据库中已知编码基因的注释信息（包括motif、domain），基于同源比对，对基因中的模序和结构域、新基因编码的蛋白质功能、所参与的信号传导通路和代谢途径等的预测。基因组注释内容还可涉及蛋白激酶、病原与宿主互作、致病毒力因子预测、抗性基因等。
@@ -346,7 +348,6 @@ notes:
 
 2. `cat pannzer2/GO.out.txt |awk '{print $1"\tGO:"$3,$4}' |awk -F"\t" '{a[$1]=a[$1]$2"; "}END{for( i in a){print i"\t"a[i]}}'|sed "s/; $//g" |sort -k 1.3n |uniq |sed "1s/.*/gene\tpannzer2.go/" >pannzer2.go.anno`把Uniprot数据库的GO注释提取出来并转化成单基因单行信息。
 
-
 ## 2.5. Mercator4——植物基因组功能注释
 网站注释：https://www.plabipd.de/portal/web/guest/mercator4/-/wiki/Mercator4/FrontPage
 
@@ -378,14 +379,18 @@ notes:
 
 2. 从Mercator4 annotated fasta file中以"not annotated"作为关键词搜索，可以获取未被注释到的基因。
 
+# 3. 基因功能注释的整合
+提交功能注释文件有两种方案：
+1. 整合功能注释和结构注释：把功能注释整理后添加到结构注释文件sample.gff第九列的product属性，与结构注释一同提交给NCBI等公共数据库
+2. 单独提供功能注释：通过Dryad【收费】或Figshare【免费】等文件分享网站单独提供功能注释文件
 
+## 3.1. 方案一：整合功能注释和结构注释
+功能注释以product属性值的形式提供，添加到结构注释gff文件的第九列。
 
-## 2.6. 基因功能注释的整合
-### 2.6.1. 基因功能注释整理
+### 3.1.1. 基因功能注释整理
 不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成两列的格式，首行为表头，第一列为基因ID（gene），第二列为基因功能注释的描述信息（标明注释来源），每个注释软件/数据库的描述信息单独为一列。
 
-目前共有9个文件被整理出来。
-
+目前共有9个文件被整理出来：
 1. eggnog.anno
 2. eggnog.go.anno
 3. eggnog.kegg.anno
@@ -396,11 +401,55 @@ notes:
 8. pannzer2.go.anno
 9. pannzer2.uniprot.anno
 
-### 2.6.2. 基因功能注释整合
+### 3.1.2. 合并功能注释和结构注释
+合并步骤：
+1. 整理注释结果
+先把所有功能注释转换成单基因单注释的格式(单基因多行注释)，确保数据只有两列(基因ID列和功能注释列)，并删除除了product值以外的内容，比如iprs.panther.anno文件中的pantherid号，整理成pannzer2.uniprot.anno文件的形式，两列数据，第一列基因ID，第二列注释到的产物product值。
+
+2. 合并多个注释结果
+cat *anno|sort -f|uniq -i|awk '$2 != "" {print $0}' >merge.anno
+合并多个注释结果，排序sort，去重uniq，和去除空值行等处理；按照基因ID排序，生成单基因多行注释的merge.anno文件
+
+3. 过滤注释
+最好的办法是在这一步做过滤filter。
+
+`sed -i -E -e "s/[,|()[]{}]//g" -e "s/^[-:/]//g" -e "s/[-:/]$//g" -e "s/[^a-zA-Z]+//g" merge.anno`
+
+product值的不规范情况：
+- 包含逗号,（因为逗号是分隔符）
+- 包含竖杠|
+- 短横杠-开头或结尾
+- 冒号:开头或结尾
+- 斜杠/开头或结尾
+- 不包含字母
+- 括号（包括圆括号,中括号和大括号）不完整的
+
+4. 单注释转多注释
+用`cat merge.anno |awk -F"\t" '{a[$1]=a[$1]$2","}END{for( i in a){print i"\t"a[i]}}' |sed "s/,$/;/g"|sort -gk 1.3n|awk '{print $1"\tproduct="$2}' >product.list`命令从merge.anno生成product.list，每个基因单行的格式，还是两列，第一列基因ID，第二列若有多个注释用逗号隔开，用分号结尾。
+
+5. 添加product属性值
+sample.gff与product.list合并，把结构注释和功能注释文件合并，功能注释以product属性值的形式加入gff文件的第九列内容。
+
+## 3.2. 方案二：单独提供功能注释
+### 3.2.1. 基因功能注释整理
+不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成两列的格式，首行为表头，第一列为基因ID（gene），第二列为基因功能注释的描述信息（标明注释来源），每个注释软件/数据库的描述信息单独为一列。
+
+目前共有9个文件被整理出来：
+1. eggnog.anno
+2. eggnog.go.anno
+3. eggnog.kegg.anno
+4. iprs.interpro.anno
+5. iprs.panther.anno
+6. iprs.pfam.anno
+7. mercator.anno
+8. pannzer2.go.anno
+9. pannzer2.uniprot.anno
+
+### 3.2.2. 基因功能注释整合
 
 需要整合所有注释软件/数据库的信息，只需根据第一列进行文件的合并。
 
-#### 2.6.2.1. join命令
+#### 3.2.2.1. join命令
 
 1. 实现合并a.anno和b.anno的方法：a.anno和b.anno都只有两列的情况
 ```
@@ -422,7 +471,7 @@ rm abc.tem ab.tem c.tem # 删除临时文件
 
 如果多个文件，则两两依次合并。还没想到什么更简单的方法，就这样用join手动合并所有注释软件/数据库的功能注释到一个文件吧。
 
-#### 2.6.2.2. merge_file_key_property.title.cpp程序
+#### 3.2.2.2. merge_file_key_property.title.cpp程序
 请大佬写了个合并功能注释的程序，merge_file_key_property.title.cpp，可以一次合并任意多个文件。
 
 1. 编译
@@ -432,10 +481,11 @@ rm abc.tem ab.tem c.tem # 删除临时文件
 
 `./merge_file_key_property.o -a .anno -n 7 -p mc -q gene -o merged` 使用示范：-a指定合并的文件类型（比如.anno）；-n指定第一列字段长度（比如sp00001长度为7）；-p指定第一列关键词的前缀（基因名前缀，比如sp）；-q指定第一列关键词的标题（比如gene），作为表头；-o指定合并文件名的前缀。
 
-#### 2.6.2.3. waiting...
+#### 3.2.2.3. waiting...
 如果文件多且特征复杂，还是琢磨一下python或者R的merge功能吧。
 
-# 3. references
+
+# 4. references
 1. https://www.jianshu.com/p/67dbafa86334
 2. https://www.jianshu.com/p/e646c0fa6443
 3. [徐洲更文章](http://xuzhougeng.top/archives/Function-anotation-with-swiss-prot-database)
