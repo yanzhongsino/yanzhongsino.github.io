@@ -99,9 +99,9 @@ sets = c("MUC16","EGFR","TP53","TTN"),# 查看特定的几个集合/几种电影
 nset = 4, # 最多展示多少个集合数据
 nintersects = 20, # 展示数量多的前多少个交集
 mb.ratio = c(0.55, 0.45), # 控制上方条形图以及下方点图的比例
-order.by = c("freq", "degree"), # 交集如何排序，这里先根据freq，然后根据degree
+order.by = c("degree", "freq"), # 交集如何排序，这里先根据degree(数量，交集包含的数字大小)，然后再根据freq(频率，涉及到的交集个数)
 keep.order = TRUE, # keep.order按照sets参数的顺序排序
-decreasing = c(TRUE,FALSE), # 变量如何排序；对应order.by参数。这里表示freq降序，degree升序。
+decreasing = c(TRUE,FALSE), # 变量如何排序；对应order.by参数。这里表示degree降序，freq升序。
 number.angles = 30, # 调整柱形图上数字角度
 point.size = 2, line.size = 1, # 点和线的大小
 mainbar.y.label = "Intersection size of gene family",sets.x.label = "genome size", # 坐标轴名称

@@ -141,7 +141,8 @@ ggtree(tree) #默认参数画树
 包含注释函数的基本参数用法
 ```R
 ggtree(tree) \ #画树 
-+ geom_tiplab() \ # 末端节点标上物种  
++ geom_tiplab() \ # 末端节点标上物种
++ geom_rootedge() \#添加根节点的枝长线，如果树文件中有根节点枝长则直接可使用
 + geom_point2() \ #节点上标记圆点
 + geom_text2(aes(label=node)) \ #节点上做文字标记。label指定内容，这里指定节点上标记节点号，可以用这个确定树图上对应的节点号
 + geom_label2(aes(label=node)) \#节点上做标签标记。label指定内容，这里指定节点上标记节点号。
@@ -158,13 +159,14 @@ ggtree(tree) \ #画树
 包含注释函数的常用参数用法
 ```R
 ggtree(tree, layout="circular", size=0.8, branch.length='none') \ #画树，layout指定布局类型，默认是rectangular；size指定枝的粗细；branch.length指定无枝长信息  
-+ geom_tiplab(color="black", size = 4, hjust = -0.1, align=T, linesize=0.7) \ # 末端节点标上物种，size文字大小，hjust是离进化枝线条的距离，align=T文字间左对齐，linesize设置虚线尺寸。  
++ geom_tiplab(color="black", size = 4, hjust = -0.1, align=T, linesize=0.7) \ # 末端节点标上物种，size文字大小，hjust是离进化枝线条的距离，align=T文字间左对齐，linesize设置虚线尺寸。
++ geom_rootedge(rootedge = 1,size=1) \#添加根节点的枝长线，如果树文件中有根节点枝长则直接可使用，否则可以用rootedge设置根节点枝长(不设置为0)，size设置粗细
 + geom_point2(color="#6FE1F8", size=5, alpha=0.7) \ #所有节点上标记圆点，配色和透明度
-+ geom_point2(aes(subset=node==16), color='darkgreen', size=5) \#在16号节点标记绿色圆点。其中subset是取子集，符合条件的才注释。
-+ geom_text2(aes(label=support,hjust=-0.1),size=3) \#节点上标记支持率
++ geom_point2(aes(subset=node==16), color='darkgreen', size=5) \#在16号节点标记绿色圆点。其中subset是取子集，符合条件的才注释；color设置颜色，size设置大小。
++ geom_text2(aes(label=support,hjust=-0.1),size=3, fontface = "bold") \#节点上标记支持率；size设置大小，fontface设置文本加粗显示
 + geom_text2(aes(subset=!isTip, label=node), hjust=-0.3, size=3, color="deepskyblue4")  \ #非tip节点标记上node号
 + geom_label2(aes(x=0.79,label=D),color="black",vjust=-0.2,fill="#7FFF00",alpha=0.6) \#做标记,aes里的x指定位置，label指定内容
-+ geom_strip(9,10,label="legumes",offset = 0.06,offset.text = 0.012,color = "#FF6100",barsize = 1.5,fontsize = 5,angle = 90,hjust = 0.5) \#用条带指定node9和node10之间的分支clade，barsize指定条带尺寸，label指定文字内容，fontsize指定文字尺寸，hjust指定文字位置
++ geom_strip(9,10,label="legumes",offset = 0.06,offset.text = 0.012,color = "#FF6100",barsize = 1.5,fontsize = 5,angle = 90,hjust = 0.5) \#用条带指定node9和node10之间的分支clade，label指定文字内容，offset指定条带和文字与末端节点的距离，offset.text指定文字与条带的距离，barsize指定条带尺寸，fontsize指定文字尺寸，hjust指定文字位置
 + geom_hilight(node=15,fill="firebrick",alpha=0.6) \#用矩形高亮一个分支
 + geom_range("length_0.95_HPD", color='red', size=2, alpha=.5, center='length') #在节点上画长条形的分歧时间的95%置信范围，值来自树文件中的length_0.95_HPD注释值，让中心点位于length注释值
 ```
@@ -233,9 +235,10 @@ d2 <- data.frame(id=tr$tip.label, val=rnorm(30, sd=3)) #生成两列数据，分
 p2 <- facet_plot(p1, panel="dot", data=d2, geom=geom_point, aes(x=val), color='firebrick') + theme_tree2() #用ggtree的facet_plot的geom_point函数画点图  
 ```
 
-**p2 dotplot**
-
 <img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" width=80% height=80% title="facet_plot_p2.png" align=center/>
+
+**Figure 1. p2 dotplot**
+from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png)
 
 2. 可视化堆叠直方图stacked barplot —— geom_barh
 大多ggplot2的geom绘制垂直版本的图形对象，通过ggstance包可以制作水平版本的数据图geom，方便画直方图/堆叠直方图/热图/箱线图与系统发育树对应。
@@ -251,8 +254,11 @@ p3 <- facet_plot(p2, panel = 'Stacked Barplot', data = d3,
 				stat='identity' )   
 ```
 
-**p3 barplot**
+
 <img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" title="facet_plot_p3.png" width="80%" height="80%" />
+
+**Figure 2. p3 barplot**
+from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png)
 
 3. 可视化箱线图boxplot —— geom_boxploth
 ```R
@@ -264,8 +270,10 @@ p4 <- facet_plot(p3, panel="Boxplot", data=d4, geom_boxploth,
 			mapping = aes(x=val, group=label, color=location)) #用geom_boxploth画水平版本的箱线图
 ```
 
-**p4 boxplot**
 <img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" title="facet_plot_p4.png" width="80%" height="80%" />
+
+**Figure 3. p4 boxplot**
+from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png)
 
 #### 2.2.2.5. 时序树(chronogram)
 时序树上每个节点的数字代表的是分歧时间，端点一般对齐（因为端点的所有样本都对应当下的采样时间），画时序图需要先有时间标定的树文件，树上的枝长代表时长，一般会再添加时间尺度轴。
@@ -282,9 +290,16 @@ p4 <- facet_plot(p3, panel="Boxplot", data=d4, geom_boxploth,
 - 也可以把时间写入枝长位置，以文本的形式读取时序树；
 
 3. 时间尺度轴的变化
+- 直接用`theme_tree2() +scale_x_continuous()`来设置时间尺度轴的显示
 ```R
-p <- ggtree(tree) + theme_tree2() + geom_treescale(x=3,y=20,color="red") #画树，theme_tree2()在树下方加时间尺度轴，这里假设是[0,4]；geom_treescale()在右上角添加比例尺
+ggtree(tree) + theme_tree2() +scale_x_continuous(limits=c(-1,4),breaks = seq(0,4,1),labels = c(4,3,2,1,0),expand = c(0.1,0.1)) + geom_treescale(x=3,y=20,color="red") #画树，theme_tree2()在树下方加时间尺度轴，这里假设是[0,4]，用scale_x_continuous()限制时间尺度轴的显示和刻度，limits=c(-1,4)设置尺度轴显示范围为-1到4(同样也是图的横向显示范围)，breaks设置值的显示范围为0到4，每隔1显示一个值，labels设置显示的值，可以直接设定c(4,3,2,1,0)使时间尺度轴倒序显示，expand设置绘图左右范围的空白大小；geom_treescale()在右上角添加比例尺
+```
+
+- 用`revts`设置时间尺度轴翻转
+```R
+p <- ggtree(tree) + theme_tree2()
 p1 <- revts(p) #翻转时间尺度轴，比如[0,4]翻转成[-4,0]；注意使用revts后，xlim的范围也要相应调整。
+library(ggplot2) #scale_x_continuous是ggplot2的函数
 p2 <- p + scale_x_continuous(labels = abs) #把时间尺度轴的标签显示为绝对值abs的形式，scale_x_continuous是ggplot的函数
 p3 <- revts(p2) #把p2时间尺度轴翻转，由于p2用了绝对值，效果是把[0,4]翻转成了[4,0]
 p4 <- p1 + scale_x_continuous(breaks=c(-4:0), labels=abs(-4:0)) #把时间尺度轴的标签显示为绝对值abs的形式，即把[-4,0]显示成[4,0]
