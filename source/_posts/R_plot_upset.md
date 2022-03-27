@@ -108,7 +108,9 @@ mainbar.y.label = "Intersection size of gene family",sets.x.label = "genome size
 text.scale = c(1.3, 1.3, 1, 1, 1.5, 1)) # 六个数字，分别控制c(intersectionsize title, intersection size tick labels, set size title, set size ticklabels, set names, numbers above bars)
 ```
 
-<img src="upset_movies.png" width=80% height=80% title="upset_movies" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_movies.png?raw=true" width=100% height=60% title="upset_movies" align=center/>
+
+**<p align="center">Figure 1. movies upset</p>**
 
 ### 1.4.2. queries参数
 upset函数中可以添加queries参数，用于突出显示（上色）部分数据。
@@ -137,7 +139,9 @@ query.name = "share EGFR and TP53"), # 添加query图例
 list(query = intersects, params=list("TTN"), color="red", active=T)))
 ```
 
-<img src="upset_mutations.png" width=80% height=80% title="upset_mutations" align=center/>
+<img src="images/R_plot_upset_mutations.png" width=80% height=80% title="upset_mutations" align=center/>
+
+**<p align="center">Figure 2. mutations upset</p>**
 
 - 把同属Drama和Thriller的电影突出显示，把1970-1980的电影标红。
 ```
@@ -150,14 +154,18 @@ upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary
                      list(query = between, params=list(1970,1980), color="red", active=TRUE)))
 ```
 
-<img src="upset_movies2.png" width=80% height=80% title="upset_movies2" align=center/>
+<img src="images/R_plot_upset_movies2.png" width=80% height=80% title="upset_movies2" align=center/>
+
+**<p align="center">Figure 3. movies upset 2</p>**
 
 ### 1.4.3. 添加属性图
 1. 添加箱线图
 每次最多添加两个箱线图
 `upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate")) `
 
-<img src="upset_boxplot.png" width=80% height=80% title="upset_boxplot" align=center/>
+<img src="images/R_plot_upset_boxplot.png" width=80% height=80% title="upset_boxplot" align=center/>
+
+**<p align="center">Figure 4. movies upset boxplot</p>**
 
 #### 1.4.3.1. attribute.plots参数
 attribute.plots参数用于添加属性图，内置有柱形图，散点图，热图等。
@@ -178,7 +186,9 @@ upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary
       query.legend = "top") # query图例放在上方
 ```
 
-<img src="upset_scatter_histogram.png" width=80% height=80% title="upset_scatter_histograms" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_scatter_histogram.png?raw=true" width=100% height=80% title="upset_scatter_histograms" align=center/>
+
+**<p align="center">Figure 5. movies upset scatter histograms</p>**
 
 2. 添加密度曲线图
 
@@ -204,7 +214,9 @@ upset(movies, main.bar.color = "black", mb.ratio = c(0.5, 0.5), queries = list(l
         y = "ReleaseDate", queries = F)), ncols = 3))
 ```
 
-<img src="upset_density.png" width=80% height=80% title="upset_density" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_density.png?raw=true" width=100% height=80% title="upset_density" align=center/>
+
+**<p align="center">Figure 6. movies upset density</p>**
 
 # 2. references
 https://github.com/hms-dbmi/UpSetR
