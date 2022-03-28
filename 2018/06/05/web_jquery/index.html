@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="jquery基础知识">
@@ -123,16 +123,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -208,20 +198,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/06/05/web_jquery/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/05/web_jquery/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
             <div class="post-description">jquery基础知识</div>
 
         </div>
@@ -386,13 +362,6 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -439,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-jQuery%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">1. jQuery基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-jquery%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-text">1.1. jquery的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-jquery%E8%AF%AD%E6%B3%95"><span class="nav-text">1.2. jquery语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-text">1.2.1. 基础语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-jquery%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">1.3. jquery基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-jquery%E5%8A%A8%E7%94%BB"><span class="nav-text">1.4. jquery动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-%E4%B8%89%E7%A7%8D%E9%9A%90%E8%97%8F%E5%85%83%E7%B4%A0%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-text">1.4.1. 三种隐藏元素的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-1-%E5%9F%BA%E7%A1%80%E9%9A%90%E8%97%8F%E6%98%BE%E7%A4%BA%E5%8A%A8%E7%94%BB-display-none%EF%BC%89"><span class="nav-text">1.4.1.1. 基础隐藏显示动画 (display:none）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-2-%E4%B8%8A%E5%8D%B7%E4%B8%8B%E6%8B%89%E6%95%88%E6%9E%9C-height-0"><span class="nav-text">1.4.1.2. 上卷下拉效果 (height:0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-3-%E6%B7%A1%E5%85%A5%E6%B7%A1%E5%87%BA%E6%95%88%E6%9E%9C-opacity-0"><span class="nav-text">1.4.1.3. 淡入淡出效果 (opacity:0)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB"><span class="nav-text">1.4.2. 自定义动画</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-jquery-%E6%93%8D%E4%BD%9Chtml%E7%9A%84DOM"><span class="nav-text">1.5. jquery 操作html的DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-%E6%8D%95%E8%8E%B7"><span class="nav-text">1.5.1. 捕获</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2-%E6%B7%BB%E5%8A%A0%E5%86%85%E5%AE%B9"><span class="nav-text">1.5.2. 添加内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-3-%E5%88%A0%E9%99%A4%E5%86%85%E5%AE%B9"><span class="nav-text">1.5.3. 删除内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-4-%E6%93%8D%E4%BD%9CCSS"><span class="nav-text">1.5.4. 操作CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-5-%E6%8E%A7%E5%88%B6%E5%B0%BA%E5%AF%B8"><span class="nav-text">1.5.5. 控制尺寸</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-DOM%E9%81%8D%E5%8E%86"><span class="nav-text">1.6. DOM遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-tips"><span class="nav-text">1.7. tips</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-jQuery%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">1. jQuery基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-jquery%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. jquery的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-jquery%E8%AF%AD%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. jquery语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1. 基础语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-jquery%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. jquery基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-jquery%E5%8A%A8%E7%94%BB"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. jquery动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-%E4%B8%89%E7%A7%8D%E9%9A%90%E8%97%8F%E5%85%83%E7%B4%A0%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1. 三种隐藏元素的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-1-%E5%9F%BA%E7%A1%80%E9%9A%90%E8%97%8F%E6%98%BE%E7%A4%BA%E5%8A%A8%E7%94%BB-display-none%EF%BC%89"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">1.4.1.1. 基础隐藏显示动画 (display:none）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-2-%E4%B8%8A%E5%8D%B7%E4%B8%8B%E6%8B%89%E6%95%88%E6%9E%9C-height-0"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">1.4.1.2. 上卷下拉效果 (height:0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-3-%E6%B7%A1%E5%85%A5%E6%B7%A1%E5%87%BA%E6%95%88%E6%9E%9C-opacity-0"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">1.4.1.3. 淡入淡出效果 (opacity:0)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2. 自定义动画</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-jquery-%E6%93%8D%E4%BD%9Chtml%E7%9A%84DOM"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. jquery 操作html的DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-%E6%8D%95%E8%8E%B7"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.5.1. 捕获</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2-%E6%B7%BB%E5%8A%A0%E5%86%85%E5%AE%B9"><span class="nav-number">1.5.2.</span> <span class="nav-text">1.5.2. 添加内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-3-%E5%88%A0%E9%99%A4%E5%86%85%E5%AE%B9"><span class="nav-number">1.5.3.</span> <span class="nav-text">1.5.3. 删除内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-4-%E6%93%8D%E4%BD%9CCSS"><span class="nav-number">1.5.4.</span> <span class="nav-text">1.5.4. 操作CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-5-%E6%8E%A7%E5%88%B6%E5%B0%BA%E5%AF%B8"><span class="nav-number">1.5.5.</span> <span class="nav-text">1.5.5. 控制尺寸</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-DOM%E9%81%8D%E5%8E%86"><span class="nav-number">1.6.</span> <span class="nav-text">1.6. DOM遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-tips"><span class="nav-number">1.7.</span> <span class="nav-text">1.7. tips</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -459,13 +428,11 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -500,13 +467,15 @@
 
 <div class="copyright">
   
-  &copy; 2018 – 
+  &copy; 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="snowflake-o"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
 
         
 
@@ -558,37 +527,6 @@
   
 
   
-
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://yanzhongsino.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "http://example.com/2018/06/05/web_jquery/";
-    this.page.identifier = "2018/06/05/web_jquery/";
-    this.page.title = "jquery";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://yanzhongsino.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
-</script>
 
 </body>
 </html>

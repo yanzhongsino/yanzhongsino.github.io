@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="记录了两种先进行蛋白质比对，再根据蛋白质比对转换成CDS比对的软件和使用方法。">
@@ -129,16 +129,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -214,20 +204,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2021/10/29/bioinfo_align.pep2cds/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/10/29/bioinfo_align.pep2cds/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
             <div class="post-description">记录了两种先进行蛋白质比对，再根据蛋白质比对转换成CDS比对的软件和使用方法。</div>
 
         </div>
@@ -339,13 +315,6 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -392,7 +361,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9-sequence-alignment"><span class="nav-text">1. 序列比对(sequence alignment)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%9B%8B%E7%99%BD%E6%AF%94%E5%AF%B9%E8%BD%ACCDS%E6%AF%94%E5%AF%B9"><span class="nav-text">2. 蛋白比对转CDS比对</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%88%90%E5%AF%B9%E6%AF%94%E5%AF%B9-pairwise-alignment"><span class="nav-text">2.1. 成对比对(pairwise alignment)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2.1.1. 应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E6%88%90%E5%AF%B9%E6%AF%94%E5%AF%B9%E8%BD%AF%E4%BB%B6"><span class="nav-text">2.1.2. 成对比对软件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-1-ParaAT"><span class="nav-text">2.1.2.1. ParaAT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-2-ParaAT%E4%B8%8B%E8%BD%BD"><span class="nav-text">2.1.2.2. ParaAT下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-3-ParaAT%E4%BD%BF%E7%94%A8"><span class="nav-text">2.1.2.3. ParaAT使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%A4%9A%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9-multiple-sequence-alignment"><span class="nav-text">2.2. 多序列比对(multiple sequence alignment)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2.2.1. 应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%A4%9A%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E8%BD%AF%E4%BB%B6"><span class="nav-text">2.2.2. 多序列比对软件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-PAL2NAL"><span class="nav-text">2.2.2.1. PAL2NAL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-PAL2NAL%E4%B8%8B%E8%BD%BD"><span class="nav-text">2.2.2.2. PAL2NAL下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-PAL2NAL%E4%BD%BF%E7%94%A8"><span class="nav-text">2.2.2.3. PAL2NAL使用</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-references"><span class="nav-text">3. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9-sequence-alignment"><span class="nav-number">1.</span> <span class="nav-text">1. 序列比对(sequence alignment)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%9B%8B%E7%99%BD%E6%AF%94%E5%AF%B9%E8%BD%ACCDS%E6%AF%94%E5%AF%B9"><span class="nav-number">2.</span> <span class="nav-text">2. 蛋白比对转CDS比对</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%88%90%E5%AF%B9%E6%AF%94%E5%AF%B9-pairwise-alignment"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 成对比对(pairwise alignment)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. 应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E6%88%90%E5%AF%B9%E6%AF%94%E5%AF%B9%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. 成对比对软件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-1-ParaAT"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">2.1.2.1. ParaAT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-2-ParaAT%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">2.1.2.2. ParaAT下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-3-ParaAT%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">2.1.2.3. ParaAT使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%A4%9A%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9-multiple-sequence-alignment"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 多序列比对(multiple sequence alignment)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1. 应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%A4%9A%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2. 多序列比对软件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-PAL2NAL"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">2.2.2.1. PAL2NAL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-PAL2NAL%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">2.2.2.2. PAL2NAL下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-PAL2NAL%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">2.2.2.3. PAL2NAL使用</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-references"><span class="nav-number">3.</span> <span class="nav-text">3. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -412,13 +381,11 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -453,13 +420,15 @@
 
 <div class="copyright">
   
-  &copy; 2018 – 
+  &copy; 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="snowflake-o"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
 
         
 
@@ -511,37 +480,6 @@
   
 
   
-
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://yanzhongsino.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "http://example.com/2021/10/29/bioinfo_align.pep2cds/";
-    this.page.identifier = "2021/10/29/bioinfo_align.pep2cds/";
-    this.page.title = "蛋白质比对转换成CDS比对(ParaAT,PAL2NAL)";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://yanzhongsino.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
-</script>
 
 </body>
 </html>

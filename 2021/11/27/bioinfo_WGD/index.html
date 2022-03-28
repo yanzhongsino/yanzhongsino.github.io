@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。">
@@ -129,16 +129,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -214,20 +204,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2021/11/27/bioinfo_WGD/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/27/bioinfo_WGD/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
             <div class="post-description">用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。</div>
 
         </div>
@@ -431,13 +407,6 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -484,7 +453,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCScanX%E4%BB%8B%E7%BB%8D"><span class="nav-text">1. MCScanX介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MCScanX%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-text">2. MCScanX同线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">2.1. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%BF%90%E8%A1%8CMCScanX"><span class="nav-text">2.2. 运行MCScanX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">2.3. 结果文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MCScanX%E4%B8%8B%E6%B8%B8%E5%88%86%E6%9E%90"><span class="nav-text">3. MCScanX下游分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E8%AE%A1%E7%AE%97%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97Ks"><span class="nav-text">3.1. 计算共线性区块Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9AMCScanX%E7%9A%84downstream-analyses%E7%9B%AE%E5%BD%95%E5%8C%85%E5%90%AB%E4%B8%80%E4%BA%9B%E4%B8%8B%E6%B8%B8%E8%84%9A%E6%9C%AC%EF%BC%8C%E5%85%B6%E4%B8%AD%E6%9C%89%E8%AE%A1%E7%AE%97kaks%E7%9A%84%E8%84%9A%E6%9C%ACadd-ka-and-ks-to-collinearity-pl"><span class="nav-text">3.1.1. 方案一：MCScanX的downstream_analyses目录包含一些下游脚本，其中有计算kaks的脚本add_ka_and_ks_to_collinearity.pl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AParaAT-pl-KaKs-Calculator2-0"><span class="nav-text">3.1.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%92%8C%E5%B3%B0%E5%80%BC"><span class="nav-text">3.2. ggplot2画密度分布图和峰值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE"><span class="nav-text">3.2.1. ggplot2画密度分布图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-ggplot2%E5%B3%B0%E5%80%BC%E6%A0%87%E5%AE%9A"><span class="nav-text">3.2.2. ggplot2峰值标定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E5%A4%9A%E4%B8%AA%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="nav-text">3.2.3. 多个密度图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-4-%E9%80%9A%E8%BF%87%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%88%A4%E6%96%ADWGD"><span class="nav-text">3.2.4. 通过密度分布图判断WGD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-WGD%E5%8F%91%E7%94%9F%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-text">3.3. WGD发生的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E9%80%9A%E8%BF%87Ks-x3D-2%CE%BCT%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-text">3.3.1. 通过Ks&#x3D;2μT计算时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%9A%E8%BF%87%E8%BF%9B%E5%8C%96%E6%A0%91%E4%BC%B0%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-text">3.3.2. 通过进化树估算时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-1-%E8%8E%B7%E5%8F%96sample%E5%8F%91%E7%94%9FWGD%E7%9A%84%E4%B8%A4%E5%A5%97%E5%9F%BA%E5%9B%A0"><span class="nav-text">3.3.2.1. 获取sample发生WGD的两套基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-2-%E9%80%89%E8%BF%91%E7%BC%98%E7%A7%8D%E5%92%8C%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">3.3.2.2. 选近缘种和分化时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-3-orthofinder%E6%89%BE%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-text">3.3.2.3. orthofinder找直系同源基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-4-%E5%BB%BA%E5%8D%95%E5%9F%BA%E5%9B%A0%E6%A0%91"><span class="nav-text">3.3.2.4. 建单基因树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-5-paml%E4%BC%B0%E8%AE%A1%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">3.3.2.5. paml估计分化时间</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCScanX%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">1. MCScanX介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MCScanX%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2. MCScanX同线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%BF%90%E8%A1%8CMCScanX"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 运行MCScanX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 结果文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MCScanX%E4%B8%8B%E6%B8%B8%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">3. MCScanX下游分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E8%AE%A1%E7%AE%97%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97Ks"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 计算共线性区块Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9AMCScanX%E7%9A%84downstream-analyses%E7%9B%AE%E5%BD%95%E5%8C%85%E5%90%AB%E4%B8%80%E4%BA%9B%E4%B8%8B%E6%B8%B8%E8%84%9A%E6%9C%AC%EF%BC%8C%E5%85%B6%E4%B8%AD%E6%9C%89%E8%AE%A1%E7%AE%97kaks%E7%9A%84%E8%84%9A%E6%9C%ACadd-ka-and-ks-to-collinearity-pl"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1. 方案一：MCScanX的downstream_analyses目录包含一些下游脚本，其中有计算kaks的脚本add_ka_and_ks_to_collinearity.pl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AParaAT-pl-KaKs-Calculator2-0"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%92%8C%E5%B3%B0%E5%80%BC"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. ggplot2画密度分布图和峰值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1. ggplot2画密度分布图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-ggplot2%E5%B3%B0%E5%80%BC%E6%A0%87%E5%AE%9A"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2. ggplot2峰值标定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E5%A4%9A%E4%B8%AA%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3. 多个密度图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-4-%E9%80%9A%E8%BF%87%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%88%A4%E6%96%ADWGD"><span class="nav-number">3.2.4.</span> <span class="nav-text">3.2.4. 通过密度分布图判断WGD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-WGD%E5%8F%91%E7%94%9F%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. WGD发生的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E9%80%9A%E8%BF%87Ks-x3D-2%CE%BCT%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1. 通过Ks&#x3D;2μT计算时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%9A%E8%BF%87%E8%BF%9B%E5%8C%96%E6%A0%91%E4%BC%B0%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2. 通过进化树估算时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-1-%E8%8E%B7%E5%8F%96sample%E5%8F%91%E7%94%9FWGD%E7%9A%84%E4%B8%A4%E5%A5%97%E5%9F%BA%E5%9B%A0"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">3.3.2.1. 获取sample发生WGD的两套基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-2-%E9%80%89%E8%BF%91%E7%BC%98%E7%A7%8D%E5%92%8C%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">3.3.2.2. 选近缘种和分化时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-3-orthofinder%E6%89%BE%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-number">3.3.2.3.</span> <span class="nav-text">3.3.2.3. orthofinder找直系同源基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-4-%E5%BB%BA%E5%8D%95%E5%9F%BA%E5%9B%A0%E6%A0%91"><span class="nav-number">3.3.2.4.</span> <span class="nav-text">3.3.2.4. 建单基因树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-5-paml%E4%BC%B0%E8%AE%A1%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-number">3.3.2.5.</span> <span class="nav-text">3.3.2.5. paml估计分化时间</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -504,13 +473,11 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -545,13 +512,15 @@
 
 <div class="copyright">
   
-  &copy; 2018 – 
+  &copy; 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="snowflake-o"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
 
         
 
@@ -603,37 +572,6 @@
   
 
   
-
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://yanzhongsino.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "http://example.com/2021/11/27/bioinfo_WGD/";
-    this.page.identifier = "2021/11/27/bioinfo_WGD/";
-    this.page.title = "基因组WGD事件的鉴定和时间估算";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://yanzhongsino.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
-</script>
 
 </body>
 </html>
