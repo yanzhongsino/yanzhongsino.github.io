@@ -1,350 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
-  
-  <title>Circos圈图绘制 | 生信技工</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录了绘制圈图的软件Circos的使用逻辑和参数。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Circos圈图绘制">
-<meta property="og:url" content="http://example.com/2021/11/16/biosoft_Circos/index.html">
-<meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="记录了绘制圈图的软件Circos的使用逻辑和参数。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://circos.ca/img/circos-sample-panel.png">
-<meta property="article:published_time" content="2021-11-16T02:10:00.000Z">
-<meta property="article:modified_time" content="2022-03-28T03:03:27.400Z">
-<meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="plot">
-<meta property="article:tag" content="Circos">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://circos.ca/img/circos-sample-panel.png">
-  
-    <link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.4.1"></head>
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">生信技工</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-biosoft_Circos" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/11/16/biosoft_Circos/" class="article-date">
-  <time datetime="2021-11-16T02:10:00.000Z" itemprop="datePublished">2021-11-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/biosoft/">biosoft</a>►<a class="article-category-link" href="/categories/biosoft/circos/">circos</a>
-  </div>
+{% block page_class %}page-post-detail{% endblock %}
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Circos圈图绘制
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=4278314&auto=1&height=32"></iframe></div>
+{% block content %}
 
-<h1 id="1-介绍circos圈图"><a href="#1-介绍circos圈图" class="headerlink" title="1. 介绍circos圈图"></a>1. 介绍circos圈图</h1><p>介绍基因组的文章里常常出现下面的circos圈图，这篇博客记录了如何绘制这种圈图。</p>
-<img src="http://circos.ca/img/circos-sample-panel.png" title="Circos圈图" width="100%"/>
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
 
-<p><strong><p align="center">Figure 1. circos圈图示例</strong><br>from <a target="_blank" rel="noopener" href="http://circos.ca/">circos官网</a></p></p>
-<p>circos圈图的内核是把矩形掰弯成环状，矩形信息的展示以行和列为基础，环形除了行和列，还可以增加环的不同位置之间的关系，比如基因组特征的Circos图中间常见的染色体共线性关系的展示。</p>
-<h1 id="2-绘制circos圈图的软件和包"><a href="#2-绘制circos圈图的软件和包" class="headerlink" title="2. 绘制circos圈图的软件和包"></a>2. 绘制circos圈图的软件和包</h1><p>有许多可以绘制circos圈图的软件和包。常见的有<a target="_blank" rel="noopener" href="http://circos.ca/">Circos软件</a>,TBtools，R包circlize，python版本的Circos等。</p>
-<h2 id="2-1-Circos-——-从名字就可以看出是circos绘制软件的霸王"><a href="#2-1-Circos-——-从名字就可以看出是circos绘制软件的霸王" class="headerlink" title="2.1. Circos —— 从名字就可以看出是circos绘制软件的霸王"></a>2.1. Circos —— 从名字就可以看出是circos绘制软件的霸王</h2><p><a target="_blank" rel="noopener" href="http://circos.ca/">Circos软件</a>是2009年Michael Smith Genome Sciences Centre的Martin Krzywinski开发的一款基于perl的做比较基因组Circos圈图绘制的软件，功能完备，被文章里使用的非常多。Martin Krzywinski是生物信息学家和专业摄影师双重身份，所以Circos软件的审美设计是非常可靠的（当然得在合理的配色和布局下，我就用过同一套数据生成两个美学差异极大的图）。</p>
-<p>Circos有在线版本<a target="_blank" rel="noopener" href="http://mkweb.bcgsc.ca/tableviewer/">Circos Online</a>，在线使用时是把表格转为圈图，不过只允许最大75行和75列。</p>
-<p>下面记录了用Circos绘制基因组圈图的基础操作。</p>
-<h3 id="2-1-1-Circos安装"><a href="#2-1-1-Circos安装" class="headerlink" title="2.1.1. Circos安装"></a>2.1.1. Circos安装</h3><p><code>conda create -c bioconda -n circos circos</code> #单独环境安装</p>
-<p><code>circos -V</code> #确认版本</p>
-<h3 id="2-1-2-Circos运行"><a href="#2-1-2-Circos运行" class="headerlink" title="2.1.2. Circos运行"></a>2.1.2. Circos运行</h3><p><code>circos -conf circos.conf</code></p>
-<p>会生成circos.png和circos.svg两个文件。</p>
-<h3 id="2-1-3-Circos模块化绘制"><a href="#2-1-3-Circos模块化绘制" class="headerlink" title="2.1.3. Circos模块化绘制"></a>2.1.3. Circos模块化绘制</h3><p>Circos是模块化绘制的方式，即通过增添数据和设置来实现每个部分的绘制。</p>
-<p>基因组圈图中的几个基础模块：染色体模块，特征图模块，共线性模块。</p>
-<ul>
-<li>染色体模块显示了染色体的数量和长度，常常添加标尺，通常在最外圈。</li>
-<li>特征图模块可以有多圈，可以是折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)等。通常用直方图或者热图展示基因密度，重复序列密度，GC占比等信息。</li>
-<li>共线性模块通常放在中心，代表不同染色体间的共线性关系。如果有多个物种，则可以体现物种间的共线性关系。</li>
-</ul>
-<h3 id="2-1-4-Circos输入文件"><a href="#2-1-4-Circos输入文件" class="headerlink" title="2.1.4. Circos输入文件"></a>2.1.4. Circos输入文件</h3><p>输入文件包括数据文件和配置文件。</p>
-<p>需要展示的模块数据都保存在单独的数据文件中，然后在配置文件circos.conf中调用数据文件。</p>
-<p>有些教程会建议多制作几个不同类别的配置文件，然后在circos.conf调用其他配置文件。<br>比如单独设置ticks.conf,links.conf，然后在circos.conf里加入下面内容调用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;include ticks.conf&gt;&gt;</span><br><span class="line">&lt;&lt;include links.conf&gt;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>比如单独设置plots_histogram.conf，plots_heatmap.conf，plots_text.conf，然后在circos.conf里加入下面内容调用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;plots&gt;</span><br><span class="line">&lt;&lt;include plots_histogram.conf&gt;&gt;</span><br><span class="line"> &lt;&lt;include plots_heatmap.conf&gt;&gt;</span><br><span class="line"> &lt;&lt;include plots_text.conf&gt;&gt;</span><br><span class="line">&lt;/plots&gt;</span><br></pre></td></tr></table></figure>
-
-<p>但如果不是设置特别复杂，直接使用circos.conf一个配置文件即可，所有设置都可以写在circos.conf。</p>
-<h4 id="2-1-4-1-主配置文件circos-conf"><a href="#2-1-4-1-主配置文件circos-conf" class="headerlink" title="2.1.4.1. 主配置文件circos.conf"></a>2.1.4.1. 主配置文件circos.conf</h4><h5 id="2-1-4-1-1-circos-conf由几个部分组成"><a href="#2-1-4-1-1-circos-conf由几个部分组成" class="headerlink" title="2.1.4.1.1. circos.conf由几个部分组成"></a>2.1.4.1.1. circos.conf由几个部分组成</h5><ul>
-<li><ideogram>绘制染色体</li>
-<li><ticks>绘制染色体刻度</li>
-<li><links>绘制染色体间连线（通常代表共线性）</li>
-<li><plots>绘制图形</li>
-</ul>
-<h5 id="2-1-4-1-2-circos-conf示例"><a href="#2-1-4-1-2-circos-conf示例" class="headerlink" title="2.1.4.1.2. circos.conf示例"></a>2.1.4.1.2. circos.conf示例</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 1. 染色体和刻度的设置</span><br><span class="line">karyotype = karyotype.txt #指定染色体数据文件</span><br><span class="line">chromosomes_order = scaf001,scaf002,scaf003,scaf004,contig003,contig006 #指定染色体顺序，若不指定则按照染色体数据文件karyotype.txt的顺序</span><br><span class="line">chromosomes_reverse = /scaf/ #染色体坐标默认是从0到最大值，通过正则匹配把染色体坐标改成最大值到0</span><br><span class="line">chromosomes_scale = /scaf/=0.5rn,/contig/=0.5rn #设置染色体缩放，scaf的所有染色体占据50%的空间，contig的所有染色体占据50%的空间。</span><br><span class="line"></span><br><span class="line">&lt;&lt;include etc/colors_fonts_patterns.conf&gt;&gt;</span><br><span class="line">&lt;&lt;include etc/housekeeping.conf&gt;&gt;</span><br><span class="line"></span><br><span class="line">chromosomes_units = 1000000 #定义长度单位，后面使用u赋值长度</span><br><span class="line">show_ticks = yes #显示染色体刻度</span><br><span class="line">show_tick_labels = yes #显示刻度标签</span><br><span class="line"></span><br><span class="line"># 2. ideogram模块，用于染色体设置</span><br><span class="line">&lt;ideogram&gt;</span><br><span class="line">&lt;spacing&gt;</span><br><span class="line">default = 1u #染色体间间距</span><br><span class="line"> &lt;pairwise scaf001 contig001&gt;</span><br><span class="line">  spacing = 10u</span><br><span class="line"> &lt;/pairwise&gt; # 在scaf001和contig001之间流出10u的间距（其他染色体默认是1u）</span><br><span class="line"> &lt;pairwise scaf004 contig006&gt;</span><br><span class="line">  spacing = 10u</span><br><span class="line"> &lt;/pairwise&gt; # 在scaf004和contig006之间流出10u的间距（其他染色体默认是1u）</span><br><span class="line">&lt;/spacing&gt;</span><br><span class="line">radius = 0.90r #染色体位置</span><br><span class="line">thickness = 20p #染色体的厚</span><br><span class="line">fill = yes</span><br><span class="line">stroke_color = dgrey #颜色</span><br><span class="line">stroke_thickness = 2p</span><br><span class="line"></span><br><span class="line">show_label = yes #显示label，染色体名称</span><br><span class="line">label_font = default #字体</span><br><span class="line">label_radius = dims(ideogram,radius) + 0.05r #染色体标签位置</span><br><span class="line">label_size = 48 #字体大小</span><br><span class="line">label_parallel = yes #是否平行</span><br><span class="line">label_format = eval(sprintf(&quot;%s&quot;,var(chr))) #格式</span><br><span class="line"></span><br><span class="line">&lt;/ideogram&gt;</span><br><span class="line"></span><br><span class="line"># 3. ticks模块，用于染色体刻度设置</span><br><span class="line">&lt;ticks&gt;</span><br><span class="line">radius = 1r #刻度位置</span><br><span class="line">color = black #刻度颜色</span><br><span class="line">thickness = 2p #刻度厚度</span><br><span class="line">multiplier = 1e-6 #输出标签为实际长度与其相乘，实际位置为chromosomes_units*multiplier</span><br><span class="line">format = %d # %d表示显示整数</span><br><span class="line"></span><br><span class="line">&lt;tick&gt;</span><br><span class="line">spacing = 1u #刻度间距离，1u表示一个长度单位，即1chromosomes_units</span><br><span class="line">size = 5p #tick的长度</span><br><span class="line">&lt;/tick&gt;</span><br><span class="line"></span><br><span class="line">&lt;tick&gt;</span><br><span class="line">spacing = 5u</span><br><span class="line">size = 10p</span><br><span class="line">show_label = yes #是否展示标签</span><br><span class="line">label_size = 20p #标签尺寸</span><br><span class="line">label_offset = 10p #让标签往外偏移一点</span><br><span class="line">format = %d #显示整数</span><br><span class="line">&lt;/tick&gt;</span><br><span class="line">&lt;/ticks&gt;</span><br><span class="line"></span><br><span class="line"># 4. image模块，用于输出设置</span><br><span class="line">&lt;image&gt;</span><br><span class="line">dir* = . #输出目录，参数后*表示覆盖已有设置</span><br><span class="line">radius* = 1500p #输出图片半径</span><br><span class="line">angle_offset* = -85 #默认情况下，第一个染色体从-90°位置开始，但设置scaf001和contig001之间的空隙为10u会导致图看起来不对称，通过angle_offset调整角度使图对称。</span><br><span class="line">&lt;&lt;include etc/image.conf&gt;&gt;</span><br><span class="line">&lt;/image&gt;</span><br><span class="line"></span><br><span class="line"># 5. plots模块，用于特征图形设置</span><br><span class="line">&lt;plots&gt;</span><br><span class="line">&lt;plot&gt;</span><br><span class="line">show = True #是否展示该图形，默认展示</span><br><span class="line">type = scatter #展示的图形类型，折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)</span><br><span class="line">file = genes_num.txt #数据文件</span><br><span class="line">r1 = 0.98r #在圈图中的位置，外径</span><br><span class="line">r0 = 0.89r #在圈图中的位置，内径</span><br><span class="line">min = 10 #展示的数据下限</span><br><span class="line">max = 1000 #展示的数据上限</span><br><span class="line">glyph = circle #散点图的符号类型，圆(circle), 矩形(rectangle), 三角形(triangle)</span><br><span class="line">glyph_size = 2p #散点图符号大小，单位为p</span><br><span class="line">color = pastel1-5-qual-2 #散点图符号颜色，直方图外部线的颜色</span><br><span class="line">stroke_color = pastel1-5-qual-2 #对于散点图，符号外部的颜色</span><br><span class="line">stroke_thickness = 1p #对于散点图，符号外部线的厚度</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line"></span><br><span class="line">&lt;plot&gt;</span><br><span class="line">type = histogram #直方图</span><br><span class="line">file = gc_rate.txt #数据文件</span><br><span class="line">fill_color = pastel1-5-qual-1 #直方图填充色</span><br><span class="line">color = pastel1-5-qual-2 #散点图符号颜色，直方图外部线的颜色</span><br><span class="line">r1 = 0.78r</span><br><span class="line">r0 = 0.69r</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line"></span><br><span class="line">&lt;plot&gt;</span><br><span class="line">type = heatmap #热图</span><br><span class="line">file = repeats_num.txt #数据文件</span><br><span class="line">fill_color = pastel1-5-qual-2</span><br><span class="line">r1 = 0.88r</span><br><span class="line">r0 = 0.79r</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line"></span><br><span class="line">&lt;plot&gt;</span><br><span class="line">type = line #折线图</span><br><span class="line">file = col.txt #数据文件</span><br><span class="line">fill_color = pastel1-5-qual-4</span><br><span class="line">r1 = 0.68r</span><br><span class="line">r0 = 0.59r</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line">&lt;/plots&gt;</span><br><span class="line"></span><br><span class="line"># 6. links模块，用于共线性设置</span><br><span class="line">&lt;links&gt;</span><br><span class="line">&lt;link&gt;</span><br><span class="line">file = anchors.simple_link.txt #共线性数据文件</span><br><span class="line">radius = 0.58r #位置外界</span><br><span class="line">color = blue_a4 #颜色</span><br><span class="line">ribbon = yes</span><br><span class="line"></span><br><span class="line"># 6plus. rules模块，放在link内部，用于为共线性模块不同染色体用不同颜色渲染</span><br><span class="line">&lt;rules&gt;</span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf001&quot; #判断link文件中左侧染色体`var(chr1)`的名字是不是`eq` &quot;scaf001&quot;，如果是颜色就进行下面设置。</span><br><span class="line">color = pastel1-9-qual-9 #颜色</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf002&quot;</span><br><span class="line">color = pastel1-9-qual-7</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf003&quot;</span><br><span class="line">color = pastel1-9-qual-6</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf004&quot;</span><br><span class="line">color = pastel1-9-qual-8</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf005&quot;</span><br><span class="line">color = pastel1-9-qual-5</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf006&quot;</span><br><span class="line">color = pastel1-9-qual-4</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf007&quot;</span><br><span class="line">color = pastel1-9-qual-3</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf008&quot;</span><br><span class="line">color = pastel1-9-qual-2</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf009&quot;</span><br><span class="line">color = pastel1-9-qual-1</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf010&quot;</span><br><span class="line">color = pastel1-5-qual-5</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf011&quot;</span><br><span class="line">color = pastel1-5-qual-4</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf012&quot;</span><br><span class="line">color = pastel1-5-qual-3</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf013&quot;</span><br><span class="line">color = pastel1-5-qual-2</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf014&quot;</span><br><span class="line">color = pastel1-5-qual-1</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line">&lt;/rules&gt;</span><br><span class="line"></span><br><span class="line">&lt;/link&gt;</span><br><span class="line">&lt;/links&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-1-4-1-3-circos-conf参数详解"><a href="#2-1-4-1-3-circos-conf参数详解" class="headerlink" title="2.1.4.1.3. circos.conf参数详解"></a>2.1.4.1.3. circos.conf参数详解</h5><ol>
-<li>颜色选择<br>Circos的颜色用的是<a target="_blank" rel="noopener" href="https://colorbrewer2.org/">colorbrewer2网站</a>的颜色，也可以参考<a target="_blank" rel="noopener" href="http://circos.ca/documentation/tutorials/configuration/colors/images">circos的colors网址</a>。</li>
-</ol>
-<p>Circos中颜色的命名格式为PALETTE-NUMCOLORS-TYPE-IDX：</p>
-<ul>
-<li>PALETTE:调色版名，如rdylbu</li>
-<li>NUMCOLORS: 颜色数目, 11</li>
-<li>调色版类型: div(diverging), seq(sequential), qual(qualitative)</li>
-<li>IDX: 调色版中的颜色索引</li>
-</ul>
-<p>所以brbg-3-div-1代表的是<a target="_blank" rel="noopener" href="http://circos.ca/documentation/tutorials/configuration/colors/images">circos的colors网址</a>里的brbg-div的3组的第一个颜色。</p>
-<ol start="2">
-<li>长度单位<br>控制图形不同元素大小的三个单位，p,r,u。</li>
-</ol>
-<ul>
-<li>p(pixels), 表示绝对大小；如果使用p作为单位，需要参考circos.conf中设置输出图形模块的<image>里定义的radius输出图片半径。</li>
-<li>r(relative), 相对大小；会随着最终图形大小而发生变换。</li>
-<li>u(chromosome unit)，定义chromosome unit之后使用；一般在显示刻度时使用。。</li>
-</ul>
-<h4 id="2-1-4-2-数据文件-——-染色体文件karyotype-txt"><a href="#2-1-4-2-数据文件-——-染色体文件karyotype-txt" class="headerlink" title="2.1.4.2. 数据文件 —— 染色体文件karyotype.txt"></a>2.1.4.2. 数据文件 —— 染色体文件karyotype.txt</h4><p>染色体文件karyotype.txt用于生成染色体模块。</p>
-<h5 id="2-1-4-2-1-染色体文件karyotype-txt的获取"><a href="#2-1-4-2-1-染色体文件karyotype-txt的获取" class="headerlink" title="2.1.4.2.1. 染色体文件karyotype.txt的获取"></a>2.1.4.2.1. 染色体文件karyotype.txt的获取</h5><p>从genome.fa.fai里生成karyotype.txt文件<code>head -12 genome.fa.fai |awk &#39;&#123;print &quot;chr - &quot;$1&quot; &quot;$1&quot; 0 &quot;$2&quot; set3-12-qual-12&quot;&#125;&#39; &gt;karyotype.txt</code>，取前12条染色体。</p>
-<p>修改最后一列来定义染色体颜色，推荐<code>set3-12-qual</code>系列，一共12种，可以依次给到12条染色体。</p>
-<h4 id="2-1-4-3-数据文件-——-线性关系文件-link-txt"><a href="#2-1-4-3-数据文件-——-线性关系文件-link-txt" class="headerlink" title="2.1.4.3. 数据文件 —— 线性关系文件_link.txt"></a>2.1.4.3. 数据文件 —— 线性关系文件_link.txt</h4><p>线性关系文件_link.txt用于生成共线性模块。</p>
-<p>格式是六列数据，用tab分隔，每行都代表一条线，由具有共线性的两组染色体ID、起始位置和终止位置组成。</p>
-<p><code>contig003  7719    355757  contig014   3459    349346</code></p>
-<h5 id="2-1-4-3-1-线性关系文件-link-txt的获取"><a href="#2-1-4-3-1-线性关系文件-link-txt的获取" class="headerlink" title="2.1.4.3.1. 线性关系文件_link.txt的获取"></a>2.1.4.3.1. 线性关系文件_link.txt的获取</h5><p>可以用jcvi生成simple文件，然后用脚本simple2links.py转换成_link.txt文件。</p>
-<p><code>pip install jcvi</code>安装jcvi，可以参考博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/">MCscan</a>。</p>
-<ol>
-<li><p>准备sample.bed和sample.cds两个文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python -m jcvi.formats.gff bed --type=gene --key=ID sample.gff3 &gt;sample.bed #gff2bed</span><br><span class="line">python -m jcvi.formats.bed uniq sample.bed #生成sample.uniq.bed</span><br><span class="line">seqkit grep -f &lt;(cut -f 4 sample.uniq.bed )  sample.cds.fa | seqkit seq -i &gt; sample.cds #提取cds</span><br><span class="line">mv sample.uniq.bed sample.bed</span><br><span class="line">rm sample.leftover.bed</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>运行共线性分析</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m jcvi.compara.catalog ortholog --no_strip_names --cpu=1 sample sample #生成sample.sample.anchors，单个物种就用sample sample，两个物种就准备两套.bed和.cds文件，用sample1 sample2。</span><br><span class="line">python -m jcvi.compara.synteny screen --minspan=30 --simple sample.sample.anchors sample.sample.anchors.new #生成sample.sample.anchors.simple</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>MCScanX<br>从MCScanX结果sample.collinearity中生成类似MCSCAN结果的bv.simple。</p>
-</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -C 1 &quot;#&quot; sample.collinearity |grep -v &quot;^-&quot;  &gt;sample.col</span><br><span class="line">tail -1 sample.collinearity &gt;&gt; sample.col</span><br><span class="line">cat sample.col |sed -e &quot;s/#.* /#/g&quot; -e &quot;s/[^b]*bv/bv/&quot; |tr &#x27;\n&#x27; &#x27; &#x27;|sed &quot;s/ #/\n/g&quot;|awk &#x27;&#123;print $2,$3,$5,$6&quot; 200 &quot;$1&#125;&#x27;|sed -e &quot;s/plus/+/g&quot; -e &quot;s/minus/-/g&quot; |grep -v &quot;#&quot; &gt;sample.simple</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>simple2links<br><code>python simple2links.py sample.sample.anchors.simple #生成sample.sample.anchors.simple_link.txt</code></li>
-</ol>
-<p>sample.sample.anchors.simple_link.txt可以作为circos画共线性的输入文件</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/xuzhougeng/myscripts/blob/master/simple2links.py">simple2links.py脚本地址</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># simple2links.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> argv</span><br><span class="line"></span><br><span class="line">simple_file = argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">ref_bed = simple_file.split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>] + <span class="string">&quot;.bed&quot;</span></span><br><span class="line">qry_bed = simple_file.split(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] + <span class="string">&quot;.bed&quot;</span></span><br><span class="line"></span><br><span class="line">ref_dict = &#123;line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">3</span>]:line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">0</span>:<span class="number">3</span>] <span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(ref_bed)&#125;</span><br><span class="line">qry_dict = &#123;line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">3</span>]:line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">0</span>:<span class="number">3</span>] <span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(qry_bed)&#125;</span><br><span class="line"></span><br><span class="line">fo = <span class="built_in">open</span>(simple_file + <span class="string">&quot;_link.txt&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(simple_file):</span><br><span class="line">    <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    items = line.strip().split(<span class="string">&quot;\t&quot;</span>) </span><br><span class="line">    ref_start_gene = items[<span class="number">0</span>]</span><br><span class="line">    ref_end_gene = items[<span class="number">1</span>]</span><br><span class="line">    qry_start_gene = items[<span class="number">2</span>]</span><br><span class="line">    qry_end_gene = items[<span class="number">3</span>]</span><br><span class="line">    </span><br><span class="line">    ref_chr, ref_start = ref_dict[ref_start_gene][<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">    ref_end = ref_dict[ref_end_gene][<span class="number">2</span>]</span><br><span class="line">    qry_chr, qry_start = qry_dict[qry_start_gene][<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">    qry_end = qry_dict[qry_end_gene][<span class="number">2</span>]</span><br><span class="line">    </span><br><span class="line">    circos_input = [ref_chr, ref_start, ref_end, qry_chr, qry_start, qry_end]</span><br><span class="line">    fo.writelines(<span class="string">&#x27;\t&#x27;</span>.join(circos_input) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">fo.close()</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-1-4-4-数据文件-——-特征图文件"><a href="#2-1-4-4-数据文件-——-特征图文件" class="headerlink" title="2.1.4.4. 数据文件 —— 特征图文件"></a>2.1.4.4. 数据文件 —— 特征图文件</h4><p>特征图文件用于生成折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)等特征图模块。</p>
-<h5 id="2-1-4-4-1-获取特征图文件"><a href="#2-1-4-4-1-获取特征图文件" class="headerlink" title="2.1.4.4.1. 获取特征图文件"></a>2.1.4.4.1. 获取特征图文件</h5><p>特征图文件格式相同，由四列组成，染色体ID(chr)，起始位置(start)，终止位置(end)，特征数据(value[options])。</p>
-<p>前三列是bed格式，最后一列是特征数据，比如在这个位置有几个基因。通常用法是展示染色体的基因密度信息、重复序列密度和GC含量等信息。</p>
-<ol>
-<li><p>准备</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cut -d &#x27; &#x27; -f 3,6 karyotype.txt | tr &#x27; &#x27; &#x27;\t&#x27; &gt;genome.txt #获取基因组文件</span><br><span class="line">bedtools makewindows -g genome.txt -w 100000 &gt;genome.windows #以100kb为滑窗，沿染色体创建窗口</span><br></pre></td></tr></table></figure></li>
-<li><p>基因密度</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zgrep &#x27;[[:blank:]]gene[[:blank:]]&#x27; sample.gff3 |awk &#x27;&#123;print $1&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; &gt;genes.bed #提取基因位置信息</span><br><span class="line">bedtools coverage -a genome.windows -b genes.bed | cut -f 1-4 &gt;genes_num.txt #按照滑窗统计基因密度</span><br></pre></td></tr></table></figure></li>
-<li><p>重复序列密度</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk &#x27;&#123;print $1&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; repeats.gff |grep -v &quot;#&quot; &gt;repeats.bed #提取重复位置信息</span><br><span class="line">bedtools coverage -a genome.windows -b repeats.bed | cut -f 1-4 &gt;repeats_num.txt #按照滑窗统计重复密度</span><br></pre></td></tr></table></figure></li>
-<li><p>GC含量<br><code>bedtools nuc -fi genome.fa -bed genome.windows | cut -f 1-3,5 | sed &#39;1d&#39; &gt; gc_rate.txt #按照滑窗统计GC含量</code></p>
-</li>
-<li><p>共线性区块的基因密度</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat bv.col|sed -e &quot;s/#.* /#/g&quot; -e &quot;s/[^b]*bv/bv/&quot; |tr &#x27;\n&#x27; &#x27; &#x27;|sed &quot;s/ #/\n/g&quot;|awk &#x27;&#123;print $2,$3,$5,$6&#125;&#x27;|grep -v &quot;#&quot; |sed &quot;s/ /\n/g&quot;|sed &quot;/^$/d&quot; |sort |uniq &gt;bv.col.list #获取共线性区块包含的基因列表</span><br><span class="line">grep -f col.list Bauhinia.variegata.gene.gff3 |awk &#x27;$3 == &quot;gene&quot; &#123;print $1&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; &gt;col.bed #获取基因的位置信息</span><br><span class="line">bedtools coverage -a genome.windows -b col.bed |cut -f 1-4 &gt;col.txt #统计共线性基因密度</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="3-references"><a href="#3-references" class="headerlink" title="3. references"></a>3. references</h1><p><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752132/">Circos paper</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3a31ceef711b">xuzhougeng 1</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4b3d3809ac07">xuzhougeng 2</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ea3a8933ace9">xuzhougeng 3</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1658e702ba17">xuzhougeng 4</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/31f26d1e5974">xuzhougeng 5</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/11/16/biosoft_Circos/" data-id="cl1aidmwz002u4gvk29r7g4ob" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Circos/" rel="tag">Circos</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/plot/" rel="tag">plot</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2021/11/19/omics_transcriptome.RNA-seq/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          RNA-sequencing数据分析工具比较
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2021/11/13/bioinfo_GSEA_topGO/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">基因富集分析(gene set enrichment analysis, GSEA)—— topGO</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/">bio</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/bioinfo/">bioinfo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/biosoft/">biosoft</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/concept/">concept</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/evolution/">evolution</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/experiment/">experiment</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/taxon/">taxon</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/">biosoft</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/circos/">circos</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/scripts/">scripts</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/">system</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/Windows/">Windows</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/web/">web</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/">computer language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/R/">R</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/basics/">basics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/shell/">shell</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/text-processing/">text processing</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/">omics</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/omics/genome/">genome</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/transcriptome/">transcriptome</a></li></ul></li></ul>
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/4dtv/" rel="tag">4dtv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">;</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BUSCO/" rel="tag">BUSCO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bauhinia/" rel="tag">Bauhinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioconductor/" rel="tag">Bioconductor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAFE/" rel="tag">CAFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CDS/" rel="tag">CDS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRAN/" rel="tag">CRAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Circos/" rel="tag">Circos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clustal/" rel="tag">Clustal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DESeq2/" rel="tag">DESeq2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EDTA/" rel="tag">EDTA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GATK/" rel="tag">GATK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GOEAST/" rel="tag">GOEAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GSEA/" rel="tag">GSEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gblocks/" rel="tag">Gblocks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GenBank/" rel="tag">GenBank</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISAT2/" rel="tag">HISAT2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KOBAS-i/" rel="tag">KOBAS-i</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KaKs-Calculator2-0/" rel="tag">KaKs_Calculator2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoRDEC/" rel="tag">LoRDEC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MAFFT/" rel="tag">MAFFT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCScanX/" rel="tag">MCScanX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCscan/" rel="tag">MCscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSA/" rel="tag">MSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MUSCLE/" rel="tag">MUSCLE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multiple-Sequence-Alignment/" rel="tag">Multiple Sequence Alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oases/" rel="tag">Oases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoFinder/" rel="tag">OrthoFinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoMCL/" rel="tag">OrthoMCL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PAL2NAL/" rel="tag">PAL2NAL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PANNZER2/" rel="tag">PANNZER2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PATH/" rel="tag">PATH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PCR/" rel="tag">PCR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRANK/" rel="tag">PRANK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT/" rel="tag">ParaAT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT-pl/" rel="tag">ParaAT.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QUAST/" rel="tag">QUAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R-package/" rel="tag">R package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-seq/" rel="tag">RNA-seq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-sequencing/" rel="tag">RNA-sequencing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROUSFinder2-0-py/" rel="tag">ROUSFinder2.0.py</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RStudio/" rel="tag">RStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatMasker/" rel="tag">RepeatMasker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatModeler/" rel="tag">RepeatModeler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rtools/" rel="tag">Rtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STARlong/" rel="tag">STARlong</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Salmon-SMEM/" rel="tag">Salmon-SMEM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StringTie/" rel="tag">StringTie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TE/" rel="tag">TE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TreeMix/" rel="tag">TreeMix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UpSetR/" rel="tag">UpSetR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Venn/" rel="tag">Venn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VennDiagram/" rel="tag">VennDiagram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGDI/" rel="tag">WGDI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\&&</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\||</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analog/" rel="tag">analog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/" rel="tag">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/batch-run-sh/" rel="tag">batch_run.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bifurcated-tree/" rel="tag">bifurcated tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/" rel="tag">bootstrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/build-website/" rel="tag">build website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chronogram/" rel="tag">chronogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladistics/" rel="tag">cladistics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladogram/" rel="tag">cladogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clusterProfiler/" rel="tag">clusterProfiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codon/" rel="tag">codon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/colinearity/" rel="tag">colinearity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combine/" rel="tag">combine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crown-groups/" rel="tag">crown groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deploy-website/" rel="tag">deploy website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/divergence-time/" rel="tag">divergence time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eggnog-mapper/" rel="tag">eggnog-mapper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/evolutionary-tree/" rel="tag">evolutionary tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experiment/" rel="tag">experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract/" rel="tag">extract</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-intron-info-pl/" rel="tag">extract_intron_info.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-single-copy-genes-sh/" rel="tag">extract_single_copy_genes.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/facet-plot/" rel="tag">facet_plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/" rel="tag">flex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/for/" rel="tag">for</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fossil-time/" rel="tag">fossil time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-annotation/" rel="tag">functional annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-family/" rel="tag">gene family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-flow/" rel="tag">gene flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-set-enrichment-analysis/" rel="tag">gene set enrichment analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome/" rel="tag">genome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-submit/" rel="tag">genome submit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geom-taxalink/" rel="tag">geom_taxalink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggdensitree/" rel="tag">ggdensitree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggplot2/" rel="tag">ggplot2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggstance/" rel="tag">ggstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggtree/" rel="tag">ggtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gplots/" rel="tag">gplots</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/homolog/" rel="tag">homolog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interproscan/" rel="tag">interproscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/itol/" rel="tag">itol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jcvi/" rel="tag">jcvi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/" rel="tag">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/line-separator/" rel="tag">line separator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loop/" rel="tag">loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mcmctree/" rel="tag">mcmctree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/molecular-experiment/" rel="tag">molecular experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monophyly/" rel="tag">monophyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-transcriptome-assembly-with-ref-sh/" rel="tag">multi-transcriptome_assembly_with_ref.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiPhylo/" rel="tag">multiPhylo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthogroup/" rel="tag">orthogroup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ortholog/" rel="tag">ortholog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paml/" rel="tag">paml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paralog/" rel="tag">paralog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paraphyly/" rel="tag">paraphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paste/" rel="tag">paste</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-reticulum/" rel="tag">phylogenetic reticulum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-tree/" rel="tag">phylogenetic tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogeny/" rel="tag">phylogeny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogram/" rel="tag">phylogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plot/" rel="tag">plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/polyphyly/" rel="tag">polyphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/population-networks/" rel="tag">population networks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protein/" rel="tag">protein</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/" rel="tag">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reinstall/" rel="tag">reinstall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rename/" rel="tag">rename</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repeat-sequences/" rel="tag">repeat sequences</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/" rel="tag">scripts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/" rel="tag">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sequence-alignment/" rel="tag">sequence alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sort/" rel="tag">sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stem-groups/" rel="tag">stem groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sync/" rel="tag">sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synteny/" rel="tag">synteny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table2asn/" rel="tag">table2asn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topGO/" rel="tag">topGO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/" rel="tag">tr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/treeio/" rel="tag">treeio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimAl/" rel="tag">trimAl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimming/" rel="tag">trimming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/website-maintenance/" rel="tag">website maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/while/" rel="tag">while</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/" rel="tag">xargs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xenolog/" rel="tag">xenolog</a></li></ul>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/4dtv/" style="font-size: 10px;">4dtv</a> <a href="/tags/" style="font-size: 10px;">;</a> <a href="/tags/BUSCO/" style="font-size: 10px;">BUSCO</a> <a href="/tags/Bauhinia/" style="font-size: 10px;">Bauhinia</a> <a href="/tags/Bioconductor/" style="font-size: 10px;">Bioconductor</a> <a href="/tags/CAFE/" style="font-size: 10px;">CAFE</a> <a href="/tags/CDS/" style="font-size: 10px;">CDS</a> <a href="/tags/CRAN/" style="font-size: 10px;">CRAN</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Circos/" style="font-size: 10px;">Circos</a> <a href="/tags/Clustal/" style="font-size: 10px;">Clustal</a> <a href="/tags/DESeq2/" style="font-size: 10px;">DESeq2</a> <a href="/tags/EDTA/" style="font-size: 10px;">EDTA</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/GATK/" style="font-size: 10px;">GATK</a> <a href="/tags/GOEAST/" style="font-size: 10px;">GOEAST</a> <a href="/tags/GSEA/" style="font-size: 14px;">GSEA</a> <a href="/tags/Gblocks/" style="font-size: 10px;">Gblocks</a> <a href="/tags/GenBank/" style="font-size: 10px;">GenBank</a> <a href="/tags/HISAT2/" style="font-size: 10px;">HISAT2</a> <a href="/tags/KOBAS-i/" style="font-size: 10px;">KOBAS-i</a> <a href="/tags/KaKs-Calculator2-0/" style="font-size: 10px;">KaKs_Calculator2.0</a> <a href="/tags/Ks/" style="font-size: 12px;">Ks</a> <a href="/tags/LoRDEC/" style="font-size: 10px;">LoRDEC</a> <a href="/tags/MAFFT/" style="font-size: 10px;">MAFFT</a> <a href="/tags/MCScanX/" style="font-size: 10px;">MCScanX</a> <a href="/tags/MCscan/" style="font-size: 10px;">MCscan</a> <a href="/tags/MSA/" style="font-size: 10px;">MSA</a> <a href="/tags/MUSCLE/" style="font-size: 10px;">MUSCLE</a> <a href="/tags/Multiple-Sequence-Alignment/" style="font-size: 10px;">Multiple Sequence Alignment</a> <a href="/tags/Oases/" style="font-size: 10px;">Oases</a> <a href="/tags/OrthoFinder/" style="font-size: 10px;">OrthoFinder</a> <a href="/tags/OrthoMCL/" style="font-size: 10px;">OrthoMCL</a> <a href="/tags/PAL2NAL/" style="font-size: 10px;">PAL2NAL</a> <a href="/tags/PANNZER2/" style="font-size: 10px;">PANNZER2</a> <a href="/tags/PATH/" style="font-size: 10px;">PATH</a> <a href="/tags/PCR/" style="font-size: 10px;">PCR</a> <a href="/tags/PRANK/" style="font-size: 10px;">PRANK</a> <a href="/tags/ParaAT/" style="font-size: 10px;">ParaAT</a> <a href="/tags/ParaAT-pl/" style="font-size: 10px;">ParaAT.pl</a> <a href="/tags/QUAST/" style="font-size: 10px;">QUAST</a> <a href="/tags/R/" style="font-size: 16px;">R</a> <a href="/tags/R-package/" style="font-size: 14px;">R package</a> <a href="/tags/RNA-seq/" style="font-size: 10px;">RNA-seq</a> <a href="/tags/RNA-sequencing/" style="font-size: 10px;">RNA-sequencing</a> <a href="/tags/ROUSFinder2-0-py/" style="font-size: 10px;">ROUSFinder2.0.py</a> <a href="/tags/RStudio/" style="font-size: 10px;">RStudio</a> <a href="/tags/RepeatMasker/" style="font-size: 10px;">RepeatMasker</a> <a href="/tags/RepeatModeler/" style="font-size: 10px;">RepeatModeler</a> <a href="/tags/Rtools/" style="font-size: 10px;">Rtools</a> <a href="/tags/STARlong/" style="font-size: 10px;">STARlong</a> <a href="/tags/Salmon-SMEM/" style="font-size: 10px;">Salmon-SMEM</a> <a href="/tags/StringTie/" style="font-size: 10px;">StringTie</a> <a href="/tags/TE/" style="font-size: 10px;">TE</a> <a href="/tags/TreeMix/" style="font-size: 10px;">TreeMix</a> <a href="/tags/UpSetR/" style="font-size: 10px;">UpSetR</a> <a href="/tags/Venn/" style="font-size: 10px;">Venn</a> <a href="/tags/VennDiagram/" style="font-size: 10px;">VennDiagram</a> <a href="/tags/WGD/" style="font-size: 12px;">WGD</a> <a href="/tags/WGDI/" style="font-size: 10px;">WGDI</a> <a href="/tags/" style="font-size: 10px;">\&&</a> <a href="/tags/" style="font-size: 10px;">\||</a> <a href="/tags/analog/" style="font-size: 10px;">analog</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/batch-run-sh/" style="font-size: 10px;">batch_run.sh</a> <a href="/tags/bifurcated-tree/" style="font-size: 10px;">bifurcated tree</a> <a href="/tags/biosoft/" style="font-size: 18px;">biosoft</a> <a href="/tags/blog/" style="font-size: 12px;">blog</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/build-website/" style="font-size: 10px;">build website</a> <a href="/tags/chronogram/" style="font-size: 10px;">chronogram</a> <a href="/tags/cladistics/" style="font-size: 10px;">cladistics</a> <a href="/tags/cladogram/" style="font-size: 10px;">cladogram</a> <a href="/tags/clusterProfiler/" style="font-size: 12px;">clusterProfiler</a> <a href="/tags/codon/" style="font-size: 10px;">codon</a> <a href="/tags/colinearity/" style="font-size: 10px;">colinearity</a> <a href="/tags/combine/" style="font-size: 10px;">combine</a> <a href="/tags/concept/" style="font-size: 12px;">concept</a> <a href="/tags/crown-groups/" style="font-size: 10px;">crown groups</a> <a href="/tags/deploy-website/" style="font-size: 10px;">deploy website</a> <a href="/tags/divergence-time/" style="font-size: 10px;">divergence time</a> <a href="/tags/eggnog-mapper/" style="font-size: 10px;">eggnog-mapper</a> <a href="/tags/evolutionary-tree/" style="font-size: 12px;">evolutionary tree</a> <a href="/tags/experiment/" style="font-size: 10px;">experiment</a> <a href="/tags/extract/" style="font-size: 10px;">extract</a> <a href="/tags/extract-intron-info-pl/" style="font-size: 10px;">extract_intron_info.pl</a> <a href="/tags/extract-single-copy-genes-sh/" style="font-size: 10px;">extract_single_copy_genes.sh</a> <a href="/tags/facet-plot/" style="font-size: 10px;">facet_plot</a> <a href="/tags/flex/" style="font-size: 10px;">flex</a> <a href="/tags/for/" style="font-size: 10px;">for</a> <a href="/tags/fossil-time/" style="font-size: 10px;">fossil time</a> <a href="/tags/functional-annotation/" style="font-size: 10px;">functional annotation</a> <a href="/tags/gene-family/" style="font-size: 10px;">gene family</a> <a href="/tags/gene-flow/" style="font-size: 10px;">gene flow</a> <a href="/tags/gene-set-enrichment-analysis/" style="font-size: 14px;">gene set enrichment analysis</a> <a href="/tags/genome/" style="font-size: 10px;">genome</a> <a href="/tags/genome-annotation/" style="font-size: 14px;">genome annotation</a> <a href="/tags/genome-assessment/" style="font-size: 12px;">genome assessment</a> <a href="/tags/genome-submit/" style="font-size: 10px;">genome submit</a> <a href="/tags/geom-taxalink/" style="font-size: 10px;">geom_taxalink</a> <a href="/tags/ggdensitree/" style="font-size: 10px;">ggdensitree</a> <a href="/tags/ggplot2/" style="font-size: 10px;">ggplot2</a> <a href="/tags/ggstance/" style="font-size: 10px;">ggstance</a> <a href="/tags/ggtree/" style="font-size: 10px;">ggtree</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/gplots/" style="font-size: 10px;">gplots</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/homolog/" style="font-size: 10px;">homolog</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/interproscan/" style="font-size: 10px;">interproscan</a> <a href="/tags/itol/" style="font-size: 10px;">itol</a> <a href="/tags/jcvi/" style="font-size: 10px;">jcvi</a> <a href="/tags/jquery/" style="font-size: 10px;">jquery</a> <a href="/tags/line-separator/" style="font-size: 10px;">line separator</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/loop/" style="font-size: 10px;">loop</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mcmctree/" style="font-size: 10px;">mcmctree</a> <a href="/tags/molecular-experiment/" style="font-size: 10px;">molecular experiment</a> <a href="/tags/monophyly/" style="font-size: 10px;">monophyly</a> <a href="/tags/multi-transcriptome-assembly-with-ref-sh/" style="font-size: 10px;">multi-transcriptome_assembly_with_ref.sh</a> <a href="/tags/multiPhylo/" style="font-size: 10px;">multiPhylo</a> <a href="/tags/orthogroup/" style="font-size: 10px;">orthogroup</a> <a href="/tags/ortholog/" style="font-size: 10px;">ortholog</a> <a href="/tags/orthology/" style="font-size: 12px;">orthology</a> <a href="/tags/paml/" style="font-size: 12px;">paml</a> <a href="/tags/paralog/" style="font-size: 10px;">paralog</a> <a href="/tags/paraphyly/" style="font-size: 10px;">paraphyly</a> <a href="/tags/paste/" style="font-size: 10px;">paste</a> <a href="/tags/phylogenetic-reticulum/" style="font-size: 10px;">phylogenetic reticulum</a> <a href="/tags/phylogenetic-tree/" style="font-size: 10px;">phylogenetic tree</a> <a href="/tags/phylogeny/" style="font-size: 16px;">phylogeny</a> <a href="/tags/phylogram/" style="font-size: 10px;">phylogram</a> <a href="/tags/plot/" style="font-size: 14px;">plot</a> <a href="/tags/polyphyly/" style="font-size: 10px;">polyphyly</a> <a href="/tags/population-networks/" style="font-size: 10px;">population networks</a> <a href="/tags/protein/" style="font-size: 10px;">protein</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reinstall/" style="font-size: 10px;">reinstall</a> <a href="/tags/rename/" style="font-size: 10px;">rename</a> <a href="/tags/repeat-sequences/" style="font-size: 10px;">repeat sequences</a> <a href="/tags/scripts/" style="font-size: 10px;">scripts</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/sequence-alignment/" style="font-size: 12px;">sequence alignment</a> <a href="/tags/sort/" style="font-size: 10px;">sort</a> <a href="/tags/stem-groups/" style="font-size: 10px;">stem groups</a> <a href="/tags/sync/" style="font-size: 12px;">sync</a> <a href="/tags/synteny/" style="font-size: 10px;">synteny</a> <a href="/tags/system/" style="font-size: 10px;">system</a> <a href="/tags/table2asn/" style="font-size: 10px;">table2asn</a> <a href="/tags/topGO/" style="font-size: 12px;">topGO</a> <a href="/tags/tr/" style="font-size: 10px;">tr</a> <a href="/tags/treeio/" style="font-size: 10px;">treeio</a> <a href="/tags/trimAl/" style="font-size: 10px;">trimAl</a> <a href="/tags/trimming/" style="font-size: 10px;">trimming</a> <a href="/tags/tutorial/" style="font-size: 20px;">tutorial</a> <a href="/tags/website-maintenance/" style="font-size: 10px;">website maintenance</a> <a href="/tags/while/" style="font-size: 10px;">while</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/xargs/" style="font-size: 10px;">xargs</a> <a href="/tags/xenolog/" style="font-size: 10px;">xenolog</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/03/22/omics_genome.submit/">提交基因组到公共数据库 —— 以GenBank为例</a>
-          </li>
-        
-          <li>
-            <a href="/2022/03/20/bioinfo_geneflow_treemix/">用TreeMix推断居群间基因流</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/24/bioinfo_evolutionary.tree/">绘制进化树 —— R包treeio+ggtree</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/16/linux_command/">shell的常用命令</a>
-          </li>
-        
-          <li>
-            <a href="/2021/12/28/R_install/">R及相关软件的安装</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 南方枝叶<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
