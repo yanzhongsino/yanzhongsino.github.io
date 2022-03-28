@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>基因组WGD事件的鉴定和时间估算 | 生信技工</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组WGD事件的鉴定和时间估算">
+<meta property="og:url" content="http://example.com/2021/11/27/bioinfo_WGD/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-27T09:50:00.000Z">
+<meta property="article:modified_time" content="2022-02-15T06:57:11.405Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="MCScanX">
+<meta property="article:tag" content="Ks">
+<meta property="article:tag" content="WGD">
+<meta property="article:tag" content="ParaAT.pl">
+<meta property="article:tag" content="KaKs_Calculator2.0">
+<meta property="article:tag" content="ggplot2">
+<meta property="article:tag" content="paml">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">生信技工</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-bioinfo_WGD" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/27/bioinfo_WGD/" class="article-date">
+  <time datetime="2021-11-27T09:50:00.000Z" itemprop="datePublished">2021-11-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/bioinfo/">bioinfo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基因组WGD事件的鉴定和时间估算
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=29808885&auto=1&height=32"></iframe></div>
+
+<h1 id="1-MCScanX介绍"><a href="#1-MCScanX介绍" class="headerlink" title="1. MCScanX介绍"></a>1. MCScanX介绍</h1><p>MCScanX调整<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/">MCScan算法</a>进行检测基因组间或基因组内的同线性，并附加了14个下游分析和可视化的脚本。</p>
+<h1 id="2-MCScanX同线性分析"><a href="#2-MCScanX同线性分析" class="headerlink" title="2. MCScanX同线性分析"></a>2. MCScanX同线性分析</h1><h2 id="2-1-准备输入文件"><a href="#2-1-准备输入文件" class="headerlink" title="2.1. 准备输入文件"></a>2.1. 准备输入文件</h2><p>MCScanX做同线性分析需要两个输入文件sample.gff(四列数据)和sample.blast。</p>
+<p>如果是多个物种，则把多个物种的gff3文件和pep.fa文件合并后再准备sample.gff和sample.blast输入文件。</p>
+<ol>
+<li>sample.gff<br><code>cat sample.gene.gff3 |awk &#39;&#123;if($3==&quot;gene&quot;)&#123;print $1,$9,$4,$5&#125;&#125;&#39;|sed &quot;s/;.*;//g&quot;|sed &quot;s/ID=//g&quot;|sed &quot;s/ /\t/g&quot; &gt;sample.gff #准备gff文件</code></li>
+<li>sample.blast<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -in sample.pep.fa -dbtype prot -out index/sample.pep #给蛋白序列建库</span><br><span class="line">blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 -num_threads 12 -outfmt 6 -num_alignments 5 &amp; #进行自我比对，生成6号格式的比对结果sample.blast</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-2-运行MCScanX"><a href="#2-2-运行MCScanX" class="headerlink" title="2.2. 运行MCScanX"></a>2.2. 运行MCScanX</h2><p>在有sample.gff和sample.blast两个文件的目录下，指定前缀sample运行<code>MCScanX sample</code>。</p>
+<p>重要参数解释：</p>
+<ul>
+<li>-s MATCH_SIZE,default: 5。每个共线性区块包含的基因数量的下限。</li>
+<li>-m MAX_GAPS，default：25。在共线性区块中允许的最大gaps数量。</li>
+<li>-b patterns of collinear blocks。0:intra- and inter-species (default); 1:intra-species; 2:inter-species。</li>
+</ul>
+<h2 id="2-3-结果文件"><a href="#2-3-结果文件" class="headerlink" title="2.3. 结果文件"></a>2.3. 结果文件</h2><ul>
+<li>主要的结果文件是<strong>sample.collinearity</strong>。以#开头的参数(parameters)和基本统计信息(statistics)，以及Alignment 0起始的共线性区块列表信息。</li>
+<li>sample.html #目录，内含多个文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">############### Parameters ###############</span><br><span class="line"># MATCH_SCORE: 50</span><br><span class="line"># MATCH_SIZE: 5</span><br><span class="line"># GAP_PENALTY: -1</span><br><span class="line"># OVERLAP_WINDOW: 5</span><br><span class="line"># E_VALUE: 1e-05</span><br><span class="line"># MAX GAPS: 25</span><br><span class="line">############### Statistics ###############</span><br><span class="line"># Number of collinear genes: 21371, Percentage: 56.25</span><br><span class="line"># Number of all genes: 37996</span><br><span class="line">##########################################</span><br><span class="line">## Alignment 0: score=352.0 e_value=1.2e-17 N=8 scaf014&amp;scaf014 plus</span><br><span class="line">477-  0:	bv37796	bv37889	  3e-06</span><br><span class="line">477-  1:	bv37820	bv37905	  6e-24</span><br><span class="line">477-  2:	bv37822	bv37926	  9e-29</span><br><span class="line">477-  3:	bv37826	bv37930	  4e-62</span><br><span class="line">477-  4:	bv37828	bv37931	  1e-74</span><br><span class="line">477-  5:	bv37829	bv37932	 3e-142</span><br><span class="line">477-  6:	bv37830	bv37933	  6e-78</span><br><span class="line">477-  7:	bv37832	bv37934	  3e-76</span><br><span class="line">## Alignment 1: score=300.0 e_value=6.1e-08 N=6 scaf014&amp;scaf014 minus</span><br><span class="line">478-  0:	bv35514	bv35525	      0</span><br><span class="line">478-  1:	bv35515	bv35524	      0</span><br><span class="line">478-  2:	bv35516	bv35523	  1e-81</span><br><span class="line">478-  3:	bv35517	bv35522	      0</span><br><span class="line">478-  4:	bv35518	bv35521	 1e-115</span><br><span class="line">478-  5:	bv35519	bv35520	      0</span><br><span class="line">... ...</span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-MCScanX下游分析"><a href="#3-MCScanX下游分析" class="headerlink" title="3. MCScanX下游分析"></a>3. MCScanX下游分析</h1><h2 id="3-1-计算共线性区块Ks"><a href="#3-1-计算共线性区块Ks" class="headerlink" title="3.1. 计算共线性区块Ks"></a>3.1. 计算共线性区块Ks</h2><p>tips:需要检查得到的结果中Ks值是否有负值或NA等无效数据，并过滤无效数据。</p>
+<h3 id="3-1-1-方案一：MCScanX的downstream-analyses目录包含一些下游脚本，其中有计算kaks的脚本add-ka-and-ks-to-collinearity-pl"><a href="#3-1-1-方案一：MCScanX的downstream-analyses目录包含一些下游脚本，其中有计算kaks的脚本add-ka-and-ks-to-collinearity-pl" class="headerlink" title="3.1.1. 方案一：MCScanX的downstream_analyses目录包含一些下游脚本，其中有计算kaks的脚本add_ka_and_ks_to_collinearity.pl"></a>3.1.1. 方案一：MCScanX的downstream_analyses目录包含一些下游脚本，其中有计算kaks的脚本add_ka_and_ks_to_collinearity.pl</h3><p><code>add_ka_and_ks_to_collinearity.pl -i sample.collinearity -d sample.cds.fa -o sample.kaks &gt; out.log 2&gt;&amp;1</code> #注意算出的部分kaks值为-2的问题，未找到解决方案</p>
+<h3 id="3-1-2-方案二：ParaAT-pl-KaKs-Calculator2-0"><a href="#3-1-2-方案二：ParaAT-pl-KaKs-Calculator2-0" class="headerlink" title="3.1.2. 方案二：ParaAT.pl+KaKs_Calculator2.0"></a>3.1.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</h3><ul>
+<li>ParaAT.pl用于根据同源基因对list生成比对的gene对cds序列，并可以指定输出格式，如axt格式；</li>
+<li>KaKs_Calculator用于计算基因对的kaks。</li>
+</ul>
+<p>用还会用到两个脚本:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py">axt2one-line.py</a>转换axt格式为单行</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl">calculate_4DTV_correction.pl</a>计算4dtv。</li>
+</ul>
+<ol>
+<li>安装ParaAT.pl<br>参考<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align.pep2cds/">blog.ParaAT</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装KaKs_Calculator2.0<br><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">KaKs_Calculator2.0下载地址</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
+
+<p>然后把.&#x2F;KaKs_Calculator2.0&#x2F;bin&#x2F;Linux&#x2F;和.&#x2F;KaKs_Calculator2.0&#x2F;src&#x2F;添加到环境变量即可使用KaKs_Calculator和AXTConvertor命令。</p>
+<ol start="3">
+<li><p>用ParaAT.pl获取共线性基因对比对序列</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat sample.collinearity |grep -v &quot;^#&quot;|cut -f2,3 &gt;sample.homolog #提取blocks的同源gene对</span><br><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -g -k -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子；-o指定生成目录；加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢，推荐手动用KaKs_Calculator的YN模型，生成sample.axt.kaks文件。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用KaKs_Calculator手动计算共线性基因对的KaKs和4dtv值<br>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd sample.paraat</span><br><span class="line">for i in `ls |grep &quot;axt&quot;`;do KaKs_Calculator -i $i -o $&#123;i&#125;.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br><span class="line">- 计算4dtv</span><br><span class="line">for i in `ls |grep &quot;axt&quot;`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br><span class="line">cd ..</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line"></span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-ggplot2画密度分布图和峰值"><a href="#3-2-ggplot2画密度分布图和峰值" class="headerlink" title="3.2. ggplot2画密度分布图和峰值"></a>3.2. ggplot2画密度分布图和峰值</h2><h3 id="3-2-1-ggplot2画密度分布图"><a href="#3-2-1-ggplot2画密度分布图" class="headerlink" title="3.2.1. ggplot2画密度分布图"></a>3.2.1. ggplot2画密度分布图</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>ggplot2<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>ggpmisc<span class="punctuation">)</span></span><br><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;all.results&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">)</span></span><br><span class="line">p <span class="operator">&lt;-</span> ggplot<span class="punctuation">(</span>data<span class="punctuation">,</span> aes<span class="punctuation">(</span>Ks<span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">+</span> geom_density<span class="punctuation">(</span>size<span class="operator">=</span><span class="number">1</span><span class="punctuation">,</span>color<span class="operator">=</span><span class="string">&quot;black&quot;</span><span class="punctuation">)</span><span class="operator">+</span>xlab<span class="punctuation">(</span><span class="string">&quot;Synonymous substitution rate(Ks)&quot;</span><span class="punctuation">)</span><span class="operator">+</span>ylab<span class="punctuation">(</span><span class="string">&quot;Percent of Total Paralogs&quot;</span><span class="punctuation">)</span><span class="operator">+</span>theme_classic<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">+</span>scale_y_continuous<span class="punctuation">(</span>breaks<span class="operator">=</span>seq<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">2.5</span><span class="punctuation">,</span> <span class="number">0.2</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="operator">+</span>xlim<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">3</span><span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;Ks.pdf&quot;</span><span class="punctuation">,</span>plot<span class="operator">=</span>p<span class="punctuation">,</span>width<span class="operator">=</span><span class="number">10</span><span class="punctuation">,</span>height<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-ggplot2峰值标定"><a href="#3-2-2-ggplot2峰值标定" class="headerlink" title="3.2.2. ggplot2峰值标定"></a>3.2.2. ggplot2峰值标定</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pb <span class="operator">&lt;-</span> ggplot_build<span class="punctuation">(</span>p<span class="punctuation">)</span></span><br><span class="line">pic <span class="operator">&lt;-</span> p <span class="operator">+</span> stat_peaks<span class="punctuation">(</span>data <span class="operator">=</span> pb<span class="punctuation">[[</span><span class="string">&#x27;data&#x27;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="number">1</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">,</span> aes<span class="punctuation">(</span>x<span class="operator">=</span>x<span class="punctuation">,</span> y<span class="operator">=</span>density<span class="punctuation">)</span><span class="punctuation">,</span> geom<span class="operator">=</span> <span class="string">&#x27;text&#x27;</span><span class="punctuation">,</span> color<span class="operator">=</span><span class="string">&quot;red&quot;</span><span class="punctuation">,</span> <span class="punctuation">,</span>vjust<span class="operator">=</span><span class="operator">-</span><span class="number">0.5</span><span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;Ks_peaks.pdf&quot;</span><span class="punctuation">,</span>plot<span class="operator">=</span>pic<span class="punctuation">,</span>width<span class="operator">=</span><span class="number">10</span><span class="punctuation">,</span>height<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>在密度分布图里得到红色标记的峰值。</p>
+<h3 id="3-2-3-多个密度图"><a href="#3-2-3-多个密度图" class="headerlink" title="3.2.3. 多个密度图"></a>3.2.3. 多个密度图</h3><p>同时展示多组Ks数据分布，可以把数据合并，添加一列作为分类标签，通过colour颜色参数指定这个分类标签列，则可以实现一张图上展示多个密度图。</p>
+<p><code>ggplot(data)+geom_density(aes(x=V3,colour=V5),adjust=2)+xlim(0,0.5)+theme_classic()</code> #指定第三列V3为数据，第五列V5为分类依据并赋予不同颜色。</p>
+<h3 id="3-2-4-通过密度分布图判断WGD"><a href="#3-2-4-通过密度分布图判断WGD" class="headerlink" title="3.2.4. 通过密度分布图判断WGD"></a>3.2.4. 通过密度分布图判断WGD</h3><p>一般认为，Ks密度分布图如果有明显的峰，一个峰代表对应一次WGD事件。<br>通过峰的数量和对应的Ks大小可以判断WGD事件的次数和发生时间。</p>
+<h2 id="3-3-WGD发生的时间"><a href="#3-3-WGD发生的时间" class="headerlink" title="3.3. WGD发生的时间"></a>3.3. WGD发生的时间</h2><p>通过Ks的密度分布图鉴定得到WGD事件发生的证据之后，有多种方法可以估算WGD发生的时间。</p>
+<h3 id="3-3-1-通过Ks-x3D-2μT计算时间"><a href="#3-3-1-通过Ks-x3D-2μT计算时间" class="headerlink" title="3.3.1. 通过Ks&#x3D;2μT计算时间"></a>3.3.1. 通过Ks&#x3D;2μT计算时间</h3><p>依据公式Ks&#x3D;2μT来计算时间T，依赖准确的进化速率μ，μ通常引用近缘类群的已有权威研究。</p>
+<p>进化速率μ：</p>
+<ul>
+<li>蕨类植物的同义突变率：4.79e-9 subst.&#x2F;syn. site&#x2F;year :the first estimate of fern nuclear genome evolutionary rates with polypodiaceous nuclear genomes (Barker 2009)</li>
+<li>水稻：2.5e-8 subst.&#x2F;syn. site&#x2F;year</li>
+</ul>
+<h3 id="3-3-2-通过进化树估算时间"><a href="#3-3-2-通过进化树估算时间" class="headerlink" title="3.3.2. 通过进化树估算时间"></a>3.3.2. 通过进化树估算时间</h3><ul>
+<li>用代表WGD的Ks值附近的同线性基因对制作两套样品的单倍型数据，然后选取一到多个近缘种的蛋白序列与其中一套单倍型做直系同源基因分析，用找到的直系同源单拷贝基因建树（把两套单倍型数据当作两个物种来建树），通过化石或者二次标定的方法用paml的mcmctree模块计算两套单倍型的分化时间，即为WGD发生的时间。</li>
+<li>如果物种分化时间的尺度太大而不能准确估算WGD时间，可以先用大尺度的系统发育树做近缘种和目标物种的分化时间的估算，然后在做WGD时间估算时只用一个近缘种加上近缘种与目标物种的分化时间标定来获得更准确的WGD时间估计结果。</li>
+</ul>
+<h4 id="3-3-2-1-获取sample发生WGD的两套基因"><a href="#3-3-2-1-获取sample发生WGD的两套基因" class="headerlink" title="3.3.2.1. 获取sample发生WGD的两套基因"></a>3.3.2.1. 获取sample发生WGD的两套基因</h4><ol>
+<li>前面分析中计算Ks的分布峰值假设在<strong>0.05</strong>，取Ks值在0.05正负25%的范围，即[0.0375-0.0625]之间的基因对。<br><code>cat all.results |awk &#39;$3&gt;0.0375 &amp;&amp; $3&gt;0.0625 &#123;print $1&#125; |sed &quot;s/-/\t/g&quot; &gt;wgd.homologs</code></li>
+<li>基因对中若有一个基因对多个基因的情况，则选取Ks最接近0.05的那对。</li>
+<li>获取两套基因list。<br><code>cut -f1 wgd.homologs &gt;wgd_H1.homologs</code>;<br><code>cut -f2 wgd.homologs &gt;wgd_H2.homologs</code></li>
+</ol>
+<h4 id="3-3-2-2-选近缘种和分化时间"><a href="#3-3-2-2-选近缘种和分化时间" class="headerlink" title="3.3.2.2. 选近缘种和分化时间"></a>3.3.2.2. 选近缘种和分化时间</h4><ol>
+<li>参考近年发表的权威组学系统发育文章选取近缘种和物种分化时间数据。</li>
+<li>这里假设选取了两个近缘物种sampleA和sampleB。sample发生WGD形成的两套单倍型H1和H2，目标物种sample与近缘种sampleA的分化时间已知为88Ma。</li>
+<li>确定物种树拓扑结构：<code>(((sampleH1,sampleH2),sampleA)&#39;&lt;0.88&gt;0.88),sampleB;</code>，以sampleB为外类群。</li>
+</ol>
+<h4 id="3-3-2-3-orthofinder找直系同源基因"><a href="#3-3-2-3-orthofinder找直系同源基因" class="headerlink" title="3.3.2.3. orthofinder找直系同源基因"></a>3.3.2.3. orthofinder找直系同源基因</h4><ol>
+<li>根据基因对提取蛋白序列，任意用一个（这里用wgd_H1.homologs)提取蛋白序列：<code>seqkit grep -n -f wgd_H1.homologs sample.pep &gt; wgd_H1.pep</code></li>
+<li>与其他两个近缘种的蛋白序列一起，用orthofinder找直系同源基因。</li>
+</ol>
+<ul>
+<li>orthofinder使用方法：把所有物种的pep蛋白序列（两个近缘物种加上wgd_H1.pep）放进一个文件夹(directory)，注意蛋白序列中不能有.&#x2F;*等符号（常用来代表终止密码子）。</li>
+<li>运行<code>orthofinder -f directory -t 24</code> # -t指定线程</li>
+<li>结果文件的Orthogroups目录下，Orthogroups.txt包含所有直系同源基因，Orthogroups_SingleCopyOrthologues.txt包含单拷贝的直系同源基因。</li>
+<li>根据Orthogroups_SingleCopyOrthologues.txt把Orthogroups.txt里基因信息提取出来,<code>grep -f Orthogroups_SingleCopyOrthologues.txt Orthogroups.tsv &gt;OG.txt</code>。OG.txt文件内容是singlecopyorthologues列表，第一列orthogroupID，后面3列每套蛋白序列ID，共4列，这个文件的每行数据为一个homologs对应的每套数据的蛋白ID。</li>
+<li>合并wgd.homologs和OG.txt文件为OG.list：<code>join -1 1 -2 2 wgd.homologs OG.txt &gt; OG.list</code>。OG.list文件是在OG.txt基础上增加了wgd_H2.homologs的一套蛋白ID数据，共有四套蛋白ID数据。</li>
+</ul>
+<h4 id="3-3-2-4-建单基因树"><a href="#3-3-2-4-建单基因树" class="headerlink" title="3.3.2.4. 建单基因树"></a>3.3.2.4. 建单基因树</h4><ol>
+<li>建树脚本<br>用下面的脚本singlegenetree.sh，提取每个homologs序列，并通过raxml-ng（raxmlHPC建氨基酸树只有bootstrap结果，没有bestTree）为每个homologs基因比对（mafft）和建树。<br>OG.list文件包含第一列ogID和后4列4套样本ID。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">singlegenetree.sh</span></span><br><span class="line">cat ./OG.list | while read line</span><br><span class="line">do</span><br><span class="line">        sample_id=$(echo $line |awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">        sample_a=$(echo $line |awk &#x27;&#123;print $2&#125;&#x27;)</span><br><span class="line">        sample_b=$(echo $line |awk &#x27;&#123;print $3&#125;&#x27;)</span><br><span class="line">        sample_c=$(echo $line |awk &#x27;&#123;print $4&#125;&#x27;)        </span><br><span class="line">        sample_d=$(echo $line |awk &#x27;&#123;print $5&#125;&#x27;)</span><br><span class="line">        mkdir ./singlegenetree/$&#123;sample_id&#125;</span><br><span class="line">        seqkit grep -n $&#123;sample_a&#125; sample.pep &gt;./singlegenetree/$&#123;sample_id&#125;/H1_$&#123;sample_a&#125;.pep</span><br><span class="line">        seqkit grep -n $&#123;sample_b&#125; sample.pep &gt;./singlegenetree/$&#123;sample_id&#125;/H2_$&#123;sample_b&#125;.pep</span><br><span class="line">        seqkit grep -n $&#123;sample_c&#125; sampleA.pep &gt;./singlegenetree/$&#123;sample_id&#125;/$&#123;sample_c&#125;.pep</span><br><span class="line">        seqkit grep -n $&#123;sample_d&#125; sampleB.pep &gt;./singlegenetree/$&#123;sample_id&#125;/$&#123;sample_d&#125;.pep</span><br><span class="line">        cd ./singlegenetree/$&#123;sample_id&#125;/</span><br><span class="line">        cat H1_$&#123;sample_a&#125;.pep H2_$&#123;sample_b&#125;.pep $&#123;sample_c&#125;.pep $&#123;sample_d&#125;.pep &gt; $&#123;sample_id&#125;.pep</span><br><span class="line">        mafft $&#123;sample_id&#125;.pep &gt;$&#123;sample_id&#125;.mafft.pep</span><br><span class="line">        raxml-ng --all --msa $&#123;sample_id&#125;.mafft.pep --data-type AA --threads 8 --bs-trees 100 --model LG+G8+F --tree pars&#123;10&#125; --outgroup $&#123;sample_d&#125; --redo</span><br><span class="line">        sed -E &quot;s/:[0-9]\.[0-9]*//g&quot; $&#123;sample_id&#125;.mafft.pep.raxml.bestTree  &gt;besttree.$&#123;sample_id&#125; #删除不必要的枝长等信息</span><br><span class="line">        cd ../../</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>筛选homologs<br>判断生成的每个OG的树文件besttree.${sample_id}，只保留符合物种树拓扑结构<code>(((sampleH1,sampleH2),sampleA)),sampleB;</code>的基因，保存成OG.filtered。</li>
+</ol>
+<h4 id="3-3-2-5-paml估计分化时间"><a href="#3-3-2-5-paml估计分化时间" class="headerlink" title="3.3.2.5. paml估计分化时间"></a>3.3.2.5. paml估计分化时间</h4><p>此节参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/03/25/bioinfo_caculate.divergence.time/">估算系统树分歧时间</a>的paml部分。</p>
+<ol>
+<li>在OG.filtered最后一列添加每个OG的序列长度信息，保存成OG.filtered.list。</li>
+<li>准备输入文件sample.phy<br>上一步脚本提取的每个homologs的比对后的四套数据蛋白序列${sample_id}.mafft.pep，用脚本fa2phylip.sh换成phylip格式（用python的SeqIO库换的格式mcmctree识别不了）。<br>并合并提取的所有homologs序列。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">fa2phylip.sh</span></span><br><span class="line">cat ./OG.filtered.list | while read line</span><br><span class="line">do</span><br><span class="line">        sample_id=$(echo $line |awk &#x27;&#123;print $1&#125;&#x27;) #获取OG.ID</span><br><span class="line">        sample_a=$(echo $line |awk &#x27;&#123;print $6&#125;&#x27;) #获取序列长度</span><br><span class="line">        sed &quot;s/_.*//g&quot; ../singlegenetree/$&#123;sample_id&#125;/$&#123;sample_id&#125;.mafft.pep|seqkit seq -w 0|sed -E &quot;:a;N;s/\n/ /g;ta&quot; |sed &quot;s/ &gt;/\n/g&quot; |sed &quot;s/&gt;//g&quot;|sed &quot;s/ /  /g&quot;|sed &quot;1i\5  $&#123;sample_a&#125;&quot; |sed &#x27;1i\ &#x27; &gt; ./phy/$&#123;sample_id&#125;.phy #把上一步获取的$&#123;sample_id&#125;.mafft.pep改为phylip格式，并在首行添加空格行（为了合并后每个OG用空行隔开）</span><br><span class="line"></span><br><span class="line">done</span><br><span class="line">cat ./phy/*phy &gt;sample.phy #合并所有phy文件为一个sample.phy文件，假设共有261个子phy文件被合并</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>准备输入文件sample.tre</li>
+</ol>
+<ul>
+<li>sample.tre包含两行，第一行表述树中有5个样本，共计1个树，两个数值之间用空格分割；<br>第二行则是Newick格式树信息。</li>
+<li>其中第二行Newick格式树包含有校准点信息，校准点信息一般指95%HPD（Highest Posterior Density）对应的置信区间，这里用的校准点时间只有一个点，所以写成’&lt;0.88&gt;0.88’形式；校准点单位是100MYA（软件说明文档中使用该单位，也推荐使用该单位，若使用其它单位，后续配置文件中的相关参数也需要对应修改）。</li>
+<li>此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。</li>
+<li>sample.tre内容为：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4 1</span><br><span class="line">(((sampleH1,sampleH2),sampleA)&#x27;&lt;0.88&gt;0.88),sampleB;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>准备配置文件mcmctree3.ctl<br>ndata &#x3D; 261表示有261个数据，与sample.phy包含的子phy数量对应；seqtype &#x3D; 2表示这里用的氨基酸序列；model &#x3D; 0暂时选用0，后面要改；</li>
+</ol>
+<figure class="highlight plaintext"><figcaption><span>mcmctree3.ctl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">          seed = -1</span><br><span class="line">       seqfile = sample.phy</span><br><span class="line">      treefile = sample.tre</span><br><span class="line">       outfile = mcmc.out</span><br><span class="line">      mcmcfile = mcmc.txt</span><br><span class="line"></span><br><span class="line">       seqtype = 2    *0: DNA data; 1: codon data; 2: AAs data</span><br><span class="line">        ndata = 261</span><br><span class="line">       usedata = 3    * 0: no data; 1:seq like; 2:normal approximation</span><br><span class="line">         clock = 3    * 1: global clock; 2: independent rates; 3: correlated rates</span><br><span class="line">*      TipDate = 1 100</span><br><span class="line">        RootAge = &#x27;&lt;10&#x27;  * constraint on root age, used if no fossil for root.</span><br><span class="line"></span><br><span class="line">         model = 0    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85</span><br><span class="line">         alpha = 0.5   * alpha for gamma rates at sites</span><br><span class="line">         ncatG = 4    * No. categories in discrete gamma</span><br><span class="line"></span><br><span class="line">     cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?</span><br><span class="line"></span><br><span class="line">       BDparas = 1 1 0.1   * birth, death, sampling</span><br><span class="line">   kappa_gamma = 6 2      * gamma prior for kappa</span><br><span class="line">   alpha_gamma = 1 1      * gamma prior for alpha</span><br><span class="line"></span><br><span class="line">   rgene_gamma = 2 20 1   * gamma prior for rate for genes</span><br><span class="line">  sigma2_gamma = 1 10 1    * gamma prior for sigma^2     (for clock=2 or 3)</span><br><span class="line"></span><br><span class="line">      finetune = 1: .1 .1 .1 .1 .1 .1  * times, rates, mixing, paras, RateParas</span><br><span class="line"></span><br><span class="line">         print = 1</span><br><span class="line">        burnin = 1000000</span><br><span class="line">      sampfreq = 10</span><br><span class="line">       nsample = 500000</span><br><span class="line"></span><br><span class="line">*** Note: Make your window wider (100 columns) when running this program.</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>运行<code>mcmctree mcmctree3.ctl</code></li>
+</ol>
+<ul>
+<li>此步骤的目的是为了获取in.BV文件；</li>
+<li>用命令<code>mcmctree mcmctree3.ctl</code>运行起来后，ctrl+C多次中断运行（共261个序列，会依次调用261次codeml，中断后会自动进入下一次调用，目的是完成261次调用生成261个序列的临时文件）；由于单个序列短，很快会完成分析，也可以不ctrl+C中断，等待完成，只要生成261套tmp*文件即可。</li>
+<li>删除rst2文件和mcmc.out,mcmc.txt,out.BV文件；把paml软件下的wag.dat文件复制到当前目录下<code>cp ~/software/anaconda3/dat/wag.dat ./</code>；</li>
+<li>用命令<code>sed -i -e &quot;s/model = 0/model =2\naaRatefile = wag.dat/&quot; -e &quot;s/method = 0/method = 1/&quot; tmp*.ctl</code>把所有tmp*.ctl文件的model修改成model &#x3D; 2，method修改成method &#x3D; 1,并添加一行aaRatefile &#x3D; wag.dat；</li>
+<li>用命令<code>for i in $(ls tmp*.ctl);do codeml $&#123;i&#125; ; mv rst2 $&#123;i&#125;.rst2; done</code>调用codeml进行261次分析（每次codeml都生成rst2文件，所以每次生成后把rst2改名，否则rst2被覆盖）；</li>
+<li>然后<code>cat *rst2 &gt;in.BV</code>合并所有rst2文件到in.BV文件；</li>
+</ul>
+<ol start="6">
+<li>运行<code>mcmctree mcmctree2.ctl</code></li>
+</ol>
+<ul>
+<li>新建目录并复制四个文件sample.phy,sample.tre,mcmctree3.ctl,in.BV到新目录<code>mkdir mcmctree2 &amp;&amp; cd mcmctree2 &amp;&amp; cp ../Ane.* ./ &amp;&amp; cp ../mcmctree3.ctl ./ &amp;&amp; cp ../in.BV ./</code>;</li>
+<li>把mcmctree3.ctl文件内的usedata &#x3D; 3改为usedata &#x3D; 2，并重命名成mcmctree2.ctl；</li>
+<li>然后运行<code>mcmctree mcmctree2.ctl</code>；</li>
+<li>等待两三天获取结果，FigTree.tre文件包含了所有节点的95%HPD的时间，是nexus格式。</li>
+<li>根据FigTree.tre结果：<code>((sampleA: 0.408365, (sampleH1: 0.107333, sampleH2: 0.107333) [&amp;95%=&#123;0.0749432, 0.126365&#125;]: 0.301032) [&amp;95%=&#123;0.285365, 0.478163&#125;]: 0.362000, sampleB: 0.770366) [&amp;95%=&#123;0.53864, 0.90012&#125;];</code>的sampleH1和sampleH2分化的时间，可以看出WGD发生的时间在**10.7Ma[7.5-12.6]**之间。</li>
+</ul>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3326336/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3326336/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wyp1125/MCScanX">https://github.com/wyp1125/MCScanX</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/11/27/bioinfo_WGD/" data-id="cl1aidmwr00204gvkfgn96dmn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KaKs-Calculator2-0/" rel="tag">KaKs_Calculator2.0</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MCScanX/" rel="tag">MCScanX</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ParaAT-pl/" rel="tag">ParaAT.pl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ggplot2/" rel="tag">ggplot2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paml/" rel="tag">paml</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/12/06/bioinfo_OrthoFinder2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用OrthoFinder做直系同源推断
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/11/20/bio_evolutionary.tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">进化树相关知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/">bio</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/bioinfo/">bioinfo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/biosoft/">biosoft</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/concept/">concept</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/evolution/">evolution</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/experiment/">experiment</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/taxon/">taxon</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/">biosoft</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/circos/">circos</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/scripts/">scripts</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/">system</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/Windows/">Windows</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/web/">web</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/">computer language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/R/">R</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/basics/">basics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/shell/">shell</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/text-processing/">text processing</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/">omics</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/omics/genome/">genome</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/transcriptome/">transcriptome</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/4dtv/" rel="tag">4dtv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">;</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BUSCO/" rel="tag">BUSCO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bauhinia/" rel="tag">Bauhinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioconductor/" rel="tag">Bioconductor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAFE/" rel="tag">CAFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CDS/" rel="tag">CDS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRAN/" rel="tag">CRAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Circos/" rel="tag">Circos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clustal/" rel="tag">Clustal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DESeq2/" rel="tag">DESeq2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EDTA/" rel="tag">EDTA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GATK/" rel="tag">GATK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GOEAST/" rel="tag">GOEAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GSEA/" rel="tag">GSEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gblocks/" rel="tag">Gblocks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GenBank/" rel="tag">GenBank</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISAT2/" rel="tag">HISAT2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KOBAS-i/" rel="tag">KOBAS-i</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KaKs-Calculator2-0/" rel="tag">KaKs_Calculator2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoRDEC/" rel="tag">LoRDEC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MAFFT/" rel="tag">MAFFT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCScanX/" rel="tag">MCScanX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCscan/" rel="tag">MCscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSA/" rel="tag">MSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MUSCLE/" rel="tag">MUSCLE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multiple-Sequence-Alignment/" rel="tag">Multiple Sequence Alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oases/" rel="tag">Oases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoFinder/" rel="tag">OrthoFinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoMCL/" rel="tag">OrthoMCL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PAL2NAL/" rel="tag">PAL2NAL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PANNZER2/" rel="tag">PANNZER2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PATH/" rel="tag">PATH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PCR/" rel="tag">PCR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRANK/" rel="tag">PRANK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT/" rel="tag">ParaAT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT-pl/" rel="tag">ParaAT.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QUAST/" rel="tag">QUAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R-package/" rel="tag">R package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-seq/" rel="tag">RNA-seq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-sequencing/" rel="tag">RNA-sequencing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROUSFinder2-0-py/" rel="tag">ROUSFinder2.0.py</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RStudio/" rel="tag">RStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatMasker/" rel="tag">RepeatMasker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatModeler/" rel="tag">RepeatModeler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rtools/" rel="tag">Rtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STARlong/" rel="tag">STARlong</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Salmon-SMEM/" rel="tag">Salmon-SMEM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StringTie/" rel="tag">StringTie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TE/" rel="tag">TE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TreeMix/" rel="tag">TreeMix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UpSetR/" rel="tag">UpSetR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Venn/" rel="tag">Venn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VennDiagram/" rel="tag">VennDiagram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGDI/" rel="tag">WGDI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\&&</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\||</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analog/" rel="tag">analog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/" rel="tag">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/batch-run-sh/" rel="tag">batch_run.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bifurcated-tree/" rel="tag">bifurcated tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/" rel="tag">bootstrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/build-website/" rel="tag">build website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chronogram/" rel="tag">chronogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladistics/" rel="tag">cladistics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladogram/" rel="tag">cladogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clusterProfiler/" rel="tag">clusterProfiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codon/" rel="tag">codon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/colinearity/" rel="tag">colinearity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combine/" rel="tag">combine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crown-groups/" rel="tag">crown groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deploy-website/" rel="tag">deploy website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/divergence-time/" rel="tag">divergence time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eggnog-mapper/" rel="tag">eggnog-mapper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/evolutionary-tree/" rel="tag">evolutionary tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experiment/" rel="tag">experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract/" rel="tag">extract</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-intron-info-pl/" rel="tag">extract_intron_info.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-single-copy-genes-sh/" rel="tag">extract_single_copy_genes.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/facet-plot/" rel="tag">facet_plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/" rel="tag">flex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/for/" rel="tag">for</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fossil-time/" rel="tag">fossil time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-annotation/" rel="tag">functional annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-family/" rel="tag">gene family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-flow/" rel="tag">gene flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-set-enrichment-analysis/" rel="tag">gene set enrichment analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome/" rel="tag">genome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-submit/" rel="tag">genome submit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geom-taxalink/" rel="tag">geom_taxalink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggdensitree/" rel="tag">ggdensitree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggplot2/" rel="tag">ggplot2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggstance/" rel="tag">ggstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggtree/" rel="tag">ggtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gplots/" rel="tag">gplots</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/homolog/" rel="tag">homolog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interproscan/" rel="tag">interproscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/itol/" rel="tag">itol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jcvi/" rel="tag">jcvi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/" rel="tag">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/line-separator/" rel="tag">line separator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loop/" rel="tag">loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mcmctree/" rel="tag">mcmctree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/molecular-experiment/" rel="tag">molecular experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monophyly/" rel="tag">monophyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-transcriptome-assembly-with-ref-sh/" rel="tag">multi-transcriptome_assembly_with_ref.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiPhylo/" rel="tag">multiPhylo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthogroup/" rel="tag">orthogroup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ortholog/" rel="tag">ortholog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paml/" rel="tag">paml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paralog/" rel="tag">paralog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paraphyly/" rel="tag">paraphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paste/" rel="tag">paste</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-reticulum/" rel="tag">phylogenetic reticulum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-tree/" rel="tag">phylogenetic tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogeny/" rel="tag">phylogeny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogram/" rel="tag">phylogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plot/" rel="tag">plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/polyphyly/" rel="tag">polyphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/population-networks/" rel="tag">population networks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protein/" rel="tag">protein</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/" rel="tag">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reinstall/" rel="tag">reinstall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rename/" rel="tag">rename</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repeat-sequences/" rel="tag">repeat sequences</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/" rel="tag">scripts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/" rel="tag">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sequence-alignment/" rel="tag">sequence alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sort/" rel="tag">sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stem-groups/" rel="tag">stem groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sync/" rel="tag">sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synteny/" rel="tag">synteny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table2asn/" rel="tag">table2asn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topGO/" rel="tag">topGO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/" rel="tag">tr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/treeio/" rel="tag">treeio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimAl/" rel="tag">trimAl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimming/" rel="tag">trimming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/website-maintenance/" rel="tag">website maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/while/" rel="tag">while</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/" rel="tag">xargs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xenolog/" rel="tag">xenolog</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/4dtv/" style="font-size: 10px;">4dtv</a> <a href="/tags/" style="font-size: 10px;">;</a> <a href="/tags/BUSCO/" style="font-size: 10px;">BUSCO</a> <a href="/tags/Bauhinia/" style="font-size: 10px;">Bauhinia</a> <a href="/tags/Bioconductor/" style="font-size: 10px;">Bioconductor</a> <a href="/tags/CAFE/" style="font-size: 10px;">CAFE</a> <a href="/tags/CDS/" style="font-size: 10px;">CDS</a> <a href="/tags/CRAN/" style="font-size: 10px;">CRAN</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Circos/" style="font-size: 10px;">Circos</a> <a href="/tags/Clustal/" style="font-size: 10px;">Clustal</a> <a href="/tags/DESeq2/" style="font-size: 10px;">DESeq2</a> <a href="/tags/EDTA/" style="font-size: 10px;">EDTA</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/GATK/" style="font-size: 10px;">GATK</a> <a href="/tags/GOEAST/" style="font-size: 10px;">GOEAST</a> <a href="/tags/GSEA/" style="font-size: 14px;">GSEA</a> <a href="/tags/Gblocks/" style="font-size: 10px;">Gblocks</a> <a href="/tags/GenBank/" style="font-size: 10px;">GenBank</a> <a href="/tags/HISAT2/" style="font-size: 10px;">HISAT2</a> <a href="/tags/KOBAS-i/" style="font-size: 10px;">KOBAS-i</a> <a href="/tags/KaKs-Calculator2-0/" style="font-size: 10px;">KaKs_Calculator2.0</a> <a href="/tags/Ks/" style="font-size: 12px;">Ks</a> <a href="/tags/LoRDEC/" style="font-size: 10px;">LoRDEC</a> <a href="/tags/MAFFT/" style="font-size: 10px;">MAFFT</a> <a href="/tags/MCScanX/" style="font-size: 10px;">MCScanX</a> <a href="/tags/MCscan/" style="font-size: 10px;">MCscan</a> <a href="/tags/MSA/" style="font-size: 10px;">MSA</a> <a href="/tags/MUSCLE/" style="font-size: 10px;">MUSCLE</a> <a href="/tags/Multiple-Sequence-Alignment/" style="font-size: 10px;">Multiple Sequence Alignment</a> <a href="/tags/Oases/" style="font-size: 10px;">Oases</a> <a href="/tags/OrthoFinder/" style="font-size: 10px;">OrthoFinder</a> <a href="/tags/OrthoMCL/" style="font-size: 10px;">OrthoMCL</a> <a href="/tags/PAL2NAL/" style="font-size: 10px;">PAL2NAL</a> <a href="/tags/PANNZER2/" style="font-size: 10px;">PANNZER2</a> <a href="/tags/PATH/" style="font-size: 10px;">PATH</a> <a href="/tags/PCR/" style="font-size: 10px;">PCR</a> <a href="/tags/PRANK/" style="font-size: 10px;">PRANK</a> <a href="/tags/ParaAT/" style="font-size: 10px;">ParaAT</a> <a href="/tags/ParaAT-pl/" style="font-size: 10px;">ParaAT.pl</a> <a href="/tags/QUAST/" style="font-size: 10px;">QUAST</a> <a href="/tags/R/" style="font-size: 16px;">R</a> <a href="/tags/R-package/" style="font-size: 14px;">R package</a> <a href="/tags/RNA-seq/" style="font-size: 10px;">RNA-seq</a> <a href="/tags/RNA-sequencing/" style="font-size: 10px;">RNA-sequencing</a> <a href="/tags/ROUSFinder2-0-py/" style="font-size: 10px;">ROUSFinder2.0.py</a> <a href="/tags/RStudio/" style="font-size: 10px;">RStudio</a> <a href="/tags/RepeatMasker/" style="font-size: 10px;">RepeatMasker</a> <a href="/tags/RepeatModeler/" style="font-size: 10px;">RepeatModeler</a> <a href="/tags/Rtools/" style="font-size: 10px;">Rtools</a> <a href="/tags/STARlong/" style="font-size: 10px;">STARlong</a> <a href="/tags/Salmon-SMEM/" style="font-size: 10px;">Salmon-SMEM</a> <a href="/tags/StringTie/" style="font-size: 10px;">StringTie</a> <a href="/tags/TE/" style="font-size: 10px;">TE</a> <a href="/tags/TreeMix/" style="font-size: 10px;">TreeMix</a> <a href="/tags/UpSetR/" style="font-size: 10px;">UpSetR</a> <a href="/tags/Venn/" style="font-size: 10px;">Venn</a> <a href="/tags/VennDiagram/" style="font-size: 10px;">VennDiagram</a> <a href="/tags/WGD/" style="font-size: 12px;">WGD</a> <a href="/tags/WGDI/" style="font-size: 10px;">WGDI</a> <a href="/tags/" style="font-size: 10px;">\&&</a> <a href="/tags/" style="font-size: 10px;">\||</a> <a href="/tags/analog/" style="font-size: 10px;">analog</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/batch-run-sh/" style="font-size: 10px;">batch_run.sh</a> <a href="/tags/bifurcated-tree/" style="font-size: 10px;">bifurcated tree</a> <a href="/tags/biosoft/" style="font-size: 18px;">biosoft</a> <a href="/tags/blog/" style="font-size: 12px;">blog</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/build-website/" style="font-size: 10px;">build website</a> <a href="/tags/chronogram/" style="font-size: 10px;">chronogram</a> <a href="/tags/cladistics/" style="font-size: 10px;">cladistics</a> <a href="/tags/cladogram/" style="font-size: 10px;">cladogram</a> <a href="/tags/clusterProfiler/" style="font-size: 12px;">clusterProfiler</a> <a href="/tags/codon/" style="font-size: 10px;">codon</a> <a href="/tags/colinearity/" style="font-size: 10px;">colinearity</a> <a href="/tags/combine/" style="font-size: 10px;">combine</a> <a href="/tags/concept/" style="font-size: 12px;">concept</a> <a href="/tags/crown-groups/" style="font-size: 10px;">crown groups</a> <a href="/tags/deploy-website/" style="font-size: 10px;">deploy website</a> <a href="/tags/divergence-time/" style="font-size: 10px;">divergence time</a> <a href="/tags/eggnog-mapper/" style="font-size: 10px;">eggnog-mapper</a> <a href="/tags/evolutionary-tree/" style="font-size: 12px;">evolutionary tree</a> <a href="/tags/experiment/" style="font-size: 10px;">experiment</a> <a href="/tags/extract/" style="font-size: 10px;">extract</a> <a href="/tags/extract-intron-info-pl/" style="font-size: 10px;">extract_intron_info.pl</a> <a href="/tags/extract-single-copy-genes-sh/" style="font-size: 10px;">extract_single_copy_genes.sh</a> <a href="/tags/facet-plot/" style="font-size: 10px;">facet_plot</a> <a href="/tags/flex/" style="font-size: 10px;">flex</a> <a href="/tags/for/" style="font-size: 10px;">for</a> <a href="/tags/fossil-time/" style="font-size: 10px;">fossil time</a> <a href="/tags/functional-annotation/" style="font-size: 10px;">functional annotation</a> <a href="/tags/gene-family/" style="font-size: 10px;">gene family</a> <a href="/tags/gene-flow/" style="font-size: 10px;">gene flow</a> <a href="/tags/gene-set-enrichment-analysis/" style="font-size: 14px;">gene set enrichment analysis</a> <a href="/tags/genome/" style="font-size: 10px;">genome</a> <a href="/tags/genome-annotation/" style="font-size: 14px;">genome annotation</a> <a href="/tags/genome-assessment/" style="font-size: 12px;">genome assessment</a> <a href="/tags/genome-submit/" style="font-size: 10px;">genome submit</a> <a href="/tags/geom-taxalink/" style="font-size: 10px;">geom_taxalink</a> <a href="/tags/ggdensitree/" style="font-size: 10px;">ggdensitree</a> <a href="/tags/ggplot2/" style="font-size: 10px;">ggplot2</a> <a href="/tags/ggstance/" style="font-size: 10px;">ggstance</a> <a href="/tags/ggtree/" style="font-size: 10px;">ggtree</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/gplots/" style="font-size: 10px;">gplots</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/homolog/" style="font-size: 10px;">homolog</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/interproscan/" style="font-size: 10px;">interproscan</a> <a href="/tags/itol/" style="font-size: 10px;">itol</a> <a href="/tags/jcvi/" style="font-size: 10px;">jcvi</a> <a href="/tags/jquery/" style="font-size: 10px;">jquery</a> <a href="/tags/line-separator/" style="font-size: 10px;">line separator</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/loop/" style="font-size: 10px;">loop</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mcmctree/" style="font-size: 10px;">mcmctree</a> <a href="/tags/molecular-experiment/" style="font-size: 10px;">molecular experiment</a> <a href="/tags/monophyly/" style="font-size: 10px;">monophyly</a> <a href="/tags/multi-transcriptome-assembly-with-ref-sh/" style="font-size: 10px;">multi-transcriptome_assembly_with_ref.sh</a> <a href="/tags/multiPhylo/" style="font-size: 10px;">multiPhylo</a> <a href="/tags/orthogroup/" style="font-size: 10px;">orthogroup</a> <a href="/tags/ortholog/" style="font-size: 10px;">ortholog</a> <a href="/tags/orthology/" style="font-size: 12px;">orthology</a> <a href="/tags/paml/" style="font-size: 12px;">paml</a> <a href="/tags/paralog/" style="font-size: 10px;">paralog</a> <a href="/tags/paraphyly/" style="font-size: 10px;">paraphyly</a> <a href="/tags/paste/" style="font-size: 10px;">paste</a> <a href="/tags/phylogenetic-reticulum/" style="font-size: 10px;">phylogenetic reticulum</a> <a href="/tags/phylogenetic-tree/" style="font-size: 10px;">phylogenetic tree</a> <a href="/tags/phylogeny/" style="font-size: 16px;">phylogeny</a> <a href="/tags/phylogram/" style="font-size: 10px;">phylogram</a> <a href="/tags/plot/" style="font-size: 14px;">plot</a> <a href="/tags/polyphyly/" style="font-size: 10px;">polyphyly</a> <a href="/tags/population-networks/" style="font-size: 10px;">population networks</a> <a href="/tags/protein/" style="font-size: 10px;">protein</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reinstall/" style="font-size: 10px;">reinstall</a> <a href="/tags/rename/" style="font-size: 10px;">rename</a> <a href="/tags/repeat-sequences/" style="font-size: 10px;">repeat sequences</a> <a href="/tags/scripts/" style="font-size: 10px;">scripts</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/sequence-alignment/" style="font-size: 12px;">sequence alignment</a> <a href="/tags/sort/" style="font-size: 10px;">sort</a> <a href="/tags/stem-groups/" style="font-size: 10px;">stem groups</a> <a href="/tags/sync/" style="font-size: 12px;">sync</a> <a href="/tags/synteny/" style="font-size: 10px;">synteny</a> <a href="/tags/system/" style="font-size: 10px;">system</a> <a href="/tags/table2asn/" style="font-size: 10px;">table2asn</a> <a href="/tags/topGO/" style="font-size: 12px;">topGO</a> <a href="/tags/tr/" style="font-size: 10px;">tr</a> <a href="/tags/treeio/" style="font-size: 10px;">treeio</a> <a href="/tags/trimAl/" style="font-size: 10px;">trimAl</a> <a href="/tags/trimming/" style="font-size: 10px;">trimming</a> <a href="/tags/tutorial/" style="font-size: 20px;">tutorial</a> <a href="/tags/website-maintenance/" style="font-size: 10px;">website maintenance</a> <a href="/tags/while/" style="font-size: 10px;">while</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/xargs/" style="font-size: 10px;">xargs</a> <a href="/tags/xenolog/" style="font-size: 10px;">xenolog</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/22/omics_genome.submit/">提交基因组到公共数据库 —— 以GenBank为例</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/20/bioinfo_geneflow_treemix/">用TreeMix推断居群间基因流</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/bioinfo_evolutionary.tree/">绘制进化树 —— R包treeio+ggtree</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/16/linux_command/">shell的常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/28/R_install/">R及相关软件的安装</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 南方枝叶<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

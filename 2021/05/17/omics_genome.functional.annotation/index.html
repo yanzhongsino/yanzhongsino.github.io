@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>基因组注释（三）：基因功能注释 | 生信技工</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录对基因组的基因进行功能注释的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组注释（三）：基因功能注释">
+<meta property="og:url" content="http://example.com/2021/05/17/omics_genome.functional.annotation/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录对基因组的基因进行功能注释的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-17T02:36:00.000Z">
+<meta property="article:modified_time" content="2022-03-22T07:00:59.992Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="tutorial">
+<meta property="article:tag" content="genome annotation">
+<meta property="article:tag" content="functional annotation">
+<meta property="article:tag" content="eggnog-mapper">
+<meta property="article:tag" content="interproscan">
+<meta property="article:tag" content="PANNZER2">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">生信技工</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-omics_genome.functional.annotation" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/17/omics_genome.functional.annotation/" class="article-date">
+  <time datetime="2021-05-17T02:36:00.000Z" itemprop="datePublished">2021-05-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/omics/">omics</a>►<a class="article-category-link" href="/categories/omics/genome/">genome</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基因组注释（三）：基因功能注释
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
+
+
+<p>基因功能的注释依赖于上一步的基因结构预测，根据预测结果从基因组上提取翻译后的<strong>蛋白序列</strong>和主流的数据库进行比对，完成功能注释。(有些也支持用DNA序列做功能注释的，但比较少。)</p>
+<p>比较推荐的方案是：eggNOG-mapper网页注释和PANNZER2网页注释，如果有余力再加上interpro的本地注释。</p>
+<p>功能注释的一般流程：1.选择数据库并下载，2.构建blastp索引，3.用blastp比对蛋白序列到数据库，4.结果整理。</p>
+<p>有些软件集成了数据库和功能注释的多个流程，甚至提供服务器用于网页版注释，例如eggNOG-mapper和interproscan分别集成了eggNOG和interpro数据库，PANNZER2使用最新的UniProt数据库实现网页注释。</p>
+<h1 id="1-数据库概述"><a href="#1-数据库概述" class="headerlink" title="1. 数据库概述"></a>1. 数据库概述</h1><p>根据数据库中已知编码基因的注释信息（包括motif、domain），基于同源比对，对基因中的模序和结构域、新基因编码的蛋白质功能、所参与的信号传导通路和代谢途径等的预测。基因组注释内容还可涉及蛋白激酶、病原与宿主互作、致病毒力因子预测、抗性基因等。<br>常用数据库：</p>
+<ul>
+<li><p>Nr：NCBI官方非冗余蛋白数据库，包括PDB, Swiss-Prot, PIR, PRF; 如果要用DNA序列，就是nt库。</p>
+</li>
+<li><p>UniProt：分为两部分。Swiss-Prot是UniProt数据库中经过人工校正的高质量蛋白数据库，蛋白序列得到实验的验证。TrEBL是UniProt数据库中未经过人工校正、机器自动注释的蛋白数据库。</p>
+</li>
+<li><p>eggNOG：EMBL创建，是对NCBI的COG数据库的拓展，提供了不同分类水平蛋白的直系同源分组（Orthologous Groups，OG）。</p>
+</li>
+<li><p>InterPro：EBI开发的一个整合的蛋白家族功能注释数据库，包括Gene3D、CDD、Pfam等10几个数据库。</p>
+</li>
+<li><p>Pfam: 蛋白结构域注释的分类系统。</p>
+</li>
+<li><p>GO: 基因本体论注释数据库。</p>
+</li>
+<li><p>KEGG: 代谢通路注释数据库。</p>
+</li>
+</ul>
+<p>数据库的下载非常耗时，不管是eggnog还是interproscan，linux下几十KB&#x2F;s，window下几百KB&#x2F;s(需科学上网)，耗时长度以天计算，可以尝试先在window系统下载，再转移到linux下。</p>
+<h2 id="1-1-Nr-x2F-Nt数据库"><a href="#1-1-Nr-x2F-Nt数据库" class="headerlink" title="1.1. Nr&#x2F;Nt数据库"></a>1.1. Nr&#x2F;Nt数据库</h2><p><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz">nr数据库</a>；<br><a href="ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nt.gz">nt数据库</a>；</p>
+<h2 id="1-2-UniProt数据库（Swiss-Prot和TrEMBL）"><a href="#1-2-UniProt数据库（Swiss-Prot和TrEMBL）" class="headerlink" title="1.2. UniProt数据库（Swiss-Prot和TrEMBL）"></a>1.2. UniProt数据库（Swiss-Prot和TrEMBL）</h2><p>UniProt数据库包括人工校正的高质量数据库Swiss-Prot和软件自动注释的TrEMBL数据库。</p>
+<p><a href="ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz">Swiss-Prot数据库</a>：高质量，手工注释，非冗余的蛋白质序列数据库。非常可靠。</p>
+<p><a href="ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.fasta.gz">TrEMBL数据库</a>：自动注释的蛋白质序列数据库。</p>
+<p>UniProt将完整数据库分类拆分成几个<a href="ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/">子库</a>。包括古菌，真菌，植物，人，哺乳动物，脊椎动物，无脊椎动物，啮齿动物等。</p>
+<h2 id="1-3-GO数据库"><a href="#1-3-GO数据库" class="headerlink" title="1.3. GO数据库"></a>1.3. GO数据库</h2><p>[GO数据库](<a target="_blank" rel="noopener" href="http://geneontology.org/docs/download-ontology/%EF%BC%89">http://geneontology.org/docs/download-ontology/）</a></p>
+<h2 id="1-4-KEGG数据库"><a href="#1-4-KEGG数据库" class="headerlink" title="1.4. KEGG数据库"></a>1.4. KEGG数据库</h2><p>KEGG(Kyoto Encyclopedia of Genes and Genomes)京都基因和基因组百科全书，是研究Pathway代谢通路最主要的数据库，整合了基因组、化学、系统及疾病和健康的信息。</p>
+<h2 id="1-5-COG直系同源蛋白数据库"><a href="#1-5-COG直系同源蛋白数据库" class="headerlink" title="1.5. COG直系同源蛋白数据库"></a>1.5. COG直系同源蛋白数据库</h2><p><a href="ftp://ftp.ncbi.nlm.nih.gov/pub/COG/COG2014/data/">COG数据库</a>:NCBI开发的用于同源蛋白注释的数据库。<br>fun2003-2014.tab是COG的分类信息，将COG的功能分为26个类别，每个类别用一个字母表示。<br>cognames2003-2014.tab是COG的详细信息，包括编号，对应的分类，功能描述等。<br>cog2003-2014.csv是蛋白和COG对应关系。<br>prot2003-2014.fa.gz是fa格式的蛋白序列和注释信息。</p>
+<h2 id="1-6-KOG数据库"><a href="#1-6-KOG数据库" class="headerlink" title="1.6. KOG数据库"></a>1.6. KOG数据库</h2><p>KOG（Clusters of orthologous groups for eukaryotic complete genomes）真核生物蛋白相邻类的聚簇。构成每个KOG的蛋白都是被假定来自一个祖先蛋白，要么是orthologs，要么是paralogs。orthologs是指来自不同物种的由垂直家系（物种形成）进化而来的蛋白，并且保留与原始蛋白相同的功能；paralogs是指在一定物种中来源于基因复制的蛋白，可能会进化成新的与原来有关的功能。<br><a href="ftp://ftp.ncbi.nlm.nih.gov/pub/COG/KOG/kyva">KOG数据库</a></p>
+<h2 id="1-7-eggNOG数据库"><a href="#1-7-eggNOG数据库" class="headerlink" title="1.7. eggNOG数据库"></a>1.7. eggNOG数据库</h2><p>eggNOG（evolutionary genealogy of genes：non-supervised orthologous groups）由EMBL创建，是对NCBI的COG数据库的拓展，提供了不同分类水平蛋白的直系同源分组（Orthologous Groups，OG），包括真核生物，原核生物，病毒的信息。拓展了COG的分类，采用无监督聚类算法在全基因组范围内推导基因功能，更适合谱系特征基因的分析。</p>
+<p><a target="_blank" rel="noopener" href="http://eggnog5.embl.de/">eggNOG数据库</a>中，e5.proteomes.faa是所有的蛋白组序列，e5.taxid_info.tsv是taxid对应的物种名及完整的谱系信息，e5.og_annotations.tsv是所有NOG group信息（第一列为Taxid，第二列为NOG groups，第三列为COG归属，第四列为Function）。per_tax_level下不同taxonomy level的members.tsv文件分别是相应level的蛋白序列id和NOG group的对应关系（第一列taxid，第二列NOG groups，第三列为该NOG group所包含的蛋白序列数目，第四列为该NOG group所包含的物种数目，第五列是该NOG group所包含的蛋白序列id，第六列是该NOG group所包含的物种taxid。</p>
+<h2 id="1-8-pfam数据库"><a href="#1-8-pfam数据库" class="headerlink" title="1.8. pfam数据库"></a>1.8. pfam数据库</h2><p><a target="_blank" rel="noopener" href="http://pfam.xfam.org/">pfam数据库</a>是蛋白质家族数据库，根据多序列比对结果和隐马尔科夫模型，将蛋白分成不同家族。</p>
+<h2 id="1-9-string数据库"><a href="#1-9-string数据库" class="headerlink" title="1.9. string数据库"></a>1.9. string数据库</h2><p><a target="_blank" rel="noopener" href="https://string-db.org/">string数据库</a>。<br>搜寻已知蛋白质和预测蛋白质之间的相关关系的系统，包括蛋白质之间的物理作用和间接的功能相关性。基于染色体临近，系统进化谱，基因融合和基因芯片数据等计算基因或蛋白的共表达。<br>包括动物转录因子数据AnimalTFDB3.0，植物转录因子数据<a target="_blank" rel="noopener" href="http://plntfdb.bio.uni-potsdam.de/v3.0/">PlnTFDB</a>，真菌转录因子数据库<a target="_blank" rel="noopener" href="http://ftfd.snu.ac.kr/index.php?a=view">Fungal TFDB</a>。</p>
+<p>植物转录因子数据库收录了大部分植物模式物种共20个种的84个转录因子家族，包含28193 protein models，26184 distinct protein sequences，支持在线blast和本地blast。<br>分析工具：<a target="_blank" rel="noopener" href="http://itak.feilab.net/cgi-bin/itak/index.cgi">iTAK</a>，软件内置了PlantTFDB的数据库，可直接用于预测植物转录因子。<br>结果在classification.txt文件中。</p>
+<h1 id="2-基因功能注释"><a href="#2-基因功能注释" class="headerlink" title="2. 基因功能注释"></a>2. 基因功能注释</h1><p>notes: 注释分析中要保证蛋白序列中没有代表氨基酸字符以外的字符，比如说有些软件会把最后一个终止密码子翻译成”.”或者”*”，需要删除。</p>
+<h2 id="2-1-下载数据库手动注释–以Uniprot为例"><a href="#2-1-下载数据库手动注释–以Uniprot为例" class="headerlink" title="2.1. 下载数据库手动注释–以Uniprot为例"></a>2.1. 下载数据库手动注释–以Uniprot为例</h2><h3 id="2-1-1-下载数据库"><a href="#2-1-1-下载数据库" class="headerlink" title="2.1.1. 下载数据库"></a>2.1.1. 下载数据库</h3><p>这里以Uniprot为例，下载其他数据库后可用同样方法进行手动注释。</p>
+<p>可以uniprot_sprot和uniprot_trembl的植物数据库合并在一起。<br><code>wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_plants.dat.gz #</code>;<br><code>wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_trembl_plants.dat.gz # 11.5G</code>;<br><code>zcat uniprot_sprot_plants.dat.gz uniprot_trembl_plants.dat.gz &gt; uniprot_plants.dat</code>;</p>
+<p>转换格式：<br>用python的SeqIO模块转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Bio <span class="keyword">import</span> SeqIO</span><br><span class="line">count = SeqIO.convert(<span class="string">&quot;uniprot_plants.dat&quot;</span>,<span class="string">&quot;swiss&quot;</span>,<span class="string">&quot;uniprot_plants.fa&quot;</span>,<span class="string">&quot;fasta&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Converted %i records&quot;</span> % count)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-2-构建blastp索引"><a href="#2-1-2-构建blastp索引" class="headerlink" title="2.1.2. 构建blastp索引"></a>2.1.2. 构建blastp索引</h3><p><code>makeblastdb -in uniprot_plants.fasta -dbtype prot -title uniprot_plants -parse_seqids</code><br>或者更快的<br><code>diamond makedb --in uniprot_plants.fasta -d uniprot_plants</code></p>
+<h3 id="2-1-3-用blastp比对蛋白序列protein-fa和数据库uniprot-plants"><a href="#2-1-3-用blastp比对蛋白序列protein-fa和数据库uniprot-plants" class="headerlink" title="2.1.3. 用blastp比对蛋白序列protein.fa和数据库uniprot_plants"></a>2.1.3. 用blastp比对蛋白序列protein.fa和数据库uniprot_plants</h3><p><code>blastp -query protein.fa -out uniprot_plants.xml -db uniprot_plants.fasta -evalue 1e-5 -outfmt 6 -num_threads 24 &amp;</code><br>或者更快的<br><code>diamond blastp -d uniprot_plants.dmnd -q proteins.fasta --evalue 1e-5 &gt; blastp.outfmt6</code></p>
+<h3 id="2-1-4-比对结果中筛选每个query的最佳subject"><a href="#2-1-4-比对结果中筛选每个query的最佳subject" class="headerlink" title="2.1.4. 比对结果中筛选每个query的最佳subject"></a>2.1.4. 比对结果中筛选每个query的最佳subject</h3><p>jcvi可用conda安装<br><code>python -m jcvi.formats.blast best -n 1 blastp.outfmt6</code><br>生成blastp.outfmt6.best</p>
+<h3 id="2-1-5-使用add-annotation-from-dat-py根据blastp输出从dat提取GO-x2F-KEGG-x2F-同源基因"><a href="#2-1-5-使用add-annotation-from-dat-py根据blastp输出从dat提取GO-x2F-KEGG-x2F-同源基因" class="headerlink" title="2.1.5. 使用add_annotation_from_dat.py根据blastp输出从dat提取GO&#x2F;KEGG&#x2F;同源基因"></a>2.1.5. 使用add_annotation_from_dat.py根据blastp输出从dat提取GO&#x2F;KEGG&#x2F;同源基因</h3><p>python add_annotation_from_dat.py blastp.outfmt6.best uniprot_plants.dat<br>生成swiss_annotation.tsv文件；包含以下几列。</p>
+<ul>
+<li>gene id</li>
+<li>uniprot accession</li>
+<li>identity</li>
+<li>homology species</li>
+<li>EnsemblPlants</li>
+<li>GO ID</li>
+<li>GO component, CC&#x2F;MF&#x2F;BP</li>
+<li>evidence</li>
+</ul>
+<p>参考脚本<a target="_blank" rel="noopener" href="https://github.com/xuzhougeng/myscripts/blob/master/annotation/add_annotation_from_dat.py">add_annotation_from_dat.py</a></p>
+<h3 id="2-1-6-blast2go"><a href="#2-1-6-blast2go" class="headerlink" title="2.1.6. blast2go"></a>2.1.6. blast2go</h3><p>blast2go的功能是将blast注释结果转换成GO注释，但使用较为复杂，下载数据库耗时长，不推荐使用。<br><a target="_blank" rel="noopener" href="https://www.plob.org/article/1299.html">blast2go教程</a>；<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ad44b2a837c9">blast2go教程</a><br>下载数据库<br>wget <a href="ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz">ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz</a> #650M<br>wget <a href="ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz">ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz</a> #2.3G<br>wget <a href="ftp://ftp.pir.georgetown.edu/databases/idmapping/idmapping.tb.gz">ftp://ftp.pir.georgetown.edu/databases/idmapping/idmapping.tb.gz</a> #10G<br>wget <a target="_blank" rel="noopener" href="http://release.geneontology.org/2017-01-01/mysql_dumps/go_monthly-assocdb-data.gz">http://release.geneontology.org/2017-01-01/mysql_dumps/go_monthly-assocdb-data.gz</a> #6.3G</p>
+<h2 id="2-2-eggnog-mapper注释"><a href="#2-2-eggnog-mapper注释" class="headerlink" title="2.2. eggnog-mapper注释"></a>2.2. eggnog-mapper注释</h2><p>eggNOG(evolutionary genealogy of genes: Non-supervised Orthologous Groups)。<br><a target="_blank" rel="noopener" href="http://eggnog5.embl.de/download/emapperdb-5.0.0/">eggNOG数据库</a>是数据库，eggnog-mapper是使用eggnog数据库作为参考的注释软件或网页，<a target="_blank" rel="noopener" href="http://eggnog-mapper.embl.de/">eggnog-mapper网页版</a>。</p>
+<h3 id="2-2-1-eggNOG本地注释"><a href="#2-2-1-eggNOG本地注释" class="headerlink" title="2.2.1. eggNOG本地注释"></a>2.2.1. eggNOG本地注释</h3><p>下载数据库本地注释的方法：<br>在eggnog网站下载对应使用的数据库。<br><a target="_blank" rel="noopener" href="http://eggnog5.embl.de/download/emapperdb-5.0.0/eggnog.db.gz">http://eggnog5.embl.de/download/emapperdb-5.0.0/eggnog.db.gz</a><br><a target="_blank" rel="noopener" href="http://eggnogdb.embl.de/download/emapperdb-5.0.0/eggnog_proteins.dmnd.gz">http://eggnogdb.embl.de/download/emapperdb-5.0.0/eggnog_proteins.dmnd.gz</a><br>注释命令：<br>python2 &#x2F;home&#x2F;leon&#x2F;software&#x2F;3.Function&#x2F;eggnog-mapper.orginal&#x2F;emapper.py -i Tov.final.all.maker.transcripts.fasta -o run_egg –override  -m diamond  –cpu 80</p>
+<h3 id="2-2-2-eggNOG-mapper网页版注释"><a href="#2-2-2-eggNOG-mapper网页版注释" class="headerlink" title="2.2.2. eggNOG-mapper网页版注释"></a>2.2.2. eggNOG-mapper网页版注释</h3><h4 id="2-2-2-1-注释原理"><a href="#2-2-2-1-注释原理" class="headerlink" title="2.2.2.1. 注释原理"></a>2.2.2.1. 注释原理</h4><p>注释分为三步：</p>
+<ol>
+<li>序列比对<br>用hmmer3对所有蛋白序列在eggNOG数据库中搜索，找到最佳匹配的HMM；再用phmmer在最佳匹配的HMM对应的一组eggNOG蛋白中进一步搜索，每条蛋白序列的最佳匹配结果以seed orthlog形式存放。<br>除了HMMER3还可选DIAMOND直接对所有eggNOG蛋白序列进行搜索，速度更快，若数据大或在eggNOG搜集的物种库中有近缘种可选择DIAMOND。</li>
+<li>推测直系同源基因<br>基于预分析的eggNOG进化树数据库，提取最佳匹配seed orthlog的蛋白的一组更精细的直系同源基因，根据bit-score或E-value对结果过滤，剔除同源性不高的结果。</li>
+<li>功能注释<br>用于搜索的蛋白序列对应的直系同源基因的功能描述就是最终的注释结果。比如说GO, KEGG, COG等。</li>
+</ol>
+<h4 id="2-2-2-2-注释"><a href="#2-2-2-2-注释" class="headerlink" title="2.2.2.2. 注释"></a>2.2.2.2. 注释</h4><p>推荐使用<a target="_blank" rel="noopener" href="http://eggnog-mapper.embl.de/">eggnog-mapper网页版</a>注释，避免下载数据库的繁琐。限制10万条蛋白序列，数量超过可以切分后分开注释。</p>
+<p>只需要上传氨基酸序列，点击提交；然后<strong>在收到的邮件里点击链接，开始任务</strong>即可。</p>
+<h4 id="2-2-2-3-注释结果"><a href="#2-2-2-3-注释结果" class="headerlink" title="2.2.2.3. 注释结果"></a>2.2.2.3. 注释结果</h4><p>eggnog-mapper会生成五个文件:</p>
+<ul>
+<li>[project_name].emapper.gff: gff注释文件。</li>
+<li>[project_name].emapper.orthologs: 搜索匹配到的物种和orthologs的信息。</li>
+<li>[project_name].emapper.seed_orthologs: 记录每个用于搜索序列对的的最佳的OG，也就是</li>
+<li>[project_name].emapper.annotations.tsv: 该文件提供了最终的注释结果。大部分需要的内容都可以通过写脚本从从提取，一共有13列。</li>
+<li>[project_name].emapper.annotations.xlsx：最终注释结果，另一种格式。</li>
+</ul>
+<p>其中[project_name].emapper.annotations.tsv每一列对应的记录如下：</p>
+<ol>
+<li>query: 检索的基因名或者其他ID</li>
+<li>seed_ortholog: eggNOG中最佳的蛋白匹配</li>
+<li>evalue: 最佳匹配的e-value</li>
+<li>score: 最佳匹配的bit-score</li>
+<li>eggNOG_OGs：匹配到的eggNOG数据库里的OGs</li>
+<li>max_annot_lvl：</li>
+<li>COG_category：COG类别</li>
+<li>Description：功能描述</li>
+<li>Preferred_name: 预测的基因名，特别指的是类似AP2有一定含义的基因名，而不是- AT2G17950这类编号</li>
+<li>GOs: 推测的GO的词条， 未必最新</li>
+<li>EC：</li>
+<li>KEGG_ko: 推测的KEGG KO词条， 未必最新</li>
+<li>KEGG_Pathway：推测的KEGG通路词条</li>
+<li>KEGG_Module：</li>
+<li>KEGG_Reaction：</li>
+<li>KEGG_rclass：</li>
+<li>BRITE:</li>
+<li>KEGG_TC:</li>
+<li>CAZy</li>
+<li>BiGG_Reaction: BiGG代谢反应的预测结果</li>
+<li>PFAMs:注释到PFAM数据</li>
+</ol>
+<h4 id="2-2-2-4-结果整理"><a href="#2-2-2-4-结果整理" class="headerlink" title="2.2.2.4. 结果整理"></a>2.2.2.4. 结果整理</h4><ul>
+<li><code>cat eggnog.web/*.emapper.annotations.tsv |sed &#39;/#.*/d&#39; |cut -f1,8,9 |awk -F&quot;\t&quot; &#39;&#123;print $1&quot;\t&quot;$3&quot;: &quot;$2&#125;&#39; |sed &#39;/-: -/d&#39;|sort -k 1.3n |uniq |sed &#39;1i\gene\teggnog.preferred.name: description&#39; &gt;eggnog.anno</code> 提取信息列：1（query），8（Description），9（Preferred name），10（GOs），12（KEGG_ko）列。然后提取1（query），8（Description），9（Preferred name）注释信息。eggnog注释是每个基因一行信息，所以eggnog.anno的行数就是注释到的基因数量。</li>
+<li><code>cat eggnog.web/*.emapper.annotations.tsv |sed &#39;/#.*/d&#39; |cut -f1,10 |sed &#39;/\t-$/d&#39; |sort -k 1.3n |uniq |sed &#39;1i\gene\teggnog.go&#39; &gt;eggnog.go.anno</code> 提取信息列：1（query），10（GOs）的eggnog的GO注释信息。</li>
+<li><code>cat eggnog.web/*.emapper.annotations.tsv |sed &#39;/#.*/d&#39; |cut -f1,12 |sed &#39;/\t-$/d&#39; |sort -k 1.3n |uniq |sed &#39;1i\gene\teggnog.kegg&#39; &gt;eggnog.kegg.anno</code> 提取信息列：1（query），12（KEGG_ko）的eggnog的KEGG注释信息。</li>
+</ul>
+<h2 id="2-3-InterProScan"><a href="#2-3-InterProScan" class="headerlink" title="2.3. InterProScan"></a>2.3. InterProScan</h2><h3 id="2-3-1-Interproscan"><a href="#2-3-1-Interproscan" class="headerlink" title="2.3.1. Interproscan"></a>2.3.1. Interproscan</h3><p>interpro是数据库，interproscan是可以使用interpro的注释软件。<br>如果序列少，可以使用<a target="_blank" rel="noopener" href="http://www.ebi.ac.uk/interpro/search/sequence/">interproscan网页版</a>注释，避免下载数据库的繁琐。限制一次注释一条，长度小于40000个蛋白序列，超过可以切分后分开注释。</p>
+<p>interproscan可实现多个数据库同时注释，包括：</p>
+<ul>
+<li>InterPro注释</li>
+<li>Pfam数据库注释(可以通过hmmscan搜索pfam数据库完成)</li>
+<li>PANTHER数据库注释</li>
+<li>GO注释(可以基于NR和Pfam等数据库，然后BLAST2GO完成)</li>
+<li>Reactome通路注释，不同于KEGG<br>还有很多数据库。</li>
+</ul>
+<h3 id="2-3-2-Interproscan的安装和数据库下载"><a href="#2-3-2-Interproscan的安装和数据库下载" class="headerlink" title="2.3.2. Interproscan的安装和数据库下载"></a>2.3.2. Interproscan的安装和数据库下载</h3><p>如果注释的文件比较大或者比较多，可以下载本地版注释，下载过程非常慢。根据你的linux版本和发布日期来选择最适版本，软件很大最近版大约9.1G。建议下载对应的md5文件，用 md5sum -c *.md5来检查下载的是否完全。</p>
+<h4 id="2-3-2-1-Interproscan安装"><a href="#2-3-2-1-Interproscan安装" class="headerlink" title="2.3.2.1. Interproscan安装"></a>2.3.2.1. Interproscan安装</h4><p>interproscan软件地址：<a href="ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/">ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/</a>, 选择最新版本，比如5.47-82.0，则<code>wget ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.47-82.0/*</code>，版本号目录下有两个文件，一个软件的tar.gz压缩文件，一个对应的md5文件，都下下来。</p>
+<h4 id="2-3-2-2-软件自带数据库"><a href="#2-3-2-2-软件自带数据库" class="headerlink" title="2.3.2.2. 软件自带数据库"></a>2.3.2.2. 软件自带数据库</h4><p>软件本身自带了很多数据库，不需要安装，5.47-82.0版本带有CDD-3.17,Coils-2.2.1,Gene3D-4.2.0,Hamap-2020_01,MobiDBLite-2.0,PANTHER-15.0,Pfam-33.1,PIRSF-3.10,PRINTS-42.0,ProSitePatterns-2019_11,ProSiteProfiles-2019_11,SFLD-4,SMART-7.1,SUPERFAMILY-1.75,TIGRFAM-15.0数据库。</p>
+<h4 id="2-3-2-3-关于PANHTER数据库"><a href="#2-3-2-3-关于PANHTER数据库" class="headerlink" title="2.3.2.3. 关于PANHTER数据库"></a>2.3.2.3. 关于PANHTER数据库</h4><p>PANHTER(Protein ANalysis THrough Evolutionary Relationships) 数据库是Gene Ontology Phylogenetic Annotation Project的一部分。</p>
+<ol>
+<li>发现interproscan 5.47-82.0软件自带PANHTER数据库，所以不用单独下载啦。</li>
+<li>若是没有带PANHTER数据库，则下载构建本地PANHTER数据库，需要下载并解压到软件安装目录下的 &#x2F;path of interproscan&#x2F;data&#x2F;。</li>
+</ol>
+<ul>
+<li>PANHTER下载地址：<a href="ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/data/">ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/data/</a>,</li>
+<li>选择最新版本，比如14.1，则<code>wget ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/panther-data-14.1.tar.gz*</code>，下载14.1和对应的md5文件。</li>
+<li>md5验证两个文件下载完全后，tar zxf解压缩，并把PANHTER数据库放进interproscan的data目录下。</li>
+</ul>
+<h4 id="2-3-2-4-java和python版本检查"><a href="#2-3-2-4-java和python版本检查" class="headerlink" title="2.3.2.4. java和python版本检查"></a>2.3.2.4. java和python版本检查</h4><p>软件的运行依赖java11和python3，<code>java -version</code>和<code>python --version</code>检查版本是否正确。</p>
+<h4 id="2-3-2-5-测试安装"><a href="#2-3-2-5-测试安装" class="headerlink" title="2.3.2.5. 测试安装"></a>2.3.2.5. 测试安装</h4><p>解压缩后运行 interproscan.sh 测试是否成功安装，弹出help界面就是成功安装，用测试文件运行下，<code>interproscan.sh -i test_proteins.fasta</code>，没报错则软件可正常运行。</p>
+<h4 id="2-3-2-6-tips"><a href="#2-3-2-6-tips" class="headerlink" title="2.3.2.6. tips"></a>2.3.2.6. tips</h4><ul>
+<li>如果本地化运行，可以把interproscan.properties文件里的<a href="precalculated.match.lookup.service.url=http://www.ebi.ac.uk/interpro/match-lookup">这行代码</a>注释掉，就不进行match.lookup检查，这个应该是更新数据库的检查。</li>
+<li>如果不注释，在运行时存储interproscan数据库端网络慢时（大部分情况下）会输出一些Connection timed out和ERROR - Lookup version check failed的报错信息，但the analysis will continue to run locally.本地运行仍在继续。</li>
+</ul>
+<h3 id="2-3-3-Interproscan运行"><a href="#2-3-3-Interproscan运行" class="headerlink" title="2.3.3. Interproscan运行"></a>2.3.3. Interproscan运行</h3><p>常用运行参数<br><code>interproscan -i pep.fa -b out.iprscan -goterms -iprlookup -pa -dp -cpu 24</code></p>
+<p>interproscan的参数：</p>
+<ul>
+<li><p>-i,–input 输入文件，一般要为fasta格式，注意不要带有除氨基酸符号的其他特殊符号（比如代表终止密码子的*），gene&#x2F;氨基酸的名称不能为空。</p>
+</li>
+<li><p>-b,–output-file-base 指定输出文件的路径和文件名，默认是输入文件的路径</p>
+</li>
+<li><p>-appl,–applications 指定使用Interpro中哪些数据库，默认使用全部数据库</p>
+</li>
+<li><p>-f,–formats 用于指定输出文件的后缀，蛋白序列默认输出TSV, XML and GFF3</p>
+</li>
+<li><p>-t,–seqtype 输入文件的序列类型，p为protein，n为dna&#x2F;rna，默认是p</p>
+</li>
+<li><p>-cpu 指定使用线程数</p>
+</li>
+<li><p>-goterms 打开GO注释，依赖iprlookup参数，switch on lookup of corresponding Gene Ontology annotation (IMPLIES -iprlookup option)</p>
+</li>
+<li><p>-iprlookup Also include lookup of corresponding InterPro annotation in the TSV and GFF3 output formats.</p>
+</li>
+<li><p>-pa Optional, switch on lookup of corresponding Pathway annotation (IMPLIES -iprlookup option)</p>
+</li>
+<li><p>-dp 关闭precalculated match lookup service，默认的是开启。根据md5值来快速检验这上传的数据是否已经被注释了，如果是已经注释了就直接出结果。</p>
+</li>
+</ul>
+<h3 id="2-3-4-Interproscan结果解释"><a href="#2-3-4-Interproscan结果解释" class="headerlink" title="2.3.4. Interproscan结果解释"></a>2.3.4. Interproscan结果解释</h3><p>生成的out.tsv和out.gff3等是不同格式的注释文件，这里使用tsv格式。</p>
+<p>tsv格式文件每一列含义：</p>
+<ol>
+<li>蛋白名字</li>
+<li>序列MD5 disest</li>
+<li>序列长度</li>
+<li>所用的库（Pfam&#x2F;PANTHER&#x2F;RPINTS etc）</li>
+<li>匹配的数据编号（PF00001&#x2F;PTHR00001 etc)</li>
+<li>功能描述</li>
+<li>起始位置</li>
+<li>终止位置</li>
+<li>e-value得分</li>
+<li>匹配的状态T: true</li>
+<li>日期</li>
+<li>interPro 注释编号</li>
+<li>interPro 注释描述</li>
+<li>GO注释</li>
+<li>Pathways 注释</li>
+</ol>
+<p>每行是一条蛋白序列注释到的每个数据库的每一个匹配，所以每个基因会有多行。<br>根据第四列-数据库名称来提取不同数据库的注释结果。这里提取pfam和PANTHER两个数据库的结果。</p>
+<h3 id="2-3-5-Interproscan结果整理"><a href="#2-3-5-Interproscan结果整理" class="headerlink" title="2.3.5. Interproscan结果整理"></a>2.3.5. Interproscan结果整理</h3><ol>
+<li>提取interpro数据库注释内容并转化成单基因单行格式<br><code>cat *.iprscan.tsv |cut -f1,12,13|grep &quot;IPR&quot;|awk &#39;&#123;print $1&quot;\t&quot;$2&quot;: &quot;$3&#125;&#39;|sort -k 1.3n|uniq |awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;; &quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39;|sed &quot;s/; $//g&quot; |sort -k 1.3n |sed &#39;1i\gene\tinterpro&#39; &gt;iprs.interpro.anno</code></li>
+</ol>
+<p>notes：</p>
+<ul>
+<li>注意排序和去重。</li>
+<li>因为我的geneID是tg00001这种格式，只有两个字母，所以sort排序按数字从第三个<code>sort -k 1.3n</code>开始排序，可以根据不同geneID更改。</li>
+<li>其中<code>awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;; &quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39;|sed &quot;s/; $//g&quot; |sort -k 1.3n</code>部分是单基因多行注释转化成单基因单行注释的命令。</li>
+<li>用cut截取1，12，13三列是因为有些行没有12列及之后数据，直接用awk会失效。</li>
+<li>用grep搜索IPR是因为直接用awk匹配第12列不能匹配完全，比如SUPERFAMILY数据库的比对就匹配不了。</li>
+</ul>
+<ol start="2">
+<li><p>提取Pfam数据库注释结果并转化成单基因单行格式<br><code>cat *.iprscan.tsv  |awk &#39;$4 == &quot;Pfam&quot; &#123;print $1&quot;\t&quot;$5&quot;: &quot;$6&#125;&#39; |sort -k 1.3n |uniq|awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;; &quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39;|sed &quot;s/; $//g&quot; |sort -k 1.3n |sed &#39;1i\gene\tinterproscan.pfam&#39;&gt;iprs.pfam.anno</code></p>
+</li>
+<li><p>提取PANTHER数据库注释结果并转化成单基因单行格式<br><code>cat *.iprscan.tsv |awk &#39;$4 == &quot;PANTHER&quot; &#123;print $1&quot;\t&quot;$5&quot;: &quot;$6&#125;&#39;|sort -k 1.3n|uniq |awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;; &quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39;|sed &quot;s/; $//g&quot; |sort -k 1.3n |sed &#39;1i\gene\tinterproscan.panther&#39;&gt;iprs.panther.anno</code></p>
+</li>
+</ol>
+<h2 id="2-4-PANNZER-Protein-ANNotation-with-Z-scoRE"><a href="#2-4-PANNZER-Protein-ANNotation-with-Z-scoRE" class="headerlink" title="2.4. PANNZER(Protein ANNotation with Z-scoRE)"></a>2.4. PANNZER(Protein ANNotation with Z-scoRE)</h2><h3 id="2-4-1-PANNZER"><a href="#2-4-1-PANNZER" class="headerlink" title="2.4.1. PANNZER"></a>2.4.1. PANNZER</h3><p>网站注释：<a target="_blank" rel="noopener" href="http://ekhidna2.biocenter.helsinki.fi/sanspanz/">http://ekhidna2.biocenter.helsinki.fi/sanspanz/</a></p>
+<ul>
+<li>用于原核和真核蛋白序列的功能注释。</li>
+<li>使用的Uniprot数据库，与数据库更新一致。</li>
+<li>用于预测functional description (DE) 和 GO classes。</li>
+</ul>
+<p>注释速度：7万条序列4个小时。</p>
+<h3 id="2-4-2-结果文件"><a href="#2-4-2-结果文件" class="headerlink" title="2.4.2. 结果文件"></a>2.4.2. 结果文件</h3><p>notes: </p>
+<ul>
+<li>网页版的结果，注意需要把进度条拉到最下面再复制保存文本，否则没有显示完全，ctrl+a全选只会选中已显示的内容，未显示的未被选中。</li>
+<li>(20210813)今天发现不需要拉进度条这么繁琐，在网页右键另存为可以报错文本格式的结果。</li>
+</ul>
+<ol>
+<li>*.anno.out.txt是蛋白序列的注释信息，包含六列：</li>
+</ol>
+<ul>
+<li>qpid：序列ID；</li>
+<li>type：original_DE,qseq（前两种类型是每个基因都有的）,DE,MF_ARGOT,BP_ARGOT,CC_ARGOT,EC_ARGOT等（后面的类型是注释到的基因才有的）；</li>
+<li>score：匹配分数；</li>
+<li>PPV：不知道是啥指标；</li>
+<li>id：数字；</li>
+<li>desc：功能描述；每个序列都有多行信息，没被注释到的序列只有两行第二列type分别为original_DE和qseq的基本信息。</li>
+</ul>
+<p>每个基因有只有一行第二列type为DE的数据，此时第六列的描述是对基因的功能描述，即我们想要的基因功能注释信息。</p>
+<ol start="2">
+<li>*.DE_prediction.txt是注释到DE（functional description）的序列的注释信息。<br>重要的是第一列（qpid）：基因id；第九列（desc）：DE描述信息，即注释到uniprot数据库的描述信息；第十列（genename）：基因名字。</li>
+<li>*.GO_prediction.txt是注释到GO的序列的注释信息。<br>重要的是第一列（qpid）：基因id；第二列（ontology）：GO类别，BP&#x2F;MF&#x2F;CC三个类别；第三列（goid）：GO ID；第四列（desc）：GO描述信息。</li>
+</ol>
+<h3 id="2-4-3-结果整理"><a href="#2-4-3-结果整理" class="headerlink" title="2.4.3. 结果整理"></a>2.4.3. 结果整理</h3><ol>
+<li><p><code>cat pannzer2/anno.out.txt |awk &#39;$2 == &quot;DE&quot; &#123;print $1&quot;\t&quot;$6&#125;&#39; |sort -k 1.3n |uniq |sed &#39;1i\gene\tpannzer2.uniprot&#39; &gt;pannzer2.uniprot.anno</code>把Uniprot数据库功能注释信息提取出来。</p>
+</li>
+<li><p><code>cat pannzer2/GO.out.txt |awk &#39;&#123;print $1&quot;\tGO:&quot;$3,$4&#125;&#39; |awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;; &quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39;|sed &quot;s/; $//g&quot; |sort -k 1.3n |uniq |sed &quot;1s/.*/gene\tpannzer2.go/&quot; &gt;pannzer2.go.anno</code>把Uniprot数据库的GO注释提取出来并转化成单基因单行信息。</p>
+</li>
+</ol>
+<h2 id="2-5-Mercator4——植物基因组功能注释"><a href="#2-5-Mercator4——植物基因组功能注释" class="headerlink" title="2.5. Mercator4——植物基因组功能注释"></a>2.5. Mercator4——植物基因组功能注释</h2><p>网站注释：<a target="_blank" rel="noopener" href="https://www.plabipd.de/portal/web/guest/mercator4/-/wiki/Mercator4/FrontPage">https://www.plabipd.de/portal/web/guest/mercator4/-/wiki/Mercator4/FrontPage</a></p>
+<h3 id="2-5-1-注释原理"><a href="#2-5-1-注释原理" class="headerlink" title="2.5.1. 注释原理"></a>2.5.1. 注释原理</h3><ul>
+<li>针对植物基因组的功能注释，以整个植物界的高质量带注释基因组为种子，找直系同源蛋白。</li>
+<li>基于隐马尔可夫模型（HMM），用HMMER3软件的hmmscan对每条蛋白做HMM测试，然后被分到Bin-50类别下。</li>
+<li>其余未被分类的蛋白与Swiss-Prot数据库做blastp比较，然后注释。</li>
+</ul>
+<p>注释速度：7万条蛋白3min注释完，神速！</p>
+<h3 id="2-5-2-注释结果"><a href="#2-5-2-注释结果" class="headerlink" title="2.5.2. 注释结果"></a>2.5.2. 注释结果</h3><p>两个文件，点击即可下载。</p>
+<ol>
+<li>Mercator4 annotation results<br>一共有五列，每列信息都在单引号内：</li>
+</ol>
+<ul>
+<li>BINCODE：有层级的有序数字列表</li>
+<li>NAME：这一层级的功能名字，代表蛋白数据库里的功能层级</li>
+<li>IDENTIFIER：基因ID，在末级层级才会有基因ID</li>
+<li>DESCRIPTION：功能描述</li>
+<li>TYPE：类型</li>
+</ul>
+<ol start="2">
+<li>Mercator4 annotated fasta file</li>
+</ol>
+<h3 id="2-5-3-结果整理"><a href="#2-5-3-结果整理" class="headerlink" title="2.5.3. 结果整理"></a>2.5.3. 结果整理</h3><ol>
+<li>从Mercator4 annotation results提取注释结果出来并转化成单基因单行信息格式，其中geneIDprefix根据基因名的前缀替换：</li>
+</ol>
+<p><code>cat mercator4v3/*.annotations.results.txt |awk -F&quot;\t&quot; &#39;$3 ~ &quot;geneIDprefix&quot; &#123;print $3&quot;\t&quot;$2&quot;: &quot;$4&#125;&#39; |sed &quot;s/&#39;//g&quot; |sort -k 1.3n |uniq |grep -v &quot;no hits&quot;|awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;; &quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39;|sed &quot;s/; $//g&quot; |sort -k 1.3n |sed &quot;s/not assigned.annotated/-/g&quot; |sed &quot;1i\gene\tmercator&quot;&gt;mercator.anno</code></p>
+<p>注意检查是否还有no hits或者not assigned.annotated，有的话都替换掉。</p>
+<ol start="2">
+<li>从Mercator4 annotated fasta file中以”not annotated”作为关键词搜索，可以获取未被注释到的基因。</li>
+</ol>
+<h1 id="3-基因功能注释的整合"><a href="#3-基因功能注释的整合" class="headerlink" title="3. 基因功能注释的整合"></a>3. 基因功能注释的整合</h1><p>提交功能注释文件有两种方案：</p>
+<ol>
+<li>整合功能注释和结构注释：把功能注释整理后添加到结构注释文件sample.gff第九列的product属性，与结构注释一同提交给NCBI等公共数据库</li>
+<li>单独提供功能注释：通过Dryad【收费】或Figshare【免费】等文件分享网站单独提供功能注释文件</li>
+</ol>
+<h2 id="3-1-方案一：整合功能注释和结构注释"><a href="#3-1-方案一：整合功能注释和结构注释" class="headerlink" title="3.1. 方案一：整合功能注释和结构注释"></a>3.1. 方案一：整合功能注释和结构注释</h2><p>功能注释以product属性值的形式提供，添加到结构注释gff文件的第九列。</p>
+<h3 id="3-1-1-基因功能注释整理"><a href="#3-1-1-基因功能注释整理" class="headerlink" title="3.1.1. 基因功能注释整理"></a>3.1.1. 基因功能注释整理</h3><p>不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成两列的格式，首行为表头，第一列为基因ID（gene），第二列为基因功能注释的描述信息（标明注释来源），每个注释软件&#x2F;数据库的描述信息单独为一列。</p>
+<p>目前共有9个文件被整理出来：</p>
+<ol>
+<li>eggnog.anno</li>
+<li>eggnog.go.anno</li>
+<li>eggnog.kegg.anno</li>
+<li>iprs.interpro.anno</li>
+<li>iprs.panther.anno</li>
+<li>iprs.pfam.anno</li>
+<li>mercator.anno</li>
+<li>pannzer2.go.anno</li>
+<li>pannzer2.uniprot.anno</li>
+</ol>
+<h3 id="3-1-2-合并功能注释和结构注释"><a href="#3-1-2-合并功能注释和结构注释" class="headerlink" title="3.1.2. 合并功能注释和结构注释"></a>3.1.2. 合并功能注释和结构注释</h3><p>合并步骤：</p>
+<ol>
+<li><p>整理注释结果<br>先把所有功能注释转换成单基因单注释的格式(单基因多行注释)，确保数据只有两列(基因ID列和功能注释列)，并删除除了product值以外的内容，比如iprs.panther.anno文件中的pantherid号，整理成pannzer2.uniprot.anno文件的形式，两列数据，第一列基因ID，第二列注释到的产物product值。</p>
+</li>
+<li><p>合并多个注释结果<br>cat *anno|sort -f|uniq -i|awk ‘$2 !&#x3D; “” {print $0}’ &gt;merge.anno<br>合并多个注释结果，排序sort，去重uniq，和去除空值行等处理；按照基因ID排序，生成单基因多行注释的merge.anno文件</p>
+</li>
+<li><p>过滤注释<br>最好的办法是在这一步做过滤filter。</p>
+</li>
+</ol>
+<p><code>sed -i -E -e &quot;s/[,|()[]&#123;&#125;]//g&quot; -e &quot;s/^[-:/]//g&quot; -e &quot;s/[-:/]$//g&quot; -e &quot;s/[^a-zA-Z]+//g&quot; merge.anno</code></p>
+<p>product值的不规范情况：</p>
+<ul>
+<li>包含逗号,（因为逗号是分隔符）</li>
+<li>包含竖杠|</li>
+<li>短横杠-开头或结尾</li>
+<li>冒号:开头或结尾</li>
+<li>斜杠&#x2F;开头或结尾</li>
+<li>不包含字母</li>
+<li>括号（包括圆括号,中括号和大括号）不完整的</li>
+</ul>
+<ol start="4">
+<li><p>单注释转多注释<br>用<code>cat merge.anno |awk -F&quot;\t&quot; &#39;&#123;a[$1]=a[$1]$2&quot;,&quot;&#125;END&#123;for( i in a)&#123;print i&quot;\t&quot;a[i]&#125;&#125;&#39; |sed &quot;s/,$/;/g&quot;|sort -gk 1.3n|awk &#39;&#123;print $1&quot;\tproduct=&quot;$2&#125;&#39; &gt;product.list</code>命令从merge.anno生成product.list，每个基因单行的格式，还是两列，第一列基因ID，第二列若有多个注释用逗号隔开，用分号结尾。</p>
+</li>
+<li><p>添加product属性值<br>sample.gff与product.list合并，把结构注释和功能注释文件合并，功能注释以product属性值的形式加入gff文件的第九列内容。</p>
+</li>
+</ol>
+<h2 id="3-2-方案二：单独提供功能注释"><a href="#3-2-方案二：单独提供功能注释" class="headerlink" title="3.2. 方案二：单独提供功能注释"></a>3.2. 方案二：单独提供功能注释</h2><h3 id="3-2-1-基因功能注释整理"><a href="#3-2-1-基因功能注释整理" class="headerlink" title="3.2.1. 基因功能注释整理"></a>3.2.1. 基因功能注释整理</h3><p>不同软件的基因功能注释结果都预先进行了整理（参考各个软件后的注释整理部分），整理成两列的格式，首行为表头，第一列为基因ID（gene），第二列为基因功能注释的描述信息（标明注释来源），每个注释软件&#x2F;数据库的描述信息单独为一列。</p>
+<p>目前共有9个文件被整理出来：</p>
+<ol>
+<li>eggnog.anno</li>
+<li>eggnog.go.anno</li>
+<li>eggnog.kegg.anno</li>
+<li>iprs.interpro.anno</li>
+<li>iprs.panther.anno</li>
+<li>iprs.pfam.anno</li>
+<li>mercator.anno</li>
+<li>pannzer2.go.anno</li>
+<li>pannzer2.uniprot.anno</li>
+</ol>
+<h3 id="3-2-2-基因功能注释整合"><a href="#3-2-2-基因功能注释整合" class="headerlink" title="3.2.2. 基因功能注释整合"></a>3.2.2. 基因功能注释整合</h3><p>需要整合所有注释软件&#x2F;数据库的信息，只需根据第一列进行文件的合并。</p>
+<h4 id="3-2-2-1-join命令"><a href="#3-2-2-1-join命令" class="headerlink" title="3.2.2.1. join命令"></a>3.2.2.1. join命令</h4><ol>
+<li><p>实现合并a.anno和b.anno的方法：a.anno和b.anno都只有两列的情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">join -t $&#x27;\t&#x27; -j 1 a.anno b.anno &gt;ab.tem #合并两个注释文件都注释到基因的行</span><br><span class="line">join -t $&#x27;\t&#x27; -j 1 -v 1 a.anno b.anno |awk -F&quot;\t&quot; &#x27;&#123;print $1&quot;\t&quot;$2&quot;\t-&quot;&#125;&#x27; &gt;a.tem #提取a.anno单独注释到基因的行</span><br><span class="line">join -t $&#x27;\t&#x27; -j 1 -v 2 a.anno b.anno |awk -F&quot;\t&quot; &#x27;&#123;print $1&quot;\t-\t&quot;$2&#125;&#x27; &gt;b.tem #提取b.anno单独注释到基因的行</span><br><span class="line">cat ab.tem a.tem b.tem |sort -k 1.3n &gt;ab.anno #合并注释文件</span><br><span class="line">rm ab.tem a.tem b.tem # 删除临时文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现合并ab.anno和c.anno的方法：ab.anno有三列，c.anno有两列的情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">join -t $&#x27;\t&#x27; -j 1 ab.anno c.anno &gt;abc.tem #合并两个注释文件都注释到基因的行</span><br><span class="line">join -t $&#x27;\t&#x27; -j 1 -v 1 ab.anno c.anno |awk -F&quot;\t&quot; &#x27;&#123;print $1&quot;\t&quot;$2&quot;\t&quot;$3&quot;\t-&quot;&#125;&#x27; &gt;ab.tem #提取ab.anno单独注释到基因的行</span><br><span class="line">join -t $&#x27;\t&#x27; -j 1 -v 2 ab.anno c.anno |awk -F&quot;\t&quot; &#x27;&#123;print $1&quot;\t-\t-\t&quot;$2&#125;&#x27; &gt;c.tem #提取c.anno单独注释到基因的行</span><br><span class="line">cat abc.tem ab.tem c.tem |sort -k 1.3n &gt;abc.anno #合并注释文件</span><br><span class="line">rm abc.tem ab.tem c.tem # 删除临时文件</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>如果多个文件，则两两依次合并。还没想到什么更简单的方法，就这样用join手动合并所有注释软件&#x2F;数据库的功能注释到一个文件吧。</p>
+<h4 id="3-2-2-2-merge-file-key-property-title-cpp程序"><a href="#3-2-2-2-merge-file-key-property-title-cpp程序" class="headerlink" title="3.2.2.2. merge_file_key_property.title.cpp程序"></a>3.2.2.2. merge_file_key_property.title.cpp程序</h4><p>请大佬写了个合并功能注释的程序，merge_file_key_property.title.cpp，可以一次合并任意多个文件。</p>
+<ol>
+<li>编译<br><code>g++ -std=c++11 ./merge_file_key_property.cpp -o merge_file_key_property.o</code>生成执行文件*.o</li>
+<li>执行<br><code> ./merge_file_key_property.o -h</code>查看参数</li>
+</ol>
+<p><code>./merge_file_key_property.o -a .anno -n 7 -p mc -q gene -o merged</code> 使用示范：-a指定合并的文件类型（比如.anno）；-n指定第一列字段长度（比如sp00001长度为7）；-p指定第一列关键词的前缀（基因名前缀，比如sp）；-q指定第一列关键词的标题（比如gene），作为表头；-o指定合并文件名的前缀。</p>
+<h4 id="3-2-2-3-waiting…"><a href="#3-2-2-3-waiting…" class="headerlink" title="3.2.2.3. waiting…"></a>3.2.2.3. waiting…</h4><p>如果文件多且特征复杂，还是琢磨一下python或者R的merge功能吧。</p>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/67dbafa86334">https://www.jianshu.com/p/67dbafa86334</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e646c0fa6443">https://www.jianshu.com/p/e646c0fa6443</a></li>
+<li><a target="_blank" rel="noopener" href="http://xuzhougeng.top/archives/Function-anotation-with-swiss-prot-database">徐洲更文章</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4f4819f385d2">https://www.jianshu.com/p/4f4819f385d2</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/05/17/omics_genome.functional.annotation/" data-id="cl1aidmxb003w4gvkd19t2f6f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PANNZER2/" rel="tag">PANNZER2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eggnog-mapper/" rel="tag">eggnog-mapper</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/functional-annotation/" rel="tag">functional annotation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interproscan/" rel="tag">interproscan</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/06/23/concept_homology/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          同源性(homology)相关概念
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/20/blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">blog</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/">bio</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/bioinfo/">bioinfo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/biosoft/">biosoft</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/concept/">concept</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/evolution/">evolution</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/experiment/">experiment</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/taxon/">taxon</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/">biosoft</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/circos/">circos</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/scripts/">scripts</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/">system</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/Windows/">Windows</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/web/">web</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/">computer language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/R/">R</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/basics/">basics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/shell/">shell</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/text-processing/">text processing</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/">omics</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/omics/genome/">genome</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/transcriptome/">transcriptome</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/4dtv/" rel="tag">4dtv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">;</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BUSCO/" rel="tag">BUSCO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bauhinia/" rel="tag">Bauhinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioconductor/" rel="tag">Bioconductor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAFE/" rel="tag">CAFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CDS/" rel="tag">CDS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRAN/" rel="tag">CRAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Circos/" rel="tag">Circos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clustal/" rel="tag">Clustal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DESeq2/" rel="tag">DESeq2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EDTA/" rel="tag">EDTA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GATK/" rel="tag">GATK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GOEAST/" rel="tag">GOEAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GSEA/" rel="tag">GSEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gblocks/" rel="tag">Gblocks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GenBank/" rel="tag">GenBank</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISAT2/" rel="tag">HISAT2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KOBAS-i/" rel="tag">KOBAS-i</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KaKs-Calculator2-0/" rel="tag">KaKs_Calculator2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoRDEC/" rel="tag">LoRDEC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MAFFT/" rel="tag">MAFFT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCScanX/" rel="tag">MCScanX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCscan/" rel="tag">MCscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSA/" rel="tag">MSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MUSCLE/" rel="tag">MUSCLE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multiple-Sequence-Alignment/" rel="tag">Multiple Sequence Alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oases/" rel="tag">Oases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoFinder/" rel="tag">OrthoFinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoMCL/" rel="tag">OrthoMCL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PAL2NAL/" rel="tag">PAL2NAL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PANNZER2/" rel="tag">PANNZER2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PATH/" rel="tag">PATH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PCR/" rel="tag">PCR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRANK/" rel="tag">PRANK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT/" rel="tag">ParaAT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT-pl/" rel="tag">ParaAT.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QUAST/" rel="tag">QUAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R-package/" rel="tag">R package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-seq/" rel="tag">RNA-seq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-sequencing/" rel="tag">RNA-sequencing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROUSFinder2-0-py/" rel="tag">ROUSFinder2.0.py</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RStudio/" rel="tag">RStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatMasker/" rel="tag">RepeatMasker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatModeler/" rel="tag">RepeatModeler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rtools/" rel="tag">Rtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STARlong/" rel="tag">STARlong</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Salmon-SMEM/" rel="tag">Salmon-SMEM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StringTie/" rel="tag">StringTie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TE/" rel="tag">TE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TreeMix/" rel="tag">TreeMix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UpSetR/" rel="tag">UpSetR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Venn/" rel="tag">Venn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VennDiagram/" rel="tag">VennDiagram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGDI/" rel="tag">WGDI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\&&</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\||</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analog/" rel="tag">analog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/" rel="tag">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/batch-run-sh/" rel="tag">batch_run.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bifurcated-tree/" rel="tag">bifurcated tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/" rel="tag">bootstrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/build-website/" rel="tag">build website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chronogram/" rel="tag">chronogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladistics/" rel="tag">cladistics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladogram/" rel="tag">cladogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clusterProfiler/" rel="tag">clusterProfiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codon/" rel="tag">codon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/colinearity/" rel="tag">colinearity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combine/" rel="tag">combine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crown-groups/" rel="tag">crown groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deploy-website/" rel="tag">deploy website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/divergence-time/" rel="tag">divergence time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eggnog-mapper/" rel="tag">eggnog-mapper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/evolutionary-tree/" rel="tag">evolutionary tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experiment/" rel="tag">experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract/" rel="tag">extract</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-intron-info-pl/" rel="tag">extract_intron_info.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-single-copy-genes-sh/" rel="tag">extract_single_copy_genes.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/facet-plot/" rel="tag">facet_plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/" rel="tag">flex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/for/" rel="tag">for</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fossil-time/" rel="tag">fossil time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-annotation/" rel="tag">functional annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-family/" rel="tag">gene family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-flow/" rel="tag">gene flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-set-enrichment-analysis/" rel="tag">gene set enrichment analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome/" rel="tag">genome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-submit/" rel="tag">genome submit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geom-taxalink/" rel="tag">geom_taxalink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggdensitree/" rel="tag">ggdensitree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggplot2/" rel="tag">ggplot2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggstance/" rel="tag">ggstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggtree/" rel="tag">ggtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gplots/" rel="tag">gplots</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/homolog/" rel="tag">homolog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interproscan/" rel="tag">interproscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/itol/" rel="tag">itol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jcvi/" rel="tag">jcvi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/" rel="tag">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/line-separator/" rel="tag">line separator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loop/" rel="tag">loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mcmctree/" rel="tag">mcmctree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/molecular-experiment/" rel="tag">molecular experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monophyly/" rel="tag">monophyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-transcriptome-assembly-with-ref-sh/" rel="tag">multi-transcriptome_assembly_with_ref.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiPhylo/" rel="tag">multiPhylo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthogroup/" rel="tag">orthogroup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ortholog/" rel="tag">ortholog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paml/" rel="tag">paml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paralog/" rel="tag">paralog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paraphyly/" rel="tag">paraphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paste/" rel="tag">paste</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-reticulum/" rel="tag">phylogenetic reticulum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-tree/" rel="tag">phylogenetic tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogeny/" rel="tag">phylogeny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogram/" rel="tag">phylogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plot/" rel="tag">plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/polyphyly/" rel="tag">polyphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/population-networks/" rel="tag">population networks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protein/" rel="tag">protein</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/" rel="tag">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reinstall/" rel="tag">reinstall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rename/" rel="tag">rename</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repeat-sequences/" rel="tag">repeat sequences</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/" rel="tag">scripts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/" rel="tag">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sequence-alignment/" rel="tag">sequence alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sort/" rel="tag">sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stem-groups/" rel="tag">stem groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sync/" rel="tag">sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synteny/" rel="tag">synteny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table2asn/" rel="tag">table2asn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topGO/" rel="tag">topGO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/" rel="tag">tr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/treeio/" rel="tag">treeio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimAl/" rel="tag">trimAl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimming/" rel="tag">trimming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/website-maintenance/" rel="tag">website maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/while/" rel="tag">while</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/" rel="tag">xargs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xenolog/" rel="tag">xenolog</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/4dtv/" style="font-size: 10px;">4dtv</a> <a href="/tags/" style="font-size: 10px;">;</a> <a href="/tags/BUSCO/" style="font-size: 10px;">BUSCO</a> <a href="/tags/Bauhinia/" style="font-size: 10px;">Bauhinia</a> <a href="/tags/Bioconductor/" style="font-size: 10px;">Bioconductor</a> <a href="/tags/CAFE/" style="font-size: 10px;">CAFE</a> <a href="/tags/CDS/" style="font-size: 10px;">CDS</a> <a href="/tags/CRAN/" style="font-size: 10px;">CRAN</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Circos/" style="font-size: 10px;">Circos</a> <a href="/tags/Clustal/" style="font-size: 10px;">Clustal</a> <a href="/tags/DESeq2/" style="font-size: 10px;">DESeq2</a> <a href="/tags/EDTA/" style="font-size: 10px;">EDTA</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/GATK/" style="font-size: 10px;">GATK</a> <a href="/tags/GOEAST/" style="font-size: 10px;">GOEAST</a> <a href="/tags/GSEA/" style="font-size: 14px;">GSEA</a> <a href="/tags/Gblocks/" style="font-size: 10px;">Gblocks</a> <a href="/tags/GenBank/" style="font-size: 10px;">GenBank</a> <a href="/tags/HISAT2/" style="font-size: 10px;">HISAT2</a> <a href="/tags/KOBAS-i/" style="font-size: 10px;">KOBAS-i</a> <a href="/tags/KaKs-Calculator2-0/" style="font-size: 10px;">KaKs_Calculator2.0</a> <a href="/tags/Ks/" style="font-size: 12px;">Ks</a> <a href="/tags/LoRDEC/" style="font-size: 10px;">LoRDEC</a> <a href="/tags/MAFFT/" style="font-size: 10px;">MAFFT</a> <a href="/tags/MCScanX/" style="font-size: 10px;">MCScanX</a> <a href="/tags/MCscan/" style="font-size: 10px;">MCscan</a> <a href="/tags/MSA/" style="font-size: 10px;">MSA</a> <a href="/tags/MUSCLE/" style="font-size: 10px;">MUSCLE</a> <a href="/tags/Multiple-Sequence-Alignment/" style="font-size: 10px;">Multiple Sequence Alignment</a> <a href="/tags/Oases/" style="font-size: 10px;">Oases</a> <a href="/tags/OrthoFinder/" style="font-size: 10px;">OrthoFinder</a> <a href="/tags/OrthoMCL/" style="font-size: 10px;">OrthoMCL</a> <a href="/tags/PAL2NAL/" style="font-size: 10px;">PAL2NAL</a> <a href="/tags/PANNZER2/" style="font-size: 10px;">PANNZER2</a> <a href="/tags/PATH/" style="font-size: 10px;">PATH</a> <a href="/tags/PCR/" style="font-size: 10px;">PCR</a> <a href="/tags/PRANK/" style="font-size: 10px;">PRANK</a> <a href="/tags/ParaAT/" style="font-size: 10px;">ParaAT</a> <a href="/tags/ParaAT-pl/" style="font-size: 10px;">ParaAT.pl</a> <a href="/tags/QUAST/" style="font-size: 10px;">QUAST</a> <a href="/tags/R/" style="font-size: 16px;">R</a> <a href="/tags/R-package/" style="font-size: 14px;">R package</a> <a href="/tags/RNA-seq/" style="font-size: 10px;">RNA-seq</a> <a href="/tags/RNA-sequencing/" style="font-size: 10px;">RNA-sequencing</a> <a href="/tags/ROUSFinder2-0-py/" style="font-size: 10px;">ROUSFinder2.0.py</a> <a href="/tags/RStudio/" style="font-size: 10px;">RStudio</a> <a href="/tags/RepeatMasker/" style="font-size: 10px;">RepeatMasker</a> <a href="/tags/RepeatModeler/" style="font-size: 10px;">RepeatModeler</a> <a href="/tags/Rtools/" style="font-size: 10px;">Rtools</a> <a href="/tags/STARlong/" style="font-size: 10px;">STARlong</a> <a href="/tags/Salmon-SMEM/" style="font-size: 10px;">Salmon-SMEM</a> <a href="/tags/StringTie/" style="font-size: 10px;">StringTie</a> <a href="/tags/TE/" style="font-size: 10px;">TE</a> <a href="/tags/TreeMix/" style="font-size: 10px;">TreeMix</a> <a href="/tags/UpSetR/" style="font-size: 10px;">UpSetR</a> <a href="/tags/Venn/" style="font-size: 10px;">Venn</a> <a href="/tags/VennDiagram/" style="font-size: 10px;">VennDiagram</a> <a href="/tags/WGD/" style="font-size: 12px;">WGD</a> <a href="/tags/WGDI/" style="font-size: 10px;">WGDI</a> <a href="/tags/" style="font-size: 10px;">\&&</a> <a href="/tags/" style="font-size: 10px;">\||</a> <a href="/tags/analog/" style="font-size: 10px;">analog</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/batch-run-sh/" style="font-size: 10px;">batch_run.sh</a> <a href="/tags/bifurcated-tree/" style="font-size: 10px;">bifurcated tree</a> <a href="/tags/biosoft/" style="font-size: 18px;">biosoft</a> <a href="/tags/blog/" style="font-size: 12px;">blog</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/build-website/" style="font-size: 10px;">build website</a> <a href="/tags/chronogram/" style="font-size: 10px;">chronogram</a> <a href="/tags/cladistics/" style="font-size: 10px;">cladistics</a> <a href="/tags/cladogram/" style="font-size: 10px;">cladogram</a> <a href="/tags/clusterProfiler/" style="font-size: 12px;">clusterProfiler</a> <a href="/tags/codon/" style="font-size: 10px;">codon</a> <a href="/tags/colinearity/" style="font-size: 10px;">colinearity</a> <a href="/tags/combine/" style="font-size: 10px;">combine</a> <a href="/tags/concept/" style="font-size: 12px;">concept</a> <a href="/tags/crown-groups/" style="font-size: 10px;">crown groups</a> <a href="/tags/deploy-website/" style="font-size: 10px;">deploy website</a> <a href="/tags/divergence-time/" style="font-size: 10px;">divergence time</a> <a href="/tags/eggnog-mapper/" style="font-size: 10px;">eggnog-mapper</a> <a href="/tags/evolutionary-tree/" style="font-size: 12px;">evolutionary tree</a> <a href="/tags/experiment/" style="font-size: 10px;">experiment</a> <a href="/tags/extract/" style="font-size: 10px;">extract</a> <a href="/tags/extract-intron-info-pl/" style="font-size: 10px;">extract_intron_info.pl</a> <a href="/tags/extract-single-copy-genes-sh/" style="font-size: 10px;">extract_single_copy_genes.sh</a> <a href="/tags/facet-plot/" style="font-size: 10px;">facet_plot</a> <a href="/tags/flex/" style="font-size: 10px;">flex</a> <a href="/tags/for/" style="font-size: 10px;">for</a> <a href="/tags/fossil-time/" style="font-size: 10px;">fossil time</a> <a href="/tags/functional-annotation/" style="font-size: 10px;">functional annotation</a> <a href="/tags/gene-family/" style="font-size: 10px;">gene family</a> <a href="/tags/gene-flow/" style="font-size: 10px;">gene flow</a> <a href="/tags/gene-set-enrichment-analysis/" style="font-size: 14px;">gene set enrichment analysis</a> <a href="/tags/genome/" style="font-size: 10px;">genome</a> <a href="/tags/genome-annotation/" style="font-size: 14px;">genome annotation</a> <a href="/tags/genome-assessment/" style="font-size: 12px;">genome assessment</a> <a href="/tags/genome-submit/" style="font-size: 10px;">genome submit</a> <a href="/tags/geom-taxalink/" style="font-size: 10px;">geom_taxalink</a> <a href="/tags/ggdensitree/" style="font-size: 10px;">ggdensitree</a> <a href="/tags/ggplot2/" style="font-size: 10px;">ggplot2</a> <a href="/tags/ggstance/" style="font-size: 10px;">ggstance</a> <a href="/tags/ggtree/" style="font-size: 10px;">ggtree</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/gplots/" style="font-size: 10px;">gplots</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/homolog/" style="font-size: 10px;">homolog</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/interproscan/" style="font-size: 10px;">interproscan</a> <a href="/tags/itol/" style="font-size: 10px;">itol</a> <a href="/tags/jcvi/" style="font-size: 10px;">jcvi</a> <a href="/tags/jquery/" style="font-size: 10px;">jquery</a> <a href="/tags/line-separator/" style="font-size: 10px;">line separator</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/loop/" style="font-size: 10px;">loop</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mcmctree/" style="font-size: 10px;">mcmctree</a> <a href="/tags/molecular-experiment/" style="font-size: 10px;">molecular experiment</a> <a href="/tags/monophyly/" style="font-size: 10px;">monophyly</a> <a href="/tags/multi-transcriptome-assembly-with-ref-sh/" style="font-size: 10px;">multi-transcriptome_assembly_with_ref.sh</a> <a href="/tags/multiPhylo/" style="font-size: 10px;">multiPhylo</a> <a href="/tags/orthogroup/" style="font-size: 10px;">orthogroup</a> <a href="/tags/ortholog/" style="font-size: 10px;">ortholog</a> <a href="/tags/orthology/" style="font-size: 12px;">orthology</a> <a href="/tags/paml/" style="font-size: 12px;">paml</a> <a href="/tags/paralog/" style="font-size: 10px;">paralog</a> <a href="/tags/paraphyly/" style="font-size: 10px;">paraphyly</a> <a href="/tags/paste/" style="font-size: 10px;">paste</a> <a href="/tags/phylogenetic-reticulum/" style="font-size: 10px;">phylogenetic reticulum</a> <a href="/tags/phylogenetic-tree/" style="font-size: 10px;">phylogenetic tree</a> <a href="/tags/phylogeny/" style="font-size: 16px;">phylogeny</a> <a href="/tags/phylogram/" style="font-size: 10px;">phylogram</a> <a href="/tags/plot/" style="font-size: 14px;">plot</a> <a href="/tags/polyphyly/" style="font-size: 10px;">polyphyly</a> <a href="/tags/population-networks/" style="font-size: 10px;">population networks</a> <a href="/tags/protein/" style="font-size: 10px;">protein</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reinstall/" style="font-size: 10px;">reinstall</a> <a href="/tags/rename/" style="font-size: 10px;">rename</a> <a href="/tags/repeat-sequences/" style="font-size: 10px;">repeat sequences</a> <a href="/tags/scripts/" style="font-size: 10px;">scripts</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/sequence-alignment/" style="font-size: 12px;">sequence alignment</a> <a href="/tags/sort/" style="font-size: 10px;">sort</a> <a href="/tags/stem-groups/" style="font-size: 10px;">stem groups</a> <a href="/tags/sync/" style="font-size: 12px;">sync</a> <a href="/tags/synteny/" style="font-size: 10px;">synteny</a> <a href="/tags/system/" style="font-size: 10px;">system</a> <a href="/tags/table2asn/" style="font-size: 10px;">table2asn</a> <a href="/tags/topGO/" style="font-size: 12px;">topGO</a> <a href="/tags/tr/" style="font-size: 10px;">tr</a> <a href="/tags/treeio/" style="font-size: 10px;">treeio</a> <a href="/tags/trimAl/" style="font-size: 10px;">trimAl</a> <a href="/tags/trimming/" style="font-size: 10px;">trimming</a> <a href="/tags/tutorial/" style="font-size: 20px;">tutorial</a> <a href="/tags/website-maintenance/" style="font-size: 10px;">website maintenance</a> <a href="/tags/while/" style="font-size: 10px;">while</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/xargs/" style="font-size: 10px;">xargs</a> <a href="/tags/xenolog/" style="font-size: 10px;">xenolog</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/22/omics_genome.submit/">提交基因组到公共数据库 —— 以GenBank为例</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/20/bioinfo_geneflow_treemix/">用TreeMix推断居群间基因流</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/bioinfo_evolutionary.tree/">绘制进化树 —— R包treeio+ggtree</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/16/linux_command/">shell的常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/28/R_install/">R及相关软件的安装</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 南方枝叶<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
