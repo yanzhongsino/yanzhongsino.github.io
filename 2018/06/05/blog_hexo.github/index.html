@@ -15,7 +15,7 @@
 <meta property="og:description" content="这篇教程的目的是指导小白建立和管理自己的网站。用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。build website with hexo, deploy with github.io, sync at multiple terminals.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-06-05T07:53:00.000Z">
-<meta property="article:modified_time" content="2022-03-28T09:26:56.460Z">
+<meta property="article:modified_time" content="2022-03-28T09:30:15.006Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="tutorial">
 <meta property="article:tag" content="blog">
@@ -147,24 +147,16 @@
 </li>
 <li><p>初始化目录<code>hexo init</code><br> 选定位置通过git bash进入，创建hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。<br> 即生成一系列建站需要的文件：</p>
 <ul>
-<li><p>_config.yml：站点配置文件</p>
-</li>
-<li><p>package.json：说明使用哪些包，npm install参考这个文件安装</p>
-</li>
-<li><p>node_modules目录:安装的模块，用npm install会重新生成</p>
-</li>
-<li><p>package-lock.json：用npm install会重新生成</p>
-</li>
-<li><p>scaffolds目录：文章模板</p>
-</li>
-<li><p>source目录：blogmarkdown源文件</p>
-</li>
-<li><p>theme目录：网站主题</p>
-</li>
-<li><p>.gitignore：记录提交时忽略的文件，即以下文件</p>
-</li>
-<li><p>.deploy_git目录：hexo d命令时会重新生成<br> db.json</p>
-</li>
+<li>_config.yml：站点配置文件</li>
+<li>package.json：说明使用哪些包，npm install参考这个文件安装</li>
+<li>node_modules目录:安装的模块，用npm install会重新生成</li>
+<li>package-lock.json：用npm install会重新生成</li>
+<li>scaffolds目录：文章模板</li>
+<li>source目录：blogmarkdown源文件</li>
+<li>theme目录：网站主题</li>
+<li>.gitignore：记录提交时忽略的文件，即以下文件</li>
+<li>.deploy_git目录：hexo d命令时会重新生成</li>
+<li>db.json</li>
 </ul>
 </li>
 <li><p>安装组件<code>npm install</code>，<code>npm install hexo-server --save</code>,<code>npm install hexo-deployer-git</code></p>
