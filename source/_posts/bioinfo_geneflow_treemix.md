@@ -157,12 +157,22 @@ R包OptM分析treemix的结果，确认最佳m值(Deltam值最小情况下的m�
 >plot_optM(linear,method = "linear",pdf="linear.pdf") #结果作图，这个结果我没找到怎么看最佳m值，猜测是在图中斜率变化最大的位置对应的m值，标记了黑色的change points处，这里是m在2-3的位置，接近2。
 ```
 
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_evanno.png?raw=true" width=80% title="linear" align=center/>
+
+**<p align="center">Figure 1. evanno 示例</p>**
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_linear.png?raw=true" width=80% title="linear" align=center/>
+
+**<p align="center">Figure 2. linear 示例</p>**
+
 ### 1.3.4. 最佳m值作图
 用最佳m值对应的结果文件作图
 ```R
 >source("path/to/plotting_funcs.R") #载入treemix/src文件夹中的R脚本
 >plot_tree("sample.treemix.3.1") #用sample.treemix.3.1结果作图
 ```
+
+
 
 **notes**：
 - 虽然TreeMix的输入是个体的snp.vcf计算的基因型频率数据，但推断的系统发育网是居群的(居群名称组成的系统结构)，不是个体的系统发育。
