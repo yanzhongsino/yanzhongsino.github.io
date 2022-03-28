@@ -45,7 +45,6 @@ make install
 ### 1.3.1. 计算等位基因频率
 
 1. `vcftools --gzvcf sample.snp.vcf.gz --plink-tped --out sample` # 转换为tped格式，生成sample.tped和sample.tfam文件。
-
 如果报错**Unrecognized values used for CHROM: scaffold_1 - Replacing with 0**，可以用`bcftools view -H sample.snp.vcf.gz | cut -f 1 | uniq | awk '{print $0"\t"$0}' > chrom-map.txt`生成染色体ID的文件，然后再用--chrom-map指定文件来运行`vcftools --gzvcf sample.snp.vcf.gz --plink-tped --chrom-map chrom-map.txt --out sample`。
 
 2. sample.tfam文件共6列，前两列都为样本ID，修改第一列数据为群体ID。（可以是同一物种不同种群作为单独群体，也可以是一个物种作为一个群体，这里sample的一个物种作为一个群体，群体ID为物种名）。

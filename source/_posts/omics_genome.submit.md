@@ -13,7 +13,7 @@ tags:
 description: 此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=26090155&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=31721697&auto=1&height=32"></iframe></div>
 
 # 1. 基因组数据库
 提交基因组组装的数据到公共数据库以实现共享，在发表提供基因组数据文章时在文章内提供基因组的accession number。
