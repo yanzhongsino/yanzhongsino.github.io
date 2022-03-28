@@ -13,11 +13,11 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/undefined/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
   </script>
 
   <meta name="description" content="记录对基因组的基因进行功能注释的方法。">
@@ -123,6 +123,16 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -203,6 +213,20 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/05/17/omics_genome.functional.annotation/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/05/17/omics_genome.functional.annotation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
             <div class="post-description">记录对基因组的基因进行功能注释的方法。</div>
 
         </div>
@@ -596,6 +620,13 @@
 
           </div>
           
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -642,7 +673,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">1. 数据库概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Nr-x2F-Nt%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. Nr&#x2F;Nt数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-UniProt%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88Swiss-Prot%E5%92%8CTrEMBL%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. UniProt数据库（Swiss-Prot和TrEMBL）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-GO%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. GO数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-KEGG%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. KEGG数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-COG%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E8%9B%8B%E7%99%BD%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. COG直系同源蛋白数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-KOG%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.6.</span> <span class="nav-text">1.6. KOG数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-eggNOG%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.7.</span> <span class="nav-text">1.7. eggNOG数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-pfam%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.8.</span> <span class="nav-text">1.8. pfam数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-string%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.9.</span> <span class="nav-text">1.9. string数据库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">2. 基因功能注释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%BA%93%E6%89%8B%E5%8A%A8%E6%B3%A8%E9%87%8A%E2%80%93%E4%BB%A5Uniprot%E4%B8%BA%E4%BE%8B"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 下载数据库手动注释–以Uniprot为例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. 下载数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E6%9E%84%E5%BB%BAblastp%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. 构建blastp索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-%E7%94%A8blastp%E6%AF%94%E5%AF%B9%E8%9B%8B%E7%99%BD%E5%BA%8F%E5%88%97protein-fa%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93uniprot-plants"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3. 用blastp比对蛋白序列protein.fa和数据库uniprot_plants</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-%E6%AF%94%E5%AF%B9%E7%BB%93%E6%9E%9C%E4%B8%AD%E7%AD%9B%E9%80%89%E6%AF%8F%E4%B8%AAquery%E7%9A%84%E6%9C%80%E4%BD%B3subject"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4. 比对结果中筛选每个query的最佳subject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-5-%E4%BD%BF%E7%94%A8add-annotation-from-dat-py%E6%A0%B9%E6%8D%AEblastp%E8%BE%93%E5%87%BA%E4%BB%8Edat%E6%8F%90%E5%8F%96GO-x2F-KEGG-x2F-%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-number">2.1.5.</span> <span class="nav-text">2.1.5. 使用add_annotation_from_dat.py根据blastp输出从dat提取GO&#x2F;KEGG&#x2F;同源基因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-6-blast2go"><span class="nav-number">2.1.6.</span> <span class="nav-text">2.1.6. blast2go</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-eggnog-mapper%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. eggnog-mapper注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-eggNOG%E6%9C%AC%E5%9C%B0%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1. eggNOG本地注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-eggNOG-mapper%E7%BD%91%E9%A1%B5%E7%89%88%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2. eggNOG-mapper网页版注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-%E6%B3%A8%E9%87%8A%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">2.2.2.1. 注释原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">2.2.2.2. 注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">2.2.2.3. 注释结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-4-%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-number">2.2.2.4.</span> <span class="nav-text">2.2.2.4. 结果整理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-InterProScan"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. InterProScan</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-Interproscan"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. Interproscan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-Interproscan%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2. Interproscan的安装和数据库下载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-1-Interproscan%E5%AE%89%E8%A3%85"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">2.3.2.1. Interproscan安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-2-%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%B8%A6%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">2.3.2.2. 软件自带数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-3-%E5%85%B3%E4%BA%8EPANHTER%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">2.3.2.3. 关于PANHTER数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-4-java%E5%92%8Cpython%E7%89%88%E6%9C%AC%E6%A3%80%E6%9F%A5"><span class="nav-number">2.3.2.4.</span> <span class="nav-text">2.3.2.4. java和python版本检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-5-%E6%B5%8B%E8%AF%95%E5%AE%89%E8%A3%85"><span class="nav-number">2.3.2.5.</span> <span class="nav-text">2.3.2.5. 测试安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-6-tips"><span class="nav-number">2.3.2.6.</span> <span class="nav-text">2.3.2.6. tips</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-Interproscan%E8%BF%90%E8%A1%8C"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3. Interproscan运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-Interproscan%E7%BB%93%E6%9E%9C%E8%A7%A3%E9%87%8A"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4. Interproscan结果解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5-Interproscan%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-number">2.3.5.</span> <span class="nav-text">2.3.5. Interproscan结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-PANNZER-Protein-ANNotation-with-Z-scoRE"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. PANNZER(Protein ANNotation with Z-scoRE)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-PANNZER"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.4.1. PANNZER</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.4.2. 结果文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-number">2.4.3.</span> <span class="nav-text">2.4.3. 结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-Mercator4%E2%80%94%E2%80%94%E6%A4%8D%E7%89%A9%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-number">2.5.</span> <span class="nav-text">2.5. Mercator4——植物基因组功能注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-%E6%B3%A8%E9%87%8A%E5%8E%9F%E7%90%86"><span class="nav-number">2.5.1.</span> <span class="nav-text">2.5.1. 注释原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.5.2. 注释结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-3-%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-number">2.5.3.</span> <span class="nav-text">2.5.3. 结果整理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E7%9A%84%E6%95%B4%E5%90%88"><span class="nav-number">3.</span> <span class="nav-text">3. 基因功能注释的整合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9A%E6%95%B4%E5%90%88%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E5%92%8C%E7%BB%93%E6%9E%84%E6%B3%A8%E9%87%8A"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 方案一：整合功能注释和结构注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1. 基因功能注释整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E5%90%88%E5%B9%B6%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E5%92%8C%E7%BB%93%E6%9E%84%E6%B3%A8%E9%87%8A"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2. 合并功能注释和结构注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A%E5%8D%95%E7%8B%AC%E6%8F%90%E4%BE%9B%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 方案二：单独提供功能注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1. 基因功能注释整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E6%95%B4%E5%90%88"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2. 基因功能注释整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-1-join%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">3.2.2.1. join命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-2-merge-file-key-property-title-cpp%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">3.2.2.2. merge_file_key_property.title.cpp程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-3-waiting%E2%80%A6"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">3.2.2.3. waiting…</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%BF%B0"><span class="nav-text">1. 数据库概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Nr-x2F-Nt%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.1. Nr&#x2F;Nt数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-UniProt%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88Swiss-Prot%E5%92%8CTrEMBL%EF%BC%89"><span class="nav-text">1.2. UniProt数据库（Swiss-Prot和TrEMBL）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-GO%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.3. GO数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-KEGG%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.4. KEGG数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-COG%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E8%9B%8B%E7%99%BD%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.5. COG直系同源蛋白数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-KOG%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.6. KOG数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-eggNOG%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.7. eggNOG数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-pfam%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.8. pfam数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-string%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1.9. string数据库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-text">2. 基因功能注释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%BA%93%E6%89%8B%E5%8A%A8%E6%B3%A8%E9%87%8A%E2%80%93%E4%BB%A5Uniprot%E4%B8%BA%E4%BE%8B"><span class="nav-text">2.1. 下载数据库手动注释–以Uniprot为例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">2.1.1. 下载数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E6%9E%84%E5%BB%BAblastp%E7%B4%A2%E5%BC%95"><span class="nav-text">2.1.2. 构建blastp索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-%E7%94%A8blastp%E6%AF%94%E5%AF%B9%E8%9B%8B%E7%99%BD%E5%BA%8F%E5%88%97protein-fa%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93uniprot-plants"><span class="nav-text">2.1.3. 用blastp比对蛋白序列protein.fa和数据库uniprot_plants</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-%E6%AF%94%E5%AF%B9%E7%BB%93%E6%9E%9C%E4%B8%AD%E7%AD%9B%E9%80%89%E6%AF%8F%E4%B8%AAquery%E7%9A%84%E6%9C%80%E4%BD%B3subject"><span class="nav-text">2.1.4. 比对结果中筛选每个query的最佳subject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-5-%E4%BD%BF%E7%94%A8add-annotation-from-dat-py%E6%A0%B9%E6%8D%AEblastp%E8%BE%93%E5%87%BA%E4%BB%8Edat%E6%8F%90%E5%8F%96GO-x2F-KEGG-x2F-%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-text">2.1.5. 使用add_annotation_from_dat.py根据blastp输出从dat提取GO&#x2F;KEGG&#x2F;同源基因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-6-blast2go"><span class="nav-text">2.1.6. blast2go</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-eggnog-mapper%E6%B3%A8%E9%87%8A"><span class="nav-text">2.2. eggnog-mapper注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-eggNOG%E6%9C%AC%E5%9C%B0%E6%B3%A8%E9%87%8A"><span class="nav-text">2.2.1. eggNOG本地注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-eggNOG-mapper%E7%BD%91%E9%A1%B5%E7%89%88%E6%B3%A8%E9%87%8A"><span class="nav-text">2.2.2. eggNOG-mapper网页版注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-%E6%B3%A8%E9%87%8A%E5%8E%9F%E7%90%86"><span class="nav-text">2.2.2.1. 注释原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-%E6%B3%A8%E9%87%8A"><span class="nav-text">2.2.2.2. 注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-text">2.2.2.3. 注释结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-4-%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-text">2.2.2.4. 结果整理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-InterProScan"><span class="nav-text">2.3. InterProScan</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-Interproscan"><span class="nav-text">2.3.1. Interproscan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-Interproscan%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD"><span class="nav-text">2.3.2. Interproscan的安装和数据库下载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-1-Interproscan%E5%AE%89%E8%A3%85"><span class="nav-text">2.3.2.1. Interproscan安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-2-%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%B8%A6%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">2.3.2.2. 软件自带数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-3-%E5%85%B3%E4%BA%8EPANHTER%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">2.3.2.3. 关于PANHTER数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-4-java%E5%92%8Cpython%E7%89%88%E6%9C%AC%E6%A3%80%E6%9F%A5"><span class="nav-text">2.3.2.4. java和python版本检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-5-%E6%B5%8B%E8%AF%95%E5%AE%89%E8%A3%85"><span class="nav-text">2.3.2.5. 测试安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-6-tips"><span class="nav-text">2.3.2.6. tips</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-Interproscan%E8%BF%90%E8%A1%8C"><span class="nav-text">2.3.3. Interproscan运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-Interproscan%E7%BB%93%E6%9E%9C%E8%A7%A3%E9%87%8A"><span class="nav-text">2.3.4. Interproscan结果解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5-Interproscan%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-text">2.3.5. Interproscan结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-PANNZER-Protein-ANNotation-with-Z-scoRE"><span class="nav-text">2.4. PANNZER(Protein ANNotation with Z-scoRE)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-PANNZER"><span class="nav-text">2.4.1. PANNZER</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">2.4.2. 结果文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-text">2.4.3. 结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-Mercator4%E2%80%94%E2%80%94%E6%A4%8D%E7%89%A9%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-text">2.5. Mercator4——植物基因组功能注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-%E6%B3%A8%E9%87%8A%E5%8E%9F%E7%90%86"><span class="nav-text">2.5.1. 注释原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-text">2.5.2. 注释结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-3-%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-text">2.5.3. 结果整理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E7%9A%84%E6%95%B4%E5%90%88"><span class="nav-text">3. 基因功能注释的整合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9A%E6%95%B4%E5%90%88%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E5%92%8C%E7%BB%93%E6%9E%84%E6%B3%A8%E9%87%8A"><span class="nav-text">3.1. 方案一：整合功能注释和结构注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86"><span class="nav-text">3.1.1. 基因功能注释整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E5%90%88%E5%B9%B6%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E5%92%8C%E7%BB%93%E6%9E%84%E6%B3%A8%E9%87%8A"><span class="nav-text">3.1.2. 合并功能注释和结构注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A%E5%8D%95%E7%8B%AC%E6%8F%90%E4%BE%9B%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-text">3.2. 方案二：单独提供功能注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86"><span class="nav-text">3.2.1. 基因功能注释整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E5%9F%BA%E5%9B%A0%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A%E6%95%B4%E5%90%88"><span class="nav-text">3.2.2. 基因功能注释整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-1-join%E5%91%BD%E4%BB%A4"><span class="nav-text">3.2.2.1. join命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-2-merge-file-key-property-title-cpp%E7%A8%8B%E5%BA%8F"><span class="nav-text">3.2.2.2. merge_file_key_property.title.cpp程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-3-waiting%E2%80%A6"><span class="nav-text">3.2.2.3. waiting…</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -662,11 +693,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
+          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
+          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -701,15 +734,13 @@
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="snowflake-o"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
 
         
 
@@ -725,9 +756,9 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/undefined/anime.min.js"></script>
+  <script src="/undefined/velocity/velocity.min.js"></script>
+  <script src="/undefined/velocity/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
@@ -761,6 +792,37 @@
   
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/05/17/omics_genome.functional.annotation/";
+    this.page.identifier = "2021/05/17/omics_genome.functional.annotation/";
+    this.page.title = "基因组注释（三）：基因功能注释";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
 
 </body>
 </html>

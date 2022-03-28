@@ -13,11 +13,11 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/undefined/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
   </script>
 
   <meta name="description" content="记录了分析基因家族扩张收缩的软件CAFE5的安装与使用。">
@@ -121,6 +121,16 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -201,6 +211,20 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/10/29/biosoft_CAFE5/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/10/29/biosoft_CAFE5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
             <div class="post-description">记录了分析基因家族扩张收缩的软件CAFE5的安装与使用。</div>
 
         </div>
@@ -312,6 +336,13 @@
 
           </div>
           
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -358,7 +389,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-CAFE"><span class="nav-number">1.</span> <span class="nav-text">1. CAFE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-CAFE5%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">2. CAFE5安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-CAFE5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">3. CAFE5使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-CAFE5%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. CAFE5输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-gene-families-txt"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1. gene_families.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-tree-txt"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2. tree.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%90%E8%A1%8CCAFE5"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 运行CAFE5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-CAFE5%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. CAFE5的结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1. 结果文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BC%98%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2. 选择最优结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-number">3.3.3.</span> <span class="nav-text">结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%8A%8A%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E6%94%B6%E7%BC%A9%E6%89%A9%E5%BC%A0%E7%9A%84%E5%9F%BA%E5%9B%A0%E6%95%B0%E9%87%8F%E7%94%BB%E5%9C%A8%E6%A0%91%E4%B8%8A"><span class="nav-number">3.4.</span> <span class="nav-text">3.4. 把每个节点收缩扩张的基因数量画在树上</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-CAFE"><span class="nav-text">1. CAFE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-CAFE5%E5%AE%89%E8%A3%85"><span class="nav-text">2. CAFE5安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-CAFE5%E4%BD%BF%E7%94%A8"><span class="nav-text">3. CAFE5使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-CAFE5%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.1. CAFE5输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-gene-families-txt"><span class="nav-text">3.1.1. gene_families.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-tree-txt"><span class="nav-text">3.1.2. tree.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%90%E8%A1%8CCAFE5"><span class="nav-text">3.2. 运行CAFE5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-CAFE5%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="nav-text">3.3. CAFE5的结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">3.3.1. 结果文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BC%98%E7%BB%93%E6%9E%9C"><span class="nav-text">3.3.2. 选择最优结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-text">结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%8A%8A%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E6%94%B6%E7%BC%A9%E6%89%A9%E5%BC%A0%E7%9A%84%E5%9F%BA%E5%9B%A0%E6%95%B0%E9%87%8F%E7%94%BB%E5%9C%A8%E6%A0%91%E4%B8%8A"><span class="nav-text">3.4. 把每个节点收缩扩张的基因数量画在树上</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -378,11 +409,13 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
+          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
+          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -417,15 +450,13 @@
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="snowflake-o"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
 
         
 
@@ -441,9 +472,9 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/undefined/anime.min.js"></script>
+  <script src="/undefined/velocity/velocity.min.js"></script>
+  <script src="/undefined/velocity/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
@@ -477,6 +508,37 @@
   
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/10/29/biosoft_CAFE5/";
+    this.page.identifier = "2021/10/29/biosoft_CAFE5/";
+    this.page.title = "CAFE5分析基因家族扩张和收缩";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
 
 </body>
 </html>
