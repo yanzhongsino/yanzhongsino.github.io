@@ -1,37 +1,562 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
+  <meta name="description" content="记录了R及相关软件RStudio，Rtools的安装，R包的安装方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R及相关软件的安装">
+<meta property="og:url" content="http://example.com/2021/12/28/R_install/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了R及相关软件RStudio，Rtools的安装，R包的安装方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-28T08:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-28T12:35:34.784Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="R">
+<meta property="article:tag" content="RStudio">
+<meta property="article:tag" content="Rtools">
+<meta property="article:tag" content="R package">
+<meta property="article:tag" content="CRAN">
+<meta property="article:tag" content="Bioconductor">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/12/28/R_install/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>R及相关软件的安装 | 生信技工</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/28/R_install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          R及相关软件的安装
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-28 16:30:00 / 修改时间：20:35:34" itemprop="dateCreated datePublished" datetime="2021-12-28T16:30:00+08:00">2021-12-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/computer-language/" itemprop="url" rel="index"><span itemprop="name">computer language</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/computer-language/R/" itemprop="url" rel="index"><span itemprop="name">R</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/12/28/R_install/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/12/28/R_install/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">记录了R及相关软件RStudio，Rtools的安装，R包的安装方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=27853350&auto=1&height=32"></iframe></div>
+
+<h1 id="1-R"><a href="#1-R" class="headerlink" title="1. R"></a>1. R</h1><p>R是常用于统计和画图的计算机语言。</p>
+<h2 id="1-1-R包存储库"><a href="#1-1-R包存储库" class="headerlink" title="1.1. R包存储库"></a>1.1. R包存储库</h2><p>R 语言可以通过各种宏包来拓展功能，一般通过中央软件存储库下载R包，如R基金会资助的最常用的<a target="_blank" rel="noopener" href="https://cran.r-project.org/"><strong>The Comprehensive R Archive Network (CRAN)</strong></a>和存储R开发的生物数据分析包的生物专业软件存储库<a target="_blank" rel="noopener" href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>。</p>
+<h2 id="1-2-R相关"><a href="#1-2-R相关" class="headerlink" title="1.2. R相关"></a>1.2. R相关</h2><h3 id="1-2-1-RStudio"><a href="#1-2-1-RStudio" class="headerlink" title="1.2.1. RStudio"></a>1.2.1. RStudio</h3><ul>
+<li>RStudio 是 R 的集成开发环境 (IDE)。</li>
+<li>它包括一个控制台、支持直接代码执行的语法高亮编辑器，以及用于绘图、历史、调试和工作区管理的工具。</li>
+<li>有两种格式：RStudio Desktop 是一个常规的桌面应用程序，而 RStudio Server 运行在远程服务器上，并允许使用Web 浏览器访问 RStudio。</li>
+</ul>
+<h3 id="1-2-2-Rtools"><a href="#1-2-2-Rtools" class="headerlink" title="1.2.2. Rtools"></a>1.2.2. Rtools</h3><ul>
+<li>Rtools是 Windows 上从源代码构建 R 包所需的一组程序。</li>
+<li>Rtools为 Windows 平台提供了一个与 R 兼容的工具链，使得Windows平台R的使用与UNIX-ish平台R的使用许多命令一致。它主要包括 GNU make、GNU gcc 和其他在 UNIX-ish 平台上常用的实用程序。</li>
+<li>如果只使用CRAN 或 Bioconductor 上提供的R包，则无需Rtools，如果使用需要编译的R包（比如ROracle）或者制作自己的R包，则需要Rtools。</li>
+</ul>
+<h1 id="2-R的安装和配置"><a href="#2-R的安装和配置" class="headerlink" title="2. R的安装和配置"></a>2. R的安装和配置</h1><h2 id="2-1-R-for-Windows"><a href="#2-1-R-for-Windows" class="headerlink" title="2.1. R for Windows"></a>2.1. R for Windows</h2><h3 id="2-1-1-安装R"><a href="#2-1-1-安装R" class="headerlink" title="2.1.1. 安装R"></a>2.1.1. 安装R</h3><p><a target="_blank" rel="noopener" href="https://www.r-project.org/">R官网</a>或者<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/">R清华镜像</a>下载安装最新版本的R(现在最新版是R4.1.2)。<br>双击之后按步骤安装。</p>
+<h3 id="2-1-2-安装RStudio-Desktop"><a href="#2-1-2-安装RStudio-Desktop" class="headerlink" title="2.1.2. 安装RStudio Desktop"></a>2.1.2. 安装RStudio Desktop</h3><p><a target="_blank" rel="noopener" href="https://www.rstudio.com/">RStudio官网</a>下载安装最新版本的Rstudio Desktop。<br>双击之后按步骤安装。</p>
+<h3 id="2-1-3-安装Rtools"><a href="#2-1-3-安装Rtools" class="headerlink" title="2.1.3. 安装Rtools"></a>2.1.3. 安装Rtools</h3><p><a target="_blank" rel="noopener" href="https://cran.r-project.org/bin/windows/Rtools/rtools40.html">Rtools4</a>下载安装最新版本的Rtools。<br>双击之后按步骤安装。</p>
+<h2 id="2-2-R-for-Linux"><a href="#2-2-R-for-Linux" class="headerlink" title="2.2. R for Linux"></a>2.2. R for Linux</h2><h3 id="2-2-1-安装R"><a href="#2-2-1-安装R" class="headerlink" title="2.2.1. 安装R"></a>2.2.1. 安装R</h3><h4 id="2-2-1-1-安装R"><a href="#2-2-1-1-安装R" class="headerlink" title="2.2.1.1. 安装R"></a>2.2.1.1. 安装R</h4><p><a target="_blank" rel="noopener" href="https://cran.r-project.org/">R 官网</a>里参考对应系统的R安装教程。</p>
+<ol>
+<li>Ubuntu<br><code>apt update</code>,<code>apt upgrade</code>,<code>apt install r-base</code></li>
+<li>Centos<br><code>dnf install R</code></li>
+<li>Debian<br><code>apt-get update</code>,<code>apt-get install r-base r-base-dev</code></li>
+<li>conda安装<br><code>conda create -n r r-essentials r-base</code> #创建新环境r，并从CRAN安装所有的r-essentials包，R Essentials 包包含大约 200 个最流行的数据科学 R 包，包括 IRKernel、dplyr、shiny、ggplot2、tidyr、caret 和 nnet。</li>
+</ol>
+<p>安装R后<code>R --version</code>查看版本，可能非最新版。</p>
+<h4 id="2-2-1-2-手动安装R"><a href="#2-2-1-2-手动安装R" class="headerlink" title="2.2.1.2. 手动安装R"></a>2.2.1.2. 手动安装R</h4><p><a target="_blank" rel="noopener" href="https://blog.51cto.com/kuxingseng2016/1846326">R source installation ref</a>;<a target="_blank" rel="noopener" href="https://xieduo7.github.io/2018-04-02-R%E5%AE%89%E8%A3%85.html">ref2</a>。</p>
+<ol>
+<li>R的依赖<br>参考R官方文档<a target="_blank" rel="noopener" href="https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Essential-and-useful-other-programs-under-a-Unix_002dalike">R installation and administration</a>，包括zlib,bzip,liblzma(XZ),PCRE等。</li>
+<li>R下载<br><a target="_blank" rel="noopener" href="https://www.r-project.org/">R官网</a>或者<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/">R清华镜像</a>下载安装最新版本的R(现在最新版是R4.1.2)。</li>
+<li>R源码安装<br>R源码是C语言写的，需要编译安装。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf R-4.1.2.tar.gz</span><br><span class="line">cd R-4.1.2</span><br><span class="line">./configure --enable-R-shlib #配置，生成Makefile</span><br><span class="line">make #编译</span><br><span class="line">make install #安装</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="2-2-2-安装RStudio-Server"><a href="#2-2-2-安装RStudio-Server" class="headerlink" title="2.2.2. 安装RStudio Server"></a>2.2.2. 安装RStudio Server</h3><h4 id="2-2-2-1-安装RStudio-Server"><a href="#2-2-2-1-安装RStudio-Server" class="headerlink" title="2.2.2.1. 安装RStudio Server"></a>2.2.2.1. 安装RStudio Server</h4><p>RStudio Server 运行在远程服务器上，并允许使用Web 浏览器访问 RStudio。</p>
+<p>在<a target="_blank" rel="noopener" href="https://www.rstudio.com/products/rstudio/download/">RStodio官网</a>上选择RStudio Server，选相应的系统版本下载。</p>
+<ol>
+<li>Ubuntu<br><code>sudo apt-get install r-base</code> # for Ubuntu 16</li>
+<li>CentOS<br><code>wget https://download2.rstudio.org/server/centos8/x86_64/rstudio-server-rhel-2021.09.1-372-x86_64.rpm</code>,<br><code>sudo yum install rstudio-server-rhel-2021.09.1-372-x86_64.rpm</code> # for CentOS 8</li>
+</ol>
+<h4 id="2-2-2-2-卸载-x2F-更新RStudio-Server"><a href="#2-2-2-2-卸载-x2F-更新RStudio-Server" class="headerlink" title="2.2.2.2. 卸载&#x2F;更新RStudio Server"></a>2.2.2.2. 卸载&#x2F;更新RStudio Server</h4><p>更新也需要先卸载再安装新的版本。</p>
+<ol>
+<li><code>rstudio-server stop</code> #暂停当前RStudio Server服务</li>
+<li><code>yum remove rstudio-server</code> #CentOS卸载，或者 <code>apt-get remove rstudio-server</code> #Ubuntu卸载</li>
+</ol>
+<h4 id="2-2-2-3-安装后配置RStudio-Server"><a href="#2-2-2-3-安装后配置RStudio-Server" class="headerlink" title="2.2.2.3. 安装后配置RStudio Server"></a>2.2.2.3. 安装后配置RStudio Server</h4><ol>
+<li>安装后，通过修改&#x2F;etc&#x2F;rstudio&#x2F;rserver.conf更改端口和R所在路径</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">www-port=8787 # 端口, 默认8787</span><br><span class="line">www-address=0.0.0.0</span><br><span class="line">rsession-which-r=/opt/sysoft/R-4.1.2/bin/R # 安装R的路径</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>用<code>rstudio-server restart</code>重启服务<br>没有任何信息就表示安装成功了，还可以<code>rstudio-server verify-installation</code>验证，没有输出就是安装成功。</li>
+</ol>
+<h4 id="2-2-2-4-使用RStudio-Server"><a href="#2-2-2-4-使用RStudio-Server" class="headerlink" title="2.2.2.4. 使用RStudio Server"></a>2.2.2.4. 使用RStudio Server</h4><p><code>ps -aux|grep rstudio-server</code>查看服务是否运行，<code>ipconfig</code>查看服务器IP地址。</p>
+<p>安装配置好RStudio Server后，直接在浏览器打开<a href="http://IP:8787，输入服务器的用户名和密码，即可访问RStudio">http://IP:8787，输入服务器的用户名和密码，即可访问RStudio</a> Server服务。</p>
+<h1 id="3-R包安装"><a href="#3-R包安装" class="headerlink" title="3. R包安装"></a>3. R包安装</h1><p>R 语言可以通过各种宏包来拓展功能，一般通过中央软件存储库下载R包，如最常用的R基金会资助的<a target="_blank" rel="noopener" href="https://cran.r-project.org/"><strong>The Comprehensive R Archive Network (CRAN)</strong></a>，存储R开发的生物数据分析包的生物专业软件存储库<a target="_blank" rel="noopener" href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>，以及<a target="_blank" rel="noopener" href="https://anaconda.org/"><strong>anaconda</strong></a>。</p>
+<h2 id="3-1-通过CRAN安装R包"><a href="#3-1-通过CRAN安装R包" class="headerlink" title="3.1. 通过CRAN安装R包"></a>3.1. 通过CRAN安装R包</h2><ol>
+<li><code>install.packages(&quot;packagename&quot;)</code> R默认的安装方式，会从CRAN下载包并安装。</li>
+<li>同时安装多个包: <code>install.packages(c(&quot;packagename1&quot;,&quot;packagename2&quot;))</code></li>
+<li>使用R包下载地址安装: <code>install.packages(&quot;http://cran.r-project.org/src/contrib/Archive/ggplot2/ggplot2_0.9.1.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)</code></li>
+<li>下载包到本地后手动安装: <code>install.packages(&quot;ggplot2_0.9.1.tar.gz&quot;, repos = NULL)</code></li>
+</ol>
+<h2 id="3-2-通过Bioconductor后安装R包"><a href="#3-2-通过Bioconductor后安装R包" class="headerlink" title="3.2. 通过Bioconductor后安装R包"></a>3.2. 通过Bioconductor后安装R包</h2><ol>
+<li>安装Bioconductor<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span>requireNamespace<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">,</span> quietly <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">    install.packages<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span>version <span class="operator">=</span> <span class="string">&quot;3.13&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+BiocManager的版本与R版本一一对应，安装时如果版本不对会有提示，根据提示安装对应版本即可。</li>
+<li>查看可用的Bioconductor包：<code>BiocManager::available()</code></li>
+<li>安装Bioconductor库里有的R包：<code>BiocManager::install(&quot;packagename&quot;)</code></li>
+<li>同时安装多个包：<code>BiocManager::install(c(&quot;packagename1&quot;,&quot;packagename2&quot;))</code></li>
+</ol>
+<h2 id="3-3-通过conda安装R包"><a href="#3-3-通过conda安装R包" class="headerlink" title="3.3. 通过conda安装R包"></a>3.3. 通过conda安装R包</h2><p>在<a target="_blank" rel="noopener" href="https://anaconda.org/">anaconda官网</a>查询想要安装的R包，如果库里有可以使用conda安装。</p>
+<p>一般需要在包名称前添加r-，比如安装rbokeh和rjava。<br><code>conda install r-rbokeh</code>,<code>conda install r-rjava</code></p>
+<h2 id="3-4-更新和卸载R包"><a href="#3-4-更新和卸载R包" class="headerlink" title="3.4. 更新和卸载R包"></a>3.4. 更新和卸载R包</h2><ol>
+<li>更新：<code>update.packages()</code>；conda更新R包caret<code>conda update r-caret</code></li>
+<li>卸载：<code>remove.packages()</code>。</li>
+</ol>
+<h1 id="4-R包载入"><a href="#4-R包载入" class="headerlink" title="4. R包载入"></a>4. R包载入</h1><ol>
+<li>library(packagename)<br>如果包不存在，library会停止执行，不返回任何值。</li>
+<li>require(packagename)<br>require会根据包存在与否返回true或false，并继续下面的语句执行。</li>
+</ol>
+<h1 id="5-R包使用查询"><a href="#5-R包使用查询" class="headerlink" title="5. R包使用查询"></a>5. R包使用查询</h1><p>R包使用方法: <code>help(package=&quot;packagename&quot;)</code></p>
+<h1 id="6-reference"><a href="#6-reference" class="headerlink" title="6. reference"></a>6. reference</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.bioinfo-scrounger.com/archives/435/">https://www.bioinfo-scrounger.com/archives/435/</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/R/" rel="tag"># R</a>
+              <a href="/tags/RStudio/" rel="tag"># RStudio</a>
+              <a href="/tags/Rtools/" rel="tag"># Rtools</a>
+              <a href="/tags/R-package/" rel="tag"># R package</a>
+              <a href="/tags/CRAN/" rel="tag"># CRAN</a>
+              <a href="/tags/Bioconductor/" rel="tag"># Bioconductor</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/13/bioinfo_GSEA_clusterProfiler/" rel="prev" title="基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler">
+      <i class="fa fa-chevron-left"></i> 基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/16/linux_command/" rel="next" title="shell的常用命令">
+      shell的常用命令 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-R"><span class="nav-text">1. R</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-R%E5%8C%85%E5%AD%98%E5%82%A8%E5%BA%93"><span class="nav-text">1.1. R包存储库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-R%E7%9B%B8%E5%85%B3"><span class="nav-text">1.2. R相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-RStudio"><span class="nav-text">1.2.1. RStudio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-Rtools"><span class="nav-text">1.2.2. Rtools</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-R%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="nav-text">2. R的安装和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-R-for-Windows"><span class="nav-text">2.1. R for Windows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.1.1. 安装R</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E5%AE%89%E8%A3%85RStudio-Desktop"><span class="nav-text">2.1.2. 安装RStudio Desktop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-%E5%AE%89%E8%A3%85Rtools"><span class="nav-text">2.1.3. 安装Rtools</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-R-for-Linux"><span class="nav-text">2.2. R for Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1. 安装R</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1.1. 安装R</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-2-%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1.2. 手动安装R</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%AE%89%E8%A3%85RStudio-Server"><span class="nav-text">2.2.2. 安装RStudio Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-%E5%AE%89%E8%A3%85RStudio-Server"><span class="nav-text">2.2.2.1. 安装RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-%E5%8D%B8%E8%BD%BD-x2F-%E6%9B%B4%E6%96%B0RStudio-Server"><span class="nav-text">2.2.2.2. 卸载&#x2F;更新RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-%E5%AE%89%E8%A3%85%E5%90%8E%E9%85%8D%E7%BD%AERStudio-Server"><span class="nav-text">2.2.2.3. 安装后配置RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-4-%E4%BD%BF%E7%94%A8RStudio-Server"><span class="nav-text">2.2.2.4. 使用RStudio Server</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-R%E5%8C%85%E5%AE%89%E8%A3%85"><span class="nav-text">3. R包安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E9%80%9A%E8%BF%87CRAN%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">3.1. 通过CRAN安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E9%80%9A%E8%BF%87Bioconductor%E5%90%8E%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">3.2. 通过Bioconductor后安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E9%80%9A%E8%BF%87conda%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">3.3. 通过conda安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%9B%B4%E6%96%B0%E5%92%8C%E5%8D%B8%E8%BD%BDR%E5%8C%85"><span class="nav-text">3.4. 更新和卸载R包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-R%E5%8C%85%E8%BD%BD%E5%85%A5"><span class="nav-text">4. R包载入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-R%E5%8C%85%E4%BD%BF%E7%94%A8%E6%9F%A5%E8%AF%A2"><span class="nav-text">5. R包使用查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-reference"><span class="nav-text">6. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/12/28/R_install/";
+    this.page.identifier = "2021/12/28/R_install/";
+    this.page.title = "R及相关软件的安装";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

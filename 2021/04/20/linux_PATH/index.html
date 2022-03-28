@@ -1,37 +1,503 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
+  <meta name="description" content="这篇博客记录了Linux系统下环境变量PATH的设置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Linux系统中设置环境变量PATH">
+<meta property="og:url" content="http://example.com/2021/04/20/linux_PATH/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="这篇博客记录了Linux系统下环境变量PATH的设置。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-20T08:20:15.000Z">
+<meta property="article:modified_time" content="2021-10-30T02:47:39.801Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="tutorial">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="PATH">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/04/20/linux_PATH/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>在Linux系统中设置环境变量PATH | 生信技工</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/linux_PATH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在Linux系统中设置环境变量PATH
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-20 16:20:15" itemprop="dateCreated datePublished" datetime="2021-04-20T16:20:15+08:00">2021-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-30 10:47:39" itemprop="dateModified" datetime="2021-10-30T10:47:39+08:00">2021-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/basics/" itemprop="url" rel="index"><span itemprop="name">basics</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/04/20/linux_PATH/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/04/20/linux_PATH/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">这篇博客记录了Linux系统下环境变量PATH的设置。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5264843&auto=1&height=32"></iframe><music URL></div>
+
+
+
+<h1 id="1-环境变量PATH设置"><a href="#1-环境变量PATH设置" class="headerlink" title="1. 环境变量PATH设置"></a>1. 环境变量PATH设置</h1><h2 id="1-1-PATH的解释"><a href="#1-1-PATH的解释" class="headerlink" title="1.1. PATH的解释"></a>1.1. PATH的解释</h2><p>PATH是环境变量，一个存放有（可执行）命令和程序的目录集合，目录间以冒号:分隔。</p>
+<p>操作系统接到用户输入命令时，会<strong>从前到后依次</strong>查看PATH存储的目录，查找与输入命令同名的可执行文件，<strong>一旦查找到就停止查找</strong>，全部目录都查不到就报错。</p>
+<p><code>echo $PATH</code>可以查看当前存放了哪些目录。</p>
+<h2 id="1-2-设置环境变量"><a href="#1-2-设置环境变量" class="headerlink" title="1.2. 设置环境变量"></a>1.2. 设置环境变量</h2><h3 id="1-2-1-临时设置，当前终端有效"><a href="#1-2-1-临时设置，当前终端有效" class="headerlink" title="1.2.1. 临时设置，当前终端有效"></a>1.2.1. 临时设置，当前终端有效</h3><ol>
+<li>添加目录到环境变量<br><code>PATH=$PATH:/home/usrname/opt/software/</code>命令把目录<code>/home/software/</code>添加到PATH后，并用冒号:分隔，即重新给PATH赋值。</li>
+</ol>
+<p><code>PATH=$PATH:/home/software/</code>和<code>PATH=/home/software/:$PATH</code>区别在于把目录<code>/home/software/</code>置于PATH的最前面还是最后面，最前面代表最优先使用这个目录下的命令。</p>
+<ol start="2">
+<li>声明环境变量<br><code>export PATH</code>命令声明变量，使其对系统shell可识别</li>
+</ol>
+<p>以上两条命令可以合并成<code>export PATH=$PATH:/home/software/</code>或者<code>export PATH=/home/software/:$PATH</code>，此时目录<code>/home/software/</code>下的命令可以被当前shell直接调用。</p>
+<p>但这种设置方式只在当前shell有效，关掉shell就失效。</p>
+<h3 id="1-2-2-当前用户永久设置"><a href="#1-2-2-当前用户永久设置" class="headerlink" title="1.2.2. 当前用户永久设置"></a>1.2.2. 当前用户永久设置</h3><p>登录服务器时，会自动运行当前用户下<code>~/.bashrc</code>和<code>~/.bash_profile</code>文件内的命令。</p>
+<p>所以把<code>export PATH=$PATH:/home/software/</code>写入<code>~/.bashrc</code>或者<code>~/.bash_profile</code>文件就可以使目录<code>/home/software/</code>对于当前用户永久生效。</p>
+<p>第一次写入后需要用命令<code>source ~/.bashrc</code>运行~&#x2F;.bashrc文件来刷新环境变量，之后就不再需要。</p>
+<h3 id="1-2-3-所有用户永久设置"><a href="#1-2-3-所有用户永久设置" class="headerlink" title="1.2.3. 所有用户永久设置"></a>1.2.3. 所有用户永久设置</h3><p>与前一步同理，不过写入的文件是&#x2F;etc&#x2F;profile或者&#x2F;etc&#x2F;bashrc，需要root用户修改。</p>
+<p>第一次修改需要<code>source /etc/profile</code>刷新，之后不再需要。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tutorial/" rel="tag"># tutorial</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/PATH/" rel="tag"># PATH</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/01/scripts/" rel="prev" title="scripts">
+      <i class="fa fa-chevron-left"></i> scripts
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/20/blog/" rel="next" title="blog">
+      blog <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8FPATH%E8%AE%BE%E7%BD%AE"><span class="nav-text">1. 环境变量PATH设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-PATH%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="nav-text">1.1. PATH的解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-text">1.2. 设置环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E4%B8%B4%E6%97%B6%E8%AE%BE%E7%BD%AE%EF%BC%8C%E5%BD%93%E5%89%8D%E7%BB%88%E7%AB%AF%E6%9C%89%E6%95%88"><span class="nav-text">1.2.1. 临时设置，当前终端有效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E6%B0%B8%E4%B9%85%E8%AE%BE%E7%BD%AE"><span class="nav-text">1.2.2. 当前用户永久设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E6%89%80%E6%9C%89%E7%94%A8%E6%88%B7%E6%B0%B8%E4%B9%85%E8%AE%BE%E7%BD%AE"><span class="nav-text">1.2.3. 所有用户永久设置</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/04/20/linux_PATH/";
+    this.page.identifier = "2021/04/20/linux_PATH/";
+    this.page.title = "在Linux系统中设置环境变量PATH";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

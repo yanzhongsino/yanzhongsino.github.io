@@ -1,37 +1,583 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
+  <meta name="description" content="记录了绘制圈图的软件Circos的使用逻辑和参数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Circos圈图绘制">
+<meta property="og:url" content="http://example.com/2021/11/16/biosoft_Circos/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了绘制圈图的软件Circos的使用逻辑和参数。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://circos.ca/img/circos-sample-panel.png">
+<meta property="article:published_time" content="2021-11-16T02:10:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T03:03:27.400Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="plot">
+<meta property="article:tag" content="Circos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://circos.ca/img/circos-sample-panel.png">
+
+<link rel="canonical" href="http://example.com/2021/11/16/biosoft_Circos/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Circos圈图绘制 | 生信技工</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/16/biosoft_Circos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Circos圈图绘制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-16 10:10:00" itemprop="dateCreated datePublished" datetime="2021-11-16T10:10:00+08:00">2021-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 11:03:27" itemprop="dateModified" datetime="2022-03-28T11:03:27+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/biosoft/" itemprop="url" rel="index"><span itemprop="name">biosoft</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/biosoft/circos/" itemprop="url" rel="index"><span itemprop="name">circos</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/11/16/biosoft_Circos/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/16/biosoft_Circos/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">记录了绘制圈图的软件Circos的使用逻辑和参数。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=4278314&auto=1&height=32"></iframe></div>
+
+<h1 id="1-介绍circos圈图"><a href="#1-介绍circos圈图" class="headerlink" title="1. 介绍circos圈图"></a>1. 介绍circos圈图</h1><p>介绍基因组的文章里常常出现下面的circos圈图，这篇博客记录了如何绘制这种圈图。</p>
+<img src="http://circos.ca/img/circos-sample-panel.png" title="Circos圈图" width="100%"/>
+
+<p><strong><p align="center">Figure 1. circos圈图示例</strong><br>from <a target="_blank" rel="noopener" href="http://circos.ca/">circos官网</a></p></p>
+<p>circos圈图的内核是把矩形掰弯成环状，矩形信息的展示以行和列为基础，环形除了行和列，还可以增加环的不同位置之间的关系，比如基因组特征的Circos图中间常见的染色体共线性关系的展示。</p>
+<h1 id="2-绘制circos圈图的软件和包"><a href="#2-绘制circos圈图的软件和包" class="headerlink" title="2. 绘制circos圈图的软件和包"></a>2. 绘制circos圈图的软件和包</h1><p>有许多可以绘制circos圈图的软件和包。常见的有<a target="_blank" rel="noopener" href="http://circos.ca/">Circos软件</a>,TBtools，R包circlize，python版本的Circos等。</p>
+<h2 id="2-1-Circos-——-从名字就可以看出是circos绘制软件的霸王"><a href="#2-1-Circos-——-从名字就可以看出是circos绘制软件的霸王" class="headerlink" title="2.1. Circos —— 从名字就可以看出是circos绘制软件的霸王"></a>2.1. Circos —— 从名字就可以看出是circos绘制软件的霸王</h2><p><a target="_blank" rel="noopener" href="http://circos.ca/">Circos软件</a>是2009年Michael Smith Genome Sciences Centre的Martin Krzywinski开发的一款基于perl的做比较基因组Circos圈图绘制的软件，功能完备，被文章里使用的非常多。Martin Krzywinski是生物信息学家和专业摄影师双重身份，所以Circos软件的审美设计是非常可靠的（当然得在合理的配色和布局下，我就用过同一套数据生成两个美学差异极大的图）。</p>
+<p>Circos有在线版本<a target="_blank" rel="noopener" href="http://mkweb.bcgsc.ca/tableviewer/">Circos Online</a>，在线使用时是把表格转为圈图，不过只允许最大75行和75列。</p>
+<p>下面记录了用Circos绘制基因组圈图的基础操作。</p>
+<h3 id="2-1-1-Circos安装"><a href="#2-1-1-Circos安装" class="headerlink" title="2.1.1. Circos安装"></a>2.1.1. Circos安装</h3><p><code>conda create -c bioconda -n circos circos</code> #单独环境安装</p>
+<p><code>circos -V</code> #确认版本</p>
+<h3 id="2-1-2-Circos运行"><a href="#2-1-2-Circos运行" class="headerlink" title="2.1.2. Circos运行"></a>2.1.2. Circos运行</h3><p><code>circos -conf circos.conf</code></p>
+<p>会生成circos.png和circos.svg两个文件。</p>
+<h3 id="2-1-3-Circos模块化绘制"><a href="#2-1-3-Circos模块化绘制" class="headerlink" title="2.1.3. Circos模块化绘制"></a>2.1.3. Circos模块化绘制</h3><p>Circos是模块化绘制的方式，即通过增添数据和设置来实现每个部分的绘制。</p>
+<p>基因组圈图中的几个基础模块：染色体模块，特征图模块，共线性模块。</p>
+<ul>
+<li>染色体模块显示了染色体的数量和长度，常常添加标尺，通常在最外圈。</li>
+<li>特征图模块可以有多圈，可以是折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)等。通常用直方图或者热图展示基因密度，重复序列密度，GC占比等信息。</li>
+<li>共线性模块通常放在中心，代表不同染色体间的共线性关系。如果有多个物种，则可以体现物种间的共线性关系。</li>
+</ul>
+<h3 id="2-1-4-Circos输入文件"><a href="#2-1-4-Circos输入文件" class="headerlink" title="2.1.4. Circos输入文件"></a>2.1.4. Circos输入文件</h3><p>输入文件包括数据文件和配置文件。</p>
+<p>需要展示的模块数据都保存在单独的数据文件中，然后在配置文件circos.conf中调用数据文件。</p>
+<p>有些教程会建议多制作几个不同类别的配置文件，然后在circos.conf调用其他配置文件。<br>比如单独设置ticks.conf,links.conf，然后在circos.conf里加入下面内容调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;include ticks.conf&gt;&gt;</span><br><span class="line">&lt;&lt;include links.conf&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>比如单独设置plots_histogram.conf，plots_heatmap.conf，plots_text.conf，然后在circos.conf里加入下面内容调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;plots&gt;</span><br><span class="line">&lt;&lt;include plots_histogram.conf&gt;&gt;</span><br><span class="line"> &lt;&lt;include plots_heatmap.conf&gt;&gt;</span><br><span class="line"> &lt;&lt;include plots_text.conf&gt;&gt;</span><br><span class="line">&lt;/plots&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但如果不是设置特别复杂，直接使用circos.conf一个配置文件即可，所有设置都可以写在circos.conf。</p>
+<h4 id="2-1-4-1-主配置文件circos-conf"><a href="#2-1-4-1-主配置文件circos-conf" class="headerlink" title="2.1.4.1. 主配置文件circos.conf"></a>2.1.4.1. 主配置文件circos.conf</h4><h5 id="2-1-4-1-1-circos-conf由几个部分组成"><a href="#2-1-4-1-1-circos-conf由几个部分组成" class="headerlink" title="2.1.4.1.1. circos.conf由几个部分组成"></a>2.1.4.1.1. circos.conf由几个部分组成</h5><ul>
+<li><ideogram>绘制染色体</li>
+<li><ticks>绘制染色体刻度</li>
+<li><links>绘制染色体间连线（通常代表共线性）</li>
+<li><plots>绘制图形</li>
+</ul>
+<h5 id="2-1-4-1-2-circos-conf示例"><a href="#2-1-4-1-2-circos-conf示例" class="headerlink" title="2.1.4.1.2. circos.conf示例"></a>2.1.4.1.2. circos.conf示例</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 1. 染色体和刻度的设置</span><br><span class="line">karyotype = karyotype.txt #指定染色体数据文件</span><br><span class="line">chromosomes_order = scaf001,scaf002,scaf003,scaf004,contig003,contig006 #指定染色体顺序，若不指定则按照染色体数据文件karyotype.txt的顺序</span><br><span class="line">chromosomes_reverse = /scaf/ #染色体坐标默认是从0到最大值，通过正则匹配把染色体坐标改成最大值到0</span><br><span class="line">chromosomes_scale = /scaf/=0.5rn,/contig/=0.5rn #设置染色体缩放，scaf的所有染色体占据50%的空间，contig的所有染色体占据50%的空间。</span><br><span class="line"></span><br><span class="line">&lt;&lt;include etc/colors_fonts_patterns.conf&gt;&gt;</span><br><span class="line">&lt;&lt;include etc/housekeeping.conf&gt;&gt;</span><br><span class="line"></span><br><span class="line">chromosomes_units = 1000000 #定义长度单位，后面使用u赋值长度</span><br><span class="line">show_ticks = yes #显示染色体刻度</span><br><span class="line">show_tick_labels = yes #显示刻度标签</span><br><span class="line"></span><br><span class="line"># 2. ideogram模块，用于染色体设置</span><br><span class="line">&lt;ideogram&gt;</span><br><span class="line">&lt;spacing&gt;</span><br><span class="line">default = 1u #染色体间间距</span><br><span class="line"> &lt;pairwise scaf001 contig001&gt;</span><br><span class="line">  spacing = 10u</span><br><span class="line"> &lt;/pairwise&gt; # 在scaf001和contig001之间流出10u的间距（其他染色体默认是1u）</span><br><span class="line"> &lt;pairwise scaf004 contig006&gt;</span><br><span class="line">  spacing = 10u</span><br><span class="line"> &lt;/pairwise&gt; # 在scaf004和contig006之间流出10u的间距（其他染色体默认是1u）</span><br><span class="line">&lt;/spacing&gt;</span><br><span class="line">radius = 0.90r #染色体位置</span><br><span class="line">thickness = 20p #染色体的厚</span><br><span class="line">fill = yes</span><br><span class="line">stroke_color = dgrey #颜色</span><br><span class="line">stroke_thickness = 2p</span><br><span class="line"></span><br><span class="line">show_label = yes #显示label，染色体名称</span><br><span class="line">label_font = default #字体</span><br><span class="line">label_radius = dims(ideogram,radius) + 0.05r #染色体标签位置</span><br><span class="line">label_size = 48 #字体大小</span><br><span class="line">label_parallel = yes #是否平行</span><br><span class="line">label_format = eval(sprintf(&quot;%s&quot;,var(chr))) #格式</span><br><span class="line"></span><br><span class="line">&lt;/ideogram&gt;</span><br><span class="line"></span><br><span class="line"># 3. ticks模块，用于染色体刻度设置</span><br><span class="line">&lt;ticks&gt;</span><br><span class="line">radius = 1r #刻度位置</span><br><span class="line">color = black #刻度颜色</span><br><span class="line">thickness = 2p #刻度厚度</span><br><span class="line">multiplier = 1e-6 #输出标签为实际长度与其相乘，实际位置为chromosomes_units*multiplier</span><br><span class="line">format = %d # %d表示显示整数</span><br><span class="line"></span><br><span class="line">&lt;tick&gt;</span><br><span class="line">spacing = 1u #刻度间距离，1u表示一个长度单位，即1chromosomes_units</span><br><span class="line">size = 5p #tick的长度</span><br><span class="line">&lt;/tick&gt;</span><br><span class="line"></span><br><span class="line">&lt;tick&gt;</span><br><span class="line">spacing = 5u</span><br><span class="line">size = 10p</span><br><span class="line">show_label = yes #是否展示标签</span><br><span class="line">label_size = 20p #标签尺寸</span><br><span class="line">label_offset = 10p #让标签往外偏移一点</span><br><span class="line">format = %d #显示整数</span><br><span class="line">&lt;/tick&gt;</span><br><span class="line">&lt;/ticks&gt;</span><br><span class="line"></span><br><span class="line"># 4. image模块，用于输出设置</span><br><span class="line">&lt;image&gt;</span><br><span class="line">dir* = . #输出目录，参数后*表示覆盖已有设置</span><br><span class="line">radius* = 1500p #输出图片半径</span><br><span class="line">angle_offset* = -85 #默认情况下，第一个染色体从-90°位置开始，但设置scaf001和contig001之间的空隙为10u会导致图看起来不对称，通过angle_offset调整角度使图对称。</span><br><span class="line">&lt;&lt;include etc/image.conf&gt;&gt;</span><br><span class="line">&lt;/image&gt;</span><br><span class="line"></span><br><span class="line"># 5. plots模块，用于特征图形设置</span><br><span class="line">&lt;plots&gt;</span><br><span class="line">&lt;plot&gt;</span><br><span class="line">show = True #是否展示该图形，默认展示</span><br><span class="line">type = scatter #展示的图形类型，折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)</span><br><span class="line">file = genes_num.txt #数据文件</span><br><span class="line">r1 = 0.98r #在圈图中的位置，外径</span><br><span class="line">r0 = 0.89r #在圈图中的位置，内径</span><br><span class="line">min = 10 #展示的数据下限</span><br><span class="line">max = 1000 #展示的数据上限</span><br><span class="line">glyph = circle #散点图的符号类型，圆(circle), 矩形(rectangle), 三角形(triangle)</span><br><span class="line">glyph_size = 2p #散点图符号大小，单位为p</span><br><span class="line">color = pastel1-5-qual-2 #散点图符号颜色，直方图外部线的颜色</span><br><span class="line">stroke_color = pastel1-5-qual-2 #对于散点图，符号外部的颜色</span><br><span class="line">stroke_thickness = 1p #对于散点图，符号外部线的厚度</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line"></span><br><span class="line">&lt;plot&gt;</span><br><span class="line">type = histogram #直方图</span><br><span class="line">file = gc_rate.txt #数据文件</span><br><span class="line">fill_color = pastel1-5-qual-1 #直方图填充色</span><br><span class="line">color = pastel1-5-qual-2 #散点图符号颜色，直方图外部线的颜色</span><br><span class="line">r1 = 0.78r</span><br><span class="line">r0 = 0.69r</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line"></span><br><span class="line">&lt;plot&gt;</span><br><span class="line">type = heatmap #热图</span><br><span class="line">file = repeats_num.txt #数据文件</span><br><span class="line">fill_color = pastel1-5-qual-2</span><br><span class="line">r1 = 0.88r</span><br><span class="line">r0 = 0.79r</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line"></span><br><span class="line">&lt;plot&gt;</span><br><span class="line">type = line #折线图</span><br><span class="line">file = col.txt #数据文件</span><br><span class="line">fill_color = pastel1-5-qual-4</span><br><span class="line">r1 = 0.68r</span><br><span class="line">r0 = 0.59r</span><br><span class="line">&lt;/plot&gt;</span><br><span class="line">&lt;/plots&gt;</span><br><span class="line"></span><br><span class="line"># 6. links模块，用于共线性设置</span><br><span class="line">&lt;links&gt;</span><br><span class="line">&lt;link&gt;</span><br><span class="line">file = anchors.simple_link.txt #共线性数据文件</span><br><span class="line">radius = 0.58r #位置外界</span><br><span class="line">color = blue_a4 #颜色</span><br><span class="line">ribbon = yes</span><br><span class="line"></span><br><span class="line"># 6plus. rules模块，放在link内部，用于为共线性模块不同染色体用不同颜色渲染</span><br><span class="line">&lt;rules&gt;</span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf001&quot; #判断link文件中左侧染色体`var(chr1)`的名字是不是`eq` &quot;scaf001&quot;，如果是颜色就进行下面设置。</span><br><span class="line">color = pastel1-9-qual-9 #颜色</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf002&quot;</span><br><span class="line">color = pastel1-9-qual-7</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf003&quot;</span><br><span class="line">color = pastel1-9-qual-6</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf004&quot;</span><br><span class="line">color = pastel1-9-qual-8</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf005&quot;</span><br><span class="line">color = pastel1-9-qual-5</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf006&quot;</span><br><span class="line">color = pastel1-9-qual-4</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf007&quot;</span><br><span class="line">color = pastel1-9-qual-3</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf008&quot;</span><br><span class="line">color = pastel1-9-qual-2</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf009&quot;</span><br><span class="line">color = pastel1-9-qual-1</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf010&quot;</span><br><span class="line">color = pastel1-5-qual-5</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf011&quot;</span><br><span class="line">color = pastel1-5-qual-4</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf012&quot;</span><br><span class="line">color = pastel1-5-qual-3</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf013&quot;</span><br><span class="line">color = pastel1-5-qual-2</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line"></span><br><span class="line">&lt;rule&gt;</span><br><span class="line">condition = var(chr1) eq &quot;scaf014&quot;</span><br><span class="line">color = pastel1-5-qual-1</span><br><span class="line">&lt;/rule&gt;</span><br><span class="line">&lt;/rules&gt;</span><br><span class="line"></span><br><span class="line">&lt;/link&gt;</span><br><span class="line">&lt;/links&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-1-4-1-3-circos-conf参数详解"><a href="#2-1-4-1-3-circos-conf参数详解" class="headerlink" title="2.1.4.1.3. circos.conf参数详解"></a>2.1.4.1.3. circos.conf参数详解</h5><ol>
+<li>颜色选择<br>Circos的颜色用的是<a target="_blank" rel="noopener" href="https://colorbrewer2.org/">colorbrewer2网站</a>的颜色，也可以参考<a target="_blank" rel="noopener" href="http://circos.ca/documentation/tutorials/configuration/colors/images">circos的colors网址</a>。</li>
+</ol>
+<p>Circos中颜色的命名格式为PALETTE-NUMCOLORS-TYPE-IDX：</p>
+<ul>
+<li>PALETTE:调色版名，如rdylbu</li>
+<li>NUMCOLORS: 颜色数目, 11</li>
+<li>调色版类型: div(diverging), seq(sequential), qual(qualitative)</li>
+<li>IDX: 调色版中的颜色索引</li>
+</ul>
+<p>所以brbg-3-div-1代表的是<a target="_blank" rel="noopener" href="http://circos.ca/documentation/tutorials/configuration/colors/images">circos的colors网址</a>里的brbg-div的3组的第一个颜色。</p>
+<ol start="2">
+<li>长度单位<br>控制图形不同元素大小的三个单位，p,r,u。</li>
+</ol>
+<ul>
+<li>p(pixels), 表示绝对大小；如果使用p作为单位，需要参考circos.conf中设置输出图形模块的<image>里定义的radius输出图片半径。</li>
+<li>r(relative), 相对大小；会随着最终图形大小而发生变换。</li>
+<li>u(chromosome unit)，定义chromosome unit之后使用；一般在显示刻度时使用。。</li>
+</ul>
+<h4 id="2-1-4-2-数据文件-——-染色体文件karyotype-txt"><a href="#2-1-4-2-数据文件-——-染色体文件karyotype-txt" class="headerlink" title="2.1.4.2. 数据文件 —— 染色体文件karyotype.txt"></a>2.1.4.2. 数据文件 —— 染色体文件karyotype.txt</h4><p>染色体文件karyotype.txt用于生成染色体模块。</p>
+<h5 id="2-1-4-2-1-染色体文件karyotype-txt的获取"><a href="#2-1-4-2-1-染色体文件karyotype-txt的获取" class="headerlink" title="2.1.4.2.1. 染色体文件karyotype.txt的获取"></a>2.1.4.2.1. 染色体文件karyotype.txt的获取</h5><p>从genome.fa.fai里生成karyotype.txt文件<code>head -12 genome.fa.fai |awk &#39;&#123;print &quot;chr - &quot;$1&quot; &quot;$1&quot; 0 &quot;$2&quot; set3-12-qual-12&quot;&#125;&#39; &gt;karyotype.txt</code>，取前12条染色体。</p>
+<p>修改最后一列来定义染色体颜色，推荐<code>set3-12-qual</code>系列，一共12种，可以依次给到12条染色体。</p>
+<h4 id="2-1-4-3-数据文件-——-线性关系文件-link-txt"><a href="#2-1-4-3-数据文件-——-线性关系文件-link-txt" class="headerlink" title="2.1.4.3. 数据文件 —— 线性关系文件_link.txt"></a>2.1.4.3. 数据文件 —— 线性关系文件_link.txt</h4><p>线性关系文件_link.txt用于生成共线性模块。</p>
+<p>格式是六列数据，用tab分隔，每行都代表一条线，由具有共线性的两组染色体ID、起始位置和终止位置组成。</p>
+<p><code>contig003  7719    355757  contig014   3459    349346</code></p>
+<h5 id="2-1-4-3-1-线性关系文件-link-txt的获取"><a href="#2-1-4-3-1-线性关系文件-link-txt的获取" class="headerlink" title="2.1.4.3.1. 线性关系文件_link.txt的获取"></a>2.1.4.3.1. 线性关系文件_link.txt的获取</h5><p>可以用jcvi生成simple文件，然后用脚本simple2links.py转换成_link.txt文件。</p>
+<p><code>pip install jcvi</code>安装jcvi，可以参考博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/">MCscan</a>。</p>
+<ol>
+<li><p>准备sample.bed和sample.cds两个文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python -m jcvi.formats.gff bed --type=gene --key=ID sample.gff3 &gt;sample.bed #gff2bed</span><br><span class="line">python -m jcvi.formats.bed uniq sample.bed #生成sample.uniq.bed</span><br><span class="line">seqkit grep -f &lt;(cut -f 4 sample.uniq.bed )  sample.cds.fa | seqkit seq -i &gt; sample.cds #提取cds</span><br><span class="line">mv sample.uniq.bed sample.bed</span><br><span class="line">rm sample.leftover.bed</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行共线性分析</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m jcvi.compara.catalog ortholog --no_strip_names --cpu=1 sample sample #生成sample.sample.anchors，单个物种就用sample sample，两个物种就准备两套.bed和.cds文件，用sample1 sample2。</span><br><span class="line">python -m jcvi.compara.synteny screen --minspan=30 --simple sample.sample.anchors sample.sample.anchors.new #生成sample.sample.anchors.simple</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MCScanX<br>从MCScanX结果sample.collinearity中生成类似MCSCAN结果的bv.simple。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -C 1 &quot;#&quot; sample.collinearity |grep -v &quot;^-&quot;  &gt;sample.col</span><br><span class="line">tail -1 sample.collinearity &gt;&gt; sample.col</span><br><span class="line">cat sample.col |sed -e &quot;s/#.* /#/g&quot; -e &quot;s/[^b]*bv/bv/&quot; |tr &#x27;\n&#x27; &#x27; &#x27;|sed &quot;s/ #/\n/g&quot;|awk &#x27;&#123;print $2,$3,$5,$6&quot; 200 &quot;$1&#125;&#x27;|sed -e &quot;s/plus/+/g&quot; -e &quot;s/minus/-/g&quot; |grep -v &quot;#&quot; &gt;sample.simple</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>simple2links<br><code>python simple2links.py sample.sample.anchors.simple #生成sample.sample.anchors.simple_link.txt</code></li>
+</ol>
+<p>sample.sample.anchors.simple_link.txt可以作为circos画共线性的输入文件</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/xuzhougeng/myscripts/blob/master/simple2links.py">simple2links.py脚本地址</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># simple2links.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> argv</span><br><span class="line"></span><br><span class="line">simple_file = argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">ref_bed = simple_file.split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>] + <span class="string">&quot;.bed&quot;</span></span><br><span class="line">qry_bed = simple_file.split(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] + <span class="string">&quot;.bed&quot;</span></span><br><span class="line"></span><br><span class="line">ref_dict = &#123;line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">3</span>]:line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">0</span>:<span class="number">3</span>] <span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(ref_bed)&#125;</span><br><span class="line">qry_dict = &#123;line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">3</span>]:line.split(<span class="string">&quot;\t&quot;</span>)[<span class="number">0</span>:<span class="number">3</span>] <span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(qry_bed)&#125;</span><br><span class="line"></span><br><span class="line">fo = <span class="built_in">open</span>(simple_file + <span class="string">&quot;_link.txt&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(simple_file):</span><br><span class="line">    <span class="keyword">if</span> line.startswith(<span class="string">&quot;#&quot;</span>):</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    items = line.strip().split(<span class="string">&quot;\t&quot;</span>) </span><br><span class="line">    ref_start_gene = items[<span class="number">0</span>]</span><br><span class="line">    ref_end_gene = items[<span class="number">1</span>]</span><br><span class="line">    qry_start_gene = items[<span class="number">2</span>]</span><br><span class="line">    qry_end_gene = items[<span class="number">3</span>]</span><br><span class="line">    </span><br><span class="line">    ref_chr, ref_start = ref_dict[ref_start_gene][<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">    ref_end = ref_dict[ref_end_gene][<span class="number">2</span>]</span><br><span class="line">    qry_chr, qry_start = qry_dict[qry_start_gene][<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">    qry_end = qry_dict[qry_end_gene][<span class="number">2</span>]</span><br><span class="line">    </span><br><span class="line">    circos_input = [ref_chr, ref_start, ref_end, qry_chr, qry_start, qry_end]</span><br><span class="line">    fo.writelines(<span class="string">&#x27;\t&#x27;</span>.join(circos_input) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">fo.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-4-4-数据文件-——-特征图文件"><a href="#2-1-4-4-数据文件-——-特征图文件" class="headerlink" title="2.1.4.4. 数据文件 —— 特征图文件"></a>2.1.4.4. 数据文件 —— 特征图文件</h4><p>特征图文件用于生成折线图(line)，散点图(scatter)，直方图(histogram)和热图(heatmap)等特征图模块。</p>
+<h5 id="2-1-4-4-1-获取特征图文件"><a href="#2-1-4-4-1-获取特征图文件" class="headerlink" title="2.1.4.4.1. 获取特征图文件"></a>2.1.4.4.1. 获取特征图文件</h5><p>特征图文件格式相同，由四列组成，染色体ID(chr)，起始位置(start)，终止位置(end)，特征数据(value[options])。</p>
+<p>前三列是bed格式，最后一列是特征数据，比如在这个位置有几个基因。通常用法是展示染色体的基因密度信息、重复序列密度和GC含量等信息。</p>
+<ol>
+<li><p>准备</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cut -d &#x27; &#x27; -f 3,6 karyotype.txt | tr &#x27; &#x27; &#x27;\t&#x27; &gt;genome.txt #获取基因组文件</span><br><span class="line">bedtools makewindows -g genome.txt -w 100000 &gt;genome.windows #以100kb为滑窗，沿染色体创建窗口</span><br></pre></td></tr></table></figure></li>
+<li><p>基因密度</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zgrep &#x27;[[:blank:]]gene[[:blank:]]&#x27; sample.gff3 |awk &#x27;&#123;print $1&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; &gt;genes.bed #提取基因位置信息</span><br><span class="line">bedtools coverage -a genome.windows -b genes.bed | cut -f 1-4 &gt;genes_num.txt #按照滑窗统计基因密度</span><br></pre></td></tr></table></figure></li>
+<li><p>重复序列密度</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk &#x27;&#123;print $1&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; repeats.gff |grep -v &quot;#&quot; &gt;repeats.bed #提取重复位置信息</span><br><span class="line">bedtools coverage -a genome.windows -b repeats.bed | cut -f 1-4 &gt;repeats_num.txt #按照滑窗统计重复密度</span><br></pre></td></tr></table></figure></li>
+<li><p>GC含量<br><code>bedtools nuc -fi genome.fa -bed genome.windows | cut -f 1-3,5 | sed &#39;1d&#39; &gt; gc_rate.txt #按照滑窗统计GC含量</code></p>
+</li>
+<li><p>共线性区块的基因密度</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat bv.col|sed -e &quot;s/#.* /#/g&quot; -e &quot;s/[^b]*bv/bv/&quot; |tr &#x27;\n&#x27; &#x27; &#x27;|sed &quot;s/ #/\n/g&quot;|awk &#x27;&#123;print $2,$3,$5,$6&#125;&#x27;|grep -v &quot;#&quot; |sed &quot;s/ /\n/g&quot;|sed &quot;/^$/d&quot; |sort |uniq &gt;bv.col.list #获取共线性区块包含的基因列表</span><br><span class="line">grep -f col.list Bauhinia.variegata.gene.gff3 |awk &#x27;$3 == &quot;gene&quot; &#123;print $1&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; &gt;col.bed #获取基因的位置信息</span><br><span class="line">bedtools coverage -a genome.windows -b col.bed |cut -f 1-4 &gt;col.txt #统计共线性基因密度</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="3-references"><a href="#3-references" class="headerlink" title="3. references"></a>3. references</h1><p><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752132/">Circos paper</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3a31ceef711b">xuzhougeng 1</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4b3d3809ac07">xuzhougeng 2</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ea3a8933ace9">xuzhougeng 3</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1658e702ba17">xuzhougeng 4</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/31f26d1e5974">xuzhougeng 5</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/plot/" rel="tag"># plot</a>
+              <a href="/tags/Circos/" rel="tag"># Circos</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/13/bioinfo_GSEA_topGO/" rel="prev" title="基因富集分析(gene set enrichment analysis, GSEA)—— topGO">
+      <i class="fa fa-chevron-left"></i> 基因富集分析(gene set enrichment analysis, GSEA)—— topGO
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/19/omics_transcriptome.RNA-seq/" rel="next" title="RNA-sequencing数据分析工具比较">
+      RNA-sequencing数据分析工具比较 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%BB%8B%E7%BB%8Dcircos%E5%9C%88%E5%9B%BE"><span class="nav-text">1. 介绍circos圈图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BB%98%E5%88%B6circos%E5%9C%88%E5%9B%BE%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%92%8C%E5%8C%85"><span class="nav-text">2. 绘制circos圈图的软件和包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Circos-%E2%80%94%E2%80%94-%E4%BB%8E%E5%90%8D%E5%AD%97%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%87%BA%E6%98%AFcircos%E7%BB%98%E5%88%B6%E8%BD%AF%E4%BB%B6%E7%9A%84%E9%9C%B8%E7%8E%8B"><span class="nav-text">2.1. Circos —— 从名字就可以看出是circos绘制软件的霸王</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-Circos%E5%AE%89%E8%A3%85"><span class="nav-text">2.1.1. Circos安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-Circos%E8%BF%90%E8%A1%8C"><span class="nav-text">2.1.2. Circos运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-Circos%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BB%98%E5%88%B6"><span class="nav-text">2.1.3. Circos模块化绘制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-Circos%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">2.1.4. Circos输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-1-%E4%B8%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6circos-conf"><span class="nav-text">2.1.4.1. 主配置文件circos.conf</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-1-1-circos-conf%E7%94%B1%E5%87%A0%E4%B8%AA%E9%83%A8%E5%88%86%E7%BB%84%E6%88%90"><span class="nav-text">2.1.4.1.1. circos.conf由几个部分组成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-1-2-circos-conf%E7%A4%BA%E4%BE%8B"><span class="nav-text">2.1.4.1.2. circos.conf示例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-1-3-circos-conf%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="nav-text">2.1.4.1.3. circos.conf参数详解</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-2-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6-%E2%80%94%E2%80%94-%E6%9F%93%E8%89%B2%E4%BD%93%E6%96%87%E4%BB%B6karyotype-txt"><span class="nav-text">2.1.4.2. 数据文件 —— 染色体文件karyotype.txt</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-2-1-%E6%9F%93%E8%89%B2%E4%BD%93%E6%96%87%E4%BB%B6karyotype-txt%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-text">2.1.4.2.1. 染色体文件karyotype.txt的获取</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-3-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6-%E2%80%94%E2%80%94-%E7%BA%BF%E6%80%A7%E5%85%B3%E7%B3%BB%E6%96%87%E4%BB%B6-link-txt"><span class="nav-text">2.1.4.3. 数据文件 —— 线性关系文件_link.txt</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-3-1-%E7%BA%BF%E6%80%A7%E5%85%B3%E7%B3%BB%E6%96%87%E4%BB%B6-link-txt%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-text">2.1.4.3.1. 线性关系文件_link.txt的获取</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-4-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6-%E2%80%94%E2%80%94-%E7%89%B9%E5%BE%81%E5%9B%BE%E6%96%87%E4%BB%B6"><span class="nav-text">2.1.4.4. 数据文件 —— 特征图文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-4-1-%E8%8E%B7%E5%8F%96%E7%89%B9%E5%BE%81%E5%9B%BE%E6%96%87%E4%BB%B6"><span class="nav-text">2.1.4.4.1. 获取特征图文件</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-references"><span class="nav-text">3. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/11/16/biosoft_Circos/";
+    this.page.identifier = "2021/11/16/biosoft_Circos/";
+    this.page.title = "Circos圈图绘制";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

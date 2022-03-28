@@ -1,37 +1,802 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
+  <meta name="description" content="此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="提交基因组到公共数据库 —— 以GenBank为例">
+<meta property="og:url" content="http://example.com/2022/03/22/omics_genome.submit/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-22T13:30:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T07:04:51.433Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="genome submit">
+<meta property="article:tag" content="GenBank">
+<meta property="article:tag" content="table2asn">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/03/22/omics_genome.submit/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>提交基因组到公共数据库 —— 以GenBank为例 | 生信技工</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/22/omics_genome.submit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          提交基因组到公共数据库 —— 以GenBank为例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-22 21:30:00" itemprop="dateCreated datePublished" datetime="2022-03-22T21:30:00+08:00">2022-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 15:04:51" itemprop="dateModified" datetime="2022-03-28T15:04:51+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/03/22/omics_genome.submit/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/22/omics_genome.submit/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=31721697&auto=1&height=32"></iframe></div>
+
+<h1 id="1-基因组数据库"><a href="#1-基因组数据库" class="headerlink" title="1. 基因组数据库"></a>1. 基因组数据库</h1><p>提交基因组组装的数据到公共数据库以实现共享，在发表提供基因组数据文章时在文章内提供基因组的accession number。</p>
+<p>常用的公共数据库包括：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/">NCBI-GenBank</a>：美国生物信息学国家中心</li>
+<li><a target="_blank" rel="noopener" href="https://www.ebi.ac.uk/">EMBL-EBI</a>：欧洲生物信息学研究所</li>
+<li><a target="_blank" rel="noopener" href="https://www.ddbj.nig.ac.jp/index-e.html">DDBJ</a>：日本DNA数据银行</li>
+<li><a target="_blank" rel="noopener" href="https://ngdc.cncb.ac.cn/?lang=zh">中国的国家基因组科学数据中心, National Genomics Data Center, NGDC</a>: 中国</li>
+</ul>
+<h1 id="2-基因组提交"><a href="#2-基因组提交" class="headerlink" title="2. 基因组提交"></a>2. 基因组提交</h1><p>可以单独提交基因组，也可以基因组和基因组注释一同提交。</p>
+<p>单独提交基因组会比加上注释信息简单很多，因为加上注释信息一般都会面临多种注释错误(我的例子是4万个基因注释中包含了将近一千个错误需要手动修改)，但是现在基因组注释是非常基础的操作，所以还是建议加上注释文件更完整。如果发表时间紧张，可以考虑先提交基因组获得accession number(在文章里提供)，再提交注释(accession number不变)。</p>
+<ul>
+<li>单独提交基因组只需要准备基因组文件(fasta格式)，在提交网站填写基因组相关信息，上传基因组文件即可。</li>
+<li>基因组与注释文件共同提交则需要对注释文件(gff或者bed格式)做检查和过滤后，用table2asn软件从基因组文件(fasta格式)和注释文件(gff或者bed格式)生成一个sqn文件，再提交sqn文件到提交网站上。当然，单独的基因组文件也可以转化成sqn格式再上传。</li>
+</ul>
+<p>在<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/">NCBI的提交网站</a>可以选择各种数据类型，提交基因组就输入<strong>genome</strong>。</p>
+<h1 id="3-文件准备"><a href="#3-文件准备" class="headerlink" title="3. 文件准备"></a>3. 文件准备</h1><p>在整理基因组文件，基因组结构注释和功能注释文件时，可以先用table2asn检测错误，以指导基因组改善(例如可能删除污染片段)，以及合并注释文件。</p>
+<h2 id="3-1-基因组文件"><a href="#3-1-基因组文件" class="headerlink" title="3.1. 基因组文件"></a>3.1. 基因组文件</h2><p>基因组文件用fa格式储存，最好做一做污染过滤。</p>
+<h2 id="3-2-注释文件"><a href="#3-2-注释文件" class="headerlink" title="3.2. 注释文件"></a>3.2. 注释文件</h2><ul>
+<li>注释文件可以是tbl格式或者gff格式，我的习惯是用gff格式(许多注释软件结果也是gff格式)。</li>
+<li>提交的注释文件可以只有结构注释(不提供功能注释，或者通过Dryad【收费】或Figshare【免费】等文件分享网站提供功能注释文件)，也可以把功能注释整理后添加到结构注释文件的product属性值。</li>
+</ul>
+<h3 id="3-2-1-功能注释"><a href="#3-2-1-功能注释" class="headerlink" title="3.2.1. 功能注释"></a>3.2.1. 功能注释</h3><p>功能注释以product属性值的形式提供，添加到结构注释gff文件的第九列。</p>
+<p>合并功能注释和结构注释可以参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/05/17/omics_genome.functional.annotation/">基因组注释(三)：基因功能注释</a></p>
+<p>product值的不规范情况：</p>
+<ul>
+<li>包含逗号,（因为逗号是分隔符）</li>
+<li>包含竖杠|</li>
+<li>短横杠-开头或结尾</li>
+<li>冒号:开头或结尾</li>
+<li>斜杠&#x2F;开头或结尾</li>
+<li>不包含字母</li>
+<li>括号（包括圆括号,中括号和大括号）不完整的</li>
+</ul>
+<h1 id="4-提交基因组"><a href="#4-提交基因组" class="headerlink" title="4. 提交基因组"></a>4. 提交基因组</h1><h2 id="4-1-提交基因组到NCBI的GenBank"><a href="#4-1-提交基因组到NCBI的GenBank" class="headerlink" title="4.1. 提交基因组到NCBI的GenBank"></a>4.1. 提交基因组到NCBI的GenBank</h2><p>单独提交基因组只需要基因组(fasta格式)文件，在基因组提交网站<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/genome/">genome Submit Portal</a>操作。</p>
+<ol>
+<li>注册和登录NCBI账号</li>
+<li>选择提交类型Submission Type：单个基因组Single genome或者批量多个基因组Batch&#x2F;multiple genomes</li>
+</ol>
+<p>然后进入信息填写页面：</p>
+<ol>
+<li><p>提交者信息Submitter</p>
+<ul>
+<li>包括姓名First and Last name，邮箱Email，单位Submitting organization(学校)，部门Department(学院)，街道Street，城市City，省&#x2F;州State&#x2F;Province，邮编Postal code，国家Country。</li>
+<li>在最后可以选择<strong>Update my contact information in profile</strong>会更新填写的信息到账号，下一次新填写就默认填入提交者信息了。</li>
+</ul>
+</li>
+<li><p>一般性的信息General info</p>
+<ul>
+<li>BioProject和BioSample可以先注册在这里提供accession number；也可以选择还未注册提交之后会增加填写BioProject和BioSample信息的步骤然后自动注册新的；</li>
+<li>释放日期Release date可以指定日期，也可以提交通过后立即释放；释放日期可以提交后发邮件更改的；</li>
+<li>基因组信息Genome info：如果保存到了sqn文件也可以选择**Genome Assembly structured comment is in the contig .sqn file(s)**就不需要填写(但我选了之后不识别还是不选填入)。包括组装日期Assembly date，组装方法Assembly method和版本，组装名称Assembly name，基因组覆盖度Genome coverage(这里其实是depth)，测序技术Sequencing technology；</li>
+<li>确认信息：是否完整基因组，是否最终版，是否de novo从头组装即无参考组装，是否已有提交的更新，是否自动移除被系统认为是污染的序列(建议自动移除，否则可能发邮件让手动移除污染序列)；</li>
+<li>Submission title可选填，建议填上以区别于其他提交。</li>
+</ul>
+</li>
+<li><p>BioProject General Info</p>
+<ul>
+<li>提供创建新的BioProject的信息，项目题目Project title，项目描述Project description，和领域Relevance</li>
+<li>可选项：相关的外部链接External links，基金grants</li>
+</ul>
+</li>
+<li><p>Publications【only batch&#x2F;multiple genomes】：选填，发表文章的PubMed ID或者DOI号</p>
+</li>
+<li><p>BioSample Type：样品类型，选择Human&#x2F;Plant等</p>
+</li>
+<li><p>BioSample Attributes</p>
+<ul>
+<li>如果是批量提交基因组，可以用excel或csv表格提交多个BioSamples信息</li>
+<li>样品名称Sample Name：区别于其他样品的唯一名称</li>
+<li>生物名称Organism，可以填物种学名；个体描述isolate&#x2F;栽培名称cultivar&#x2F;生态型ecotype三选一填，年龄age&#x2F;发育阶段development stage二选一填</li>
+<li>地理位置geographic location：可以填国家China</li>
+<li>组织tissue：填写取样部位，eg leaf，flower，root，stem</li>
+</ul>
+</li>
+<li><p>Genome Info【only batch&#x2F;multiple genomes】</p>
+<ul>
+<li>批量提交的基因组应该有相同的类型：要么只有染色体序列，要么都包含非染色体的序列(会被处理到WGD genome程序)</li>
+<li>确认信息：是否完整基因组，是否最终版，是否de novo从头组装即无参考组装，是否已有提交的更新，是否自动移除被系统认为是污染的序列(建议自动移除，否则可能发邮件让手动移除污染序列)；</li>
+</ul>
+</li>
+<li><p>Files</p>
+<ul>
+<li>提交基因组文件，单个基因组提交fasta格式或者sqn格式，批量基因组提交fasta格式或者asn.1格式</li>
+<li>FTP或Aspera命令行上传文件夹(&gt;10GB)，或者网页提交(&lt;2GB)或Aspera Connect plugin(2-10GB)上传文件</li>
+<li>提交之后会检查信息是否错误，提示修改</li>
+</ul>
+</li>
+<li><p>空隙Gaps【only batch&#x2F;multiple genomes】</p>
+<ul>
+<li>基因组序列中的N的含义，是否随机合并序列(不用组装软件)，感觉一般都不会随机合并吧</li>
+<li>指定代表gap的N的最小数量，是否有代表未知长度gap的N的数量(常用大于100个N代表未知长度的gap)，组装gap的证据的数据源</li>
+</ul>
+</li>
+<li><p>Assignment【only single genomes】：确认是否有染色体序列，填写染色体序列信息，是否有质体或线粒体或质粒序列    </p>
+</li>
+<li><p>References【only single genomes】：序列作者和相关文章信息</p>
+</li>
+<li><p>Review&amp;Submit：最后检查一遍信息没错误就确认提交</p>
+</li>
+</ol>
+<h2 id="4-2-提交基因组和注释"><a href="#4-2-提交基因组和注释" class="headerlink" title="4.2. 提交基因组和注释"></a>4.2. 提交基因组和注释</h2><p>提交带有注释的基因组的大致步骤：</p>
+<ol>
+<li>注册新的BioProject和BioSample</li>
+<li>生成template.sbt文件</li>
+<li>用table2asn把基因组(fsa)和注释文件(gff&#x2F;tbl)生成用于提交的sqn文件</li>
+<li>根据生成的验证结果文件查看table2asn检查出来的错误，并修正基因组和注释文件中包含的错误</li>
+<li>重新运行table2asn和修正错误(重复步骤3和4)直至没有错误</li>
+<li>根据上一个部分<strong>提交基因组到NCBI的GenBank</strong>的步骤提交sqn文件到NCBI</li>
+<li>提交后可能会收到邮件需要再次更改，更改后重新运行table2asn和修正错误(重复步骤3和4)直至没有错误在NCBI修正错误(提交新的sqn文件)</li>
+</ol>
+<h3 id="4-2-1-准备工作"><a href="#4-2-1-准备工作" class="headerlink" title="4.2.1. 准备工作"></a>4.2.1. 准备工作</h3><h4 id="4-2-1-1-注册新的BioProject和BioSample"><a href="#4-2-1-1-注册新的BioProject和BioSample" class="headerlink" title="4.2.1.1. 注册新的BioProject和BioSample"></a>4.2.1.1. 注册新的BioProject和BioSample</h4><ul>
+<li>在网站<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/">submit</a>提交新的BioProject和BioSample</li>
+<li>根据项目和样品信息，计划发表的信息填写，勾选自动生成Locus Tag Prefixes。</li>
+<li>提交后马上可以获得BioProject ID(PRJNAxxxxxx)和BioSample ID(SAMNxxxxxxxx)，以及Locus Tag Prefixes(xxxxx)三个编号信息用于genome的提交填写。</li>
+</ul>
+<h4 id="4-2-1-2-生成template-sbt文件"><a href="#4-2-1-2-生成template-sbt文件" class="headerlink" title="4.2.1.2. 生成template.sbt文件"></a>4.2.1.2. 生成template.sbt文件</h4><p>在网站<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/genbank/template/submission/">template</a>提交基因组信息和BioProject ID(PRJNAxxxxxx)和BioSample ID(SAMNxxxxxxxx)，生成template.sbt文件。</p>
+<h3 id="4-2-2-生成提交文件"><a href="#4-2-2-生成提交文件" class="headerlink" title="4.2.2. 生成提交文件"></a>4.2.2. 生成提交文件</h3><p>用table2asn把基因组(fsa)和注释文件(gff&#x2F;tbl)生成用于提交的sqn文件。</p>
+<p>table2asn还有一个功能，是在整理基因组文件，基因组结构注释和功能注释文件时，可以先用table2asn检测错误，以指导基因组(例如可能删除污染片段)，以及合并注释文件。</p>
+<h4 id="4-2-2-1-table2asn简介"><a href="#4-2-2-1-table2asn简介" class="headerlink" title="4.2.2.1. table2asn简介"></a>4.2.2.1. table2asn简介</h4><p>table2asn用于把基因组和其他信息转换成NCBI的GenBank认可的ASN.1 (Abstract Syntax Notation 1)文本格式文件(sqn后缀)和其他用于协助修改的文件，是命令行格式的软件，取代了原来的老款软件tbl2asn。</p>
+<p>另一个相同功能的图形界面软件是Genome Workbench(尝试了一下，数据量大的情况下Window版本会卡顿，还是推荐table2asn)。</p>
+<h4 id="4-2-2-2-安装table2asn"><a href="#4-2-2-2-安装table2asn" class="headerlink" title="4.2.2.2. 安装table2asn"></a>4.2.2.2. 安装table2asn</h4><p>在网址下载对应系统(linux64,mac,win64)版本的table2asn安装包，解压缩，重命名为table2asn并设置权限(linux系统下运行<code>chmod 711 table2asn</code>)。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/table2asn/">table2asn下载网址</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/table2asn/">table2asn 用法简介</a></li>
+<li><a target="_blank" rel="noopener" href="https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/table2asn/DOCUMENTATION/table2asn_readme.txt">table2asn read me</a></li>
+</ul>
+<h4 id="4-2-2-3-运行table2asn"><a href="#4-2-2-3-运行table2asn" class="headerlink" title="4.2.2.3. 运行table2asn"></a>4.2.2.3. 运行table2asn</h4><ol>
+<li>用法</li>
+</ol>
+<ul>
+<li>最基本的用法：<code>table2asn -t template.sbt -indir ./</code></li>
+<li>注释的基因组提交的基础用法：<code>table2asn -t template.sbt -indir ./ -outdir ./ -M n -Z -locus-tag-prefix L6164</code></li>
+<li>注释的基因组提交推荐用法：<code>table2asn -t template.sbt -indir ./ -outdir ./ -M n -Z -a s -V vb -c fx -euk -augustus-fix -l paired-ends -gaps-min 1 -gaps-unknown 100 -locus-tag-prefix L6164 -j &quot;[organism=Bauhinia variegata][isolate=pink_petal]&quot; -logfile table2asn.log</code></li>
+</ul>
+<ol start="2">
+<li>参数解释</li>
+</ol>
+<ul>
+<li>-indir .&#x2F;: 指定存放sample.fsa和sample.gff&#x2F;.tbl文件的目录。自动识别目录下所有*.fsa和*.gff&#x2F;tbl文件，需要sample.fsa和sample.gff有相同前缀</li>
+<li>-outdir .&#x2F;: 指定结果文件目录，默认与输入一致</li>
+<li>-t: 指定template.sbt文件</li>
+<li>-i sample.fsa：指定目录下的单个sample.fsa文件(单个基因组提交)，有基因组的最大限制（大概是2G内），超出限制可以只用-indir不用-i -f指定</li>
+<li>-f sample.gff：指定目录下的sample.gff&#x2F;tbl文件，不能和-indir同用</li>
+<li>-M n：用作原核或真核基因组提交，代替(-a s -V v -c f)，加上-Z就包含基因组特定的差异验证; -M t则是用作TSA提交，代替(-a s -V v -c f，加上TSA特定的验证)</li>
+<li>-Z: 生成差异报告(Discrepancy report)，保存到sample.dr中；只推荐注释基因组或者转录组提交使用</li>
+<li>-a s: 指定文件类型；-a a指任意格式，包括单个fasta或ASN.1(default)； -a s指一套不相关的序列，例如一个基因组组装；-a s1指物种内的居群集；-a s2指不同物种的系统集</li>
+<li>-V: 验证数据，后面可以跟vbr的任意组合；v验证数据记录，结果保存在sample.val(含有错误的类型和严重程度)，错误总结保存在sample.stats；b生成sample.gbf的GenBank文件；r在不做国家检查的情况下验证(Validates without Country Check)</li>
+<li>-c: 清理数据，后面可以跟fxdD的任意组合；f修正差异报告中特定类别的产物名称，被修正的产物名称保存在sample.fixedproducts；x扩展注释的features的1-2个核苷酸边界，使得连接gaps或序列末端；D&#x2F;d修正采样日期</li>
+<li>-euk：为差异报告的测试指定是真核生物(eukaryotic lineage)</li>
+<li>-augustus-fix：针对augustus的错误进行修正</li>
+<li>-locus-tag-prefix L6164: 在向NCBI申请BioProject(以及BioSample)后会分配一个locus-tag-prefix前缀，在这里指定，不指定可能在sample.dr中报错FATAL: INCONSISTENT_PROTEIN_ID。</li>
+<li>-gaps-min 1 -gaps-unknown 100: 指定序列中的N的含义，如未正确指定，可能在submit.stats中报错SEQ_INST.InternalNsInSeqRaw。-gaps-min 指定代表gap的连续Ns的最小数量，1指把大于等于1个的连续Ns碱基都转换成assembly_gaps。-gaps-unknown 指定代表未知长度的gap的连续Ns的</li>
+<li>-l paired-ends: </li>
+<li>-j “[organism&#x3D;Bauhinia variegata][isolate&#x3D;pink_petal]”: 用于指定样本名[organism]和个体名[isolate]，会添加进每一条序列的ID里；不指定可能在sample.stats中报错SEQ_DESCR.BioSourceMissing和SEQ_DESCR.NoSourceDescriptor。</li>
+<li>-logfile bv.log:指定log文件，如果运q行有错误存放在log文件</li>
+<li>-y：添加评论到每一条提交记录，例如-y “Contigs larger than 2kb have been annotated, representing approximately 87% of the total genome”</li>
+</ul>
+<h3 id="4-2-3-修正错误"><a href="#4-2-3-修正错误" class="headerlink" title="4.2.3. 修正错误"></a>4.2.3. 修正错误</h3><p>根据生成的验证结果修正注释错误，重复table2asn生成sqn文件和修正错误的步骤直至没有错误。</p>
+<h4 id="4-2-3-1-查看错误"><a href="#4-2-3-1-查看错误" class="headerlink" title="4.2.3.1. 查看错误"></a>4.2.3.1. 查看错误</h4><p>查看运行table2asn生成的sample.stats，如果有ERROR-level的错误和部分特定的WARNING-level的错误就需要修正，通过sample.val查看错误的具体描述。<br>另外差异报告文件sample.dr中标注为FATAL的错误也需要修正。</p>
+<p>下面是一个sample.stats文件的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Total messages:		86696</span><br><span class="line"></span><br><span class="line">=================================================================</span><br><span class="line">86259 WARNING-level messages exist</span><br><span class="line"></span><br><span class="line">SEQ_FEAT.CDSmRNArange:	219</span><br><span class="line">SEQ_FEAT.NotSpliceConsensusDonor:	300</span><br><span class="line">SEQ_FEAT.NotSpliceConsensusAcceptor:	585</span><br><span class="line">SEQ_FEAT.SeqFeatXrefFeatureMissing:	84578</span><br><span class="line">SEQ_FEAT.ShortExon:	577</span><br><span class="line"></span><br><span class="line">=================================================================</span><br><span class="line">437 ERROR-level messages exist</span><br><span class="line"></span><br><span class="line">SEQ_INST.StopInProtein:	109</span><br><span class="line">SEQ_INST.InternalNsInSeqRaw:	169</span><br><span class="line">SEQ_DESCR.BioSourceMissing:	47</span><br><span class="line">SEQ_DESCR.NoSourceDescriptor:	1</span><br><span class="line">SEQ_FEAT.InternalStop:	109</span><br><span class="line">SEQ_FEAT.NoStop:	2</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-2-3-2-注释规范"><a href="#4-2-3-2-注释规范" class="headerlink" title="4.2.3.2. 注释规范"></a>4.2.3.2. 注释规范</h4><p>报错常常是注释文件的注释不规范导致的，根据报错我总结出几点注释规范：</p>
+<ol>
+<li>同一个mRNA包含的exons与CDSs的数量和位置几乎一致；区别在于同一个mRNA的exons的起始和终止位置(第一个exon的首和最后一个exon的尾)与mRNA的起始和终止相同，包含5’UTR和3’UTR，CDSs则不包含5’UTR和3’UTR，所以CDSs的起始和终止位置不一定和exon相同。</li>
+<li>第9列的产物属性product值不能包括逗号,(因为逗号是多个属性值的分隔符)，竖杠|，不能不包含字母，不能以短横杠-或冒号:结尾。最好先做好product值的过滤filter，再添加到gff注释文件。</li>
+</ol>
+<p>product值的不规范情况：</p>
+<ul>
+<li>包含逗号,（因为逗号是分隔符）</li>
+<li>包含竖杠|</li>
+<li>短横杠-开头或结尾</li>
+<li>冒号:开头或结尾</li>
+<li>斜杠&#x2F;开头或结尾</li>
+<li>不包含字母</li>
+<li>括号（包括圆括号和中括号）不完整的</li>
+</ul>
+<p>在整理基因组结构注释和功能注释时，可以先用table2asn检测错误，以指导注释合并。</p>
+<h4 id="4-2-3-3-报错和修正方案"><a href="#4-2-3-3-报错和修正方案" class="headerlink" title="4.2.3.3. 报错和修正方案"></a>4.2.3.3. 报错和修正方案</h4><p>table2asn运行结束后要根据输出文件的报错进行调整，并重新运行直至没有报错再提交给NCBI。</p>
+<p>NCBI给出了<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/validation/">Validation and Discrepancy Report Error Explanations</a>和<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/genome_validation/">Validation Error Explanations for Genomes</a>可以参考报错含义和解决方案。</p>
+<p>下面我总结了一下我遇到的报错类型和修正方案：</p>
+<h5 id="4-2-3-3-1-sample-stats-x2F-sample-val文件中报错ERROR"><a href="#4-2-3-3-1-sample-stats-x2F-sample-val文件中报错ERROR" class="headerlink" title="4.2.3.3.1. sample.stats&#x2F;sample.val文件中报错ERROR"></a>4.2.3.3.1. sample.stats&#x2F;sample.val文件中报错ERROR</h5><p>添加<code>pseudo=true</code>属性值的命令举例：<code>sed -i &#39;/ID=Bv00639;/ &#123;s/$/pseudo=true;/g&#125;&#39; sample.gff</code></p>
+<ol>
+<li><strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong><ul>
+<li>当gff的CDS位置有中间终止密码子时报错</li>
+<li>可以修改CDS序列位置，去除中间终止密码子。如果无法去除中间终止密码子，可以在sample.gff文件对应的gene行(第三列为gene的那行)的第九列添加<code>pseudo=true</code>属性值代表序列无法被翻译。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.NoStop</strong><ul>
+<li>当gff的CDS位置无终止密码子时</li>
+<li>可以延长CDS序列位置，直至出现终止密码子。如果无法找到终止密码子，可以在sample.gff文件对应的gene行(第三列为gene的那行)的第九列添加<code>pseudo=true</code>属性值代表序列无法被翻译。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.AbuttingIntervals</strong><ul>
+<li>当gff注释的一个基因的exons位置相邻时。</li>
+<li>可以合并两个相邻的exons，更改位置。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.SeqLocOrder</strong><ul>
+<li>当gff的exon位置有重叠时。</li>
+<li>可以参考mRNA和CDS序列的位置更改重叠的exon位置；exons的边界和mRNA一致，数量和CDS一致。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.CDSmRNAXrefLocationProblem</strong>或<strong>SEQ_FEAT.CDSwithMultipleMRNAs</strong><ul>
+<li>当gff注释CDS和exon的位置或数量不一致时</li>
+<li>可以更改exon或CDS位置和数量。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.ShortIntron</strong><ul>
+<li>含有短于11bp的内含子时</li>
+<li>可以修正intron的位置使它长于11bp，或者在gene那行第九列添加<code>pseudo=true</code>属性值，或者在table2asn的命令中中加上参数<code>-c s</code>代表标记为”LOW QUALITY PROTEIN”。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.TransLen</strong><ul>
+<li>表示蛋白质长度与预测的蛋白质长度不匹配，运行错误</li>
+<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#x67;&#x65;&#x6e;&#x6f;&#109;&#101;&#x73;&#x40;&#x6e;&#99;&#x62;&#105;&#x2e;&#x6e;&#108;&#109;&#46;&#110;&#x69;&#104;&#x2e;&#103;&#x6f;&#118;">&#x67;&#x65;&#x6e;&#x6f;&#109;&#101;&#x73;&#x40;&#x6e;&#99;&#x62;&#105;&#x2e;&#x6e;&#108;&#109;&#46;&#110;&#x69;&#104;&#x2e;&#103;&#x6f;&#118;</a>)让帮忙修改这个错误。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.BadInternalCharacter</strong><ul>
+<li>表示gff的第9列的属性值attributes中包含不符合规定的字符，例如”|”符号。</li>
+<li>删除第9列属性值包含的”|”符号</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.BadTrailingHyphen</strong></li>
+</ol>
+<ul>
+<li>当gff的第9列的属性值attributes中以连字符”-“结尾时</li>
+<li>删除第9列属性值包含的”-“符号</li>
+</ul>
+<ol start="11">
+<li><strong>SEQ_FEAT.BadTrailingCharacter</strong><ul>
+<li>当gff的第9列的属性值attributes中以连字符”:”结尾时。</li>
+<li>删除第9列属性值包含的”:”结尾符号</li>
+</ul>
+</li>
+<li>当gff的product属性不符合蛋白产物名称规定时，会生成Adiantum.nelumboides.fixedproducts文件，记录把不符合规定的product属性值改为<strong>hypothetical protein</strong>。可以提取不符合规定的product属性值用于product的filter。</li>
+</ol>
+<h5 id="4-2-3-3-2-sample-stats-x2F-sample-val文件中的报警WARNING"><a href="#4-2-3-3-2-sample-stats-x2F-sample-val文件中的报警WARNING" class="headerlink" title="4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警WARNING"></a>4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警<strong>WARNING</strong></h5><p>部分WARNING也最好修复；比如<strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong>和<strong>SEQ_FEAT.DuplicateFeat</strong>虽然是在WARNING-level messages中，但上传给NCBI后会发邮件让修改后重新提交。</p>
+<ol>
+<li><strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong><ul>
+<li>exon和CDS的位置或数量不一致且有中间终止密码子导致</li>
+<li>可以调整exon和CDS的位置和数量；可能引入<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong>错误，若引入则在gene行的第九列添加<code>pseudo=true</code>属性值；</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.DuplicateFeat</strong><ul>
+<li>当gff在同样的位置注释了多个gene时</li>
+<li>需要删除其中一个。</li>
+</ul>
+</li>
+</ol>
+<h5 id="4-2-3-3-3-sample-dr文件中的报错FATAL"><a href="#4-2-3-3-3-sample-dr文件中的报错FATAL" class="headerlink" title="4.2.3.3.3. sample.dr文件中的报错FATAL"></a>4.2.3.3.3. sample.dr文件中的报错FATAL</h5><p><code>cat sample.dr |grep &quot;FATAL&quot;</code>查看FATAL报错信息，如果物种不是细菌则可以忽略BACTERIAL_开头的报错信息；CONTAINED_CDS开头的信息不影响提交，也可暂时忽略。<br>如果product属性值中有错误格式会报错，比如含有不完整的括号，会显示<strong>FATAL: SUSPECT_PRODUCT_NAMES: 9 features contain unbalanced brackets or parentheses</strong>，需要处理(添加括号或者删除括号)。</p>
+<h3 id="4-2-4-在线提交"><a href="#4-2-4-在线提交" class="headerlink" title="4.2.4. 在线提交"></a>4.2.4. 在线提交</h3><p>根据上一个部分<strong>提交基因组到NCBI的GenBank</strong>的步骤提交sqn文件到NCBI</p>
+<h3 id="4-2-5-提交后修改"><a href="#4-2-5-提交后修改" class="headerlink" title="4.2.5. 提交后修改"></a>4.2.5. 提交后修改</h3><p>提交给NCBI后会收到邮件通知处理进度，如果有错误，会在提交网站显示Error提交状态，并收到需要更改的邮件。根据邮件提示修正注释错误，重复table2asn生成sqn文件和修正错误的步骤直至没有错误在NCBI修正错误(提交新的sqn文件)。</p>
+<p>下面记录了我遇到的邮件中提到的错误和修改方案：</p>
+<ol>
+<li><p><strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong><br>exon和CDS的位置或数量不一致且有中间终止密码子导致。可以调整exon和CDS的位置和数量；可能引入<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong>错误，若引入则在gene行的第九列添加<code>pseudo=true</code>属性值；</p>
+</li>
+<li><p><strong>SEQ_FEAT.DuplicateFeat</strong><br>这个错误是同一位置注释到多个基因引起的，可以提取邮件中的gene ID(重复基因的第二个)信息，保存成gene ID list，然后用命令<code>grep -v -f geneID.list sample.gff &gt;sample.revised.gff</code>删除list里的注释信息。</p>
+</li>
+<li><p><strong>Discrepancy</strong><br>Discrepancy.txt文件中保存了一些不符合标准的报错，比如product属性值中有横杠起始的元素，或者括号不完全，根据Discrepancy.txt文件指出的错误一条条修改。</p>
+</li>
+</ol>
+<p><code>cat sample.dr |grep &quot;FATAL&quot;</code>查看FATAL报错信息，如果物种不是细菌则可以忽略BACTERIAL_开头的报错信息；CONTAINED_CDS开头的信息不影响提交，也可暂时忽略。<br>如果product属性值中有不完整的括号，会显示<strong>FATAL: SUSPECT_PRODUCT_NAMES: 9 features contain unbalanced brackets or parentheses</strong>，需要处理需要处理(添加括号或者删除括号)。</p>
+<h2 id="4-3-提交状态"><a href="#4-3-提交状态" class="headerlink" title="4.3. 提交状态"></a>4.3. 提交状态</h2><p>在提交网页，提交后会显示提交状态，经过一轮机器自动验证和两轮人工检查后可公开数据。</p>
+<p>提交状态含义：</p>
+<ol>
+<li>Unfinished</li>
+</ol>
+<ul>
+<li>提交未完成</li>
+<li>提交如果没有最后确认，会保存已填写内容，随时可以登陆账号点击未完成的提交号继续提交。</li>
+</ul>
+<ol start="2">
+<li>Queued</li>
+</ol>
+<ul>
+<li>提交在等待自动验证</li>
+<li>刚提交的任务会进入自动验证环节</li>
+</ul>
+<ol start="3">
+<li>Error</li>
+</ol>
+<ul>
+<li>错误</li>
+<li>有文件有错误需要修正或者再次提交；会提供错误具体信息的文件和邮件通知。</li>
+</ul>
+<ol start="4">
+<li>Processing</li>
+</ol>
+<ul>
+<li>处理中</li>
+<li>提交通过自动验证，等待NCBI员工手动检查</li>
+</ul>
+<ol start="5">
+<li>Processing and accession number present</li>
+</ol>
+<ul>
+<li>处理中，并且显示了序列号</li>
+<li>提交通过了NCBI员工的首次检查，等待NCBI员工的最终检查</li>
+<li>如果提交有问题最终检查员工会发邮件告知</li>
+<li>如果指定了释放日期，提交会在释放日期前再做最终检查；也就是说释放日期前都保持在这个提交状态</li>
+</ul>
+<ol start="6">
+<li>Processed</li>
+</ol>
+<ul>
+<li>已处理</li>
+<li>数据已被公开释放，在这之前做的任何更改都会包含在释放数据中，但在提交网站不会显示修改。</li>
+</ul>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/genomesubmit/">genomes submission guide</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/table2asn/">table2asn</a></li>
+<li><a target="_blank" rel="noopener" href="https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/table2asn/DOCUMENTATION/">table2asn documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/validation/">Validation and Discrepancy Report Error Explanations</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/genome_validation/">Validation Error Explanations for Genomes</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/asndisc/">Discrepancy Report</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/genome-vendor/sequin/blob/master/errmsg/valid.msg">MODULE valid</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/">annotating genomes with gff3</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/genome-submit/" rel="tag"># genome submit</a>
+              <a href="/tags/GenBank/" rel="tag"># GenBank</a>
+              <a href="/tags/table2asn/" rel="tag"># table2asn</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/20/bioinfo_geneflow_treemix/" rel="prev" title="用TreeMix推断居群间基因流">
+      <i class="fa fa-chevron-left"></i> 用TreeMix推断居群间基因流
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">1. 基因组数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%8F%90%E4%BA%A4"><span class="nav-text">2. 基因组提交</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">3. 文件准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%96%87%E4%BB%B6"><span class="nav-text">3.1. 基因组文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6"><span class="nav-text">3.2. 注释文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%8A%9F%E8%83%BD%E6%B3%A8%E9%87%8A"><span class="nav-text">3.2.1. 功能注释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%8F%90%E4%BA%A4%E5%9F%BA%E5%9B%A0%E7%BB%84"><span class="nav-text">4. 提交基因组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%8F%90%E4%BA%A4%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%88%B0NCBI%E7%9A%84GenBank"><span class="nav-text">4.1. 提交基因组到NCBI的GenBank</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%8F%90%E4%BA%A4%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%92%8C%E6%B3%A8%E9%87%8A"><span class="nav-text">4.2. 提交基因组和注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">4.2.1. 准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-1-%E6%B3%A8%E5%86%8C%E6%96%B0%E7%9A%84BioProject%E5%92%8CBioSample"><span class="nav-text">4.2.1.1. 注册新的BioProject和BioSample</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-2-%E7%94%9F%E6%88%90template-sbt%E6%96%87%E4%BB%B6"><span class="nav-text">4.2.1.2. 生成template.sbt文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E7%94%9F%E6%88%90%E6%8F%90%E4%BA%A4%E6%96%87%E4%BB%B6"><span class="nav-text">4.2.2. 生成提交文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-1-table2asn%E7%AE%80%E4%BB%8B"><span class="nav-text">4.2.2.1. table2asn简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-2-%E5%AE%89%E8%A3%85table2asn"><span class="nav-text">4.2.2.2. 安装table2asn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-3-%E8%BF%90%E8%A1%8Ctable2asn"><span class="nav-text">4.2.2.3. 运行table2asn</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-%E4%BF%AE%E6%AD%A3%E9%94%99%E8%AF%AF"><span class="nav-text">4.2.3. 修正错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-1-%E6%9F%A5%E7%9C%8B%E9%94%99%E8%AF%AF"><span class="nav-text">4.2.3.1. 查看错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-2-%E6%B3%A8%E9%87%8A%E8%A7%84%E8%8C%83"><span class="nav-text">4.2.3.2. 注释规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-3-%E6%8A%A5%E9%94%99%E5%92%8C%E4%BF%AE%E6%AD%A3%E6%96%B9%E6%A1%88"><span class="nav-text">4.2.3.3. 报错和修正方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-3-1-sample-stats-x2F-sample-val%E6%96%87%E4%BB%B6%E4%B8%AD%E6%8A%A5%E9%94%99ERROR"><span class="nav-text">4.2.3.3.1. sample.stats&#x2F;sample.val文件中报错ERROR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-3-2-sample-stats-x2F-sample-val%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E6%8A%A5%E8%AD%A6WARNING"><span class="nav-text">4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警WARNING</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-3-3-sample-dr%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E6%8A%A5%E9%94%99FATAL"><span class="nav-text">4.2.3.3.3. sample.dr文件中的报错FATAL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-4-%E5%9C%A8%E7%BA%BF%E6%8F%90%E4%BA%A4"><span class="nav-text">4.2.4. 在线提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-5-%E6%8F%90%E4%BA%A4%E5%90%8E%E4%BF%AE%E6%94%B9"><span class="nav-text">4.2.5. 提交后修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E6%8F%90%E4%BA%A4%E7%8A%B6%E6%80%81"><span class="nav-text">4.3. 提交状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/03/22/omics_genome.submit/";
+    this.page.identifier = "2022/03/22/omics_genome.submit/";
+    this.page.title = "提交基因组到公共数据库 —— 以GenBank为例";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

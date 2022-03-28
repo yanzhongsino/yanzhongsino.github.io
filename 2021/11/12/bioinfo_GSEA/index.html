@@ -1,37 +1,660 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
+  <meta name="description" content="介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因富集分析(gene set enrichment analysis, GSEA)">
+<meta property="og:url" content="http://example.com/2021/11/12/bioinfo_GSEA/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png">
+<meta property="article:published_time" content="2021-11-12T08:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T02:45:56.242Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="gene set enrichment analysis">
+<meta property="article:tag" content="GSEA">
+<meta property="article:tag" content="topGO">
+<meta property="article:tag" content="KOBAS-i">
+<meta property="article:tag" content="GOEAST">
+<meta property="article:tag" content="clusterProfiler">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png">
+
+<link rel="canonical" href="http://example.com/2021/11/12/bioinfo_GSEA/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>基因富集分析(gene set enrichment analysis, GSEA) | 生信技工</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/12/bioinfo_GSEA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因富集分析(gene set enrichment analysis, GSEA)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-12 16:00:00" itemprop="dateCreated datePublished" datetime="2021-11-12T16:00:00+08:00">2021-11-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 10:45:56" itemprop="dateModified" datetime="2022-03-28T10:45:56+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/11/12/bioinfo_GSEA/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/12/bioinfo_GSEA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe width="298" height="52" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
+<h1 id="1-基因富集分析-gene-set-enrichment-analysis-GSEA"><a href="#1-基因富集分析-gene-set-enrichment-analysis-GSEA" class="headerlink" title="1. 基因富集分析(gene set enrichment analysis, GSEA)"></a>1. 基因富集分析(gene set enrichment analysis, GSEA)</h1><h2 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1. 定义"></a>1.1. 定义</h2><p>基因富集分析(gene set enrichment analysis, GSEA)，或者功能富集分析(functional enrichment analysis)是对大量的序列(基因或者蛋白质)进行按照基因功能或通路等分组，并鉴定哪些组包含比背景比例更多的基因(过度表达，over-represented)或更少的基因(表达不足，under-represented)的一种统计学方法。</p>
+<h2 id="1-2-方法"><a href="#1-2-方法" class="headerlink" title="1.2. 方法"></a>1.2. 方法</h2><ol>
+<li>通过将输入基因集和先验基因集(比如GO,KEGG)中的每个类别进行比较，来鉴定先验基因集中的哪一类基因集富含输入基因，即哪一类基因被富集。</li>
+<li>通常有三个步骤</li>
+</ol>
+<ul>
+<li>计算富集分数(enrichment score,ES)</li>
+<li>估计ES的统计显著性</li>
+<li>调整多重假设检验，归一化ES，计算错误发现率。<h2 id="1-3-应用"><a href="#1-3-应用" class="headerlink" title="1.3. 应用"></a>1.3. 应用</h2>通常会使用其他分析的结果作为输入基因集，比如比较基因组分析中得到的某物种特有的基因集，比较转录组分析得到的差异表达基因集，基因家族收缩扩张分析得到的基因组中扩张的基因集，基因组共线性分析中在全基因组复制事件附近的Ks值的基因集等各种分析得到的基因集，做基因富集分析来查看这些基因集是否主要集中在某些类别，这些类别代表的功能是否与表型或者进化事件有关联。</li>
+</ul>
+<h1 id="2-基因富集分析常用基因集"><a href="#2-基因富集分析常用基因集" class="headerlink" title="2. 基因富集分析常用基因集"></a>2. 基因富集分析常用基因集</h1><h2 id="2-1-Gene-Ontology-GO"><a href="#2-1-Gene-Ontology-GO" class="headerlink" title="2.1. Gene Ontology(GO)"></a>2.1. Gene Ontology(GO)</h2><h3 id="2-1-1-GO"><a href="#2-1-1-GO" class="headerlink" title="2.1.1. GO"></a>2.1.1. GO</h3><p>GO是一个国际标准化的基因功能分类体系，由基因本体联合会(Gene Ontology Consortium，GOC) 负责。它提供了一套动态并可控的词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性，它由一组预先定义好的GO术语（GO term）组成，这组术语对基因产物的功能进行限定和描述。</p>
+<p>GO由三个ontology（本体）组成，是由独立的术语表示的，分别描述基因的细胞组分（cellular component，CC）、分子功能（molecular function，MF）、参与的生物过程（biological process，BP）。</p>
+<p>GO这三个本体的含义：</p>
+<ol>
+<li>细胞组成（cellular component，CC）：描述基因产物执行功能的细胞结构相关的位置，比如一个蛋白可能定位在细胞核中，也可能定位在核糖体中；</li>
+<li>分子功能（Molecular Function，MF）：描述基因产物发生在分子水平上的活动，例如催化或运输。通常对应于单个基因产物（即蛋白质或RNA）可以进行的活动。常见的宽泛的分子功能描述是催化活性(catalytic activity)和转运活动(transporter activity)。为了避免与基因产物名称混淆，通常分子功能描述后加上”activity”一词。</li>
+<li>生物过程（biological process，BP）：描述的是指基因产物所关联的一个大的生物功能，或者说是多个分子活动完成的一个大的生物程序。例如有丝分裂或嘌呤代谢；</li>
+</ol>
+<h3 id="2-1-2-GO-terms"><a href="#2-1-2-GO-terms" class="headerlink" title="2.1.2. GO terms"></a>2.1.2. GO terms</h3><p>GO terms，它提供生物过程的逻辑结构与相关关系，不同GO terms之间的关系可以通过一个有向无环图来表示。</p>
+<p>此处需要注意的是，GO terms是对<strong>基因产物</strong>，而不是基因本身进行描述，因为基因本身的产物有时候不止一种。GO数据库中的GO分类相关信息会得到不断地更新与增加，这个特点要记住，因为不同的GO分析工具使用的数据库版本有可能不一样，造成GO分析结果出现不同。</p>
+<h3 id="2-1-3-GO-annotations"><a href="#2-1-3-GO-annotations" class="headerlink" title="2.1.3. GO annotations"></a>2.1.3. GO annotations</h3><p>GO注释（GO annotations）是关于特定基因功能的声明，它主要是将GO terms和基因或基因产物相关联来提供注释，也就是描述这个GO terms关联的基因产物是什么（蛋白质，还是非编码RNA，还是大分子等），有什么功能，如何在分子水平发挥作用，在细胞中的哪个位置发挥作用，以及它有助于执行哪些生物过程(途径、程序)。</p>
+<h2 id="2-2-Kyoto-Encyclopedia-of-Genes-and-Genomes-KEGG"><a href="#2-2-Kyoto-Encyclopedia-of-Genes-and-Genomes-KEGG" class="headerlink" title="2.2. Kyoto Encyclopedia of Genes and Genomes(KEGG)"></a>2.2. Kyoto Encyclopedia of Genes and Genomes(KEGG)</h2><h3 id="2-2-1-KEGG"><a href="#2-2-1-KEGG" class="headerlink" title="2.2.1. KEGG"></a>2.2.1. KEGG</h3><p>KEGG是处理基因组，生物通路，疾病，药物，化学物质的数据库集合，于1995年由京都大学化学研究所教授Minoru Kanehisa在当时正在进行的日本人类基因组计划下发起。</p>
+<p>KEGG 是一种数据库资源，用于从基因组和分子级信息了解生物系统（例如细胞、生物体和生态系统）的高级功能和效用。它是生物系统的计算机表示，由基因和蛋白质（基因组信息）和化学物质（化学信息）的分子构建块组成，它们与相互作用、反应和关系网络（系统信息）的分子接线图知识相结合。它还包含疾病和药物信息（健康信息）作为对生物系统的扰动。</p>
+<h3 id="2-2-2-KEGG-Database"><a href="#2-2-2-KEGG-Database" class="headerlink" title="2.2.2. KEGG Database"></a>2.2.2. KEGG Database</h3><p>KEGG 是一个集成的数据库资源，由如下所示的 16 个数据库组成。它们大致分为系统信息、基因组信息、化学信息和健康信息，它们通过网页的颜色编码来区分。</p>
+<table>
+<caption><h4>KEGG Database</h4></caption>
+<thead>
+<tr>
+<th>Category</th>
+<th>Database</th>
+<th>Content</th>
+<th>Color</th>
+</tr>
+</thead>
+</tbody>
+<tr>
+<td rowspan="3">Systems information</td>
+<td>KEGG PATHWAY</td>
+<td>KEGG pathway maps</td>
+<td rowspan="3"><font color=green>kegg3</br>green</font></td>
+</tr>
+<tr>
+<td>KEGG BRITE</td>
+<td>BRITE hierarchies and tables</td>
+</tr>
+<tr>
+<td>KEGG MODULE</td>
+<td>KEGG modules and reaction modules</td>
+</tr>
+<tr>
+<td rowspan="3">Genomic information</td>
+<td>KEGG ORTHOLOGY (KO)</td>
+<td>Functional orthologs</td>
+<td><font color=yellow>kegg4 yellow</font></td>
+</tr>
+<tr>
+<td>KEGG GENES</td>
+<td>Genes and proteins</td>
+<td rowspan="2"><font color=red>kegg1</br>red</font></td>
+</tr>
+<tr>
+<td>KEGG GENOME</td>
+<td>KEGG organisms and viruses</td>
+</tr>
+<tr>
+<td rowspan="4">Chemical information</td>
+<td>KEGG COMPOUND</td>
+<td>Metabolites and other chemical substances</td>
+<td rowspan="4"><font color=blue>kegg2</br>blue</font></td>
+</tr>
+<tr>
+<td>KEGG GLYCAN</td>
+<td>Glycans</td>
+</tr>
+<tr>
+<td>KEGG REACTION</br>KEGG RCLASS</td>
+<td>Biochemical reactions</br>Reaction class</td>
+</tr>
+<tr>
+<td>KEGG ENZYME</td>
+<td>Enzyme nomenclature</td>
+</tr>
+<tr>
+<td rowspan="4">Health information</td>
+<td>KEGG NETWORK</td>
+<td>Disease-related network variations</td>
+<td rowspan="4"><font color=purple>kegg5</br>purle</font></td>
+</tr>
+<tr>
+<td>KEGG VARIANT</td>
+<td>Human gene variants</td>
+</tr>
+<tr>
+<td>KEGG DISEASE</td>
+<td>Human diseases</td>
+</tr>
+<tr>
+<td>KEGG DRUG</br>KEGG DGROUP</td>
+<td>Drugs</br>Drug groups</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="2-2-3-KEGG-PATHWAY-Database"><a href="#2-2-3-KEGG-PATHWAY-Database" class="headerlink" title="2.2.3. KEGG PATHWAY Database"></a>2.2.3. KEGG PATHWAY Database</h3><p>KEGG PATHWAY Database是KEGG资源的核心，是一组手工绘制的KEGG通路图，代表细胞和生物体的新陈代谢和各种其他功能的实验知识。每个通路图都包含一个分子相互作用和反应网络，旨在将基因组中的基因与通路中的基因产物（主要是蛋白质）联系起来。</p>
+<h1 id="3-基因富集分析程序"><a href="#3-基因富集分析程序" class="headerlink" title="3. 基因富集分析程序"></a>3. 基因富集分析程序</h1><p>目前有许多程序可以用于基因富集分析。包括NASQAR,PlantRegMap,MSigDB,Broad Institute,WebGestalt,Enrichr,GeneSCF,DAVID,Metascape,AmiGO 2,GREAT,FunRich,FuncAssociate,InterMine,ToppGene Suite,QuSAGE,Blast2GO,g:Profiler。</p>
+<p>可以根据需要分析的物种类别和流行度选择分析平台，根据需要选择先验基因集。</p>
+<p>下面介绍几种常见的。</p>
+<h2 id="3-1-NASQAR"><a href="#3-1-NASQAR" class="headerlink" title="3.1. NASQAR"></a>3.1. NASQAR</h2><p>NASQAR (Nucleic Acid SeQuence Analysis Resource)是一个开源的网页平台，可以用R包clusterProfiler做GSEA分析，支持<a target="_blank" rel="noopener" href="http://bioconductor.org/packages/release/BiocViews.html#___OrgDb">Org.Db数据库</a>的所有物种的GO Term和KEGG Pathway富集分析。</p>
+<h2 id="3-2-PlantRegMap"><a href="#3-2-PlantRegMap" class="headerlink" title="3.2. PlantRegMap"></a>3.2. PlantRegMap</h2><p>支持165种植物的GO注释和GO富集分析。</p>
+<h2 id="3-3-Enrichr"><a href="#3-3-Enrichr" class="headerlink" title="3.3. Enrichr"></a>3.3. Enrichr</h2><p>Enrichr是针对哺乳动物的基因富集分析工具。可以通过API使用，并提供可视化结果。</p>
+<h2 id="3-4-GeneSCF"><a href="#3-4-GeneSCF" class="headerlink" title="3.4. GeneSCF"></a>3.4. GeneSCF</h2><p>GeneSCF支持多个物种，实时的功能富集分析工具。不需要额外更新数据库，GeneSCF是实时最新的数据库，并且支持多物种富集分析。结果以文本呈现。</p>
+<h2 id="3-5-DAVID"><a href="#3-5-DAVID" class="headerlink" title="3.5. DAVID"></a>3.5. DAVID</h2><p>DAVID是做注释，富集和可视化的整合的数据库。但注释数据库自从2016年10月就没有更新。</p>
+<h2 id="3-6-Blast2GO"><a href="#3-6-Blast2GO" class="headerlink" title="3.6. Blast2GO"></a>3.6. Blast2GO</h2><p>Blast2GO可以做组学数据的功能注释和GSEA分析。</p>
+<h2 id="3-7-KOBAS-i"><a href="#3-7-KOBAS-i" class="headerlink" title="3.7. KOBAS-i"></a>3.7. KOBAS-i</h2><h3 id="3-7-1-KOBAS-i简介"><a href="#3-7-1-KOBAS-i简介" class="headerlink" title="3.7.1. KOBAS-i简介"></a>3.7.1. KOBAS-i简介</h3><ol>
+<li>KOBAS是中科院和北大联合开发的做功能注释和GSEA分析的工具。</li>
+<li>目前已经发表了第三个版本，KOBAS-intelligence(KOBAS-i)，KOBAS-i引入了之前发布的基于机器学习的新方法CGPS，并扩展了可视化功能，支持的物种增加到5944个。</li>
+<li>KOBAS包含注释模块和富集模块。</li>
+</ol>
+<ul>
+<li>注释模块接受基因列表作为输入，包括 ID 或序列，并根据通路、疾病和GO信息等多个数据库为每个基因生成注释。</li>
+<li>富集模块给出了关于哪些通路和 GO 术语与输入基因列表或表达在统计上显着相关的结果。有两种不同的富集分析可用，命名为基因列表富集和 exp-data 富集。</li>
+</ul>
+<ol start="4">
+<li>KOBAS-i有网页版，也有本地版。</li>
+</ol>
+<h3 id="3-7-2-KOBAS-i网页版【推荐】"><a href="#3-7-2-KOBAS-i网页版【推荐】" class="headerlink" title="3.7.2. KOBAS-i网页版【推荐】"></a>3.7.2. KOBAS-i网页版【推荐】</h3><p>给了两个可用的网址：<a target="_blank" rel="noopener" href="http://kobas.cbi.pku.edu.cn/%EF%BC%8Chttp://bioinfo.org/kobas%E3%80%82">http://kobas.cbi.pku.edu.cn/，http://bioinfo.org/kobas。</a><br><a target="_blank" rel="noopener" href="http://kobas.cbi.pku.edu.cn/">KOBAS-i</a>。</p>
+<h4 id="3-7-2-1-注释-annotation-和富集-Enrichment-的步骤"><a href="#3-7-2-1-注释-annotation-和富集-Enrichment-的步骤" class="headerlink" title="3.7.2.1. 注释(annotation)和富集(Enrichment)的步骤"></a>3.7.2.1. 注释(annotation)和富集(Enrichment)的步骤</h4><ol>
+<li>输入<br>注释只有三个输入项：</li>
+</ol>
+<ul>
+<li>选择物种。目前支持5944个物种。</li>
+<li>选择输入基因集数据类型。支持核苷酸或者蛋白质的fasta序列，blast的Tabular输出结果，Ensembl Gene ID，Entrez Gene ID，UniProtKB AC，Gene Symbol。</li>
+<li>输入基因集。可以粘贴文本，也可以上传文件。</li>
+</ul>
+<p>富集除了需要上面三个输入项外，还需要选择用哪写先验基因集的数据库来做富集分析。包括PATHWAY,DISEASE,GO。其中KEGG Pathway是所有物种都可以用，其他的只有部份物种可以选。</p>
+<ul>
+<li>PATHWAY。有四个选项，KEGG Pathway(K),Reactome(R),BioCyc(B),PANTHER(p)。</li>
+<li>DISEASE。有三个选项，OMIM(o),KEGG Disease(k),NHGRI GWAS Catalog(N)</li>
+<li>GO(G)。<br>此外还有高级选项，可以选择统计学方法和纠错方法。</li>
+</ul>
+<p>然后点击Run，就可以等待运行结果了。</p>
+<ol start="2">
+<li>结果<br>运行结束后，点击右上角的Download total terms就可以下载到结果。<br>富集分析还可以点击Visualization得到结果的可视化图。</li>
+</ol>
+<h2 id="3-8-GOEAST"><a href="#3-8-GOEAST" class="headerlink" title="3.8. GOEAST"></a>3.8. GOEAST</h2><p>在线工具<a target="_blank" rel="noopener" href="http://omicslab.genetics.ac.cn/GOEAST/index.php">GOEAST</a></p>
+<h1 id="4-富集分析的R包"><a href="#4-富集分析的R包" class="headerlink" title="4. 富集分析的R包"></a>4. 富集分析的R包</h1><p>常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。</p>
+<h2 id="4-1-topGO"><a href="#4-1-topGO" class="headerlink" title="4.1. topGO"></a>4.1. topGO</h2><p>用topGO做GSEA分析的具体教程可以查看博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/">blog_topGO</a>。</p>
+<p>topGO是一个R包，用于半自动的GO terms的基因富集分析。topGO的结果可以展示为有向无环图。</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图" alt="DAG图" align=center/>
+
+<p><strong><p align="center">Figure 1. DAG图示例</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">wikipedia:directed acyclic graph</a></p></p>
+<p>注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。</p>
+<h2 id="4-2-clusterProfiler"><a href="#4-2-clusterProfiler" class="headerlink" title="4.2. clusterProfiler"></a>4.2. clusterProfiler</h2><p>clusterProfiler包的具体使用参考博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/">blog_clusterProfiler</a>。</p>
+<h3 id="4-2-1-clusterProfiler"><a href="#4-2-1-clusterProfiler" class="headerlink" title="4.2.1. clusterProfiler"></a>4.2.1. clusterProfiler</h3><p>clusterProfiler是一个R包，是一个解释组学数据的通用富集工具，支持Gene Ontology(GO), Kyoto Encyclopedia of Genes and Genomes(KEGG), Disease Ontology(DO), Disease Gene Network(DisGeNET), Molecular Signatures Database(MSigDb), wikiPathways和许多其他的基因集的功能注释和富集分析，以及富集分析结果的可视化。2021年07月发布了clusterProfiler 4.0版本。</p>
+<h3 id="4-2-2-clusterProfiler支持的基因集-gene-sets"><a href="#4-2-2-clusterProfiler支持的基因集-gene-sets" class="headerlink" title="4.2.2. clusterProfiler支持的基因集(gene sets)"></a>4.2.2. clusterProfiler支持的基因集(gene sets)</h3><ol>
+<li>Gene Ontology(GO)</li>
+<li>Kyoto Encyclopedia of Genes and Genomes(KEGG)</li>
+<li>Disease Ontology(DO)</li>
+<li>Disease Gene Network(DisGeNET)</li>
+<li>Molecular Signatures Database(MSigDb)</li>
+<li>wikiPathways</li>
+</ol>
+<h3 id="4-2-3-clusterProfiler功能-——-enrichment-analysis"><a href="#4-2-3-clusterProfiler功能-——-enrichment-analysis" class="headerlink" title="4.2.3. clusterProfiler功能 —— enrichment analysis"></a>4.2.3. clusterProfiler功能 —— enrichment analysis</h3><ol>
+<li>Over Representation Analysis, ORA<br>ORA是用于判断已知的生物功能或过程在实验产生的基因列表（例如差异表达基因列表, differentially expressed genes, DEGs）中是否过表达(over-represented&#x3D;enriched)的常用方法。</li>
+<li>Gene Set Enrichment Analysis, GSEA</li>
+<li>Leading edge analysis and core enriched genes</li>
+</ol>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis">GSEA wiki</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect">GOEAST introduction</a><br><a target="_blank" rel="noopener" href="https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf">topGO tutorial</a><br><a target="_blank" rel="noopener" href="https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/">topGO blog</a><br><a target="_blank" rel="noopener" href="https://www.codenong.com/cs105162324/">R topGO</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/47b5ea646932">enrichment</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7177c372243f">GO explanation</a><br><a target="_blank" rel="noopener" href="http://geneontology.org/docs/ontology-documentation/">GO overview</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/KEGG">KEGG</a><br><a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">clusterProfiler github</a><br><a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html">universal enrichment analysis using clusterProfiler</a><br><a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">clusterProfiler paper</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gene-set-enrichment-analysis/" rel="tag"># gene set enrichment analysis</a>
+              <a href="/tags/GSEA/" rel="tag"># GSEA</a>
+              <a href="/tags/topGO/" rel="tag"># topGO</a>
+              <a href="/tags/KOBAS-i/" rel="tag"># KOBAS-i</a>
+              <a href="/tags/GOEAST/" rel="tag"># GOEAST</a>
+              <a href="/tags/clusterProfiler/" rel="tag"># clusterProfiler</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/05/bioinfo_MCscan/" rel="prev" title="用MCscan做基因组间的同线性分析">
+      <i class="fa fa-chevron-left"></i> 用MCscan做基因组间的同线性分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/13/bioinfo_GSEA_topGO/" rel="next" title="基因富集分析(gene set enrichment analysis, GSEA)—— topGO">
+      基因富集分析(gene set enrichment analysis, GSEA)—— topGO <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90-gene-set-enrichment-analysis-GSEA"><span class="nav-text">1. 基因富集分析(gene set enrichment analysis, GSEA)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%9A%E4%B9%89"><span class="nav-text">1.1. 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%B9%E6%B3%95"><span class="nav-text">1.2. 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%BA%94%E7%94%A8"><span class="nav-text">1.3. 应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E5%B8%B8%E7%94%A8%E5%9F%BA%E5%9B%A0%E9%9B%86"><span class="nav-text">2. 基因富集分析常用基因集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Gene-Ontology-GO"><span class="nav-text">2.1. Gene Ontology(GO)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-GO"><span class="nav-text">2.1.1. GO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-GO-terms"><span class="nav-text">2.1.2. GO terms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-GO-annotations"><span class="nav-text">2.1.3. GO annotations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Kyoto-Encyclopedia-of-Genes-and-Genomes-KEGG"><span class="nav-text">2.2. Kyoto Encyclopedia of Genes and Genomes(KEGG)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-KEGG"><span class="nav-text">2.2.1. KEGG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-KEGG-Database"><span class="nav-text">2.2.2. KEGG Database</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">KEGG Database</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-KEGG-PATHWAY-Database"><span class="nav-text">2.2.3. KEGG PATHWAY Database</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F"><span class="nav-text">3. 基因富集分析程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-NASQAR"><span class="nav-text">3.1. NASQAR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-PlantRegMap"><span class="nav-text">3.2. PlantRegMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-Enrichr"><span class="nav-text">3.3. Enrichr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-GeneSCF"><span class="nav-text">3.4. GeneSCF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-DAVID"><span class="nav-text">3.5. DAVID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-Blast2GO"><span class="nav-text">3.6. Blast2GO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-KOBAS-i"><span class="nav-text">3.7. KOBAS-i</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-KOBAS-i%E7%AE%80%E4%BB%8B"><span class="nav-text">3.7.1. KOBAS-i简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-KOBAS-i%E7%BD%91%E9%A1%B5%E7%89%88%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">3.7.2. KOBAS-i网页版【推荐】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-1-%E6%B3%A8%E9%87%8A-annotation-%E5%92%8C%E5%AF%8C%E9%9B%86-Enrichment-%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="nav-text">3.7.2.1. 注释(annotation)和富集(Enrichment)的步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-GOEAST"><span class="nav-text">3.8. GOEAST</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E7%9A%84R%E5%8C%85"><span class="nav-text">4. 富集分析的R包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-topGO"><span class="nav-text">4.1. topGO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-clusterProfiler"><span class="nav-text">4.2. clusterProfiler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-clusterProfiler"><span class="nav-text">4.2.1. clusterProfiler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-clusterProfiler%E6%94%AF%E6%8C%81%E7%9A%84%E5%9F%BA%E5%9B%A0%E9%9B%86-gene-sets"><span class="nav-text">4.2.2. clusterProfiler支持的基因集(gene sets)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-clusterProfiler%E5%8A%9F%E8%83%BD-%E2%80%94%E2%80%94-enrichment-analysis"><span class="nav-text">4.2.3. clusterProfiler功能 —— enrichment analysis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/11/12/bioinfo_GSEA/";
+    this.page.identifier = "2021/11/12/bioinfo_GSEA/";
+    this.page.title = "基因富集分析(gene set enrichment analysis, GSEA)";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

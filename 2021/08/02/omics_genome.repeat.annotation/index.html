@@ -1,37 +1,798 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
+  <meta name="description" content="记录了基因组注释的第一步，重复序列的注释，转座子的相关知识，注释常用软件和用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组注释（一）：重复序列注释">
+<meta property="og:url" content="http://example.com/2021/08/02/omics_genome.repeat.annotation/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了基因组注释的第一步，重复序列的注释，转座子的相关知识，注释常用软件和用法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/oushujun/EDTA/raw/master/development/EDTA%20workflow.png?raw=true">
+<meta property="article:published_time" content="2021-08-02T02:30:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T03:36:09.574Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="tutorial">
+<meta property="article:tag" content="genome annotation">
+<meta property="article:tag" content="repeat sequences">
+<meta property="article:tag" content="TE">
+<meta property="article:tag" content="RepeatMasker">
+<meta property="article:tag" content="RepeatModeler">
+<meta property="article:tag" content="EDTA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/oushujun/EDTA/raw/master/development/EDTA%20workflow.png?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/08/02/omics_genome.repeat.annotation/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>基因组注释（一）：重复序列注释 | 生信技工</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/02/omics_genome.repeat.annotation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因组注释（一）：重复序列注释
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-02 10:30:00" itemprop="dateCreated datePublished" datetime="2021-08-02T10:30:00+08:00">2021-08-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 11:36:09" itemprop="dateModified" datetime="2022-03-28T11:36:09+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/08/02/omics_genome.repeat.annotation/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/08/02/omics_genome.repeat.annotation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">记录了基因组注释的第一步，重复序列的注释，转座子的相关知识，注释常用软件和用法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=365639&auto=1&height=32"></iframe></div>
+
+<p><strong>防坑指南</strong></p>
+<ol>
+<li>基因组在组装后，注释前。<code>seqkit seq -u lower.geno &gt;upper.geno</code>改为碱基全部大写的形式，因为小写碱基有些软件是识别成soft-masked的形式，影响注释预测，edta的TIR预测和geta软件都有可能报错。（这个坑我已经踩两次了，唉~）</li>
+</ol>
+<p><strong>写在前面</strong></p>
+<p>多种参数和条件用下来推荐的方案是：</p>
+<ol>
+<li>RepeatModeler自我训练</li>
+<li>RepeatMasker加载Repbase数据库，并用-species参数指定近缘种，参考RepeatModeler自我训练结果做重复序列预测</li>
+<li>EDTA，提供转录组组装的CDS序列做过滤，实现Denovo的TE预测。</li>
+<li>结合RepeatMasker和EDTA的结果作为最终基因组的重复序列注释。</li>
+</ol>
+<h1 id="1-重复序列注释"><a href="#1-重复序列注释" class="headerlink" title="1. 重复序列注释"></a>1. 重复序列注释</h1><p>重复序列占基因组非常高的比例，对重复序列的注释一般是做基因组注释的第一步。常用的基因组重复序列注释软件有RepeatMasker, RepeatModeler, EDTA。</p>
+<p>转座子(transposable elements,TE)是可以在基因组内改变位置的一段DNA序列，通常由DNA复制造成，TE是基因组的重要组成部分。</p>
+<table>
+    <caption><h4>转座子(transposable elements,TEs)的分类</h4></caption>
+    <thead>
+    <tr>
+        <th>转座子</br>(transposable elements,TEs)</th>
+        <th>功能</th>
+        <th colspan="2">分类</th>
+        <th>结构特征</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td rowspan="5"><h6>I 类元件</br>/逆转录转座子(retrotransposons)</h6></td>
+        <td rowspan="5">在“复制和粘贴”转座机制中作为RNA中间体</td>
+        <td rowspan="3">长末端重复(long terminal repeat, LTR)逆转录转座子</td>
+        <td>Ty3-gypsy类</td>
+        <td>LTR 元件具有 5 bp 目标位点重复(TSD)；LTR-Gypsy元件为 5'-TG...CA-3'。</td>
+    </tr>
+    <tr>
+        <td>Ty1-copia类</td>
+        <td>LTR 元件具有 5 bp 目标位点重复(TSD)；LTR-Copia元件的标准末端序列为 5'-TG...C/G/TA-3'</td>
+    </tr>
+    <tr>
+        <td>其他，比如BEL-Pap类，内源性反转录病毒(HERV,MER4)等</td>
+        <td>---</td>
+    </tr>
+    <tr>
+        <td rowspan="2">非长末端重复(non-LTR)逆转录转座子</td>
+        <td>长散布核元件</br>(LINEs,long interspersed nuclear element)</td>
+        <td rowspan="2">non-LTR 具有可变长度的 TSD 或完全缺乏 TSD，而是与插入时侧翼序列的缺失相关。non-LTR 通常在元件的 3' 末端有一个末端 poly-A 尾</td>
+    </tr>
+    <tr>
+        <td>短散布核元件</br>(SINEs,short interspersed nuclear element)</td>
+    </tr>
+    <tr>
+        <td rowspan="3"><h6>II 类元件</br>/DNA 转座子(DNA transposons)</h6></td>
+        <td rowspan="3">在“剪切和粘贴”转座机制中作为DNA中间体</td>
+        <td colspan="2">TIR元件</br>(TIR末端反向重复序列,这里指具有TIRs结构的DNA转座子，包括微型反向转座元件MITEs)</td>
+        <td>---</td>
+    </tr>
+    <tr>
+        <td colspan="2">Helitron</td>
+        <td>通过滚环机制复制，因此不产生 TSD 序列，也没有 TIR，但具有特征 5'-TC…CTRR-3' 末端序列，通常在元素的 3' 端附近有一个富含 GC 的短茎环结构。</td>
+    </tr>
+    <tr>
+        <td colspan="2">Mavericks</br>非TE重复序列</br>(non-TE repeat sequence)</td>
+        <td>大尺寸，15-40 kbp</br>包含长的TIRs(几百对碱基)</br>包含保守的5'-AG...TC-3'末端</td>
+    </tr>
+    </tbody>
+</table>
+
+<h1 id="2-RepeatMasker"><a href="#2-RepeatMasker" class="headerlink" title="2. RepeatMasker"></a>2. RepeatMasker</h1><h2 id="2-1-RepeatMasker介绍"><a href="#2-1-RepeatMasker介绍" class="headerlink" title="2.1. RepeatMasker介绍"></a>2.1. RepeatMasker介绍</h2><p>RepeatMasker是基因组重复序列检测的常用工具。一般依赖于已有的重复序列参考库Repbase作同源预测。对于绝大部分目标真核物种，都收录在Repbase中。</p>
+<h2 id="2-2-RepeatMasker安装"><a href="#2-2-RepeatMasker安装" class="headerlink" title="2.2. RepeatMasker安装"></a>2.2. RepeatMasker安装</h2><ol>
+<li><p>conda安装<br><code>conda install -c bioconda repeatmasker</code></p>
+</li>
+<li><p>加载Repbase数据库【推荐】</p>
+</li>
+</ol>
+<ul>
+<li><p>强烈建议加载<a target="_blank" rel="noopener" href="https://www.girinst.org/server/RepBase/index.php">Repbase数据库</a>，遗传信息研究所发布的重复DNA数据库，收录了非常多的物种基因组的重复序列信息，目前是需要付费的，加载后重复序列注释率得到很大提升。</p>
+</li>
+<li><p>我上传了一个20181026的版本到百度云盘，可以下载：<br>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1g43z1DyHtiGxAGJMiC4nZQ">https://pan.baidu.com/s/1g43z1DyHtiGxAGJMiC4nZQ</a><br>提取码：ckc4</p>
+</li>
+<li><p>下载解压后把目录下两个文件RMRBSeqs.embl和README.RMRBSeqs放到RepeatMasker安装目录的Libraries目录下，如果是conda安装的在pathto&#x2F;anaconda3&#x2F;share&#x2F;RepeatMasker&#x2F;Libraries&#x2F;下。</p>
+</li>
+</ul>
+<ol start="3">
+<li>配置依赖</li>
+</ol>
+<ul>
+<li><p>在RepeatMasker目录下运行<code>perl ./configure</code>，依次配置trf的位置，选择搜索引擎（4选1，推荐RMBlast或者HMMER（nhmmer命令），可以配置多个，但运行时只能用一种，选完再选5）。</p>
+</li>
+<li><p>一般如果依赖的软件安装成功加入环境变量了，会在配置依赖时自动出现依赖软件的路径，如果没有则手动输入依赖软件的路径。最后提示RepeatMasker is now ready to use即表示配置成功。</p>
+</li>
+</ul>
+<h2 id="2-3-RepeatMasker使用"><a href="#2-3-RepeatMasker使用" class="headerlink" title="2.3. RepeatMasker使用"></a>2.3. RepeatMasker使用</h2><h3 id="2-3-1-查看数据库中的物种"><a href="#2-3-1-查看数据库中的物种" class="headerlink" title="2.3.1. 查看数据库中的物种"></a>2.3.1. 查看数据库中的物种</h3><ol>
+<li>Repbase数据库配置好以后，用<code>RepeatMasker/util/queryRepeatDatabse.pl -tree &gt;species.txt</code>可以在species.txt中查看数据库中的物种列表。</li>
+<li>查看RepeatMasker&#x2F;Libraries&#x2F;taxonomy.dat文件，也有所有已收录物种的名称。</li>
+</ol>
+<ul>
+<li>找到数据库中已有训练的物种或者近缘种后，在使用RepeatMasker时用参数-species指定库中已有物种作为参考。</li>
+</ul>
+<h3 id="2-3-2-RepeatModeler自我训练"><a href="#2-3-2-RepeatModeler自我训练" class="headerlink" title="2.3.2. RepeatModeler自我训练"></a>2.3.2. RepeatModeler自我训练</h3><ul>
+<li>大部分情况下数据库中没有待注释物种的近缘种，此时最好用RepeatModeler等软件进行自我训练，用denovo预测来构建重复序列数据库。</li>
+<li>即使数据库中已有近缘种，有时候Repbase注释重复区的效果不是很好，也推荐进行自我训练。</li>
+</ul>
+<h4 id="2-3-2-1-RepeatModeler安装"><a href="#2-3-2-1-RepeatModeler安装" class="headerlink" title="2.3.2.1. RepeatModeler安装"></a>2.3.2.1. RepeatModeler安装</h4><ol>
+<li>RepeatModeler依赖：</li>
+</ol>
+<ul>
+<li>配置好的RepeatMasker</li>
+<li>RECON：Denovo Repeat Finder</li>
+<li>RepeatScout：Denovo Repeat Finder</li>
+<li>NSEG</li>
+</ul>
+<ol start="2">
+<li><p>RepeatModeler支持conda安装：<code>conda install -c bioconda repeatmodeler</code></p>
+</li>
+<li><p>或者下载源码编译，再一步步指定依赖软件路径，类似RepeatMasker的安装过程。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget http://repeatmasker.org/RepeatModeler/RepeatModeler-open-1.0.11.tar.gz</span><br><span class="line">tar xzvf RepeatModeler-open-1.0.11.tar.gz</span><br><span class="line"> </span><br><span class="line">cd RepeatModeler-open-1.0.11</span><br><span class="line">chmod -R 755 *</span><br><span class="line">perl ./configure</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-2-2-RepeatModeler使用"><a href="#2-3-2-2-RepeatModeler使用" class="headerlink" title="2.3.2.2. RepeatModeler使用"></a>2.3.2.2. RepeatModeler使用</h4><ol>
+<li>建库</li>
+</ol>
+<p>生成sample.nhr,.nin,.nnd,.nni,.nog,.nsq,.translation 7个文件</p>
+<p><code>mkdir db &amp;&amp; cd db</code><br><code>BuildDatabase -name sample -engine ncbi sample.fa</code></p>
+<ol start="2">
+<li>self-training</li>
+</ol>
+<p><code>nohup RepeatModeler -pa 8 -database db/sample -engine ncbi &amp;</code></p>
+<ul>
+<li>耗时数天。</li>
+<li>-pa 限制的是core的进程，如果服务器是4核，想设置32个线程跑，应该设置-pa 8。</li>
+<li>-databse指定库</li>
+<li>-engine指定引擎<br>运行跑6 rounds，前4轮有几分钟到十几分钟的-pa线程×cores的超负荷运行，后两轮每轮约1-2h的-pa线程×cores的超负荷运行。</li>
+</ul>
+<ol start="3">
+<li>结果文件</li>
+</ol>
+<ul>
+<li>sample-families.fa （用于repeatmasker指定lib）</li>
+<li>sample-families.stk（用于上传到Dfam数据库）</li>
+<li>生成目录下RM_21945.SatAug11650032020，内含consensi.fa文件（自身比对找到的一致性序列）</li>
+<li>consensi.fa.classified文件（fa格式），包含所有repeat序列和分类，序列id里包含了序列名称和是否能被repeatmasker识别的状态，如果不能被识别就标记Unknown。</li>
+</ul>
+<p>consensi.fa.classified文件即为训练结果，重复序列数据库，用作其他软件的输入。</p>
+<ol start="4">
+<li>处理</li>
+</ol>
+<p>如果想要更加可信的结果，可以把标记为Unknown的去除，留下的保存为ModelerID.lib，作为后续使用。</p>
+<ul>
+<li><p><code>seqkit grep -r -i -p &quot;Unknown&quot; -v ./RM_21945.SatAug11650032020/consensi.fa.classified &gt; ModelerID.lib</code>  #从consensi.fa.classified 文件提取可以被识别（就是序列id不含Unknown的序列）</p>
+</li>
+<li><p><code>seqkit grep -r -i -p &quot;Unknown&quot;  ./RM_21945.SatAug11650032020/consensi.fa.classified &gt; Modelerunknown.lib</code>  #从consensi.fa.classified 文件提取不能被识别（就是序列id含Unknown的序列）</p>
+</li>
+</ul>
+<h3 id="2-3-3-RepeatMasker运行"><a href="#2-3-3-RepeatMasker运行" class="headerlink" title="2.3.3. RepeatMasker运行"></a>2.3.3. RepeatMasker运行</h3><p><code>RepeatMasker sample.fa -species &quot;Arachis ipaensis&quot; -pa 12 -lib consensi.fa.classified -poly -html -gff -dir repeatmasker</code></p>
+<p><strong>参数解释：</strong></p>
+<ul>
+<li>-species 选择RepeatMasker数据库中已有近缘物种，比如”Arachis ipaensis”，可用RepeatMasker&#x2F;util&#x2F;queryRepeatDatabase.pl -tree &gt;species.txt获取已有物种列表。但RepeatMasker-4.1.1版本及以后不再提供queryRepeatDatabase.pl脚本，而是由famdb.py代替。</li>
+<li>-pa 线程，用RMBlast引擎会用到4核，即设置-pa 12会用到48线程。</li>
+<li>-lib RepeatModeler.consensi.fa.classified RepeatModeler自我训练的库</li>
+<li>-poly 在file.poly中保存多态的polymorphic的简单重复序列，即微卫星重复序列。</li>
+<li>-html输出xhtml格式文件</li>
+<li>-gff输出gff格式文件</li>
+<li>-dir 指定输出文件的目录，默认时当下目录</li>
+</ul>
+<h3 id="2-3-4-RepeatMasker结果"><a href="#2-3-4-RepeatMasker结果" class="headerlink" title="2.3.4. RepeatMasker结果"></a>2.3.4. RepeatMasker结果</h3><ul>
+<li>sample.fa.tbl：结果报告，统计了基因组长度，GC含量，重复序列长度及各类重复序列占比等。</li>
+<li>sample.fa.out：将基因组中预测得到的重复序列和参考序列相比的碱基替换频率、插入&#x2F;删除率，以及重复序列的位置、结构、类型等信息展示出。</li>
+<li>sample.fa.out.gff：sample.fa.out的gff格式。</li>
+<li>sample.fa.out.html：sample.fa.out的网页形式。</li>
+<li>sample.fa.polyout：通过-poly参数，额外将sample.fa.out中的微卫星注释提取出来。微卫星注释是一种Simple_repeat序列，可以通过*.polyout将*.out的微卫星注释删除。有研究者认为微卫星不能算作严格的重复序列类型，还有研究者甚至认为Simple_repeat全都不能算。</li>
+<li>sample.fa.cat.ga：记录了基因组序列和数据库中参考重复序列的比对详情，其中“i”和“v”分别代表了碱基转换（transitions）和颠换（transversions），“-”表示该位点存在碱基插入&#x2F;删除。。</li>
+<li>sample.fa.masked：将重复序列屏蔽成N碱基的masked基因组。</li>
+</ul>
+<p>其中，sample.fa.out每一列含义：</p>
+<ul>
+<li>第一列：比对分值，SW score</li>
+<li>第二列：替代率 perc div.</li>
+<li>第三列：碱基缺失百分率</li>
+<li>第四列：在重复序列中碱基缺失百分率</li>
+<li>第五列：query sequence</li>
+<li>第六列：查询序列起始位置</li>
+<li>第七列：查询序列终止位置</li>
+<li>第八列：查询区域中超出比对区域碱基的数- 目，也就是没有比对上的碱基数</li>
+<li>第九列：+&#x2F;-(C)</li>
+<li>第十列：比上的重复序列名称，类型命名</li>
+<li>第十一列：比上重复序列的分类，和- repeatmolder 中*.classed 是一样的</li>
+<li>第十二列：比上的在数据库中的起始位置</li>
+<li>第十三列：比上的在数据库中的终止位置</li>
+<li>第十四列：在第十列上超出比对区域碱基的数- 目，也就是没有比对上的碱基数</li>
+<li>第十五列：比对区域的ID，随机给的</li>
+</ul>
+<h1 id="3-EDTA-The-Extensive-de-novo-TE-Annotator"><a href="#3-EDTA-The-Extensive-de-novo-TE-Annotator" class="headerlink" title="3. EDTA(The Extensive de novo TE Annotator)"></a>3. EDTA(The Extensive de novo TE Annotator)</h1><h2 id="3-1-EDTA介绍"><a href="#3-1-EDTA介绍" class="headerlink" title="3.1. EDTA介绍"></a>3.1. EDTA介绍</h2><p><a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA#quick-installation-using-conda-linux64">EDTA</a>是一个用于自动化全基因组的转座元件(transposable elements,TE)从头注释(de-novo)注释和评估TE注释的综合软件。</p>
+<img src="https://github.com/oushujun/EDTA/raw/master/development/EDTA%20workflow.png?raw=true" title="EDTA流程图" width="90%" />
+
+<p><strong><p align="center">Figure 1. EDTA流程图</strong><br>from <a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA#quick-installation-using-conda-linux64">github: EDTA</a></p></p>
+<p><strong>EDTA运行和调用软件的流程：</strong></p>
+<ol>
+<li>LTR预测</li>
+</ol>
+<ul>
+<li>LTR_FINDER预测LTR</li>
+<li>LTRharvest预测LTR</li>
+<li>LTR_retriever确认前两个软件预测的LTR</li>
+</ul>
+<ol start="2">
+<li>TIR预测</li>
+</ol>
+<ul>
+<li>Generic Repeat Finder</li>
+<li>TIR-Learner预测TIR</li>
+</ul>
+<ol start="3">
+<li>Helitrons预测</li>
+</ol>
+<ul>
+<li>HelitronScanner</li>
+</ul>
+<ol start="4">
+<li>filter过滤</li>
+</ol>
+<ul>
+<li>以上三种TE预测结束后做basic filter获得full-length TEs</li>
+<li>进一步做advance filter，获得raw library</li>
+<li>与指定的curated library合并</li>
+<li>用RepeatModeler做训练</li>
+<li>用指定的CDS做最后的filters</li>
+</ul>
+<ol start="5">
+<li>获得最终的final TE library</li>
+<li>Annotation</li>
+<li>Evaluation</li>
+</ol>
+<h2 id="3-2-EDTA-安装"><a href="#3-2-EDTA-安装" class="headerlink" title="3.2. EDTA 安装"></a>3.2. EDTA 安装</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA#installation">开发者推荐的安装方式</a></p>
+<p><strong>注意RepeatMasker安装的Repbase库的加入，参考RepeatMasker的安装。</strong></p>
+<h3 id="3-2-1-quick-installation-using-conda"><a href="#3-2-1-quick-installation-using-conda" class="headerlink" title="3.2.1. quick installation using conda"></a>3.2.1. quick installation using conda</h3><ol>
+<li><p>下载EDTA<br><code>git clone https://github.com/oushujun/EDTA.git</code></p>
+</li>
+<li><p>用EDTA.yml创建新的环境和安装依赖<br><code>conda env create -f EDTA.yml</code></p>
+</li>
+</ol>
+<h3 id="3-2-2-another-installation-using-conda"><a href="#3-2-2-another-installation-using-conda" class="headerlink" title="3.2.2. another installation using conda"></a>3.2.2. another installation using conda</h3><ol>
+<li><p>【推荐】创建新的环境并进入<br><code>conda create -n EDTA</code><br><code>conda activate EDTA</code></p>
+</li>
+<li><p>三种方式安装EDTA：</p>
+</li>
+</ol>
+<ul>
+<li><p>安装EDTA<br><code>conda install -c bioconda -c conda-forge edta</code></p>
+</li>
+<li><p>安装EDTA和指定版本依赖<br><code>conda install -c conda-forge -c bioconda edta python=3.6 tensorflow=1.14 &#39;h5py&lt;3&#39;</code></p>
+</li>
+<li><p>用mamba加速安装<br><code>conda install -c conda-forge mamba</code><br><code>mamba install -c conda-forge -c bioconda edta python=3.6 tensorflow=1.14 &#39;h5py&lt;3&#39;</code></p>
+</li>
+</ul>
+<h3 id="3-2-3-singularity安装"><a href="#3-2-3-singularity安装" class="headerlink" title="3.2.3. singularity安装"></a>3.2.3. singularity安装</h3><p><code>singularity pull EDTA.sif docker://oushujun/edta:&lt;tag&gt;</code></p>
+<h3 id="3-2-4-docker安装"><a href="#3-2-4-docker安装" class="headerlink" title="3.2.4. docker安装"></a>3.2.4. docker安装</h3><p><code>docker pull docker://oushujun/edta:&lt;tag&gt;</code></p>
+<p>singularity和docker安装我没用过，参考开发者说明吧。</p>
+<h2 id="3-3-EDTA-使用"><a href="#3-3-EDTA-使用" class="headerlink" title="3.3. EDTA 使用"></a>3.3. EDTA 使用</h2><p><code>nohup EDTA.pl --genome sample.fa --cds sample.cds --species others --step all --sensitive 1 --anno 1 --evaluate 1 -t 36 &amp;</code></p>
+<p><strong>参数解释：</strong></p>
+<ul>
+<li>–genome 基因组文件</li>
+<li>–cds 提供这个种或近缘种的CDS序列（不能包括introns和UTR），用于最终过滤。</li>
+<li>–rmout 提供其他软件做的同源TE注释（比如repeatmasker的.out文件），如果不提供则默认使用EDTA - library用于masking。</li>
+<li>–species [Rice|Maize|others]三种可选</li>
+<li>–step    [all|filter|final|anno]</li>
+<li>-sensitive: 是否用RepeatModeler分析剩下的TE，默认是0，不要。RepeatModeler会增加运行时间。</li>
+<li>-anno: 是否在构建TE文库后进行全基因组预测，默认是0.</li>
+<li>-evalues: 默认是0，需要同时设置-anno 1才能使用。能够评估注释质量，但会显著增加分析时间。</li>
+<li>–overwrite默认是0，设定为1会删除已有结果重新运行，建议保持默认，运行中断可以继续运行。</li>
+</ul>
+<p>简化推荐版：<br><code>nohup EDTA.pl --genome sample.fa --cds sample.cds --species others --step all --anno 1 -t 36 &amp;</code></p>
+<h2 id="3-4-结果文件"><a href="#3-4-结果文件" class="headerlink" title="3.4. 结果文件"></a>3.4. 结果文件</h2><ul>
+<li>genome.mod.EDTA.TElib.fa：最终结果，非冗余的TE库。如果在输入文件中用–curatedlib指定的修正版TE库，则该文件中也将包含这部分序列。</li>
+<li>genome.mod.EDTA.TElib.novel.fa: 新TE类型。该文件包括在输入文件中用–curatedlib指定的修正版TE库没有的TE序列，即genome.mod.EDTA.TElib.fa减去–curatedlib指定库(需要–curatedlib参数)。</li>
+<li>genome.mod.EDTA.TEanno.gff: 全基因组TE的注释。该文件包括结构完整和结构不完整的TE的注释（需要–anno 1参数）。</li>
+<li>genome.mod.EDTA.TEanno.sum: 对全基因组TE注释的总结（需要–anno 1参数）。</li>
+<li>genome.mod.MAKER.masked: 低阈值TE的屏蔽。该文件中仅包括长TE（&gt;&#x3D; 1 kb）序列(需要–anno 1参数)。</li>
+<li>genome.mod.EDTA.TE.fa.stat.redun.sum: 简单TE的注释偏差(需要–evaluate 1参数)。</li>
+<li>genome.mod.EDTA.TE.fa.stat.nested.sum：嵌套型TE注释的偏差（需要–evaluate 1参数）。</li>
+<li>genome.mod.EDTA.TE.fa.stat.all.sum: 注释偏差的概述（需要–evaluate 1参数）。</li>
+</ul>
+<h2 id="3-5-评估已有TE注释"><a href="#3-5-评估已有TE注释" class="headerlink" title="3.5. 评估已有TE注释"></a>3.5. 评估已有TE注释</h2><p>当已有TE库结果，想要与其他软件（比如RepeatMasker）预测结果比较，可以用EDTA的脚本<code>lib-test.pl</code>进行，评估是通过与参考注释进行比较来进行的。</p>
+<ol>
+<li>用RepeatMasker根据已有TE库进行注释<br><code>RepeatMasker -pa 36 -q -no_is -norna -nolow -div 40 -lib sample.TE.lib.fasta -cutoff 225 sample.fa</code></li>
+<li>用lib-test.pl进行TE注释的比较和评估<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">perl lib-test.pl -genome genome.fasta -std genome.stdlib.RM.out -tst genome.testlib.RM.out -cat [options]</span><br><span class="line">	-genome	[file]	FASTA format genomesequence</span><br><span class="line">	-std	[file]	RepeatMasker .out file of the standard library</span><br><span class="line">	-tst	[file]	RepeatMasker .out file of the test library</span><br><span class="line">	-cat	[string]	Testing TE category. Use one of LTR|nonLTR|LINE|SINE|TIR|MITEHelitron|Total|Classified</span><br><span class="line">	-N	[0|1]	Include Ns in total length of the genome. Defaule: 0 (not include Ns).</span><br><span class="line">	-unknown	[0|1]	Include unknownannotations to the testing category. This should be used when</span><br><span class="line">				the test library has no classification and you assume they all belong to the</span><br><span class="line">				target category specified by -cat. 	Default: 0 (not include unknowns)</span><br><span class="line">	-rand	[int]	A randum number used to identify the current run. (default:generate automatically)</span><br><span class="line">	-threads|-t	[int]	Number of threads torun this program. Default: 4</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>lib-test.pl -genome sample.fa -std genome.stdlib.RM.out -tst genome.testlib.RM.out -cat LTR</code></p>
+<h2 id="3-6-notes"><a href="#3-6-notes" class="headerlink" title="3.6. notes"></a>3.6. notes</h2><ul>
+<li>基因组的碱基全部大写，因为小写在一些软件是被认为进行了soft-masked的，在TIR预测时会报错。</li>
+<li>-t设置线程，当运行到调用RMBlast引擎时，默认使用四核，如果服务器是四核，则实际使用线程为设置的-t的四倍（RepeatMasker和RepeatModeler的-pa设置线程有一样的问题），EDTA支持断点续跑，可以先设置-t 高一点，运行到RMBlast时，kill掉，重新设置低一点的-t。</li>
+<li>预测有时运行会报错缺一些perl的module，例如Bio，安装缺失的module，再次运行即可。</li>
+<li>关于–rmout，当使用这个参数指定同源TE注释时，不使用EDTA的同源注释，而是用这个参数指定的库做同源注释，最终结果是这个同源注释加上EDTA其他注释的完整的intact TEs结果。所以当提供的repeatmasker文件预测结果非常全面时，使用这个参数；如果提供的库对物种TE的预测结果不够全面，使用这个参数反而会降低最终预测结果，不建议使用这个参数。不知道是否提供的库是否全面，有时间就有这个参数和没这个参数的结果比较选用，没时间就直接不用这个参数。参考<a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA/issues/193">issue</a>。</li>
+<li>HelitronScanner预测Helitrons默认需要400G运行内存，若不够会出现如下报错，把运行内存上限升高后再次运行即可：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Raw Helitron results not found in sample.fa.mod.EDTA.raw/sample.fa.mod.Helitron.raw.fa</span><br><span class="line">	If you believe the program is working properly, this may be caused by the lack of intact Helitrons in your genome. Consider to use the --force 1 parameter to overwrite this check</span><br></pre></td></tr></table></figure>
+
+<p><strong>ref：</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://www.repeatmasker.org/RepeatModeler/">http://www.repeatmasker.org/RepeatModeler/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhanmaomao/p/12345462.html">https://www.cnblogs.com/zhanmaomao/p/12345462.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ddd1c9a74fde">https://www.jianshu.com/p/ddd1c9a74fde</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dfa89f394882">https://www.jianshu.com/p/dfa89f394882</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tutorial/" rel="tag"># tutorial</a>
+              <a href="/tags/genome-annotation/" rel="tag"># genome annotation</a>
+              <a href="/tags/repeat-sequences/" rel="tag"># repeat sequences</a>
+              <a href="/tags/TE/" rel="tag"># TE</a>
+              <a href="/tags/RepeatMasker/" rel="tag"># RepeatMasker</a>
+              <a href="/tags/RepeatModeler/" rel="tag"># RepeatModeler</a>
+              <a href="/tags/EDTA/" rel="tag"># EDTA</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/24/biosoft_BUSCO/" rel="prev" title="BUSCO评估基因组组装和注释完整性">
+      <i class="fa fa-chevron-left"></i> BUSCO评估基因组组装和注释完整性
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/10/omics_genome.management/" rel="next" title="基因组组装和注释结果的整理">
+      基因组组装和注释结果的整理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%87%8D%E5%A4%8D%E5%BA%8F%E5%88%97%E6%B3%A8%E9%87%8A"><span class="nav-text">1. 重复序列注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">转座子(transposable elements,TEs)的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-text">I 类元件
+&#x2F;逆转录转座子(retrotransposons)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-text">II 类元件
+&#x2F;DNA 转座子(DNA transposons)</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-RepeatMasker"><span class="nav-text">2. RepeatMasker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-RepeatMasker%E4%BB%8B%E7%BB%8D"><span class="nav-text">2.1. RepeatMasker介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-RepeatMasker%E5%AE%89%E8%A3%85"><span class="nav-text">2.2. RepeatMasker安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-RepeatMasker%E4%BD%BF%E7%94%A8"><span class="nav-text">2.3. RepeatMasker使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E7%89%A9%E7%A7%8D"><span class="nav-text">2.3.1. 查看数据库中的物种</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-RepeatModeler%E8%87%AA%E6%88%91%E8%AE%AD%E7%BB%83"><span class="nav-text">2.3.2. RepeatModeler自我训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-1-RepeatModeler%E5%AE%89%E8%A3%85"><span class="nav-text">2.3.2.1. RepeatModeler安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-2-RepeatModeler%E4%BD%BF%E7%94%A8"><span class="nav-text">2.3.2.2. RepeatModeler使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-RepeatMasker%E8%BF%90%E8%A1%8C"><span class="nav-text">2.3.3. RepeatMasker运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-RepeatMasker%E7%BB%93%E6%9E%9C"><span class="nav-text">2.3.4. RepeatMasker结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-EDTA-The-Extensive-de-novo-TE-Annotator"><span class="nav-text">3. EDTA(The Extensive de novo TE Annotator)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-EDTA%E4%BB%8B%E7%BB%8D"><span class="nav-text">3.1. EDTA介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-EDTA-%E5%AE%89%E8%A3%85"><span class="nav-text">3.2. EDTA 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-quick-installation-using-conda"><span class="nav-text">3.2.1. quick installation using conda</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-another-installation-using-conda"><span class="nav-text">3.2.2. another installation using conda</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-singularity%E5%AE%89%E8%A3%85"><span class="nav-text">3.2.3. singularity安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-4-docker%E5%AE%89%E8%A3%85"><span class="nav-text">3.2.4. docker安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-EDTA-%E4%BD%BF%E7%94%A8"><span class="nav-text">3.3. EDTA 使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">3.4. 结果文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E8%AF%84%E4%BC%B0%E5%B7%B2%E6%9C%89TE%E6%B3%A8%E9%87%8A"><span class="nav-text">3.5. 评估已有TE注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-notes"><span class="nav-text">3.6. notes</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/08/02/omics_genome.repeat.annotation/";
+    this.page.identifier = "2021/08/02/omics_genome.repeat.annotation/";
+    this.page.title = "基因组注释（一）：重复序列注释";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
