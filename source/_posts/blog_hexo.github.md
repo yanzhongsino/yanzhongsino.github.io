@@ -87,10 +87,9 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     - scaffolds目录：文章模板
     - source目录：blogmarkdown源文件
     - theme目录：网站主题
-
     - .gitignore：记录提交时忽略的文件，即以下文件
     - .deploy_git目录：hexo d命令时会重新生成
-    db.json
+    - db.json
 
 4. 安装组件`npm install`，`npm install hexo-server --save`,`npm install hexo-deployer-git`
         
