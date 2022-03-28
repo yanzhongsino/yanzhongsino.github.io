@@ -296,18 +296,12 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
     `git subtree add --prefix=themes/next next master --squash` #添加subtree，把本地next仓库作为子仓库添加到本地themes/next目录下，分支为master，--squash的意思是把subtree的改动合并成一次commit提交。
 
-    ~~在本地替换themes/next目录下的主题配置文件_config.yml，把删除前修改好的放进themes/next目录~~，用`git add .`,`git commit -m "add theme next"`,`git push`命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。
+    在本地替换themes/next目录下的主题配置文件_config.yml，把删除前修改好的放进themes/next目录，用`git add .`,`git commit -m "add theme next"`,`git push`命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。
 
     
 ### 7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。
-    
-~~- Solution A 使用source/_data/next.yml进行主题配置和同步~~
-    使用source/_data/next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】
-    
-    ~~为了避免这种不便，next开发者提供了两种[解决方案](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)。~~
-    ~~这里介绍第二种NexT方式的解决方案。~~
-    
-    ~~把主题配置修改的任务转移到新建的位置：复制一份主题配置文件/themes/next/_config.yml到新建的位置/source/_data/next.yml，并且维持/themes/next/_config.yml的默认值，在/source/_data/next.yml中修改主题配置。当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件/source/_data/next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。~~
+- Solution A 把next主题的配置文件_config.yml合并到博客配置文件_config.yml
+    把next主题的配置文件_config.yml的内容复制到博客配置文件_config.yml，每行都缩进两个空格(在VScode里选中内容，ctrl+]即可缩进)，然后在内容前一行添加`theme_config:`标题行。有任何主题配置都在博客配置文件中进行。
 
 - Solution B 使用_config.next.yml进行主题配置和同步【需要>hexo5.0】
     [next官方指导doc](https://theme-next.js.org/docs/getting-started/configuration.html)
@@ -317,11 +311,17 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
     当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个文件_config.next.yml中，实现主题的配置和同步。
 
     将本地的修改推送给子项目（github端fork的hexo-theme-next项目）`git subtree push --prefix=themes/next next master`，对github端fork的hexo-theme-next项目进行pull、push操作需要使用`git subtree`命令。
-
    
-平常使用同步同前面介绍的一致。`git add .`,`git commit -m "commit notes"`,`git push`命令同步hexo项目和blog源文件到github端的hexo分支，`hexo clean & hexo g -d`命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。
-当next主题项目下文件更改时，增加了`git subtree push --prefix=themes/next next master`推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。
+    平常使用同步同前面介绍的一致。`git add .`,`git commit -m "commit notes"`,`git push`命令同步hexo项目和blog源文件到github端的hexo分支，`hexo clean & hexo g -d`命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。
+    当next主题项目下文件更改时，增加了`git subtree push --prefix=themes/next next master`推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。
 
+- Solution C 使用source/_data/next.yml进行主题配置和同步
+    使用source/_data/next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】
+    
+    为了避免这种不便，next开发者提供了两种[解决方案](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)。
+
+  
+    把主题配置修改的任务转移到新建的位置：复制一份主题配置文件/themes/next/_config.yml到新建的位置/source/_data/next.yml，并且维持/themes/next/_config.yml的默认值，在/source/_data/next.yml中修改主题配置。当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件/source/_data/next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。
 
 - next主题更新【还未验证】
     当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。
