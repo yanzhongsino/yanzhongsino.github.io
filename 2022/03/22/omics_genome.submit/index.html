@@ -13,11 +13,11 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/undefined/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
   </script>
 
   <meta name="description" content="此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。">
@@ -121,6 +121,11 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
@@ -129,11 +134,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -453,7 +453,7 @@
 </li>
 <li><strong>SEQ_FEAT.TransLen</strong><ul>
 <li>表示蛋白质长度与预测的蛋白质长度不匹配，运行错误</li>
-<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#103;&#101;&#x6e;&#x6f;&#x6d;&#101;&#115;&#x40;&#x6e;&#x63;&#98;&#105;&#x2e;&#110;&#x6c;&#x6d;&#46;&#x6e;&#x69;&#104;&#46;&#103;&#111;&#x76;">&#103;&#101;&#x6e;&#x6f;&#x6d;&#101;&#115;&#x40;&#x6e;&#x63;&#98;&#105;&#x2e;&#110;&#x6c;&#x6d;&#46;&#x6e;&#x69;&#104;&#46;&#103;&#111;&#x76;</a>)让帮忙修改这个错误。</li>
+<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#103;&#x65;&#110;&#x6f;&#109;&#x65;&#x73;&#64;&#x6e;&#99;&#98;&#105;&#x2e;&#110;&#108;&#109;&#46;&#110;&#105;&#x68;&#x2e;&#103;&#x6f;&#x76;">&#103;&#x65;&#110;&#x6f;&#109;&#x65;&#x73;&#64;&#x6e;&#99;&#98;&#105;&#x2e;&#110;&#108;&#109;&#46;&#110;&#105;&#x68;&#x2e;&#103;&#x6f;&#x76;</a>)让帮忙修改这个错误。</li>
 </ul>
 </li>
 <li><strong>SEQ_FEAT.BadInternalCharacter</strong><ul>
@@ -730,9 +730,9 @@
   </div>
 
   
-  <script src="/undefined/anime.min.js"></script>
-  <script src="/undefined/velocity/velocity.min.js"></script>
-  <script src="/undefined/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
