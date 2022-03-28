@@ -1,37 +1,488 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
+  
+  <title>用OrthoFinder做直系同源推断 | 生信技工</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录了直系同源推断(orthology inference)，以及软件OrthoFinder的原理和使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用OrthoFinder做直系同源推断">
+<meta property="og:url" content="http://example.com/2021/12/06/bioinfo_OrthoFinder2/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了直系同源推断(orthology inference)，以及软件OrthoFinder的原理和使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png">
+<meta property="article:published_time" content="2021-12-06T09:20:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T03:00:24.150Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="OrthoFinder">
+<meta property="article:tag" content="orthology">
+<meta property="article:tag" content="OrthoMCL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png">
+  
+    <link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<meta name="generator" content="Hexo 5.4.1"></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">生信技工</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-bioinfo_OrthoFinder2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/06/bioinfo_OrthoFinder2/" class="article-date">
+  <time datetime="2021-12-06T09:20:00.000Z" itemprop="datePublished">2021-12-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/bioinfo/">bioinfo</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用OrthoFinder做直系同源推断
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=108151&auto=1&height=32"></iframe></div>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<h1 id="1-直系同源-orthology-推断"><a href="#1-直系同源-orthology-推断" class="headerlink" title="1. 直系同源(orthology)推断"></a>1. 直系同源(orthology)推断</h1><h2 id="1-1-直系同源推断"><a href="#1-1-直系同源推断" class="headerlink" title="1.1. 直系同源推断"></a>1.1. 直系同源推断</h2><p>直系同源(orthology)是指直系同源基因的直系同源这种属性，相关的概念可以参考<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/06/23/concept_homology/">博文-同源性相关概念</a>。</p>
+<p>直系同源推断(orthology inference)常常在多个物种间进行，通常是获取多个物种的直系同源群(orthogroups)和直系同源群间的关系。</p>
+<p>直系同源基因判定的方法有两种：</p>
+<ul>
+<li>一种是将物种的直系同源基因两两比较，不同物种的每一对都是直系同源，但存在基因重复，使得用这种方法找到的同源关系是不具有传递性的（A和B是同源的，B和C是同源的，但是A和C不是同源的）。multiparanoid和OMA方法都是这个原理。所以需要每个同源基因都在多个集合中存在才行，进行两两比较。</li>
+<li>另一种是识别完整的正交群，一个同源组orthogroup包含所有物种共同祖先基因，同时包含直系／旁系同源基因，OrthoMCL是这个原理，它是通过正交组做推断，用BLAST计算多个物种序列之间的序列相似性得分，然后用MCL聚类算法，识别该数据集中高度相似的序列组。</li>
+</ul>
+<h2 id="1-2-直系同源基因推断常用软件：OrthoMCL和OrthoFinder"><a href="#1-2-直系同源基因推断常用软件：OrthoMCL和OrthoFinder" class="headerlink" title="1.2. 直系同源基因推断常用软件：OrthoMCL和OrthoFinder"></a>1.2. 直系同源基因推断常用软件：OrthoMCL和OrthoFinder</h2><h3 id="1-2-1-OrthoMCL"><a href="#1-2-1-OrthoMCL" class="headerlink" title="1.2.1. OrthoMCL"></a>1.2.1. OrthoMCL</h3><p>OrthoMCL是2003年发表的工具。发表以后得到广泛使用，但存在一些问题：</p>
+<ul>
+<li>2013年之后就没更新，安装需要使用MySQL。</li>
+<li>在BLAST序列相似度时发现，长序列比短序列更准确，有时会留下较长的质量差的序列，而丢弃较短的单质量好的序列。</li>
+<li>orthoBench是唯一可用的公开的正交群标准数据集，用orthoBench数据集评估orthoMCL性能，发现它对序列长度有依赖性，太长或者太短的序列都不准确。</li>
+<li>recall率有待提高。</li>
+</ul>
+<h3 id="1-2-2-OrthoFinder"><a href="#1-2-2-OrthoFinder" class="headerlink" title="1.2.2. OrthoFinder"></a>1.2.2. OrthoFinder</h3><p>OrthoFinder是2015年才出现，2019年正式发表的工具。OrthoFinder解决了一些OrthoMCL中存在的问题，展现了优势：</p>
+<ul>
+<li>持续更新，安装友好，运行速度快。</li>
+<li>OrthoFinder解决了这个问题，它将BLAST评分做了转换，将原来的e值准换成bit值（比特值）来减少序列长度对准确度的影响，因为e值存在阈值，e 小于10的－180次方的都被算作0，而比特值没有阈值。</li>
+<li>OrthoFinder用RBNH代替了传统的RBH提高了recall。</li>
+</ul>
+<p>这篇博文主要介绍OrthoFinder这个工具。</p>
+<h1 id="2-OrthoFinder"><a href="#2-OrthoFinder" class="headerlink" title="2. OrthoFinder"></a>2. OrthoFinder</h1><h2 id="2-1-OrthoFinder的功能"><a href="#2-1-OrthoFinder的功能" class="headerlink" title="2.1. OrthoFinder的功能"></a>2.1. OrthoFinder的功能</h2><p>OrthoFinder是用于推断系统发育直系同源关系的基于python的软件。OrthoFinder1模块推断直系同源群，OrthoFinder2模块在直系同源群的基础上构建物种系统发育树，步骤如下：</p>
+<ol>
+<li>推断所有物种的直系同源群和直系同源基因。</li>
+</ol>
+<ul>
+<li>用all vs all比对所有输入的物种蛋白序列；</li>
+<li>RBNHs方法确定阈值；</li>
+<li>MCL聚类获得直系同源组。</li>
+</ul>
+<ol start="2">
+<li>推断找到的所有直系同源基因的有根基因树。</li>
+</ol>
+<ul>
+<li>为每个直系同源组构建基因系统发育树；</li>
+<li>使用STAG算法从无根基因树上构建无根物种树；</li>
+<li>使用STRIDE算法构建有根物种树；</li>
+<li>有根物种树进一步辅助构建有根基因树。</li>
+</ul>
+<ol start="3">
+<li>用基因树推断基因间的所有直系同源群间的关系。</li>
+<li>推断基因复制事件并交叉引用到对应的基因树和物种树上的对应节点。</li>
+<li>提供比较基因组学统计结果。</li>
+</ol>
+<img src="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png" width=100% title="The OrthoFinder workflow" alt="The OrthoFinder workflow" align=center/>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<p><strong><p align="center">Figure 1. The OrthoFinder workflow</strong><br>from <a target="_blank" rel="noopener" href="https://github.com/davidemms/OrthoFinder">github: orthofinder</a></p></p>
+<h2 id="2-2-OrthoFinder的分步原理"><a href="#2-2-OrthoFinder的分步原理" class="headerlink" title="2.2. OrthoFinder的分步原理"></a>2.2. OrthoFinder的分步原理</h2><h3 id="2-2-1-OrthoFinder1推断直系同源群的基本原理"><a href="#2-2-1-OrthoFinder1推断直系同源群的基本原理" class="headerlink" title="2.2.1. OrthoFinder1推断直系同源群的基本原理"></a>2.2.1. OrthoFinder1推断直系同源群的基本原理</h3><ul>
+<li>首先BLAST all vs all 做所有物种蛋白序列的比对。选best hits Top5%，用比特值代替e值，用最小二乘法将Top5%的分数值拟合成一个线性模型，将比特值用这个模型转换之后，较长的质量差的hit将不再优于短的质量好的序列；</li>
+<li>然后将基因长度和系统发育距离标准化。用的是RBNH方法，传统的是用RBH方法，它是一种高精度鉴定直系同源基因对的方法，用BLAST best hit的倒数做的，但是RBNH是用标准话的比特值来做的。</li>
+</ul>
+<h3 id="2-2-2-OrthoFinder1推断直系同源群的工作流程"><a href="#2-2-2-OrthoFinder1推断直系同源群的工作流程" class="headerlink" title="2.2.2. OrthoFinder1推断直系同源群的工作流程"></a>2.2.2. OrthoFinder1推断直系同源群的工作流程</h3><p>OrthoFinder1推断直系同源群的分析过程分为如下几步:</p>
+<ol>
+<li>BLAST all-vs-all搜索。使用BLASTP以evalue&#x3D;10e-3进行搜索，寻找潜在的同源基因。(除了BLAST, 还可以选择DIAMOND和MMSeq2等其他搜索工具)。</li>
+<li>基于基因长度和系统发育距离对BLAST bit得分进行标准化。</li>
+<li>使用RBNHs方法，确定一个同源组序列性相似度的阈值，筛选出质量好的直系同源组(orthogroup graph)。</li>
+<li>构建直系同源组图(orthogroup graph)，通过归一化的比特值画出正交组的边缘连接，用作MCL的输入。</li>
+<li>使用MCL对基因进行聚类，划分直系同源组。</li>
+</ol>
+<h3 id="2-2-3-OrthoFinder2在OrthoFinder1的基础上构建物种系统发育树的流程"><a href="#2-2-3-OrthoFinder2在OrthoFinder1的基础上构建物种系统发育树的流程" class="headerlink" title="2.2.3. OrthoFinder2在OrthoFinder1的基础上构建物种系统发育树的流程"></a>2.2.3. OrthoFinder2在OrthoFinder1的基础上构建物种系统发育树的流程</h3><ol>
+<li>为每个直系同源组构建基因系统发育树；</li>
+<li>使用STAG算法从无根基因树上构建无根物种树；</li>
+<li>使用STRIDE算法构建有根物种树；</li>
+<li>有根物种树进一步辅助构建有根基因树；</li>
+<li>基于DLC(Duplication-Loss-Coalescent)分析模型，有根基因树可以用来推断物种形成和基因复制事件；</li>
+<li>最后把结果记录在统计信息中。</li>
+</ol>
+<h2 id="2-3-OrthoFinder使用"><a href="#2-3-OrthoFinder使用" class="headerlink" title="2.3. OrthoFinder使用"></a>2.3. OrthoFinder使用</h2><h3 id="2-3-1-OrthoFinder安装"><a href="#2-3-1-OrthoFinder安装" class="headerlink" title="2.3.1. OrthoFinder安装"></a>2.3.1. OrthoFinder安装</h3><ol>
+<li><p>conda安装【推荐】<br>conda安装一次解决依赖问题：<code>conda install orthofinder</code></p>
+</li>
+<li><p>下载解压缩<br><a target="_blank" rel="noopener" href="https://github.com/davidemms/OrthoFinder/releases">OrthoFinder最新版下载地址</a></p>
+</li>
+</ol>
+<p>下载后解压缩：<code>tar xzf OrthoFinder_source.tar.gz</code> or <code>tar xzf OrthoFinder.tar.gz</code></p>
+<p>即可使用：<code>python OrthoFinder_source/orthofinder.py -h</code> or <code>./OrthoFinder/orthofinder -h</code></p>
+<h3 id="2-3-2-OrthoFinder运行"><a href="#2-3-2-OrthoFinder运行" class="headerlink" title="2.3.2. OrthoFinder运行"></a>2.3.2. OrthoFinder运行</h3><h4 id="2-3-2-1-输入文件"><a href="#2-3-2-1-输入文件" class="headerlink" title="2.3.2.1. 输入文件"></a>2.3.2.1. 输入文件</h4><p>把需要分析的物种的组学蛋白序列文件(.fa,.faa,.fasta,.fas,.pep后缀)放在同一个目录下(例如workdirectory目录下)，然后用OrthoFinder的-f参数指定目录做分析。</p>
+<p>如果是下载的蛋白数据，使用最长转录本的蛋白序列即可。</p>
+<h4 id="2-3-2-2-简单版"><a href="#2-3-2-2-简单版" class="headerlink" title="2.3.2.2. 简单版"></a>2.3.2.2. 简单版</h4><p><code>orthofinder -f ./workdirectory</code> # -f指定数据目录</p>
+<h4 id="2-3-2-3-参数版"><a href="#2-3-2-3-参数版" class="headerlink" title="2.3.2.3. 参数版"></a>2.3.2.3. 参数版</h4><p><code>orthofinder -f ./workdirectory -t 24 -a 8 -M msa -S blast -A mafft -T raxml-ng</code></p>
+<ul>
+<li>-t指定比对线程;</li>
+<li>-a指定分析线程;</li>
+<li>-M指定推断基因树的方法: dendroblast(default)&#x2F;msa;</li>
+<li>-S指定比对软件: diamond(default)&#x2F;blast&#x2F;blast_gz&#x2F;mmseqs&#x2F;blast_nucl</li>
+<li>-A指定多序列比对(MSA)使用软件：mafft(default)&#x2F;muscle；需要指定-M msa</li>
+<li>-T指定画树软件：fasttree(default)&#x2F;raxml&#x2F;raxml-ng&#x2F;iqtree</li>
+</ul>
+<h4 id="2-3-2-4-修改参数文件config-json"><a href="#2-3-2-4-修改参数文件config-json" class="headerlink" title="2.3.2.4. 修改参数文件config.json"></a>2.3.2.4. 修改参数文件config.json</h4><ol>
+<li>如果需要做更细致的参数设定，比如对调用软件blast的参数evalue阈值的修改，可以通过修改参数文件config.json来实现。</li>
+<li>config.json文件位置：下载安装的在安装目录下，conda安装的在conda的bin目录下。</li>
+<li>推荐修改值：</li>
+</ol>
+<ul>
+<li>raxml-ng参数修改为–model LG+G8+F –threads 2 –bs-trees 1000（default是–model LG+G4 –threads 1)；</li>
+<li>blastp和blastn的参数修改为 -evalue 0.00001（default是0.001）</li>
+</ul>
+<h4 id="2-3-2-5-RESTART"><a href="#2-3-2-5-RESTART" class="headerlink" title="2.3.2.5. RESTART"></a>2.3.2.5. RESTART</h4><p>如果需要重新运行，可以使用以下参数设定从哪个步骤开始运行。</p>
+<ul>
+<li>-b  <dir> # Start OrthoFinder from pre-computed BLAST results in <dir></li>
+<li>-fg <dir> # Start OrthoFinder from pre-computed orthogroups in <dir></li>
+<li>-ft <dir> # Start OrthoFinder from pre-computed gene trees in <dir></li>
+</ul>
+<ol>
+<li>添加新物种<br>运行之后想要添加物种可以用<code>orthofinder -b previous_orthofinder_directory -f new_fasta_directory</code>而无需重新运行先前计算的 BLAST 搜索。</li>
+</ol>
+<p>这会将“new_fasta_directory”中的每个物种添加到现有物种集中，重用所有以前的 BLAST 结果，仅执行新物种所需的新 BLAST 搜索并重新计算正交群。’previous_orthofinder_directory’ 是包含文件 ‘SpeciesIDs.txt’ 的 OrthoFinder ‘WorkingDirectory&#x2F;‘。</p>
+<ol start="2">
+<li>移除物种<br>OrthoFinder 允许您从以前的分析中删除物种。<br>在先前分析的“WorkingDirectory&#x2F;”中有一个名为“SpeciesIDs.txt”的文件。使用“#”字符注释掉要从分析中删除的任何物种，然后使用以下命令运行 OrthoFinder：<code>orthofinder -b previous_orthofinder_directory</code></li>
+</ol>
+<p>其中 ‘previous_orthofinder_directory’ 是包含文件 ‘SpeciesIDs.txt’ 的 OrthoFinder ‘WorkingDirectory&#x2F;‘。</p>
+<ol start="3">
+<li>同时添加和删除物种<br>前面两个选项可以结合起来，如上所述注释掉要删除的物种，然后使用命令：<br><code>orthofinder -b previous_orthofinder_directory -f new_fasta_directory</code></li>
+</ol>
+<h4 id="2-3-2-6-结果文件"><a href="#2-3-2-6-结果文件" class="headerlink" title="2.3.2.6. 结果文件"></a>2.3.2.6. 结果文件</h4><p>OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根基因树，解析基因树，无根物种树、有根物种树，基因重复事件以及相关的统计数据。</p>
+<ol>
+<li><p><strong>Phylogenetic_Hierarchical_Orthogroups 文件夹</strong></p>
+<p> 从 2.4.0 版本开始，主要文件储存在这个目录下面，orthogroups目录被弃用。</p>
+<p> OrthoFinder 通过分析有根基因树来推断每个层次级别（即物种树中的每个节点）的 HOG、正交群。这是一种比所有其他方法使用的和以前由 OrthoFinder 使用的基于基因相似性&#x2F;图形的方法（已弃用的 Orthogroups&#x2F;Orthogroups.tsv 文件）更准确的正交群推断方法。</p>
+<p> 根据 Orthobench 基准，这些新的正交群比 OrthoFinder 2 正交群 (Orthogroups&#x2F;Orthogroups.tsv) 准确 12%。通过包括外群物种，可以进一步提高准确度（在 Orthobench 上准确度提高 20%），这有助于解释有根基因树。</p>
+</li>
+</ol>
+<ul>
+<li>参阅“Species_Tree&#x2F;SpeciesTree_rooted_node_labels.txt”以确定哪个 N?.tsv 文件包含您需要的正交群。</li>
+<li>N0.tsv是制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。附加列给出了 HOG（分层正交群）ID 和基因树中确定 HOG 的节点（注意，这可能位于包含基因的进化枝的根上方）。该文件有效地替换了使用 MCL 进行马尔可夫聚类的Orthogroups&#x2F;Orthogroups.tsv 中的正交群。</li>
+<li>N1.txt, N2.tsv, … : Orthogroups 从对应物种树 N1、N2 等物种进化枝的基因树推断出来。现在可以在分析中包含外群物种，然后使用 HOG 文件获取为物种树中所选进化枝定义的正交群。</li>
+</ul>
+<ol start="2">
+<li><strong>Orthologues 文件夹</strong></li>
+</ol>
+<ul>
+<li>Orthologues 目录包含每个物种的一个子目录，该子目录又包含每个成对物种比较的文件，列出该物种对之间的直向同源物。</li>
+<li>直向同源物可以是一对一、一对多或多对多，这取决于直向同源物分化后的基因复制事件。</li>
+<li>文件中的每一行都包含一个物种中的基因，这些基因是另一个物种中基因的直向同源物，并且每一行都与包含这些基因的直向群交叉引用。</li>
+</ul>
+<ol start="3">
+<li><strong>Orthogroups 文件夹【2.4.0版本后弃用】</strong><br>从 2.4.0 版本开始，主要文件储存在Phylogenetic_Hierarchical_Orthogroups目录下面，orthogroups目录被弃用。</li>
+</ol>
+<ul>
+<li>Orthogroups.tsv【2.4.0版本后弃用】：制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。应改用 Phylogenetic_Hierarchical_Orthogroups&#x2F;N0.tsv 中的正交群。</li>
+<li>Orthogroups.txt【旧格式】：包含 Orthogroups.tsv 文件内容的 OrthoMCL 输出格式文件。</li>
+<li>Orthogroups_UnassignedGenes.tsv：是制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含未分配给任何正交群的所有基因，即 MCL 中 未成功聚类（直系同源组中基因数 &gt;&#x3D; 1）的离散基因。</li>
+<li>Orthogroups.GeneCount.tsv：是一个制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含每个正交群中每个物种的基因数计数，可用于基因收缩扩张分析。</li>
+<li>Orthogroups_SingleCopyOrthologues.txt：是一个正交群列表，每个物种只包含一个基因，即它们包含一对一的直向同源物（单拷贝直系同源基因）。它们非常适合物种间比较和物种树推断。</li>
+</ul>
+<ol start="4">
+<li><strong>Gene_Trees 文件夹</strong></li>
+</ol>
+<ul>
+<li>记录了每个 orthogroup（gene_num &gt;&#x3D; 4）的有根基因树结构。</li>
+</ul>
+<ol start="5">
+<li><strong>Resolved Gene Trees文件夹</strong></li>
+</ol>
+<ul>
+<li>为具有 4 个或更多序列的每个正交群推断出有根的系统发育树，并使用OrthoFinder的杂种-重叠&#x2F;重复-丢失溯祖模型(hybrid species-overlap&#x2F;duplication-loss coalescent model)进行解析。</li>
+</ul>
+<ol start="6">
+<li><strong>Species_Tree 文件夹</strong></li>
+</ol>
+<ul>
+<li>SpeciesTree_rooted.txt：STAG物种树从所有orthogroups推断，含有内部节点STAG支持值，并使用STRIDE生根，计算出的有根物种树结构。</li>
+<li>SpeciesTree_rooted_node_labels.txt：与上述相同的树，但节点被赋予标签(N0,N1, . . . , N m N_0,N_1,…,N_mN0,N1,…,Nm)（而不是支持值）以允许其他结果文件交叉引用物种树中的分支&#x2F;节点（例如基因复制事件的位置）。</li>
+<li>Orthogroups_for_concatenated_alignment.txt：仅在 -M msa 模式下输出，列出了所有串联起来用于推断物种树的 orthogroup ID。</li>
+</ul>
+<ol start="7">
+<li><strong>Comparative_Genomics_Statistics 文件夹</strong></li>
+</ol>
+<ul>
+<li><p>Duplications_per_Orthogroup.tsv：是一个制表符分隔的文本文件，它给出了每个正交群中标识的重复数。此数据的主文件是 Gene_Duplication_Events&#x2F;Duplications.tsv。</p>
+</li>
+<li><p>Duplications_per_Species_Tree_Node.tsv：是一个制表符分隔的文本文件，它给出了识别为沿着物种树的每个分支发生的重复数。此数据的主文件是 Gene_Duplication_Events&#x2F;Duplications.tsv。</p>
+</li>
+<li><p>Orthogroups_SpeciesOverlaps.tsv：是一个制表符分隔的文本文件，其中包含作为方阵的每个物种对之间共享的正交群的数量。</p>
+</li>
+<li><p>OrthologuesStats_*.tsv：是制表符分隔的文本文件，包含矩阵给出每对物种之间一对一、一对多和多对多关系中的直向同源物数量。</p>
+<ul>
+<li>OrthologuesStats_one-to-one.tsv是每个物种对之间一对一直向同源物的数量。</li>
+<li>OrthologuesStats_many-to-many.tsv包含每个物种对的多对多关系中的直向同源物的数量（由于物种形成后两个谱系中的基因重复事件）。条目 (i,j) 是物种 i 中与物种 j 中的基因存在多对多直系关系的基因数。</li>
+<li>OrthologuesStats_one-to-many.tsv：条目 (i,j) 给出物种 i 中与物种 j 的基因处于一对多直系关系的基因数量。这里有一个示例结果文件的演练： https : &#x2F;&#x2F;github.com&#x2F;davidemms&#x2F;OrthoFinder&#x2F;issues&#x2F;259。</li>
+<li>OrthologuesStats_many-to-one.tsv：条目 (i,j) 给出物种 i 中与物种 j 的基因处于多对一直系关系的基因数量。这里有一个示例结果文件的演练： https : &#x2F;&#x2F;github.com&#x2F;davidemms&#x2F;OrthoFinder&#x2F;issues&#x2F;259。</li>
+<li>OrthologuesStats_Total.tsv包含任何多样性的每个物种的直向同源物对的总数。条目 (i,j) 是物种 i 中在物种 j 中具有直向同源物的基因总数。</li>
+</ul>
+</li>
+<li><p>Statistics_Overall.tsv：是一个制表符分隔的文本文件，其中包含有关正交群大小和分配给正交群的基因比例的一般统计信息。</p>
+</li>
+<li><p>Statistics_PerSpecies.tsv：是一个制表符分隔的文本文件，包含与 Statistics_Overall.csv 文件相同的信息，但针对每个单独的物种。</p>
+</li>
+</ul>
+<p>文件“Statistics_Overall.csv”和“Statistics_PerSpecies.csv”中的大部分术语都是不言自明的，其余的定义如下。</p>
+<ul>
+<li>Species-specific orthogroup：完全由来自一个物种的基因组成的正交群。</li>
+<li>G50：正交群中的基因数量，使得 50% 的基因处于该大小或更大的正交群中。</li>
+<li>O50：正交群的最小数量，使得 50% 的基因处于该大小或更大的正交群中。</li>
+<li>单拷贝正群：每个物种只有一个基因（并且没有更多）的正群。这些正交群是推断物种树和许多其他分析的理想选择。</li>
+<li>未分配基因：未与任何其他基因放在同一个群中的基因。</li>
+</ul>
+<ol start="8">
+<li><strong>Gene_Duplication_Events 文件夹</strong></li>
+</ol>
+<ul>
+<li>Duplications.tsv：是一个制表符分隔的文本文件，它列出了通过检查每个正群基因树的每个节点识别出的所有基因复制事件。列是“Orthogroup”，“Species Tree node”（发生复制的物种树的分支，参见Species_Tree&#x2F;SpeciesTree_rooted_node_labels.txt），“Gene tree node”（与基因复制事件对应的节点，参见相应的orthogroup Resolved_Gene_Trees&#x2F;) 中的树；”Support”（存在复制基因的两个副本的预期物种的比例）；“Type”（”Terminal”：物种树终端分支上的重复，”Non-Terminal”：物种树内部分支上的重复，因此被多个物种共享，”Non-Terminal”：STRIDE检查基因树的拓扑结构在复制后应该是什么）；“Genes 1”（基因列表来自复制基因的一个副本），“Genes 2”（基因列表来自复制基因的另一个副本）。</li>
+<li>SpeciesTree_Gene_Duplications_0.5_Support.txt：提供了物种树分支上的上述重复的总和。它是一个 newick 格式的文本文件。每个节点或物种名称后面的数字是在导致节点&#x2F;物种的分支上发生的具有至少 50% 支持度的基因复制事件的数量。分支长度是标准分支长度，如 Species_Tree&#x2F;SpeciesTree_rooted.txt 中给出的。</li>
+</ul>
+<ol start="9">
+<li><strong>Orthogroup_Sequences 文件夹</strong></li>
+</ol>
+<ul>
+<li>FASTA格式文件，每个正交群的 FASTA 文件给出了正交群中每个基因的氨基酸序列。</li>
+</ul>
+<ol start="10">
+<li><strong>Single_Copy_Orthologue_Sequences 文件夹</strong></li>
+</ol>
+<ul>
+<li>FASTA格式文件，包含每个单拷贝 Orthogroup 所包含的氨基酸的序列信息。</li>
+</ul>
+<ol start="11">
+<li><strong>WorkingDirectory 文件夹</strong></li>
+</ol>
+<ul>
+<li>OrthoFinder 运行所需的必需中间文件，如 DIAMOND 比对结果，STAG 输出的无根物种树等。</li>
+</ul>
+<ol start="12">
+<li><strong>MultipleSequenceAlignments 文件夹</strong></li>
+</ol>
+<ul>
+<li>此文件夹仅在 -M msa 模式下输出，均为 FASTA 格式文件。</li>
+<li>记录了每个 orthogroup 中序列间的多序列比对结果。</li>
+<li>记录了程序通过 CMSA 算法过滤后的 orthogroup 中各序列串联后的多序列比对结果，同时比对结果中空位数 &gt; 50% 的列已被删除。</li>
+</ul>
+<h1 id="3-references"><a href="#3-references" class="headerlink" title="3. references"></a>3. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://davidemms.github.io/">tutorial</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/davidemms/OrthoFinder">github</a></li>
+<li><a target="_blank" rel="noopener" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1832-y">paper</a></li>
+<li><a target="_blank" rel="noopener" href="https://xuzhougeng.top/archives/OrthoFinder2-fast-and-accurate-phylogenomic-orthology-analysis-from-gene-sequences">xuzhougeng’s blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44614936/article/details/101640473">website</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/12/06/bioinfo_OrthoFinder2/" data-id="cl1aiqcrb001xm4vk2mi12mup" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OrthoFinder/" rel="tag">OrthoFinder</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OrthoMCL/" rel="tag">OrthoMCL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/12/13/bioinfo_GSEA_clusterProfiler/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/11/27/bioinfo_WGD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">基因组WGD事件的鉴定和时间估算</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/">bio</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/bioinfo/">bioinfo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/biosoft/">biosoft</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/concept/">concept</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/evolution/">evolution</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/experiment/">experiment</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/taxon/">taxon</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/">biosoft</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/circos/">circos</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/scripts/">scripts</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/">system</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/Windows/">Windows</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/web/">web</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/">computer language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/R/">R</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/basics/">basics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/shell/">shell</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/text-processing/">text processing</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/">omics</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/omics/genome/">genome</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/transcriptome/">transcriptome</a></li></ul></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/4dtv/" rel="tag">4dtv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">;</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BUSCO/" rel="tag">BUSCO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bauhinia/" rel="tag">Bauhinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioconductor/" rel="tag">Bioconductor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAFE/" rel="tag">CAFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CDS/" rel="tag">CDS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRAN/" rel="tag">CRAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Circos/" rel="tag">Circos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clustal/" rel="tag">Clustal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DESeq2/" rel="tag">DESeq2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EDTA/" rel="tag">EDTA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GATK/" rel="tag">GATK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GOEAST/" rel="tag">GOEAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GSEA/" rel="tag">GSEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gblocks/" rel="tag">Gblocks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GenBank/" rel="tag">GenBank</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISAT2/" rel="tag">HISAT2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KOBAS-i/" rel="tag">KOBAS-i</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KaKs-Calculator2-0/" rel="tag">KaKs_Calculator2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoRDEC/" rel="tag">LoRDEC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MAFFT/" rel="tag">MAFFT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCScanX/" rel="tag">MCScanX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCscan/" rel="tag">MCscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSA/" rel="tag">MSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MUSCLE/" rel="tag">MUSCLE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multiple-Sequence-Alignment/" rel="tag">Multiple Sequence Alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oases/" rel="tag">Oases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoFinder/" rel="tag">OrthoFinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoMCL/" rel="tag">OrthoMCL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PAL2NAL/" rel="tag">PAL2NAL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PANNZER2/" rel="tag">PANNZER2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PATH/" rel="tag">PATH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PCR/" rel="tag">PCR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRANK/" rel="tag">PRANK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT/" rel="tag">ParaAT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT-pl/" rel="tag">ParaAT.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QUAST/" rel="tag">QUAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R-package/" rel="tag">R package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-seq/" rel="tag">RNA-seq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-sequencing/" rel="tag">RNA-sequencing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROUSFinder2-0-py/" rel="tag">ROUSFinder2.0.py</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RStudio/" rel="tag">RStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatMasker/" rel="tag">RepeatMasker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatModeler/" rel="tag">RepeatModeler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rtools/" rel="tag">Rtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STARlong/" rel="tag">STARlong</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Salmon-SMEM/" rel="tag">Salmon-SMEM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StringTie/" rel="tag">StringTie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TE/" rel="tag">TE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TreeMix/" rel="tag">TreeMix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UpSetR/" rel="tag">UpSetR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Venn/" rel="tag">Venn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VennDiagram/" rel="tag">VennDiagram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGDI/" rel="tag">WGDI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\&&</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\||</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analog/" rel="tag">analog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/" rel="tag">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/batch-run-sh/" rel="tag">batch_run.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bifurcated-tree/" rel="tag">bifurcated tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/" rel="tag">bootstrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/build-website/" rel="tag">build website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chronogram/" rel="tag">chronogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladistics/" rel="tag">cladistics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladogram/" rel="tag">cladogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clusterProfiler/" rel="tag">clusterProfiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codon/" rel="tag">codon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/colinearity/" rel="tag">colinearity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combine/" rel="tag">combine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crown-groups/" rel="tag">crown groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deploy-website/" rel="tag">deploy website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/divergence-time/" rel="tag">divergence time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eggnog-mapper/" rel="tag">eggnog-mapper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/evolutionary-tree/" rel="tag">evolutionary tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experiment/" rel="tag">experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract/" rel="tag">extract</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-intron-info-pl/" rel="tag">extract_intron_info.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-single-copy-genes-sh/" rel="tag">extract_single_copy_genes.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/facet-plot/" rel="tag">facet_plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/" rel="tag">flex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/for/" rel="tag">for</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fossil-time/" rel="tag">fossil time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-annotation/" rel="tag">functional annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-family/" rel="tag">gene family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-flow/" rel="tag">gene flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-set-enrichment-analysis/" rel="tag">gene set enrichment analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome/" rel="tag">genome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-submit/" rel="tag">genome submit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geom-taxalink/" rel="tag">geom_taxalink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggdensitree/" rel="tag">ggdensitree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggplot2/" rel="tag">ggplot2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggstance/" rel="tag">ggstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggtree/" rel="tag">ggtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gplots/" rel="tag">gplots</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/homolog/" rel="tag">homolog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interproscan/" rel="tag">interproscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/itol/" rel="tag">itol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jcvi/" rel="tag">jcvi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/" rel="tag">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/line-separator/" rel="tag">line separator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loop/" rel="tag">loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mcmctree/" rel="tag">mcmctree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/molecular-experiment/" rel="tag">molecular experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monophyly/" rel="tag">monophyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-transcriptome-assembly-with-ref-sh/" rel="tag">multi-transcriptome_assembly_with_ref.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiPhylo/" rel="tag">multiPhylo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthogroup/" rel="tag">orthogroup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ortholog/" rel="tag">ortholog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paml/" rel="tag">paml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paralog/" rel="tag">paralog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paraphyly/" rel="tag">paraphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paste/" rel="tag">paste</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-reticulum/" rel="tag">phylogenetic reticulum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-tree/" rel="tag">phylogenetic tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogeny/" rel="tag">phylogeny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogram/" rel="tag">phylogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plot/" rel="tag">plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/polyphyly/" rel="tag">polyphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/population-networks/" rel="tag">population networks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protein/" rel="tag">protein</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/" rel="tag">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reinstall/" rel="tag">reinstall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rename/" rel="tag">rename</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repeat-sequences/" rel="tag">repeat sequences</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/" rel="tag">scripts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/" rel="tag">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sequence-alignment/" rel="tag">sequence alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sort/" rel="tag">sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stem-groups/" rel="tag">stem groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sync/" rel="tag">sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synteny/" rel="tag">synteny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table2asn/" rel="tag">table2asn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topGO/" rel="tag">topGO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/" rel="tag">tr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/treeio/" rel="tag">treeio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimAl/" rel="tag">trimAl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimming/" rel="tag">trimming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/website-maintenance/" rel="tag">website maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/while/" rel="tag">while</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/" rel="tag">xargs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xenolog/" rel="tag">xenolog</a></li></ul>
+    </div>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/4dtv/" style="font-size: 10px;">4dtv</a> <a href="/tags/" style="font-size: 10px;">;</a> <a href="/tags/BUSCO/" style="font-size: 10px;">BUSCO</a> <a href="/tags/Bauhinia/" style="font-size: 10px;">Bauhinia</a> <a href="/tags/Bioconductor/" style="font-size: 10px;">Bioconductor</a> <a href="/tags/CAFE/" style="font-size: 10px;">CAFE</a> <a href="/tags/CDS/" style="font-size: 10px;">CDS</a> <a href="/tags/CRAN/" style="font-size: 10px;">CRAN</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Circos/" style="font-size: 10px;">Circos</a> <a href="/tags/Clustal/" style="font-size: 10px;">Clustal</a> <a href="/tags/DESeq2/" style="font-size: 10px;">DESeq2</a> <a href="/tags/EDTA/" style="font-size: 10px;">EDTA</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/GATK/" style="font-size: 10px;">GATK</a> <a href="/tags/GOEAST/" style="font-size: 10px;">GOEAST</a> <a href="/tags/GSEA/" style="font-size: 14px;">GSEA</a> <a href="/tags/Gblocks/" style="font-size: 10px;">Gblocks</a> <a href="/tags/GenBank/" style="font-size: 10px;">GenBank</a> <a href="/tags/HISAT2/" style="font-size: 10px;">HISAT2</a> <a href="/tags/KOBAS-i/" style="font-size: 10px;">KOBAS-i</a> <a href="/tags/KaKs-Calculator2-0/" style="font-size: 10px;">KaKs_Calculator2.0</a> <a href="/tags/Ks/" style="font-size: 12px;">Ks</a> <a href="/tags/LoRDEC/" style="font-size: 10px;">LoRDEC</a> <a href="/tags/MAFFT/" style="font-size: 10px;">MAFFT</a> <a href="/tags/MCScanX/" style="font-size: 10px;">MCScanX</a> <a href="/tags/MCscan/" style="font-size: 10px;">MCscan</a> <a href="/tags/MSA/" style="font-size: 10px;">MSA</a> <a href="/tags/MUSCLE/" style="font-size: 10px;">MUSCLE</a> <a href="/tags/Multiple-Sequence-Alignment/" style="font-size: 10px;">Multiple Sequence Alignment</a> <a href="/tags/Oases/" style="font-size: 10px;">Oases</a> <a href="/tags/OrthoFinder/" style="font-size: 10px;">OrthoFinder</a> <a href="/tags/OrthoMCL/" style="font-size: 10px;">OrthoMCL</a> <a href="/tags/PAL2NAL/" style="font-size: 10px;">PAL2NAL</a> <a href="/tags/PANNZER2/" style="font-size: 10px;">PANNZER2</a> <a href="/tags/PATH/" style="font-size: 10px;">PATH</a> <a href="/tags/PCR/" style="font-size: 10px;">PCR</a> <a href="/tags/PRANK/" style="font-size: 10px;">PRANK</a> <a href="/tags/ParaAT/" style="font-size: 10px;">ParaAT</a> <a href="/tags/ParaAT-pl/" style="font-size: 10px;">ParaAT.pl</a> <a href="/tags/QUAST/" style="font-size: 10px;">QUAST</a> <a href="/tags/R/" style="font-size: 16px;">R</a> <a href="/tags/R-package/" style="font-size: 14px;">R package</a> <a href="/tags/RNA-seq/" style="font-size: 10px;">RNA-seq</a> <a href="/tags/RNA-sequencing/" style="font-size: 10px;">RNA-sequencing</a> <a href="/tags/ROUSFinder2-0-py/" style="font-size: 10px;">ROUSFinder2.0.py</a> <a href="/tags/RStudio/" style="font-size: 10px;">RStudio</a> <a href="/tags/RepeatMasker/" style="font-size: 10px;">RepeatMasker</a> <a href="/tags/RepeatModeler/" style="font-size: 10px;">RepeatModeler</a> <a href="/tags/Rtools/" style="font-size: 10px;">Rtools</a> <a href="/tags/STARlong/" style="font-size: 10px;">STARlong</a> <a href="/tags/Salmon-SMEM/" style="font-size: 10px;">Salmon-SMEM</a> <a href="/tags/StringTie/" style="font-size: 10px;">StringTie</a> <a href="/tags/TE/" style="font-size: 10px;">TE</a> <a href="/tags/TreeMix/" style="font-size: 10px;">TreeMix</a> <a href="/tags/UpSetR/" style="font-size: 10px;">UpSetR</a> <a href="/tags/Venn/" style="font-size: 10px;">Venn</a> <a href="/tags/VennDiagram/" style="font-size: 10px;">VennDiagram</a> <a href="/tags/WGD/" style="font-size: 12px;">WGD</a> <a href="/tags/WGDI/" style="font-size: 10px;">WGDI</a> <a href="/tags/" style="font-size: 10px;">\&&</a> <a href="/tags/" style="font-size: 10px;">\||</a> <a href="/tags/analog/" style="font-size: 10px;">analog</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/batch-run-sh/" style="font-size: 10px;">batch_run.sh</a> <a href="/tags/bifurcated-tree/" style="font-size: 10px;">bifurcated tree</a> <a href="/tags/biosoft/" style="font-size: 18px;">biosoft</a> <a href="/tags/blog/" style="font-size: 12px;">blog</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/build-website/" style="font-size: 10px;">build website</a> <a href="/tags/chronogram/" style="font-size: 10px;">chronogram</a> <a href="/tags/cladistics/" style="font-size: 10px;">cladistics</a> <a href="/tags/cladogram/" style="font-size: 10px;">cladogram</a> <a href="/tags/clusterProfiler/" style="font-size: 12px;">clusterProfiler</a> <a href="/tags/codon/" style="font-size: 10px;">codon</a> <a href="/tags/colinearity/" style="font-size: 10px;">colinearity</a> <a href="/tags/combine/" style="font-size: 10px;">combine</a> <a href="/tags/concept/" style="font-size: 12px;">concept</a> <a href="/tags/crown-groups/" style="font-size: 10px;">crown groups</a> <a href="/tags/deploy-website/" style="font-size: 10px;">deploy website</a> <a href="/tags/divergence-time/" style="font-size: 10px;">divergence time</a> <a href="/tags/eggnog-mapper/" style="font-size: 10px;">eggnog-mapper</a> <a href="/tags/evolutionary-tree/" style="font-size: 12px;">evolutionary tree</a> <a href="/tags/experiment/" style="font-size: 10px;">experiment</a> <a href="/tags/extract/" style="font-size: 10px;">extract</a> <a href="/tags/extract-intron-info-pl/" style="font-size: 10px;">extract_intron_info.pl</a> <a href="/tags/extract-single-copy-genes-sh/" style="font-size: 10px;">extract_single_copy_genes.sh</a> <a href="/tags/facet-plot/" style="font-size: 10px;">facet_plot</a> <a href="/tags/flex/" style="font-size: 10px;">flex</a> <a href="/tags/for/" style="font-size: 10px;">for</a> <a href="/tags/fossil-time/" style="font-size: 10px;">fossil time</a> <a href="/tags/functional-annotation/" style="font-size: 10px;">functional annotation</a> <a href="/tags/gene-family/" style="font-size: 10px;">gene family</a> <a href="/tags/gene-flow/" style="font-size: 10px;">gene flow</a> <a href="/tags/gene-set-enrichment-analysis/" style="font-size: 14px;">gene set enrichment analysis</a> <a href="/tags/genome/" style="font-size: 10px;">genome</a> <a href="/tags/genome-annotation/" style="font-size: 14px;">genome annotation</a> <a href="/tags/genome-assessment/" style="font-size: 12px;">genome assessment</a> <a href="/tags/genome-submit/" style="font-size: 10px;">genome submit</a> <a href="/tags/geom-taxalink/" style="font-size: 10px;">geom_taxalink</a> <a href="/tags/ggdensitree/" style="font-size: 10px;">ggdensitree</a> <a href="/tags/ggplot2/" style="font-size: 10px;">ggplot2</a> <a href="/tags/ggstance/" style="font-size: 10px;">ggstance</a> <a href="/tags/ggtree/" style="font-size: 10px;">ggtree</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/gplots/" style="font-size: 10px;">gplots</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/homolog/" style="font-size: 10px;">homolog</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/interproscan/" style="font-size: 10px;">interproscan</a> <a href="/tags/itol/" style="font-size: 10px;">itol</a> <a href="/tags/jcvi/" style="font-size: 10px;">jcvi</a> <a href="/tags/jquery/" style="font-size: 10px;">jquery</a> <a href="/tags/line-separator/" style="font-size: 10px;">line separator</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/loop/" style="font-size: 10px;">loop</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mcmctree/" style="font-size: 10px;">mcmctree</a> <a href="/tags/molecular-experiment/" style="font-size: 10px;">molecular experiment</a> <a href="/tags/monophyly/" style="font-size: 10px;">monophyly</a> <a href="/tags/multi-transcriptome-assembly-with-ref-sh/" style="font-size: 10px;">multi-transcriptome_assembly_with_ref.sh</a> <a href="/tags/multiPhylo/" style="font-size: 10px;">multiPhylo</a> <a href="/tags/orthogroup/" style="font-size: 10px;">orthogroup</a> <a href="/tags/ortholog/" style="font-size: 10px;">ortholog</a> <a href="/tags/orthology/" style="font-size: 12px;">orthology</a> <a href="/tags/paml/" style="font-size: 12px;">paml</a> <a href="/tags/paralog/" style="font-size: 10px;">paralog</a> <a href="/tags/paraphyly/" style="font-size: 10px;">paraphyly</a> <a href="/tags/paste/" style="font-size: 10px;">paste</a> <a href="/tags/phylogenetic-reticulum/" style="font-size: 10px;">phylogenetic reticulum</a> <a href="/tags/phylogenetic-tree/" style="font-size: 10px;">phylogenetic tree</a> <a href="/tags/phylogeny/" style="font-size: 16px;">phylogeny</a> <a href="/tags/phylogram/" style="font-size: 10px;">phylogram</a> <a href="/tags/plot/" style="font-size: 14px;">plot</a> <a href="/tags/polyphyly/" style="font-size: 10px;">polyphyly</a> <a href="/tags/population-networks/" style="font-size: 10px;">population networks</a> <a href="/tags/protein/" style="font-size: 10px;">protein</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reinstall/" style="font-size: 10px;">reinstall</a> <a href="/tags/rename/" style="font-size: 10px;">rename</a> <a href="/tags/repeat-sequences/" style="font-size: 10px;">repeat sequences</a> <a href="/tags/scripts/" style="font-size: 10px;">scripts</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/sequence-alignment/" style="font-size: 12px;">sequence alignment</a> <a href="/tags/sort/" style="font-size: 10px;">sort</a> <a href="/tags/stem-groups/" style="font-size: 10px;">stem groups</a> <a href="/tags/sync/" style="font-size: 12px;">sync</a> <a href="/tags/synteny/" style="font-size: 10px;">synteny</a> <a href="/tags/system/" style="font-size: 10px;">system</a> <a href="/tags/table2asn/" style="font-size: 10px;">table2asn</a> <a href="/tags/topGO/" style="font-size: 12px;">topGO</a> <a href="/tags/tr/" style="font-size: 10px;">tr</a> <a href="/tags/treeio/" style="font-size: 10px;">treeio</a> <a href="/tags/trimAl/" style="font-size: 10px;">trimAl</a> <a href="/tags/trimming/" style="font-size: 10px;">trimming</a> <a href="/tags/tutorial/" style="font-size: 20px;">tutorial</a> <a href="/tags/website-maintenance/" style="font-size: 10px;">website maintenance</a> <a href="/tags/while/" style="font-size: 10px;">while</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/xargs/" style="font-size: 10px;">xargs</a> <a href="/tags/xenolog/" style="font-size: 10px;">xenolog</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/22/omics_genome.submit/">提交基因组到公共数据库 —— 以GenBank为例</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/20/bioinfo_geneflow_treemix/">用TreeMix推断居群间基因流</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/bioinfo_evolutionary.tree/">绘制进化树 —— R包treeio+ggtree</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/16/linux_command/">shell的常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/28/R_install/">R及相关软件的安装</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 南方枝叶<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

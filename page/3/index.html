@@ -1,23 +1,1753 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
+  
+  <title>生信技工</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="学习生物信息学的笔记本">
+<meta property="og:type" content="website">
+<meta property="og:title" content="生信技工">
+<meta property="og:url" content="http://example.com/page/3/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="学习生物信息学的笔记本">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoftware">
+<meta property="article:tag" content="skills">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
+<meta name="generator" content="Hexo 5.4.1"></head>
 
-{% block content %}
-  <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
-  </section>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">生信技工</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-R_plot_venn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/29/R_plot_venn/" class="article-date">
+  <time datetime="2021-09-29T07:56:36.000Z" itemprop="datePublished">2021-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/computer-language/">computer language</a>►<a class="article-category-link" href="/categories/computer-language/R/">R</a>
+  </div>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/29/R_plot_venn/">集合可视化 —— 文氏图/韦恩图(Venn Diagram)</a>
+    </h1>
+  
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+
+<h1 id="1-文氏图-x2F-韦恩图-Venn-Diagram-——-5个集合内的可视化"><a href="#1-文氏图-x2F-韦恩图-Venn-Diagram-——-5个集合内的可视化" class="headerlink" title="1. 文氏图&#x2F;韦恩图(Venn Diagram) —— 5个集合内的可视化"></a>1. 文氏图&#x2F;韦恩图(Venn Diagram) —— 5个集合内的可视化</h1><p>当有多个群组（集合）的数据，想要展示在不同的事物群组（集合）之间的数学或逻辑联系时，可使用韦恩Venn图和UpSet图展示多集合直接的共享关系和各自的独享关系。</p>
+<p>当集合数量少于等于5个时，多用韦恩图；当集合数量大于5个时，多用upset图。</p>
+<p>韦恩图的绘制推荐使用R包gplots；upset图的绘制推荐使用R包UpSetR，参考博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/09/29/R_plot_upset/">upset图</a>。</p>
+<h2 id="1-1-应用场景"><a href="#1-1-应用场景" class="headerlink" title="1.1. 应用场景"></a>1.1. 应用场景</h2><ol>
+<li>利用orthofinder找到的不同物种的orthogroups的结果来绘制Venn Diagram韦恩图或者UpSet plot图，查看不同物种间共享的orthogroups的数量关系。</li>
+</ol>
+<h2 id="1-2-数据准备"><a href="#1-2-数据准备" class="headerlink" title="1.2. 数据准备"></a>1.2. 数据准备</h2><p>从orthofinder的结果文件Results_date&#x2F;Orthogroups&#x2F;Orthogroups.GeneCount.tsv（每个物种拥有每种orthogroups的基因数量的统计）中提取每个物种拥有的orthogroups信息；并合并作为venn的输入文件。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">species=($(<span class="built_in">head</span> -1 Orthogroups.GeneCount.tsv|sed <span class="string">&quot;s/.pep//g&quot;</span>)) <span class="comment">#读取Orthogroups.GeneCount.tsv第一行表头写入species列表中</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 `<span class="built_in">expr</span> <span class="variable">$&#123;#species[@]&#125;</span> - 2`); <span class="keyword">do</span> awk -v awka=`<span class="built_in">expr</span> <span class="variable">$i</span> + 1` <span class="string">&#x27;$awka != 0 &#123;print $1&#125;&#x27;</span> Orthogroups.GeneCount.tsv  |sed <span class="string">&quot;1s/.*/<span class="variable">$&#123;species[$i]&#125;</span>/&quot;</span> &gt;<span class="variable">$&#123;species[$i]&#125;</span>.temp; <span class="keyword">done</span> <span class="comment">#第二到倒数第二列（物种数据所在列）不为0时，输出第一列内容（OG的ID号）。</span></span><br><span class="line"><span class="built_in">paste</span> *.temp &gt;orthogroups.venn <span class="comment">#把提取的所有物种横向拼接成一个文件，即为venn的输入。</span></span><br><span class="line"><span class="built_in">rm</span> *.temp <span class="comment">#删除临时文件</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-韦恩图绘制"><a href="#1-3-韦恩图绘制" class="headerlink" title="1.3. 韦恩图绘制"></a>1.3. 韦恩图绘制</h2><h3 id="1-3-1-在线画韦恩图"><a href="#1-3-1-在线画韦恩图" class="headerlink" title="1.3.1. 在线画韦恩图"></a>1.3.1. 在线画韦恩图</h3><ol>
+<li><a target="_blank" rel="noopener" href="http://bioinformatics.psb.ugent.be/webtools/Venn/">http://bioinformatics.psb.ugent.be/webtools/Venn/</a></li>
+<li><a target="_blank" rel="noopener" href="http://jvenn.toulouse.inra.fr/app/example.html">http://jvenn.toulouse.inra.fr/app/example.html</a></li>
+</ol>
+<p>快和方便，但图不好看。</p>
+<h3 id="1-3-2-R包画韦恩图"><a href="#1-3-2-R包画韦恩图" class="headerlink" title="1.3.2. R包画韦恩图"></a>1.3.2. R包画韦恩图</h3><h4 id="1-3-2-1-R包gplots"><a href="#1-3-2-1-R包gplots" class="headerlink" title="1.3.2.1. R包gplots"></a>1.3.2.1. R包gplots</h4><p>R包gplots画韦恩图方便快捷参数少，缺点是画出来的图黑白无填充色，适合初期查看数据。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;gplots&quot;</span><span class="punctuation">)</span> <span class="comment">#安装gplots包</span></span><br><span class="line">library<span class="punctuation">(</span>gplots<span class="punctuation">)</span> <span class="comment">#载入gplots包</span></span><br><span class="line">setwd<span class="punctuation">(</span><span class="string">&quot;D:/R/&quot;</span><span class="punctuation">)</span> <span class="comment">#设置工作目录</span></span><br><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;orthogroups.venn&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="built_in">T</span><span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">)</span> <span class="comment">#读入数据文件</span></span><br><span class="line">head<span class="punctuation">(</span>data<span class="punctuation">)</span> <span class="comment">#查看数据文件</span></span><br><span class="line">attach<span class="punctuation">(</span>data<span class="punctuation">)</span> <span class="comment">#把数据用于全局</span></span><br><span class="line">venn<span class="punctuation">(</span>data <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>Athaliana<span class="punctuation">,</span>Graimondii<span class="punctuation">,</span>Ppersica<span class="punctuation">,</span>Mtruncatula<span class="punctuation">,</span>Vvinifera<span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#画韦恩图，需要几维就填入几列数据，黑白无填充图，根据data的表头，即第一行来填写。</span></span><br></pre></td></tr></table></figure>
+<br>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> head<span class="punctuation">(</span>data<span class="punctuation">)</span></span><br><span class="line">  Athaliana  Csativus Csinensis Graimondii Mguttatus Mtruncatula  Ppersica Ptrichocarpa Vvinifera</span><br><span class="line"><span class="number">1</span> OG0000001 OG0000001 OG0000001  OG0000001 OG0000000   OG0000000 OG0000001    OG0000001 OG0000001</span><br><span class="line"><span class="number">2</span> OG0000002 OG0000002 OG0000002  OG0000002 OG0000001   OG0000001 OG0000002    OG0000002 OG0000002</span><br><span class="line"><span class="number">3</span> OG0000003 OG0000003 OG0000003  OG0000003 OG0000002   OG0000002 OG0000003    OG0000003 OG0000003</span><br><span class="line"><span class="number">4</span> OG0000004 OG0000004 OG0000004  OG0000004 OG0000003   OG0000003 OG0000004    OG0000004 OG0000004</span><br><span class="line"><span class="number">5</span> OG0000005 OG0000005 OG0000005  OG0000005 OG0000004   OG0000004 OG0000005    OG0000005 OG0000005</span><br><span class="line"><span class="number">6</span> OG0000007 OG0000007 OG0000007  OG0000007 OG0000005   OG0000005 OG0000007    OG0000007 OG0000006</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-2-2-R包VennDiagram"><a href="#1-3-2-2-R包VennDiagram" class="headerlink" title="1.3.2.2. R包VennDiagram"></a>1.3.2.2. R包VennDiagram</h4><p>R包VennDiagram画韦恩图参数较多，适合做用于发表的韦恩图。</p>
+<ol>
+<li><p>准备工作</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;VennDiagram&quot;</span><span class="punctuation">)</span> <span class="comment">#安装VennDiagram包</span></span><br><span class="line">library<span class="punctuation">(</span>VennDiagram<span class="punctuation">)</span> <span class="comment">#载入VennDiagram包</span></span><br><span class="line">library<span class="punctuation">(</span>grid<span class="punctuation">)</span> <span class="comment">#载入grid包</span></span><br><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;orthogroups.venn&quot;</span><span class="punctuation">,</span> header <span class="operator">=</span> <span class="built_in">T</span><span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">)</span> <span class="comment">#读入数据文件</span></span><br><span class="line">head<span class="punctuation">(</span>data<span class="punctuation">)</span> <span class="comment">#查看数据文件</span></span><br><span class="line">attach<span class="punctuation">(</span>data<span class="punctuation">)</span> <span class="comment">#把数据用于全局</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一维韦恩图</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">grid.newpage<span class="punctuation">(</span><span class="punctuation">)</span>; <span class="comment">#清除已有图形，开始新的空白页</span></span><br><span class="line">venn.single.plot <span class="operator">&lt;-</span> venn.diagram<span class="punctuation">(</span></span><br><span class="line">  x <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>Athaliana<span class="operator">=</span>Athaliana<span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#等号前面是图上显示的数据名称，等号后面是数据源。</span></span><br><span class="line">  filename <span class="operator">=</span> <span class="literal">NULL</span><span class="punctuation">,</span></span><br><span class="line">  col <span class="operator">=</span> <span class="string">&quot;black&quot;</span><span class="punctuation">,</span> <span class="comment">#图的边界颜色</span></span><br><span class="line">  lwd <span class="operator">=</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">  fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line">  fill <span class="operator">=</span> <span class="string">&quot;grey&quot;</span><span class="punctuation">,</span> <span class="comment">#填充色</span></span><br><span class="line">  aplha <span class="operator">=</span> <span class="number">0.75</span><span class="punctuation">,</span> <span class="comment">#透明度</span></span><br><span class="line">  cex <span class="operator">=</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">  cat.cex <span class="operator">=</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">  cat.fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">)</span>; <span class="comment">#一维韦恩图</span></span><br><span class="line">grid.draw<span class="punctuation">(</span>venn.single.plot<span class="punctuation">)</span>; <span class="comment">#用venn.plot绘图</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>二维韦恩图</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">grid.newpage<span class="punctuation">(</span><span class="punctuation">)</span>; <span class="comment">#清除已有图形，开始新的空白页</span></span><br><span class="line">venn.pairwise.plot <span class="operator">&lt;-</span> venn.diagram<span class="punctuation">(</span></span><br><span class="line">  x <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>Graimondii<span class="operator">=</span>Graimondii<span class="punctuation">,</span> Ppersica<span class="operator">=</span>Ppersica<span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#等号前面是图上显示的数据名称，等号后面是数据源。</span></span><br><span class="line">  filename <span class="operator">=</span> <span class="literal">NULL</span><span class="punctuation">,</span></span><br><span class="line">  lwd <span class="operator">=</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">  fill <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;cornflowerblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorchid1&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#填充色</span></span><br><span class="line">  aplha <span class="operator">=</span> <span class="number">0.75</span><span class="punctuation">,</span> <span class="comment">#透明度</span></span><br><span class="line">  label.col <span class="operator">=</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cex <span class="operator">=</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">  fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span><span class="punctuation">,</span></span><br><span class="line">  fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.col <span class="operator">=</span>  <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;cornflowerblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorchid1&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cat.cex <span class="operator">=</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">  cat.fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.dist <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.03</span><span class="punctuation">,</span> <span class="number">0.03</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cat.pos <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="operator">-</span><span class="number">20</span><span class="punctuation">,</span><span class="number">14</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">)</span>; <span class="comment">#二维韦恩图</span></span><br><span class="line">grid.draw<span class="punctuation">(</span>venn.pairwise.plot<span class="punctuation">)</span>; <span class="comment">#用venn.plot绘图</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_2.png?raw=true" width=50% title="venn_2" align=center/>
+
+<p><strong><p align="center">Figure 1. Venn diagram with 2 groups</p></strong></p>
+<ol start="4">
+<li>三维韦恩图<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">grid.newpage<span class="punctuation">(</span><span class="punctuation">)</span>; <span class="comment">#清除已有图形，开始新的空白页</span></span><br><span class="line">venn.triple.plot <span class="operator">&lt;-</span> venn.diagram<span class="punctuation">(</span></span><br><span class="line">  x <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>Athaliana<span class="operator">=</span>Athaliana<span class="punctuation">,</span> Ppersica<span class="operator">=</span>Ppersica<span class="punctuation">,</span> Graimondii<span class="operator">=</span>Graimondii<span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#等号前面是图上显示的数据名称，等号后面是数据源。</span></span><br><span class="line">  filename <span class="operator">=</span> <span class="literal">NULL</span><span class="punctuation">,</span></span><br><span class="line">  col <span class="operator">=</span> <span class="string">&quot;transparent&quot;</span><span class="punctuation">,</span></span><br><span class="line">  fill <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;red&quot;</span><span class="punctuation">,</span> <span class="string">&quot;blue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;green&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  alpha <span class="operator">=</span> <span class="number">0.5</span><span class="punctuation">,</span></span><br><span class="line">  label.col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;darkred&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkgreen&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cex <span class="operator">=</span> <span class="number">2.5</span><span class="punctuation">,</span></span><br><span class="line">  fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span><span class="punctuation">,</span></span><br><span class="line">  fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.default.pos <span class="operator">=</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;darkred&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkgreen&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cat.cex <span class="operator">=</span> <span class="number">2.5</span><span class="punctuation">,</span></span><br><span class="line">  cat.fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.dist <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">0.06</span><span class="punctuation">,</span> <span class="number">0.06</span><span class="punctuation">,</span> <span class="number">0.03</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cat.pos <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="punctuation">)</span>;</span><br><span class="line">grid.draw<span class="punctuation">(</span>venn.triple.plot<span class="punctuation">)</span>; <span class="comment">#用venn.plot绘图</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_3.png?raw=true" width=60% title="venn_3" align=center/>
+
+<p><strong><p align="center">Figure 2. Venn diagram with 3 groups</p></strong></p>
+<ol start="5">
+<li>四维韦恩图<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">grid.newpage<span class="punctuation">(</span><span class="punctuation">)</span>; <span class="comment">#清除已有图形，开始新的空白页</span></span><br><span class="line">venn.quad.plot <span class="operator">&lt;-</span> venn.diagram<span class="punctuation">(</span></span><br><span class="line">  x <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>Mtruncatula<span class="operator">=</span>Mtruncatula<span class="punctuation">,</span> Vvinifera<span class="operator">=</span>Vvinifera<span class="punctuation">,</span> Graimondii<span class="operator">=</span>Graimondii<span class="punctuation">,</span> Ppersica<span class="operator">=</span>Ppersica<span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#等号前面是图上显示的数据名称，等号后面是数据源，数据顺序与图上顺序一致。</span></span><br><span class="line">  filename <span class="operator">=</span> <span class="literal">NULL</span><span class="punctuation">,</span></span><br><span class="line">  col <span class="operator">=</span> <span class="string">&quot;black&quot;</span><span class="punctuation">,</span></span><br><span class="line">  lty <span class="operator">=</span> <span class="string">&quot;dotted&quot;</span><span class="punctuation">,</span> <span class="comment">#边框线类型</span></span><br><span class="line">  lwd <span class="operator">=</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">  fill <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;cornflowerblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;green&quot;</span><span class="punctuation">,</span> <span class="string">&quot;yellow&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorchid1&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  alpha <span class="operator">=</span> <span class="number">0.50</span><span class="punctuation">,</span></span><br><span class="line">  label.col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;orange&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorchid4&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkgreen&quot;</span><span class="punctuation">,</span> <span class="string">&quot;white&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cex <span class="operator">=</span> <span class="number">2.5</span><span class="punctuation">,</span></span><br><span class="line">  fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span><span class="punctuation">,</span></span><br><span class="line">  fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;darkblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkgreen&quot;</span><span class="punctuation">,</span> <span class="string">&quot;orange&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorchid4&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  cat.cex <span class="operator">=</span> <span class="number">2.5</span><span class="punctuation">,</span> <span class="comment">#分类名称字体大小</span></span><br><span class="line">  cat.fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span></span><br><span class="line"><span class="punctuation">)</span>; <span class="comment"># 四维韦恩图</span></span><br><span class="line">grid.draw<span class="punctuation">(</span>venn.quad.plot<span class="punctuation">)</span>; <span class="comment">#用venn.plot绘图</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_4.png?raw=true" width=60% title="venn_4" align=center/>
+
+<p><strong><p align="center">Figure 3. Venn diagram with 4 groups</p></strong></p>
+<ol start="6">
+<li>五维韦恩图<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">grid.newpage<span class="punctuation">(</span><span class="punctuation">)</span>; <span class="comment">#清除已有图形，开始新的空白页</span></span><br><span class="line">venn.quintuple.plot <span class="operator">&lt;-</span> venn.diagram<span class="punctuation">(</span></span><br><span class="line">  x <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>Athaliana<span class="operator">=</span>Athaliana<span class="punctuation">,</span> Ppersica<span class="operator">=</span>Ppersica<span class="punctuation">,</span> Graimondii<span class="operator">=</span>Graimondii<span class="punctuation">,</span> Mtruncatula<span class="operator">=</span>Mtruncatula<span class="punctuation">,</span> Vvinifera<span class="operator">=</span>Vvinifera<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">  filename <span class="operator">=</span> <span class="literal">NULL</span><span class="punctuation">,</span> <span class="comment"># 韦恩图结果文件保存路径和名称</span></span><br><span class="line">  col <span class="operator">=</span> <span class="string">&quot;black&quot;</span><span class="punctuation">,</span> <span class="comment">#指定图形的圆周边缘颜色，transparent透明</span></span><br><span class="line">  fill <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;dodgerblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;goldenrod1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorange1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;seagreen3&quot;</span><span class="punctuation">,</span> <span class="string">&quot;orchid3&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment"># 填充颜色</span></span><br><span class="line">  alpha <span class="operator">=</span> <span class="number">0.50</span><span class="punctuation">,</span> <span class="comment">#透明度</span></span><br><span class="line">  cex <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">1.5</span><span class="punctuation">,</span> <span class="number">1.5</span><span class="punctuation">,</span> <span class="number">1.5</span><span class="punctuation">,</span> <span class="number">1.5</span><span class="punctuation">,</span> <span class="number">1.5</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.8</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.8</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.8</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.8</span><span class="punctuation">,</span></span><br><span class="line">          <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.8</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0.55</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1.5</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#每个区域label名称的大小</span></span><br><span class="line">  cat.col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;dodgerblue&quot;</span><span class="punctuation">,</span> <span class="string">&quot;goldenrod1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;darkorange1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;seagreen3&quot;</span><span class="punctuation">,</span> <span class="string">&quot;orchid3&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#分类颜色</span></span><br><span class="line">  cat.cex <span class="operator">=</span> <span class="number">1.5</span><span class="punctuation">,</span> <span class="comment">#每个分类名称大小</span></span><br><span class="line">  cat.dist <span class="operator">=</span> <span class="number">0.07</span><span class="punctuation">,</span> <span class="comment">#分类名称距离边的距离</span></span><br><span class="line">  cat.just <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span><span class="built_in">c</span><span class="punctuation">(</span><span class="operator">-</span><span class="number">1</span><span class="punctuation">,</span><span class="operator">-</span><span class="number">1</span><span class="punctuation">)</span><span class="punctuation">,</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">2</span><span class="punctuation">,</span><span class="operator">-</span><span class="number">1</span><span class="punctuation">)</span><span class="punctuation">,</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">2</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">)</span><span class="punctuation">,</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">4</span><span class="punctuation">)</span><span class="punctuation">,</span><span class="built_in">c</span><span class="punctuation">(</span><span class="operator">-</span><span class="number">0.5</span><span class="punctuation">,</span><span class="operator">-</span><span class="number">1</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="comment">#分类名称的位置，圈内或圈外</span></span><br><span class="line">  cat.fontface <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">,</span></span><br><span class="line">  cat.fontfamily <span class="operator">=</span> <span class="string">&quot;serif&quot;</span><span class="punctuation">,</span> <span class="comment"># 分类字体</span></span><br><span class="line">  margin <span class="operator">=</span> <span class="number">0.2</span> <span class="comment">#图距离边缘的距离</span></span><br><span class="line"><span class="punctuation">)</span>; <span class="comment"># 五维韦恩图</span></span><br><span class="line">grid.draw<span class="punctuation">(</span>venn.quintuple.plot<span class="punctuation">)</span>; <span class="comment">#用venn.plot绘图</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_5.png?raw=true" width=60% title="venn_5" align=center/>
+
+<p><strong><p align="center">Figure 4. Venn diagram with 5 groups</p></strong></p>
+<h4 id="1-3-2-3-保存R生成的图"><a href="#1-3-2-3-保存R生成的图" class="headerlink" title="1.3.2.3. 保存R生成的图"></a>1.3.2.3. 保存R生成的图</h4><p>在RStudio里作图，选择Export-Save as PDF<br>一般参数：PDF Size(A4)+Orientation(Landscape)<br>保存图像为pdf即可。</p>
+<h1 id="2-references"><a href="#2-references" class="headerlink" title="2. references"></a>2. references</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/79fb263e41ff">https://www.jianshu.com/p/79fb263e41ff</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/29/R_plot_venn/" data-id="cl1aiqcr10014m4vk9o3h6zb4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/R-package/" rel="tag">R package</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Venn/" rel="tag">Venn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VennDiagram/" rel="tag">VennDiagram</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gplots/" rel="tag">gplots</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/plot/" rel="tag">plot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-concept_monophyly.paraphyly.polyphyly" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/20/concept_monophyly.paraphyly.polyphyly/" class="article-date">
+  <time datetime="2021-09-20T10:30:00.000Z" itemprop="datePublished">2021-09-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/concept/">concept</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/20/concept_monophyly.paraphyly.polyphyly/">单系(monophyly)、并系(paraphyly)和复系(polyphyly)及相关定义</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Monophyly%2C_paraphyly%2C_polyphyly.png/1280px-Monophyly%2C_paraphyly%2C_polyphyly.png" width=100% title="单系-并系-复系示意图" alt="单系-并系-复系示意图" align=center/>
+
+<p><strong><p align="center">Figure 1. 单系-并系-复系示意图</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Monophyly">wikipedia: monophyly</a></p></p>
+<h1 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h1><ol>
+<li>分类<br> <strong>分类</strong>就是根据共有属性，将对象群进行分门别类。对象的属性有多少种（一般是无穷多种），就可以有多少种分类方法&#x2F;分类依据。</li>
+<li>分类在生物学领域的应用<br> <strong>分类在生物学领域的应用</strong>是依据生物的特征将生物进行分门别类整理，而生物学的分类的目的是为了准确描述生物间的亲缘关系。</li>
+<li>分支分类学（cladistics）<br> 也叫支序分类学，是指一种用分支图（系统进化关系树） 来对生物进行分类和描述进化关系的分类学。</li>
+</ol>
+<h1 id="2-单系-monophyly"><a href="#2-单系-monophyly" class="headerlink" title="2. 单系-monophyly"></a>2. 单系-monophyly</h1><ol>
+<li>定义</li>
+</ol>
+<ul>
+<li>单系(monophyly)是指一组仅由共同祖先种群及其所有直系后代组成的分类群。</li>
+<li>通过共有衍征被归类到一起的类群。</li>
+<li>一个等效的术语是holophyly。</li>
+</ul>
+<ol start="2">
+<li>例子<br>单系类群的例子有哺乳动物，鸟类。</li>
+<li>单系的意义<br>单系群是真正意义完整的分类群，是生物学上分类追求的结果。</li>
+</ol>
+<h1 id="3-并系-paraphyly"><a href="#3-并系-paraphyly" class="headerlink" title="3. 并系-paraphyly"></a>3. 并系-paraphyly</h1><ol>
+<li>定义</li>
+</ol>
+<ul>
+<li>并系群是由一个共同祖先和所有后代减去一个或多个单系群组成。</li>
+<li>通过共有祖征被归类到一起的类群。</li>
+<li>并系群是不完整的单系群，导致不完整的原因是部分单系群的祖征丢失。</li>
+<li>并系群大多是由于传统形态分类年代的认知偏差产生的具有共同形态特征的非自然类群，随着分子生物学的发展纠正了许多原来认为的单系类群为并系类群。</li>
+</ul>
+<ol start="2">
+<li>例子<br>并系类群的例子有苔藓植物，蕨类植物，爬行动物，鱼类，原核生物。</li>
+<li>分类学上的处理</li>
+</ol>
+<ul>
+<li>分类学上对并系类群一般做合并处理。</li>
+<li>例如传统概念的夹竹桃科（Apocynaceae）是个并系，与萝藦科（Asclepiadaceae）之后的广义夹竹桃科则成为一个单系类群。</li>
+</ul>
+<h1 id="4-多系-x2F-复系-polyphyly"><a href="#4-多系-x2F-复系-polyphyly" class="headerlink" title="4. 多系&#x2F;复系-polyphyly"></a>4. 多系&#x2F;复系-polyphyly</h1><ol>
+<li>定义</li>
+</ol>
+<ul>
+<li>多系是指一个包含的成员来自两个或多个分支，且没有包含所有成员的最近共同祖先的分类群。</li>
+<li>通过趋同共性被归类到一起的类群。</li>
+<li>也是由于传统认知偏差造成的非自然类群，但具有共同特征且有科学价值。</li>
+<li>广泛一点说，任何不适单系或者并系的分类群都可以被称为多系。</li>
+</ul>
+<ol start="2">
+<li>例子</li>
+</ol>
+<ul>
+<li>多系类群的例子有果树，水生昆虫，寄生植物，多肉植物，食虫植物等。</li>
+</ul>
+<ol start="3">
+<li>分类学上的处理</li>
+</ol>
+<ul>
+<li>分类学上对多系类群一般做拆分处理。</li>
+<li>例如传统的毛茛科（Ranunculaceae）是多系类群，包含芍药属（Paeonia），星叶草属（Circaeaster）和狭义的毛茛科，把三个部分拆分，芍药属独立成为芍药科（Paeoniaceae），星叶草属独立成为星叶草科（Circaeasteraceae），狭义的毛茛科依然保持，则成为三个独立的单系类群。</li>
+</ul>
+<h1 id="5-物种概念中的单系和并系"><a href="#5-物种概念中的单系和并系" class="headerlink" title="5. 物种概念中的单系和并系"></a>5. 物种概念中的单系和并系</h1><p>物种概念要求物种是单系的，但由于部分类群祖征的丢失，并系物种在自然界中很常见。<br>研究表明，多达20%的动物物种和20%-50%的植物物种是并系的。</p>
+<h2 id="5-1-一些例子"><a href="#5-1-一些例子" class="headerlink" title="5.1. 一些例子"></a>5.1. 一些例子</h2><p>并系群-排除的单系群-对应的完整单系群</p>
+<ul>
+<li>鱼fish-四足类Tetrapoda-脊椎动物Vertebrate</li>
+<li>爬行动物Reptiles-鸟类birds-蜥形目Sauropsida</li>
+<li>猴子Monkey-人猿总科Hominoidea-类人猿目Simiiformes</li>
+</ul>
+<h1 id="6-references"><a href="#6-references" class="headerlink" title="6. references"></a>6. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cladistics">wiki:cladistics</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Monophyly">wiki:monophyly</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Paraphyly">wiki:paraphyly</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Polyphyly">wiki:polyphyly</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.weibo.com/ttarticle/p/show?id=2309404308383288185230">ArtemisiaLiu’s weibo</a></li>
+<li><a target="_blank" rel="noopener" href="http://wap.sciencenet.cn/blog-3454407-1262077.html?mobile=1">http://wap.sciencenet.cn/blog-3454407-1262077.html?mobile=1</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/20/concept_monophyly.paraphyly.polyphyly/" data-id="cl1aiqcrt003im4vkf502a8tl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cladistics/" rel="tag">cladistics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/monophyly/" rel="tag">monophyly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paraphyly/" rel="tag">paraphyly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/polyphyly/" rel="tag">polyphyly</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-biosoft_WGDI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/11/biosoft_WGDI/" class="article-date">
+  <time datetime="2021-09-11T06:30:00.000Z" itemprop="datePublished">2021-09-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/biosoft/">biosoft</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/11/biosoft_WGDI/">WGDI分析基因组共线性、计算Ks和鉴定WGD</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+
+<h1 id="1-WGDI介绍"><a href="#1-WGDI介绍" class="headerlink" title="1. WGDI介绍"></a>1. WGDI介绍</h1><p>WGDI (Whole-Genome Duplication Integrated analysis)是python写的命令行工具，用于多倍化和跨物种基因组比对的综合分析，包括鉴定基因组内共线性区块，Ks计算，全基因组复制事件(WGD, whole genome duplication)的数量和时间的鉴定。</p>
+<p>WGDI主要的三个功能是：</p>
+<ul>
+<li>多倍体推断</li>
+<li>基因组同源性的层次推断</li>
+<li>祖先染色体核型分析</li>
+</ul>
+<h1 id="2-WGDI安装"><a href="#2-WGDI安装" class="headerlink" title="2. WGDI安装"></a>2. WGDI安装</h1><p>WGDI的依赖：PAML,MAFFT,MUSCLE,PAL2NAL,IQTREE。</p>
+<p>安装有三种方法:</p>
+<ol>
+<li>conda<br><code>conda create -c bioconda -c conda-forge -n wgdi wgdi</code> 建议新建一个环境</li>
+<li>pip<br><code>pip install wgdi</code></li>
+<li>github<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/SunPengChuan/wgdi.git</span><br><span class="line">cd wgdi</span><br><span class="line">python setup.py install</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="3-WGDI进行共线性分析"><a href="#3-WGDI进行共线性分析" class="headerlink" title="3. WGDI进行共线性分析"></a>3. WGDI进行共线性分析</h1><h2 id="3-1-初始输入文件"><a href="#3-1-初始输入文件" class="headerlink" title="3.1. 初始输入文件"></a>3.1. 初始输入文件</h2><h3 id="3-1-1-输入文件"><a href="#3-1-1-输入文件" class="headerlink" title="3.1.1. 输入文件"></a>3.1.1. 输入文件</h3><p>WGDI需要三个输入文件，分别是基因的位置信息文件sample.gff，染色体长度信息文件sample.len和BLAST的输出文件sample.blast.txt，要求格式如下：</p>
+<ul>
+<li>input.gff: 一共七列，以tab分隔，分别为chr(chromosome number)，geneid(gene name)，start，end，direction(strand+&#x2F;-)，order(order of each chromosome,starting from 1, 每个chr内部从1开始的顺序），original(original id and not read,旧的id，不会读入)。<br>  和典型的GFF格式不一样</li>
+<li>input.len: 一共三列，以tab分隔，染色体长度信息和染色体上的基因个数，chr(chromosome number), chr_length(染色体长度bp), chr_gene_number(注释到单个染色体的基因数量)</li>
+<li>sample.blast.txt：蛋白质序列的自我比对，BLAST的-outfmt 6输出格式的文件sample.blast.txt</li>
+</ul>
+<h3 id="3-1-2-准备输入文件"><a href="#3-1-2-准备输入文件" class="headerlink" title="3.1.2. 准备输入文件"></a>3.1.2. 准备输入文件</h3><ol>
+<li>sample.blastp.txt<br>用蛋白序列建库，blastp进行蛋白序列的自我比对，获取-outfmt 6格式的输出文件sample.blastp.txt。命令如下：<br><code>makeblastdb -in sample.pep.fa -dbtype prot</code><br><code>blastp -num_threads 32 -db sample.pep.fasta -query sample.pep.fa -outfmt 6 -evalue 1e-5 -num_alignments 20 -out sample.blastp.txt &amp;</code></li>
+</ol>
+<p>使用脚本<a target="_blank" rel="noopener" href="https://github.com/xuzhougeng/myscripts/blob/master/comparative/generate_conf.py">generate_conf.py</a>从基因组genome.fa和注释文件sample.gff3中获取input.gff和input.len文件。命令是<code>python generate_conf.py -p input genome.fa sample.gff3</code>。</p>
+<ol start="2">
+<li><p>input.gff<br>用generate_conf.py脚本获取输入文件input.gff和input.len<br><code>python generate_conf.py -p input genome.fa sample.gff3</code> # 用脚本生成WGDI的输入文件input.gff和input.len,如果存在contig没被注释到基因，会报错:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;generate_conf.py&quot;, line 117, in &lt;module&gt;</span><br><span class="line">    chrom=chrom,lens=lens,count=gene_count[chrom]), file=len_file)</span><br><span class="line">KeyError: &#x27;contig030&#x27;</span><br></pre></td></tr></table></figure>
+<p>并在contig030的地方停止继续写入input.len，input.gff不受影响。</p>
+</li>
+<li><p>input.len<br>可以用下面的脚本get_len.sh获取input.len</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">## 获取contig的长度</span><br><span class="line">samtools faidx genome.fa</span><br><span class="line">cat genome.fa.fai |cut -f1,2 &gt;chrom.len</span><br><span class="line"></span><br><span class="line">## 获取contig的基因计数</span><br><span class="line">cat sample.gff3 |awk &#x27;$3 == &quot;gene&quot; &#123;print $1&#125;&#x27; &gt;chrom.tem</span><br><span class="line">contig=$(head -1 chrom.tem |sed &quot;s/[0-9]//g&quot;)</span><br><span class="line">c_number=$(tail -1 chrom.tem|sed &quot;s/[A-Za-z]//g&quot;)</span><br><span class="line">for i in $(seq -w 1 $c_number); do echo -e $contig$i&quot;\t&quot;$(grep &quot;$contig$i&quot; chrom.tem |wc -l);done &gt;chrom.count</span><br><span class="line"></span><br><span class="line">## 合并生成input.len</span><br><span class="line">join chrom.len chrom.count|sed &quot;s/ /\t/g&quot; &gt;input.len</span><br><span class="line"></span><br><span class="line">## 删除中间文件</span><br><span class="line">rm chrom.tem chrom.len chrom.count</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-共线性分析"><a href="#3-2-共线性分析" class="headerlink" title="3.2. 共线性分析"></a>3.2. 共线性分析</h2><p>WGDI的分析的参数都是在配置文件中进行设置，所以分析都需要先创建配置文件，然后修改配置文件，最后运行程序。<br>每个配置项中都有gff1，gff2；lens1，lens2；blast这五个参数，是相同的。</p>
+<h3 id="3-2-1-绘制共线性点阵图"><a href="#3-2-1-绘制共线性点阵图" class="headerlink" title="3.2.1. 绘制共线性点阵图"></a>3.2.1. 绘制共线性点阵图</h3><p>WGDI的d模块绘制基因组内的共线性点阵图，初略估计是否有基因复制区域。<br>共线性点阵图是把两个基因组（做WGD分析则是把一个基因组的两份复制）分别作为横纵坐标，把检测到的同源匹配基因在相应位置做点标记；点数量多且相邻时，会有点组成的线出现，线代表比较长的共线性区块，代表着历史上的复制事件。</p>
+<ol>
+<li>创建配置文件input.conf<br><code>wgdi -d \? &gt;input.conf</code></li>
+</ol>
+<p>创建input.conf配置文件，里面包含[dotplot]配置参数。</p>
+<ol start="2">
+<li>修改配置文件</li>
+</ol>
+<ul>
+<li><p>input.conf配置文件的信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[dotplot]</span><br><span class="line">blast = blast file # sample.blastp.txt文件</span><br><span class="line">gff1 =  gff1 file # 比对项1的input.gff文件</span><br><span class="line">gff2 =  gff2 file # 比对项2的input.gff文件，如果是自我比对，则gff1和gff2一样</span><br><span class="line">lens1 = lens1 file # 比对项1的input.len文件</span><br><span class="line">lens2 = lens2 file # 比对项2的input.len文件，如果是自我比对，则lens1和lens2一样</span><br><span class="line">genome1_name =  Genome1 name # 比对项1的基因组名称</span><br><span class="line">genome2_name =  Genome2 name # 比对项2的基因组名称，如果是自我比对，与genome1_name一致</span><br><span class="line">multiple  = 1 # 最好的同源基因对数量，输出结果图中会用红点表示</span><br><span class="line">score = 100 # blast输出的score过滤</span><br><span class="line">evalue = 1e-5 # blast输出的evalue过滤</span><br><span class="line">repeat_number = 10 # 允许去除超过部分种群的同源基因数量</span><br><span class="line">position = order</span><br><span class="line">blast_reverse = false</span><br><span class="line">ancestor_left = ancestor file or none # 点阵图左侧物种的祖先染色体区域，一般设置成none就好</span><br><span class="line">ancestor_top = ancestor file or none # 点阵图顶侧物种的祖先染色体区域，一般设置成none就好</span><br><span class="line">markersize = 0.5 # 点的尺寸</span><br><span class="line">figsize = 10,10 # 图的尺寸</span><br><span class="line">savefig = savefile(.png, .pdf, .svg) # 保存的图片结果名称和格式</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>input.conf配置文件示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[dotplot]</span><br><span class="line">blast = sample.blastp.txt</span><br><span class="line">gff1 =  input.gff</span><br><span class="line">gff2 =  input.gff</span><br><span class="line">lens1 = input.len</span><br><span class="line">lens2 = input.len</span><br><span class="line">genome1_name =  sample</span><br><span class="line">genome2_name =  sample</span><br><span class="line">multiple  = 1</span><br><span class="line">score = 100</span><br><span class="line">evalue = 1e-5</span><br><span class="line">repeat_number = 10</span><br><span class="line">position = order</span><br><span class="line">blast_reverse = false</span><br><span class="line">ancestor_left = none</span><br><span class="line">ancestor_top = none</span><br><span class="line">markersize = 0.5</span><br><span class="line">figsize = 10,10</span><br><span class="line">savefig = out.pdf</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><p>运行<br><code>wgdi -d input.conf</code></p>
+</li>
+<li><p>结果<br>结果保存在out.pdf的图中。</p>
+</li>
+</ol>
+<p>结果解释：</p>
+<ul>
+<li>图中有三种颜色，红色表示genome2的基因在genome1中的最优同源匹配，次优的四个基因是蓝色，其余的是灰色。</li>
+<li>WGDI会过滤掉自身与自身的比对结果，所以图中对角线出现的片段不是自身比对结果，而是串联基因（tandem）形成的共线性区块。</li>
+<li>如果基因组存在加倍事件，则基因组不同区域的同源基因的排布顺序会比较一致，在图上就能观察到多个点排列组成的“线”。</li>
+</ul>
+<h3 id="3-2-2-获取共线性区块"><a href="#3-2-2-获取共线性区块" class="headerlink" title="3.2.2. 获取共线性区块"></a>3.2.2. 获取共线性区块</h3><p>WGDI的icl(Improved version of ColinearScan)模块用于获取共线性区块的具体位置信息。与MCScanX软件功能一致。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -icl \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[collinearity]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[collinearity]</span><br><span class="line">gff1 =  gff1 file # 比对项1的input.gff文件</span><br><span class="line">gff2 =  gff2 file # 比对项2的input.gff文件，如果是自我比对，则gff1和gff2一样</span><br><span class="line">lens1 = lens1 file # 比对项1的input.len文件</span><br><span class="line">lens2 = lens2 file # 比对项2的input.len文件，如果是自我比对，则lens1和lens2一样</span><br><span class="line">blast = blast file # sample.blastp.txt文件</span><br><span class="line">blast_reverse = false</span><br><span class="line">multiple  = 1 # 最好的同源基因对数量，输出结果图中会用红点表示</span><br><span class="line">process = 8 # 线程</span><br><span class="line">evalue = 1e-5 # blast输出的evalue过滤</span><br><span class="line">score = 100 # blast输出的score过滤</span><br><span class="line">grading = 50,25,10 # 为red,blue,gray三种颜色的点指定不同的分数</span><br><span class="line">mg = 25,25 # 检测共线性区域的最大gap值，即共线性区块内含的最大空缺基因数量。</span><br><span class="line">pvalue = 1 # 显著性，评估共线性blocks的紧密程度和独特程度的参数，取值范围是0-1，更好的共线性范围是0-0.2。</span><br><span class="line">repeat_number = 10 # 允许去除超过部分种群的同源基因数量</span><br><span class="line">positon = order</span><br><span class="line">savefile = out.collinearity # 保存共线性结果的文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -icl input.conf</code></p>
+</li>
+<li><p>结果<br>结果out.collinearity中记录着共线性区域。</p>
+</li>
+</ol>
+<p># Alignment起始的行记录着共线性区块的信息，包括得分(score),显著性(pvalue),基因对数(N)，strand(plus&#x2F;minus)。</p>
+<h3 id="3-2-3-计算KaKs"><a href="#3-2-3-计算KaKs" class="headerlink" title="3.2.3. 计算KaKs"></a>3.2.3. 计算KaKs</h3><p>WGDI的ks模块计算共线性区块的基因对间的ka和ks。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -ks \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[ks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ks]</span><br><span class="line">cds_file =  input.cds.fa # 基因组(一个或多个)的cds序列</span><br><span class="line">pep_file =  input.pep.fa # 基因组(一个或多个)的氨基酸序列；可选参数，如果不设置，将用biopython模块翻译cds文件获得。</span><br><span class="line">align_software = muscle # 选择多序列比对软件:&#123;muscle,mafft&#125;</span><br><span class="line">pairs_file = out.collinearity # tab分隔的共线性基因对。上一步共线性分析的结果文件，也支持MCScanX的共线性分析结果文件。</span><br><span class="line">ks_file = out.ks # 保存ks结果的文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -ks input.conf</code></p>
+</li>
+</ol>
+<p>WGDI会用muscle根据氨基酸序列进行联配，然后用pal2pal.pl基于cds序列将氨基酸联配转为密码子联配，最后用paml中的yn00和ng86两种方法计算ka和ks。</p>
+<ol start="4">
+<li>结果<br>out.ks结果有6列，对应的是每个基因的ka和ks。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ head -2 out.ks</span><br><span class="line">id1  id2  ka_NG86  ks_NG86  ka_YN00  ks_YN00</span><br><span class="line">vvi161s1g00311	vvi161s1g00312	0.2986	1.2027	0.3047	1.3864</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-4-整合共线性区块信息"><a href="#3-2-4-整合共线性区块信息" class="headerlink" title="3.2.4. 整合共线性区块信息"></a>3.2.4. 整合共线性区块信息</h3><p>WGDI的bi模块可以整合共线性区块和ks信息成一个可读性更强的csv文件。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -bi \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[blockinfo]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[blockinfo]</span><br><span class="line">blast = input.blastp.txt</span><br><span class="line">gff1 =  input.gff</span><br><span class="line">gff2 =  input.gff</span><br><span class="line">lens1 = input.len</span><br><span class="line">lens2 = input.len</span><br><span class="line">collinearity = out.collinearity # 共线性区域结果文件</span><br><span class="line">score = 100</span><br><span class="line">evalue = 1e-5</span><br><span class="line">repeat_number = 20</span><br><span class="line">position = order</span><br><span class="line">ks = out.ks # ks结果文件</span><br><span class="line">ks_col = ks_NG86 # 声明使用ks结果文件的列名</span><br><span class="line">savefile = block_info.csv</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -bi input.conf</code></p>
+</li>
+<li><p>结果</p>
+</li>
+</ol>
+<p>结果文件block_info.csv共11列：</p>
+<ul>
+<li>id：共线性结果的id</li>
+<li>chr1,start1,end1：点图左边的基因组共线性区块的位置范围</li>
+<li>chr2,start2,end2：点图上边的基因组共线性区块的位置范围</li>
+<li>pvalue：共线性结果评估，一般认为&lt;0.01更合理</li>
+<li>length：共线性区块长度</li>
+<li>ks_median：共线性区块上所有基因对ks的中位数，用于评估ks分布</li>
+<li>ks_average：共线性区块上所有基因对ks的平均值</li>
+<li>homo1-n：multiple参数为n，则有n列，表示一个基因有n个最佳匹配时的取值，对应点阵图中的红点</li>
+<li>block1,block2：共线性区块上基因order的位置</li>
+<li>ks：共线性区块上基因对的ks值</li>
+<li>density1,density2：共线性区块的基因分布密集程度，值越大越密集</li>
+<li>class1,class2：在alignment模块中用到，对应两个block分组。默认值是0，表示两个block是同一组。这两列需要根据覆盖率、染色体核型等多个方面进行确定。</li>
+</ul>
+<h2 id="3-3-根据ks分布拟合单次WGD事件"><a href="#3-3-根据ks分布拟合单次WGD事件" class="headerlink" title="3.3. 根据ks分布拟合单次WGD事件"></a>3.3. 根据ks分布拟合单次WGD事件</h2><ol>
+<li>背景知识<br>在Lynch和Conery在2000年发表在Science的论文中，他们证明了小规模基因复制的Ks分布是L型，而在L型分布背景上叠加的峰则是来自于演化历史中某个突然的大规模复制事件。<br>L型分布（呈指数分布, exponential distribution), 最初的峰可能是近期的串联复制引起，随着时间推移基因丢失，形成一个向下的坡。正态分布(normal distribution)的峰则是由全基因组复制引起。</li>
+</ol>
+<p>这就意味着我们可以根据ks频率分布图的正态分布峰来判断物种历史上发生过的全基因组复制事件，并通过ks值拟合峰值获得WGD事件发生的时间。</p>
+<ol start="2">
+<li>根据ks分布拟合单次WGD事件的峰</li>
+</ol>
+<ul>
+<li>通过kspeaks(-kp)模块过滤blockinfo文件，根据ks峰值分布设置ks_area过滤参数，同时可以调整homo参数看看效果，得到单独一个WGD事件形成的共线性区块和相应的ks值。</li>
+<li>接着用PeaksFit(-pf)模块对值的峰进行拟合得到模型参数。</li>
+<li>最后用KsFigures(-kf)将拟合结果绘制到一张图上。</li>
+<li>想看单个WGD事件的ks点阵图还可以把blockks的blockinfo参数换成kspeaks(-kp)模块过滤后得到的ks_median.distri.csv，跑一遍绘制ks点阵图(-bk)模块获取过滤后的ks点阵图。</li>
+</ul>
+<p>因为用WGDI对ks频率分布图的峰进行拟合时，一次只能拟合一个峰。当发现两次或多次WGD事件后，需要两次或多次重复以上分析过程，分别获取WGD的ks拟合图。</p>
+<h2 id="3-4-ks拟合和可视化"><a href="#3-4-ks拟合和可视化" class="headerlink" title="3.4. ks拟合和可视化"></a>3.4. ks拟合和可视化</h2><h3 id="3-4-1-ks可视化——绘制ks点阵图"><a href="#3-4-1-ks可视化——绘制ks点阵图" class="headerlink" title="3.4.1. ks可视化——绘制ks点阵图"></a>3.4.1. ks可视化——绘制ks点阵图</h3><p>第一步绘制的点阵图里包含基因组上检测到的所有同源基因对（所以点特别多），bk模块绘制的ks点阵图的点只包含确认了共线性的基因对，用ks值作为点的颜色信息，可以根据ks点阵图的共线性区域的颜色来区分不同时期的多倍化事件。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -bk \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[blockks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[blockks]</span><br><span class="line">lens1 = input.len</span><br><span class="line">lens2 = input.len</span><br><span class="line">genome1_name =  sample</span><br><span class="line">genome2_name =  sample</span><br><span class="line">blockinfo =  block_info.csv # bi模块整合结果</span><br><span class="line">pvalue = 0.2 # 共线性区块的显著性，对应blockinfo的pvalue列</span><br><span class="line">tandem = true # 是否过滤串联基因形成的共线性区（在点阵图上对角线附近）</span><br><span class="line">tandem_length = 200 # 如果tandem=true，那么评估tandem的标准为两个区块的物理距离</span><br><span class="line">markersize = 1</span><br><span class="line">area = 0,2 # 输出结果中ks的取值范围</span><br><span class="line">block_length =  5 # 一个共线性区块的最小基因对数量，对应blockinfo的length列</span><br><span class="line">figsize = 8,8</span><br><span class="line">savefig = ks.dotplot.pdf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -bk input.conf</code></p>
+</li>
+<li><p>结果<br>结果保存在ks.dotplot.pdf文件中。</p>
+</li>
+</ol>
+<p>结果解释：</p>
+<ul>
+<li>图中每个点都是共线性区块的基因对，点的颜色是ks值。</li>
+<li>可以用共线性区块的ks中位数来初步判断复制发生的时间，所以图中颜色相近的共线性区块看作同时发生的复制，当图中大致观察到两种颜色的点和线时，表示对应的两次全基因组复制事件。</li>
+</ul>
+<h3 id="3-4-2-ks可视化——过滤后绘制ks频率分布图"><a href="#3-4-2-ks可视化——过滤后绘制ks频率分布图" class="headerlink" title="3.4.2. ks可视化——过滤后绘制ks频率分布图"></a>3.4.2. ks可视化——过滤后绘制ks频率分布图</h3><p>通过计算共线性区块的基因对ks值，可以获得基因对复制发生的时间，如果有全基因组复制（WGD）发生，那么现有物种的基因组会留下许多ks相近的基因对，通过ks频率分布图可以看到峰，由此判断WGD的发生次数和发生时间。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -kp \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[kspeaks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[kspeaks]</span><br><span class="line">blockinfo = block_info.csv</span><br><span class="line">pvalue = 0.2 # 共线性区块的显著性，对应blockinfo的pvalue列</span><br><span class="line">tandem = true # 是否过滤串联重复基因形成的共线性区（在点阵图上对角线附近）</span><br><span class="line">block_length = 5 # 共线性区块的基因对的数目</span><br><span class="line">ks_area = 0,10 # 对应blockinfo的ks列，0-10表示只保留ks在0-10的基因对。</span><br><span class="line">multiple  = 1 # 选择homo中的哪列用于后续过滤，一般选homo1</span><br><span class="line">homo = -1,1 # 根据homo的共线性区块中基因对的总体得分（取值范围-1，1，值越大表示最佳匹配的基因对越多，也就是越近期的WGD事件得到的基因对）对共线性区块进行过滤，只取得分在-1-1之间的共线性区块，即不根据homo过滤。</span><br><span class="line">fontsize = 9</span><br><span class="line">area = 0,3</span><br><span class="line">figsize = 10,6.18</span><br><span class="line">savefig = ks_median.distri.pdf # ks频率分布图结果</span><br><span class="line">savefile = ks_median.distri.csv # 对block_info.csv的过滤后结果，与block_info.csv格式一致</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -kp input.conf</code></p>
+</li>
+</ol>
+<p>根据配置参数过滤blockinfo文件的低质量数据，再绘制频率分布图。</p>
+<ol start="4">
+<li>结果<br>结果保存在ks_median.distri.pdf（ks峰图）和ks_median.distri.csv（输入文件block_info.csv过滤后结果，与block_info.csv格式一致）。</li>
+</ol>
+<p>从峰图的峰的数量可以估计WGD的数量。</p>
+<ol start="5">
+<li>说明<br>因为用WGDI对ks频率分布图的峰进行拟合时，一次只能拟合一个峰。当发现两次或多次WGD事件后，需要两次或多次重复以上分析过程，分别获取WGD的ks拟合图。</li>
+</ol>
+<p>所以也可以先不过滤绘制ks频率分布图，初步查看ks的分布情况；再根据每次WGD事件的分布设置ks_area,multiple,homo三个参数来分离单次WGD事件的数据，再进行过滤-拟合-作图。</p>
+<p>三个参数的设置：</p>
+<ul>
+<li>ks_area：根据单次WGD的ks分布范围设置，过滤出单次WGD的数据。</li>
+<li>multiple：选择不同的homo，一般没有特殊需求，选择最优的，即1。</li>
+<li>homo：设置不同的homo范围，观察做出的图中峰的变化来确定homo范围是否合理。</li>
+</ul>
+<h3 id="3-4-3-拟合ks频率分布图的峰"><a href="#3-4-3-拟合ks频率分布图的峰" class="headerlink" title="3.4.3. 拟合ks频率分布图的峰"></a>3.4.3. 拟合ks频率分布图的峰</h3><ol>
+<li>建立配置文件<br><code>wgdi -pf \? &gt;&gt;peak.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[kspeaks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[peaksfit]</span><br><span class="line">blockinfo  =  ks.distri.csv</span><br><span class="line">mode  =  median</span><br><span class="line">bins_number  =  200</span><br><span class="line">ks_area  =  0,10</span><br><span class="line">fontsize  =  9</span><br><span class="line">area  =  0,3</span><br><span class="line">figsize  =  10,6.18</span><br><span class="line">savefig  =  ks.peaksfit.pdf </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -pf peak.conf</code></p>
+</li>
+</ol>
+<p>得到拟合图ks.peaksfit.pdf和一些参数(包括一个R-square和3个拟合参数the gaussian fitting curve parameters）;拟合参数用于后续ksfigure模块分析。</p>
+<h3 id="3-4-4-拟合结果作图——kf模块"><a href="#3-4-4-拟合结果作图——kf模块" class="headerlink" title="3.4.4. 拟合结果作图——kf模块"></a>3.4.4. 拟合结果作图——kf模块</h3><ol>
+<li><p>建立配置文件<br>在已有配置文件input.conf的基础上添加[ksfigure]配置参数。<br><code>wgdi -kf \? &gt;&gt;input.conf</code></p>
+</li>
+<li><p>创建all_ks.csv文件</p>
+</li>
+</ol>
+<ul>
+<li><p>all_ks.csv文件内容<br>第一行为标题行，之后行为数据行。<br>共有4+3n列(n是peak数量，即WGD的次数），逗号分隔，第一列是样本信息，第2-3列对应线条属性(color,linewidth,linestyle)，后面列都是拟合参数（the gaussian fitting curve parameters拟合参数，每个peak有3个拟合参数，n个peaks有3n个，依次列出。<br>标题行要包含所有列（可为空）；数据行根据各自的峰数量可能有不同列数（比如一个峰的7列，两个峰的10列）。</p>
+</li>
+<li><p>all_ks.csv文件示例<br>两个样本，三次比对(sample1_sample1,sample2_sample2,sample1_sample2)，两个峰的all_ks.csv文件示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">,color,linewidth,linestyle,,,,,,</span><br><span class="line">sample1_sample1,green,1,--,5.02360835744403,0.8319599832352784,0.10382203381206191,2.084853812322066,1.8332872127128195,0.2506813629824027</span><br><span class="line">sample2_sample2,red,1,--,5.02360835744403,0.8319599832352784,0.10382203381206191,2.084853812322066,1.8332872127128195,0.2506813629824027</span><br><span class="line">sample1_sample2,yellow,1,-,3.00367275,1.288717936,0.177816426</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[ksfigure]</span><br><span class="line">ksfit = all_ks.csv # 拟合参数文件</span><br><span class="line">labelfontsize = 15</span><br><span class="line">legendfontsize = 15</span><br><span class="line">xlabel = none</span><br><span class="line">ylabel = none</span><br><span class="line">title = none</span><br><span class="line">area = 0,4</span><br><span class="line">figsize = 10,6.18</span><br><span class="line">savefig =  all_ks.pdf #保存的拟合图</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -kf input.conf</code></p>
+</li>
+</ol>
+<p>得到all_ks.pdf拟合图</p>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><p><a target="_blank" rel="noopener" href="https://wgdi.readthedocs.io/en/latest/">WGDI’s documentation</a><br><a target="_blank" rel="noopener" href="https://github.com/SunPengChuan/wgdi">WGDI’s github</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a50548e81ac0">xuzhougeng’s WGDI上</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0e4a2807468d">xuzhougeng’s WGDI中</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/28a4c3045919">xuzhougeng’s WGDI下</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e97fdcf5d06f">xuzhougeng’s WGDI blockinfo blog</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/11/biosoft_WGDI/" data-id="cl1aiqcrp002zm4vkd46lgut3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WGDI/" rel="tag">WGDI</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-bioinfo_MSA" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/06/bioinfo_MSA/" class="article-date">
+  <time datetime="2021-09-06T10:00:00.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/bioinfo/">bioinfo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/06/bioinfo_MSA/">多序列比对(Multiple Sequence Alignment,MSA)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+
+<p><strong>写在前面</strong>：</p>
+<ul>
+<li>比对软件的选择：<br>  要是是基因组大数据的序列做比对，优先选择<strong>MAFFT</strong>（快速且兼顾准确）；要是少量序列比对，优先选择<strong>PRANK</strong>（准确）；要是极少数序列比对，哪个方便选哪个，一般<strong>Clustal和MUSCLE</strong>（方便）会整合到许多软件里，会更方便使用。</li>
+<li>过滤软件的选择：<br>  目前暂时优先选<strong>trimAl</strong>。</li>
+</ul>
+<p>update-20211006:今天发现PRANK这个软件比对过后序列的顺序会被打乱，后续处理要小心。</p>
+<h1 id="1-序列比对-sequence-alignment"><a href="#1-序列比对-sequence-alignment" class="headerlink" title="1. 序列比对(sequence alignment)"></a>1. 序列比对(sequence alignment)</h1><h2 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1. 概念"></a>1.1. 概念</h2><p>在生物信息学中，序列比对(sequence alignment)是指根据相似性排列DNA,RNA或者protein序列，通过在序列中插入空格(gap)来使得相似的碱基&#x2F;氨基酸在相同列对齐的一种方法。</p>
+<h2 id="1-2-方法"><a href="#1-2-方法" class="headerlink" title="1.2. 方法"></a>1.2. 方法</h2><p>比对方法通常包括全局比对(global alignments)和局部比对(local alignments)。</p>
+<ol>
+<li>全局比对(global alignments)<br>全局比对强制要求比对跨越所有序列的整个长度，尽量对齐每条序列的每个碱基，当序列碱基和长度大致相似时最有用。通常全局比对用Needleman-Wunsch算法，是一种动态规划算法。</li>
+<li>局部比对(local alignments)<br>局部比对则确认通常有较大分歧的长序列内的相似性，有更多的计算相似性区域的额外的挑战。通常在较长序列包含相似序列基序的差异较大序列中更有用，常见的是Smith-Waterman算法，也是一种动态规划算法。</li>
+<li>混合比对(Hybrid methods)<br>全局和局部比对都使用的方法。</li>
+</ol>
+<h2 id="1-3-类型"><a href="#1-3-类型" class="headerlink" title="1.3. 类型"></a>1.3. 类型</h2><p>按照序列的数量分为成对比对(pairwise alignment)和多序列比对(multiple sequence alignment)。</p>
+<ol>
+<li>成对比对(pairwise alignment)</li>
+</ol>
+<ul>
+<li>两条序列的比对。因为计算效率很高，通常不需要高精度方法。</li>
+<li>常见的三种方法是点阵法(dot-matrix methods)，动态规划法(dynamic programming)和字节法(word methods)。</li>
+</ul>
+<ol start="2">
+<li>多序列比对(multiple sequence alignment)</li>
+</ol>
+<ul>
+<li>三条及以上序列的比对，是成对比对的扩展，算法上有些差异，以及更复杂。是这篇博客主要讲的内容。</li>
+</ul>
+<h1 id="2-多序列比对-Multiple-Sequence-Alignment-MSA"><a href="#2-多序列比对-Multiple-Sequence-Alignment-MSA" class="headerlink" title="2. 多序列比对(Multiple Sequence Alignment,MSA)"></a>2. 多序列比对(Multiple Sequence Alignment,MSA)</h1><h2 id="2-1-概念"><a href="#2-1-概念" class="headerlink" title="2.1. 概念"></a>2.1. 概念</h2><p>多序列比对(Multiple Sequence Alignment,MSA)是对三个以上的生物学序列（biological sequence），如蛋白质序列、DNA序列或RNA序列所作的序列比对。<br>目的是在不改变序列顺序的前提下，尽可能地把不同序列的相同碱基或者氨基酸排在同一列，并认为同一列的序列在进化上是同源的，有共同的祖先。</p>
+<h2 id="2-2-用途"><a href="#2-2-用途" class="headerlink" title="2.2. 用途"></a>2.2. 用途</h2><p>比对之后的序列，可用于进化学研究。比如，比较序列差异来推断序列进化历史（eg. 分化时间）和进化方式(突变&#x2F;插入缺失&#x2F;倒置等)。</p>
+<p>常见的应用：</p>
+<ul>
+<li>构建系统发育树：亲缘关系的分析。</li>
+<li>比较基因功能：比较不同物种间的基因功能。</li>
+<li>预测蛋白质结构，分类和注释蛋白和ncRNA：通过与已知功能的基因序列的相似性比对，进行基因功能的预测和注释。</li>
+<li>序列拼接：通过比对，组装基因组。</li>
+<li>突变分析：不同个体基因组间的差异；不同物种基因组间的共线性和结构变异。</li>
+<li>检测适应性进化</li>
+</ul>
+<h2 id="2-3-重要性"><a href="#2-3-重要性" class="headerlink" title="2.3. 重要性"></a>2.3. 重要性</h2><p>多序列比对的准确性与进化分析的准确性息息相关，不同比对软件和过滤软件的结果不同。</p>
+<p>Blackburner和Whelan在2013年发表在MBE上的文章《Class of Multiple Sequence Alignment Algorithm Affects Genomic Analysis》对不同的比对算法和软件进行了比较分析，提出多序列比对MSA方法对下游分析至关重要，系统发育树和分支长度的推断高度依赖使用的多序列比对MSA类别，基于相似性的比对软件倾向于识别适应性进化（正选择）。</p>
+<p>简单的对齐后过滤不能解决不同MSA方法间的差异。</p>
+<h1 id="3-多序列比对-Multiple-Sequence-Alignment-MSA-的算法"><a href="#3-多序列比对-Multiple-Sequence-Alignment-MSA-的算法" class="headerlink" title="3. 多序列比对(Multiple Sequence Alignment,MSA)的算法"></a>3. 多序列比对(Multiple Sequence Alignment,MSA)的算法</h1><p>多序列比对是双序列比对的扩展。</p>
+<h2 id="3-1-动态规划算法-dynamic-programming-——-主要用于双序列比对"><a href="#3-1-动态规划算法-dynamic-programming-——-主要用于双序列比对" class="headerlink" title="3.1. 动态规划算法(dynamic programming) —— 主要用于双序列比对"></a>3.1. 动态规划算法(dynamic programming) —— 主要用于双序列比对</h2><p>算法特点：</p>
+<ul>
+<li>可以给出最优解。</li>
+<li>将一个二维的动态规划矩阵扩展到三维或多维，即可用于多序列比对。</li>
+<li>比对序列超过3个，需要的存储空间和运算时间都使得比对应用无法实现。<h3 id="3-1-1-基于全局比对的算法：Needleman-Wunsch算法"><a href="#3-1-1-基于全局比对的算法：Needleman-Wunsch算法" class="headerlink" title="3.1.1. 基于全局比对的算法：Needleman-Wunsch算法"></a>3.1.1. 基于全局比对的算法：Needleman-Wunsch算法</h3></li>
+</ul>
+<ol>
+<li><p><strong>全局比对</strong><br> 全局比对是指将参与比对的两条序列里面的所有字符进行比对。全局比对在全局范围内对两条序列进行比对打分，找出最佳比对，主要被用来寻找关系密切的序列。其可以用来鉴别或证明新序列与已知序列家族的同源性，是进行分子进化分析的重要前提。其代表是Needleman-Wunsch算法。</p>
+</li>
+<li><p>全局比对算法特点：</p>
+</li>
+</ol>
+<ul>
+<li>打分矩阵：罚分分值不同，比对结果不同。</li>
+<li>计算比对最高得分的算法：常用Needleman-Wunsch算法。</li>
+<li>打印出最高得分相应的序列比对结果：根据得分矩阵回溯，找到最高得分结果。</li>
+</ul>
+<h3 id="3-1-2-基于局部比对的算法：Smith-Waterman算法"><a href="#3-1-2-基于局部比对的算法：Smith-Waterman算法" class="headerlink" title="3.1.2. 基于局部比对的算法：Smith-Waterman算法"></a>3.1.2. 基于局部比对的算法：Smith-Waterman算法</h3><ol>
+<li><p><strong>局部比对</strong><br> 与全局比对不同，局部比对不必对两个完整的序列进行比对，而是在每个序列中使用某些局部区域片段进行比对。其产生的需求在于、人们发现有的蛋白序列虽然在序列整体上表现出较大的差异性，但是在某些局部区域能独立的发挥相同的功能，序列相当保守。这时候依靠全局比对明显不能得到这些局部相似序列的。其次，在真核生物的基因中，内含子片段表现出了极大变异性，外显子区域却较为保守，这时候全局比对表现出了其局限性，无法找出这些局部相似性序列。其代表是Smith-Waterman局部比对算法。BLAST是局部比对的一种推广。</p>
+</li>
+<li><p>Smith-Waterman算法特点</p>
+</li>
+</ol>
+<ul>
+<li>是一种用来寻找并比较具有局部相似性区域的动态规划算法，适用于亲缘关系较远，整体上不具有相似性而在一些较小区域存在局部相似性的两条序列。</li>
+<li>使用迭代方法计算出每个序列的相似分值，保存在一个得分矩阵M中，然后根据这个得分矩阵，通过动态规划的方法回溯找到最优的比对序列。</li>
+</ul>
+<h2 id="3-2-启发式搜索算法-heuristic-algorithm-：BWT算法和BLAST算法"><a href="#3-2-启发式搜索算法-heuristic-algorithm-：BWT算法和BLAST算法" class="headerlink" title="3.2. 启发式搜索算法(heuristic algorithm)：BWT算法和BLAST算法"></a>3.2. 启发式搜索算法(heuristic algorithm)：BWT算法和BLAST算法</h2><p>一个基于直观或经验构造的算法，在可接受的花费下给出待解决组合优化问题每一个实例的一个可行解，该可行解与最优解的偏离程度一般不能被预计；目前绝大多数应用的比对软件都是启发式算法。</p>
+<ul>
+<li>渐进式算法(progressive methods): Clustal W,MUSCLE,T-Coffee,DiAlign</li>
+<li>迭代算法(iterative methods): MUSCLE,PRRP算法</li>
+<li>星对比算法</li>
+</ul>
+<h2 id="3-3-随机算法"><a href="#3-3-随机算法" class="headerlink" title="3.3. 随机算法"></a>3.3. 随机算法</h2><p>对构造好的目标函数进行最优解搜索。</p>
+<ul>
+<li>遗传算法：借鉴生物界进化规律演化来的全局意义上的自适应随机搜索方法。</li>
+<li>模拟退火算法：用一物质系统的退火过程来模拟优化问题的寻优方法，当物质系统达到最小能量状态时，优化问题的目标函数也相应地达到了全局最优解。</li>
+<li>粒子群算法</li>
+</ul>
+<h2 id="3-4-其他算法"><a href="#3-4-其他算法" class="headerlink" title="3.4. 其他算法"></a>3.4. 其他算法</h2><p>还有一些其他不常见的算法</p>
+<ol>
+<li>分治算法</li>
+<li>蚁群算法</li>
+</ol>
+<h1 id="4-序列选择和比对前处理"><a href="#4-序列选择和比对前处理" class="headerlink" title="4. 序列选择和比对前处理"></a>4. 序列选择和比对前处理</h1><p>一般来说，同源序列、同一家族的序列才会进行比对。</p>
+<p><strong>通用的序列选择标准</strong>：</p>
+<ul>
+<li>如果是编码区序列，优先选蛋白序列。因为蛋白序列短且含有20种氨基酸信息，比DNA的4种核苷酸信息更多。</li>
+<li>如果是数据库里选序列，尽量选择有详细注释的，可以在后续分析中提供更多信息。</li>
+<li>多序列比对选用10-15条开始比对。如果比对结果不错，再加其他序列比对；如果比对结果不好，对现有序列处理（比如删除，剪辑等）。比对序列数量不是越多越好，多了可能增加比对软件出错概率。</li>
+<li>如果有一条序列与半数以上其他序列一致性低于30%，比对会有问题。（一般氨基酸序列一致性在30-70%，E-value在10^-40-10^-5，仅供参考）。</li>
+<li>如果有序列间一致性太高的，多序列比对也没什么价值，结果一直不错。</li>
+<li>很多比对软件擅长比对总长度类似的序列，对长短不一的序列可以尝试比对前剪辑。</li>
+<li>一般的比对软件对有重复片段的多序列比对时会有问题，尤其是序列间重复次数不同时问题更大，需要人工提取这部分手工比对。</li>
+</ul>
+<h1 id="5-多序列比对软件"><a href="#5-多序列比对软件" class="headerlink" title="5. 多序列比对软件"></a>5. 多序列比对软件</h1><h2 id="5-1-比对软件概况"><a href="#5-1-比对软件概况" class="headerlink" title="5.1. 比对软件概况"></a>5.1. 比对软件概况</h2><ol>
+<li>基于相似性的比对(similarity-MSAMs)</li>
+</ol>
+<ul>
+<li>经典渐进式比对(progressive alignment)软件：ClustalW</li>
+<li>现代渐进式比对软件：DIALIGN-TX, MUSCLE</li>
+<li>一致性比对软件(Consistency methods)：MUMMALS,ProbAlign,ProbCons,MAFFT,T-Coffee。</li>
+</ul>
+<ol start="2">
+<li>基于进化关系的比对</li>
+</ol>
+<ul>
+<li>PRANK</li>
+<li>BAli-Phy</li>
+<li>StatAlign</li>
+</ul>
+<ol start="3">
+<li>其他</li>
+</ol>
+<ul>
+<li>MACSE</li>
+<li>基于隐马尔可夫模型(Profile HMM Methods)的比对：SEPP, TIPP, UPP, HIPPI</li>
+</ul>
+<h2 id="5-2-基于相似性的比对-similarity-MSAMs"><a href="#5-2-基于相似性的比对-similarity-MSAMs" class="headerlink" title="5.2. 基于相似性的比对(similarity-MSAMs)"></a>5.2. 基于相似性的比对(similarity-MSAMs)</h2><h3 id="5-2-1-Clustal-1994"><a href="#5-2-1-Clustal-1994" class="headerlink" title="5.2.1. Clustal(1994)"></a>5.2.1. Clustal(1994)</h3><p>Clustal版本有X、W系列，目前最新的Omega表现最好。</p>
+<p>基于渐进式比对(progressive alignment)，由引导树(guide tree)确定将序列添加到不断增长的MSA中的顺序，此算法通过成对的序列(sequence)-序列，序列-剖面(profile)，剖面-剖面的比对实现。</p>
+<ol>
+<li>算法流程</li>
+</ol>
+<ul>
+<li>先进行序列两两比对，构建距离矩阵；</li>
+<li>基于两两比对距离矩阵，通过计算构建系统进化引导树(guide tree)，对关系密切的序列进行加权；</li>
+<li>从关系最近的两条序列开始，逐渐加入关系远的序列并不断重新构建多序列比对，直到所有序列都被加入为止。</li>
+</ul>
+<ol start="2">
+<li>算法特点</li>
+</ol>
+<ul>
+<li>是一种试探算法，渐进式比对算法都不能保证得到最优的比对。</li>
+<li>比对准确性高度依赖开始的两两比对，适用于<strong>亲缘关系较近</strong>的序列。</li>
+</ul>
+<h3 id="5-2-2-MUSCLE-2004"><a href="#5-2-2-MUSCLE-2004" class="headerlink" title="5.2.2. MUSCLE(2004)"></a>5.2.2. MUSCLE(2004)</h3><p>特点：</p>
+<ul>
+<li>采用迭代方法进行比对运算，每一次最优化过程就是迭代过程，通过不断使用动态规划法重排来纠正错误，同时对这些亚类群进行比对以获得所有序列的全局比对。</li>
+<li>相对Clustal，在比对速度和精度上都更优。</li>
+<li>相对Clustal，添加了额外的步骤，包括改进起始树(starting tree)，重新选择树的分支和重新对齐任一剖面的改进步骤。</li>
+</ul>
+<h3 id="5-2-3-MAFFT-2002"><a href="#5-2-3-MAFFT-2002" class="headerlink" title="5.2.3. MAFFT(2002)"></a>5.2.3. MAFFT(2002)</h3><p>特点：</p>
+<ul>
+<li>基于渐进式比对的算法，用快速傅里叶变换(fast Fourier transform)对序列进行聚类，再实现成对比对(pairwise alignments)；</li>
+<li>之后的版本增加了其他算法和操作模式，包括快速、精确模式，非编码RNA序列比对及在现有比对中添加新的序列。</li>
+<li>实现了两种算法，累进方法（FFT‐NS‐2）和迭代优化方法（FFT‐NS‐i）</li>
+<li>比对精度比MUSCLE高，速度也快。</li>
+</ul>
+<h3 id="5-2-4-T-Coffee-2000"><a href="#5-2-4-T-Coffee-2000" class="headerlink" title="5.2.4. T-Coffee (2000)"></a>5.2.4. T-Coffee (2000)</h3><p>与MAFFT功能类似，但包括更复杂的成对比对评分函数，MSA必须描述一组一致的成对比对。</p>
+<h2 id="5-3-基于进化关系的比对-——-统计比对-statistical-alignment"><a href="#5-3-基于进化关系的比对-——-统计比对-statistical-alignment" class="headerlink" title="5.3. 基于进化关系的比对 —— 统计比对(statistical alignment)"></a>5.3. 基于进化关系的比对 —— 统计比对(statistical alignment)</h2><h3 id="5-3-1-统计比对的特点"><a href="#5-3-1-统计比对的特点" class="headerlink" title="5.3.1. 统计比对的特点"></a>5.3.1. 统计比对的特点</h3><ul>
+<li>统计比对(statistical alignment)是在进化学语境下描述序列的变化，能够确定各序列在与其共同祖先分化后发生的插入、替换和删除的过程，在系统发育树上明确建模。</li>
+<li>可以根据序列的差异性灵活地使用不同地比对标准（评分矩阵与罚分），基于渐进式的比对无法做到</li>
+<li>基于进化关系，准确性优于渐进式比对，但由于计算量大，很少使用在基因组数据上。</li>
+</ul>
+<h3 id="5-3-2-BAli-Phy-2005"><a href="#5-3-2-BAli-Phy-2005" class="headerlink" title="5.3.2. BAli-Phy(2005)"></a>5.3.2. BAli-Phy(2005)</h3><ul>
+<li>贝叶斯后验比对</li>
+<li>利用马尔科夫链蒙特卡罗来探索给定分子序列数据的比对和系统发育的联合空间，同时估计消除了对不准确的比对引导树的偏差，在比对过程中采用了更复杂的替换模型，并自动利用共享插入&#x2F;删除中的信息来帮助推断系统发育关系</li>
+<li>准确度和PRANK差不多？</li>
+</ul>
+<h3 id="5-3-3-PRANK-2008"><a href="#5-3-3-PRANK-2008" class="headerlink" title="5.3.3. PRANK(2008)"></a>5.3.3. PRANK(2008)</h3><p>特点：</p>
+<ul>
+<li>针对DNA,密码子(codon)和氨基酸序列的概率多重比对软件（有密码子和氨基酸模式）；</li>
+<li>可以重新构建祖先序列，有DNA翻译(DNA translation)和回译(back-translation)选项；</li>
+<li>对完全统计对齐的启发式(heuristic)方法；</li>
+<li>准确度高，但非常耗时，不适合基因组数据；</li>
+</ul>
+<p>p.s.：PRANK比对过后序列顺序会被打乱，与比对前不一致，做后续处理时要小心。</p>
+<h3 id="5-3-4-StatAlign-2008"><a href="#5-3-4-StatAlign-2008" class="headerlink" title="5.3.4. StatAlign(2008)"></a>5.3.4. StatAlign(2008)</h3><h2 id="5-4-MACSE"><a href="#5-4-MACSE" class="headerlink" title="5.4. MACSE"></a>5.4. MACSE</h2><p>了解得不多，先摘录在这里。</p>
+<ul>
+<li>第一个可以用于自动调整含有移码变异以及假基因的蛋白编码序列，而不破坏潜在密码子结构。</li>
+<li>在核苷酸水平上对DNA序列进行比对，但有可能包括不是三个碱基倍数的间隙长度（即产生移码），同时基于其氨基酸翻译对产生的核苷酸比对进行评分。</li>
+<li>这可以产生保留潜在密码子结构的核苷酸比对，同时受益于氨基酸序列的更高相似性。</li>
+<li>已被用于基因组分析中</li>
+<li>OrthoMAM v8&#x2F;v10数据库采用这个软件的分析流程</li>
+</ul>
+<h2 id="5-5-基于隐马尔可夫模型-Profile-HMM-Methods-的比对"><a href="#5-5-基于隐马尔可夫模型-Profile-HMM-Methods-的比对" class="headerlink" title="5.5. 基于隐马尔可夫模型(Profile HMM Methods)的比对"></a>5.5. 基于隐马尔可夫模型(Profile HMM Methods)的比对</h2><h3 id="5-5-1-SEPP-SATe-enabled-Phylogenetic-Placement"><a href="#5-5-1-SEPP-SATe-enabled-Phylogenetic-Placement" class="headerlink" title="5.5.1. SEPP(SATe-enabled Phylogenetic Placement)"></a>5.5.1. SEPP(SATe-enabled Phylogenetic Placement)</h3><p>解决将short reads放进参考序列和树的系统发育问题</p>
+<h3 id="5-5-2-TIPP-Taxonomic-Identification-and-Phylogenetic-Profiling"><a href="#5-5-2-TIPP-Taxonomic-Identification-and-Phylogenetic-Profiling" class="headerlink" title="5.5.2. TIPP(Taxonomic Identification and Phylogenetic Profiling)"></a>5.5.2. TIPP(Taxonomic Identification and Phylogenetic Profiling)</h3><p>解决元组数据的分类识别和丰度分析问题</p>
+<h3 id="5-5-3-UPP-Ultra-large-alignments-using-Phylogeny-aware-Profiles"><a href="#5-5-3-UPP-Ultra-large-alignments-using-Phylogeny-aware-Profiles" class="headerlink" title="5.5.3. UPP(Ultra-large alignments using Phylogeny-aware Profiles)"></a>5.5.3. UPP(Ultra-large alignments using Phylogeny-aware Profiles)</h3><p>解决非常大的数据集对齐的问题，这些数据集可能包括零碎数据，可以将数据集多达1,000,000条序列对齐；</p>
+<h3 id="5-5-4-HIPPI-Highly-Accurate-Protein-Family-Classificatio-with-Ensembles-of-HMMs"><a href="#5-5-4-HIPPI-Highly-Accurate-Protein-Family-Classificatio-with-Ensembles-of-HMMs" class="headerlink" title="5.5.4. HIPPI(Highly Accurate Protein Family Classificatio with Ensembles of HMMs)"></a>5.5.4. HIPPI(Highly Accurate Protein Family Classificatio with Ensembles of HMMs)</h3><p>解决蛋白质家族分类问题</p>
+<h1 id="6-Trimming-质量过滤软件"><a href="#6-Trimming-质量过滤软件" class="headerlink" title="6. Trimming - 质量过滤软件"></a>6. Trimming - 质量过滤软件</h1><p>在比对完成后，使用质量过滤软件过滤一些低质量以及高变异度的序列区域，仅保留进化保守的区域用于后续分析。</p>
+<h2 id="6-1-产生低质量区域的原因"><a href="#6-1-产生低质量区域的原因" class="headerlink" title="6.1. 产生低质量区域的原因"></a>6.1. 产生低质量区域的原因</h2><ul>
+<li>序列特征：远缘物种的序列在一些位置（例如第一个或最后一个外显子）有很大差异，这种真实存在的差异由于受到选择的影响，不适用于推断系统发育树（希望用保守区域推断系统发育关系）。</li>
+<li>各种错误：包括测序错误、基因组组装错误、基因预测错误和多序列比对错误等。</li>
+</ul>
+<h2 id="6-2-多序列比对后过滤软件"><a href="#6-2-多序列比对后过滤软件" class="headerlink" title="6.2. 多序列比对后过滤软件"></a>6.2. 多序列比对后过滤软件</h2><h3 id="6-2-1-常见过滤软件"><a href="#6-2-1-常见过滤软件" class="headerlink" title="6.2.1. 常见过滤软件"></a>6.2.1. 常见过滤软件</h3><ol>
+<li><strong>block-filtering</strong>: trimAl,Gblocks</li>
+<li><strong>segment filtering</strong>: HmmCleaner,PREQUAL（基于隐马尔可夫模型的算法）</li>
+<li><strong>sliding window analysis</strong>: FasParser2</li>
+</ol>
+<h3 id="6-2-2-Gblocks-2000"><a href="#6-2-2-Gblocks-2000" class="headerlink" title="6.2.2. Gblocks(2000)"></a>6.2.2. Gblocks(2000)</h3><ul>
+<li>删除大片段非保守性或非同源性片段（6-10bp的非同源片段识别得不好），还对block(即一段连续不含Gap的列)的长度进行了限制。</li>
+<li>不足：武断地规定了某个具体阈值来判断比对片段的保留或删除，对所有基因和所有片段一刀切式的处理，没有考虑不同片段的不同进化速率。</li>
+</ul>
+<h3 id="6-2-3-trimAl-2009"><a href="#6-2-3-trimAl-2009" class="headerlink" title="6.2.3. trimAl(2009)"></a>6.2.3. trimAl(2009)</h3><ul>
+<li>优点：速度快，准确度高。</li>
+<li>比起Gblocks，可自动选择每个特定比对中的参数，包括Gap比例和氨基酸相似性水平，从而优化signal-to-noise ratio。</li>
+</ul>
+<h3 id="6-2-4-HmmCleaner"><a href="#6-2-4-HmmCleaner" class="headerlink" title="6.2.4. HmmCleaner"></a>6.2.4. HmmCleaner</h3><ul>
+<li>基于隐马尔可夫模型的新过滤算法。</li>
+<li>只能过滤氨基酸序列。</li>
+</ul>
+<h3 id="6-2-5-PREQUAL"><a href="#6-2-5-PREQUAL" class="headerlink" title="6.2.5. PREQUAL"></a>6.2.5. PREQUAL</h3><ul>
+<li>基于隐马尔可夫模型的新过滤算法。</li>
+<li>针对非比对的蛋白编码序列及氨基酸序列。</li>
+</ul>
+<h3 id="6-2-6-FasParser2-2018"><a href="#6-2-6-FasParser2-2018" class="headerlink" title="6.2.6. FasParser2(2018)"></a>6.2.6. FasParser2(2018)</h3><ul>
+<li>有图形界面。</li>
+<li>包括有效过滤序列比对质量模块（滑窗分析），可实现大规模检测序列中经历正选择的位点并清除。</li>
+</ul>
+<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sequence_alignment">https://en.wikipedia.org/wiki/Sequence_alignment</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%A4%9A%E9%87%8D%E5%BA%8F%E5%88%97%E6%AF%94%E5%B0%8D">https://zh.wikipedia.org/zh-hans/%E5%A4%9A%E9%87%8D%E5%BA%8F%E5%88%97%E6%AF%94%E5%B0%8D</a></li>
+<li><a target="_blank" rel="noopener" href="https://academic.oup.com/mbe/article/30/3/642/1038709?login=true">https://academic.oup.com/mbe/article/30/3/642/1038709?login=true</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/430f21cce4f5">https://www.jianshu.com/p/430f21cce4f5</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/31fb919f1c91">https://www.jianshu.com/p/31fb919f1c91</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/150579075">https://zhuanlan.zhihu.com/p/150579075</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/06/bioinfo_MSA/" data-id="cl1aiqcra001sm4vkb3my79g8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clustal/" rel="tag">Clustal</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gblocks/" rel="tag">Gblocks</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MAFFT/" rel="tag">MAFFT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MSA/" rel="tag">MSA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MUSCLE/" rel="tag">MUSCLE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Multiple-Sequence-Alignment/" rel="tag">Multiple Sequence Alignment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRANK/" rel="tag">PRANK</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sequence-alignment/" rel="tag">sequence alignment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/trimAl/" rel="tag">trimAl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/trimming/" rel="tag">trimming</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-biosoft_QUAST" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/23/biosoft_QUAST/" class="article-date">
+  <time datetime="2021-08-23T06:30:00.000Z" itemprop="datePublished">2021-08-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/biosoft/">biosoft</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/23/biosoft_QUAST/">QUAST评估基因组组装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+
+<h1 id="1-QUAST是什么"><a href="#1-QUAST是什么" class="headerlink" title="1. QUAST是什么"></a>1. QUAST是什么</h1><p>QUAST(Quality Assessment Tool for Genome Assemblies)是基因组质量评估工具，通过计算各种指标来评估基因组的组装，包括N50,L50，GC含量等contig基本信息。</p>
+<p>QUAST基于python开发，matplotlib绘图。</p>
+<h1 id="2-QUAST网站"><a href="#2-QUAST网站" class="headerlink" title="2. QUAST网站"></a>2. QUAST网站</h1><p>主页：<a target="_blank" rel="noopener" href="http://bioinf.spbau.ru/quast">http://bioinf.spbau.ru/quast</a><br>github: <a target="_blank" rel="noopener" href="https://github.com/ablab/quast">https://github.com/ablab/quast</a></p>
+<h1 id="3-QUAST安装"><a href="#3-QUAST安装" class="headerlink" title="3. QUAST安装"></a>3. QUAST安装</h1><ol>
+<li>下载解压缩即可使用<br>QUAST会在第一次使用时自动编译所有子部分，因此不需要安装，解压缩即可使用。</li>
+</ol>
+<ul>
+<li><code>wget -c https://github.com/ablab/quast/releases/download/quast_5.1.0rc1/quast-5.1.0rc1.tar.gz</code></li>
+<li><code>tar -zxvf quast-5.1.0rc1.tar.gz</code></li>
+<li><code>python quast.py --help</code></li>
+<li><code>python quast.py --version</code></li>
+</ul>
+<ol start="2">
+<li><p>conda安装<br><code>conda install -y quast</code></p>
+</li>
+<li><p>Ubuntu 20.04系统上安装<br><code>sudo apt-get update &amp;&amp; sudo apt-get install -y pkg-config libfreetype6-dev libpng-dev python3-matplotlib</code></p>
+</li>
+</ol>
+<h1 id="4-QUAST使用"><a href="#4-QUAST使用" class="headerlink" title="4. QUAST使用"></a>4. QUAST使用</h1><p>简化版：<code>quast.py contigs.fas</code></p>
+<p>全面版：<code>quast.py contigs_1.fa contigs_2.fa -r reference.fa.gz -g genes.txt -1 reads1.fastq.gz -2 reads2.fastq.gz -o quast_out -t 12</code></p>
+<p>contigs.fa是必须提供的，即等待评估组装质量的基因组，可以多个同时评估。<br>-r 参考基因组，可选；提供后有比较结果。<br>-g 参考基因组的features文件，GFF,BED文件<br>-1和-2 PE测序的FASTQ文件，可选<br>-o 结果输出目录<br>-t 线程</p>
+<h1 id="5-QUAST结果"><a href="#5-QUAST结果" class="headerlink" title="5. QUAST结果"></a>5. QUAST结果</h1><ol>
+<li>结果文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">report.txt      summary table</span><br><span class="line">report.tsv      tab-separated version, for parsing, or for spreadsheets (Google Docs, Excel, etc)  </span><br><span class="line">report.tex      Latex version</span><br><span class="line">report.pdf      PDF version, includes all tables and plots for some statistics</span><br><span class="line">report.html     everything in an interactive HTML file</span><br><span class="line">icarus.html     Icarus main menu with links to interactive viewers</span><br><span class="line">contigs_reports/        [only if a reference genome is provided]</span><br><span class="line">  misassemblies_report  detailed report on misassemblies</span><br><span class="line">  unaligned_report      detailed report on unaligned and partially unaligned contigs</span><br><span class="line">k_mer_stats/            [only if --k-mer-stats is specified]</span><br><span class="line">  kmers_report          detailed report on k-mer-based metrics</span><br><span class="line">reads_stats/            [only if reads are provided]</span><br><span class="line">  reads_report          detailed report on mapped reads statistics</span><br></pre></td></tr></table></figure>
+
+<p>看report.html网页结果全面，会有图和数据，report.txt则是主要数据。</p>
+<ol start="2">
+<li>结果示例</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">cat report.txt</span><br><span class="line">Assembly                    sample</span><br><span class="line"># contigs (&gt;= 0 bp)         266</span><br><span class="line"># contigs (&gt;= 1000 bp)      266</span><br><span class="line"># contigs (&gt;= 5000 bp)      186</span><br><span class="line"># contigs (&gt;= 10000 bp)     159</span><br><span class="line"># contigs (&gt;= 25000 bp)     108</span><br><span class="line"># contigs (&gt;= 50000 bp)     30</span><br><span class="line">Total length (&gt;= 0 bp)      256218469</span><br><span class="line">Total length (&gt;= 1000 bp)   256218469</span><br><span class="line">Total length (&gt;= 5000 bp)   256043090</span><br><span class="line">Total length (&gt;= 10000 bp)  255847102</span><br><span class="line">Total length (&gt;= 25000 bp)  254902657</span><br><span class="line">Total length (&gt;= 50000 bp)  252626053</span><br><span class="line"># contigs                   266</span><br><span class="line">Largest contig              33924140</span><br><span class="line">Total length                256218469</span><br><span class="line">GC (%)                      42.94</span><br><span class="line">N50                         20460156</span><br><span class="line">N90                         13725599</span><br><span class="line">L50                         5</span><br><span class="line">L90                         11</span><br><span class="line"># N&#x27;s per 100 kbp           66.54</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/23/biosoft_QUAST/" data-id="cl1aiqcro002wm4vk0isdcniy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QUAST/" rel="tag">QUAST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-omics_genome.management" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/10/omics_genome.management/" class="article-date">
+  <time datetime="2021-08-10T08:30:00.000Z" itemprop="datePublished">2021-08-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/omics/">omics</a>►<a class="article-category-link" href="/categories/omics/genome/">genome</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/10/omics_genome.management/">基因组组装和注释结果的整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1833352&auto=1&height=32"></iframe></div>
+
+
+<h1 id="1-基因组整理【组装之后，注释之前】"><a href="#1-基因组整理【组装之后，注释之前】" class="headerlink" title="1. 基因组整理【组装之后，注释之前】"></a>1. 基因组整理【组装之后，注释之前】</h1><h2 id="1-1-基因组碱基整理"><a href="#1-1-基因组碱基整理" class="headerlink" title="1.1. 基因组碱基整理"></a>1.1. 基因组碱基整理</h2><p>基因组碱基-u修改成大写字母形式，同时建议使用-w 0把序列输出限定为一行序列。</p>
+<p><code>seqkit seq -u -w 0 genome.old.fa&gt;genome.new.fa</code></p>
+<h2 id="1-2-基因组碱基小写带来的问题："><a href="#1-2-基因组碱基小写带来的问题：" class="headerlink" title="1.2. 基因组碱基小写带来的问题："></a>1.2. 基因组碱基小写带来的问题：</h2><ol>
+<li>edta运行TIR预测时，报错并中断运行。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EDTA/bin/TIR-Learner2.5/Module2/RunGRF.py&quot;, line 79, in &lt;module&gt;</span><br><span class="line">    if (len(str(records[0].seq))&gt;int(length)+500):</span><br><span class="line">IndexError: list index out of range</span><br><span class="line">cp: cannot stat &#x27;TIR-Learner/*-p&#x27;: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>geta生成基因注释结果减少。<br>前期运行不受影响，会在geta生成的&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;中合并前面步骤预测结果时把许多基因预测结果识别为partial而筛除掉本为完整的基因，可看到&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.gff3的gene数量是正常的，而out.tmp&#x2F;6.combineGeneModels&#x2F;genome.completed.gff3明显降低，&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.partial.gff3明显升高。out.tmp&#x2F;6.combineGeneModels&#x2F;genome.filter.gff3是最后的基因注释结果，即out.gff3也相应减少。</li>
+<li>maker的某些运行步骤也会出错。</li>
+</ol>
+<h2 id="1-3-基因组序列ID修改"><a href="#1-3-基因组序列ID修改" class="headerlink" title="1.3. 基因组序列ID修改"></a>1.3. 基因组序列ID修改</h2><h3 id="1-3-1-排序【optional】–根据需要选择"><a href="#1-3-1-排序【optional】–根据需要选择" class="headerlink" title="1.3.1. 排序【optional】–根据需要选择"></a>1.3.1. 排序【optional】–根据需要选择</h3><p>按长度对基因组contigs进行从长到短的排序</p>
+<p><code>seqkit sort -l -r -w 0 genome.old.fa &gt;genome.sort.fa</code> </p>
+<h3 id="1-3-2-重命名【推荐】"><a href="#1-3-2-重命名【推荐】" class="headerlink" title="1.3.2. 重命名【推荐】"></a>1.3.2. 重命名【推荐】</h3><p>最好重命名成长度一致的数字，避免后期分析遇到contig1和contig11同时被匹配的问题。</p>
+<ol>
+<li>solution A【速度最快，推荐】<br>序列IDs按顺序命名为1-n的数字，–nr-width可以设置数字的长度，长度为5时第一条序列名称为00001。</li>
+</ol>
+<p><code>seqkit replace -p &#39;.*&#39; -r &#123;nr&#125; --nr-width 5 genome.sort.fa</code> </p>
+<ol start="2">
+<li>solution B<br>把序列id重命名成1-n的数字</li>
+</ol>
+<p><code>awk &#39;BEGIN&#123;i=0 ; FS=&quot;,&quot; ; OFS=&quot;,&quot;&#125;&#123; if(/&gt;/)&#123;gsub($1,&quot;&gt;&quot;++i,$1);print $0&#125;else&#123;print $0&#125;&#125;&#39; genome.sort.fa&gt;genome.fa</code> </p>
+<p>基因组的序列id改为scaf001的形式</p>
+<p><code>sed -i &quot;s/&gt;/&gt;scaf/g&quot; genome.fa</code> </p>
+<ol start="3">
+<li>solution C<br>把基因组序列id的数字1-100改成0001-0100这种数字位数相同的格式。这个没有solution A快，只推荐在不想做大规模更改的情况下使用。</li>
+</ol>
+<p>用下面脚本实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">j=1</span><br><span class="line">for i in `seq -w 1 0100` #把相同数字位数的0001-0100依次赋值给变量i</span><br><span class="line">do</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.fa #两次替换，第一次替换scaffold$j为行尾的字符串（比如在基因组序列文件中），第二次替换scaffold$j不为行尾的字符串，[^0-9]代表不为数字的任意一个字符，\1代表替换前括号([^0-9])中的内容。</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.gff #同上，替换其他文件，比如gff文件。</span><br><span class="line">	j=$(($j+1)) #把1-100依次赋值给变量j</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-基因组注释整理【注释结果整理】"><a href="#2-基因组注释整理【注释结果整理】" class="headerlink" title="2. 基因组注释整理【注释结果整理】"></a>2. 基因组注释整理【注释结果整理】</h1><h2 id="2-1-合并多个注释结果"><a href="#2-1-合并多个注释结果" class="headerlink" title="2.1. 合并多个注释结果"></a>2.1. 合并多个注释结果</h2><p>基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。</p>
+<p>合并两个基因注释文件（若是多个就依次合并）</p>
+<ol>
+<li><p>输出A.gff中符合要求的行，即A.gff中与B.gff中位置有overlap的行。<br><code>bedtools intersect -a A.gff -b B.gff -wa &gt;A.dup.gff</code> </p>
+</li>
+<li><p>输出只在A.gff存在的行，即把A.dup.gff从A.gff中删除，需要两个文件都已排序，若未排序先sort排序再处理。<br><code>comm -1 A.gff A.dup.gff &gt;A.filter.gff</code> </p>
+</li>
+<li><p>合并B.gff和A.gff中与B.gff不重复的部分。<br><code>cat B.gff A.filter.gff &gt;sample.gff</code></p>
+</li>
+</ol>
+<h2 id="2-2-重命名注释结果【可选】"><a href="#2-2-重命名注释结果【可选】" class="headerlink" title="2.2. 重命名注释结果【可选】"></a>2.2. 重命名注释结果【可选】</h2><p>根据需要选择【非必要的】，根据染色体位置顺序对注释的基因结果进行排序和重命名整理。<br>除了基因注释外，不同分析源都可能发现新的基因，增加注释的基因数量，从而打乱顺序。</p>
+<h3 id="2-2-1-排序"><a href="#2-2-1-排序" class="headerlink" title="2.2.1. 排序"></a>2.2.1. 排序</h3><ol>
+<li>把sample.gff3中gene替换成1gene，mRNA替换成2mRNA，exon替换成3exon，CDS替换成4CDS；目的是确保排序后单个基因内部的顺序是1-2-3-4。<br><code>sed -i -e &quot;s/gene/1gene/g&quot; -e &quot;s/mRNA/2mRNA/g&quot; -e &quot;s/exon/3exon/g&quot; -e &quot;s/CDS/4CDS/g&quot; sample.gff3</code></li>
+<li>根据染色体位置排序。按照第一列第四个字符，第四列数值，第五列数值逆序依次排序。<br><code>cat sample.gff3 |sort -k 1.4n -k 4n -k 5nr &gt;sample.sort.gff3</code></li>
+<li>获得的sample.sort.gff3文件再1gene替换成gene，234类似替换。<br><code>sed -i -e &quot;s/1gene/gene/g&quot; -e &quot;s/2mRNA/mRNA/g&quot; -e &quot;s/3exon/exon/g&quot; -e &quot;s/4CDS/CDS/g&quot; sample.sort.gff3</code></li>
+</ol>
+<h3 id="2-2-2-重命名"><a href="#2-2-2-重命名" class="headerlink" title="2.2.2. 重命名"></a>2.2.2. 重命名</h3><ol>
+<li>复制一份注释文件用于修改和替换<br><code>cp sample.sort.gff3 sample.new.gff3</code></li>
+<li>获取旧ID的list。获取sample.sort.gff3第九列中的ID值。<br><code>cat sample.new.gff3 | awk &#39;$3==&quot;gene&quot; &#123;print $9&#125;&#39;|sed -e &quot;s/;.*//g&quot; -e &quot;s/ID=//g&quot; &gt;old.name</code></li>
+<li>获取新ID的list。<br><code>for i in $(seq -w 1 </code>cat old.name|wc -l<code>); do echo scaf$i; done &gt;new.name</code></li>
+<li>合并旧的和新的ID。<br><code>paste -d &quot;/&quot; old.name new.name &gt; old2new.name</code></li>
+<li>生成替换脚本old2new.sh。<br><code>sed -e &quot;s/^/sed -i \&quot;s\//g&quot; -e &quot;s/$/\/g sample.new.gff3/g\&quot;&quot; old2new.name &gt;old2new.sh</code></li>
+<li>运行替换脚本，会直接替换sample.new.gff3文件的旧ID为新ID，可能会运行较长时间。<br><code>sh old2new.sh</code></li>
+</ol>
+<p>ps：这部分代码可实现，但是是非常冗余的代码量（水平有限），且未必适用所有注释文件，谨慎参考。</p>
+<h2 id="2-3-从注释文件提取序列"><a href="#2-3-从注释文件提取序列" class="headerlink" title="2.3. 从注释文件提取序列"></a>2.3. 从注释文件提取序列</h2><p>用gffread根据注释文件从基因组提取基因序列:</p>
+<ul>
+<li>从基因组genome.fa和注释文件sample.gff3获取cds序列<br><code>gffread -x sample.cds.fa -g genome.fa sample.gff3</code></li>
+<li>从基因组genome.fa和注释文件sample.gff3获取exon序列<br><code>gffread -w sample.exon.fa -g genome.fa sample.gff3</code></li>
+<li>从基因组genome.fa和注释文件sample.gff3获取protein序列<br><code>gffread -y sample.protein.fa -g genome.fa sample.gff3</code></li>
+</ul>
+<h2 id="2-4-从注释文件提取intron信息"><a href="#2-4-从注释文件提取intron信息" class="headerlink" title="2.4. 从注释文件提取intron信息"></a>2.4. 从注释文件提取intron信息</h2><p>脚本<a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/modifiedscripts/extract_intron_info.pl">extract_intron_info.pl</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/10/omics_genome.management/" data-id="cl1aiqcrx003zm4vkchg66j9s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combine/" rel="tag">combine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/extract/" rel="tag">extract</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rename/" rel="tag">rename</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sort/" rel="tag">sort</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-omics_genome.repeat.annotation" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/02/omics_genome.repeat.annotation/" class="article-date">
+  <time datetime="2021-08-02T02:30:00.000Z" itemprop="datePublished">2021-08-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/omics/">omics</a>►<a class="article-category-link" href="/categories/omics/genome/">genome</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/02/omics_genome.repeat.annotation/">基因组注释（一）：重复序列注释</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=365639&auto=1&height=32"></iframe></div>
+
+<p><strong>防坑指南</strong></p>
+<ol>
+<li>基因组在组装后，注释前。<code>seqkit seq -u lower.geno &gt;upper.geno</code>改为碱基全部大写的形式，因为小写碱基有些软件是识别成soft-masked的形式，影响注释预测，edta的TIR预测和geta软件都有可能报错。（这个坑我已经踩两次了，唉~）</li>
+</ol>
+<p><strong>写在前面</strong></p>
+<p>多种参数和条件用下来推荐的方案是：</p>
+<ol>
+<li>RepeatModeler自我训练</li>
+<li>RepeatMasker加载Repbase数据库，并用-species参数指定近缘种，参考RepeatModeler自我训练结果做重复序列预测</li>
+<li>EDTA，提供转录组组装的CDS序列做过滤，实现Denovo的TE预测。</li>
+<li>结合RepeatMasker和EDTA的结果作为最终基因组的重复序列注释。</li>
+</ol>
+<h1 id="1-重复序列注释"><a href="#1-重复序列注释" class="headerlink" title="1. 重复序列注释"></a>1. 重复序列注释</h1><p>重复序列占基因组非常高的比例，对重复序列的注释一般是做基因组注释的第一步。常用的基因组重复序列注释软件有RepeatMasker, RepeatModeler, EDTA。</p>
+<p>转座子(transposable elements,TE)是可以在基因组内改变位置的一段DNA序列，通常由DNA复制造成，TE是基因组的重要组成部分。</p>
+<table>
+    <caption><h4>转座子(transposable elements,TEs)的分类</h4></caption>
+    <thead>
+    <tr>
+        <th>转座子</br>(transposable elements,TEs)</th>
+        <th>功能</th>
+        <th colspan="2">分类</th>
+        <th>结构特征</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td rowspan="5"><h6>I 类元件</br>/逆转录转座子(retrotransposons)</h6></td>
+        <td rowspan="5">在“复制和粘贴”转座机制中作为RNA中间体</td>
+        <td rowspan="3">长末端重复(long terminal repeat, LTR)逆转录转座子</td>
+        <td>Ty3-gypsy类</td>
+        <td>LTR 元件具有 5 bp 目标位点重复(TSD)；LTR-Gypsy元件为 5'-TG...CA-3'。</td>
+    </tr>
+    <tr>
+        <td>Ty1-copia类</td>
+        <td>LTR 元件具有 5 bp 目标位点重复(TSD)；LTR-Copia元件的标准末端序列为 5'-TG...C/G/TA-3'</td>
+    </tr>
+    <tr>
+        <td>其他，比如BEL-Pap类，内源性反转录病毒(HERV,MER4)等</td>
+        <td>---</td>
+    </tr>
+    <tr>
+        <td rowspan="2">非长末端重复(non-LTR)逆转录转座子</td>
+        <td>长散布核元件</br>(LINEs,long interspersed nuclear element)</td>
+        <td rowspan="2">non-LTR 具有可变长度的 TSD 或完全缺乏 TSD，而是与插入时侧翼序列的缺失相关。non-LTR 通常在元件的 3' 末端有一个末端 poly-A 尾</td>
+    </tr>
+    <tr>
+        <td>短散布核元件</br>(SINEs,short interspersed nuclear element)</td>
+    </tr>
+    <tr>
+        <td rowspan="3"><h6>II 类元件</br>/DNA 转座子(DNA transposons)</h6></td>
+        <td rowspan="3">在“剪切和粘贴”转座机制中作为DNA中间体</td>
+        <td colspan="2">TIR元件</br>(TIR末端反向重复序列,这里指具有TIRs结构的DNA转座子，包括微型反向转座元件MITEs)</td>
+        <td>---</td>
+    </tr>
+    <tr>
+        <td colspan="2">Helitron</td>
+        <td>通过滚环机制复制，因此不产生 TSD 序列，也没有 TIR，但具有特征 5'-TC…CTRR-3' 末端序列，通常在元素的 3' 端附近有一个富含 GC 的短茎环结构。</td>
+    </tr>
+    <tr>
+        <td colspan="2">Mavericks</br>非TE重复序列</br>(non-TE repeat sequence)</td>
+        <td>大尺寸，15-40 kbp</br>包含长的TIRs(几百对碱基)</br>包含保守的5'-AG...TC-3'末端</td>
+    </tr>
+    </tbody>
+</table>
+
+<h1 id="2-RepeatMasker"><a href="#2-RepeatMasker" class="headerlink" title="2. RepeatMasker"></a>2. RepeatMasker</h1><h2 id="2-1-RepeatMasker介绍"><a href="#2-1-RepeatMasker介绍" class="headerlink" title="2.1. RepeatMasker介绍"></a>2.1. RepeatMasker介绍</h2><p>RepeatMasker是基因组重复序列检测的常用工具。一般依赖于已有的重复序列参考库Repbase作同源预测。对于绝大部分目标真核物种，都收录在Repbase中。</p>
+<h2 id="2-2-RepeatMasker安装"><a href="#2-2-RepeatMasker安装" class="headerlink" title="2.2. RepeatMasker安装"></a>2.2. RepeatMasker安装</h2><ol>
+<li><p>conda安装<br><code>conda install -c bioconda repeatmasker</code></p>
+</li>
+<li><p>加载Repbase数据库【推荐】</p>
+</li>
+</ol>
+<ul>
+<li><p>强烈建议加载<a target="_blank" rel="noopener" href="https://www.girinst.org/server/RepBase/index.php">Repbase数据库</a>，遗传信息研究所发布的重复DNA数据库，收录了非常多的物种基因组的重复序列信息，目前是需要付费的，加载后重复序列注释率得到很大提升。</p>
+</li>
+<li><p>我上传了一个20181026的版本到百度云盘，可以下载：<br>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1g43z1DyHtiGxAGJMiC4nZQ">https://pan.baidu.com/s/1g43z1DyHtiGxAGJMiC4nZQ</a><br>提取码：ckc4</p>
+</li>
+<li><p>下载解压后把目录下两个文件RMRBSeqs.embl和README.RMRBSeqs放到RepeatMasker安装目录的Libraries目录下，如果是conda安装的在pathto&#x2F;anaconda3&#x2F;share&#x2F;RepeatMasker&#x2F;Libraries&#x2F;下。</p>
+</li>
+</ul>
+<ol start="3">
+<li>配置依赖</li>
+</ol>
+<ul>
+<li><p>在RepeatMasker目录下运行<code>perl ./configure</code>，依次配置trf的位置，选择搜索引擎（4选1，推荐RMBlast或者HMMER（nhmmer命令），可以配置多个，但运行时只能用一种，选完再选5）。</p>
+</li>
+<li><p>一般如果依赖的软件安装成功加入环境变量了，会在配置依赖时自动出现依赖软件的路径，如果没有则手动输入依赖软件的路径。最后提示RepeatMasker is now ready to use即表示配置成功。</p>
+</li>
+</ul>
+<h2 id="2-3-RepeatMasker使用"><a href="#2-3-RepeatMasker使用" class="headerlink" title="2.3. RepeatMasker使用"></a>2.3. RepeatMasker使用</h2><h3 id="2-3-1-查看数据库中的物种"><a href="#2-3-1-查看数据库中的物种" class="headerlink" title="2.3.1. 查看数据库中的物种"></a>2.3.1. 查看数据库中的物种</h3><ol>
+<li>Repbase数据库配置好以后，用<code>RepeatMasker/util/queryRepeatDatabse.pl -tree &gt;species.txt</code>可以在species.txt中查看数据库中的物种列表。</li>
+<li>查看RepeatMasker&#x2F;Libraries&#x2F;taxonomy.dat文件，也有所有已收录物种的名称。</li>
+</ol>
+<ul>
+<li>找到数据库中已有训练的物种或者近缘种后，在使用RepeatMasker时用参数-species指定库中已有物种作为参考。</li>
+</ul>
+<h3 id="2-3-2-RepeatModeler自我训练"><a href="#2-3-2-RepeatModeler自我训练" class="headerlink" title="2.3.2. RepeatModeler自我训练"></a>2.3.2. RepeatModeler自我训练</h3><ul>
+<li>大部分情况下数据库中没有待注释物种的近缘种，此时最好用RepeatModeler等软件进行自我训练，用denovo预测来构建重复序列数据库。</li>
+<li>即使数据库中已有近缘种，有时候Repbase注释重复区的效果不是很好，也推荐进行自我训练。</li>
+</ul>
+<h4 id="2-3-2-1-RepeatModeler安装"><a href="#2-3-2-1-RepeatModeler安装" class="headerlink" title="2.3.2.1. RepeatModeler安装"></a>2.3.2.1. RepeatModeler安装</h4><ol>
+<li>RepeatModeler依赖：</li>
+</ol>
+<ul>
+<li>配置好的RepeatMasker</li>
+<li>RECON：Denovo Repeat Finder</li>
+<li>RepeatScout：Denovo Repeat Finder</li>
+<li>NSEG</li>
+</ul>
+<ol start="2">
+<li><p>RepeatModeler支持conda安装：<code>conda install -c bioconda repeatmodeler</code></p>
+</li>
+<li><p>或者下载源码编译，再一步步指定依赖软件路径，类似RepeatMasker的安装过程。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget http://repeatmasker.org/RepeatModeler/RepeatModeler-open-1.0.11.tar.gz</span><br><span class="line">tar xzvf RepeatModeler-open-1.0.11.tar.gz</span><br><span class="line"> </span><br><span class="line">cd RepeatModeler-open-1.0.11</span><br><span class="line">chmod -R 755 *</span><br><span class="line">perl ./configure</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-2-2-RepeatModeler使用"><a href="#2-3-2-2-RepeatModeler使用" class="headerlink" title="2.3.2.2. RepeatModeler使用"></a>2.3.2.2. RepeatModeler使用</h4><ol>
+<li>建库</li>
+</ol>
+<p>生成sample.nhr,.nin,.nnd,.nni,.nog,.nsq,.translation 7个文件</p>
+<p><code>mkdir db &amp;&amp; cd db</code><br><code>BuildDatabase -name sample -engine ncbi sample.fa</code></p>
+<ol start="2">
+<li>self-training</li>
+</ol>
+<p><code>nohup RepeatModeler -pa 8 -database db/sample -engine ncbi &amp;</code></p>
+<ul>
+<li>耗时数天。</li>
+<li>-pa 限制的是core的进程，如果服务器是4核，想设置32个线程跑，应该设置-pa 8。</li>
+<li>-databse指定库</li>
+<li>-engine指定引擎<br>运行跑6 rounds，前4轮有几分钟到十几分钟的-pa线程×cores的超负荷运行，后两轮每轮约1-2h的-pa线程×cores的超负荷运行。</li>
+</ul>
+<ol start="3">
+<li>结果文件</li>
+</ol>
+<ul>
+<li>sample-families.fa （用于repeatmasker指定lib）</li>
+<li>sample-families.stk（用于上传到Dfam数据库）</li>
+<li>生成目录下RM_21945.SatAug11650032020，内含consensi.fa文件（自身比对找到的一致性序列）</li>
+<li>consensi.fa.classified文件（fa格式），包含所有repeat序列和分类，序列id里包含了序列名称和是否能被repeatmasker识别的状态，如果不能被识别就标记Unknown。</li>
+</ul>
+<p>consensi.fa.classified文件即为训练结果，重复序列数据库，用作其他软件的输入。</p>
+<ol start="4">
+<li>处理</li>
+</ol>
+<p>如果想要更加可信的结果，可以把标记为Unknown的去除，留下的保存为ModelerID.lib，作为后续使用。</p>
+<ul>
+<li><p><code>seqkit grep -r -i -p &quot;Unknown&quot; -v ./RM_21945.SatAug11650032020/consensi.fa.classified &gt; ModelerID.lib</code>  #从consensi.fa.classified 文件提取可以被识别（就是序列id不含Unknown的序列）</p>
+</li>
+<li><p><code>seqkit grep -r -i -p &quot;Unknown&quot;  ./RM_21945.SatAug11650032020/consensi.fa.classified &gt; Modelerunknown.lib</code>  #从consensi.fa.classified 文件提取不能被识别（就是序列id含Unknown的序列）</p>
+</li>
+</ul>
+<h3 id="2-3-3-RepeatMasker运行"><a href="#2-3-3-RepeatMasker运行" class="headerlink" title="2.3.3. RepeatMasker运行"></a>2.3.3. RepeatMasker运行</h3><p><code>RepeatMasker sample.fa -species &quot;Arachis ipaensis&quot; -pa 12 -lib consensi.fa.classified -poly -html -gff -dir repeatmasker</code></p>
+<p><strong>参数解释：</strong></p>
+<ul>
+<li>-species 选择RepeatMasker数据库中已有近缘物种，比如”Arachis ipaensis”，可用RepeatMasker&#x2F;util&#x2F;queryRepeatDatabase.pl -tree &gt;species.txt获取已有物种列表。但RepeatMasker-4.1.1版本及以后不再提供queryRepeatDatabase.pl脚本，而是由famdb.py代替。</li>
+<li>-pa 线程，用RMBlast引擎会用到4核，即设置-pa 12会用到48线程。</li>
+<li>-lib RepeatModeler.consensi.fa.classified RepeatModeler自我训练的库</li>
+<li>-poly 在file.poly中保存多态的polymorphic的简单重复序列，即微卫星重复序列。</li>
+<li>-html输出xhtml格式文件</li>
+<li>-gff输出gff格式文件</li>
+<li>-dir 指定输出文件的目录，默认时当下目录</li>
+</ul>
+<h3 id="2-3-4-RepeatMasker结果"><a href="#2-3-4-RepeatMasker结果" class="headerlink" title="2.3.4. RepeatMasker结果"></a>2.3.4. RepeatMasker结果</h3><ul>
+<li>sample.fa.tbl：结果报告，统计了基因组长度，GC含量，重复序列长度及各类重复序列占比等。</li>
+<li>sample.fa.out：将基因组中预测得到的重复序列和参考序列相比的碱基替换频率、插入&#x2F;删除率，以及重复序列的位置、结构、类型等信息展示出。</li>
+<li>sample.fa.out.gff：sample.fa.out的gff格式。</li>
+<li>sample.fa.out.html：sample.fa.out的网页形式。</li>
+<li>sample.fa.polyout：通过-poly参数，额外将sample.fa.out中的微卫星注释提取出来。微卫星注释是一种Simple_repeat序列，可以通过*.polyout将*.out的微卫星注释删除。有研究者认为微卫星不能算作严格的重复序列类型，还有研究者甚至认为Simple_repeat全都不能算。</li>
+<li>sample.fa.cat.ga：记录了基因组序列和数据库中参考重复序列的比对详情，其中“i”和“v”分别代表了碱基转换（transitions）和颠换（transversions），“-”表示该位点存在碱基插入&#x2F;删除。。</li>
+<li>sample.fa.masked：将重复序列屏蔽成N碱基的masked基因组。</li>
+</ul>
+<p>其中，sample.fa.out每一列含义：</p>
+<ul>
+<li>第一列：比对分值，SW score</li>
+<li>第二列：替代率 perc div.</li>
+<li>第三列：碱基缺失百分率</li>
+<li>第四列：在重复序列中碱基缺失百分率</li>
+<li>第五列：query sequence</li>
+<li>第六列：查询序列起始位置</li>
+<li>第七列：查询序列终止位置</li>
+<li>第八列：查询区域中超出比对区域碱基的数- 目，也就是没有比对上的碱基数</li>
+<li>第九列：+&#x2F;-(C)</li>
+<li>第十列：比上的重复序列名称，类型命名</li>
+<li>第十一列：比上重复序列的分类，和- repeatmolder 中*.classed 是一样的</li>
+<li>第十二列：比上的在数据库中的起始位置</li>
+<li>第十三列：比上的在数据库中的终止位置</li>
+<li>第十四列：在第十列上超出比对区域碱基的数- 目，也就是没有比对上的碱基数</li>
+<li>第十五列：比对区域的ID，随机给的</li>
+</ul>
+<h1 id="3-EDTA-The-Extensive-de-novo-TE-Annotator"><a href="#3-EDTA-The-Extensive-de-novo-TE-Annotator" class="headerlink" title="3. EDTA(The Extensive de novo TE Annotator)"></a>3. EDTA(The Extensive de novo TE Annotator)</h1><h2 id="3-1-EDTA介绍"><a href="#3-1-EDTA介绍" class="headerlink" title="3.1. EDTA介绍"></a>3.1. EDTA介绍</h2><p><a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA#quick-installation-using-conda-linux64">EDTA</a>是一个用于自动化全基因组的转座元件(transposable elements,TE)从头注释(de-novo)注释和评估TE注释的综合软件。</p>
+<img src="https://github.com/oushujun/EDTA/raw/master/development/EDTA%20workflow.png?raw=true" title="EDTA流程图" width="90%" />
+
+<p><strong><p align="center">Figure 1. EDTA流程图</strong><br>from <a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA#quick-installation-using-conda-linux64">github: EDTA</a></p></p>
+<p><strong>EDTA运行和调用软件的流程：</strong></p>
+<ol>
+<li>LTR预测</li>
+</ol>
+<ul>
+<li>LTR_FINDER预测LTR</li>
+<li>LTRharvest预测LTR</li>
+<li>LTR_retriever确认前两个软件预测的LTR</li>
+</ul>
+<ol start="2">
+<li>TIR预测</li>
+</ol>
+<ul>
+<li>Generic Repeat Finder</li>
+<li>TIR-Learner预测TIR</li>
+</ul>
+<ol start="3">
+<li>Helitrons预测</li>
+</ol>
+<ul>
+<li>HelitronScanner</li>
+</ul>
+<ol start="4">
+<li>filter过滤</li>
+</ol>
+<ul>
+<li>以上三种TE预测结束后做basic filter获得full-length TEs</li>
+<li>进一步做advance filter，获得raw library</li>
+<li>与指定的curated library合并</li>
+<li>用RepeatModeler做训练</li>
+<li>用指定的CDS做最后的filters</li>
+</ul>
+<ol start="5">
+<li>获得最终的final TE library</li>
+<li>Annotation</li>
+<li>Evaluation</li>
+</ol>
+<h2 id="3-2-EDTA-安装"><a href="#3-2-EDTA-安装" class="headerlink" title="3.2. EDTA 安装"></a>3.2. EDTA 安装</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA#installation">开发者推荐的安装方式</a></p>
+<p><strong>注意RepeatMasker安装的Repbase库的加入，参考RepeatMasker的安装。</strong></p>
+<h3 id="3-2-1-quick-installation-using-conda"><a href="#3-2-1-quick-installation-using-conda" class="headerlink" title="3.2.1. quick installation using conda"></a>3.2.1. quick installation using conda</h3><ol>
+<li><p>下载EDTA<br><code>git clone https://github.com/oushujun/EDTA.git</code></p>
+</li>
+<li><p>用EDTA.yml创建新的环境和安装依赖<br><code>conda env create -f EDTA.yml</code></p>
+</li>
+</ol>
+<h3 id="3-2-2-another-installation-using-conda"><a href="#3-2-2-another-installation-using-conda" class="headerlink" title="3.2.2. another installation using conda"></a>3.2.2. another installation using conda</h3><ol>
+<li><p>【推荐】创建新的环境并进入<br><code>conda create -n EDTA</code><br><code>conda activate EDTA</code></p>
+</li>
+<li><p>三种方式安装EDTA：</p>
+</li>
+</ol>
+<ul>
+<li><p>安装EDTA<br><code>conda install -c bioconda -c conda-forge edta</code></p>
+</li>
+<li><p>安装EDTA和指定版本依赖<br><code>conda install -c conda-forge -c bioconda edta python=3.6 tensorflow=1.14 &#39;h5py&lt;3&#39;</code></p>
+</li>
+<li><p>用mamba加速安装<br><code>conda install -c conda-forge mamba</code><br><code>mamba install -c conda-forge -c bioconda edta python=3.6 tensorflow=1.14 &#39;h5py&lt;3&#39;</code></p>
+</li>
+</ul>
+<h3 id="3-2-3-singularity安装"><a href="#3-2-3-singularity安装" class="headerlink" title="3.2.3. singularity安装"></a>3.2.3. singularity安装</h3><p><code>singularity pull EDTA.sif docker://oushujun/edta:&lt;tag&gt;</code></p>
+<h3 id="3-2-4-docker安装"><a href="#3-2-4-docker安装" class="headerlink" title="3.2.4. docker安装"></a>3.2.4. docker安装</h3><p><code>docker pull docker://oushujun/edta:&lt;tag&gt;</code></p>
+<p>singularity和docker安装我没用过，参考开发者说明吧。</p>
+<h2 id="3-3-EDTA-使用"><a href="#3-3-EDTA-使用" class="headerlink" title="3.3. EDTA 使用"></a>3.3. EDTA 使用</h2><p><code>nohup EDTA.pl --genome sample.fa --cds sample.cds --species others --step all --sensitive 1 --anno 1 --evaluate 1 -t 36 &amp;</code></p>
+<p><strong>参数解释：</strong></p>
+<ul>
+<li>–genome 基因组文件</li>
+<li>–cds 提供这个种或近缘种的CDS序列（不能包括introns和UTR），用于最终过滤。</li>
+<li>–rmout 提供其他软件做的同源TE注释（比如repeatmasker的.out文件），如果不提供则默认使用EDTA - library用于masking。</li>
+<li>–species [Rice|Maize|others]三种可选</li>
+<li>–step    [all|filter|final|anno]</li>
+<li>-sensitive: 是否用RepeatModeler分析剩下的TE，默认是0，不要。RepeatModeler会增加运行时间。</li>
+<li>-anno: 是否在构建TE文库后进行全基因组预测，默认是0.</li>
+<li>-evalues: 默认是0，需要同时设置-anno 1才能使用。能够评估注释质量，但会显著增加分析时间。</li>
+<li>–overwrite默认是0，设定为1会删除已有结果重新运行，建议保持默认，运行中断可以继续运行。</li>
+</ul>
+<p>简化推荐版：<br><code>nohup EDTA.pl --genome sample.fa --cds sample.cds --species others --step all --anno 1 -t 36 &amp;</code></p>
+<h2 id="3-4-结果文件"><a href="#3-4-结果文件" class="headerlink" title="3.4. 结果文件"></a>3.4. 结果文件</h2><ul>
+<li>genome.mod.EDTA.TElib.fa：最终结果，非冗余的TE库。如果在输入文件中用–curatedlib指定的修正版TE库，则该文件中也将包含这部分序列。</li>
+<li>genome.mod.EDTA.TElib.novel.fa: 新TE类型。该文件包括在输入文件中用–curatedlib指定的修正版TE库没有的TE序列，即genome.mod.EDTA.TElib.fa减去–curatedlib指定库(需要–curatedlib参数)。</li>
+<li>genome.mod.EDTA.TEanno.gff: 全基因组TE的注释。该文件包括结构完整和结构不完整的TE的注释（需要–anno 1参数）。</li>
+<li>genome.mod.EDTA.TEanno.sum: 对全基因组TE注释的总结（需要–anno 1参数）。</li>
+<li>genome.mod.MAKER.masked: 低阈值TE的屏蔽。该文件中仅包括长TE（&gt;&#x3D; 1 kb）序列(需要–anno 1参数)。</li>
+<li>genome.mod.EDTA.TE.fa.stat.redun.sum: 简单TE的注释偏差(需要–evaluate 1参数)。</li>
+<li>genome.mod.EDTA.TE.fa.stat.nested.sum：嵌套型TE注释的偏差（需要–evaluate 1参数）。</li>
+<li>genome.mod.EDTA.TE.fa.stat.all.sum: 注释偏差的概述（需要–evaluate 1参数）。</li>
+</ul>
+<h2 id="3-5-评估已有TE注释"><a href="#3-5-评估已有TE注释" class="headerlink" title="3.5. 评估已有TE注释"></a>3.5. 评估已有TE注释</h2><p>当已有TE库结果，想要与其他软件（比如RepeatMasker）预测结果比较，可以用EDTA的脚本<code>lib-test.pl</code>进行，评估是通过与参考注释进行比较来进行的。</p>
+<ol>
+<li>用RepeatMasker根据已有TE库进行注释<br><code>RepeatMasker -pa 36 -q -no_is -norna -nolow -div 40 -lib sample.TE.lib.fasta -cutoff 225 sample.fa</code></li>
+<li>用lib-test.pl进行TE注释的比较和评估<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">perl lib-test.pl -genome genome.fasta -std genome.stdlib.RM.out -tst genome.testlib.RM.out -cat [options]</span><br><span class="line">	-genome	[file]	FASTA format genomesequence</span><br><span class="line">	-std	[file]	RepeatMasker .out file of the standard library</span><br><span class="line">	-tst	[file]	RepeatMasker .out file of the test library</span><br><span class="line">	-cat	[string]	Testing TE category. Use one of LTR|nonLTR|LINE|SINE|TIR|MITEHelitron|Total|Classified</span><br><span class="line">	-N	[0|1]	Include Ns in total length of the genome. Defaule: 0 (not include Ns).</span><br><span class="line">	-unknown	[0|1]	Include unknownannotations to the testing category. This should be used when</span><br><span class="line">				the test library has no classification and you assume they all belong to the</span><br><span class="line">				target category specified by -cat. 	Default: 0 (not include unknowns)</span><br><span class="line">	-rand	[int]	A randum number used to identify the current run. (default:generate automatically)</span><br><span class="line">	-threads|-t	[int]	Number of threads torun this program. Default: 4</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>lib-test.pl -genome sample.fa -std genome.stdlib.RM.out -tst genome.testlib.RM.out -cat LTR</code></p>
+<h2 id="3-6-notes"><a href="#3-6-notes" class="headerlink" title="3.6. notes"></a>3.6. notes</h2><ul>
+<li>基因组的碱基全部大写，因为小写在一些软件是被认为进行了soft-masked的，在TIR预测时会报错。</li>
+<li>-t设置线程，当运行到调用RMBlast引擎时，默认使用四核，如果服务器是四核，则实际使用线程为设置的-t的四倍（RepeatMasker和RepeatModeler的-pa设置线程有一样的问题），EDTA支持断点续跑，可以先设置-t 高一点，运行到RMBlast时，kill掉，重新设置低一点的-t。</li>
+<li>预测有时运行会报错缺一些perl的module，例如Bio，安装缺失的module，再次运行即可。</li>
+<li>关于–rmout，当使用这个参数指定同源TE注释时，不使用EDTA的同源注释，而是用这个参数指定的库做同源注释，最终结果是这个同源注释加上EDTA其他注释的完整的intact TEs结果。所以当提供的repeatmasker文件预测结果非常全面时，使用这个参数；如果提供的库对物种TE的预测结果不够全面，使用这个参数反而会降低最终预测结果，不建议使用这个参数。不知道是否提供的库是否全面，有时间就有这个参数和没这个参数的结果比较选用，没时间就直接不用这个参数。参考<a target="_blank" rel="noopener" href="https://github.com/oushujun/EDTA/issues/193">issue</a>。</li>
+<li>HelitronScanner预测Helitrons默认需要400G运行内存，若不够会出现如下报错，把运行内存上限升高后再次运行即可：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Raw Helitron results not found in sample.fa.mod.EDTA.raw/sample.fa.mod.Helitron.raw.fa</span><br><span class="line">	If you believe the program is working properly, this may be caused by the lack of intact Helitrons in your genome. Consider to use the --force 1 parameter to overwrite this check</span><br></pre></td></tr></table></figure>
+
+<p><strong>ref：</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://www.repeatmasker.org/RepeatModeler/">http://www.repeatmasker.org/RepeatModeler/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhanmaomao/p/12345462.html">https://www.cnblogs.com/zhanmaomao/p/12345462.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ddd1c9a74fde">https://www.jianshu.com/p/ddd1c9a74fde</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dfa89f394882">https://www.jianshu.com/p/dfa89f394882</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/02/omics_genome.repeat.annotation/" data-id="cl1aiqcry0042m4vkbjkl9iek" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EDTA/" rel="tag">EDTA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RepeatMasker/" rel="tag">RepeatMasker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RepeatModeler/" rel="tag">RepeatModeler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TE/" rel="tag">TE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/repeat-sequences/" rel="tag">repeat sequences</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-biosoft_BUSCO" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/07/24/biosoft_BUSCO/" class="article-date">
+  <time datetime="2021-07-24T03:20:00.000Z" itemprop="datePublished">2021-07-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/biosoft/">biosoft</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/24/biosoft_BUSCO/">BUSCO评估基因组组装和注释完整性</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=3986241&auto=1&height=32"></iframe></div>
+
+<h1 id="1-busco简介"><a href="#1-busco简介" class="headerlink" title="1. busco简介"></a>1. busco简介</h1><p>Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组装和注释的完整性的工具。通过与已有单拷贝直系同源数据库的比较，得到有多少比例的数据库能够有比对，比例越高代表基因组完整度越好。</p>
+<p>可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。</p>
+<p><a target="_blank" rel="noopener" href="https://busco.ezlab.org/">BUSCO官网</a><br><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/">BUSCO v5数据库</a></p>
+<h1 id="2-busco安装"><a href="#2-busco安装" class="headerlink" title="2. busco安装"></a>2. busco安装</h1><p><code>conda install -c bioconda busco=5.1.3</code> #安装版本是5.1.3</p>
+<h1 id="3-busco数据库下载"><a href="#3-busco数据库下载" class="headerlink" title="3. busco数据库下载"></a>3. busco数据库下载</h1><p><code>busco --list-datasets</code> #查看busco可用的数据库。</p>
+<p>下载对应的busco数据库(wget + 数据库网址）；目前有v1-v5版本，根据需要评估的物种，尽量选用最新版本的最多基因的数据库。</p>
+<p>植物相关的数据库有：</p>
+<table>
+<thead>
+<tr>
+<th>类群</th>
+<th>数据库</th>
+<th>BUSCO groups数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>真核生物</td>
+<td><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/eukaryota_odb10.2020-09-10.tar.gz">eukaryota_odb10.2020-09-10.tar.gz</a></td>
+<td>255</td>
+</tr>
+<tr>
+<td>绿色植物</td>
+<td><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/viridiplantae_odb10.2020-09-10.tar.gz">viridiplantae_odb10.2020-09-10.tar.gz</a></td>
+<td>425</td>
+</tr>
+<tr>
+<td>有胚植物</td>
+<td><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/embryophyta_odb10.2020-09-10.tar.gz">embryophyta_odb10.2020-09-10.tar.gz</a></td>
+<td>1614</td>
+</tr>
+<tr>
+<td>真双子叶植物</td>
+<td><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/eudicots_odb10.2020-09-10.tar.gz">eudicots_odb10.2020-09-10.tar.gz</a></td>
+<td>2326</td>
+</tr>
+<tr>
+<td>豆目</td>
+<td><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/fabales_odb10.2020-08-05.tar.gz">fabales_odb10.2020-08-05.tar.gz</a></td>
+<td>5366</td>
+</tr>
+</tbody></table>
+<h1 id="4-busco使用"><a href="#4-busco使用" class="headerlink" title="4. busco使用"></a>4. busco使用</h1><h2 id="4-1-直接在命令中设定参数【需设置的参数较少时】"><a href="#4-1-直接在命令中设定参数【需设置的参数较少时】" class="headerlink" title="4.1. 直接在命令中设定参数【需设置的参数较少时】"></a>4.1. 直接在命令中设定参数【需设置的参数较少时】</h2><p><code>nohup busco -i genome.fa -c 10 -o busco -m geno -l busco_downloads/eudicots_odb10 --offline &amp;</code></p>
+<ul>
+<li>-i：指定需要分析的数据，组装的genome或者注释的蛋白序列或者组装的转录组dna序列;</li>
+<li>-m：geno&#x2F;prot&#x2F;tran模式；</li>
+<li>-c：指定线程；</li>
+<li>-o：指定输出文件目录名；</li>
+<li>-l：指定数据库</li>
+<li>使用–offline离线模式</li>
+</ul>
+<p>非常不建议用busco的–auto-lineage模式，这个模式在运行busco时下载数据库，网络不好时连接的失败率非常高。推荐用<code>-l busco_downloads/eudicots_odb10 --offline</code>指定下载好的本地数据库，并使用离线模式。</p>
+<h2 id="4-2-在设置文件中给出参数【需设置的参数较多时】"><a href="#4-2-在设置文件中给出参数【需设置的参数较多时】" class="headerlink" title="4.2. 在设置文件中给出参数【需设置的参数较多时】"></a>4.2. 在设置文件中给出参数【需设置的参数较多时】</h2><p><code>nohup busco --config config.ini</code><br>通过conda安装的这config.ini配置文件在&#x2F;path&#x2F;to&#x2F;miniconda3&#x2F;envs&#x2F;busco5&#x2F;config&#x2F;目录下；直接复制一份到工作目录，修改使用即可。</p>
+<p>把config.ini的示例文件中行首的分号;去掉，并把等号后的内容修改成设置的内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"># This is the BUSCOv5 configuration file template.</span><br><span class="line"># It is not necessary to use this, as BUSCO will use the dependencies available on your PATH by default.</span><br><span class="line"># The busco run parameters can all be set on the command line. See the help prompt (busco -h) for details.</span><br><span class="line">#</span><br><span class="line"># To use this file for an alternative configuration, or to specify particular versions of dependencies:</span><br><span class="line"># 1) edit the path and command values to match your desired dependency versions.</span><br><span class="line">#    WARNING: passing a parameter through the command line overrides the value specified in this file.</span><br><span class="line">#</span><br><span class="line"># 2) Enable a parameter by removing &quot;;&quot;</span><br><span class="line">#</span><br><span class="line"># 3) Make this config file available to BUSCO either by setting an environment variable</span><br><span class="line">#</span><br><span class="line">#                   export BUSCO_CONFIG_FILE=&quot;/path/to/myconfig.ini&quot;</span><br><span class="line">#</span><br><span class="line">#    or by passing it as a command line argument</span><br><span class="line">#</span><br><span class="line">#                   busco &lt;args&gt; --config /path/to/config.ini</span><br><span class="line">#</span><br><span class="line">[busco_run]</span><br><span class="line"># Input file</span><br><span class="line">;in = /path/to/input_file.fna</span><br><span class="line"># Run name, used in output files and folder</span><br><span class="line">;out = BUSCO_run</span><br><span class="line"># Where to store the output directory</span><br><span class="line">;out_path = /path/to/output_folder</span><br><span class="line"># Path to the BUSCO dataset</span><br><span class="line">;lineage_dataset = bacteria</span><br><span class="line"># Which mode to run (genome / proteins / transcriptome)</span><br><span class="line">;mode = genome</span><br><span class="line"># Run lineage auto selector</span><br><span class="line">;auto-lineage = True</span><br><span class="line"># Run auto selector only for non-eukaryote datasets</span><br><span class="line">;auto-lineage-prok = True</span><br><span class="line"># Run auto selector only for eukaryote datasets</span><br><span class="line">;auto-lineage-euk = True</span><br><span class="line"># How many threads to use for multithreaded steps</span><br><span class="line">;cpu = 16</span><br><span class="line"># Force rewrite if files already exist (True/False)</span><br><span class="line">;force = False</span><br><span class="line"># Restart a previous BUSCO run (True/False)</span><br><span class="line">;restart = False</span><br><span class="line"># Blast e-value</span><br><span class="line">;evalue = 1e-3</span><br><span class="line"># How many candidate regions (contigs, scaffolds) to consider for each BUSCO</span><br><span class="line">;limit = 3</span><br><span class="line"># Metaeuk parameters for initial run</span><br><span class="line">;metaeuk_parameters=&#x27;--param1=value1,--param2=value2&#x27;</span><br><span class="line"># Metaeuk parameters for rerun</span><br><span class="line">;metaeuk_rerun_parameters=&quot;&quot;</span><br><span class="line"># Augustus parameters</span><br><span class="line">;augustus_parameters=&#x27;--param1=value1,--param2=value2&#x27;</span><br><span class="line"># Quiet mode (True/False)</span><br><span class="line">;quiet = False</span><br><span class="line"># Local destination path for downloaded lineage datasets</span><br><span class="line">;download_path = ./busco_downloads/</span><br><span class="line"># Run offline</span><br><span class="line">;offline=True</span><br><span class="line"># Ortho DB Datasets version</span><br><span class="line">;datasets_version = odb10</span><br><span class="line"># URL to BUSCO datasets</span><br><span class="line">;download_base_url = https://busco-data.ezlab.org/v4/data/</span><br><span class="line"># Download most recent BUSCO data and files</span><br><span class="line">;update-data = True</span><br><span class="line"># Use Augustus gene predictor instead of metaeuk</span><br><span class="line">;use_augustus = True</span><br><span class="line"></span><br><span class="line">[tblastn]</span><br><span class="line">path = /ncbi-blast-2.10.1+/bin/</span><br><span class="line">command = tblastn</span><br><span class="line"></span><br><span class="line">[makeblastdb]</span><br><span class="line">path = /ncbi-blast-2.10.1+/bin/</span><br><span class="line">command = makeblastdb</span><br><span class="line"></span><br><span class="line">[metaeuk]</span><br><span class="line">path = /metaeuk/build/bin/</span><br><span class="line">command = metaeuk</span><br><span class="line"></span><br><span class="line">[augustus]</span><br><span class="line">path = /augustus/bin/</span><br><span class="line">command = augustus</span><br><span class="line"></span><br><span class="line">[etraining]</span><br><span class="line">path = /augustus/bin/</span><br><span class="line">command = etraining</span><br><span class="line"></span><br><span class="line">[gff2gbSmallDNA.pl]</span><br><span class="line">path = /augustus/scripts/</span><br><span class="line">command = gff2gbSmallDNA.pl</span><br><span class="line"></span><br><span class="line">[new_species.pl]</span><br><span class="line">path = /augustus/scripts/</span><br><span class="line">command = new_species.pl</span><br><span class="line"></span><br><span class="line">[optimize_augustus.pl]</span><br><span class="line">path = /augustus/scripts/</span><br><span class="line">command = optimize_augustus.pl</span><br><span class="line"></span><br><span class="line">[hmmsearch]</span><br><span class="line">path = /usr/local/bin/</span><br><span class="line">command = hmmsearch</span><br><span class="line"></span><br><span class="line">[sepp]</span><br><span class="line">path = /home/biodocker/sepp/</span><br><span class="line">command = run_sepp.py</span><br><span class="line"></span><br><span class="line">[prodigal]</span><br><span class="line">path = /usr/local/bin/</span><br><span class="line">command = prodigal</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-busco结果"><a href="#5-busco结果" class="headerlink" title="5. busco结果"></a>5. busco结果</h1><p>结果在short_summary.txt后缀文件中。</p>
+<p>一个例子</p>
+<pre><code>    --------------------------------------------------
+    |Results from dataset eudicots_odb10              |
+    --------------------------------------------------
+    |C:92.9%[S:72.4%,D:20.5%],F:1.8%,M:5.3%,n:2326    |
+    |2162   Complete BUSCOs (C)                       |
+    |1685   Complete and single-copy BUSCOs (S)       |
+    |477    Complete and duplicated BUSCOs (D)        |
+    |41     Fragmented BUSCOs (F)                     |
+    |123    Missing BUSCOs (M)                        |
+    |2326   Total BUSCO groups searched               |
+    --------------------------------------------------
+</code></pre>
+<p>结果的解释：<br>使用的eudicots_odb10真双子叶植物数据库中共有2326个BUSCO groups，其中2162（92.9%）个BUSCO groups被完整比对上（包括1685个单拷贝和477个多拷贝），41个部分比对上，123个没有比对上。</p>
+<p>通常用完整比对上的占总共的BUSCO groups的比例作为BUSCO的重要结果，越高越好，这里是92.9%&#x3D;2162&#x2F;2326。</p>
+<h1 id="6-busco结果画图"><a href="#6-busco结果画图" class="headerlink" title="6. busco结果画图"></a>6. busco结果画图</h1><p>在执行完毕之后，可以使用generate_plot.py画条形图，可以多个物种间比较。</p>
+<p>首先把所有的经过BUSCO检测的物种结果short_summary.txt后缀文件放到一个文件夹（result）下；然后运行<code>python busco/scripts/generate_plot.py –wd result</code></p>
+<h1 id="7-调用augustus【optional】"><a href="#7-调用augustus【optional】" class="headerlink" title="7. 调用augustus【optional】"></a>7. 调用augustus【optional】</h1><p>AUGUSTUS运行的时候需要额外设定2个环境变量，AUGUSTUS_CONFIG_PATH和BUSCO_CONFIG_FILE, 通过conda安装的这两个配置文件都在&#x2F;path&#x2F;to&#x2F;miniconda3&#x2F;envs&#x2F;busco5&#x2F;config目录下。</p>
+<p>所以需要在.bashrc或.zshrc中加入下面这一行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export AUGUSTUS_CONFIG_PATH=&quot;/path/to/anaconda3/envs/busco5/config</span><br><span class="line">export BUSCO_CONFIG_FILE=&quot;/path/to/anaconda3/envs/busco5/config/config.ini</span><br></pre></td></tr></table></figure>
+<p>实现AUGUSTUS和BUSCO的设置。</p>
+<h1 id="8-notes"><a href="#8-notes" class="headerlink" title="8. notes"></a>8. notes</h1><p>2021年06月23日开始写，07月24日今天终于完结。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/24/biosoft_BUSCO/" data-id="cl1aiqcrl002om4vk72jp2tp0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BUSCO/" rel="tag">BUSCO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-concept_crown.and.stem" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/07/16/concept_crown.and.stem/" class="article-date">
+  <time datetime="2021-07-16T06:30:00.000Z" itemprop="datePublished">2021-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/concept/">concept</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/16/concept_crown.and.stem/">冠群(crown groups)和干群(stem groups)及相关定义</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Crown_n_Stem_Groups.svg/330px-Crown_n_Stem_Groups.svg.png" title="冠群干群示意图" width="100%" />
+
+<p><strong><p align="center">Figure 1. 冠群干群示意图</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Crown_group">wikipedia: crown group</a></p></p>
+<p>C1&#x2F;C2是冠群，S1是干群；C1和S1组成了泛群&#x2F;总群T1</p>
+<p><strong>泛群(pan-group)&#x3D;冠群(crown groups)+干群(stem groups)</strong></p>
+<h1 id="1-冠群-crown-groups"><a href="#1-冠群-crown-groups" class="headerlink" title="1. 冠群(crown groups)"></a>1. 冠群(crown groups)</h1><p>在种系遗传学(phylogenetics)中，冠群(crown groups)指的是指定的现存生物群体，和它们的最近共同祖先(the most recent common ancestor,最近共祖)，和最近共祖的所有灭绝后代的物种集合。</p>
+<p>同时，这也是进化枝(clade)的其中一种定义方式，即某个最近共祖和它的所有后代（包括现存的和灭绝的）的物种集。<br>如图中红色部分则是两个典型的冠群。</p>
+<h1 id="2-泛群-Pan-group"><a href="#2-泛群-Pan-group" class="headerlink" title="2. 泛群(Pan-group)"></a>2. 泛群(Pan-group)</h1><p>泛群(pan-group)或者总群(total group)是指冠群和比起其他现存生物与冠群更近缘的所有生物的总称。在系统树上，是指冠群和所有回退到与含有现存成员的最近分支分叉的位置(但不包含这个分叉点)的分支。</p>
+<h1 id="3-干群-stem-groups"><a href="#3-干群-stem-groups" class="headerlink" title="3. 干群(stem groups)"></a>3. 干群(stem groups)</h1><p>干群(stem groups)是并系类群，由一个泛群中不包括冠群的成员组成。所有干群成员都是灭绝的，多用于古生物学的化石集合。</p>
+<h1 id="4-邻群-Plesion-group"><a href="#4-邻群-Plesion-group" class="headerlink" title="4. 邻群(Plesion-group)"></a>4. 邻群(Plesion-group)</h1><p>邻群(plesion-group)有几种含义，其中一种是”nearby group”，例如指定类群(可以是冠群，也可以不是)的姐妹群；另一种含义是一个可能是并系的群体，由原始特征(symplesiomorphies，我也不是太明白)定义，通常是指系统发育树的基部类群。<br>就我们的进化学研究我好像没见过这个词，用的不多。</p>
+<h1 id="5-词缀"><a href="#5-词缀" class="headerlink" title="5. 词缀"></a>5. 词缀</h1><p>通常要作区分时，把crown-,stem-,pan-,plesion-作为前缀，比如Crown-Aves指现存所有鸟类，以及它们的最近共祖和最近共祖的所有灭绝后代。</p>
+<h1 id="6-冠-crown-和干-stem-的在系统发育树上的应用"><a href="#6-冠-crown-和干-stem-的在系统发育树上的应用" class="headerlink" title="6. 冠(crown)和干(stem)的在系统发育树上的应用"></a>6. 冠(crown)和干(stem)的在系统发育树上的应用</h1><p>系统发育树在描述分支节点时，有冠节点和干节点的区别，在标定物种的分化时间时，有冠时间点和干时间点的区别，这个其实是对应冠节点和干节点的，冠节点的时间就是冠时间点。</p>
+<p>用例子说明系统发育树上的冠节点和干节点：</p>
+<p>在下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D中，假设A1和A2都属于As类群，A3和A4不属于As类群，那么在这个系统发育树上，As类群的冠节点是B，干节点是C。当描述As与其他物种分化时间时，冠时间指B点的时间，干时间指C点的时间。</p>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true" title="系统发育树示意图(A4,(A3,(A2,A1)B)C)D" width="100%" />
+
+<p><strong><p align="center">Figure 2. 系统发育树示意图</p></strong></p>
+<p>notes：</p>
+<p>每篇博客的周期都有点超出预期吖~</p>
+<p>2021.08.05写完</p>
+<p><strong>ref：</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Crown_group">wiki: crown group</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/07/16/concept_crown.and.stem/" data-id="cl1aiqcrq0037m4vkcpquer6p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crown-groups/" rel="tag">crown groups</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fossil-time/" rel="tag">fossil time</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stem-groups/" rel="tag">stem groups</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-concept_homology" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/23/concept_homology/" class="article-date">
+  <time datetime="2021-06-23T08:50:00.000Z" itemprop="datePublished">2021-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bio/">bio</a>►<a class="article-category-link" href="/categories/bio/concept/">concept</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/23/concept_homology/">同源性(homology)相关概念</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=3986241&auto=1&height=32"></iframe></div>
+
+<img src="https://bitesizebio.com/wp-content/uploads/2015/11/Homology.png" width=60% title="homologs示意图" alt="homologs示意图" align=center/>
+
+<p><strong><p align="center">Figure 1. homologs示意图</strong><br>from <a target="_blank" rel="noopener" href="https://bitesizebio.com/26762/homology-terminology-never-say-wrong-word/">bitesizebio website</a></p></p>
+<h2 id="1-同源性-homology-定义"><a href="#1-同源性-homology-定义" class="headerlink" title="1. 同源性(homology)定义"></a>1. 同源性(homology)定义</h2><p><strong>homology</strong>在生物学上被翻译成“同源性”，是指在不同生物类群中，由于共同的祖先，在一对结构或基因间表现出来的相似性。在基因序列(DNA,RNA or Protein)上体现出的相似性被称作序列同源性(sequence homology)，具有序列同源性的基因被称做同源基因(homolog&#x3D;homologous gene)，常用于进化生物学的研究。</p>
+<h2 id="2-同源基因-homolog-分类"><a href="#2-同源基因-homolog-分类" class="headerlink" title="2. 同源基因(homolog)分类"></a>2. 同源基因(homolog)分类</h2><p>按不同成因分为两类（也有把homolog分为ortholog，paralog和xenolog三类的）：</p>
+<ul>
+<li>直系同源基因（ortholog）：物种形成(speciation)导致，一个共同祖先的基因由于物种形成分离到不同物种间；orthologs通常（不是绝对）保留相同的功能。</li>
+<li>旁系同源基因(paralog)：重复(duplication)导致，一个物种的基因组内由于基因复制产生的同源性；paralogs通常具有不同的功能，或者成为假基因(pseudogene)；不同物种间不是由于物种形成导致的同源基因也被称为paralogs。在旁系同源基因中，起源于一次全基因组重复(whole-genome duplication, WGD)的那些被称为ohnolog，由Ken Wolfe在2000年第一次给出定义。</li>
+</ul>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Ohnology.svg/290px-Ohnology.svg.png" width=50% title="ohnologs示意图" alt="ohnologs示意图" align=center/>
+
+<p><strong><p align="center">Figure 2. ohnologs示意图</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sequence_homology">wikipedia: sequence homology</a></p></p>
+<h2 id="3-扩展概念"><a href="#3-扩展概念" class="headerlink" title="3. 扩展概念"></a>3. 扩展概念</h2><ul>
+<li>直系同源基因：单数形式ortholog&#x3D;orthologous gene；复数形式orthologs&#x3D;orthologous genes。</li>
+<li>直系同源(orthology)：一个名词，代表直系同源基因的直系同源属性；相应地，有旁系同源(paralogy)。</li>
+<li>直系同源群(orthogroup)：在一群物种中，起源于这群物种的最近共同祖先(last common ancestor, LCA)的一个基因的一组基因，是这群物种中具有直系同源性的基因家族(gene family)的合集。</li>
+</ul>
+<p>按照逻辑，应该有一套完整的单词：</p>
+<table>
+<thead>
+<tr>
+<th>*log 特指基因</th>
+<th>*logy 属性</th>
+<th>*logous 形容词</th>
+<th>*group</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ortholog</td>
+<td>orthology</td>
+<td>orthologous</td>
+<td>orthogroup</td>
+</tr>
+<tr>
+<td>paralog</td>
+<td>paralogy</td>
+<td>paralogous</td>
+<td>paragroup</td>
+</tr>
+<tr>
+<td>homolog</td>
+<td>homology</td>
+<td>homologous</td>
+<td>homogroup</td>
+</tr>
+</tbody></table>
+<p>但我查了下，paragroup,homogroup这两个词是不存在的。<br>按照orthogrop的定义，个人觉得用homogroup代替orthogroup好像更好，因为直系同源群内包括orthologs和paralogs，即包括所有homologs。</p>
+<h2 id="4-相关概念"><a href="#4-相关概念" class="headerlink" title="4. 相关概念"></a>4. 相关概念</h2><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Ortholog_paralog_analog_examples.svg/400px-Ortholog_paralog_analog_examples.svg.png" width=50% title="analog示意图" alt="analog示意图" align=center/>
+
+<p><strong><p align="center">Figure 3. analog示意图</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sequence_homology">wikipedia: sequence homology</a></p></p>
+<ul>
+<li><p>异同源基因(xenolog)：水平基因转移(horizontal&#x2F;lateral gene transfer)导致，来源于寄生，腐生，共生或病毒侵染等途径转移产生的异同源基因；一般具有相似功能，但如果新环境差异巨大，功能可能出现分化。xenolog一词最早在1970年由Walter Fitch创造。由于异同源基因不是来自共同祖先，而是拥有独立起源。</p>
+</li>
+<li><p>analog（不知道咋翻译，同功基因？）：在不同物种中，不相关的基因有着相似的功能，但是独立的进化起源。<br>按照定义，xenolog应该是一种analog。</p>
+</li>
+<li><p>基因家族(gene family)：是指在一个物种中，起源于一个基因的复制，通常具有相似生化功能的一套基因。</p>
+</li>
+</ul>
+<p><strong>reference</strong><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Homology_(biology)">wiki：homology</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sequence_homology#Homoeology">wiki：sequence homology</a><br><a target="_blank" rel="noopener" href="https://www.annualreviews.org/doi/abs/10.1146/annurev.genet.39.073003.114725">Paper：Orthologs, Paralogs, and Evolutionary Genomics</a><br><a target="_blank" rel="noopener" href="https://academic.oup.com/sysbio/article-abstract/19/2/99/1655771?redirectedFrom=fulltext">Paper：analog和xenolog的由来和定义</a><br><a target="_blank" rel="noopener" href="https://www.nature.com/articles/ng0500_3">Paper：ohnolog的由来和定义</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/23/concept_homology/" data-id="cl1aiqcrs003fm4vkgt9whptv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/analog/" rel="tag">analog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gene-family/" rel="tag">gene family</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/homolog/" rel="tag">homolog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/orthogroup/" rel="tag">orthogroup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ortholog/" rel="tag">ortholog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paralog/" rel="tag">paralog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xenolog/" rel="tag">xenolog</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">下一页 &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/">bio</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/bio/bioinfo/">bioinfo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/biosoft/">biosoft</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/concept/">concept</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/evolution/">evolution</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/experiment/">experiment</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bio/taxon/">taxon</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/">biosoft</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/biosoft/circos/">circos</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/scripts/">scripts</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/">system</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/system/Windows/">Windows</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer/web/">web</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/">computer language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/computer-language/R/">R</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/basics/">basics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/shell/">shell</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/text-processing/">text processing</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/">omics</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/omics/genome/">genome</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/omics/transcriptome/">transcriptome</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/4dtv/" rel="tag">4dtv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">;</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BUSCO/" rel="tag">BUSCO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bauhinia/" rel="tag">Bauhinia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioconductor/" rel="tag">Bioconductor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAFE/" rel="tag">CAFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CDS/" rel="tag">CDS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRAN/" rel="tag">CRAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Circos/" rel="tag">Circos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clustal/" rel="tag">Clustal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DESeq2/" rel="tag">DESeq2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EDTA/" rel="tag">EDTA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GATK/" rel="tag">GATK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GOEAST/" rel="tag">GOEAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GSEA/" rel="tag">GSEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gblocks/" rel="tag">Gblocks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GenBank/" rel="tag">GenBank</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISAT2/" rel="tag">HISAT2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KOBAS-i/" rel="tag">KOBAS-i</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KaKs-Calculator2-0/" rel="tag">KaKs_Calculator2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ks/" rel="tag">Ks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoRDEC/" rel="tag">LoRDEC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MAFFT/" rel="tag">MAFFT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCScanX/" rel="tag">MCScanX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCscan/" rel="tag">MCscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSA/" rel="tag">MSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MUSCLE/" rel="tag">MUSCLE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multiple-Sequence-Alignment/" rel="tag">Multiple Sequence Alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oases/" rel="tag">Oases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoFinder/" rel="tag">OrthoFinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OrthoMCL/" rel="tag">OrthoMCL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PAL2NAL/" rel="tag">PAL2NAL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PANNZER2/" rel="tag">PANNZER2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PATH/" rel="tag">PATH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PCR/" rel="tag">PCR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRANK/" rel="tag">PRANK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT/" rel="tag">ParaAT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ParaAT-pl/" rel="tag">ParaAT.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QUAST/" rel="tag">QUAST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R-package/" rel="tag">R package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-seq/" rel="tag">RNA-seq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNA-sequencing/" rel="tag">RNA-sequencing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROUSFinder2-0-py/" rel="tag">ROUSFinder2.0.py</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RStudio/" rel="tag">RStudio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatMasker/" rel="tag">RepeatMasker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RepeatModeler/" rel="tag">RepeatModeler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rtools/" rel="tag">Rtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STARlong/" rel="tag">STARlong</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Salmon-SMEM/" rel="tag">Salmon-SMEM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/StringTie/" rel="tag">StringTie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TE/" rel="tag">TE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TreeMix/" rel="tag">TreeMix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UpSetR/" rel="tag">UpSetR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Venn/" rel="tag">Venn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VennDiagram/" rel="tag">VennDiagram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGD/" rel="tag">WGD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WGDI/" rel="tag">WGDI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\&&</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/" rel="tag">\||</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analog/" rel="tag">analog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/" rel="tag">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/batch-run-sh/" rel="tag">batch_run.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bifurcated-tree/" rel="tag">bifurcated tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/biosoft/" rel="tag">biosoft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/" rel="tag">bootstrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/build-website/" rel="tag">build website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chronogram/" rel="tag">chronogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladistics/" rel="tag">cladistics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cladogram/" rel="tag">cladogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/clusterProfiler/" rel="tag">clusterProfiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codon/" rel="tag">codon</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/colinearity/" rel="tag">colinearity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combine/" rel="tag">combine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concept/" rel="tag">concept</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crown-groups/" rel="tag">crown groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deploy-website/" rel="tag">deploy website</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/divergence-time/" rel="tag">divergence time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eggnog-mapper/" rel="tag">eggnog-mapper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/evolutionary-tree/" rel="tag">evolutionary tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experiment/" rel="tag">experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract/" rel="tag">extract</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-intron-info-pl/" rel="tag">extract_intron_info.pl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extract-single-copy-genes-sh/" rel="tag">extract_single_copy_genes.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/facet-plot/" rel="tag">facet_plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/" rel="tag">flex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/for/" rel="tag">for</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fossil-time/" rel="tag">fossil time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-annotation/" rel="tag">functional annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-family/" rel="tag">gene family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-flow/" rel="tag">gene flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gene-set-enrichment-analysis/" rel="tag">gene set enrichment analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome/" rel="tag">genome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-annotation/" rel="tag">genome annotation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-assessment/" rel="tag">genome assessment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/genome-submit/" rel="tag">genome submit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geom-taxalink/" rel="tag">geom_taxalink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggdensitree/" rel="tag">ggdensitree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggplot2/" rel="tag">ggplot2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggstance/" rel="tag">ggstance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ggtree/" rel="tag">ggtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gplots/" rel="tag">gplots</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/homolog/" rel="tag">homolog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interproscan/" rel="tag">interproscan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/itol/" rel="tag">itol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jcvi/" rel="tag">jcvi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/" rel="tag">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/line-separator/" rel="tag">line separator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loop/" rel="tag">loop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mcmctree/" rel="tag">mcmctree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/molecular-experiment/" rel="tag">molecular experiment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monophyly/" rel="tag">monophyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-transcriptome-assembly-with-ref-sh/" rel="tag">multi-transcriptome_assembly_with_ref.sh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiPhylo/" rel="tag">multiPhylo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthogroup/" rel="tag">orthogroup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ortholog/" rel="tag">ortholog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orthology/" rel="tag">orthology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paml/" rel="tag">paml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paralog/" rel="tag">paralog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paraphyly/" rel="tag">paraphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paste/" rel="tag">paste</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-reticulum/" rel="tag">phylogenetic reticulum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogenetic-tree/" rel="tag">phylogenetic tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogeny/" rel="tag">phylogeny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phylogram/" rel="tag">phylogram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plot/" rel="tag">plot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/polyphyly/" rel="tag">polyphyly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/population-networks/" rel="tag">population networks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protein/" rel="tag">protein</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/" rel="tag">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reinstall/" rel="tag">reinstall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rename/" rel="tag">rename</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repeat-sequences/" rel="tag">repeat sequences</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/" rel="tag">scripts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/" rel="tag">sed</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sequence-alignment/" rel="tag">sequence alignment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sort/" rel="tag">sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stem-groups/" rel="tag">stem groups</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sync/" rel="tag">sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/synteny/" rel="tag">synteny</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table2asn/" rel="tag">table2asn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topGO/" rel="tag">topGO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/" rel="tag">tr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/treeio/" rel="tag">treeio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimAl/" rel="tag">trimAl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trimming/" rel="tag">trimming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/" rel="tag">tutorial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/website-maintenance/" rel="tag">website maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/while/" rel="tag">while</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/" rel="tag">xargs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xenolog/" rel="tag">xenolog</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/4dtv/" style="font-size: 10px;">4dtv</a> <a href="/tags/" style="font-size: 10px;">;</a> <a href="/tags/BUSCO/" style="font-size: 10px;">BUSCO</a> <a href="/tags/Bauhinia/" style="font-size: 10px;">Bauhinia</a> <a href="/tags/Bioconductor/" style="font-size: 10px;">Bioconductor</a> <a href="/tags/CAFE/" style="font-size: 10px;">CAFE</a> <a href="/tags/CDS/" style="font-size: 10px;">CDS</a> <a href="/tags/CRAN/" style="font-size: 10px;">CRAN</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Circos/" style="font-size: 10px;">Circos</a> <a href="/tags/Clustal/" style="font-size: 10px;">Clustal</a> <a href="/tags/DESeq2/" style="font-size: 10px;">DESeq2</a> <a href="/tags/EDTA/" style="font-size: 10px;">EDTA</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/GATK/" style="font-size: 10px;">GATK</a> <a href="/tags/GOEAST/" style="font-size: 10px;">GOEAST</a> <a href="/tags/GSEA/" style="font-size: 14px;">GSEA</a> <a href="/tags/Gblocks/" style="font-size: 10px;">Gblocks</a> <a href="/tags/GenBank/" style="font-size: 10px;">GenBank</a> <a href="/tags/HISAT2/" style="font-size: 10px;">HISAT2</a> <a href="/tags/KOBAS-i/" style="font-size: 10px;">KOBAS-i</a> <a href="/tags/KaKs-Calculator2-0/" style="font-size: 10px;">KaKs_Calculator2.0</a> <a href="/tags/Ks/" style="font-size: 12px;">Ks</a> <a href="/tags/LoRDEC/" style="font-size: 10px;">LoRDEC</a> <a href="/tags/MAFFT/" style="font-size: 10px;">MAFFT</a> <a href="/tags/MCScanX/" style="font-size: 10px;">MCScanX</a> <a href="/tags/MCscan/" style="font-size: 10px;">MCscan</a> <a href="/tags/MSA/" style="font-size: 10px;">MSA</a> <a href="/tags/MUSCLE/" style="font-size: 10px;">MUSCLE</a> <a href="/tags/Multiple-Sequence-Alignment/" style="font-size: 10px;">Multiple Sequence Alignment</a> <a href="/tags/Oases/" style="font-size: 10px;">Oases</a> <a href="/tags/OrthoFinder/" style="font-size: 10px;">OrthoFinder</a> <a href="/tags/OrthoMCL/" style="font-size: 10px;">OrthoMCL</a> <a href="/tags/PAL2NAL/" style="font-size: 10px;">PAL2NAL</a> <a href="/tags/PANNZER2/" style="font-size: 10px;">PANNZER2</a> <a href="/tags/PATH/" style="font-size: 10px;">PATH</a> <a href="/tags/PCR/" style="font-size: 10px;">PCR</a> <a href="/tags/PRANK/" style="font-size: 10px;">PRANK</a> <a href="/tags/ParaAT/" style="font-size: 10px;">ParaAT</a> <a href="/tags/ParaAT-pl/" style="font-size: 10px;">ParaAT.pl</a> <a href="/tags/QUAST/" style="font-size: 10px;">QUAST</a> <a href="/tags/R/" style="font-size: 16px;">R</a> <a href="/tags/R-package/" style="font-size: 14px;">R package</a> <a href="/tags/RNA-seq/" style="font-size: 10px;">RNA-seq</a> <a href="/tags/RNA-sequencing/" style="font-size: 10px;">RNA-sequencing</a> <a href="/tags/ROUSFinder2-0-py/" style="font-size: 10px;">ROUSFinder2.0.py</a> <a href="/tags/RStudio/" style="font-size: 10px;">RStudio</a> <a href="/tags/RepeatMasker/" style="font-size: 10px;">RepeatMasker</a> <a href="/tags/RepeatModeler/" style="font-size: 10px;">RepeatModeler</a> <a href="/tags/Rtools/" style="font-size: 10px;">Rtools</a> <a href="/tags/STARlong/" style="font-size: 10px;">STARlong</a> <a href="/tags/Salmon-SMEM/" style="font-size: 10px;">Salmon-SMEM</a> <a href="/tags/StringTie/" style="font-size: 10px;">StringTie</a> <a href="/tags/TE/" style="font-size: 10px;">TE</a> <a href="/tags/TreeMix/" style="font-size: 10px;">TreeMix</a> <a href="/tags/UpSetR/" style="font-size: 10px;">UpSetR</a> <a href="/tags/Venn/" style="font-size: 10px;">Venn</a> <a href="/tags/VennDiagram/" style="font-size: 10px;">VennDiagram</a> <a href="/tags/WGD/" style="font-size: 12px;">WGD</a> <a href="/tags/WGDI/" style="font-size: 10px;">WGDI</a> <a href="/tags/" style="font-size: 10px;">\&&</a> <a href="/tags/" style="font-size: 10px;">\||</a> <a href="/tags/analog/" style="font-size: 10px;">analog</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/batch-run-sh/" style="font-size: 10px;">batch_run.sh</a> <a href="/tags/bifurcated-tree/" style="font-size: 10px;">bifurcated tree</a> <a href="/tags/biosoft/" style="font-size: 18px;">biosoft</a> <a href="/tags/blog/" style="font-size: 12px;">blog</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/build-website/" style="font-size: 10px;">build website</a> <a href="/tags/chronogram/" style="font-size: 10px;">chronogram</a> <a href="/tags/cladistics/" style="font-size: 10px;">cladistics</a> <a href="/tags/cladogram/" style="font-size: 10px;">cladogram</a> <a href="/tags/clusterProfiler/" style="font-size: 12px;">clusterProfiler</a> <a href="/tags/codon/" style="font-size: 10px;">codon</a> <a href="/tags/colinearity/" style="font-size: 10px;">colinearity</a> <a href="/tags/combine/" style="font-size: 10px;">combine</a> <a href="/tags/concept/" style="font-size: 12px;">concept</a> <a href="/tags/crown-groups/" style="font-size: 10px;">crown groups</a> <a href="/tags/deploy-website/" style="font-size: 10px;">deploy website</a> <a href="/tags/divergence-time/" style="font-size: 10px;">divergence time</a> <a href="/tags/eggnog-mapper/" style="font-size: 10px;">eggnog-mapper</a> <a href="/tags/evolutionary-tree/" style="font-size: 12px;">evolutionary tree</a> <a href="/tags/experiment/" style="font-size: 10px;">experiment</a> <a href="/tags/extract/" style="font-size: 10px;">extract</a> <a href="/tags/extract-intron-info-pl/" style="font-size: 10px;">extract_intron_info.pl</a> <a href="/tags/extract-single-copy-genes-sh/" style="font-size: 10px;">extract_single_copy_genes.sh</a> <a href="/tags/facet-plot/" style="font-size: 10px;">facet_plot</a> <a href="/tags/flex/" style="font-size: 10px;">flex</a> <a href="/tags/for/" style="font-size: 10px;">for</a> <a href="/tags/fossil-time/" style="font-size: 10px;">fossil time</a> <a href="/tags/functional-annotation/" style="font-size: 10px;">functional annotation</a> <a href="/tags/gene-family/" style="font-size: 10px;">gene family</a> <a href="/tags/gene-flow/" style="font-size: 10px;">gene flow</a> <a href="/tags/gene-set-enrichment-analysis/" style="font-size: 14px;">gene set enrichment analysis</a> <a href="/tags/genome/" style="font-size: 10px;">genome</a> <a href="/tags/genome-annotation/" style="font-size: 14px;">genome annotation</a> <a href="/tags/genome-assessment/" style="font-size: 12px;">genome assessment</a> <a href="/tags/genome-submit/" style="font-size: 10px;">genome submit</a> <a href="/tags/geom-taxalink/" style="font-size: 10px;">geom_taxalink</a> <a href="/tags/ggdensitree/" style="font-size: 10px;">ggdensitree</a> <a href="/tags/ggplot2/" style="font-size: 10px;">ggplot2</a> <a href="/tags/ggstance/" style="font-size: 10px;">ggstance</a> <a href="/tags/ggtree/" style="font-size: 10px;">ggtree</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/gplots/" style="font-size: 10px;">gplots</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/homolog/" style="font-size: 10px;">homolog</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/interproscan/" style="font-size: 10px;">interproscan</a> <a href="/tags/itol/" style="font-size: 10px;">itol</a> <a href="/tags/jcvi/" style="font-size: 10px;">jcvi</a> <a href="/tags/jquery/" style="font-size: 10px;">jquery</a> <a href="/tags/line-separator/" style="font-size: 10px;">line separator</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/loop/" style="font-size: 10px;">loop</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mcmctree/" style="font-size: 10px;">mcmctree</a> <a href="/tags/molecular-experiment/" style="font-size: 10px;">molecular experiment</a> <a href="/tags/monophyly/" style="font-size: 10px;">monophyly</a> <a href="/tags/multi-transcriptome-assembly-with-ref-sh/" style="font-size: 10px;">multi-transcriptome_assembly_with_ref.sh</a> <a href="/tags/multiPhylo/" style="font-size: 10px;">multiPhylo</a> <a href="/tags/orthogroup/" style="font-size: 10px;">orthogroup</a> <a href="/tags/ortholog/" style="font-size: 10px;">ortholog</a> <a href="/tags/orthology/" style="font-size: 12px;">orthology</a> <a href="/tags/paml/" style="font-size: 12px;">paml</a> <a href="/tags/paralog/" style="font-size: 10px;">paralog</a> <a href="/tags/paraphyly/" style="font-size: 10px;">paraphyly</a> <a href="/tags/paste/" style="font-size: 10px;">paste</a> <a href="/tags/phylogenetic-reticulum/" style="font-size: 10px;">phylogenetic reticulum</a> <a href="/tags/phylogenetic-tree/" style="font-size: 10px;">phylogenetic tree</a> <a href="/tags/phylogeny/" style="font-size: 16px;">phylogeny</a> <a href="/tags/phylogram/" style="font-size: 10px;">phylogram</a> <a href="/tags/plot/" style="font-size: 14px;">plot</a> <a href="/tags/polyphyly/" style="font-size: 10px;">polyphyly</a> <a href="/tags/population-networks/" style="font-size: 10px;">population networks</a> <a href="/tags/protein/" style="font-size: 10px;">protein</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reinstall/" style="font-size: 10px;">reinstall</a> <a href="/tags/rename/" style="font-size: 10px;">rename</a> <a href="/tags/repeat-sequences/" style="font-size: 10px;">repeat sequences</a> <a href="/tags/scripts/" style="font-size: 10px;">scripts</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/sequence-alignment/" style="font-size: 12px;">sequence alignment</a> <a href="/tags/sort/" style="font-size: 10px;">sort</a> <a href="/tags/stem-groups/" style="font-size: 10px;">stem groups</a> <a href="/tags/sync/" style="font-size: 12px;">sync</a> <a href="/tags/synteny/" style="font-size: 10px;">synteny</a> <a href="/tags/system/" style="font-size: 10px;">system</a> <a href="/tags/table2asn/" style="font-size: 10px;">table2asn</a> <a href="/tags/topGO/" style="font-size: 12px;">topGO</a> <a href="/tags/tr/" style="font-size: 10px;">tr</a> <a href="/tags/treeio/" style="font-size: 10px;">treeio</a> <a href="/tags/trimAl/" style="font-size: 10px;">trimAl</a> <a href="/tags/trimming/" style="font-size: 10px;">trimming</a> <a href="/tags/tutorial/" style="font-size: 20px;">tutorial</a> <a href="/tags/website-maintenance/" style="font-size: 10px;">website maintenance</a> <a href="/tags/while/" style="font-size: 10px;">while</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/xargs/" style="font-size: 10px;">xargs</a> <a href="/tags/xenolog/" style="font-size: 10px;">xenolog</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/22/omics_genome.submit/">提交基因组到公共数据库 —— 以GenBank为例</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/20/bioinfo_geneflow_treemix/">用TreeMix推断居群间基因流</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/bioinfo_evolutionary.tree/">绘制进化树 —— R包treeio+ggtree</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/16/linux_command/">shell的常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/28/R_install/">R及相关软件的安装</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 南方枝叶<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
