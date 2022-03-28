@@ -28,7 +28,7 @@
 <meta property="og:description" content="这篇教程的目的是指导小白建立和管理自己的网站。用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。build website with hexo, deploy with github.io, sync at multiple terminals.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-06-05T07:53:00.000Z">
-<meta property="article:modified_time" content="2022-03-28T12:30:44.294Z">
+<meta property="article:modified_time" content="2022-03-28T13:46:39.456Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="tutorial">
 <meta property="article:tag" content="blog">
@@ -197,7 +197,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 20:30:44" itemprop="dateModified" datetime="2022-03-28T20:30:44+08:00">2022-03-28</time>
+                <time title="修改时间：2022-03-28 21:46:39" itemprop="dateModified" datetime="2022-03-28T21:46:39+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -436,25 +436,24 @@
 <p>  <em>notes：注意fork的next版本与hexo版本相匹配，next V8与hexo v5，否则githubpages为空白（过来人踩过的坑~~）</em></p>
 <p>  <code>git remote add -f next git@github.com:yanzhongsino/hexo-theme-next.git</code> #添加远程仓库hexo-theme-next到本地，仓库名设置为next，远程仓库网址粘贴你的github账号下fork的hexo-theme-next的网址。<code>git remote</code>显示所有添加的远程仓库，此时便能看见next。</p>
 <p>  <code>git subtree add --prefix=themes/next next master --squash</code> #添加subtree，把本地next仓库作为子仓库添加到本地themes&#x2F;next目录下，分支为master，–squash的意思是把subtree的改动合并成一次commit提交。</p>
-<p>  <del>在本地替换themes&#x2F;next目录下的主题配置文件_config.yml，把删除前修改好的放进themes&#x2F;next目录</del>，用<code>git add .</code>,<code>git commit -m &quot;add theme next&quot;</code>,<code>git push</code>命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。</p>
+<p>  在本地替换themes&#x2F;next目录下的主题配置文件_config.yml，把删除前修改好的放进themes&#x2F;next目录，用<code>git add .</code>,<code>git commit -m &quot;add theme next&quot;</code>,<code>git push</code>命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。</p>
 </li>
 </ul>
-<h3 id="7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。"><a href="#7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。" class="headerlink" title="7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。"></a>7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。</h3><p><del>- Solution A 使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步</del><br>    使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】</p>
-<pre><code>~~为了避免这种不便，next开发者提供了两种[解决方案](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)。~~
-~~这里介绍第二种NexT方式的解决方案。~~
-
-~~把主题配置修改的任务转移到新建的位置：复制一份主题配置文件/themes/next/_config.yml到新建的位置/source/_data/next.yml，并且维持/themes/next/_config.yml的默认值，在/source/_data/next.yml中修改主题配置。当next主题在配置文件/themes/next/_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件/source/_data/next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。~~
-</code></pre>
-<ul>
+<h3 id="7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。"><a href="#7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。" class="headerlink" title="7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。"></a>7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。</h3><ul>
+<li><p>Solution A 把next主题的配置文件_config.yml合并到博客配置文件_config.yml<br>  把next主题的配置文件_config.yml的内容复制到博客配置文件_config.yml，每行都缩进两个空格(在VScode里选中内容，ctrl+]即可缩进)，然后在内容前一行添加<code>theme_config:</code>标题行。有任何主题配置都在博客配置文件中进行。</p>
+</li>
 <li><p>Solution B 使用_config.next.yml进行主题配置和同步【需要&gt;hexo5.0】<br>  <a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/getting-started/configuration.html">next官方指导doc</a></p>
 <p>  在本地的github.io的工作目录下，创建一个_config.next.yml的文件，把需要更改的主题设置从next&#x2F;_config.yml复制到_config.next.yml并进行更改，用_config.next.yml进行主题配置和同步。</p>
 <p>  当next主题在配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml增加新的特性时，可随时复制新特性的内容到这个文件_config.next.yml中，实现主题的配置和同步。</p>
 <p>  将本地的修改推送给子项目（github端fork的hexo-theme-next项目）<code>git subtree push --prefix=themes/next next master</code>，对github端fork的hexo-theme-next项目进行pull、push操作需要使用<code>git subtree</code>命令。</p>
+<p>  平常使用同步同前面介绍的一致。<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令同步hexo项目和blog源文件到github端的hexo分支，<code>hexo clean &amp; hexo g -d</code>命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。<br>  当next主题项目下文件更改时，增加了<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。</p>
 </li>
-</ul>
-<p>平常使用同步同前面介绍的一致。<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令同步hexo项目和blog源文件到github端的hexo分支，<code>hexo clean &amp; hexo g -d</code>命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。<br>当next主题项目下文件更改时，增加了<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。</p>
-<ul>
-<li>next主题更新【还未验证】<br>  当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。<br>  通过git bash进入本地next主题子项目，更新子项目：<code>git fetch next master</code>,<code>git pull https://github.com/example/hexo-theme-next.git</code>命令拉取next项目源更新的仓库到本地。<br>  然后<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令推送本地更改到主项目，<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目。</li>
+<li><p>Solution C 使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步<br>  使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】</p>
+<p>  为了避免这种不便，next开发者提供了两种<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md">解决方案</a>。</p>
+<p>  把主题配置修改的任务转移到新建的位置：复制一份主题配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml到新建的位置&#x2F;source&#x2F;_data&#x2F;next.yml，并且维持&#x2F;themes&#x2F;next&#x2F;_config.yml的默认值，在&#x2F;source&#x2F;_data&#x2F;next.yml中修改主题配置。当next主题在配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件&#x2F;source&#x2F;_data&#x2F;next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。</p>
+</li>
+<li><p>next主题更新【还未验证】<br>  当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。<br>  通过git bash进入本地next主题子项目，更新子项目：<code>git fetch next master</code>,<code>git pull https://github.com/example/hexo-theme-next.git</code>命令拉取next项目源更新的仓库到本地。<br>  然后<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令推送本地更改到主项目，<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目。</p>
+</li>
 </ul>
 <h3 id="7-0-3-Issue-3-hexo-deploy时报错Authentication-failed"><a href="#7-0-3-Issue-3-hexo-deploy时报错Authentication-failed" class="headerlink" title="7.0.3. Issue 3:hexo deploy时报错Authentication failed"></a>7.0.3. Issue 3:hexo deploy时报错Authentication failed</h3><p>报错信息如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fatal: 发送请求时出错。</span><br><span class="line">fatal: 基础连接已经关闭: 连接被意外关闭。</span><br><span class="line">yLogon failed, use ctrl+c to cancel basic credential prompt.</span><br><span class="line">remote: Invalid username or password.</span><br><span class="line">fatal: Authentication failed for &#x27;https://github.com/yanzhongsino/yanzhongsino.github.io.git/&#x27;</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (events.js:315:20)</span><br><span class="line">      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span><br></pre></td></tr></table></figure>
