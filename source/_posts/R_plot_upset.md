@@ -139,7 +139,7 @@ query.name = "share EGFR and TP53"), # 添加query图例
 list(query = intersects, params=list("TTN"), color="red", active=T)))
 ```
 
-<img src="images/R_plot_upset_mutations.png" width=80% height=80% title="upset_mutations" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_upset_mutations.png?raw=true" width=100% height=60% title="upset_mutations" align=center/>
 
 **<p align="center">Figure 2. mutations upset</p>**
 
@@ -154,7 +154,7 @@ upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary
                      list(query = between, params=list(1970,1980), color="red", active=TRUE)))
 ```
 
-<img src="images/R_plot_upset_movies2.png" width=80% height=80% title="upset_movies2" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_upset_movies2.png?raw=true" width=100% height=60% title="upset_movies2" align=center/>
 
 **<p align="center">Figure 3. movies upset 2</p>**
 
@@ -163,7 +163,7 @@ upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary
 每次最多添加两个箱线图
 `upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate")) `
 
-<img src="images/R_plot_upset_boxplot.png" width=80% height=80% title="upset_boxplot" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_upset_boxplot.png?raw=true" width=100% height=70% title="upset_boxplot" align=center/>
 
 **<p align="center">Figure 4. movies upset boxplot</p>**
 
@@ -186,7 +186,7 @@ upset(movies, sets=c("Drama","Comedy","Action","Thriller","Western","Documentary
       query.legend = "top") # query图例放在上方
 ```
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_scatter_histogram.png?raw=true" width=100% height=80% title="upset_scatter_histograms" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_scatter_histogram.png?raw=true" width=100% height=70% title="upset_scatter_histograms" align=center/>
 
 **<p align="center">Figure 5. movies upset scatter histograms</p>**
 
@@ -214,11 +214,11 @@ upset(movies, main.bar.color = "black", mb.ratio = c(0.5, 0.5), queries = list(l
         y = "ReleaseDate", queries = F)), ncols = 3))
 ```
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_density.png?raw=true" width=100% height=80% title="upset_density" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/3cabd7b9fd4f1552a69bf5f1797f489be352717a/source/images/R_plot_upset_density.png?raw=true" width=100% height=70% title="upset_density" align=center/>
 
 **<p align="center">Figure 6. movies upset density</p>**
 
 # 2. references
-https://github.com/hms-dbmi/UpSetR
-https://www.jianshu.com/p/324aae3d5ea4
-https://zhuanlan.zhihu.com/p/35303590
+1. https://github.com/hms-dbmi/UpSetR
+2. https://www.jianshu.com/p/324aae3d5ea4
+3. https://zhuanlan.zhihu.com/p/35303590

@@ -21,7 +21,10 @@ clusterProfiler是一个R包，是一个解释组学数据的通用富集工具�
 
 2021年07月发布了clusterProfiler 4.0版本。
 
-<img src="https://els-jbs-prod-cdn.jbs.elsevierhealth.com/cms/attachment/86a1af7b-6e9c-4c63-a02b-83fe7593f157/gr6_lrg.jpg" width=80% title="clusterProfiler function and workflow" alt="clusterProfiler function and workflow" align=center/>
+<img src="https://yulab-smu.top/biomedical-knowledge-mining-book/figures/clusterProfiler-diagram.png" width=100% title="clusterProfiler function and workflow" alt="clusterProfiler function and workflow" align=center/>
+
+**<p align="center">Figure 1. clusterProfiler function and workflow**
+from [yulab's book](https://yulab-smu.top/biomedical-knowledge-mining-book/)</p>
 
 # 3. clusterProfiler支持的基因集(gene sets)或基因通路数据库
 1. Gene Ontology(GO)

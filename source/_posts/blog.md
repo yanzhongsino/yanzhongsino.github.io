@@ -126,7 +126,26 @@ tags:
 ## 3.1. 插入图片
 若是本地图片，就放在特定位置，然后在blog中引用；若是网络图片，就直接复制图片的url地址引用；
 
-### 3.1.1. markdown语法
+### 3.1.1. 推荐用法
+若是自己的图片，可以统一保存在sources/images/目录下，在github上同步后，复制github上图片地址，就可以像引用网络图片一样引用图片url地址。
+
+```
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_2.png?raw=true" width=50% title="venn_2" align="center" />
+
+**<p align="center">Figure 1. Venn diagram with 2 groups**
+from [github: yanzhongsino](https://github.com/yanzhongsino/yanzhongsino.github.io)</p>
+```
+
+`<img />`用于图片显示，src填写图片网址，width指图片占屏幕的比例（同时还有类似的height参数，但建议不设置height以保持图片长宽比例），title是图片名称(如果网址失效会显示title值的文字)，align设置对齐方式。
+`<p align="center">Figure 1. text</p>`用于图的标题居中显示，from指示图源(引用其他来源的图时)，**用于加粗显示。
+
+效果如下：
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_2.png?raw=true" width=50% title="venn_2" align="center" />
+
+**<p align="center">Figure 1. Venn diagram with 2 groups**
+from [github: yanzhongsino](https://github.com/yanzhongsino/yanzhongsino.github.io)</p>
+
+### 3.1.2. markdown语法
 1. 统一放在images目录下
 当Hexo项目中只用到少量图片时，可以将图片统一放在source/images文件夹中，在blog中通过markdown语法访问它们，即`![图片注释](/images/image.jpg "图片标题")`。
 
@@ -141,22 +160,22 @@ tags:
 
 图片只能在文章中显示，但无法在首页中正常显示。
 
-### 3.1.2. HTML语法【推荐】
+### 3.1.3. HTML语法【推荐】
 用markdown语法无法指定图片的尺寸和对齐方式，建议用HTML语法插入图片，以实现更好的控制。
 `<img src="/images/image.png" width=80% height=80% title="picture" alt="picture" align=center/>`
 
 `<img src="url" title="title" width="80%" height="80%" />`
 
-### 3.1.3. 标签插件语法引用
+### 3.1.4. 标签插件语法引用
 如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。
 - 本地图片资源，不限制图片尺寸，使用 `{% asset_img image.jpg This is an image %}`；
 - 网络图片资源，限制图片显示尺寸，`{% img http://www.something.gif 200 400 vi-vim-cheat-sheet %}` 
 
-### 3.1.4. CDN引用
+### 3.1.5. CDN引用
 1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
 2. 【实测这种方法不生效】把代码`<div align="middle" style="width:200px; margin:auto">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中。
 
-### 3.1.5. fancybox
+### 3.1.6. fancybox
 1. 启用fancybox
 启用fancybox：点击查看图片大图。
 

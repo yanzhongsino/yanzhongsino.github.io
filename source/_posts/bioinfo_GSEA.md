@@ -200,9 +200,10 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 
 topGO是一个R包，用于半自动的GO terms的基因富集分析。topGO的结果可以展示为有向无环图。
 
-一个DAG图的示例：
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图" alt="DAG图" align=center/>
 
-<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Frpubs.com%2Fthokall%2F78374&psig=AOvVaw3W8VliiD-4n8bfdOGr5U5F&ust=1636793891235000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMCK1Ma6kvQCFQAAAAAdAAAAABAJ" width=80% height=80% title="DAG图" alt="DAG图" align=center/>
+**<p align="center">Figure 1. DAG图示例**
+from [wikipedia:directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)</p>
 
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
 

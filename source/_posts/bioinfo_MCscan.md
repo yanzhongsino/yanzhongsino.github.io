@@ -120,16 +120,20 @@ seqkit grep -f <(cut -f 4 sampleB.uniq.bed ) sampleB.pep.fa.gz | seqkit seq -i  
 
 同线性点图一般可以看点连成的比较长的线，在同一横坐标范围有几根线，或者在同一纵坐标范围有几根线，从而判断两个基因组的倍数关系。
 
-同线性点图结果示例：
-{% img https://camo.githubusercontent.com/efdb6702eac5a03f96bfd4634b0a621242a2d489442d090b3e5b0f28626a8aa1/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f3334687162637374706638687931702f67726170652e70656163682e706e673f7261773d31 800 800 vi-vim-cheat-sheet %}
+<img src="https://www.dropbox.com/s/32mmo0kfhtx5b8g/grape.peach.cscore.99.png?raw=1" width=100% title="同线性点图" alt="同线性点图" align=center/>
+
+**<p align="center">Figure 1. 同线性点图结果示例**
+from [MCscan jcvi viki](https://github-wiki-see.page/m/tanghaibao/jcvi/wiki/MCscan-%28Python-version%29)</p>
 
 ## 2.4. 同线性深度直方图
 1. 在同线性点图运行成功获得sampleA.sampleB.anchors结果文件的前提下
 2. 运行`python -m jcvi.compara.synteny depth --histogram sampleA.sampleB.anchors`
 3. 生成sampleA.sampleB.depth.pdf，显示了同线性深度比例。
 
-同线性深度直方图示例：
-{% img https://camo.githubusercontent.com/9fdbd61bbf389b65dbc12166fb02e4a46ffff2ef1b465af817bd3dff9e695e13/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f686878326474727972756d3267796f2f67726170652e70656163682e64657074682e706e673f7261773d31 800 400 vi-vim-cheat-sheet %}
+<img src="https://www.dropbox.com/s/hhx2dtryrum2gyo/grape.peach.depth.png?raw=1" width=100% title="同线性深度直方图" alt="同线性深度直方图" align=center/>
+
+**<p align="center">Figure 2. 同线性深度直方图结果示例**
+from [MCscan jcvi viki](https://github-wiki-see.page/m/tanghaibao/jcvi/wiki/MCscan-%28Python-version%29)</p>
 
 ## 2.5. 同线性染色体图
 ### 2.5.1. 输入文件
@@ -164,9 +168,10 @@ e, 0, 1, sampleA.sampleB.anchors.simple
 
 生成karyotype.pdf文件，为同线性双染色体图
 
-同线性染色体图示例：
-{% img https://camo.githubusercontent.com/6d343c2958de0eb6596c75cfeca3cc24a19617ab420d07249cf37c2813480370/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f35316b386a756a797a616765336f612f67726170652e70656163682e6b6172796f747970652e706e673f7261773d31 800 400 vi-vim-cheat-sheet %}
+<img src="https://www.dropbox.com/s/51k8jujyzage3oa/grape.peach.karyotype.png?raw=1" width=100% title="同线性双染色体图" alt="同线性双染色体图" align=center/>
 
+**<p align="center">Figure 3. 同线性双染色体图结果示例**
+from [MCscan jcvi wiki](https://github-wiki-see.page/m/tanghaibao/jcvi/wiki/MCscan-%28Python-version%29)</p>
 
 ### 2.5.3. tips
 - 运行虽然报错`ERROR    savefig failed. Reset usetex to False.`，应该是没能生成png图，但还是生成了pdf图文件。

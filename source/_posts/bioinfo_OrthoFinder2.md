@@ -55,7 +55,10 @@ OrthoFinder是用于推断系统发育直系同源关系的基于python的软件
 4. 推断基因复制事件并交叉引用到对应的基因树和物种树上的对应节点。
 5. 提供比较基因组学统计结果。
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1186%2Fs13059-019-1832-y/MediaObjects/13059_2019_1832_Fig2_HTML.png?as=webp" width=80% title="The OrthoFinder workflow" alt="The OrthoFinder workflow" align=center/>
+<img src="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png" width=100% title="The OrthoFinder workflow" alt="The OrthoFinder workflow" align=center/>
+
+**<p align="center">Figure 1. The OrthoFinder workflow**
+from [github: orthofinder](https://github.com/davidemms/OrthoFinder)</p>
 
 ## 2.2. OrthoFinder的分步原理
 ### 2.2.1. OrthoFinder1推断直系同源群的基本原理

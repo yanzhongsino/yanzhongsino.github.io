@@ -29,7 +29,10 @@ RNA-seq分析流程主要有四大模块：
 - 长读长数据的亚型jiance(Long-read isoform detection)
 - 表达分析(Expression analysis)
 
-<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig1_HTML.jpg?as=webp" title="RNACocktail分析协议" width="80%" height="40%" />
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig1_HTML.jpg?as=webp" title="RNACocktail分析协议" width="90%" />
+
+**<p align="center">Figure 1. RNACocktail分析协议**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 # 2. 比较结果总结
 1. 比对工具：**HISAT2**在准确性和运算速度上表现最好值得推荐，STAR和TopHat在剪切位点总数上表现更好。
@@ -43,7 +46,10 @@ RNA-seq分析流程主要有四大模块：
 
 作者总结了每一步的高精度工具，作为RNA-seq分析工具选择的一般建议。
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig8_HTML.jpg?as=webp" title="RNACocktail计算流程" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig8_HTML.jpg?as=webp" title="RNACocktail计算流程" width="90%" />
+
+**<p align="center">Figure 2. RNACocktail计算流程**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 # 3. 比较结果
 ## 3.1. 比对工具
@@ -60,7 +66,10 @@ RNA-seq分析的第一步通常是转录本的鉴定，需要把RNA-seq reads比
 - **STAR**对于成对reads的唯一比对表现则比较好，特别是对于有较长读长的MCF7-300细胞系的数据，不过STAR会有更多含有soft-clipped和碱基错配的较低质量比对情况。
 - 如果单看有soft-clipped的reads，**TopHat**会把这部分reads全部舍弃。
 
-<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig2_HTML.jpg?as=webp" title="比对工具比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig2_HTML.jpg?as=webp" title="比对工具比较结果" width="90%" />
+
+**<p align="center">Figure 3. 比对工具比较结果**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 ## 3.2. 有参组装工具
 比对完成后，接着组装转录本。比较了三款组装工具，StringTie在组装的转录本数量，转录本水平的准确性和运行速度上都表现最好，Cufflinks表现一般，isoform detection and prediction(IDP)在基因水平准确性上表现最好。
@@ -70,7 +79,10 @@ RNA-seq分析的第一步通常是转录本的鉴定，需要把RNA-seq reads比
 - 运行速度：StringTie>Cufflinks~IDP
 - IDP则会忽略单外显子转录本
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig3_HTML.jpg?as=webp" title="有参组装工具比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig3_HTML.jpg?as=webp" title="有参组装工具比较结果" width="90%" />
+
+**<p align="center">Figure 4. 有参组装工具比较结果**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 ## 3.3. 从头组装工具
 比较了三款从头组装转录本的工具：Trinity转录本长，灵敏度高；SOAPdenovo-Trans转录本多，准确性高；Oases鉴定长转录本有优势，能够较好地涵盖到低表达的基因。
@@ -78,7 +90,10 @@ RNA-seq分析的第一步通常是转录本的鉴定，需要把RNA-seq reads比
 - SOAPdenovo-Trans：组装到转录本数量多，准确性最高，对于高表达的转录本有明显的组装偏好性；花费的内存和CPU最低。
 - Oases：在所有样品中都有较好的N10-N50长度的表现，鉴定长转录本有优势；能够较好地涵盖到低表达的基因。
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig4_HTML.jpg?as=webp" title="从头组装工具比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig4_HTML.jpg?as=webp" title="从头组装工具比较结果" width="90%" />
+
+**<p align="center">Figure 5. 从头组装工具比较结果**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 ## 3.4. 三代测序错误纠正工具
 LoRDEC在纠错质量和速度上更有优势，LSC在纠正后reads比对率的改善上表现更好。
@@ -105,7 +120,10 @@ LoRDEC在纠错质量和速度上更有优势，LSC在纠正后reads比对率的
 - kallisto和Salmon-SMEM表现最好。
 - 基于比对基因组的工具则能够看到，使用HISAT2或者TopHat对具有较长读长的样品进行比对所得到的定量结果要比STAR要好。
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig5_HTML.jpg?as=webp" title="转录本表达定量比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig5_HTML.jpg?as=webp" title="转录本表达定量比较结果" width="90%" />
+
+**<p align="center">Figure 6. 转录本表达定量比较结果**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 ## 3.7. 差异表达的工具
 比较了基于计数的工具（DESeq2、limma和edgeR）和基于组装的工具（Cuffdiff和Ballgown）。
@@ -113,14 +131,20 @@ LoRDEC在纠错质量和速度上更有优势，LSC在纠正后reads比对率的
 **DESeq2**在各项得分中均优于其他的工具，而Cuffdiff和Ballgown的表现则相对比较差。
 总的来说，基于计数的工具要比基于组装的工具效果要好；另外从运行时间上看的话，Cuffdiff也是最慢的工具。
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig6_HTML.jpg?as=webp" title="差异表达比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig6_HTML.jpg?as=webp" title="差异表达比较结果" width="90%" />
+
+**<p align="center">Figure 7. 差异表达比较结果**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 ## 3.8. 检测基因组和转录组的突变
 两款突变检测的工具：GATK HaplotypeCaller和Samtools mpileup。
 
 **GATK**在突变检测方面具有较高的准确性，在运行时间方面GATK与Samtools没有明显的差异。
 
-<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig7_HTML.jpg?as=webp" title="突变检测比较结果" width="80%" height="80%" />
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig7_HTML.jpg?as=webp" title="突变检测比较结果" width="90%" />
+
+**<p align="center">Figure 8. 突变检测比较结果**
+from [paper: Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)</p>
 
 # 4. 39个RNA-seq分析工具版本号、重要参数及下载地址
 ## 4.1. 比对工具 —— Reference-based transcript identification

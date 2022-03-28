@@ -15,7 +15,10 @@ description: 记录了单系、并系和复系在进化生物学上的相关概�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Monophyly%2C_paraphyly%2C_polyphyly.png/1280px-Monophyly%2C_paraphyly%2C_polyphyly.png" title="单系并系复系示意图" width="80%" height="80%" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Monophyly%2C_paraphyly%2C_polyphyly.png/1280px-Monophyly%2C_paraphyly%2C_polyphyly.png" width=100% title="单系-并系-复系示意图" alt="单系-并系-复系示意图" align=center/>
+
+**<p align="center">Figure 1. 单系-并系-复系示意图**
+from [wikipedia: monophyly](https://en.wikipedia.org/wiki/Monophyly)</p>
 
 # 1. 分类
 1. 分类

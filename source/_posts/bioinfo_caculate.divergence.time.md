@@ -23,9 +23,11 @@ description: 用paml的mcmctree模块估算系统树上节点分歧时间的教�
 # 1. 原理
 尝试用数学思维讲讲估算分歧时间的原理：即路程=速度*时间，经过多长**时间**（地质时间），通过多大的**速度**（碱基替换速率），完成从祖先物种的DNA到现在物种的DNA的变化，总体上的碱基替换积累即**路程**。
 
-假设下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D;是有枝长有根树，A1-A4都是现在的物种（代表时间也已知），目的是要估算B和C节点的时间。
+假设下面Figure 1. 系统发育树示意图(A4,(A3,(A2,A1)B)C)D;是有枝长有根树，A1-A4都是现在的物种（代表时间也已知），目的是要估算B和C节点的时间。
 
-<img src="phylogeny.jpg" width=80% height=80% title="phylogeny示意图(A4,(A3,(A2,A1)B)C)D" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true" width=100% height=80% title="phylogeny示意图(A4,(A3,(A2,A1)B)C)D" align=center/>
+
+**<p align="center">Figure 1. 系统发育示意图</p>**
 
 - 第一种情况，当已知D节点时间时，求B节点时间（C节点同理）
 

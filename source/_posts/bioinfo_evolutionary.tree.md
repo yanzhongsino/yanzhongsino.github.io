@@ -235,10 +235,10 @@ d2 <- data.frame(id=tr$tip.label, val=rnorm(30, sd=3)) #生成两列数据，分
 p2 <- facet_plot(p1, panel="dot", data=d2, geom=geom_point, aes(x=val), color='firebrick') + theme_tree2() #用ggtree的facet_plot的geom_point函数画点图  
 ```
 
-<img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" width=80% height=80% title="facet_plot_p2.png" align=center/>
+<img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" width=100% height=70% title="facet_plot_p2.png" align=center/>
 
-**Figure 1. p2 dotplot**
-from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png)
+**<p align="center">Figure 1. p2 dotplot**
+from [guangchuangyu's blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png)</p>
 
 2. 可视化堆叠直方图stacked barplot —— geom_barh
 大多ggplot2的geom绘制垂直版本的图形对象，通过ggstance包可以制作水平版本的数据图geom，方便画直方图/堆叠直方图/热图/箱线图与系统发育树对应。
@@ -255,10 +255,10 @@ p3 <- facet_plot(p2, panel = 'Stacked Barplot', data = d3,
 ```
 
 
-<img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" title="facet_plot_p3.png" width="80%" height="80%" />
+<img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" title="facet_plot_p3.png" width="100%" height="70%" />
 
-**Figure 2. p3 barplot**
-from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png)
+**<p align="center">Figure 2. p3 barplot**
+from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png)</p>
 
 3. 可视化箱线图boxplot —— geom_boxploth
 ```R
@@ -270,10 +270,10 @@ p4 <- facet_plot(p3, panel="Boxplot", data=d4, geom_boxploth,
 			mapping = aes(x=val, group=label, color=location)) #用geom_boxploth画水平版本的箱线图
 ```
 
-<img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" title="facet_plot_p4.png" width="80%" height="80%" />
+<img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" title="facet_plot_p4.png" width="100%" height="70%" />
 
-**Figure 3. p4 boxplot**
-from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png)
+**<p align="center">Figure 3. p4 boxplot**
+from [guangchuangyu blog](https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png)</p>
 
 #### 2.2.2.5. 时序树(chronogram)
 时序树上每个节点的数字代表的是分歧时间，端点一般对齐（因为端点的所有样本都对应当下的采样时间），画时序图需要先有时间标定的树文件，树上的枝长代表时长，一般会再添加时间尺度轴。
@@ -352,7 +352,7 @@ p1 <- ggtree(tree,size=0.8) #画树，size指定线条粗细
 p2<- ggtree::rotate(p1,13) #旋转节点13的上下分支clade  
 p2<- p1 %>% rotate(node=14) %>% rotate(node=16) # 旋转节点14和节点16  
 
-p2+geom_strip(10,10,label="Vitales",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5)+geom_strip(3,7,label="Fabids",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5)+geom_strip(1,4,label="Malvids",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5) # 给图加上分支clade的条带和文字注释  
+p2+geom_strip(10,10,label="Vitales",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5)+geom_strip(3,7,label="Fabids",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5)+geom_strip(1,4,label="Malvids",offset = 0.14, offset.text =0.01,color = "grey31",barsize = 1.5,fontsize = 5) # 给图加上分支clade的条带和文字注释
 ```
 
 # 3. reference

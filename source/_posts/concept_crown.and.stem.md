@@ -15,8 +15,12 @@ description: 记录了冠群和干群及在古生物学和进化生物学上应�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Stemgroups_Rev.png" title="冠群干群示意图" width="80%" height="80%" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Crown_n_Stem_Groups.svg/330px-Crown_n_Stem_Groups.svg.png" title="冠群干群示意图" width="100%" />
 
+**<p align="center">Figure 1. 冠群干群示意图**
+from [wikipedia: crown group](https://en.wikipedia.org/wiki/Crown_group)</p>
+
+C1/C2是冠群，S1是干群；C1和S1组成了泛群/总群T1
 
 **泛群(pan-group)=冠群(crown groups)+干群(stem groups)**
 
@@ -46,8 +50,9 @@ description: 记录了冠群和干群及在古生物学和进化生物学上应�
 
 在下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D中，假设A1和A2都属于As类群，A3和A4不属于As类群，那么在这个系统发育树上，As类群的冠节点是B，干节点是C。当描述As与其他物种分化时间时，冠时间指B点的时间，干时间指C点的时间。
 
-<img src="https://yanzhongsino.github.io/2021/03/25/caculate.divergence.time.with.paml.mcmctree/phylogeny.jpg" title="系统发育树示意图(A4,(A3,(A2,A1)B)C)D" width="50%" height="50%" />
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true" title="系统发育树示意图(A4,(A3,(A2,A1)B)C)D" width="100%" />
 
+**<p align="center">Figure 2. 系统发育树示意图</p>**
 
 notes：
 

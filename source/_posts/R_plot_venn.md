@@ -123,7 +123,9 @@ venn.pairwise.plot <- venn.diagram(
 grid.draw(venn.pairwise.plot); #用venn.plot绘图
 ```
 
-<img src="venn_2.png" width=80% height=80% title="venn_2" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_2.png?raw=true" width=50% title="venn_2" align=center/>
+
+**<p align="center">Figure 1. Venn diagram with 2 groups</p>**
 
 4. 三维韦恩图
 ```R
@@ -148,7 +150,10 @@ venn.triple.plot <- venn.diagram(
 );
 grid.draw(venn.triple.plot); #用venn.plot绘图
 ```
-<img src="venn_3.png" width=50% height=50% title="venn_3" align=center/>
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_3.png?raw=true" width=60% title="venn_3" align=center/>
+
+**<p align="center">Figure 2. Venn diagram with 3 groups</p>**
 
 5. 四维韦恩图
 ```R
@@ -174,7 +179,9 @@ venn.quad.plot <- venn.diagram(
 grid.draw(venn.quad.plot); #用venn.plot绘图
 ```
 
-<img src="venn_4.png" width=50% height=50% title="venn_4" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_4.png?raw=true" width=60% title="venn_4" align=center/>
+
+**<p align="center">Figure 3. Venn diagram with 4 groups</p>**
 
 6. 五维韦恩图
 ```R
@@ -198,7 +205,9 @@ venn.quintuple.plot <- venn.diagram(
 grid.draw(venn.quintuple.plot); #用venn.plot绘图
 ```
 
-<img src="venn_5.png" width=50% height=50% title="venn_5" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/R_plot_venn_5.png?raw=true" width=60% title="venn_5" align=center/>
+
+**<p align="center">Figure 4. Venn diagram with 5 groups</p>**
 
 #### 1.3.2.3. 保存R生成的图
 在RStudio里作图，选择Export-Save as PDF
