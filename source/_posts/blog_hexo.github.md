@@ -49,7 +49,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
      
      注册github网站，并创建一个名为username.github.io的仓库
      
-     这个特殊的名称直接关联了gitpages，gitpages服务器会自动把上传到这个仓库的文档进行部署发布，并可以通过分配的域名https://username.github.io/实现博客的访问。
+     这个特殊的名称直接关联了gitpages，gitpages服务器会自动把上传到这个仓库的文档进行部署发布，并可以通过分配的域名`https://username.github.io/`实现博客的访问。
 
 3. git配置和生成SSH key密钥对
      
