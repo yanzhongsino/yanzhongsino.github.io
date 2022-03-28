@@ -119,7 +119,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
    + 更换主题【optional】
         
         hexo网站https://hexo.io/themes/有许多主题可选，比如常被使用的NexT主题
-        在Hexo主题页面ctrl+F并输入next查找到NexT主题，然后点击进入到NexT主题的github页面，该页面存储了NexT主题的源码,复制next主题的github仓库位置，并在hexo/themes位置下运行命令`git clone https://github.com/theme-next/hexo-theme-next.git`克隆next主题
+        在Hexo主题页面ctrl+F并输入next查找到NexT主题，然后点击进入到NexT主题的github页面，该页面存储了NexT主题的源码,复制next主题的github仓库位置，并在hexo/themes位置下运行命令`git clone https://github.com/theme-next/hexo-theme-next.git next`克隆next主题
         
         然后修改hexo下的站点配置文件_config.yml中的主题行为theme: next
 
