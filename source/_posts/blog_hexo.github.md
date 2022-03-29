@@ -300,8 +300,8 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
     
 ### 7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。
-- Solution A 把next主题的配置文件_config.yml合并到博客配置文件_config.yml
-    把next主题的配置文件_config.yml的内容复制到博客配置文件_config.yml，每行都缩进两个空格(在VScode里选中内容，ctrl+]即可缩进)，然后在内容前一行添加`theme_config:`标题行。有任何主题配置都在博客配置文件中进行。
+- Solution A 把next主题的配置文件_config.yml合并到站点配置文件_config.yml
+    把next主题的配置文件_config.yml的内容复制到站点配置文件_config.yml，每行都缩进两个空格(在VScode里选中内容，ctrl+]即可缩进)，然后在内容前一行添加`theme_config:`标题行。有任何主题配置都在博客配置文件中进行。
 
 - Solution B 使用_config.next.yml进行主题配置和同步【需要>hexo5.0】
     [next官方指导doc](https://theme-next.js.org/docs/getting-started/configuration.html)
