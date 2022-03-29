@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。">
@@ -130,16 +130,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -215,20 +205,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2021/11/12/bioinfo_GSEA/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/12/bioinfo_GSEA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
             <div class="post-description">介绍了基因富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。</div>
 
         </div>
@@ -452,13 +428,6 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -505,7 +474,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90-gene-set-enrichment-analysis-GSEA"><span class="nav-text">1. 基因富集分析(gene set enrichment analysis, GSEA)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%9A%E4%B9%89"><span class="nav-text">1.1. 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%B9%E6%B3%95"><span class="nav-text">1.2. 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%BA%94%E7%94%A8"><span class="nav-text">1.3. 应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E5%B8%B8%E7%94%A8%E5%9F%BA%E5%9B%A0%E9%9B%86"><span class="nav-text">2. 基因富集分析常用基因集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Gene-Ontology-GO"><span class="nav-text">2.1. Gene Ontology(GO)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-GO"><span class="nav-text">2.1.1. GO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-GO-terms"><span class="nav-text">2.1.2. GO terms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-GO-annotations"><span class="nav-text">2.1.3. GO annotations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Kyoto-Encyclopedia-of-Genes-and-Genomes-KEGG"><span class="nav-text">2.2. Kyoto Encyclopedia of Genes and Genomes(KEGG)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-KEGG"><span class="nav-text">2.2.1. KEGG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-KEGG-Database"><span class="nav-text">2.2.2. KEGG Database</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">KEGG Database</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-KEGG-PATHWAY-Database"><span class="nav-text">2.2.3. KEGG PATHWAY Database</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F"><span class="nav-text">3. 基因富集分析程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-NASQAR"><span class="nav-text">3.1. NASQAR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-PlantRegMap"><span class="nav-text">3.2. PlantRegMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-Enrichr"><span class="nav-text">3.3. Enrichr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-GeneSCF"><span class="nav-text">3.4. GeneSCF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-DAVID"><span class="nav-text">3.5. DAVID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-Blast2GO"><span class="nav-text">3.6. Blast2GO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-KOBAS-i"><span class="nav-text">3.7. KOBAS-i</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-KOBAS-i%E7%AE%80%E4%BB%8B"><span class="nav-text">3.7.1. KOBAS-i简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-KOBAS-i%E7%BD%91%E9%A1%B5%E7%89%88%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">3.7.2. KOBAS-i网页版【推荐】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-1-%E6%B3%A8%E9%87%8A-annotation-%E5%92%8C%E5%AF%8C%E9%9B%86-Enrichment-%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="nav-text">3.7.2.1. 注释(annotation)和富集(Enrichment)的步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-GOEAST"><span class="nav-text">3.8. GOEAST</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E7%9A%84R%E5%8C%85"><span class="nav-text">4. 富集分析的R包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-topGO"><span class="nav-text">4.1. topGO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-clusterProfiler"><span class="nav-text">4.2. clusterProfiler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-clusterProfiler"><span class="nav-text">4.2.1. clusterProfiler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-clusterProfiler%E6%94%AF%E6%8C%81%E7%9A%84%E5%9F%BA%E5%9B%A0%E9%9B%86-gene-sets"><span class="nav-text">4.2.2. clusterProfiler支持的基因集(gene sets)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-clusterProfiler%E5%8A%9F%E8%83%BD-%E2%80%94%E2%80%94-enrichment-analysis"><span class="nav-text">4.2.3. clusterProfiler功能 —— enrichment analysis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90-gene-set-enrichment-analysis-GSEA"><span class="nav-number">1.</span> <span class="nav-text">1. 基因富集分析(gene set enrichment analysis, GSEA)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%BA%94%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E5%B8%B8%E7%94%A8%E5%9F%BA%E5%9B%A0%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">2. 基因富集分析常用基因集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Gene-Ontology-GO"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. Gene Ontology(GO)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-GO"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. GO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-GO-terms"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. GO terms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-GO-annotations"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3. GO annotations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Kyoto-Encyclopedia-of-Genes-and-Genomes-KEGG"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. Kyoto Encyclopedia of Genes and Genomes(KEGG)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-KEGG"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1. KEGG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-KEGG-Database"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2. KEGG Database</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">KEGG Database</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-KEGG-PATHWAY-Database"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3. KEGG PATHWAY Database</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%9F%BA%E5%9B%A0%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">3. 基因富集分析程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-NASQAR"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. NASQAR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-PlantRegMap"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. PlantRegMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-Enrichr"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. Enrichr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-GeneSCF"><span class="nav-number">3.4.</span> <span class="nav-text">3.4. GeneSCF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-DAVID"><span class="nav-number">3.5.</span> <span class="nav-text">3.5. DAVID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-Blast2GO"><span class="nav-number">3.6.</span> <span class="nav-text">3.6. Blast2GO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-KOBAS-i"><span class="nav-number">3.7.</span> <span class="nav-text">3.7. KOBAS-i</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-KOBAS-i%E7%AE%80%E4%BB%8B"><span class="nav-number">3.7.1.</span> <span class="nav-text">3.7.1. KOBAS-i简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-KOBAS-i%E7%BD%91%E9%A1%B5%E7%89%88%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">3.7.2.</span> <span class="nav-text">3.7.2. KOBAS-i网页版【推荐】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-1-%E6%B3%A8%E9%87%8A-annotation-%E5%92%8C%E5%AF%8C%E9%9B%86-Enrichment-%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.7.2.1.</span> <span class="nav-text">3.7.2.1. 注释(annotation)和富集(Enrichment)的步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-GOEAST"><span class="nav-number">3.8.</span> <span class="nav-text">3.8. GOEAST</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%E7%9A%84R%E5%8C%85"><span class="nav-number">4.</span> <span class="nav-text">4. 富集分析的R包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-topGO"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. topGO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-clusterProfiler"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. clusterProfiler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-clusterProfiler"><span class="nav-number">4.2.1.</span> <span class="nav-text">4.2.1. clusterProfiler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-clusterProfiler%E6%94%AF%E6%8C%81%E7%9A%84%E5%9F%BA%E5%9B%A0%E9%9B%86-gene-sets"><span class="nav-number">4.2.2.</span> <span class="nav-text">4.2.2. clusterProfiler支持的基因集(gene sets)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-clusterProfiler%E5%8A%9F%E8%83%BD-%E2%80%94%E2%80%94-enrichment-analysis"><span class="nav-number">4.2.3.</span> <span class="nav-text">4.2.3. clusterProfiler功能 —— enrichment analysis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-number">5.</span> <span class="nav-text">5. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -525,13 +494,11 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -542,7 +509,7 @@
         <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <a href="/yan.zhong.sino@gmail.com" title="E-Mail → yan.zhong.sino@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
   </div>
 
@@ -566,13 +533,15 @@
 
 <div class="copyright">
   
-  &copy; 2018 – 
+  &copy; 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="snowflake-o"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
 
         
 
@@ -624,37 +593,6 @@
   
 
   
-
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://yanzhongsino.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "http://example.com/2021/11/12/bioinfo_GSEA/";
-    this.page.identifier = "2021/11/12/bioinfo_GSEA/";
-    this.page.title = "基因富集分析(gene set enrichment analysis, GSEA)";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://yanzhongsino.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
-</script>
 
 </body>
 </html>

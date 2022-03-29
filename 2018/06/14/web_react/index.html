@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="react基础知识">
@@ -123,16 +123,6 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -208,20 +198,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/06/14/web_react/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/14/web_react/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
             <div class="post-description">react基础知识</div>
 
         </div>
@@ -317,13 +293,6 @@
 
           </div>
           
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -370,7 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-react"><span class="nav-text">1. react</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-JSX"><span class="nav-text">1.1. JSX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-text">1.1.1. 基本语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E5%B5%8C%E5%85%A5javascript%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">1.1.2. 嵌入javascript表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-%E5%86%85%E8%81%94%E6%A0%B7%E5%BC%8F"><span class="nav-text">1.1.3. 内联样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-%E6%B8%B2%E6%9F%93HTML%E6%A0%87%E7%AD%BE%EF%BC%88strings%EF%BC%89%E5%92%8CReact%E7%BB%84%E4%BB%B6%EF%BC%88classes%EF%BC%89"><span class="nav-text">1.1.4. 渲染HTML标签（strings）和React组件（classes）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-5-tips"><span class="nav-text">1.1.5. tips</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%BB%84%E4%BB%B6"><span class="nav-text">1.2. 组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-text">1.3. 生命周期</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-react"><span class="nav-number">1.</span> <span class="nav-text">1. react</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-JSX"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. JSX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1. 基本语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E5%B5%8C%E5%85%A5javascript%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2. 嵌入javascript表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-%E5%86%85%E8%81%94%E6%A0%B7%E5%BC%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.3. 内联样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-%E6%B8%B2%E6%9F%93HTML%E6%A0%87%E7%AD%BE%EF%BC%88strings%EF%BC%89%E5%92%8CReact%E7%BB%84%E4%BB%B6%EF%BC%88classes%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.1.4. 渲染HTML标签（strings）和React组件（classes）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-5-tips"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.1.5. tips</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%BB%84%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 生命周期</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -390,13 +359,11 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-          
         <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -407,7 +374,7 @@
         <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <a href="/yan.zhong.sino@gmail.com" title="E-Mail → yan.zhong.sino@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
   </div>
 
@@ -431,13 +398,15 @@
 
 <div class="copyright">
   
-  &copy; 2018 – 
+  &copy; 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
-    <i class="snowflake-o"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">南方枝叶</span>
 </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
 
         
 
@@ -489,37 +458,6 @@
   
 
   
-
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://yanzhongsino.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "http://example.com/2018/06/14/web_react/";
-    this.page.identifier = "2018/06/14/web_react/";
-    this.page.title = "react";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://yanzhongsino.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
-</script>
 
 </body>
 </html>
