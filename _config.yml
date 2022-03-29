@@ -167,12 +167,12 @@ theme_config:
 
   footer:
     # Specify the date when the site was setup. If not defined, current year will be used.
-    #since: 2015
+    since: 2018
 
     # Icon between year and copyright info.
     icon:
       # Icon name in Font Awesome. See: https://fontawesome.com/icons
-      name: fa fa-heart
+      name: snowflake-o
       # If you want to animate the icon, set it to true.
       animated: false
       # Change the color of icon, using Hex Code.
@@ -182,7 +182,7 @@ theme_config:
     copyright:
 
     # Powered by Hexo & NexT
-    powered: true
+    powered: false
 
     # Beian ICP and gongan information for Chinese users. See: https://beian.miit.gov.cn, http://www.beian.gov.cn
     beian:
@@ -233,8 +233,8 @@ theme_config:
   menu:
     home: / || fa fa-home
     #about: /about/ || fa fa-user
-    #tags: /tags/ || fa fa-tags
-    #categories: /categories/ || fa fa-th
+    tags: /tags/ || fa fa-tags
+    categories: /categories/ || fa fa-th
     archives: /archives/ || fa fa-archive
     #schedule: /schedule/ || fa fa-calendar
     #sitemap: /sitemap.xml || fa fa-sitemap
@@ -293,7 +293,7 @@ theme_config:
   # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
   social:
     GitHub: https://github.com/yanzhongsino || fab fa-github
-    E-Mail: yan.zhong.sino@gmail.com || fa fa-envelope
+    E-Mail: mailto:yan.zhong.sino@gmail.com || fa fa-envelope
     #Weibo: https://weibo.com/yourname || fab fa-weibo
     #Google: https://plus.google.com/yourname || fab fa-google
     #Twitter: https://twitter.com/yourname || fab fa-twitter
@@ -696,8 +696,8 @@ theme_config:
 
   # Disqus
   disqus:
-    enable: false
-    shortname:
+    enable: true
+    shortname: yanzhongsino
     count: true
     #post_meta_order: 0
 

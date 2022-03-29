@@ -278,7 +278,7 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 # 6. next主题同步和更新
 
 # 7. Issue&Solution
-### 7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理一个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
+### 7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即`git add .`,`git commit -m "commit notes"`,`git push`命令对hexo项目下的next项目无效，themes/next主题没有被同步到github端hexo分支。
 
 - Solution A 把next主题的git项目改为普通文件进行同步
     删除themes/next目录（删除前备份next目录到其他位置），然后`git add .`,`git commit -m "delete theme next"`,`git push`命令同步到github端的hexo分支。
