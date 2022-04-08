@@ -1,17 +1,22 @@
 ---
-title: 基因组WGD事件的鉴定和时间估算
+title: 基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator
 date: 2021-11-27 17:50:00
 categories: 
 - bio
 - bioinfo
 tags:
-- MCScanX
+- synteny
+- colinearity
 - Ks
 - WGD
+- biosoft
+- MCScanX
 - ParaAT.pl
-- KaKs_Calculator2.0
+- KaKs_Calculator
 - ggplot2
 - paml
+- divergence time
+
 description: 用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。
 ---
 

@@ -1,12 +1,13 @@
 ---
-title: BUSCO评估基因组组装和注释完整性
+title: 评估基因组组装和注释完整性 —— BUSCO
 date: 2021-07-24 11:20:00
 categories: 
-- bio
-- biosoft
+- omics
+- genome
 tags: 
-- biosoft
+- genome
 - genome assessment
+- biosoft
 - BUSCO
 description: 记录评估基因组组装和注释完整性的工具BUSCO的安装使用。
 ---

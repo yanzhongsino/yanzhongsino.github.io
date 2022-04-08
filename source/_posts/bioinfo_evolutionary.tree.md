@@ -160,7 +160,7 @@ ggtree(tree) \ #画树
 ```R
 ggtree(tree, layout="circular", size=0.8, branch.length='none') \ #画树，layout指定布局类型，默认是rectangular；size指定枝的粗细；branch.length指定无枝长信息  
 + geom_tiplab(color="black", size = 4, hjust = -0.1, align=T, linesize=0.7) \ # 末端节点标上物种，size文字大小，hjust是离进化枝线条的距离，align=T文字间左对齐，linesize设置虚线尺寸。
-+ geom_rootedge(rootedge = 1,size=1) \#添加根节点的枝长线，如果树文件中有根节点枝长则直接可使用，否则可以用rootedge设置根节点枝长(不设置为0)，size设置粗细
++ geom_rootedge(rootedge = 1,size=1) \#添加根节点的枝长线，如果树文件中有根节点枝长则直接可使用，否则可以用rootedge设置根节点枝长(不设置为0)，size设置粗细。结合xlim来显示。
 + geom_point2(color="#6FE1F8", size=5, alpha=0.7) \ #所有节点上标记圆点，配色和透明度
 + geom_point2(aes(subset=node==16), color='darkgreen', size=5) \#在16号节点标记绿色圆点。其中subset是取子集，符合条件的才注释；color设置颜色，size设置大小。
 + geom_text2(aes(label=support,hjust=-0.1),size=3, fontface = "bold") \#节点上标记支持率；size设置大小，fontface设置文本加粗显示

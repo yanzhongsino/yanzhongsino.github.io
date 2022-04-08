@@ -1,93 +1,90 @@
 ---
-title: 推测基因流的方法简介
-date: 2021-11-12 16:00:00
+title: 检测基因流
+date: 2022-03-30 22:00:00
 categories: 
 - bio
 - bioinfo
 tags: 
 - gene flow
+- hybridization
+- introgressive
 - population networks
-description: 介绍生物信息学数据库。
+- Dsuite
+- PhyloNetworks
+- TreeMix
+description: 基因流和检测基因流常用软件的介绍。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1296539261&auto=1&height=32"></iframe></div>
 
-# 检测杂交/基因流
-### hybridization/introgression
+# 1. 基因流(gene flow)/杂交(hybridization)/渐渗(introgressive)
+基因流，杂交和渐渗通常一起讨论，有些情况下甚至三者在说同一件事。从定义判断，基因流通常发生在种内群体间，杂交则是发生在种间，渐渗是指杂交加回交产生的一种现象。
+1. 基因流(gene flow)
+- 基因流是指遗传物质在不同群体间的流动。
+- 造成基因流动的原因可能是个体或配子(例如花粉)在群体间的迁徙，或者不同群体间个体的交配等。
+- 基因流可能发生在同一物种的不同群体间，也可能发生在不同物种间。
+2. 杂交(hybridization)
+- 杂交指不同物种间通过有性生殖实现配子融合形成下一代的过程。
+3. 渐渗(introgressive)
+- 渐渗是指通过种间杂种与亲本物种之一的反复回交，将遗传物质从一个物种转移到另一个物种的基因库中，是一个长期的过程。
 
-1. Dsuite
-2. HyDe
-3. PhyloNetworks
-4. TreeMix
-5. PhyloNet
+# 2. 检测基因流/杂交
+通常在物种内检测不同地区的群体间是否存在基因流，也可以在物种间检测基因流来判断杂交/渐渗，物种间的基因流会导致系统发育树的不稳定或核质冲突等问题，所以可以推断系统发育网络来检测所有物种对的基因流。
 
+## 2.1. 检测基因流的软件
+1. 通过计算Patterson's D值(ABBA-BABA值)和相关统计量来判断基因流：Dsuite(2020),ADMIXTOOLS(2012),HyDe(2018),ANGSD(2011,2018),POPGENOME(2014,2019),COMP-D(2020)。
+2. 推断系统发育网络：PhyloNetworks(2017),PhyloNet(2008,2018),TreeMix(2012),BEAST2(2017)。
 
-# Dsuite检测ABBA-BABA
-Dsuite是C编写的，需要编译。
+有几个软件单独写了博客：
 
+### 2.1.1. Dsuite【推荐】
+1. Dsuite简介
+   - Dsuite是通过计算Patterson's D统计量(即ABBA统计量)和f4等统计量来评估种群间或近缘种间基因流的基于C语言的软件。
+2. Dsuite适用范围
+   - Dsuite适用于基因组学大数据和多样本(超过十个)数据
+   - 适用于居群间或物种间的基因流推测
+   - 即使每个群体只有一个个体也可以推测基因流
+   - 还可以计算pool-seq数据的基因流
+   - 相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。
+3. Dsuite输入输出
+   - 输入：基因组snp的vcf格式文件，居群树文件(可选optional)
+   - 输出：D值统计，f4-ratio统计，f-branch统计，f-branch树矩阵热图
+4. Dsuite优势和不足
+   - Dsuite的优势是运行非常快(时间以小时计算)
+   - 不足是Dsuite分析结果不包含基因流的方向
 
-### 输入文件
-- sample.snp.vcf.gz：可用bgzip压缩
-- sets.txt：包括两列，第一列个体名，第二列物种名/居群名；outgroup个体的第二列写Outgroup，可有多个），这里要注意第二列物种名不能包含短横杠-和句点.这些字符，否则Dsuite Fbranch模块报错运行解析不了树文件，Dsuite Dtrios不会报错。
-- speciestree.newick: 这个文件是可选的optional，是Newick格式的居群树文件，去掉支持率，枝长可要可不要。
+### 2.1.2. PhyloNetworks
+1. PhyloNetworks简介
+   - PhyloNetworks是通过基因树或多位点序列(SNaQ)的最大伪似然进行推断系统发育网络的一个Julia包。
+2. PhyloNetworks适用范围
+   - PhyloNetworks适用于基因树数据
+   - 适用于居群间或物种间的基因流推测
+   - 适用于推断基因流方向和强度
+3. PhyloNetworks输入输出
+   - 输入：newick格式基因树(多个基因树组成的文件)
+   - 输出：系统发育网络，基因流方向和杂交节点贡献比例
+4. PhyloNetworks优势和不足
+   - 推断系统发育网络，包括基因流的方向和强度。
+   - 相较于其他推断系统发育网络的软件，PhyloNetworks集成了上游分析，网络估计，引导分析，下游特征进化分析，绘图等功能。
+   - 不足是运行多样本(超过十个个体)和数据量大(超过1000个)会非常耗时(常常以星期/月计时)。
 
+### 2.1.3. TreeMix
+[TreeMix blog](https://yanzhongsino.github.io/2022/03/20/bioinfo_geneflow_treemix/)
 
-### 运行
+1. TreeMix简介
+   - TreeMix利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）
+2. TreeMix适用范围
+3. TreeMix输入输出
+   - 输入：基因组snp的vcf文件，和居群系统树(可选optional)
+   - 输出：最佳杂交次数和系统发育网络(包含杂交方向和强度)
+4. TreeMix优势和不足
+   - TreeMix和PhyloNetworks一样，也是推断系统发育网络。
+   - 我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。
+   - 不足是比PhyloNetworks更耗时。
 
-1. Dsuite Dtrios
-`Dsuite Dtrios sample.snp.hf.f.vcf.gz sets.txt -t speciestree.newick -o sample`
-花费时间：3-4h；
-生成sets_BBAA.txt, sets_combine_stderr.txt, sets_combine.txt, sets_Dmin.txt, sets_tree.txt, sets.txt 等文件
-
-- -o sample #指定输出文件前缀，默认是sets
-
-2. Dsuite Fbranch
-`Dsuite Fbranch speciestree.newick sets_tree.txt >fbranch.out`
-sets_tree.txt是Dtrios模块得到的结果文件
-
-生成fbranch.out文本文件
-
-Dsuite/utils/dtools.py fbranch.out speciestree.newick --outgroup Outgroup --use_distances --dpi 1200 --tree-label-size 20
-画Fbranch的图，得到fbranch.svg和fbranch.png；--dpi设置png分辨率，--outgroup设置外类群，可以在fbranch.out里看外类群名称，--tree-label-size设置树标签大小。
-
-# PhyloNetworks
-
-分析
-
-```julia
-using PhyloNetworks
-astralfile= joinpath("astral.tre") #导入树文件
-astraltree = readMultiTopology(astralfile) # read tree file
-raxmlCF = readTableCF("tableCF.csv") # read in the file and produces a "DataCF" object
-net0 = snaq!(astraltree,raxmlCF, hmax=0, filename="net0", seed=1234)
-```
-
-
-
-```julia
-using PhyloNetworks
-net0 = readTopology("net0.tre") #读入net
-rootatnode!(net0,"L446") #重新定根，然后画图
-using PhyloPlots # to visualize networks
-using RCall      # to send additional commands to R like this: R"..."
-imagefilename = "net0.pdf" #保存为pdf等格式
-R"pdf"(imagefilename) # starts image file
-plot(net0, :R, showGamma=true); # network is plotted & sent to file
-R"dev.off()"; # wrap up and save image file
-```
-
-
-
-## treemix
-treemix是利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）。
-
-用全基因组snp数据计算等位基因频率，并转换成treemix的输入文件格式。再用treemix进行基因流的分析。
-
-
-
-
-reference
-1. [PhyloNetworks paper](https://academic.oup.com/mbe/article/34/12/3292/4103410)
-2. [PhyloNetworks manual](https://crsl4.github.io/PhyloNetworks.jl/latest/)
-3. [TreeMix paper](https://www.nature.com/articles/npre.2012.6956.1)
-4. [TreeMix software](https://bitbucket.org/nygcresearch/treemix/downloads/)
+# 3. reference
+1. [wiki: gene flow](https://en.wikipedia.org/wiki/Gene_flow)
+2. [wiki: introgression](https://en.wikipedia.org/wiki/Introgression)
+3. [Dsuite paper](https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13265)
+4. [PhyloNetworks paper](https://academic.oup.com/mbe/article/34/12/3292/4103410)
+5. [TreeMix paper](https://www.nature.com/articles/npre.2012.6956.1)

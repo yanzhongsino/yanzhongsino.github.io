@@ -2,11 +2,12 @@
 title: QUAST评估基因组组装
 date: 2021-08-23 14:30:00
 categories: 
-- bio
-- biosoft
+- omics
+- genome
 tags:
-- biosoft
+- genome
 - genome assessment
+- biosoft
 - QUAST
 
 description: 记录了基因组组装评估工具QUAST的安装和使用。

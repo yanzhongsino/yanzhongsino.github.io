@@ -1,11 +1,11 @@
 ---
-title: CAFE5分析基因家族扩张和收缩
+title: 分析基因家族扩张和收缩 —— CAFE5
 date: 2021-10-29 16:50:00
 categories:
 - bio
-- biosoft
+- bioinfo
 tags:
-- tutorial
+- gene family
 - biosoft
 - CAFE
 - phylogeny

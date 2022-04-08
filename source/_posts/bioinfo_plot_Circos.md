@@ -2,9 +2,10 @@
 title: Circos圈图绘制
 date: 2021-11-16 10:10:00
 categories: 
-- biosoft
-- circos
+- bio
+- bioinfo
 tags: 
+- biosoft
 - Circos
 - plot
 description: 记录了绘制圈图的软件Circos的使用逻辑和参数。

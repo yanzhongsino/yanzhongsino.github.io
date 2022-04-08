@@ -1,5 +1,5 @@
 ---
-title: 用TreeMix推断居群间基因流
+title: 用TreeMix推断系统发育网络
 date: 2022-03-20 22:00:00
 categories: 
 - bio
@@ -7,6 +7,8 @@ categories:
 tags: 
 - TreeMix
 - gene flow
+- hybridization
+- introgressive
 - population networks
 description: 这篇博客记录的是用TreeMix软件推测居群间系统网络，确定最佳基因流数量的具体方法。
 ---

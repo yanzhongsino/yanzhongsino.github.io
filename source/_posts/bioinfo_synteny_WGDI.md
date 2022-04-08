@@ -1,13 +1,16 @@
 ---
-title: WGDI分析基因组共线性、计算Ks和鉴定WGD
+title: 分析基因组共线性、计算Ks和鉴定WGD —— WGDI
 date: 2021-09-11 14:30:00
 categories: 
 - bio
-- biosoft
+- bioinfo
 tags:
-- WGDI
-- WGD
+- synteny
+- colinearity
 - Ks
+- WGD
+- biosoft
+- WGDI
 
 description: 记录软件WGDI的安装和使用。这里记录了WGDI用于基因组内共线性区块的鉴定，Ks计算，WGD鉴定。
 ---
