@@ -61,6 +61,7 @@ python3 setup.py install --user --prefix=
    - 要注意第二列物种名不能包含短横杠-和句点.字符，否则Dsuite Dtrios虽然不会报错，但Dsuite Fbranch模块运行报错解析不了树文件(ERROR: The tree string could not be parsed correctly)。
 3. species.newick【optional】
    - Newick格式的居群/物种树文件，物种名称与sets.txt对应。
+   - 外类群名称替换成Outgroup，与sets.txt对应。
    - 树文件必须定根在Outgroup，否则dtools.py报错树文件和franch.out的拓扑不一致。
    - 去掉支持率；否则Dsuite Fbranch模块运行报错解析不了树文件，ERROR: The tree string could not be parsed correctly。
    - 枝长最好也去掉，不去枝长也不会被Dsuite用到，还可能增加报错风险。
@@ -69,10 +70,10 @@ python3 setup.py install --user --prefix=
 ## Dtrios模块
 `Dsuite Dtrios`用于计算所有三物种组合的D和f4-ratio统计量
 
-1. 运行
+1. 用法
 `Dsuite Dtrios sample.snp.vcf.gz sets.txt -t species.newick -o sample`
 
-2. 常用参数
+2. 输入和常用参数
 - sample.snp.vcf.gz：变异文件
 - sets.txt：分组文件
 - -t species.newick：指定物种树文件
@@ -91,18 +92,39 @@ sample_BBAA.txt，sample_Dmin.txt，sample_tree.txt三个文件结构一致，�
 - sample.txt
 - sample_combine_stderr.txt和sample_combine.txt：用作DtriosCombine的输入，如果不需要可删除
 
+## 计算和绘制f-branch
 ### 计算f-branch值
+`Dsuite Fbranch`是一种启发式方法，执行f-branch计算，用于解释f4-ratio相关结果。
 
-Dsuite Fbranch
+1. 用法
 `Dsuite Fbranch species.newick sample_tree.txt >fbranch.out`
 
-需要Dsuite Dtrios并-t指定树拓扑得到的结果文件sample_tree.txt作为输入
+2. 输入
+- species.newick：指定物种树文件
+- sample_tree.txt：需要Dsuite Dtrios并-t指定树拓扑得到的结果文件sample_tree.txt作为输入
 
-生成fbranch.out文本文件
+3. 结果
+fbranch.out：f-branch统计量保存成矩阵格式
 
+### 绘制f-branch图
+用dtools.py脚本绘制f-branch图
+
+1. 用法
 `Dsuite/utils/dtools.py fbranch.out species.newick --outgroup Outgroup --use_distances --dpi 1200 --tree-label-size 30`
-画Fbranch的图，得到fbranch.svg和fbranch.png；--dpi设置png分辨率，--outgroup设置外类群，可以在fbranch.out里看外类群名称，--tree-label-size设置树标签大小。
+
+2. 输入和常用参数
+- fbranch.out：指定fbranch文件
+- species.newick：指定物种树文件
+- --outgroup：指定外类群（与fbranch.out和species.newick一致，一般是Outgroup）
+- --use_distances：画树时使用newick文件里节点距离
+- --dpi：设置png分辨率，有些期刊投稿要求1200，800，600不等；最好高点。
+- --tree-label-size：设置树标签大小
+
+3. 结果
+画Fbranch的图，得到fbranch.svg和fbranch.png；
+
 如果运行log出现Plotting fbranch... Saving plots则可以看到图片生成，即使报错Segmentation fault (core dumped)也没关系。
+
 
 # 2. reference
 1. [Dsuite github](https://github.com/millanek/Dsuite)
