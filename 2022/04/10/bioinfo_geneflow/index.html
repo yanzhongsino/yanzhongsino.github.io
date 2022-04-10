@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="基因流和检测基因流常用软件的介绍。">
+  <meta name="description" content="介绍了基因流相关概念，推断基因流常用软件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="检测基因流">
+<meta property="og:title" content="基因流及其推断">
 <meta property="og:url" content="http://example.com/2022/04/10/bioinfo_geneflow/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="基因流和检测基因流常用软件的介绍。">
+<meta property="og:description" content="介绍了基因流相关概念，推断基因流常用软件。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-10T05:57:58.119Z">
+<meta property="article:modified_time" content="2022-04-10T06:06:15.091Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="PhyloNetworks">
 <meta property="article:tag" content="gene flow">
@@ -52,7 +52,7 @@
   };
 </script>
 
-  <title>检测基因流 | 生信技工</title>
+  <title>基因流及其推断 | 生信技工</title>
   
 
 
@@ -189,7 +189,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          检测基因流
+          基因流及其推断
         </h1>
 
         <div class="post-meta">
@@ -200,7 +200,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-10 00:00:00 / 修改时间：13:57:58" itemprop="dateCreated datePublished" datetime="2022-04-10T00:00:00+08:00">2022-04-10</time>
+              <time title="创建时间：2022-04-10 00:00:00 / 修改时间：14:06:15" itemprop="dateCreated datePublished" datetime="2022-04-10T00:00:00+08:00">2022-04-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
   </span>
   
   
-            <div class="post-description">基因流和检测基因流常用软件的介绍。</div>
+            <div class="post-description">介绍了基因流相关概念，推断基因流常用软件。</div>
 
         </div>
       </header>
@@ -244,7 +244,7 @@
       
         <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=210766&auto=1&height=32"></iframe></div>
 
-<h1 id="1-基因流-gene-flow-x2F-杂交-hybridization-x2F-渐渗-introgressive"><a href="#1-基因流-gene-flow-x2F-杂交-hybridization-x2F-渐渗-introgressive" class="headerlink" title="1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)"></a>1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</h1><p>基因流，杂交和渐渗通常一起讨论，有些情况下甚至三者在说同一件事。从定义判断，基因流通常发生在种内群体间，杂交则是发生在种间，渐渗是指杂交加回交产生的一种现象。</p>
+<h1 id="1-基因流-gene-flow-x2F-杂交-hybridization-x2F-渐渗-introgressive"><a href="#1-基因流-gene-flow-x2F-杂交-hybridization-x2F-渐渗-introgressive" class="headerlink" title="1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)"></a>1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</h1><p>基因流，杂交和渐渗通常一起讨论，有些情况下甚至三者在说同一件事。从定义判断，基因流通常发生在种内群体间，杂交则是发生在种间，渐渗是指杂交加回交产生的一种现象。<br>可以这样理解，杂交和渐渗都是基因流的具体结果。</p>
 <ol>
 <li>基因流(gene flow)</li>
 </ol>
@@ -265,13 +265,14 @@
 <ul>
 <li>渐渗是指通过种间杂种与亲本物种之一的反复回交，将遗传物质从一个物种转移到另一个物种的基因库中，是一个长期的过程。</li>
 </ul>
-<h1 id="2-检测基因流-x2F-杂交"><a href="#2-检测基因流-x2F-杂交" class="headerlink" title="2. 检测基因流&#x2F;杂交"></a>2. 检测基因流&#x2F;杂交</h1><p>通常在物种内检测不同地区的群体间是否存在基因流，也可以在物种间检测基因流来判断杂交&#x2F;渐渗，物种间的基因流会导致系统发育树的不稳定或核质冲突等问题，所以可以推断系统发育网络来检测所有物种对的基因流。</p>
-<h2 id="2-1-检测基因流的软件"><a href="#2-1-检测基因流的软件" class="headerlink" title="2.1. 检测基因流的软件"></a>2.1. 检测基因流的软件</h2><ol>
+<h1 id="2-推断基因流-x2F-杂交"><a href="#2-推断基因流-x2F-杂交" class="headerlink" title="2. 推断基因流&#x2F;杂交"></a>2. 推断基因流&#x2F;杂交</h1><p>通常在物种内检测不同地区的群体间是否存在基因流，也可以在物种间检测基因流来判断杂交&#x2F;渐渗，物种间的基因流会导致系统发育树的不稳定或核质冲突等问题，所以可以推断系统发育网络来检测所有物种对的基因流。</p>
+<h2 id="2-1-推断基因流的软件"><a href="#2-1-推断基因流的软件" class="headerlink" title="2.1. 推断基因流的软件"></a>2.1. 推断基因流的软件</h2><ol>
 <li>通过计算Patterson’s D值(ABBA-BABA值)和相关统计量来判断基因流：Dsuite(2020),ADMIXTOOLS(2012),HyDe(2018),ANGSD(2011,2018),POPGENOME(2014,2019),COMP-D(2020)。</li>
 <li>推断系统发育网络：PhyloNetworks(2017),PhyloNet(2008,2018),TreeMix(2012),BEAST2(2017)。</li>
 </ol>
 <p>有几个软件单独写了博客：</p>
-<h3 id="2-1-1-Dsuite【推荐】"><a href="#2-1-1-Dsuite【推荐】" class="headerlink" title="2.1.1. Dsuite【推荐】"></a>2.1.1. Dsuite【推荐】</h3><ol>
+<h3 id="2-1-1-Dsuite【推荐】"><a href="#2-1-1-Dsuite【推荐】" class="headerlink" title="2.1.1. Dsuite【推荐】"></a>2.1.1. Dsuite【推荐】</h3><p><a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/10/bioinfo_geneflow_Dsuite/">Dsuite blog</a></p>
+<ol>
 <li>Dsuite简介<ul>
 <li>Dsuite是通过计算Patterson’s D统计量(即ABBA统计量)和f4等统计量来评估种群间或近缘种间基因流的基于C语言的软件。</li>
 </ul>
@@ -445,7 +446,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E6%B5%81-gene-flow-x2F-%E6%9D%82%E4%BA%A4-hybridization-x2F-%E6%B8%90%E6%B8%97-introgressive"><span class="nav-number">1.</span> <span class="nav-text">1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%A3%80%E6%B5%8B%E5%9F%BA%E5%9B%A0%E6%B5%81-x2F-%E6%9D%82%E4%BA%A4"><span class="nav-number">2.</span> <span class="nav-text">2. 检测基因流&#x2F;杂交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%A3%80%E6%B5%8B%E5%9F%BA%E5%9B%A0%E6%B5%81%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 检测基因流的软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-Dsuite%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. Dsuite【推荐】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-PhyloNetworks"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. PhyloNetworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-TreeMix"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3. TreeMix</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-reference"><span class="nav-number">3.</span> <span class="nav-text">3. reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E6%B5%81-gene-flow-x2F-%E6%9D%82%E4%BA%A4-hybridization-x2F-%E6%B8%90%E6%B8%97-introgressive"><span class="nav-number">1.</span> <span class="nav-text">1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81-x2F-%E6%9D%82%E4%BA%A4"><span class="nav-number">2.</span> <span class="nav-text">2. 推断基因流&#x2F;杂交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 推断基因流的软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-Dsuite%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. Dsuite【推荐】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-PhyloNetworks"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. PhyloNetworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-TreeMix"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3. TreeMix</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-reference"><span class="nav-number">3.</span> <span class="nav-text">3. reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -579,7 +580,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2022/04/10/bioinfo_geneflow/";
     this.page.identifier = "2022/04/10/bioinfo_geneflow/";
-    this.page.title = "检测基因流";
+    this.page.title = "基因流及其推断";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
