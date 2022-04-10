@@ -1,5 +1,5 @@
 ---
-title: 用Dsuite推断基因流
+title: 基因流推断 —— Dsuite
 date: 2022-04-10
 categories: 
 - bio

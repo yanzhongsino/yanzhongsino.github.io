@@ -1,5 +1,5 @@
 ---
-title: 用TreeMix推断系统发育网络
+title: 系统发育网络推断 —— TreeMix
 date: 2022-03-20 22:00:00
 categories: 
 - bio

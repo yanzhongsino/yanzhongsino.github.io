@@ -1,6 +1,6 @@
 ---
-title: 用PhyloNetworks推断系统发育网络
-date: 2021-03-27 16:50:00
+title: 系统发育网络推断 —— PhyloNetworks
+date: 2021-03-27
 categories: 
 - bio
 - bioinfo
