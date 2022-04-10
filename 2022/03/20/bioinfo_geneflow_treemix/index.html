@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_evanno.png?raw=true">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_linear.png?raw=true">
 <meta property="article:published_time" content="2022-03-20T14:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-10T06:45:43.119Z">
+<meta property="article:modified_time" content="2022-04-10T07:09:53.738Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene flow">
 <meta property="article:tag" content="hybridization">
@@ -207,7 +207,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-10 14:45:43" itemprop="dateModified" datetime="2022-04-10T14:45:43+08:00">2022-04-10</time>
+                <time title="修改时间：2022-04-10 15:09:53" itemprop="dateModified" datetime="2022-04-10T15:09:53+08:00">2022-04-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,6 +260,23 @@
 <li>绘制系统发育网络图</li>
 </ol>
 <h1 id="1-TreeMix"><a href="#1-TreeMix" class="headerlink" title="1. TreeMix"></a>1. TreeMix</h1><p>TreeMix是一个利用全基因组尺度的等位基因频率数据推断居群的分化和和杂合（基因流动或基因渗入）的一个软件，适用于推断一个物种多个居群的系统发育网。TreeMix用多居群的等位基因频率来推测最大似然树(ML树)，并可推断指定数量基因流事件。</p>
+<ol>
+<li>TreeMix简介<ul>
+<li>TreeMix利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）</li>
+</ul>
+</li>
+<li>TreeMix输入输出<ul>
+<li>输入：基因组snp的vcf文件，和居群系统树(可选optional)</li>
+<li>输出：最佳杂交次数和系统发育网络(包含杂交方向和强度)</li>
+</ul>
+</li>
+<li>TreeMix优势和不足<ul>
+<li>TreeMix和PhyloNetworks一样，也是推断系统发育网络。</li>
+<li>我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。</li>
+<li>不足是比PhyloNetworks更耗时。</li>
+</ul>
+</li>
+</ol>
 <h2 id="1-1-TreeMix-install"><a href="#1-1-TreeMix-install" class="headerlink" title="1.1. TreeMix install"></a>1.1. TreeMix install</h2><ol>
 <li><p><code>conda install -c bioconda treemix</code> #现在conda可以下到最新版本treemix 1.13</p>
 </li>
