@@ -1,6 +1,6 @@
 ---
 title: 检测基因流
-date: 2022-04-10 21:00:00
+date: 2022-04-10
 categories: 
 - bio
 - bioinfo
