@@ -1,6 +1,6 @@
 ---
 title: 检测基因流
-date: 2022-03-30 22:00:00
+date: 2022-04-10 21:00:00
 categories: 
 - bio
 - bioinfo
@@ -15,7 +15,7 @@ tags:
 description: 基因流和检测基因流常用软件的介绍。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1296539261&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=210766&auto=1&height=32"></iframe></div>
 
 # 1. 基因流(gene flow)/杂交(hybridization)/渐渗(introgressive)
 基因流，杂交和渐渗通常一起讨论，有些情况下甚至三者在说同一件事。从定义判断，基因流通常发生在种内群体间，杂交则是发生在种间，渐渗是指杂交加回交产生的一种现象。
@@ -40,18 +40,24 @@ description: 基因流和检测基因流常用软件的介绍。
 ### 2.1.1. Dsuite【推荐】
 1. Dsuite简介
    - Dsuite是通过计算Patterson's D统计量(即ABBA统计量)和f4等统计量来评估种群间或近缘种间基因流的基于C语言的软件。
-2. Dsuite适用范围
-   - Dsuite适用于基因组学大数据和多样本(超过十个)数据
-   - 适用于居群间或物种间的基因流推测
-   - 即使每个群体只有一个个体也可以推测基因流
-   - 还可以计算pool-seq数据的基因流
-   - 相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。
+2. Dsuite 原理
+   - D值（即ABBA统计量）和f4-ratio统计可以表示为适用于四个分类群的双等位基因SNP：P1,P2,P3,O，拓扑是 (((P1,P2),P3),O)。
+   - 其中外类群O携带祖先等位基因A，衍生等位基因用B表示。BBAA,ABBA,BABA分别代表四个分类群携带等位的三种模式。
+   - 在没有基因流的零假设下，由于具有相同频率的不完全谱系分类，预计P3与P1或P2共享衍生等位基因B的两种模式ABBA和BABA的频率相等，如果ABBA和BABA的频率有显著差异则代表在P3和P1或P2间存在基因渐渗。
+   - D=(nABBA-nBABA)/(nABBA+nBABA)；在外群对于祖先等位基因A是固定的（外群中B的频率为0）假设下，D统计量是等位基因模式计数的归一化差异。
+   - 如果外群中衍生等位基因B不为0，则Dsuite的D值是Patterson's D，适用于无根的四分类群树。
 3. Dsuite输入输出
    - 输入：基因组snp的vcf格式文件，居群树文件(可选optional)
    - 输出：D值统计，f4-ratio统计，f-branch统计，f-branch树矩阵热图
 4. Dsuite优势和不足
    - Dsuite的优势是运行非常快(时间以小时计算)
    - 不足是Dsuite分析结果不包含基因流的方向
+5. Dsuite适用范围
+   - Dsuite适用于基因组学大数据和多样本(超过十个)数据
+   - 适用于居群间或物种间的基因流推测
+   - 即使每个群体只有一个个体也可以推测基因流
+   - 还可以计算pool-seq数据的基因流
+   - 相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。
 
 ### 2.1.2. PhyloNetworks
 1. PhyloNetworks简介

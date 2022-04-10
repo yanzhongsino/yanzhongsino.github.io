@@ -1,6 +1,6 @@
 ---
 title: 用Dsuite推断基因流
-date: 2022-04-03 22:00:00
+date: 2022-04-10 22:00:00
 categories: 
 - bio
 - bioinfo
@@ -9,30 +9,34 @@ tags:
 - gene flow
 - hybridization
 - introgressive
-description: 这篇博客记录的是用Dsuite软件计算D值(ABBA-BABA统计值)和f4比等相关统计量，用于推测居群或近缘种间基因流。
+description: 这篇博客记录的是用Dsuite软件计算D值(ABBA-BABA统计值)和f4-ratio等相关统计量，并推测居群或近缘种间基因流。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1296539261&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=171959&auto=1&height=32"></iframe></div>
 
-# Dsuite
+# 1. Dsuite
 1. Dsuite简介
    - Dsuite是通过计算Patterson's D统计量(即ABBA统计量)和f4等统计量来评估种群间或近缘种间基因流的基于C语言的软件。
-2. Dsuite适用范围
-   - Dsuite适用于基因组学大数据和多样本(超过十个)数据
-   - 适用于居群间或物种间的基因流推测
-   - 即使每个群体只有一个个体也可以推测基因流
-   - 还可以计算pool-seq数据的基因流
-   - 相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。
+2. Dsuite 原理
+   - D值（即ABBA统计量）和f4-ratio统计可以表示为适用于四个分类群的双等位基因SNP：P1,P2,P3,O，拓扑是 (((P1,P2),P3),O)。
+   - 其中外类群O携带祖先等位基因A，衍生等位基因用B表示。BBAA,ABBA,BABA分别代表四个分类群携带等位的三种模式。
+   - 在没有基因流的零假设下，由于具有相同频率的不完全谱系分类，预计P3与P1或P2共享衍生等位基因B的两种模式ABBA和BABA的频率相等，如果ABBA和BABA的频率有显著差异则代表在P3和P1或P2间存在基因渐渗。
+   - D=(nABBA-nBABA)/(nABBA+nBABA)；在外群对于祖先等位基因A是固定的（外群中B的频率为0）假设下，D统计量是等位基因模式计数的归一化差异。
+   - 如果外群中衍生等位基因B不为0，则Dsuite的D值是Patterson's D，适用于无根的四分类群树。
 3. Dsuite输入输出
    - 输入：基因组snp的vcf格式文件，居群树文件(可选optional)
    - 输出：D值统计，f4-ratio统计，f-branch统计，f-branch树矩阵热图
 4. Dsuite优势和不足
    - Dsuite的优势是运行非常快(时间以小时计算)
    - 不足是Dsuite分析结果不包含基因流的方向
-5. Dsuite 原理
+5. Dsuite适用范围
+   - Dsuite适用于基因组学大数据和多样本(超过十个)数据
+   - 适用于居群间或物种间的基因流推测
+   - 即使每个群体只有一个个体也可以推测基因流
+   - 还可以计算pool-seq数据的基因流
+   - 相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。
 
-
-# Dsuite install
+# 2. Dsuite install
 1. 安装Dsuite主程序
 Dsuite是C编写的，需要编译；需要GCC(>=4.9.0)和zlib压缩库。
 编译后可执行文件在Dsuite/Build/目录下，可以加到环境变量中或使用绝对路径。
@@ -51,8 +55,8 @@ cd utils
 python3 setup.py install --user --prefix=
 ```
 
-# Dsuite分析
-## 1.2. 输入文件
+# 3. Dsuite分析
+## 3.1. 输入文件
 1. sample.snp.vcf.gz
    - 基因组尺度的snp文件，vcf格式，可用bgzip压缩
 2. sets.txt
@@ -67,7 +71,7 @@ python3 setup.py install --user --prefix=
    - 枝长最好也去掉，不去枝长也不会被Dsuite用到，还可能增加报错风险。
    - 这个文件对于Dtrios模块是可选项，但建议加上好画fbranch的图。
 
-## Dtrios模块
+## 3.2. Dtrios模块
 `Dsuite Dtrios`用于计算所有三物种组合的D和f4-ratio统计量
 
 1. 用法
@@ -92,8 +96,8 @@ sample_BBAA.txt，sample_Dmin.txt，sample_tree.txt三个文件结构一致，�
 - sample.txt
 - sample_combine_stderr.txt和sample_combine.txt：用作DtriosCombine的输入，如果不需要可删除
 
-## 计算和绘制f-branch
-### 计算f-branch值
+## 3.3. 计算和绘制f-branch
+### 3.3.1. 计算f-branch值
 `Dsuite Fbranch`是一种启发式方法，执行f-branch计算，用于解释f4-ratio相关结果。
 
 1. 用法
@@ -106,11 +110,13 @@ sample_BBAA.txt，sample_Dmin.txt，sample_tree.txt三个文件结构一致，�
 3. 结果
 fbranch.out：f-branch统计量保存成矩阵格式
 
-### 绘制f-branch图
+### 3.3.2. 绘制f-branch图
 用dtools.py脚本绘制f-branch图
 
 1. 用法
 `Dsuite/utils/dtools.py fbranch.out species.newick --outgroup Outgroup --use_distances --dpi 1200 --tree-label-size 30`
+
+如果运行log出现Plotting fbranch... Saving plots可以看到图片文件生成，即使报错Segmentation fault (core dumped)也没关系。
 
 2. 输入和常用参数
 - fbranch.out：指定fbranch文件
@@ -118,14 +124,15 @@ fbranch.out：f-branch统计量保存成矩阵格式
 - --outgroup：指定外类群（与fbranch.out和species.newick一致，一般是Outgroup）
 - --use_distances：画树时使用newick文件里节点距离
 - --dpi：设置png分辨率，有些期刊投稿要求1200，800，600不等；最好高点。
-- --tree-label-size：设置树标签大小
+- --tree-label-size：设置树节点标签大小
 
 3. 结果
 画Fbranch的图，得到fbranch.svg和fbranch.png；
 
-如果运行log出现Plotting fbranch... Saving plots则可以看到图片生成，即使报错Segmentation fault (core dumped)也没关系。
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.Dsuite_fbranch.png?raw=true" width=90% title="f-branch示意图(A4,(A3,(A2,A1)B)C)D" align=center/>
 
+**<p align="center">Figure 1. f-branch示意图</p>**
 
-# 2. reference
+# 4. reference
 1. [Dsuite github](https://github.com/millanek/Dsuite)
 2. [Dsuite paper](https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13265)
