@@ -1,5 +1,5 @@
 ---
-title: 检测基因流
+title: 基因流及其推断
 date: 2022-04-10
 categories: 
 - bio
@@ -12,13 +12,14 @@ tags:
 - Dsuite
 - PhyloNetworks
 - TreeMix
-description: 基因流和检测基因流常用软件的介绍。
+description: 介绍了基因流相关概念，推断基因流常用软件。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=210766&auto=1&height=32"></iframe></div>
 
 # 1. 基因流(gene flow)/杂交(hybridization)/渐渗(introgressive)
 基因流，杂交和渐渗通常一起讨论，有些情况下甚至三者在说同一件事。从定义判断，基因流通常发生在种内群体间，杂交则是发生在种间，渐渗是指杂交加回交产生的一种现象。
+可以这样理解，杂交和渐渗都是基因流的具体结果。
 1. 基因流(gene flow)
 - 基因流是指遗传物质在不同群体间的流动。
 - 造成基因流动的原因可能是个体或配子(例如花粉)在群体间的迁徙，或者不同群体间个体的交配等。
@@ -28,16 +29,18 @@ description: 基因流和检测基因流常用软件的介绍。
 3. 渐渗(introgressive)
 - 渐渗是指通过种间杂种与亲本物种之一的反复回交，将遗传物质从一个物种转移到另一个物种的基因库中，是一个长期的过程。
 
-# 2. 检测基因流/杂交
+# 2. 推断基因流/杂交
 通常在物种内检测不同地区的群体间是否存在基因流，也可以在物种间检测基因流来判断杂交/渐渗，物种间的基因流会导致系统发育树的不稳定或核质冲突等问题，所以可以推断系统发育网络来检测所有物种对的基因流。
 
-## 2.1. 检测基因流的软件
+## 2.1. 推断基因流的软件
 1. 通过计算Patterson's D值(ABBA-BABA值)和相关统计量来判断基因流：Dsuite(2020),ADMIXTOOLS(2012),HyDe(2018),ANGSD(2011,2018),POPGENOME(2014,2019),COMP-D(2020)。
 2. 推断系统发育网络：PhyloNetworks(2017),PhyloNet(2008,2018),TreeMix(2012),BEAST2(2017)。
 
 有几个软件单独写了博客：
 
 ### 2.1.1. Dsuite【推荐】
+[Dsuite blog](https://yanzhongsino.github.io/2022/04/10/bioinfo_geneflow_Dsuite/)
+
 1. Dsuite简介
    - Dsuite是通过计算Patterson's D统计量(即ABBA统计量)和f4等统计量来评估种群间或近缘种间基因流的基于C语言的软件。
 2. Dsuite 原理
