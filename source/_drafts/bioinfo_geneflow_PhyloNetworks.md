@@ -15,12 +15,37 @@ description:
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
 
+# PhyloNetworks
+1. PhyloNetworks简介
+   - PhyloNetworks是通过基因树或多位点序列(SNaQ)的最大伪似然进行推断系统发育网络的一个Julia包。
+2. PhyloNetworks原理
+   - 原理：
+3. PhyloNetworks输入输出
+   - 输入：newick格式基因树(多个基因树组成的文件)
+   - 输出：系统发育网络，基因流方向和杂交节点贡献比例
+4. PhyloNetworks优势和不足
+   - 推断系统发育网络，包括基因流的方向和强度。
+   - 相较于其他推断系统发育网络的软件，PhyloNetworks集成了上游分析，网络估计，引导分析，下游特征进化分析，绘图等功能。
+   - 不足是运行多样本(超过十个个体)和数据量大(超过1000个)会非常耗时(常常以星期/月计时)。
+5. PhyloNetworks适用范围
+   - PhyloNetworks适用于基因树数据
+   - 适用于居群间或物种间的基因流推测
+   - 适用于推断基因流方向和强度
 
+# PhyloNetworks安装
+
+
+
+# PhyloNetworks分析
+## 输入文件
+
+
+## 运行
 时效
 用hmax=1，12个线程，共计4.5days跑完。
 
 
-分析
+### 计算CF
 
 获取tableCF.csv文件
 ```julia
@@ -39,7 +64,7 @@ raxmlCF = readTableCF("tableCF.csv")
 ```
 
 
-构建系统发育网络
+### 构建系统发育网络
 
 ```julia
 using PhyloNetworks
@@ -63,7 +88,7 @@ plot(net0, :R, showGamma=true); # network is plotted & sent to file
 R"dev.off()"; # wrap up and save image file
 ```
 
-references
+# references
 1. [PhyloNetworks paper](https://academic.oup.com/mbe/article/34/12/3292/4103410)
 2. [PhyloNetworks github](https://github.com/crsl4/PhyloNetworks.jl)
 3. [PhyloNetworks manual](https://crsl4.github.io/PhyloNetworks.jl/latest/)

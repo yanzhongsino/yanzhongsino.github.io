@@ -82,11 +82,10 @@ description: 介绍了基因流相关概念，推断基因流常用软件。
 
 1. TreeMix简介
    - TreeMix利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）
-2. TreeMix适用范围
-3. TreeMix输入输出
+2. TreeMix输入输出
    - 输入：基因组snp的vcf文件，和居群系统树(可选optional)
    - 输出：最佳杂交次数和系统发育网络(包含杂交方向和强度)
-4. TreeMix优势和不足
+3. TreeMix优势和不足
    - TreeMix和PhyloNetworks一样，也是推断系统发育网络。
    - 我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。
    - 不足是比PhyloNetworks更耗时。

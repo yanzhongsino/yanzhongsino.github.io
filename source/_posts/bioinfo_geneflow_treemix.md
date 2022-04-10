@@ -25,6 +25,16 @@ description: 这篇博客记录的是用TreeMix软件推测居群间系统网络
 # 1. TreeMix
 TreeMix是一个利用全基因组尺度的等位基因频率数据推断居群的分化和和杂合（基因流动或基因渗入）的一个软件，适用于推断一个物种多个居群的系统发育网。TreeMix用多居群的等位基因频率来推测最大似然树(ML树)，并可推断指定数量基因流事件。
 
+1. TreeMix简介
+   - TreeMix利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）
+2. TreeMix输入输出
+   - 输入：基因组snp的vcf文件，和居群系统树(可选optional)
+   - 输出：最佳杂交次数和系统发育网络(包含杂交方向和强度)
+3. TreeMix优势和不足
+   - TreeMix和PhyloNetworks一样，也是推断系统发育网络。
+   - 我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。
+   - 不足是比PhyloNetworks更耗时。
+
 ## 1.1. TreeMix install
 
 1. `conda install -c bioconda treemix` #现在conda可以下到最新版本treemix 1.13
