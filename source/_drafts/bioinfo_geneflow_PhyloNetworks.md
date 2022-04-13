@@ -108,6 +108,7 @@ net0 = snaq!(astraltree,raxmlCF, hmax=0, filename="net0", seed=1234) #
 ```
 
 ### 确认最佳杂交节点
+在构建h=1-10的系统发育网络之后，要确定最佳h值
 
 ### 绘制系统发育网络
 ```julia
