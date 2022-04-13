@@ -5,13 +5,14 @@ categories:
 - omics
 - genome
 tags:
-- tutorial
+- genome
 - genome annotation
 - repeat sequences
-- TE
+- transposable elements(TE)
 - RepeatMasker
 - RepeatModeler
 - EDTA
+- tandem repeat
 
 description: 记录了基因组注释的第一步，重复序列的注释，转座子的相关知识，注释常用软件和用法。
 ---
@@ -69,10 +70,27 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 		<td>短散布核元件</br>(SINEs,short interspersed nuclear element)</td>
 	</tr>
 	<tr>
-		<td rowspan="3"><h6>II 类元件</br>/DNA 转座子(DNA transposons)</h6></td>
-		<td rowspan="3">在“剪切和粘贴”转座机制中作为DNA中间体</td>
-		<td colspan="2">TIR元件</br>(TIR末端反向重复序列,这里指具有TIRs结构的DNA转座子，包括微型反向转座元件MITEs)</td>
-		<td>---</td>
+		<td rowspan="7"><h6>II 类元件</br>/DNA 转座子(DNA transposons)</h6></td>
+		<td rowspan="7">在“剪切和粘贴”转座机制中作为DNA中间体</td>
+		<td rowspan="5">Terminal Inverted Repeat(TIR)元件</br>(TIR末端反向重复序列,这里指具有TIRs结构的DNA转座子，包括微型反向转座元件MITEs)</td>
+		<td>CACTA</td>
+		<td>CACTA元素被相对较短的TIRs(15-100bp)识别，这些TIRs以保守的CACTA...TAGTG基序终止，有3bp TSD。</td>
+	</tr>
+	<tr>
+		<td>Mutator</td>
+		<td>两侧通常有非常大的反向重复序列inverted repeats(200-500bp)，两侧有9bp的目标位点重复。</td>
+	</tr>
+	<tr>
+		<td>PIF/Harbinger</td>
+		<td>包含通常以一小段C/G结束，两侧有富含T/A的3bpTSD的短TIRs。许多是具有共同的富含G的TIR序列的旅游团(Tourist Group)的MITEs</td>
+	</tr>
+	<tr>
+		<td>Tc1/Mariner</td>
+		<td>包含长度约10-30bp，通常两侧有TA的TSD的短TIRs。</td>
+	</tr>
+	<tr>
+		<td>hAT</td>
+		<td>只有极少数被分类在TREP。特征还不好描述，TIR可以很短(几个bp)，两侧有一个8bp的TSD。</td>
 	</tr>
 	<tr>
 		<td colspan="2">Helitron</td>
@@ -81,6 +99,21 @@ description: 记录了基因组注释的第一步，重复序列的注释，转�
 	<tr>
 		<td colspan="2">Mavericks</br>非TE重复序列</br>(non-TE repeat sequence)</td>
 		<td>大尺寸，15-40 kbp</br>包含长的TIRs(几百对碱基)</br>包含保守的5'-AG...TC-3'末端</td>
+	</tr>
+	<tr>
+		<td rowspan="3">串联重复(tandem repeats)</td>
+		<td rowspan="3">串联重复序列是一个或多个核苷酸的模式重复发生，并且重复彼此直接相邻的序列。</td>
+		<td colspan="2">二核苷酸重复(dinucleotide repeat)</br>三核苷酸重复(trinucleotide repeat)</td>
+		<td>根据重复单元的核苷酸数量，可以分为二核苷酸重复(dinucleotide repeat)，三核苷酸重复(trinucleotide repeat)等。</td>
+	</tr>
+	<tr>
+		<td>小卫星(minisatellite)：</br>当重复单元的核苷酸数量为10-60时，称为小卫星，通常重复5-50次。</td>
+		<td>微卫星(microsatellites)：</br>在遗传谱系或法医领域，又被称为短串联重复(short tandem repeats,STR)，在植物遗传学领域，又被称为简单序列重复(simple sequence repeat, SSR)</td>
+		<td>小卫星中那些重复单元中核苷酸数量较少的被称为微卫星重复，核苷酸数量从1到6或者更多，没有统一规定。</td>
+	</tr>
+	<tr>
+		<td colspan="2">可变数量串联重复(variable number tandem repeat, VNTR)</td>
+		<td>当重复单元拷贝数在所分析的群体中是可变时，被称为可变数量串联重复(VNTR)。MeSH将VNTR分类在小卫星下。</td>
 	</tr>
 	</tbody>
 </table>
@@ -342,7 +375,10 @@ ERROR: Raw Helitron results not found in sample.fa.mod.EDTA.raw/sample.fa.mod.He
 
 **ref：**
 
-1. http://www.repeatmasker.org/RepeatModeler/
-2. https://www.cnblogs.com/zhanmaomao/p/12345462.html
-3. https://www.jianshu.com/p/ddd1c9a74fde
-4. https://www.jianshu.com/p/dfa89f394882
+1. https://en.wikipedia.org/wiki/Tandem_repeat
+2. https://en.wikipedia.org/wiki/Microsatellite
+3. http://www.repeatmasker.org/RepeatModeler/
+4. https://www.cnblogs.com/zhanmaomao/p/12345462.html
+5. https://www.jianshu.com/p/ddd1c9a74fde
+6. https://www.jianshu.com/p/dfa89f394882
+7. https://wheat.pw.usda.gov/ITMI/Repeats/Repeat_types.html
