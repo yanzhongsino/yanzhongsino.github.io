@@ -1,6 +1,6 @@
 ---
-title: hexo建站，github.io发布，多终端同步
-date: 2022-03-29 21:30:00
+title: 博客的配置文件
+date: 2022-03-29
 categories: 
 - blog
 - config
@@ -161,6 +161,8 @@ var _hmt = _hmt || [];
     当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。
     通过git bash进入本地next主题子项目，更新子项目：`git fetch next master`,`git pull https://github.com/example/hexo-theme-next.git`命令拉取next项目源更新的仓库到本地。
     然后`git add .`,`git commit -m "commit notes"`,`git push`命令推送本地更改到主项目，`git subtree push --prefix=themes/next next master`推送本地更改到子项目。    
+
+
 
 
 # references

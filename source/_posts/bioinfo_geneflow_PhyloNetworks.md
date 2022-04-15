@@ -16,11 +16,24 @@ description: 这篇博客描述了用Julia包PhyloNetworks来推断系统发育�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=108998&auto=1&height=32"></iframe></div>
 
+
+
+{%cq%}
+test cq cite format
+test1
+test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20
+
+引用
+{%endcq%}
+
+
+
+
 # 1. PhyloNetworks
 1. PhyloNetworks简介
    - PhyloNetworks是通过基因树或多位点序列(SNaQ)的最大伪似然进行推断系统发育网络的一个Julia包。
 2. PhyloNetworks原理
-   - 原理：
+   - 原理：通过SNaQ来实现网络推断，SNaQ通过估计4分类群子集的最大伪似然来加速运算，估计的网络不受根的影响。
 3. PhyloNetworks输入输出
    - 输入：newick格式基因树(多个基因树组成的文件)
    - 输出：系统发育网络，基因流方向和杂交节点贡献比例
@@ -33,11 +46,15 @@ description: 这篇博客描述了用Julia包PhyloNetworks来推断系统发育�
    - 适用于居群间或物种间的基因流推测
    - 适用于推断基因流方向和强度
 
+
+<blockquote class="blockquote-center">blockquote cite test</br>test2</br>test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20</blockquote>
+
 # 2. PhyloNetworks安装
 PhyloNetworks是Julia包，Julia是一个类似R的计算机语言，可以交互式或脚本式执行命令。
 ## 2.1. Julia 安装
 如果想简要了解julia，可以看[julia tutorials](https://learnxinyminutes.com/docs/julia/)。
-5. 预编译软件安装
+
+1. 预编译软件安装
 在[julia software](https://julialang.org/downloads/)找到对应版本的预编译的软件下载解压缩即可使用。
 ```shell
 wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.2-linux-x86_64.tar.gz #下载linux的64位预编译的julia
@@ -67,8 +84,9 @@ julia与R很像，进入交互界面，只需要在shell里键入`julia`回车�
 ## 3.1. 输入文件
 1. CF表
 - 输入文件可以有多种形式，不管哪种形式，最终PhyloNetworks的SNaQ用到的都是CF表。
-- 可以用建树分析得到的基因树来计算CF；也可以用经过对齐的基因序列，通过TICR管道获取CF表。
 - 每个4分类群子集的一致性因子(CF)表，即基因树频率表。CF表的格式是csv(逗号分隔的表格)，表头是t1,t2,t3,t4,CF12_34,CF13_24,CF14_23,ngenes。
+- 可以用建树分析得到的基因树来计算CF；也可以用经过对齐的基因序列，通过TICR管道通过BUCKy估计CF获取CF表（用BUCKy需要考虑基因树估计误差）。
+
 2. 起始树
 - 除了CF表外，SNaQ还需要一棵起始树作为优化起点。
 - 可以用基因树分析得到的物种树(比如这里用的是ASTRAL分析raxmltrees.tre的结果astraltree.tre)。
@@ -124,7 +142,6 @@ with -loglik 53.53150526187732
 ```
 
 2. 把得到的net0作为起点来构建hmax=1的网络
-
 ```
 julia命令：
 julia>net1 = snaq!(net0, raxmlCF, hmax=1, filename="net1", seed=2345)
@@ -144,7 +161,6 @@ snaq输出文件包括：
 可以在julia中查看文件，用`less("net1.out")`命令，下箭头向下滚动，`q`退出查看。
 
 4. 把最佳网络写入文件
-
 ```
 julia> net1 = readTopology("net1.out") # 读取net1.out文件到net1；如果接着上面运行net1已经赋值了，则不必读取
 julia> net1 # 输出net1的信息到屏幕

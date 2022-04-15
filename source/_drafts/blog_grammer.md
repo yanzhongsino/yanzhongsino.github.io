@@ -1,132 +1,25 @@
 ---
-title: blog
+title: 博客撰写的语法和技巧
 date: 2021-04-20 16:22:52
 categories: 
 - blog
 tags: 
-- tutorial
 - blog
 - hexo
 - github
-- sync
-- website maintenance
 - markdown
+- next
 
-description: 这篇博客是记录日常博客撰写过程中的一些技巧，markdown的使用，github.io搭建网站的维护，hexo的使用等。
+description: 这篇博客是记录日常博客撰写过程中的语法和技巧，markdown的使用，hexo的使用，next主题的使用等。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
 
-# 1. blog的categories和tags
-categories和tags的记录
-
-```
----
-title: blog
-date: 2021-04-20 16:50:00
-categories: 
-
-- bio
-	- concept
-	- taxon
-	- bioinfo
-	- experiment
-	- theory
-	- knowledge
-
-- biosoft
-
-- omics
-	- genome
-	- transcriptome
-	- plastome
-	- mitochondrion
-
-- plot
-	- R
-
-- computer
-	- system
-		- windows
-		- linux
-	- program language
-		- python
-		- R
-		- perl
-		- java
-		- C
-	- IDE
-		- vim
-		- VScode
-		- git
-	- script
-	- web
-
-- linux
-	- basics
-	- shell
-	- text processing
-	- operation and maintenance
-
-- blog
-
-
-tags: 
-- genome assemble
-- genome annotation
-- phylogeny
-- divergence time
-- WGD
-- HGT
-- molecular experiment
-- homolog
-- ortholog
-- paralog
-- xenolog
-- analog
-- orthology
-- orthogroup
-- gene family
----  
-```
-
-# 2. 日常blog撰写和备份操作
-在做好blog搭建后，blog撰写和日常管理可参考这部分内容。
-
-## 2.1. blog同步
-  
-养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
-但如果本地有未提交的更新，则千万不要用`git pull`，否则会覆盖本地更新；直接进入下一步；直到使用`git add .`，`git commit -m "submit"`，`git push origin hexo`提交备份本地更新到github端的hexo分支后才可以使用`git pull`(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。
-
-## 2.2. blog撰写
-    
-在本地source/_posts下添加和修改md文档实现blog的日常撰写和修改。
-
-使用命令`hexo new "newpostname"`可以在hexo/source/_posts下新建一个newpostname.md的文件，这个文件以scaffolds/post.md为模板，修改scaffolds/post.md文件可以修改hexo new命令生成的新blog文件样式。
-
-## 2.3. blog备份
-   
-只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。
-用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
-
-## 2.4. blog发布
-    
-可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用`hexo clean & hexo g -d`命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
-
-
-总结一下，在配置好写作环境后的任意一台终端的日常工作流应该是：
-1. `git pull`同步远程github库的hexo更新到本地
-2. `hexo new "newblog"`在source/_posts/下添加md格式的blog，或者修改已有的blog
-3. `git add .`,`git commit -m "commit notes"`,`git push`把修改备份到github端
-4. 下次写作重复以上三个步骤
-5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
-
-
-# 3. 攥写blog
-## 3.1. 插入图片
+# 1. 撰写博客
+## 1.1. 插入图片
 若是本地图片，就放在特定位置，然后在blog中引用；若是网络图片，就直接复制图片的url地址引用；
 
-### 3.1.1. 推荐用法
+### 1.1.1. 推荐用法
 若是自己的图片，可以统一保存在sources/images/目录下，在github上同步后，复制github上图片地址，就可以像引用网络图片一样引用图片url地址。
 
 ```
@@ -145,7 +38,7 @@ from [github: yanzhongsino](https://github.com/yanzhongsino/yanzhongsino.github.
 **<p align="center">Figure 1. Venn diagram with 2 groups**
 from [github: yanzhongsino](https://github.com/yanzhongsino/yanzhongsino.github.io)</p>
 
-### 3.1.2. markdown语法
+### 1.1.2. markdown语法
 1. 统一放在images目录下
 当Hexo项目中只用到少量图片时，可以将图片统一放在source/images文件夹中，在blog中通过markdown语法访问它们，即`![图片注释](/images/image.jpg "图片标题")`。
 
@@ -160,22 +53,22 @@ from [github: yanzhongsino](https://github.com/yanzhongsino/yanzhongsino.github.
 
 图片只能在文章中显示，但无法在首页中正常显示。
 
-### 3.1.3. HTML语法【推荐】
+### 1.1.3. HTML语法【推荐】
 用markdown语法无法指定图片的尺寸和对齐方式，建议用HTML语法插入图片，以实现更好的控制。
 `<img src="/images/image.png" width=80% height=80% title="picture" alt="picture" align=center/>`
 
 `<img src="url" title="title" width="80%" height="80%" />`
 
-### 3.1.4. 标签插件语法引用
+### 1.1.4. 标签插件语法引用
 如果希望图片在文章和首页中同时显示，可以使用标签插件语法，本地和网络图片都适用。
 - 本地图片资源，不限制图片尺寸，使用 `{% asset_img image.jpg This is an image %}`；
 - 网络图片资源，限制图片显示尺寸，`{% img http://www.something.gif 200 400 vi-vim-cheat-sheet %}` 
 
-### 3.1.5. CDN引用
+### 1.1.5. CDN引用
 1. 除了在本地存储图片，还可以将图片上传到一些免费的CDN服务中。比如Cloudinary提供的图片CDN服务，在Cloudinary中上传图片后，会生成对应的url地址，将地址直接拿来引用即可。
 2. 【实测这种方法不生效】把代码`<div align="middle" style="width:200px; margin:auto">这里粘贴生成的url地址</div>`粘贴到文章中即可；align为了美观设置成居中。
 
-### 3.1.6. fancybox
+### 1.1.6. fancybox
 1. 启用fancybox
 启用fancybox：点击查看图片大图。
 
@@ -206,6 +99,34 @@ index 0f3704e..8516665 100644
 
 在img标签使用的时候加上class=”nofancybox”即可。`<img src="http://www.viemu.com/vi-vim-cheat-sheet.gif" class="nofancybox" />`
 
-## 3.2. 插入背景音乐
+## 1.2. 插入背景音乐
 1. 打开网易云网页版，找到想听的歌曲，然后点击**生成外链播放器**，然后复制网易云音乐的插件页面的HTML代码；
 2. 把代码`<div align="middle">这里粘贴刚刚复制的代码</div>`粘贴到文章中即可；align为了美观设置成居中；
+
+## 插入引用块
+插入引用块的两种方式：
+1. HTML方式
+- 直接在markdown中写HTML格式来调用引用块blockquote
+- 使用例子：`<blockquote class="blockquote-center">blockquote cite test</br>test2</br>test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20</blockquote>`
+- 效果如下：
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_blockquote.png?raw=true" width=80% title="blockquote引用效果" align="center" />
+
+**<p align="center">Figure 2. blockquote引用效果**
+
+2. 标签方式
+- hexo的next（版本>=0.4.5）主题内置了centerquote标签，可以用于添加引用块。
+- 使用格式：`{%centerquote}引用内容{%endcenterquote%}`，其中centerquote可以简写成`cq`。
+- 例子：
+```markdown
+{%cq%}
+test cq cite format
+test1
+test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20
+
+引用
+{%endcq%}
+```
+- 效果如下：
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_centerquote.png?raw=true" width=80% title="centerquote引用效果" align="center" />
+
+**<p align="center">Figure 3. centerquote引用效果**

@@ -155,12 +155,13 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
         INFO  Deleted database.
         INFO  Deleted public folder.
         清除缓存文件（db.json\)和已生成的静态文件（public目录）
-    + `hexo generate`
+    + `hexo generate`=`hexo g`
         生成静态页面，静态网页会根据source>\_posts目录下所有markdown文件编译成静态网页（html），并生成public目录存储生成的静态文件。
         
-        生成静态文件后，可以使用`hexo serve`命令启动本地服务器来查看博客网站。
-
-    + `hexo deploy`
+    + `hexo serve`=`hexo s`
+        生成静态文件后，可以使用`hexo serve`命令启动本地服务器来预览博客网站。
+        
+    + `hexo deploy`=`hexo d`
         部署public到github的master分支（部署位置：站点配置文件_config.yml的deploy参数设置的github账号和分支名），即部署到gitpages。
         
         部署之后，可以在githube的page项目中查看到变化。我的是<https://github.com/yanzhongsino/yanzhongsino.github.io>。很快也可以在<https://yanzhongsino.github.io/>线上看到生成的博客。
@@ -245,25 +246,25 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 
 # 5. 日常blog撰写和备份操作
 
-1. blog同步
-  
-  养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
-  但如果本地有未提交的更新，则千万不要用`git pull`，否则会覆盖本地更新；直接进入下一步；直到使用`git add .`，`git commit -m "submit"`，`git push origin hexo`提交备份本地更新到github端的hexo分支后才可以使用`git pull`(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。
+1. blog同步 
+   养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行`git pull`命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。
 
+   但如果本地有未提交的更新，则千万不要用`git pull`，否则会覆盖本地更新；直接进入下一步；直到使用`git add .`，`git commit -m "submit"`，`git push origin hexo`提交备份本地更新到github端的hexo分支后才可以使用`git pull`(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。
 
-2. blog撰写
-   
-      使用命令`hexo new "newpostname"`可以在hexo/source/_posts下新建一个newpostname.md的文件，打开这个文件即可写作。
+2. blog撰写   
+    使用命令`hexo new "newpostname"`可以在hexo/source/_posts下新建一个newpostname.md的文件，打开这个文件即可写作。
       
-      在本地source/_posts下添加和修改md文档实现blog的日常撰写和修改。
+    在本地source/_posts下添加和修改md文档实现blog的日常撰写和修改。
 
-3. blog备份
-   
+3. blog备份   
    只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。
+
    用三条命令`git add .`，`git commit -m "submit"`，`git push origin hexo`备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过`hexo clean`清除缓存和public目录，以免备份不需要的文件。
 
-4. blog发布
-    
+4. blog生成和预览
+    通过`hexo g`生成博客网站静态文件后，可以用`hexo serve`=`hexo s`命令启动本地服务器来在网址`http://localhost:4000`预览博客网站。没问题再进行博客发布。
+
+5. blog发布    
     可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用`hexo clean & hexo g -d`命令，根据source/_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。
 
 
@@ -272,8 +273,8 @@ github pages需要相应的博客引擎驱动，主流的是[jekyllrb](https://j
 2. `hexo new "newblog"`在source/_posts/下添加md格式的blog，或者修改已有的blog
 3. `git add .`,`git commit -m "commit notes"`,`git push`把修改备份到github端
 4. 下次写作重复以上三个步骤
-5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
-
+5. 用`hexo g`-`hexo s`来预览博客
+6. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
 
 # 6. next主题同步和更新
 

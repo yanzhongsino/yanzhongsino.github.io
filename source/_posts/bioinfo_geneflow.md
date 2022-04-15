@@ -63,12 +63,11 @@ description: 介绍了基因流相关概念，推断基因流常用软件。
    - 相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。
 
 ### 2.1.2. PhyloNetworks
+[PhyloNetworks blog](https://yanzhongsino.github.io/2022/04/14/bioinfo_geneflow_PhyloNetworks/)
 1. PhyloNetworks简介
    - PhyloNetworks是通过基因树或多位点序列(SNaQ)的最大伪似然进行推断系统发育网络的一个Julia包。
-2. PhyloNetworks适用范围
-   - PhyloNetworks适用于基因树数据
-   - 适用于居群间或物种间的基因流推测
-   - 适用于推断基因流方向和强度
+2. PhyloNetworks原理
+   - 原理：通过SNaQ来实现网络推断，SNaQ通过估计4分类群子集的最大伪似然来加速运算，估计的网络不受根的影响。
 3. PhyloNetworks输入输出
    - 输入：newick格式基因树(多个基因树组成的文件)
    - 输出：系统发育网络，基因流方向和杂交节点贡献比例
@@ -76,6 +75,10 @@ description: 介绍了基因流相关概念，推断基因流常用软件。
    - 推断系统发育网络，包括基因流的方向和强度。
    - 相较于其他推断系统发育网络的软件，PhyloNetworks集成了上游分析，网络估计，引导分析，下游特征进化分析，绘图等功能。
    - 不足是运行多样本(超过十个个体)和数据量大(超过1000个)会非常耗时(常常以星期/月计时)。
+5. PhyloNetworks适用范围
+   - PhyloNetworks适用于基因树数据
+   - 适用于居群间或物种间的基因流推测
+   - 适用于推断基因流方向和强度
 
 ### 2.1.3. TreeMix
 [TreeMix blog](https://yanzhongsino.github.io/2022/03/20/bioinfo_geneflow_treemix/)
