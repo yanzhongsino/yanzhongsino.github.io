@@ -16,7 +16,7 @@ tags:
 description: 这篇博客是记录日常博客撰写过程中的语法和技巧，markdown的使用，hexo的使用，next主题的使用等。目前记录了在博客中插入图片，音乐和引用的方式。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5284273&auto=1&height=32"></iframe><music URL></div>
 
 # 1. 撰写博客
 ## 1.1. 插入图片
@@ -106,9 +106,9 @@ index 0f3704e..8516665 100644
 1. 打开网易云网页版，找到想听的歌曲，然后点击**生成外链播放器**，然后复制网易云音乐的插件页面的HTML代码；
 2. 把代码`<div align="middle">这里粘贴刚刚复制的代码</div>`粘贴到文章中即可；align为了美观设置成居中；
 
-## 插入引用
+## 1.3. 插入引用
 插入引用有多种方式
-### markdown方式【简单】
+### 1.3.1. markdown方式【简单】
 如果只是简单的标记引用，就选择行首添加`>`的方式，简单快捷。
 1. 单行引用
 - 在markdown中的行首添加`>`符号，就会把这段内容(和接下来无空格/空行分隔的段落)标记为引用内容(效果等于加上<blockquuote>标签)。
@@ -142,7 +142,7 @@ test 嵌套引用
 
 **<p align="center">Figure 3. >嵌套引用效果**
 
-### HTML方式【居中】
+### 1.3.2. HTML方式【居中】
 如果需要居中显示引用内容，可以选择HTML的blockquote来实现。
 - 直接在markdown中写HTML格式来调用引用块blockquote
 - 使用例子：`<blockquote class="blockquote-center">blockquote cite test</br>test2</br>test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20</blockquote>`。其中`class="blockquote-center"`是为了使引用内容居中显示。
@@ -152,7 +152,7 @@ test 嵌套引用
 
 **<p align="center">Figure 4. blockquote HTML引用效果**
 
-### 标签方式【全面】
+### 1.3.3. 标签方式【全面】
 hexo内置许多标签使得引用的功能更全面。
 1. blockquote标签（hexo标签）
 blockquote标签可插入包含作者、来源和标题的引用。
@@ -221,5 +221,5 @@ test1 引用test test2 引用test test3 引用test test4 引用test test5 引用
 
 **<p align="center">Figure 8. centerquote标签引用效果**
 
-# references
+# 2. references
 1. [hexo 标签插件:blockquote](https://hexo.io/docs/tag-plugins.html)
