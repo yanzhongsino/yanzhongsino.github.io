@@ -16,19 +16,6 @@ description: 这篇博客描述了用Julia包PhyloNetworks来推断系统发育�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=108998&auto=1&height=32"></iframe></div>
 
-
-
-{%cq%}
-test cq cite format
-test1
-test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20
-
-引用
-{%endcq%}
-
-
-
-
 # 1. PhyloNetworks
 1. PhyloNetworks简介
    - PhyloNetworks是通过基因树或多位点序列(SNaQ)的最大伪似然进行推断系统发育网络的一个Julia包。
@@ -45,9 +32,6 @@ test1 引用test test2 引用test test3 引用test test4 引用test test5 引用
    - PhyloNetworks适用于基因树数据
    - 适用于居群间或物种间的基因流推测
    - 适用于推断基因流方向和强度
-
-
-<blockquote class="blockquote-center">blockquote cite test</br>test2</br>test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20</blockquote>
 
 # 2. PhyloNetworks安装
 PhyloNetworks是Julia包，Julia是一个类似R的计算机语言，可以交互式或脚本式执行命令。

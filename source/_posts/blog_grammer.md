@@ -1,6 +1,6 @@
 ---
 title: 博客撰写的语法和技巧
-date: 2021-04-20 16:22:52
+date: 2022-04-15
 categories: 
 - blog
 tags: 
@@ -9,8 +9,11 @@ tags:
 - github
 - markdown
 - next
+- image
+- music
+- quote
 
-description: 这篇博客是记录日常博客撰写过程中的语法和技巧，markdown的使用，hexo的使用，next主题的使用等。
+description: 这篇博客是记录日常博客撰写过程中的语法和技巧，markdown的使用，hexo的使用，next主题的使用等。目前记录了在博客中插入图片，音乐和引用的方式。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
@@ -103,18 +106,104 @@ index 0f3704e..8516665 100644
 1. 打开网易云网页版，找到想听的歌曲，然后点击**生成外链播放器**，然后复制网易云音乐的插件页面的HTML代码；
 2. 把代码`<div align="middle">这里粘贴刚刚复制的代码</div>`粘贴到文章中即可；align为了美观设置成居中；
 
-## 插入引用块
-插入引用块的两种方式：
-1. HTML方式
+## 插入引用
+插入引用有多种方式
+### markdown方式【简单】
+如果只是简单的标记引用，就选择行首添加`>`的方式，简单快捷。
+1. 单行引用
+- 在markdown中的行首添加`>`符号，就会把这段内容(和接下来无空格/空行分隔的段落)标记为引用内容(效果等于加上<blockquuote>标签)。
+- 例子：
+```
+test 引用
+>cite quote
+test > cite content
+```
+- 效果：
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_quote.png?raw=true" width=50% title=">引用效果" align="center" />
+
+**<p align="center">Figure 2. >引用效果**
+
+2. 多行引用
+- 在每一行的行首都添加`>`符号。
+3. 嵌套引用
+- 第一行行首添加`>`符号，第二行行首添加`>>`符号，这样就会有第二行嵌套在第一行的效果。
+- 例子：
+```
+test 嵌套引用
+>cite quote 1
+>>cite content 2
+>>>cite content 3
+```
+
+- 效果：
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_multiquote.png?raw=true" width=50% title=">嵌套引用效果" align="center" />
+
+**<p align="center">Figure 3. >嵌套引用效果**
+
+### HTML方式【居中】
+如果需要居中显示引用内容，可以选择HTML的blockquote来实现。
 - 直接在markdown中写HTML格式来调用引用块blockquote
-- 使用例子：`<blockquote class="blockquote-center">blockquote cite test</br>test2</br>test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20</blockquote>`
-- 效果如下：
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_blockquote.png?raw=true" width=80% title="blockquote引用效果" align="center" />
+- 使用例子：`<blockquote class="blockquote-center">blockquote cite test</br>test2</br>test1 引用test test2 引用test test3 引用test test4 引用test test5 引用test test6 引用test test7 引用test test8 引用test test9 引用test test10 引用test test11 引用test test12 引用test test13 引用test test14 引用test test15 引用test test16 引用test test17 引用test test18 引用test test19 引用test test20</blockquote>`。其中`class="blockquote-center"`是为了使引用内容居中显示。
+- 效果：
 
-**<p align="center">Figure 2. blockquote引用效果**
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_blockquote.png?raw=true" width=80% title="blockquote HTML引用效果" align="center" />
 
-2. 标签方式
-- hexo的next（版本>=0.4.5）主题内置了centerquote标签，可以用于添加引用块。
+**<p align="center">Figure 4. blockquote HTML引用效果**
+
+### 标签方式【全面】
+hexo内置许多标签使得引用的功能更全面。
+1. blockquote标签（hexo标签）
+blockquote标签可插入包含作者、来源和标题的引用。
+- 格式：
+```
+{% blockquote [author[, source]] [link] [source_link_title] %}
+content
+{% endblockquote %}
+```
+
+- 例子1：引用书中内容
+```
+{% blockquote David Levithan, Wide Awake %}
+Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.
+{% endblockquote %}
+```
+
+效果如下：
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_blockquote1.png?raw=true" width=80% title="blockquote标签引用效果" align="center" />
+
+**<p align="center">Figure 5. blockquote标签引用效果1**
+
+- 例子2：引用Twitter
+```
+{% blockquote @DevDocs https://twitter.com/devdocs/status/356095192085962752 %}
+NEW: DevDocs now comes with syntax highlighting. http://devdocs.io
+{% endblockquote %}
+```
+
+效果如下：
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_blockquote2.png?raw=true" width=80% title="blockquote标签引用效果" align="center" />
+
+**<p align="center">Figure 6. blockquote标签引用效果2**
+
+- 例子3：引用网页文章
+```
+{% blockquote Seth Godin http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html Welcome to Island Marketing %}
+Every interaction is both precious and an opportunity to delight.
+{% endblockquote %}
+```
+
+效果如下：
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_blockquote3.png?raw=true" width=80% title="blockquote标签引用效果" align="center" />
+
+**<p align="center">Figure 7. blockquote标签引用效果3**
+
+2. centerquote标签（next（版本>=0.4.5）主题内置标签）
+这个标签生成一个带上下分割线的引用，同时引用文本自动居中。
 - 使用格式：`{%centerquote}引用内容{%endcenterquote%}`，其中centerquote可以简写成`cq`。
 - 例子：
 ```markdown
@@ -127,6 +216,10 @@ test1 引用test test2 引用test test3 引用test test4 引用test test5 引用
 {%endcq%}
 ```
 - 效果如下：
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_centerquote.png?raw=true" width=80% title="centerquote引用效果" align="center" />
 
-**<p align="center">Figure 3. centerquote引用效果**
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/blog_grammer_centerquote.png?raw=true" width=80% title="centerquote标签引用效果" align="center" />
+
+**<p align="center">Figure 8. centerquote标签引用效果**
+
+# references
+1. [hexo 标签插件:blockquote](https://hexo.io/docs/tag-plugins.html)
