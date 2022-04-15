@@ -18,6 +18,8 @@ description: 这篇博客是记录日常博客撰写过程中的语法和技巧�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5284273&auto=1&height=32"></iframe><music URL></div>
 
+在根据博客[hexo建站，github.io发布，多终端同步](https://yanzhongsino.github.io/2018/06/05/blog_hexo.github/)配置了hexo网站（使用next主题）的基础上，记录了部分撰写博客使用的技巧。
+
 # 1. 撰写博客
 ## 1.1. 插入图片
 若是本地图片，就放在特定位置，然后在blog中引用；若是网络图片，就直接复制图片的url地址引用；

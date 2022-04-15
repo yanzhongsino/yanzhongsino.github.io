@@ -1,5 +1,5 @@
 ---
-title: 博客日常撰写的备份和同步
+title: 博客日常撰写和备份
 date: 2021-04-20 16:22:52
 categories: 
 - blog
@@ -11,10 +11,12 @@ tags:
 - website maintenance
 - markdown
 
-description: 这篇博客是记录博客日常撰写的备份和同步。
+description: 这篇博客是记录博客日常撰写和备份。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
+
+在根据博客[hexo建站，github.io发布，多终端同步](https://yanzhongsino.github.io/2018/06/05/blog_hexo.github/)配置了hexo网站（使用next主题）的基础上，记录了博客日常撰写、备份。
 
 # 1. blog的categories和tags
 categories和tags的记录
@@ -119,4 +121,3 @@ tags:
 3. `git add .`,`git commit -m "commit notes"`,`git push`把修改备份到github端
 4. 下次写作重复以上三个步骤
 5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
-
