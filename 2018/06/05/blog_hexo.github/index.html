@@ -28,7 +28,7 @@
 <meta property="og:description" content="这篇教程的目的是指导小白建立和管理自己的网站。用hexo建立网站，用github的github.io布署网站到网页，利用一些技巧实现多终端同步。build website with hexo, deploy with github.io, sync at multiple terminals.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-06-05T07:53:00.000Z">
-<meta property="article:modified_time" content="2022-03-29T03:32:17.197Z">
+<meta property="article:modified_time" content="2022-04-15T02:19:11.541Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="tutorial">
 <meta property="article:tag" content="blog">
@@ -206,7 +206,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-29 11:32:17" itemprop="dateModified" datetime="2022-03-29T11:32:17+08:00">2022-03-29</time>
+                <time title="修改时间：2022-04-15 10:19:11" itemprop="dateModified" datetime="2022-04-15T10:19:11+08:00">2022-04-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -336,10 +336,11 @@
 <ul>
 <li><p><code>hexo clean</code> 【optional】<br>  INFO  Validating config<br>  INFO  Deleted database.<br>  INFO  Deleted public folder.<br>  清除缓存文件（db.json)和已生成的静态文件（public目录）</p>
 </li>
-<li><p><code>hexo generate</code><br>  生成静态页面，静态网页会根据source&gt;_posts目录下所有markdown文件编译成静态网页（html），并生成public目录存储生成的静态文件。</p>
-<p>  生成静态文件后，可以使用<code>hexo serve</code>命令启动本地服务器来查看博客网站。</p>
+<li><p><code>hexo generate</code>&#x3D;<code>hexo g</code><br>  生成静态页面，静态网页会根据source&gt;_posts目录下所有markdown文件编译成静态网页（html），并生成public目录存储生成的静态文件。</p>
 </li>
-<li><p><code>hexo deploy</code><br>  部署public到github的master分支（部署位置：站点配置文件_config.yml的deploy参数设置的github账号和分支名），即部署到gitpages。</p>
+<li><p><code>hexo serve</code>&#x3D;<code>hexo s</code><br>  生成静态文件后，可以使用<code>hexo serve</code>命令启动本地服务器来预览博客网站。</p>
+</li>
+<li><p><code>hexo deploy</code>&#x3D;<code>hexo d</code><br>  部署public到github的master分支（部署位置：站点配置文件_config.yml的deploy参数设置的github账号和分支名），即部署到gitpages。</p>
 <p>  部署之后，可以在githube的page项目中查看到变化。我的是<a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/yanzhongsino.github.io">https://github.com/yanzhongsino/yanzhongsino.github.io</a>。很快也可以在<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/">https://yanzhongsino.github.io/</a>线上看到生成的博客。</p>
 </li>
 </ul>
@@ -414,19 +415,18 @@
 </li>
 </ol>
 <h1 id="5-日常blog撰写和备份操作"><a href="#5-日常blog撰写和备份操作" class="headerlink" title="5. 日常blog撰写和备份操作"></a>5. 日常blog撰写和备份操作</h1><ol>
-<li>blog同步</li>
-</ol>
-<p>  养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行<code>git pull</code>命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。<br>  但如果本地有未提交的更新，则千万不要用<code>git pull</code>，否则会覆盖本地更新；直接进入下一步；直到使用<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>提交备份本地更新到github端的hexo分支后才可以使用<code>git pull</code>(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。</p>
-<ol start="2">
-<li><p>blog撰写</p>
-<p>   使用命令<code>hexo new &quot;newpostname&quot;</code>可以在hexo&#x2F;source&#x2F;_posts下新建一个newpostname.md的文件，打开这个文件即可写作。</p>
-<p>   在本地source&#x2F;_posts下添加和修改md文档实现blog的日常撰写和修改。</p>
+<li><p>blog同步<br>养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行<code>git pull</code>命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。</p>
+<p>但如果本地有未提交的更新，则千万不要用<code>git pull</code>，否则会覆盖本地更新；直接进入下一步；直到使用<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>提交备份本地更新到github端的hexo分支后才可以使用<code>git pull</code>(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。</p>
 </li>
-<li><p>blog备份</p>
-<p>只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。<br>用三条命令<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过<code>hexo clean</code>清除缓存和public目录，以免备份不需要的文件。</p>
+<li><p>blog撰写<br> 使用命令<code>hexo new &quot;newpostname&quot;</code>可以在hexo&#x2F;source&#x2F;_posts下新建一个newpostname.md的文件，打开这个文件即可写作。</p>
+<p> 在本地source&#x2F;_posts下添加和修改md文档实现blog的日常撰写和修改。</p>
 </li>
-<li><p>blog发布</p>
-<p> 可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用<code>hexo clean &amp; hexo g -d</code>命令，根据source&#x2F;_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。</p>
+<li><p>blog备份<br>只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。</p>
+<p>用三条命令<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过<code>hexo clean</code>清除缓存和public目录，以免备份不需要的文件。</p>
+</li>
+<li><p>blog生成和预览<br> 通过<code>hexo g</code>生成博客网站静态文件后，可以用<code>hexo serve</code>&#x3D;<code>hexo s</code>命令启动本地服务器来在网址<code>http://localhost:4000</code>预览博客网站。没问题再进行博客发布。</p>
+</li>
+<li><p>blog发布<br> 可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用<code>hexo clean &amp; hexo g -d</code>命令，根据source&#x2F;_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。</p>
 </li>
 </ol>
 <p>总结一下，在配置好写作环境后的任意一台终端的日常工作流应该是：</p>
@@ -435,6 +435,7 @@
 <li><code>hexo new &quot;newblog&quot;</code>在source&#x2F;_posts&#x2F;下添加md格式的blog，或者修改已有的blog</li>
 <li><code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>把修改备份到github端</li>
 <li>下次写作重复以上三个步骤</li>
+<li>用<code>hexo g</code>-<code>hexo s</code>来预览博客</li>
 <li>直至blog完善成熟后，用命令<code>hexo clean &amp; hexo g -d</code>生成网站并部署到github.io</li>
 </ol>
 <h1 id="6-next主题同步和更新"><a href="#6-next主题同步和更新" class="headerlink" title="6. next主题同步和更新"></a>6. next主题同步和更新</h1><h1 id="7-Issue-amp-Solution"><a href="#7-Issue-amp-Solution" class="headerlink" title="7. Issue&amp;Solution"></a>7. Issue&amp;Solution</h1><h3 id="7-0-1-Issue-1：建站日记写好后，在另一个终端通过git-clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git-clone获取的，git不能直接管理两个git项目（有-git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git-add-git-commit-m-quot-commit-notes-quot-git-push命令对hexo项目下的next项目无效，themes-x2F-next主题没有被同步到github端hexo分支。"><a href="#7-0-1-Issue-1：建站日记写好后，在另一个终端通过git-clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git-clone获取的，git不能直接管理两个git项目（有-git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git-add-git-commit-m-quot-commit-notes-quot-git-push命令对hexo项目下的next项目无效，themes-x2F-next主题没有被同步到github端hexo分支。" class="headerlink" title="7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git add .,git commit -m &quot;commit notes&quot;,git push命令对hexo项目下的next项目无效，themes&#x2F;next主题没有被同步到github端hexo分支。"></a>7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令对hexo项目下的next项目无效，themes&#x2F;next主题没有被同步到github端hexo分支。</h3><ul>
@@ -596,7 +597,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -609,7 +610,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">167</span>
+        <span class="site-state-item-count">171</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

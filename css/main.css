@@ -477,6 +477,7 @@ code {
 .highlight .code pre {
   background: #f7f7f7;
   padding-left: 10px;
+  padding-right: 10px;
   width: 100%;
 }
 .gist table {
@@ -497,10 +498,10 @@ pre code {
   text-shadow: none;
 }
 pre .deletion {
-  background: #fdd;
+  background: #800000;
 }
 pre .addition {
-  background: #dfd;
+  background: #008000;
 }
 pre .meta {
   color: #eab700;
@@ -1196,7 +1197,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #0945ff;
+  background: #f7ff9f;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
