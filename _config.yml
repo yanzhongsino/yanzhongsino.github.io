@@ -469,7 +469,7 @@ theme_config:
     # Code Highlight theme
     # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
     # See: https://github.com/chriskempson/tomorrow-theme
-    highlight_theme: normal
+    highlight_theme: dark
     # Add copy button on codeblock
     copy_button:
       enable: false
@@ -731,7 +731,7 @@ theme_config:
     notify: false # Mail notifier
     verify: false # Verification code
     placeholder: Just go go # Comment box placeholder
-    avatar: mm # Gravatar style
+    avatar: https://avatars.githubusercontent.com/u/37318862?v=4 # Gravatar style
     guest_info: nick,mail,link # Custom comment header
     pageSize: 10 # Pagination size
     language: # Language, available values: en, zh-cn
@@ -791,7 +791,7 @@ theme_config:
     only_pageview: false
 
   # Baidu Analytics
-  baidu_analytics: # <app_id>
+  baidu_analytics: a7db9ab8b9b3ef3b239a82e4a58e43dc # <app_id>
 
   # Growingio Analytics
   growingio_analytics: # <project_id>

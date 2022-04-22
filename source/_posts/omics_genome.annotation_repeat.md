@@ -4,6 +4,7 @@ date: 2021-08-02 10:30:00
 categories: 
 - omics
 - genome
+- annotation
 tags:
 - genome
 - genome annotation

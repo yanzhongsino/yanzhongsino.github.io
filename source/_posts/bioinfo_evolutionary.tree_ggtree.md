@@ -162,8 +162,8 @@ ggtree(tree, layout="circular", size=0.8, branch.length='none') \ #画树，layo
 + geom_tiplab(color="black", size = 4, hjust = -0.1, align=T, linesize=0.7) \ # 末端节点标上物种，size文字大小，hjust是离进化枝线条的距离，align=T文字间左对齐，linesize设置虚线尺寸。
 + geom_rootedge(rootedge = 1,size=1) \#添加根节点的枝长线，如果树文件中有根节点枝长则直接可使用，否则可以用rootedge设置根节点枝长(不设置为0)，size设置粗细。结合xlim来显示。
 + geom_point2(color="#6FE1F8", size=5, alpha=0.7) \ #所有节点上标记圆点，配色和透明度
-+ geom_point2(aes(subset=node==16), color='darkgreen', size=5) \#在16号节点标记绿色圆点。其中subset是取子集，符合条件的才注释；color设置颜色，size设置大小。
-+ geom_text2(aes(label=support,hjust=-0.1),size=3, fontface = "bold") \#节点上标记支持率；size设置大小，fontface设置文本加粗显示
++ geom_point2(aes(subset=(node==16)), color='darkgreen', size=5) \#在16号节点标记绿色圆点。其中subset是取子集，符合条件的才注释；color设置颜色，size设置大小。
++ geom_text2(aes(label=branch.length,hjust=-0.1),size=3, fontface = "bold") \#节点上标记枝长；size设置大小，fontface设置文本加粗显示
 + geom_text2(aes(subset=!isTip, label=node), hjust=-0.3, size=3, color="deepskyblue4")  \ #非tip节点标记上node号
 + geom_label2(aes(x=0.79,label=D),color="black",vjust=-0.2,fill="#7FFF00",alpha=0.6) \#做标记,aes里的x指定位置，label指定内容
 + geom_strip(9,10,label="legumes",offset = 0.06,offset.text = 0.012,color = "#FF6100",barsize = 1.5,fontsize = 5,angle = 90,hjust = 0.5) \#用条带指定node9和node10之间的分支clade，label指定文字内容，offset指定条带和文字与末端节点的距离，offset.text指定文字与条带的距离，barsize指定条带尺寸，fontsize指定文字尺寸，hjust指定文字位置

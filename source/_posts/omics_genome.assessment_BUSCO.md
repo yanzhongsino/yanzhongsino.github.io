@@ -4,6 +4,7 @@ date: 2021-07-24 11:20:00
 categories: 
 - omics
 - genome
+- assessment
 tags: 
 - genome
 - genome assessment

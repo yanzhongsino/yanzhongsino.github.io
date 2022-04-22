@@ -4,8 +4,9 @@ date: 2021-05-17 10:36:00
 categories: 
 - omics
 - genome
+- annotation
 tags: 
-- tutorial
+- genome
 - genome annotation
 - functional annotation
 - eggnog-mapper

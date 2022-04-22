@@ -5,7 +5,7 @@ categories:
 - omics
 - genome
 tags:
-- tutorial
+- genome
 - genome annotation
 - sort
 - rename

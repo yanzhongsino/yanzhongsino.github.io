@@ -147,6 +147,8 @@ KEGG 是一个集成的数据库资源，由如下所示的 16 个数据库组�
 ### 2.2.3. KEGG PATHWAY Database
 KEGG PATHWAY Database是KEGG资源的核心，是一组手工绘制的KEGG通路图，代表细胞和生物体的新陈代谢和各种其他功能的实验知识。每个通路图都包含一个分子相互作用和反应网络，旨在将基因组中的基因与通路中的基因产物（主要是蛋白质）联系起来。
 
+[Xfam](http://xfam.org/)包含了许多数据库，比如Pfam，Rfam，Dfam，Treefam，Antifam等。
+
 # 3. references
 [topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
 [topGO blog](https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/)
