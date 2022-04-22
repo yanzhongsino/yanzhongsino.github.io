@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="使用Infernal软件对Rfam数据库比对实现基因组非编码RNA的注释">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组注释（四）：非编码RNA的注释-用Infernal软件对Rfam 12进行RNA注释">
+<meta property="og:url" content="http://example.com/2022/04/22/omics_genome.annotation_ncRNA/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="使用Infernal软件对Rfam数据库比对实现基因组非编码RNA的注释">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-22T03:02:37.874Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="genome annotation">
+<meta property="article:tag" content="ncRNA">
+<meta property="article:tag" content="Infernal">
+<meta property="article:tag" content="Rfam">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/04/22/omics_genome.annotation_ncRNA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基因组注释（四）：非编码RNA的注释-用Infernal软件对Rfam 12进行RNA注释 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/22/omics_genome.annotation_ncRNA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因组注释（四）：非编码RNA的注释-用Infernal软件对Rfam 12进行RNA注释
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-22 00:00:00 / 修改时间：11:02:37" itemprop="dateCreated datePublished" datetime="2022-04-22T00:00:00+08:00">2022-04-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/annotation/" itemprop="url" rel="index"><span itemprop="name">annotation</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/04/22/omics_genome.annotation_ncRNA/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/22/omics_genome.annotation_ncRNA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">使用Infernal软件对Rfam数据库比对实现基因组非编码RNA的注释</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
+
+<h1 id="1-ncRNA"><a href="#1-ncRNA" class="headerlink" title="1. ncRNA"></a>1. ncRNA</h1><p>非编码RNA(Non-coding RNA, ncRNA) 包括rRNA，tRNA，snRNA，snoRNA 和microRNA 等不编码蛋白质的RNA，它们转录后直接在RNA 水平上就能行使各自的生物学功能，并不需要翻译成蛋白质。</p>
+<h1 id="2-注释软件"><a href="#2-注释软件" class="headerlink" title="2. 注释软件"></a>2. 注释软件</h1><ul>
+<li>非编码RNA种类繁多，且结构特征各不相同，所以开发出了许多注释特定某一类RNA的软件，比如tRNAScan-SE预测tRNA，rnammer预测rRNA，snoScan 搜索带C&#x2F;D盒的snoRNAs，SnoGps 搜索带H&#x2F;ACA盒的snoRNAs，mirScan搜索microRNA等。</li>
+<li>Sanger实验室开发了Infernal软件，建立了1600多个RNA家族，并对每个家族建立了一致性二级结构和协方差模型，形成了Rfam数据库。采用Rfam数据库中的每个RNA的协方差模型，结合Infernal软件可以预测出已有RNA家族的新成员，只是特异性比较差。</li>
+</ul>
+<p>如果不是专门研究ncRNA，可以用Infernal注释所有ncRNA。如果需要更精细的注释，则可以选择特定软件注释特定RNA。</p>
+<p>这篇博客是介绍用Infernal程序与Rfam数据库一起用来注释与数据库中已知ncRNA同源的序列（这里用来注释完整的基因组）。注释结果包括tRNA，rRNA，snRNA，snoRNA和miRNA等。</p>
+<h1 id="3-Infernal"><a href="#3-Infernal" class="headerlink" title="3. Infernal"></a>3. Infernal</h1><p><a target="_blank" rel="noopener" href="http://eddylab.org/infernal/">Infernal</a>全称是”INFERence of RNA ALignment”，是一个用来检索DNA序列数据库中RNA序列和结构相似性的软件，通过协方差模型covariance models (CMs)来实现。</p>
+<h2 id="3-1-安装Infernal"><a href="#3-1-安装Infernal" class="headerlink" title="3.1. 安装Infernal"></a>3.1. 安装Infernal</h2><p><code>conda install -c bioconda infernal</code><br>现在安装的是v1.1.4</p>
+<p>安装后可使用的命令包括：</p>
+<ul>
+<li>cmpress：对cm文件进行压缩并建立索引。</li>
+<li>cmscan：用提交的序列在cm数据库中进行检索。</li>
+<li>cmalign：将RNA序列同协方差模型进行比对，并输出为stockholm格式。</li>
+<li>cmbuild：通过多序列比对结果建立一个协方差模型，并保存在新文件中。</li>
+<li>cmcalibrate：对协方差模型(CM)进行校准，在使用cmsearch和cmscan前CM模型需要先经过这个程序的处理。</li>
+<li>cmconvert：用于格式转换，是将infernal 1.0以后的CM转化为当前版本需要的CM。但对1.0之前的版本无效。</li>
+<li>cmemit：一个采样程序，从CM中进行采样并输出。</li>
+<li>cmfetch：从一个大的CM文件中获取一个或多个CM。</li>
+<li>cmsearch：用提交的CM模型在序列数据库中进行检索。</li>
+<li>cmstat：对CM文件中的CM模型进行统计汇总。</li>
+</ul>
+<h1 id="4-Rfam"><a href="#4-Rfam" class="headerlink" title="4. Rfam"></a>4. Rfam</h1><p><a target="_blank" rel="noopener" href="http://rfam.xfam.org/">Rfam</a>是RNA family数据库，包括ncRNA序列和ncRNA的二级结构，每个family用多序列比对和协方差模型covariance model (CM)来表示。</p>
+<ol>
+<li>下载Rfam数据库</li>
+</ol>
+<ul>
+<li><code>wget http://ftp.ebi.ac.uk/pub/databases/Rfam/CURRENT/Rfam.cm.gz</code><br>在<a target="_blank" rel="noopener" href="http://rfam.xfam.org/">Rfam</a>网站下载Rfam最新版本的CM数据库（目前是Rfam 14.7）</li>
+<li><code>gunzip Rfam.cm.gz</code><br>解压数据库</li>
+</ul>
+<ol start="2">
+<li>下载clanin</li>
+</ol>
+<ul>
+<li><code>wget http://ftp.ebi.ac.uk/pub/databases/Rfam/CURRENT/Rfam.clanin</code><br>在<a target="_blank" rel="noopener" href="http://rfam.xfam.org/">Rfam</a>网站下载Rfam数据库配套的clanin文件。</li>
+</ul>
+<h1 id="5-注释ncRNA"><a href="#5-注释ncRNA" class="headerlink" title="5. 注释ncRNA"></a>5. 注释ncRNA</h1><h2 id="5-1-建库"><a href="#5-1-建库" class="headerlink" title="5.1. 建库"></a>5.1. 建库</h2><ul>
+<li><code>cmpress Rfam.cm</code><br>使用cmpress压缩并建立索引，生成Rfam.cm.i1f, Rfam.cm.i1i, Rfam.cm.i1m, Rfam.cm.i1p。</li>
+</ul>
+<h2 id="5-2-注释"><a href="#5-2-注释" class="headerlink" title="5.2. 注释"></a>5.2. 注释</h2><ol>
+<li>序列索引<br>推荐的参数：</li>
+</ol>
+<p><code>nohup cmscan -Z 512 --cut_ga --rfam --nohmmonly --fmt 2 --tblout sample.tblout -o sample.result --clanin Rfam.clanin Rfam.cm genome.fa &amp;</code></p>
+<ul>
+<li>-Z：根据基因组大小来定，基因组大小的2倍，Mb单位，选一个整数。比如256Mb的基因组，-Z 512。</li>
+<li><code>--cut_ga --rfam --nohmmonly --fmt 2</code>：推荐使用</li>
+<li>–tblout sample.tblout：指定table格式输出文件</li>
+<li>-o sample.result：指定比对结果输出文件</li>
+<li>–clanin Rfam.clanin：指定clanin文件</li>
+<li>Rfam.cm genome.fa：指定数据库Rfam.cm和基因组genome.fa</li>
+</ul>
+<p>note：-o sample.result要放在Rfam.cm genome.fa前面，否则报错。</p>
+<p>此步骤<strong>耗时</strong>参考：250Mb基因组，默认线程，耗时2.5h。</p>
+<ol start="2">
+<li>结果文件</li>
+</ol>
+<ul>
+<li>sample.result：比对结果</li>
+<li>sample.tblout：table格式结果</li>
+</ul>
+<h2 id="5-3-整理结果"><a href="#5-3-整理结果" class="headerlink" title="5.3. 整理结果"></a>5.3. 整理结果</h2><h3 id="5-3-1-将注释结果整理成gff3文件"><a href="#5-3-1-将注释结果整理成gff3文件" class="headerlink" title="5.3.1. 将注释结果整理成gff3文件"></a>5.3.1. 将注释结果整理成gff3文件</h3><p>gff3文件可用于提交注释到数据库。</p>
+<p>用perl脚本<a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/saved_scripts/infernal-tblout2gff.pl">infernal-tblout2gff.pl</a>实现，脚本来自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jessepeng/p/15392809.html%E3%80%82">https://www.cnblogs.com/jessepeng/p/15392809.html。</a></p>
+<p><code>perl infernal-tblout2gff.pl --cmscan --fmt2 sample.tblout &gt;sample.infernal.ncRNA.gff3</code></p>
+<h3 id="5-3-2-统计各类ncRNA总数"><a href="#5-3-2-统计各类ncRNA总数" class="headerlink" title="5.3.2. 统计各类ncRNA总数"></a>5.3.2. 统计各类ncRNA总数</h3><ol>
+<li><p>整理注释结果文件sample.tblout<br>提取必需的列，非重叠区域或重叠区域得分高的区域<br><code>awk &#39;BEGIN&#123;OFS=&quot;\t&quot;;&#125;&#123;if(FNR==1) print &quot;target_name\taccession\tquery_name\tquery_start\tquery_end\tstrand\tscore\tEvalue&quot;; if(FNR&gt;2 &amp;&amp; $20!=&quot;=&quot; &amp;&amp; $0!~/^#/) print $2,$3,$4,$10,$11,$12,$17,$18; &#125;&#39; sample.tblout &gt;sample.tblout.xls</code></p>
+</li>
+<li><p>下载rfam注释</p>
+</li>
+</ol>
+<ul>
+<li>在<a target="_blank" rel="noopener" href="https://rfam.xfam.org/">rfam官网</a>，选择【SEARCH】-【Entry type】</li>
+<li>然后选中所有的Entry types（包括Gene，Intron，Cis-regulatory element），点击【Submit】，会列出所有RNA family的注释信息。</li>
+<li>手动选择所有注释信息，复制，粘贴到新建的空白文本文件rfam.txt并保存。</li>
+<li>把rfam.txt传输到服务器，最好用<code>dos2unix rfam.txt</code>转换文件格式为unix版本。</li>
+<li>拆分第三列<code>cat rfam.txt | awk &#39;BEGIN &#123;FS=OFS=&quot;\t&quot;&#125;&#123;split($3,x,&quot;;&quot;);class=x[2];print $1,$2,$3,$4,class&#125;&#39; &gt; rfam_anno.txt</code></li>
+</ul>
+<p>rfam注释文件rfam_anno.txt包含了所有rfam的类型type和功能描述description信息。</p>
+<ol start="3">
+<li>统计ncRNA注释结果<br><code>awk &#39;BEGIN&#123;OFS=FS=&quot;\t&quot;&#125;ARGIND==1&#123;a[$2]=$5;&#125;ARGIND==2&#123;type=a[$1]; if(type==&quot;&quot;) type=&quot;Others&quot;; count[type]+=1;&#125;END&#123;for(type in count) print type, count[type];&#125;&#39; rfam_anno.txt sample.tblout.xls &gt;sample.ncRNA.statistic</code></li>
+</ol>
+<p>sample.ncRNA.statistic输出示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> riboswitch	1</span><br><span class="line"> ribozyme	1</span><br><span class="line"> tRNA	699</span><br><span class="line">Others	41</span><br><span class="line"> miRNA	188</span><br><span class="line"> antisense	4</span><br><span class="line"> rRNA	233</span><br><span class="line"> snRNA	698</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>统计细分分类</li>
+</ol>
+<ul>
+<li>也可以根据细分分类分别统计，细分分类参考<a target="_blank" rel="noopener" href="https://rfam.xfam.org/">rfam官网</a>，【SEARCH】-【Entry type】。</li>
+<li>可参考的统计值包括每个细分ncRNA的数量(copy)，平均长度(average length)，总长(total length)，总长占基因组的比例（Percent of the genome）等</li>
+<li>统计后整理成发表文章用的表格。</li>
+</ul>
+<p>比如：snRNA包括snoRNA和splicing，snoRNA包括CD-box，HACA-box和scaRNA。下面用统计CD-box这个细分分类的ncRNA举例。</p>
+<ul>
+<li>提取CD-box的Accession(RF00000格式)：<code>grep &quot;CD-box&quot; rfam_anno.txt |cut -f1 &gt;cdbox.tem</code></li>
+<li>提取注释到的CD-box信息：<code>grep -f cdbox.tem mc.tblout.xls &gt;cdbox.txt</code></li>
+<li>cdbox.txt的行数就是CD-box的数量；利用第四五列的位置信息，即可统计平均长度(average length)，总长(total length)，<strong>注意正反链</strong>。</li>
+</ul>
+<h1 id="6-references"><a href="#6-references" class="headerlink" title="6. references"></a>6. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jessepeng/p/15392809.html">https://www.cnblogs.com/jessepeng/p/15392809.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.360doc.com/content/18/1119/05/52645714_795799901.shtml">http://www.360doc.com/content/18/1119/05/52645714_795799901.shtml</a></li>
+<li><a target="_blank" rel="noopener" href="https://genehub.wordpress.com/2019/08/08/%E6%A4%8D%E7%89%A9%E5%9F%BA%E5%9B%A0%E7%BB%84ncrna%E9%A2%84%E6%B5%8B%EF%BC%88trna%E3%80%81rrna%E3%80%81snrna%E3%80%81mirna%EF%BC%89/">https://genehub.wordpress.com/2019/08/08/%E6%A4%8D%E7%89%A9%E5%9F%BA%E5%9B%A0%E7%BB%84ncrna%E9%A2%84%E6%B5%8B%EF%BC%88trna%E3%80%81rrna%E3%80%81snrna%E3%80%81mirna%EF%BC%89/</a></li>
+<li><a target="_blank" rel="noopener" href="http://embracethesky.cn/2018/07/08/%e4%bd%bf%e7%94%a8infernal%e5%af%b9rfam-12%e8%bf%9b%e8%a1%8crna%e6%b3%a8%e9%87%8a/#more-99">http://embracethesky.cn/2018/07/08/%e4%bd%bf%e7%94%a8infernal%e5%af%b9rfam-12%e8%bf%9b%e8%a1%8crna%e6%b3%a8%e9%87%8a/#more-99</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/genome-annotation/" rel="tag"># genome annotation</a>
+              <a href="/tags/ncRNA/" rel="tag"># ncRNA</a>
+              <a href="/tags/Infernal/" rel="tag"># Infernal</a>
+              <a href="/tags/Rfam/" rel="tag"># Rfam</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/15/blog_grammer/" rel="prev" title="博客撰写的语法和技巧">
+      <i class="fa fa-chevron-left"></i> 博客撰写的语法和技巧
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-ncRNA"><span class="nav-number">1.</span> <span class="nav-text">1. ncRNA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%B3%A8%E9%87%8A%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">2. 注释软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Infernal"><span class="nav-number">3.</span> <span class="nav-text">3. Infernal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%AE%89%E8%A3%85Infernal"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 安装Infernal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Rfam"><span class="nav-number">4.</span> <span class="nav-text">4. Rfam</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%B3%A8%E9%87%8AncRNA"><span class="nav-number">5.</span> <span class="nav-text">5. 注释ncRNA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E5%BB%BA%E5%BA%93"><span class="nav-number">5.1.</span> <span class="nav-text">5.1. 建库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E6%B3%A8%E9%87%8A"><span class="nav-number">5.2.</span> <span class="nav-text">5.2. 注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E6%95%B4%E7%90%86%E7%BB%93%E6%9E%9C"><span class="nav-number">5.3.</span> <span class="nav-text">5.3. 整理结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-1-%E5%B0%86%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86%E6%88%90gff3%E6%96%87%E4%BB%B6"><span class="nav-number">5.3.1.</span> <span class="nav-text">5.3.1. 将注释结果整理成gff3文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-2-%E7%BB%9F%E8%AE%A1%E5%90%84%E7%B1%BBncRNA%E6%80%BB%E6%95%B0"><span class="nav-number">5.3.2.</span> <span class="nav-text">5.3.2. 统计各类ncRNA总数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-references"><span class="nav-number">6.</span> <span class="nav-text">6. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">174</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/04/22/omics_genome.annotation_ncRNA/";
+    this.page.identifier = "2022/04/22/omics_genome.annotation_ncRNA/";
+    this.page.title = "基因组注释（四）：非编码RNA的注释-用Infernal软件对Rfam 12进行RNA注释";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
