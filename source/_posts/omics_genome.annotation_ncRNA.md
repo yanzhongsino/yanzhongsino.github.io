@@ -64,7 +64,7 @@ description: 使用Infernal软件对Rfam数据库比对实现基因组非编码R
 # 5. 注释ncRNA
 ## 5.1. 建库
 - `cmpress Rfam.cm`
-使用cmpress压缩并建立索引，生成Rfam.cm.i1f,Rfam.cm.i1i,Rfam.cm.i1m,Rfam.cm.i1p。
+使用cmpress压缩并建立索引，生成Rfam.cm.i1f, Rfam.cm.i1i, Rfam.cm.i1m, Rfam.cm.i1p。
 
 ## 5.2. 注释
 1. 序列索引
@@ -73,10 +73,15 @@ description: 使用Infernal软件对Rfam数据库比对实现基因组非编码R
 `nohup cmscan -Z 512 --cut_ga --rfam --nohmmonly --fmt 2 --tblout sample.tblout -o sample.result --clanin Rfam.clanin Rfam.cm genome.fa &`
 
 - -Z：根据基因组大小来定，基因组大小的2倍，Mb单位，选一个整数。比如256Mb的基因组，-Z 512。
+- `--cut_ga --rfam --nohmmonly --fmt 2`：推荐使用
+- --tblout sample.tblout：指定table格式输出文件
+- -o sample.result：指定比对结果输出文件
+- --clanin Rfam.clanin：指定clanin文件
+- Rfam.cm genome.fa：指定数据库Rfam.cm和基因组genome.fa
 
 note：-o sample.result要放在Rfam.cm genome.fa前面，否则报错。
 
-此步骤耗时参考：250Mb基因组，默认线程，耗时2.5h。
+此步骤**耗时**参考：250Mb基因组，默认线程，耗时2.5h。
 
 2. 结果文件
 - sample.result：比对结果
@@ -84,7 +89,7 @@ note：-o sample.result要放在Rfam.cm genome.fa前面，否则报错。
 
 ## 5.3. 整理结果
 ### 5.3.1. 将注释结果整理成gff3文件
-gff3文件可用于提交注释到数据库
+gff3文件可用于提交注释到数据库。
 
 用perl脚本[infernal-tblout2gff.pl](https://github.com/yanzhongsino/bioscripts/blob/main/saved_scripts/infernal-tblout2gff.pl)实现，脚本来自https://www.cnblogs.com/jessepeng/p/15392809.html。
 
