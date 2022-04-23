@@ -203,6 +203,8 @@ ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name)
 
 5. 输出结果保存为csv表格
 `write.csv(summary(ego),"enrich.csv",row.names =FALSE)`
+或者
+`write.csv(x = ego,file = "enrich.csv")`
 
 #### 6.1.2.5. 结果整理和筛选
 1. 如果没使用keyType参数，可以在得到结果后使用

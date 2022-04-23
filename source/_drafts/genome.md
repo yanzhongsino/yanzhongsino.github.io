@@ -628,7 +628,8 @@ genome.assembly
 输入文件：从3d-dna获得的\*\*final.hic文件（热图）和\*\*final.assemble文件（contig位置信息，方框）；
 注意大小写，有final和FINAL文件同时存在。
 
-打开juicerbox，File-open-local选择\*\*final.hic文件，可以获得一个热图，显示任意一对位点之间的接触频率，即物理距离，颜色越深物理距离越近；再Assembly-Import Map Assembly选择\*\*final.assemble文件，右下角载入了3层注解，绿色-Scaf代表Scaffolds，蓝色-Chr代表染色体，黄色edit代表选中的区域，出现一些方框，表示了这个contig与热图对应的位置。
+打开juicerbox，File-open-local选择\*\*final.hic文件，可以获得一个热图，显示任意一对位点之间的接触频率，即物理距离，颜色越深物理距离越近；
+再Assembly-Import Map Assembly选择\*\*final.assemble文件，右下角载入了3层注解，绿色-Scaf代表Scaffolds，蓝色-Chr代表染色体，黄色edit代表选中的区域，出现一些方框，表示了这个contig与热图对应的位置。
 
 期望正确连接的热图是在左上到右下对角线位置附近形成一条颜色深的红带，而其他位置颜色浅或无颜色(染色体内部的物理距离明显高于染色体之间）。在juicerbox上做的是调整序列在对角线上的错误位置和顺序，以实现正确地体现染色体包含的scaffolds和scaffolds的顺序。
 
@@ -642,7 +643,7 @@ genome.assembly
 |chromosome boundaries-染色体边界|热图会在不同染色体间出现明显间断|根据热图间断确定染色体边界|在没有选中任何区域的状态下，鼠标放在两个染色体或者scaffolds的间断点附近时，出现方形的一半符号（7字符或L字符），此时单击会分割染色体（两个scaffolds间）或者合并染色体（两个染色体间）。另外，选中单个或多个scaffolds或者染色体，右键-add chr boundaries可以为所有scaffolds添加染色体边界；右键-remove chr boundaries为合并所有选中染色体的边界。|
 
 常用操作：
-- 放大缩小窗口：选择可以显示颜色的最小resolution(BP)后，点击resolution右边的锁定符号锁定显示分辨率。若是某锁定状态，双击是改变resolution，若是锁定状态，双击则只是窗口放大。一般锁定最好的分辨率后，用双击来放大指定区域，用右键undo zoom和redo zoom来持续放大缩小指定区域。
+- 放大缩小窗口：选择可以显示颜色的最大resolution(BP)后，点击resolution右边的锁定符号锁定显示分辨率。若是没锁定状态，双击是改变resolution，若是锁定状态，双击则只是窗口放大。一般锁定最好的分辨率后，用双击来放大指定区域，用右键undo zoom和redo zoom来持续放大缩小指定区域。
 
 右键后的一些操作/选项：
 - undo：撤销，可以快捷键ctrl+U；redo：重做，可以快捷键ctrl+R。

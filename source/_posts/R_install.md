@@ -58,8 +58,8 @@ R 语言可以通过各种宏包来拓展功能，一般通过中央软件存储
 `dnf install R`
 3. Debian
 `apt-get update`,`apt-get install r-base r-base-dev`
-4. conda安装
-`conda create -n r r-essentials r-base` #创建新环境r，并从CRAN安装所有的r-essentials包，R Essentials 包包含大约 200 个最流行的数据科学 R 包，包括 IRKernel、dplyr、shiny、ggplot2、tidyr、caret 和 nnet。
+4. conda安装【推荐】
+`conda create -n r r-essentials r-base` #创建新环境r，安装r-base(目前是4.1.3版本)，并从CRAN安装所有的r-essentials包，R Essentials 包包含大约 200 个最流行的数据科学 R 包，包括 IRKernel、dplyr、shiny、ggplot2、tidyr、caret 和 nnet。
 
 安装R后`R --version`查看版本，可能非最新版。
 
@@ -131,7 +131,7 @@ BiocManager::install(version = "3.13")
 ```
 BiocManager的版本与R版本一一对应，安装时如果版本不对会有提示，根据提示安装对应版本即可。
 2. 查看可用的Bioconductor包：`BiocManager::available()`
-3. 安装Bioconductor库里有的R包：`BiocManager::install("packagename")`
+3. 安装Bioconductor库里有的R包：`BiocManager::install("packagename",version="3.2")`
 4. 同时安装多个包：`BiocManager::install(c("packagename1","packagename2"))`
 
 ## 3.3. 通过conda安装R包

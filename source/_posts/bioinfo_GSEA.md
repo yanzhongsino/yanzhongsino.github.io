@@ -142,14 +142,16 @@ KEGG PATHWAY Database是KEGG资源的核心，是一组手工绘制的KEGG通路
 # 3. 基因富集分析程序
 目前有许多程序可以用于基因富集分析。包括NASQAR,PlantRegMap,MSigDB,Broad Institute,WebGestalt,Enrichr,GeneSCF,DAVID,Metascape,AmiGO 2,GREAT,FunRich,FuncAssociate,InterMine,ToppGene Suite,QuSAGE,Blast2GO,g:Profiler。
 
-可以根据需要分析的物种类别和流行度选择分析平台，根据需要选择先验基因集。
+可以根据需要分析的物种类别和数据库更新选择分析平台，根据需要选择先验基因集。
+
+大部分基因富集分析程序都只支持已有数据库的物种的富集分析，如果是不在支持物种列表里的物种，可以用富集分析的R包做富集分析。
 
 下面介绍几种常见的。
 
 ## 3.1. NASQAR
 NASQAR (Nucleic Acid SeQuence Analysis Resource)是一个开源的网页平台，可以用R包clusterProfiler做GSEA分析，支持[Org.Db数据库](http://bioconductor.org/packages/release/BiocViews.html#___OrgDb)的所有物种的GO Term和KEGG Pathway富集分析。
 ## 3.2. PlantRegMap
-支持165种植物的GO注释和GO富集分析。
+[PlantRegMap](http://plantregmap.gao-lab.org/go.php)，支持165种植物的GO注释和GO富集分析。
 ## 3.3. Enrichr
 Enrichr是针对哺乳动物的基因富集分析工具。可以通过API使用，并提供可视化结果。
 ## 3.4. GeneSCF
@@ -193,6 +195,8 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 在线工具[GOEAST](http://omicslab.genetics.ac.cn/GOEAST/index.php)
 
 # 4. 富集分析的R包
+如果是模式物种，或者已有数据库的物种，推荐在线网站[PlantRegMap](http://plantregmap.gao-lab.org/go.php)和[KOBAS-i](http://kobas.cbi.pku.edu.cn/)做GO和KEGG的富集分析。
+
 常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。
 
 ## 4.1. topGO
