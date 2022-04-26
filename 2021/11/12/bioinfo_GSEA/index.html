@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png">
 <meta property="article:published_time" content="2021-11-12T08:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-28T02:45:56.242Z">
+<meta property="article:modified_time" content="2022-04-23T01:23:31.933Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene set enrichment analysis">
 <meta property="article:tag" content="GSEA">
@@ -207,7 +207,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 10:45:56" itemprop="dateModified" datetime="2022-03-28T10:45:56+08:00">2022-03-28</time>
+                <time title="修改时间：2022-04-23 09:23:31" itemprop="dateModified" datetime="2022-04-23T09:23:31+08:00">2022-04-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -356,10 +356,11 @@
 
 <h3 id="2-2-3-KEGG-PATHWAY-Database"><a href="#2-2-3-KEGG-PATHWAY-Database" class="headerlink" title="2.2.3. KEGG PATHWAY Database"></a>2.2.3. KEGG PATHWAY Database</h3><p>KEGG PATHWAY Database是KEGG资源的核心，是一组手工绘制的KEGG通路图，代表细胞和生物体的新陈代谢和各种其他功能的实验知识。每个通路图都包含一个分子相互作用和反应网络，旨在将基因组中的基因与通路中的基因产物（主要是蛋白质）联系起来。</p>
 <h1 id="3-基因富集分析程序"><a href="#3-基因富集分析程序" class="headerlink" title="3. 基因富集分析程序"></a>3. 基因富集分析程序</h1><p>目前有许多程序可以用于基因富集分析。包括NASQAR,PlantRegMap,MSigDB,Broad Institute,WebGestalt,Enrichr,GeneSCF,DAVID,Metascape,AmiGO 2,GREAT,FunRich,FuncAssociate,InterMine,ToppGene Suite,QuSAGE,Blast2GO,g:Profiler。</p>
-<p>可以根据需要分析的物种类别和流行度选择分析平台，根据需要选择先验基因集。</p>
+<p>可以根据需要分析的物种类别和数据库更新选择分析平台，根据需要选择先验基因集。</p>
+<p>大部分基因富集分析程序都只支持已有数据库的物种的富集分析，如果是不在支持物种列表里的物种，可以用富集分析的R包做富集分析。</p>
 <p>下面介绍几种常见的。</p>
 <h2 id="3-1-NASQAR"><a href="#3-1-NASQAR" class="headerlink" title="3.1. NASQAR"></a>3.1. NASQAR</h2><p>NASQAR (Nucleic Acid SeQuence Analysis Resource)是一个开源的网页平台，可以用R包clusterProfiler做GSEA分析，支持<a target="_blank" rel="noopener" href="http://bioconductor.org/packages/release/BiocViews.html#___OrgDb">Org.Db数据库</a>的所有物种的GO Term和KEGG Pathway富集分析。</p>
-<h2 id="3-2-PlantRegMap"><a href="#3-2-PlantRegMap" class="headerlink" title="3.2. PlantRegMap"></a>3.2. PlantRegMap</h2><p>支持165种植物的GO注释和GO富集分析。</p>
+<h2 id="3-2-PlantRegMap"><a href="#3-2-PlantRegMap" class="headerlink" title="3.2. PlantRegMap"></a>3.2. PlantRegMap</h2><p><a target="_blank" rel="noopener" href="http://plantregmap.gao-lab.org/go.php">PlantRegMap</a>，支持165种植物的GO注释和GO富集分析。</p>
 <h2 id="3-3-Enrichr"><a href="#3-3-Enrichr" class="headerlink" title="3.3. Enrichr"></a>3.3. Enrichr</h2><p>Enrichr是针对哺乳动物的基因富集分析工具。可以通过API使用，并提供可视化结果。</p>
 <h2 id="3-4-GeneSCF"><a href="#3-4-GeneSCF" class="headerlink" title="3.4. GeneSCF"></a>3.4. GeneSCF</h2><p>GeneSCF支持多个物种，实时的功能富集分析工具。不需要额外更新数据库，GeneSCF是实时最新的数据库，并且支持多物种富集分析。结果以文本呈现。</p>
 <h2 id="3-5-DAVID"><a href="#3-5-DAVID" class="headerlink" title="3.5. DAVID"></a>3.5. DAVID</h2><p>DAVID是做注释，富集和可视化的整合的数据库。但注释数据库自从2016年10月就没有更新。</p>
@@ -396,7 +397,8 @@
 <li>结果<br>运行结束后，点击右上角的Download total terms就可以下载到结果。<br>富集分析还可以点击Visualization得到结果的可视化图。</li>
 </ol>
 <h2 id="3-8-GOEAST"><a href="#3-8-GOEAST" class="headerlink" title="3.8. GOEAST"></a>3.8. GOEAST</h2><p>在线工具<a target="_blank" rel="noopener" href="http://omicslab.genetics.ac.cn/GOEAST/index.php">GOEAST</a></p>
-<h1 id="4-富集分析的R包"><a href="#4-富集分析的R包" class="headerlink" title="4. 富集分析的R包"></a>4. 富集分析的R包</h1><p>常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。</p>
+<h1 id="4-富集分析的R包"><a href="#4-富集分析的R包" class="headerlink" title="4. 富集分析的R包"></a>4. 富集分析的R包</h1><p>如果是模式物种，或者已有数据库的物种，推荐在线网站<a target="_blank" rel="noopener" href="http://plantregmap.gao-lab.org/go.php">PlantRegMap</a>和<a target="_blank" rel="noopener" href="http://kobas.cbi.pku.edu.cn/">KOBAS-i</a>做GO和KEGG的富集分析。</p>
+<p>常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。</p>
 <h2 id="4-1-topGO"><a href="#4-1-topGO" class="headerlink" title="4.1. topGO"></a>4.1. topGO</h2><p>用topGO做GSEA分析的具体教程可以查看博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/">blog_topGO</a>。</p>
 <p>topGO是一个R包，用于半自动的GO terms的基因富集分析。topGO的结果可以展示为有向无环图。</p>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图" alt="DAG图" align=center/>
@@ -528,7 +530,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -541,7 +543,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">174</span>
+        <span class="site-state-item-count">179</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
