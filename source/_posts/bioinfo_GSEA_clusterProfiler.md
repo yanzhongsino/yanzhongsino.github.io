@@ -68,7 +68,7 @@ if (!requireNamespace("BiocManager", quiet = TRUE))
 BiocManager::install("clusterProfiler")
 ```
 
-# 6. clusterProfiler富集分析
+# 6. clusterProfiler的GO和KEGG富集分析
 clusterProfiler支持对许多ontology/pathway的hypergeometric test和gene set enrichment analyses，包括数据库GO,KEGG,DO,DisGeNET,MSigDb,wikiPathways。
 
 使用支持的数据库时，需要检查分析样本是否在已有物种列表中。不在物种列表的物种数据，以及其他不在数据库列表的数据库，做分析时使用通用的富集分析(Universal enrichment analysis)模块。
@@ -76,53 +76,8 @@ clusterProfiler支持对许多ontology/pathway的hypergeometric test和gene set 
 分析前，先用命令`library(clusterProfiler)`载入clusterProfiler包。
 
 ## 6.1. GO富集分析
-### 6.1.1. 支持的物种
-GO富集分析需要物种的注释数据库，来源可以是Bioconductor，AnnotationHub或者用户提供GO注释文件。
-
-groupGO(),enrichGO(),gseGO()函数支持具有OrgDb数据库的生物物种，enricher()和gseGO()函数支持用户自己提供的GO注释文件。
-
-1. clusterProfiler的默认GO注释信息来自Bioconductor，目前Bioconductor自带20个，植物只有拟南芥org.At.tair.db一个数据库。[OrgDb数据库](http://bioconductor.org/packages/release/BiocViews.html#___OrgDb)
-
-2. 还可以通过AnnotationHub包在线获取OrgDb对象，并制作Org.Db库。
-
-```R
-source("https://bioconductor.org/biocLite.R")
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-
-BiocManager::install("AnnotationHub") # 一个包含大量注释信息的数据库，里面有很多物种及来源于很多数据库的注释信息。
-BiocManager::install("biomaRt")
-
-library(AnnotationHub) 
-library(biomaRt)
-
-hub <- AnnotationHub() #建立AnnotationHub对象（视人品，网不行加载不了）
-# unique(hub$species) #查看AnonotationHub里面物种
-hub$species[which(hub$species=="Solanum")] #看AnonotationHub里是否包含想要的物种
-# Solanum是番茄的拉丁名
-query(hub, "Solanum")  #查看该物种信息
-hub[hub$species=="Solanum" & hub$rdataclass == "OrgDb"] #OrgDb属于rdataclass中，因此查看下该物种有没有OrgDb
-Solanum.OrgDb <- hub[["AH59087"]]#AH59087是番茄对应的编号
-#制作为标准注释库，就可和模式生物一样使用了
-```
-
-3. 用户提供GO注释数据
-如果分析的物种没有OrgDb数据库，可以自己做GO注释后提供背景注释数据库，比如interproscan、eggnog-mapper和blas2go等软件获取的GO注释结果，整理成clusterProfiler支持的输入格式即可。
-
-clusterProfiler需要导入的GO注释文件go_annotation.txt的格式如下：
-
-| GeneID | GO         | GO_Description  |
-| ------ | ---------- | --------------- |
-| 1      | GO:0005819 | spindle         |
-| 2      | GO:0072686 | mitotic spindle |
-| 3      | GO:0000776 | kinetochore     |
-
-data.frame格式，包含三列，第一列为Gene ID，第二列为 GO ID，第三列为GO_Description，顺序无要求。
-
-可以使用enricher()和gseGO()函数进行ORA和GSEA分析。
-
-如果基因是通过直接注释来注释的，那么也应该用它们的祖先GO节点来注释（间接注释）。如果用户只有直接注释，他们可以将他们的注释传递给buildGOmap函数，该函数将推断间接注释并生成data.frame同时适用于enricher()和 的gseGO()。
-
+### 背景数据库
+参考博客？
 ### 6.1.2. GO的ORA分析
 #### 6.1.2.1. 输入文件
 ORA分析的输入文件是gene ID list，比如差异表达分析(DESeq2)获得的差异表达基因列表，保存为内容为一列数据的文本文件gene.list，数据内容可以是OrgDb支持的任意ID类型（常用的都支持，ENSEMBL，ENTREZID，GENETYPE，GO，PFAM），具体参考[ID](http://yulab-smu.top/biomedical-knowledge-mining-book/useful-utilities.html#id-convert)。
@@ -131,7 +86,7 @@ ORA分析的输入文件是gene ID list，比如差异表达分析(DESeq2)获得
 #### 6.1.2.2. bitr格式转换
 如果需要，也可以用bitr功能函数实现各种ID格式的转换。
 ```R
-data <- read.table("gene",header=FALSE) #单列基因名文件
+data <- read.table("gene.list",header=FALSE) #单列基因名文件
 data$V1 <- as.character(data$V1) #需要character格式，然后进行ID转化
 test = bitr(data$V1, fromType="SYMBOL", toType=c("ENSEMBL", "ENTREZID"), OrgDb= org.At.tair.db) #将SYMBOL格式转为ENSEMBL和ENTERZID格式 
 head(test,2)
@@ -169,8 +124,8 @@ ego <- enrichGO(gene          = genes, # list of entrez gene id
                 keyType       = 'ENSEMBL', # 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；
                 ont           = "CC", # "BP", "MF", "CC", "ALL"。GO三个子类里选
                 pAdjustMethod = "BH", # 指定多重假设检验矫正的方法，选项包含 "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
-                pvalueCutoff  = 0.01, # 富集分析的pvalue
-                qvalueCutoff  = 0.05, # 富集分析显著性的qvalue
+                pvalueCutoff  = 1, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，可以设置成1，这样导出所有基因结果，再在结果文件自行筛选pvalue值
+                qvalueCutoff  = 1, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，可以设置成1，这样导出所有基因结果，再在结果文件自行筛选qvalue值
                 readable      = TRUE ) # 是否将gene ID转换到 gene symbol
 head(ego,2)
      ONTOLOGY         ID                                                Description
@@ -186,7 +141,7 @@ GO:0033004     2/121 10/11461 0.004706555 0.7796682 0.7796682              CD300
 go_anno <- read.table("go_annotation.txt",header = T,sep = "\t")
 go2gene <- go_anno[, c(2, 1)]
 go2name <- go_anno[, c(2, 3)]
-ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name)
+ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod = "BH",pvalueCutoff  = 1, qvalueCutoff  = 1) 
 ```
 
 4. ego结果文件解释
@@ -202,9 +157,10 @@ ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name)
 - Count：与该Term相关的基因数
 
 5. 输出结果保存为csv表格
-`write.csv(summary(ego),"enrich.csv",row.names =FALSE)`
-或者
-`write.csv(x = ego,file = "enrich.csv")`
+```R
+ego_results<-as.data.frame(ego) #把ego对象转换成数据框dataframe
+write.csv(ego_results,"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件enrich.csv
+```
 
 #### 6.1.2.5. 结果整理和筛选
 1. 如果没使用keyType参数，可以在得到结果后使用
@@ -292,7 +248,7 @@ head(data.frame(gsego$ID,gsego$Description))
 
 3. 提供注释文件go_annotation.txt的非模式物种分析 GSEA()
 ```R
-data <- read.table("go_annotation.txt",header = T,sep = "\t")
+data <- read.table("go_annotation.txt",header = T,sep = "\t",quote="")
 go2gene <- data[, c(2, 1)]
 go2name <- data[, c(2, 3)]
 gsego <- GSEA(genes, TERM2GENE = go2gene, TERM2NAME = go2name)
@@ -401,7 +357,8 @@ kk <- enricher(gene, TERM2GENE = go2gene,TERM2NAME = go2name)
 ```
 
 4. 结果输出到csv文件
-`write.csv(summary(kk),"KEGG-enrich.csv",row.names =FALSE)`
+`kk_results<-as.data.frame(kk)` #把kk对象转换成数据框dataframe
+`write.csv(kk_results,"KEGG-enrich.csv",row.names =FALSE)`
 
 ### 6.2.3. KEGG pathway的GSEA分析
 
@@ -603,10 +560,10 @@ wcdf$term <-  ego[,2]
 wordcloud(words = wcdf$term, freq = wcdf$V1, scale=(c(4, .1)), colors=brewer.pal(8, "Dark2"), max.words = 25)
 ```
 # 8. references
-[GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
-[enrichment](https://www.jianshu.com/p/47b5ea646932)
-[clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-[universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
-[clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
-[tutorial](https://www.cnblogs.com/jessepeng/p/12159139.html)
-[函数simplify](http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/)
+1. [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
+2. [enrichment](https://www.jianshu.com/p/47b5ea646932)
+3. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
+4. [universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
+5. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
+6. [tutorial](https://www.cnblogs.com/jessepeng/p/12159139.html)
+7. [函数simplify](http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/)
