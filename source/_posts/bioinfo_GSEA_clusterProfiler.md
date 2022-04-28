@@ -13,6 +13,11 @@ description: 介绍了基因富集分析R包clusterProfiler。
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1336867002&auto=1&height=32"></iframe></div>
 
+clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：
+- 博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)
+- 博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_GSEA_clusterProfiler.species/)
+- 博客
+
 # 1. 基因富集分析(gene set enrichment analysis, GSEA)
 基因富集分析(gene set enrichment analysis, GSEA)的介绍参考[博文基因富集分析](https://yanzhongsino.github.io/2021/11/12/bioinfo_GSEA/)。
 
@@ -75,15 +80,16 @@ clusterProfiler支持对许多ontology/pathway的hypergeometric test和gene set 
 
 分析前，先用命令`library(clusterProfiler)`载入clusterProfiler包。
 
-## 6.1. GO富集分析
-### 背景数据库
-参考博客？
-### 6.1.2. GO的ORA分析
-#### 6.1.2.1. 输入文件
+## 6.1. 背景数据库选择
+参考博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_GSEA_clusterProfiler.species/)。
+
+## 6.2. GO富集分析
+### 6.2.1. GO的ORA分析
+#### 6.2.1.1. 输入文件
 ORA分析的输入文件是gene ID list，比如差异表达分析(DESeq2)获得的差异表达基因列表，保存为内容为一列数据的文本文件gene.list，数据内容可以是OrgDb支持的任意ID类型（常用的都支持，ENSEMBL，ENTREZID，GENETYPE，GO，PFAM），具体参考[ID](http://yulab-smu.top/biomedical-knowledge-mining-book/useful-utilities.html#id-convert)。
 分析的是列表中基因在GO/KEGG各个子分类单元是否被过度代表还是代表不足。
 
-#### 6.1.2.2. bitr格式转换
+#### 6.2.1.2. bitr格式转换
 如果需要，也可以用bitr功能函数实现各种ID格式的转换。
 ```R
 data <- read.table("gene.list",header=FALSE) #单列基因名文件
@@ -96,7 +102,7 @@ head(test,2)
 2   ABCB11 ENSG00000073734     8647
 ```
 
-#### 6.1.2.3. GO分类
+#### 6.2.1.3. GO分类
 groupGO()函数可以基于GO在指定水平范围内的分布进行基因分类。
 
 ```R
@@ -110,7 +116,7 @@ GO:0008152 GO:0008152 metabolic process     0     0/929
 GO:0001906 GO:0001906      cell killing     0     0/929
 ```
 
-#### 6.1.2.4. ORA分析
+#### 6.2.1.4. ORA分析
 1. 读取输入文件
 ```R
 data <- read.table("gene.list",header=F) #读取gene ID list，内容为一列ENSEMBL格式的基因ID名称
@@ -124,8 +130,8 @@ ego <- enrichGO(gene          = genes, # list of entrez gene id
                 keyType       = 'ENSEMBL', # 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；
                 ont           = "CC", # "BP", "MF", "CC", "ALL"。GO三个子类里选
                 pAdjustMethod = "BH", # 指定多重假设检验矫正的方法，选项包含 "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
-                pvalueCutoff  = 1, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，可以设置成1，这样导出所有基因结果，再在结果文件自行筛选pvalue值
-                qvalueCutoff  = 1, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，可以设置成1，这样导出所有基因结果，再在结果文件自行筛选qvalue值
+                pvalueCutoff  = 0.05, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01
+                qvalueCutoff  = 0.2, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05
                 readable      = TRUE ) # 是否将gene ID转换到 gene symbol
 head(ego,2)
      ONTOLOGY         ID                                                Description
@@ -141,7 +147,7 @@ GO:0033004     2/121 10/11461 0.004706555 0.7796682 0.7796682              CD300
 go_anno <- read.table("go_annotation.txt",header = T,sep = "\t")
 go2gene <- go_anno[, c(2, 1)]
 go2name <- go_anno[, c(2, 3)]
-ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod = "BH",pvalueCutoff  = 1, qvalueCutoff  = 1) 
+ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod = "BH",pvalueCutoff  = 0.05, qvalueCutoff  = 0.2) 
 ```
 
 4. ego结果文件解释
@@ -158,20 +164,19 @@ ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod =
 
 5. 输出结果保存为csv表格
 ```R
-ego_results<-as.data.frame(ego) #把ego对象转换成数据框dataframe
-write.csv(ego_results,"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件enrich.csv
+write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
-#### 6.1.2.5. 结果整理和筛选
+#### 6.2.1.5. 结果整理和筛选
 1. 如果没使用keyType参数，可以在得到结果后使用
 2. 如果没使用readable=True参数，可以在得到结果后用函数setReadable()将GeneID转换为symbol。`ego <- setReadable(ego, OrgDb = org.At.tair.db)`
 3. 函数dropGO可以移除enrichGO结果中特定的GO term或GO level
 4. 函数gofilter()可以将结果限定在特定的GO level
 5. 函数simplify可以去除冗余，`ego_rm <- simplify(ego, cutoff=0.7, by="p.adjust", select_fun=min)`
 
-### 6.1.3. GO的GSEA分析
+### 6.2.2. GO的GSEA分析
 GSEA分析通过置换检验来计算p值
-#### 6.1.3.1. GSEA的输入文件
+#### 6.2.2.1. GSEA的输入文件
 1. GSEA分析的输入文件是一个基因排序列表，有三个要点：
 - numeric vector：倍数变化或者其他类型的数字变量，比如差异表达分析里的logFC值
 - named vector：每个数字倍对应的gene ID命名
@@ -207,7 +212,7 @@ geneList <- sort(geneList, decreasing = TRUE)
 11.61428 11.09063 10.42823 10.34305 10.29130 10.00569
 ```
 
-#### 6.1.3.2. GSEA分析
+#### 6.2.2.2. GSEA分析
 1. 读取输入文件
 ```R
 data <- read.csv("geneList.csv")
@@ -267,13 +272,13 @@ gsego <- GSEA(genes, TERM2GENE = go2gene, TERM2NAME = go2name)
 - leading_edge
 - core_enrichment
 
-### 6.1.4. GO富集结果可视化
+### 6.2.3. GO富集结果可视化
 `goplot(ego)`简单可视化结果为有向无环图。
 
-## 6.2. KEGG富集分析
+## 6.3. KEGG富集分析
 clusterProfiler通过[KEGG数据库的API](https://www.kegg.jp/kegg/rest/keggapi.html)来获取KEGG的注释信息，包括一个物种所有基因对应的pathway注释文件，比如人的：http://rest.kegg.jp/link/hsa/pathway；和pathway对应的描述信息，比如人的：http://rest.kegg.jp/list/pathway/hsa。
 
-### 6.2.1. 支持的物种
+### 6.3.1. 支持的物种
 1. clusterProfiler包支持的物种
 只需要将物种缩写输入给clusterProfiler，clusterProfiler包支持自动联网调取[kegg注释物种](https://www.genome.jp/kegg/catalog/org_list.html)列出物种的pathway注释信息，网站可以查看物种列表和缩写，或者用clusterProfiler包提供search_kegg_organism()函数来帮助搜索支持的生物。
 
@@ -295,8 +300,8 @@ clusterProfiler需要导入的KEGG pathway注释文件pathway_annotation.txt的�
 
 data.frame格式，包含三列，第一列为Gene ID，第二列为 KEGG Pathway ID，第三列为Path_Description，顺序无要求。
 
-### 6.2.2. KEGG pathway的ORA分析
-#### 6.2.2.1. KEGG输入ID的格式转换
+### 6.3.2. KEGG pathway的ORA分析
+#### 6.3.2.1. KEGG输入ID的格式转换
 ID转换函数
 
 ```R
@@ -315,7 +320,7 @@ data(geneList, package="DOSE") #富集分析的背景基因集
 genes <- names(geneList)[abs(geneList) > 2]
 ```
 
-#### 6.2.2.2. KEGG pathway的ORA分析
+#### 6.3.2.2. KEGG pathway的ORA分析
 输入文件与GO的ORA分析输入文件一样。
 1. 导入输入文件
 
@@ -332,7 +337,7 @@ kk <- enrichKEGG(gene         = genes,
                  organism     = 'hsa',
                  pvalueCutoff = 0.05
                  pAdjustMethod= "BH",
-                 qvalueCutoff = 0.05)
+                 qvalueCutoff = 0.2)
 head(kk,2)
               ID                                      Description GeneRatio  BgRatio
 hsa04750 hsa04750 Inflammatory mediator regulation of TRP channels      5/53  97/7387
@@ -357,10 +362,9 @@ kk <- enricher(gene, TERM2GENE = go2gene,TERM2NAME = go2name)
 ```
 
 4. 结果输出到csv文件
-`kk_results<-as.data.frame(kk)` #把kk对象转换成数据框dataframe
-`write.csv(kk_results,"KEGG-enrich.csv",row.names =FALSE)`
+`write.table(as.data.frame(kk),"KEGG_enrich.csv",sep="\t",row.names =F,quote=F)` #保存到文件KEGG_enrich.csv。其中as.data.frame(kk)把kk对象转换成数据框dataframe
 
-### 6.2.3. KEGG pathway的GSEA分析
+### 6.3.3. KEGG pathway的GSEA分析
 
 1. 读取输入文件
 ```R
@@ -393,14 +397,14 @@ go2name <- data[, c(2, 3)]
 kks <- GSEA(gene, TERM2GENE = go2gene, TERM2NAME = go2name)
 ```
 
-### 6.2.4. KEGG module的ORA分析
+### 6.3.4. KEGG module的ORA分析
 [KEGG Module](https://www.genome.jp/kegg/module.html)是手动定义的功能单元的集合。在某些情况下，KEGG 模块有更直接的解释。
 
 ```R
 mkk <- enrichMKEGG(gene = gene,
                    organism = 'hsa',
-                   pvalueCutoff = 1,
-                   qvalueCutoff = 1)
+                   pvalueCutoff = 0.05,
+                   qvalueCutoff = 0.2)
 head(mkk)
 ##            ID                                             Description GeneRatio
 ## M00912 M00912      NAD biosynthesis, tryptophan => quinolinate => NAD       2/9
@@ -418,12 +422,12 @@ head(mkk)
 ## M00049  21/829 0.207100966 0.20710097 0.18166751      26289     1             
 ```
 
-### 6.2.5. KEGG module的GSEA分析
+### 6.3.5. KEGG module的GSEA分析
 
 ```R
 mkk2 <- gseMKEGG(geneList = geneList,
                  organism = 'hsa',
-                 pvalueCutoff = 1)
+                 pvalueCutoff = 0.05)
 head(mkk2)
 ##            ID                                                      Description
 ## M00001 M00001        Glycolysis (Embden-Meyerhof pathway), glucose => pyruvate
@@ -455,7 +459,7 @@ head(mkk2)
 ## M00009            3418/50/4190/3419/2271/3421/55753/3417/1431/6389/4191
 ```
 
-### 6.2.6. KEGG pathways富集结果的可视化
+### 6.3.6. KEGG pathways富集结果的可视化
 enrichplot包可以实现几种方法，可以用在GO,KEGG,MSigDb等基因集注释上。
 1. browseKEGG()函数会打开网络浏览器突出显示富集的基因的KEGG通路，用hsa04110基因举例：
 `browseKEGG(kk, 'hsa04110')`
@@ -469,7 +473,7 @@ hsa04110 <- pathview(gene.data  = geneList,
                      limit      = list(gene=max(abs(geneList)), cpd=1))
 ```
 
-## 6.3. 通用的富集分析(Universal enrichment analysis)
+## 6.4. 通用的富集分析(Universal enrichment analysis)
 除GO,KEGG基因集外，clusterProfiler还支持WikiPathways，Reactome，Disease，MeSH等数据库的富集分析。
 
 虽然clusterProfiler支持对许多ontology/pathway的hypergeometric test和gene set enrichment analyses，但是还有很多数据，包括不支持的物种、不支持的ontologies/pathways或自定义注释等。
@@ -481,89 +485,15 @@ clusterProfiler提供了用于hypergeometric test的enricher()函数和用于基
 
 在GO和KEGG富集分析的用户自行提供注释文件的分析部分，使用的enricher()和GSEA()函数。
 
-# 7. 功能富集结果可视化
-## 7.1. enrichplot包
-enrichplot包有几种可视化方法来解释富集结果，支持clusterProfiler获得的ORA和GSEA富集结果。
 
-1. 安装和载入enrichplot包
-```R
-BiocManager::install("enrichplot")
-library(enrichplot)
-```
-
-2. 可视化 —— 条形图
-将富集分数（例如p 值）和基因计数或比率描述为条形高度和颜色。横轴为该GO term下的差异基因个数，纵轴为富集到的GO Terms的描述信息， showCategory指定展示的GO Terms的个数为20个，默认展示显著富集的top10个，即p.adjust最小的10个。
-
-`barplot(ego, showCategory=20, title="EnrichmentGO_MF")`
-
-使用mutate导出的其他变量也可以用作条形高度或颜色。
-
-```R
-mutate(edo, qscore = -log(p.adjust, base=10)) %>% 
-    barplot(x="qscore")
-```
-
-3. 可视化 —— 点阵图
-`dotplot(ego, showCategory = 10, title="EnrichmentGO_MF_dot")`
-
-散点图，横坐标为GeneRatio，纵坐标为富集到的GO Terms的描述信息，showCategory指定展示的GO Terms的个数，默认展示显著富集的top10个，即p.adjust最小的10个。
-
-4. 可视化 —— 类别网络图
-cnetplot 将基因和生物学概念（例如 GO 术语或 KEGG 通路）的联系描述为一个网络（有助于查看哪些基因涉及富集通路和可能属于多个注释类别的基因）。对于基因和富集的GO terms之间的对应关系进行展示，如果一个基因位于一个GO Terms下，则将该基因与GO连线。图中灰色的点代表基因，黄色的点代表富集到的GO terms, 默认画top5富集到的GO terms, GO 节点的大小对应富集到的基因个数。
-
-`cnetplot(ego, categorySize = "pvalue", foldChange = gene_list`
-
-5. 可视化 —— 类热图功能分类
-
-heatplot类似cnetplot，而显示为热图的关系。如果用户想要显示大量重要术语，那么类别网络图可能会过于复杂。在heatplot能够简化结果和更容易识别的表达模式。
-
-`heatplot(ego, foldChange=geneList, showCategory=5)`
-
-6. 可视化 —— 树状图
-treeplot()函数执行丰富术语的层次聚类。它依赖于pairwise_termsim()函数计算的丰富项的成对相似性，默认情况下使用 Jaccard 的相似性指数 (JC)。如果支持，用户还可以使用语义相似度值（例如，GO、DO和MeSH）。
-
-默认聚合方法treeplot()是ward.D，用户可以通过hclust_method参数指定其他方法（例如，'average'、'complete'、'median'、'centroid'等。
-
-treeplot()函数会将树切割成几个子树（由nCluster参数指定（默认为 5））并使用高频词标记子树。
-
-`ego2 <- pairwise_termsim(ego)`;
-`treeplot(ego2, hclust_method = "average")`
-
-7. 可视化 —— 富集图
-对于富集到的GO terms之间的基因重叠关系进行展示，如果两个GO terms系的差异基因存在重叠，说明这两个节点存在overlap关系，在图中用线条连接起来。每个节点是一个富集到的GO term, 默认画top30个富集到的GO terms, 节点大小对应该GO terms下富集到的差异基因个数，节点的颜色对应p.adjust的值，从小到大，对应蓝色到红色。
-
-`ego2 <- pairwise_termsim(ego)`;
-`emapplot(ego2, cex_category=1.5, layout="kk")`
-
-8. 可视化 —— upset图
-upsetplot是cnetplot可视化基因和基因集之间复杂关联的替代方法。它强调不同基因集之间的基因重叠。
-
-`upsetplot(ego)`
-
-9. 可视化 —— 脊线图
-ridgeplot将可视化核心富集基因的表达分布为GSEA富集类别。它帮助用户解释上调/下调的途径。
-
-`ridgeplot(ego)`
-
-## 7.2. 可视化 —— 有向无环图
-1. `plotGOgraph(ego)`
-矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。
-
-2. `goplot(ego, showCategory = 10)`
-igraph布局方式的有向无环图
-
-## 7.3. 可视化 —— wordcloud
-词云的方式显示结果
-```R
-wcdf <- read.table(text = ego$GeneRatio, sep = "/")[1]
-wcdf$term <-  ego[,2]
-wordcloud(words = wcdf$term, freq = wcdf$V1, scale=(c(4, .1)), colors=brewer.pal(8, "Dark2"), max.words = 25)
-```
-# 8. references
+# 7. references
 1. [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
 2. [enrichment](https://www.jianshu.com/p/47b5ea646932)
 3. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-4. [universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
-5. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
-6. [tutorial](https://www.cnblogs.com/jessepeng/p/12159139.html)
-7. [函数simplify](http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/)
+4. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
+5. [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/index.html)
+6. [clusterProfiler manual](https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf)7. 
+7. [clusterProfiler ducumentation](https://guangchuangyu.github.io/software/clusterProfiler/documentation/)
+8. [clusterProfiler blog](https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/)
+9. [tutorial](https://www.cnblogs.com/jessepeng/p/12159139.html)
+10. [函数simplify](http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/)

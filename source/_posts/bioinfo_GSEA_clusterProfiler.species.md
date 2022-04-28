@@ -16,7 +16,7 @@ tags:
 description: 记录使用clusterProfiler进行GO/KEGG基因富集分析时，根据分析的物种来选择和准备背景数据集，包括支持的模式物种的获取，非模式物种Orgdb包的构建，通用富集分析等。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1060914&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283092&auto=1&height=32"></iframe></div>
 
 博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)的姊妹篇，共同食用，效果更好 :wink: 。
 
@@ -343,11 +343,10 @@ ego <- enrichGO(gene          = genes, # list of entrez gene id
                 keyType       = 'ENSEMBL', # 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；
                 ont           = "ALL", # "BP", "MF", "CC", "ALL"。GO三个子类里选
                 pAdjustMethod = "BH", # 指定多重假设检验矫正的方法，选项包含 "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
-                pvalueCutoff  = 1, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，可以设置成1，这样导出所有基因结果，再在结果文件自行筛选pvalue值
-                qvalueCutoff  = 1, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，可以设置成1，这样导出所有基因结果，再在结果文件自行筛选qvalue值
+                pvalueCutoff  = 0.05, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01
+                qvalueCutoff  = 0.2, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05
                 readable      = TRUE ) # 是否将gene ID转换到 gene symbol
-ego_results<-as.data.frame(ego) #把ego对象转换成数据框dataframe
-write.csv(ego_results,"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv
+write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
 # 2. KEGG富集分析的背景数据集选择
@@ -432,12 +431,15 @@ genes <- as.character(data$V1) #转换成字符格式
 go_anno <- read.table("go_annotation.txt",header = T,sep = "\t") #读取go_annotation.txt，可以是pannzer_go_annotation.txt或者iprscan_go_annotation.txt
 go2gene <- go_anno[, c(2, 1)] #读取第1，2列
 go2name <- go_anno[, c(2, 3)] #读取第2，3列
-ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod = "BH",pvalueCutoff  = 1, qvalueCutoff  = 1) #enricher分析，并保存在ego。pvalueCutoff和qvalueCutoff先设置成1导出所有结果，再在结果文件做pvalue和qvalue的筛选。
-ego_results<-as.data.frame(ego) #把ego对象转换成数据框dataframe
-write.csv(ego_results,"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv
+ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod = "BH",pvalueCutoff  = 0.05, qvalueCutoff  = 0.2) #enricher分析，并保存在ego。
+write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
 # 4. references
-1. [用AnnotationForge进行非模式物种注释构建](https://www.jieandze1314.com/post/cnposts/208/)
-2. [用AnnotationHub获取非模式物种注释信息](https://www.bioinfo-scrounger.com/archives/512/)
-
+1. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
+2. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
+3. [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/index.html)
+4. [clusterProfiler manual](https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf)5. 
+5. [clusterProfiler ducumentation](https://guangchuangyu.github.io/software/clusterProfiler/documentation/)
+6. [用AnnotationForge进行非模式物种注释构建](https://www.jieandze1314.com/post/cnposts/208/)
+7. [用AnnotationHub获取非模式物种注释信息](https://www.bioinfo-scrounger.com/archives/512/)

@@ -236,16 +236,24 @@ dev.off()
   - 使用KS统计检验进行p值的计算，文件中的KS值，就是常说的p value，叫KS值的原因，是体现使用的KS检验方法。
 
 2. DAG图（矢量图/像素图）
-topGO有向无环图(Directed acyclic graph, DAG)能直观展示差异表达基因富集的GO节点（Term）及其层级关系，是差异表达基因GO富集分析的结果图形化展示，分支代表包含关系，从上至下所定义的功能描述范围越来越具体。在有向无环图中，箭头代表包含关系，即该节点的所有基因同样注释到其上级节点中。
+有向无环图(Directed acyclic graph, DAG)中，从上至下依次有包含关系，只有从上往下的箭头，这个箭头代表包含关系，即**有向**。只有从上往下的箭头，方向是确定的，所以不会形成闭环，即**无环**。
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图" alt="DAG图" align=center/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图示例" alt="DAG图" align=center/>
 
 **<p align="center">Figure 1. DAG图示例**
 from [wikipedia:directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)</p>
 
+- 有向无环图能直观展示基因富集的GO节点（Term）及其层级关系。
+- 在有向无环图中，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。
+- 分支代表包含关系，从上至下所定义的功能描述范围越来越具体。
+- 箭头代表包含关系，即该节点的所有基因同样注释到其上级节点中。
+
+<img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png" title=" topGO结果DAG图" width="90%"/>
+
+**<p align="center">Figure 2. topGO结果DAG图**
+from [clusterProfiler blog](https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/)</p>
+
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
-
-
 
 # 3. references
 [topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
