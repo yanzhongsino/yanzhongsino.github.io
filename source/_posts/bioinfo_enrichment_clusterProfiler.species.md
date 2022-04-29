@@ -17,26 +17,29 @@ tags:
 - AnnotationHub
 - AnnotationForge
 - enricher
-description: 记录使用clusterProfiler进行GO/KEGG基因富集分析时，根据分析的物种来选择和准备背景数据集，包括支持的模式物种的获取，非模式物种Orgdb包的构建，通用富集分析等。
+description: 记录使用clusterProfiler进行GO/KEGG富集分析时，根据分析的物种来选择和准备背景数据集，包括支持的模式物种的获取，非模式物种Orgdb包的构建，通用富集分析等。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283092&auto=1&height=32"></iframe></div>
 
-博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)的姊妹篇，共同食用，效果更好 :wink: 。
+clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：
+- 博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
+- 博客[富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
+- 博客[富集分析 —— clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
 
 **总结**
 
-用clusterProfiler进行GO/KEGG基因富集分析时，根据分析的物种来选择和准备背景数据集。
-1. GO富集分析根据物种选择背景数据集：
+用clusterProfiler进行GO/KEGG富集分析中的过表达分析(ORA)时，根据分析的物种来选择和准备背景数据集。
+1. GO数据库过表达分析(ORA)根据物种选择背景数据集：
 - 先在Bioconductor库查询是否已有OrgDb的物种(大部分是模式物种)
 - 如果没有，再在AnnotationHub上查询是否有在线注释可以创建OrgDb对象
 - 如果没有，就准备分析物种基因组的功能注释集，通过AnnotationForge创建OrgDb包；或者通过通用富集分析函数enricher进行富集分析
 
-2. KEGG富集分析根据物种选择背景数据集：
+2. KEGG数据库过表达分析(ORA)根据物种选择背景数据集：
 - 先在KEGG数据库查询是否已有基因组物种
 - 如果没有，就准备分析物种基因组的功能注释集，通过AnnotationForge创建OrgDb包；或者通过通用富集分析函数enricher进行富集分析
 
-# 1. GO富集分析的背景数据集选择
+# 1. GO数据库过表达分析(ORA)的背景数据集选择
 GO富集分析需要物种的注释数据库作为背景，根据分析物种的具体情况，选择不同的数据库作为背景数据库。
 
 groupGO(),enrichGO(),gseGO()函数支持具有OrgDb数据库的生物物种，enricher()和gseGO()函数支持用户自己提供的GO注释文件。
@@ -353,7 +356,7 @@ ego <- enrichGO(gene          = genes, # list of entrez gene id
 write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
-# 2. KEGG富集分析的背景数据集选择
+# 2. KEGG数据库过表达分析(ORA)的背景数据集选择
 ## 2.1. 支持的物种
 有些物种在KEGG数据库里有参考基因组数据库的支持，可以直接用于KEGG分析。
 ### 2.1.1. 查询

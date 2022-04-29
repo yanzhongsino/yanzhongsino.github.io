@@ -16,13 +16,13 @@ description: 介绍了富集分析的R包topGO。用topGO做富集分析中的�
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=116744&auto=1&height=32"></iframe></div>
 
 # 1. 富集分析(enrichment analysis)
-富集分析(enrichment analysis)的概述参考[博文富集分析概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
+富集分析(enrichment analysis)的概述参考[博客：富集分析概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
 
 # 2. topGO
 ## 2.1. topGO简介
 topGO是一个R包，用于半自动的GO terms的富集分析。
 
-因为topGO只用于GO的富集分析，且是半自动化的，推荐使用更方便的在线工具[KOBAS-i](http://kobas.cbi.pku.edu.cn/)；[KOBAS-i 备用](http://bioinfo.org/kobas)；[GOEAST](http://omicslab.genetics.ac.cn/GOEAST/index.php); 或者功能更完善的clusterProfiler包，参考[博文clusterProfiler包]()。
+因为topGO只用于GO的富集分析，且是半自动化的，推荐使用更方便的在线工具[KOBAS-i](http://kobas.cbi.pku.edu.cn/)；[KOBAS-i 备用](http://bioinfo.org/kobas)；[GOEAST](http://omicslab.genetics.ac.cn/GOEAST/index.php); 或者功能更完善的clusterProfiler包，参考[博客：clusterProfiler包](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)。
 
 ## 2.2. GO term
 GO term分为三大类：

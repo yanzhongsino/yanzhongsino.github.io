@@ -45,10 +45,10 @@ description: 介绍了富集分析和分析软件，包括在线富集分析工�
 ## 1.2. 富集分析的算法
 富集分析算法经过发展，常见的有四类：
 
-<img src="https://upload-images.jianshu.io/upload_images/9376801-a953d6c1cf61b8fd.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" title="富集分析四类算法" width="90%"/>
+<img src="https://www.sciengine.com/figures/figures-29603243e0234a3cb08e1f7155debca6-picobject1.png" title="富集分析四类算法" width="90%"/>
 
 **<p align="center">Figure 1. 富集分析四类算法**
-from [enrichment analysis blog](https://www.jianshu.com/p/042b888d5520)</p>
+from [paper:Progress in Gene Functional Enrichment Analysis](https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&scroll=)</p>
 
 ### 1.2.1. 过表达分析(Over Representation Analysis, ORA)
 1. 过表达分析(ORA)概念
@@ -297,7 +297,7 @@ Blast2GO可以做组学数据的功能注释和GSEA分析。
 常见的有topGO，clusterProfiler，有一些进行富集分析的程序使用了这些包。
 
 ## 4.1. topGO
-用topGO做富集分析的具体教程可以查看博文[blog_topGO](https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/)。
+用topGO做富集分析的具体教程可以查看博文[blog_topGO](https://yanzhongsino.github.io/2021/11/13/bioinfo_enrichment_topGO/)。
 
 topGO是一个R包，用于半自动的GO terms的富集分析。topGO的结果可以展示为有向无环图。
 
@@ -309,7 +309,7 @@ from [wikipedia:directed acyclic graph](https://en.wikipedia.org/wiki/Directed_a
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
 
 ## 4.2. clusterProfiler
-clusterProfiler包的具体使用参考博文[blog_clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)。
+clusterProfiler包的具体使用参考博文[blog_clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)。
 ### 4.2.1. clusterProfiler
 clusterProfiler是一个R包，是一个解释组学数据的通用富集工具，支持Gene Ontology(GO), Kyoto Encyclopedia of Genes and Genomes(KEGG), Disease Ontology(DO), Disease Gene Network(DisGeNET), Molecular Signatures Database(MSigDb), wikiPathways和许多其他的基因集的功能注释和富集分析，以及富集分析结果的可视化。2021年07月发布了clusterProfiler 4.0版本。
 
@@ -329,18 +329,19 @@ ORA是用于判断已知的生物功能或过程在实验产生的基因列表�
 
 # 5. references
 1. [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
-2. [Ten Years of Pathway Analysis: Current Approaches and Outstanding Challenges](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375)
-3. [enrichment analysis](https://www.jianshu.com/p/be8fe1318850)
-4. [enrichment analysis methods](https://www.jianshu.com/p/042b888d5520)
-5. [enrichment analysis methods](https://blog.csdn.net/fjsd155/article/details/103064166)
-6. [GOEAST introduction](https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect)
-7. [topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
-8. [topGO blog](https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/)
-9. [R topGO](https://www.codenong.com/cs105162324/)
-10. [enrichment](https://www.jianshu.com/p/47b5ea646932)
-11. [GO explanation](https://www.jianshu.com/p/7177c372243f)
-12. [GO overview](http://geneontology.org/docs/ontology-documentation/)
-13. [KEGG](https://en.wikipedia.org/wiki/KEGG)
-14. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-15. [universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
-16. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
+2. [paper:Ten Years of Pathway Analysis: Current Approaches and Outstanding Challenges](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375)
+3. [paper:Progress in Gene Functional Enrichment Analysis](https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&scroll=)
+4. [enrichment analysis](https://www.jianshu.com/p/be8fe1318850)
+5. [enrichment analysis methods](https://www.jianshu.com/p/042b888d5520)
+6. [enrichment analysis methods](https://blog.csdn.net/fjsd155/article/details/103064166)
+7. [GOEAST introduction](https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect)
+8. [topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
+9. [topGO blog](https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/)
+10. [R topGO](https://www.codenong.com/cs105162324/)
+11. [enrichment](https://www.jianshu.com/p/47b5ea646932)
+12. [GO explanation](https://www.jianshu.com/p/7177c372243f)
+13. [GO overview](http://geneontology.org/docs/ontology-documentation/)
+14. [KEGG](https://en.wikipedia.org/wiki/KEGG)
+15. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
+16. [universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
+17. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
