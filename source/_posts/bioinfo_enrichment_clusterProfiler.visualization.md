@@ -79,7 +79,7 @@ ego@result[c(13,14),] #查看ego的result变量的13，14行
 14       BP GO:0048598            embryonic morphogenesis    2/349 131/16975    1.673394e-05 0.001405651 0.001194023   mc40784/mc40918   2
 ```
 
-一般而言result有9列。这里因为是GO富集结果，还多一列ONTOLOGY。
+一般而言result有9列。这里因为用enrichGO富集时ont参数选择ALL，结果就会在第一列前多一列ONTOLOGY。
 - 第一列是ID,也就是富集通路的编号(GO:0010222)；
 - 第二列是Description，也就是富集通路的名称；
 - 第三列是GeneRatio，也就是要富集的基因中在对应通路中的比例；
@@ -255,14 +255,18 @@ from [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-boo
 
 ## 2.2. 可视化plotGOgraph/goplot —— 有向无环图
 1. `plotGOgraph(ego)`
-有向无环图(Directed acyclic graph, DAG)，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。和[topGO做富集分析](https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/)的DAG图一样。
+- 有向无环图(Directed acyclic graph, DAG)，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。和[topGO做富集分析](https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/)的DAG图一样。
+
+当enrichGO富集分析时ont参数选了ALL时，结果文件会在第一列前增加一列ONTOLOGY为子类，这时直接用于plotGOgraph画图会报错。
+- 可以在结果文件中筛选出特定子类(比如BP)的结果行，并删除第一列ONTOLOGY后保存文件，再读进R用于plotGOgraph画图。
+- 也可以在R内用命令`ego2<-ego%>%filter(ONTOLOGY== "BP")`筛选BP子类，接着用`ego3<-ego2%>%select(!ONTOLOGY)`或者`ego3<-ego2[,-1]`删除第一列(即ONTOLOGY列)，然后用`plotGOgraph(ego3)`作图。
 
 <img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png" title=" DAG图" width="90%"/>
 
 **<p align="center">Figure 9. DAG图**
 from [clusterProfiler blog](https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/)</p>
 
-2. `goplot(ego, showCategory = 10)`
+1. `goplot(ego, showCategory = 10)`
 igraph布局方式的有向无环图
 
 <img src="https://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/goplot-1.png" title=" goplot的DAG图" width="90%"/>
@@ -291,10 +295,10 @@ from [NGS Analysis ebook](https://learn.gencore.bio.nyu.edu/rna-seq-analysis/ove
 
 2. 代码导出
 ```R
-ego_fig<-barplot(x)
 pdf("ego.pdf") #如果保存png，就改成png("ego.png")
-print(ego_fig)
-dev.off()
+ego_fig<-barplot(x) #画图函数
+print(ego_fig) #画到pdf文件
+dev.off() #关闭pdf画板
 ```
 
 # 4. references
