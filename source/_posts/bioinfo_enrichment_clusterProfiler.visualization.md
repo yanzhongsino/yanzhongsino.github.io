@@ -28,7 +28,7 @@ clusterProfiler相关的博客共有三篇：
 clusterProfiler的可视化一般只支持clusterProfiler富集分析结果的可视化，通过认识clusterProfiler可视化接受的输入数据的格式，可以修改其他富集分析结果文件的格式，来用clusterProfiler进行可视化绘图。
 ## 1.1. 可视化输入数据格式
 1. 查看ego格式
-clusterProfiler的可视化包接受的输入数据是前面富集分析得到的结果(比如ego/kk)，用`class(ego)`或`str(ego)`可以看到ego的格式是叫enrichResult的R的class类型。
+clusterProfiler的可视化包接受的输入数据是前面富集分析得到的结果(比如ego/kk)，用`str(ego)`或`class(ego)`可以看到ego的格式是叫enrichResult的R的数据类型。
 ```R
 library(clusterProfiler)
 > class(ego) #查看ego的数据类型/类
@@ -112,7 +112,10 @@ head(data,2) #查看data前2行
   Count
 1    12
 2    12
-ego<-new("enrichResult",result=data,pvalueCutoff=0.01,pAdjustMethod="BH",qvalueCutoff=0.05) #把data内容保存到ego，这里的pvalueCutoff=0.01,pAdjustMethod="BH",qvalueCutoff=0.05根据富集分析参数的设置，或者随意设置或者不设置也不会影响可视化。
+
+geneID_all <- unlist(apply(as.matrix(data$geneID),1,function(x) unlist(strsplit(x,'/')))) #得到富集到的所用geneID
+
+ego<-new("enrichResult", result=data, gene=geneID_all, pvalueCutoff=0.01,pAdjustMethod="BH",qvalueCutoff=0.05,ontology="BP",keytype="GID",universe='Unknown',geneSets=list(),organism="Unknown",readable=FALSE) #把data内容赋值给ego的result，geneID_all赋值给gene，每个富集到的GO对应的gene集应该赋值给geneSets(数据是字典(键值对是GOID和geneIDs)组成的列表，这里直接给了空的)，ontology与enrichGO分析的ont参数一致，这里的pvalueCutoff=0.01,pAdjustMethod="BH",qvalueCutoff=0.05根据富集分析参数的设置，或者随意设置或者不设置也不会影响可视化。
 ```
 
 3. 其他来源富集分析结果可视化
