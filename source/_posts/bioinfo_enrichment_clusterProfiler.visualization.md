@@ -258,6 +258,7 @@ from [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-boo
 - 有向无环图(Directed acyclic graph, DAG)，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。和[topGO做富集分析](https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/)的DAG图一样。
 
 当enrichGO富集分析时ont参数选了ALL时，结果文件会在第一列前增加一列ONTOLOGY为子类，这时直接用于plotGOgraph画图会报错。
+**试了下，下面两种方案还是会报错Error in if (!ont %in% c("BP", "MF", "CC")) { :argument is of length zero。**。还是尽量在enrichGO分析时就用ont="BP"吧。
 - 可以在结果文件中筛选出特定子类(比如BP)的结果行，并删除第一列ONTOLOGY后保存文件，再读进R用于plotGOgraph画图。
 - 也可以在R内用命令`ego2<-ego%>%filter(ONTOLOGY== "BP")`筛选BP子类，接着用`ego3<-ego2%>%select(!ONTOLOGY)`或者`ego3<-ego2[,-1]`删除第一列(即ONTOLOGY列)，然后用`plotGOgraph(ego3)`作图。
 
