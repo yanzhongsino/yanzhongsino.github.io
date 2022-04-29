@@ -1,10 +1,14 @@
 ---
-title: 基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler
-date: 2021-12-13 22:00:00
+title: 富集分析 —— clusterProfiler
+date: 2021-12-13
 categories: 
 - bio
 - bioinfo
+- enrichment
 tags: 
+- enrichment analysis
+- over representation analysis
+- ORA
 - gene set enrichment analysis
 - GSEA
 - clusterProfiler

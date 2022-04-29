@@ -1,24 +1,26 @@
 ---
-title: 基因富集分析(gene set enrichment analysis, GSEA)—— topGO
-date: 2021-11-13 16:00:00
+title: 富集分析 —— topGO
+date: 2021-11-13
 categories: 
 - bio
 - bioinfo
+- enrichment
 tags: 
-- gene set enrichment analysis
-- GSEA
+- enrichment analysis
+- over representation analysis
+- ORA
 - topGO
-description: 介绍了基因富集分析R包topGO。
+description: 介绍了富集分析的R包topGO。用topGO做富集分析中的过表达分析(ORA)。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=116744&auto=1&height=32"></iframe></div>
 
-# 1. 基因富集分析(gene set enrichment analysis, GSEA)
-基因富集分析(gene set enrichment analysis, GSEA)的介绍参考[博文基因富集分析](https://yanzhongsino.github.io/2021/11/12/bioinfo_GSEA/)。
+# 1. 富集分析(enrichment analysis)
+富集分析(enrichment analysis)的概述参考[博文富集分析概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
 
 # 2. topGO
 ## 2.1. topGO简介
-topGO是一个R包，用于半自动的GO terms的基因富集分析。
+topGO是一个R包，用于半自动的GO terms的富集分析。
 
 因为topGO只用于GO的富集分析，且是半自动化的，推荐使用更方便的在线工具[KOBAS-i](http://kobas.cbi.pku.edu.cn/)；[KOBAS-i 备用](http://bioinfo.org/kobas)；[GOEAST](http://omicslab.genetics.ac.cn/GOEAST/index.php); 或者功能更完善的clusterProfiler包，参考[博文clusterProfiler包]()。
 
@@ -70,13 +72,13 @@ library(biomaRt)
 library(Rgraphviz)
 ```
 
-## 2.5. topGO做基因富集分析(GSEA)
+## 2.5. topGO做富集分析(ORA)
 ### 2.5.1. 输入文件
 两个输入文件
 - genes.list：需要做富集分析的geneID的list，一个基因ID一行
 - sample.anno：基因及GO注释信息，第一列是geneID，第二列是GO注释，空格分隔，GO注释可以有多个，格式为GO:0000428,GO:0003677,GO:0005506,
 
-### 2.5.2. GSEA分析
+### 2.5.2. 富集分析
 ```R
 # 设置工作目录，后面读取文件什么的就可以直接读取不需要那么长的路径
 setwd('D:/test_data')

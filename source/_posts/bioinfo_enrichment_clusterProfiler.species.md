@@ -1,10 +1,14 @@
 ---
-title: 基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler：不同物种的GO+KEGG富集分析
+title: 富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析
 date: 2022-04-26
 categories: 
 - bio
 - bioinfo
+- enrichment
 tags: 
+- enrichment analysis
+- over representation analysis
+- ORA
 - gene set enrichment analysis
 - GSEA
 - clusterProfiler
@@ -18,7 +22,7 @@ description: 记录使用clusterProfiler进行GO/KEGG基因富集分析时，根
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283092&auto=1&height=32"></iframe></div>
 
-博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)的姊妹篇，共同食用，效果更好 :wink: 。
+博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)的姊妹篇，共同食用，效果更好 :wink: 。
 
 **总结**
 

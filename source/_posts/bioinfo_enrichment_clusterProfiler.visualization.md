@@ -1,22 +1,27 @@
 ---
-title: 基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler：Visualization
+title: 富集分析 —— clusterProfiler：Visualization
 date: 2022-04-28
 categories: 
 - bio
 - bioinfo
+- enrichment
 tags: 
+- enrichment analysis
+- over representation analysis
+- ORA
 - gene set enrichment analysis
 - GSEA
 - clusterProfiler
 - visualization
-description: 介绍了基因富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。
+description: 介绍了富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283091&auto=1&height=32"></iframe></div>
 
 clusterProfiler相关的博客共有三篇：
-- 博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)
-- 博客[基因富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_GSEA_clusterProfiler.species/)
+- 博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)
+- 博客[富集分析(gene set enrichment analysis, GSEA) —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_GSEA_clusterProfiler.species/)
+- 博客[富集分析](https://yanzhongsino.github.io/2022/04/28/bioinfo_GSEA_clusterProfiler.visualization/)
 
 
 # 1. 可视化的输入数据
