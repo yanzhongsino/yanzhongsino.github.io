@@ -132,7 +132,7 @@ genes <- as.character(data$V1) #转换成字符格式
 ego <- enrichGO(gene          = genes, # list of entrez gene id
                 OrgDb         = org.At.tair.db, # 背景使用分析物种的org包，这里示例使用拟南芥的数据库
                 keyType       = 'ENSEMBL', # 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；
-                ont           = "CC", # "BP", "MF", "CC", "ALL"。GO三个子类里选
+                ont           = "BP", # "BP", "MF", "CC", "ALL"。GO三个子类里选，尽量别选ALL，三个子类都要分析就单独做三遍，利于后期画图。
                 pAdjustMethod = "BH", # 指定多重假设检验矫正的方法，选项包含 "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
                 pvalueCutoff  = 0.05, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01
                 qvalueCutoff  = 0.2, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05
