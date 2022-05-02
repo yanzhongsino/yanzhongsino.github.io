@@ -4,6 +4,7 @@ date: 2022-03-20 22:00:00
 categories: 
 - bio
 - bioinfo
+- gene flow
 tags: 
 - TreeMix
 - gene flow

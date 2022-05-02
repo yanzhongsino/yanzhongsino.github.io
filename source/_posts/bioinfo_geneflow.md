@@ -4,6 +4,7 @@ date: 2022-04-10
 categories: 
 - bio
 - bioinfo
+- gene flow
 tags: 
 - gene flow
 - hybridization
