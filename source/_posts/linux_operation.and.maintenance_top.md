@@ -1,12 +1,11 @@
 ---
-title: Linux运维(Ops)命令 —— top
+title: Linux运维命令 —— top
 date: 2022-05-02
 categories:
 - linux
-- ops
+- operation and maintenance
 tags:
 - linux
-- ops
 - 运维
 - top
 - load average
