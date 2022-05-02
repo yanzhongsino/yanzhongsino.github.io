@@ -3,10 +3,10 @@ title: Linux中CPU相关概念
 date: 2022-04-11
 categories:
 - linux
-- Ops
+- ops
 tags:
 - linux
-- Ops
+- ops
 - 运维
 - CPU
 

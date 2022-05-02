@@ -3,10 +3,10 @@ title: Linux运维(Ops)命令 —— top
 date: 2022-05-02
 categories:
 - linux
-- Ops
+- ops
 tags:
 - linux
-- Ops
+- ops
 - 运维
 - top
 - load average
