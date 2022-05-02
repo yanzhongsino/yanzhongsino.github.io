@@ -6,7 +6,6 @@ categories:
 - basics
 
 tags:
-- tutorial
 - linux
 - PATH
 

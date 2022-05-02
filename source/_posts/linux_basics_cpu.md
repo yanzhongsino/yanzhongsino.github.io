@@ -3,11 +3,10 @@ title: Linux中CPU相关概念
 date: 2022-05-02
 categories:
 - linux
-- operation and maintenance
+- basics
 
 tags:
 - linux
-- 运维
 - CPU
 - 物理CPU
 - 逻辑CPU
@@ -17,8 +16,6 @@ description: 记录Linux运维中CPU相关概念和查看CPU的命令
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283094&auto=1&height=32"></iframe></div>
-
-[TOC]
 
 # 1. CPU相关概念
 中央处理单元(central processing unit, CPU)
