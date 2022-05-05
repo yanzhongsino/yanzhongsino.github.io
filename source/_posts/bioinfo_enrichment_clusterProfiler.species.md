@@ -442,6 +442,22 @@ ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod =
 write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
+# GO和KEGG描述查询
+如果在通用富集分析中准备的背景数据集第三列描述栏没有信息，可以在富集结果出来后根据GO ID或者KEGG Pathway ID查询。
+
+1. GO term 查询
+在[GO官网](http://geneontology.org/))使用的[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)查询GO ID和GO term信息。
+[WEGO 2.0](https://wego.genomics.cn/)也可以查询。
+
+**查询方法**：在[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)的搜索框输入GO ID(格式是 GO:0000000)即可查到GO term information。
+
+2. KEGG Pathway 查询
+[KEGG网站](https://www.kegg.jp/kegg/)提供了KEGG信息查询入口，包括[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)中查询KEGG Pathway ID(格式是 ko00000)的详细信息。
+
+**查询方法**：把[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)的搜索前缀(Select prefix)改成ko，在搜索框(Enter keywords)输入KEGG Pathway ID(格式是5个数字 00000)，点击查询Go即可得到KEGG Pathway information。
+
+以后再找找批量查询的方法 waiting...
+
 # 4. references
 1. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
 2. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)

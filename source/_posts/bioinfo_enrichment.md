@@ -128,7 +128,8 @@ ORA类方法用的是离散分布的检验（Fisher精确检验，依据超几�
 # 2. 富集分析常用基因集
 ## 2.1. Gene Ontology(GO)
 ### 2.1.1. GO
-GO是一个国际标准化的基因功能分类体系，由基因本体联合会(Gene Ontology Consortium，GOC) 负责。它提供了一套动态并可控的词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性，它由一组预先定义好的GO术语（GO term）组成，这组术语对基因产物的功能进行限定和描述。
+- GO是一个国际标准化的基因功能分类体系，由基因本体联合会(Gene Ontology Consortium，GOC) 负责。它提供了一套动态并可控的词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性，它由一组预先定义好的GO术语（GO term）组成，这组术语对基因产物的功能进行限定和描述。
+- 可在[GO官网](http://geneontology.org/))使用的[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)查询GO ID和GO term信息。之前常用的[WEGO 2.0](https://wego.genomics.cn/)也可以查询。
 
 GO由三个ontology（本体）组成，是由独立的术语表示的，分别描述基因的细胞组分（cellular component，CC）、分子功能（molecular function，MF）、参与的生物过程（biological process，BP）。
 
@@ -147,9 +148,10 @@ GO注释（GO annotations）是关于特定基因功能的声明，它主要是�
 
 ## 2.2. Kyoto Encyclopedia of Genes and Genomes(KEGG)
 ### 2.2.1. KEGG
-KEGG是处理基因组，生物通路，疾病，药物，化学物质的数据库集合，于1995年由京都大学化学研究所教授Minoru Kanehisa在当时正在进行的日本人类基因组计划下发起。
+- KEGG是处理基因组，生物通路，疾病，药物，化学物质的数据库集合，于1995年由京都大学化学研究所教授Minoru Kanehisa在当时正在进行的日本人类基因组计划下发起。
+- KEGG 是一种数据库资源，用于从基因组和分子级信息了解生物系统（例如细胞、生物体和生态系统）的高级功能和效用。它是生物系统的计算机表示，由基因和蛋白质（基因组信息）和化学物质（化学信息）的分子构建块组成，它们与相互作用、反应和关系网络（系统信息）的分子接线图知识相结合。它还包含疾病和药物信息（健康信息）作为对生物系统的扰动。
 
-KEGG 是一种数据库资源，用于从基因组和分子级信息了解生物系统（例如细胞、生物体和生态系统）的高级功能和效用。它是生物系统的计算机表示，由基因和蛋白质（基因组信息）和化学物质（化学信息）的分子构建块组成，它们与相互作用、反应和关系网络（系统信息）的分子接线图知识相结合。它还包含疾病和药物信息（健康信息）作为对生物系统的扰动。
+[KEGG网站](https://www.kegg.jp/kegg/)提供了KEGG信息查询入口，包括[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)中查询KEGG Pathway ID(ko00000)的详细信息。
 
 ### 2.2.2. KEGG Database
 KEGG 是一个集成的数据库资源，由如下所示的 16 个数据库组成。它们大致分为系统信息、基因组信息、化学信息和健康信息，它们通过网页的颜色编码来区分。
