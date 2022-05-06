@@ -284,6 +284,8 @@ head(pathway2name) #查看前六行
 4 ko00040 Pentose and glucuronate interconversions
 5 ko00051 Fructose and mannose metabolism
 6 ko00052 Galactose metabolism
+
+write.table(pathway2name,file="pathway2name.txt",sep="\t",row.names=F,quote=F) #【optional】保存成文件pathway2name.txt，可以给通用KEGG富集分析的结果注释KEGG Pathway的描述(Name)用。
 ```
 
 5. 获得gene2pathway
@@ -292,7 +294,10 @@ library(stringr)
 colnames(ko2pathway)=c("KO",'Pathway') #把ko2pathway的列名改为KO和Pathway，与koterms一致。
 koterms$KO=str_replace_all(koterms$KO,"ko:","") #把koterms的KO值的前缀ko:去掉，与ko2pathway格式一致。
 gene2pathway <- koterms %>% left_join(ko2pathway, by = "KO") %>%dplyr::select(GID, Pathway) %>%na.omit() #合并koterms和ko2pathway到gene2pathway，将基因与pathway的对应关系整理出来
-write.table(gene2pathway,file="gene2pathway.txt",sep="\t",row.names=F,quote=F) #保存成文件gene2pathway.txt
+
+##【optional】下面为可选步骤
+gene2pathway_name<-left_join(gene2pathway,pathway2name,by="Pathway") #合并gene2pathway和pathway2name
+write.table(gene2pathway_name,file="gene2pathway_name.txt",sep="\t",row.names=F,quote=F) #【optional】保存成文件gene2pathway_name.txt，可以给通用KEGG富集分析用。
 
 head(gene2pathway)  #查看前六行
        GID Pathway
@@ -302,13 +307,22 @@ head(gene2pathway)  #查看前六行
 14 mc00016 ko03029
 16 mc00018 ko03037
 17 mc00018 ko04812
+
+head(gene2pathway_name) #查看前六行
+       GID Pathway                                                Name
+1 mc01138 ko00511                            Other glycan degradation
+2 mc00017 ko04142                                            Lysosome
+3 mc01022 ko00930                             Caprolactam degradation
+4 mc00072 ko01002              Peptidases and inhibitors [BR:ko01002]
+5 mc01058 ko00130 Ubiquinone and other terpenoid-quinone biosynthesis
+6 mc00288 ko03440                            Homologous recombination
 ```
 
 ### 1.3.4. 创建OrgDb包
 1. 参数准备
 - Taxonomy ID(tax_id)
 在[NCBI的Taxonomy网站](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi)，通过搜索物种的学名，点击结果中的学名就可以链接到Taxonomy ID信息，比如Melastoma candidum的Taxonomy ID为119954。
-- gene_info, gene2go, koterms, gene2pathway是前面生成的四个对象
+- gene_info, gene2go, koterms, gene2pathway是前面步骤生成的四个对象
 - version：格式是0.0.1
 - maintainer和author的格式包括名字和邮箱
 - outputDir是创建的OrgDb包的输出路径
@@ -332,7 +346,8 @@ install.packages('org.Mcandidum.eg.db',repos = NULL, type="source") #安装包
 library(org.Mcandidum.eg.db) #加载包
 ```
 2. 用于GO分析
-enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db) 
+`enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`
+
 加载后在`groupGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`,`enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`,`gseGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`等函数里把包赋值给`OrgDb`参数，`keyType`参数指定GID即可使用。
 
 3. 用于KEGG分析
@@ -442,23 +457,24 @@ ego <- enricher(genes, TERM2GENE = go2gene, TERM2NAME = go2name, pAdjustMethod =
 write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
-# GO和KEGG描述查询
+# 4. GO和KEGG描述查询
 如果在通用富集分析中准备的背景数据集第三列描述栏没有信息，可以在富集结果出来后根据GO ID或者KEGG Pathway ID查询。
 
-1. GO term 查询
-在[GO官网](http://geneontology.org/))使用的[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)查询GO ID和GO term信息。
-[WEGO 2.0](https://wego.genomics.cn/)也可以查询。
+## 4.1. GO term 查询
+1. AmiGO2查询
+- 在[GO官网](http://geneontology.org/))使用的[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)查询GO ID和GO term信息。
+- [WEGO 2.0](https://wego.genomics.cn/)也可以查询。
+- **查询方法**：在[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)的搜索框输入GO ID(格式是 GO:0000000)即可查到GO term information。
 
-**查询方法**：在[AmiGO2网站](http://amigo.geneontology.org/amigo/landing)的搜索框输入GO ID(格式是 GO:0000000)即可查到GO term information。
+## 4.2. KEGG Pathway 查询
+1. KEGG官网查询
+- [KEGG网站](https://www.kegg.jp/kegg/)提供了KEGG信息查询入口，包括[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)中查询KEGG Pathway ID(格式是 ko00000)的详细信息。
+- **查询方法**：把[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)的搜索前缀(Select prefix)改成ko，在搜索框(Enter keywords)输入KEGG Pathway ID(格式是5个数字 00000)，点击查询Go即可得到KEGG Pathway information。
+- 官网查询只发现了单个查询的方法，批量查询还是推荐使用文件查询方法。
+2. 文件查询【推荐】
+使用前面**提取注释的KEGG信息**第4步骤得到的pathway2name.txt文件，获取KEGG Pathway ID对应的描述信息(Name列)。
 
-2. KEGG Pathway 查询
-[KEGG网站](https://www.kegg.jp/kegg/)提供了KEGG信息查询入口，包括[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)中查询KEGG Pathway ID(格式是 ko00000)的详细信息。
-
-**查询方法**：把[KEGG Pathway](https://www.kegg.jp/kegg/pathway.html)的搜索前缀(Select prefix)改成ko，在搜索框(Enter keywords)输入KEGG Pathway ID(格式是5个数字 00000)，点击查询Go即可得到KEGG Pathway information。
-
-以后再找找批量查询的方法 waiting...
-
-# 4. references
+# 5. references
 1. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
 2. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
 3. [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/index.html)

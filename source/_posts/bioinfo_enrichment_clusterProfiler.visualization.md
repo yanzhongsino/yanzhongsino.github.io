@@ -18,10 +18,10 @@ description: 介绍了富集分析R包clusterProfiler富集结果的可视化，
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283091&auto=1&height=32"></iframe></div>
 
-clusterProfiler相关的博客共有三篇：
-- 博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_GSEA_clusterProfiler/)
-- 博客[富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_GSEA_clusterProfiler.species/)
-- 博客[富集分析 —— clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_GSEA_clusterProfiler.visualization/)
+clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：
+- 博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
+- 博客[富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
+- 博客[富集分析 —— clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
 
 
 # 1. 可视化的输入数据

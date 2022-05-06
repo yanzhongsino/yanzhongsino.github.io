@@ -113,14 +113,11 @@ cat Gamma_family_results.txt |grep "y"|cut -f1 >p0.05.significant #提取显著�
 grep -f p0.05.significant sample.expanded |cut -f1>sample.expanded.significant #提取显著扩张的sample物种的orthogroupsID
 grep -f p0.05.significant sample.contracted |cut -f1 >sample.contracted.significant #提取显著收缩的sample物种的orthogroupsID
 
-grep -f sample.contracted.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed -E -e "s/: [^b]+bv/ bv/g" -e "s/ [^b]+//g" >sample.contracted.significant.ortho #提取显著收缩的基因
-grep -f sample.expanded.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed -E -e "s/: [^b]+bv/ bv/g" -e "s/ [^b]+//g" >sample.expanded.significant.ortho #提取显著扩张的基因
+grep -f sample.expanded.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.expanded.significant.genes #提取显著扩张的基因列表，假设基因ID是bv的前缀。
+grep -f sample.contracted.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.contracted.significant.genes #提取显著收缩的基因列表，假设基因ID是bv的前缀。
 
-cat sample.expanded.significant.ortho |sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.expanded.significant.genes
-cat sample.contracted.significant.ortho |sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.contracted.significant.genes
-
-seqkit grep -f sample.expanded.significant.genes sample.pep.fa >sample.expanded.significant.pep.fa
-seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contracted.significant.pep.fa
+seqkit grep -f sample.expanded.significant.genes sample.pep.fa >sample.expanded.significant.pep.fa #提取显著扩张的基因序列
+seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contracted.significant.pep.fa #提取显著收缩的基因序列
 ```
 
 提取出指定物种的显著扩张和收缩的蛋白序列之后，就可以拿去做GO注释和基因富集分析。
@@ -128,16 +125,7 @@ seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contrac
 
 ## 3.4. 把每个节点收缩扩张的基因数量画在树上
 有看到一个画图脚本。
-```sh
-python python_scripts/cafetutorial_draw_tree.py -i reports/summary_run1_node.txt
- -t '((((cat:68.7105,horse:68.7105):4.56678,cow:73.2773):20.7227,(((((chimp:4.444
-17,human:4.44417):6.68268,orang:11.1268):2.28586,gibbon:13.4127):7.21153,(macaque
-:4.56724,baboon:4.56724):16.057):16.0607,marmoset:36.6849):57.3151):38.738,(rat:3
-6.3024,mouse:36.3024):96.4356)' -d '((((cat<0>,horse<2>)<1>,cow<4>)<3>,(((((chimp
-<6>,human<8>)<7>,orang<10>)<9>,gibbon<12>)<11>,(macaque<14>,baboon<16>)<15>)<13>,
-marmoset<18>)<17>)<5>,(rat<20>,mouse<22>)<21>)<19>' -o reports/summary_run1_tree_
-rapid.png -y Rapid
-```
+`python python_scripts/cafetutorial_draw_tree.py -i reports/summary_run1_node.txt -t '((((cat:68.7105,horse:68.7105):4.56678,cow:73.2773):20.7227,(((((chimp:4.44417,human:4.44417):6.68268,orang:11.1268):2.28586,gibbon:13.4127):7.21153,(macaque:4.56724,baboon:4.56724):16.057):16.0607,marmoset:36.6849):57.3151):38.738,(rat:36.3024,mouse:36.3024):96.4356)' -d '((((cat<0>,horse<2>)<1>,cow<4>)<3>,(((((chimp<6>,human<8>)<7>,orang<10>)<9>,gibbon<12>)<11>,(macaque<14>,baboon<16>)<15>)<13>,marmoset<18>)<17>)<5>,(rat<20>,mouse<22>)<21>)<19>' -o reports/summary_run1_tree_rapid.png -y Rapid`
 
 没有试过这个脚本，发表的图还是用R包ggtree自己画。
 
