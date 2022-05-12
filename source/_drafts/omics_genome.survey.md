@@ -38,13 +38,35 @@ description: 记录基因组调查(genome survey)的方法，利用K-mer分析�
 
 # K-mer分析
 ## K-mer相关概念
-1. monomeric unit (mer): 单体单元，相当于nt或者bp。通常用于双链核酸中的单位，100 mer DNA相当于每一条链有100nt，那么整条链就是100bp。
-2. 在这里，K-mers是指长度为k的一段碱基序列。
-3. K-mer是指从reads迭代生成的K个碱基的序列，一段长度为L的reads一共可以生成(L-K+1)个K-mers。
+1. monomeric unit (mer): 单体单元，单位是nt或者bp。通常用于双链核酸中的单位，100 mer DNA相当于每一条链有100nt，那么整条链就是100bp。
+2. K-mer概念
+在生物信息学中，K-mer是指包含在一段序列中的长度为k的子串。一段长度为L的核酸序列，以一个碱基为步长滑动，一共可以生成(L-K+1)个K-mers，另外还可以用这段核酸的反向互补序列再生成一次K-mer。
 
-## K-mer预估基因组大小的原理
+<img src="https://ask.qcloudimg.com/http-save/yehe-6581713/k82jlzu9rb.png?imageView2/2/w/1620" title="K-mer示例" width="90%"/>
+
+**<p align="center">Figure 1. K-mer示例**
+from [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)</p>
+
+## K-mer原理
+### K-mer的优势
+二代测序的准确率已达到99.9%，但测序量非常大时，错误碱基的绝对数量(比如10亿碱基里错误碱基数量会达到1000万个)还是会对分析有很大的影响。
+
+由于测序错误具有随机性，通过将reads切割产生的K-mer中，测序错误生成的K-mer绝大多数都是测序物种中不存在的K-mer，因此都只出现1次(或很少的几次)，要是将这些低频的K-mer去掉，就有较大可能去除测序错误，从而使得分析(基因组调查，组装基因组)结果更可靠。
+
+### K-mer用途
+许多分析都会用到K-mer的处理方法，把测序得到的reads通过取K-mer后用于分析。比如评估基因组特征，组装基因组，物种样品污染评估等。评估基因组特征(genome survey)包括评估基因组大小(size)，杂合度，重复序列比例等。
+
+1. 组装基因组
+组装基因组使用K-mer的目的主要是去除低频率的K-mer以提高组装结果准确性。
+
+2. 评估基因组大小(size)
 
 
+3. 评估基因组杂合度
+
+4. 评估基因组重复序列比例
+
+5. 物种样品污染评估
 
 # K-mer分析软件
 ## K-mer分析软件概况
@@ -175,3 +197,4 @@ dev.off()
 4. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
 5. [jellyfish github](https://github.com/gmarcais/Jellyfish)
 6. [GenomeScope github](https://github.com/schatzlab/genomescope)
+7. [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)
