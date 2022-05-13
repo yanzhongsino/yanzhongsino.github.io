@@ -43,14 +43,22 @@ QUAST会在第一次使用时自动编译所有子部分，因此不需要安装
 # 4. QUAST使用
 简化版：`quast.py contigs.fas`
 
-全面版：`quast.py contigs_1.fa contigs_2.fa -r reference.fa.gz -g genes.txt -1 reads1.fastq.gz -2 reads2.fastq.gz -o quast_out -t 12`
+全面版：`quast.py contigs_1.fa contigs_2.fa -r reference.fa -g genome.gff -1 reads1.fastq.gz -2 reads2.fastq.gz -o quast_out -t 12`
 
-contigs.fa是必须提供的，即等待评估组装质量的基因组，可以多个同时评估。
--r 参考基因组，可选；提供后有比较结果。
--g 参考基因组的features文件，GFF,BED文件
--1和-2 PE测序的FASTQ文件，可选
--o 结果输出目录
--t 线程
+- contigs.fa是必须提供的，即等待评估组装质量的基因组，可以多个同时评估。
+- -r reference.fa：参考基因组，可选；提供后有比较基因组的结果。
+- -g genome.gff：参考基因组的features文件，GFF,BED等格式
+- -1和-2：PE测序的FASTQ文件，可选
+- -o quast_out：指定结果输出目录
+- -t 12：线程
+- --large：大基因组推荐加上这个参数，相当于`-e -m 3000 -i 500 -x -k --k-mer-stats`
+- -f：--gene-finding，用GeneMarkS(原核生物)或GeneMark-ES(真核生物)预测基因
+- -e：即--eukaryote，默认是用GeneMarkS预测原核生物，这个参数指定基因组是真核生物，主要影响基因预测。类似的还有--fungus。还有许多与基因预测相关的参数可选。
+- --rna-finding：用Barrnap预测ribosomal RNA genes
+- -b：用BUSCO计算保守的orthologs数量(only on Linux)
+- -m 500：小于指定长度的contig会被去除，默认是500bp。
+- -i 65：小于指定长度的alignment会被去除，默认是65bp。
+- -k：--k-mer-stats，基于k-mer计算质量参数，推荐用于大基因组。
 
 # 5. QUAST结果
 1. 结果文件
