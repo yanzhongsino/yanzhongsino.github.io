@@ -1,20 +1,23 @@
 ---
-title: genome survey
+title: 用K-mer分析进行基因组调查(genome survey)
 date: 2022-05-15
 categories:
 - omics
 - genome
+- genome survey
 tags:
+- genome
 - genome survey
 - K-mer
 
-description: 记录基因组调查(genome survey)的方法，利用K-mer分析来估计基因组大小，杂合度等基本信息。
+description: 记录基因组调查(genome survey)的概念和方法，K-mer分析的原理，利用K-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息）。
 ---
 
 <div align="middle"><music URL></div>
 
 # 基因组调查(genome survey)
 ## 基因组调查
+基因组调查(genome survey)指基因组特征评估，一般指通过K-mer分析二代测序数据，获得基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等基因组信息的手段。
 1. 基因组调查介绍
 对于高等真核生物(特别是高等植物)来说，在进行基因组denovo测序和正式组装之前，首先构建DNA小片段文库进行中低深度的二代测序，使用测序所得的reads(通常是illumina的PE reads)进行基因组调查(genome survey)，来初步评估基因组特征，包括基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等，从而为后续的基因组测序、组装和结构注释方案提供参考依据。
 
@@ -41,6 +44,8 @@ description: 记录基因组调查(genome survey)的方法，利用K-mer分析�
 - 高复杂基因组: 杂合度>1.2%；或重复序列占比大于65%。
 
 # K-mer分析
+K-mer分析可以用在生物信息学许多方面，这篇博客的K-mer分析特指用于基因组调查的K-mer分析方法。
+
 ## K-mer相关概念
 1. monomeric unit (mer): 单体单元，单位是nt或者bp。通常用于双链核酸中的单位，100 mer DNA相当于每一条链有100nt，那么整条链就是100bp。
 2. K-mer概念
@@ -51,30 +56,25 @@ description: 记录基因组调查(genome survey)的方法，利用K-mer分析�
 **<p align="center">Figure 1. K-mer示例**
 from [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)</p>
 
-## K-mer原理
-### K-mer的优势
-1. 增加准确率
-- 二代测序的准确率已达到99.9%，但测序量非常大时，错误碱基的绝对数量(比如10亿碱基里错误碱基数量会达到1000万个)还是会对分析有很大的影响。
-- 由于测序错误具有随机性，通过将reads切割产生的K-mer中，测序错误生成的K-mer绝大多数都是测序物种中不存在的K-mer，因此都只出现1次(或很少的几次)，要是将这些低频的K-mer去掉，就有较大可能去除测序错误，从而使得分析(基因组调查，组装基因组)结果更可靠。
-
-### K-mer操作
+## K-mer分析步骤
 通过切割二代测序的reads为K-mer，
 
-### K-mer原理
+
+## K-mer原理
 K-mer的前提假设是测序是随机分布在基因组上的。
 
-定义几个变量：
+首先定义几个变量，方便原理解释：
 - 基因组大小：G
 - read读长：L
 - 总reads条数：n
 - K-mer长度：K
 
-#### 碱基深度分布
+### 碱基深度分布
 1. 单条read测序覆盖到某一个碱基的概率：L/G。
 2. 因为L/G很小，n很大，每个碱基覆盖深度服从泊松分布。
 3. 则每个碱基的覆盖深度的期望为：d=(L/G)*n。
 
-#### K-mer深度分布
+### K-mer深度分布
 1. 一个大小为G的基因组可以产生的K-mer种类约为G
 - 假设一个基因组产生的K都是unique的，从一个大小为G的基因组可以得到(G-K+1)种不同的K-mer，
 - 一般而言，基因组大小G在几百Mb或者Gb为单位，远大于K和1，所以K和1可以忽略不计，约等于G种K-mer。
@@ -86,7 +86,7 @@ K-mer的前提假设是测序是随机分布在基因组上的。
 4. 每种K-mer的覆盖深度的期望为：D=((L-K+1)/G)*n
 5. 由此可以得到，基因组大小为：G=(L-K+1)*n/D
 
-#### 通过K-mer分布估计基因组大小
+### 通过K-mer分布估计基因组大小
 1. 通过K-mer分析估计基因组大小时，计算分析可以得到总K-mer个数N和K-mer期望深度D。
 - 对测序reads进行K-mer分割，获得的总K-mer个数N。
 - 统计所有分割的K-mer，绘制频数分布图，期望是泊松分布，且分布峰值的K-mer频数即为K-mer的期望的覆盖深度D。
@@ -98,9 +98,12 @@ K-mer的前提假设是测序是随机分布在基因组上的。
 K-mer分析适用于分析唯一主峰区域所占比例较大的基因组，当基因组杂合非常高或者重复序列比例非常大时，其影响可能导致无法通过K-mer分析正确估计基因组大小。
 将K-mer深度等于1的情况认为是错误情况，计算错误率，并用于修正基因组大小。
 
+## K-mer的优势
+1. 增加准确率
+- 二代测序的准确率已达到99.9%，但测序量非常大时，错误碱基的绝对数量(比如10亿碱基里错误碱基数量会达到1000万个)还是会对分析有很大的影响。
+- 由于测序错误具有随机性，通过将reads切割产生的K-mer中，测序错误生成的K-mer绝大多数都是测序物种中不存在的K-mer，因此都只出现1次(或很少的几次)，要是将这些低频的K-mer去掉，就有较大可能去除测序错误，从而使得分析(基因组调查，组装基因组)结果更可靠。
 
-
-### K-mer用途
+## K-mer用途
 许多分析都会用到K-mer的处理方法，把测序得到的reads通过取K-mer后用于分析。比如评估基因组特征，组装基因组，物种样品污染评估等。评估基因组特征(genome survey)包括评估基因组大小(size)，杂合度，重复序列比例等。
 
 1. 组装基因组
@@ -122,8 +125,7 @@ K-mer分析适用于分析唯一主峰区域所占比例较大的基因组，当
 
 5. 物种样品污染评估
 
-# K-mer分析软件
-## K-mer分析软件概况
+# K-mer分析软件概况
 K-mer分析分为**K-mer频数统计**和**基因组特征评估**两步。
 - 软件KmerGenie可以同时实现两步。
 - 软件gce可以分别实现两步。
@@ -139,103 +141,7 @@ notes：
 
 另一个参数需注意和设定，单倍体模式还是杂合模式，可以两种模式都分析，查看差别。
 
-## K-mer频数统计
-### jellyfish
-jellyfish是Center for Bioinformatics and Computational Biology在2011年研发的一款对DNA的K-mers计数的软件，用Hash表储存数据，能多线程运行。
-1. 安装
-- `conda install -c bioconda jellyfish` #安装的是v2.2.10
-- 在[github：jellyfish](https://github.com/gmarcais/Jellyfish)上通过源码安装。
 
-2. K-mer计数
-`jellyfish count -m 17 -s 10G -t 12 -o sample -C sample_1.clean.fq sample_2.clean.fq`
-
-参数：
-- sample_1.clean.fq sample_2.clean.fq：使用的PE reads，不支持压缩格式*.fq.gz输入文件，如果不解压缩，也可以用`<(zcat sample_1.fq.gz) <(zcat sample_2.fq.gz)`代替; 或者使用这种形式`zcat *fq.gz | jellyfish count /dev/fd/0`，其中`/dev/fd/0`是进程输入标志，代表管道前结果传递。
-- -m 17: K-mer长度设置为17bp。如果基因组大小为G(单位是bp)，K-mer长度推荐设置成log(200*G)/log(4)。500Mbp的基因组对应约为17，1Gbp的19，10Gbp的21。
-- -s 1000M：存储用的hash表大小为1000M，这个参数识别单位M(Mbp)和G(Gbp)。若该值不够大，则会生成多个hash文件，以数字区分文件名。最好设置的值大于总的独特的(distinct)k-mer数，这样生成的文件只有一个。如果基因组大小为G，每个reads有一个错误，总共有n条reads，则该值可以设置为[(G + n)/0.8]。
-- -t 12：线程12
-- -C：对DNA正负链都进行统计，表示考虑DNA正义与反义链，遇到反义kmer时，计入正义kmer频数中。如果是双端测序reads，需要这个参数。
-- -o sample：结果文件前缀名为sample，会生成K-mer计数文件sample.jf，是hash的二进制文件。
-- c 7：K-mer的计数结果所占的最大比特数，默认支持的最大数字是2^7=128。该值最大，消耗内存越大。
--out-counter-len=4：输出的二进制hash文件中的计数结果所占的字节数，一个字节是8比特，则默认支持的最大数字是2^32=4.3G。
-- 不推荐用-Q，会将低质量的碱基替换成N。
-- -L：不输出低于此值的K-mer
-- -U：不输出高于此值的K-mer
-
-3. 合并【按需选择】
-如果jellyfish count模块输出结果的二进制hash文件有多个，需要将多个hash文件合并，合并到merge.jf。用法如下：
-
-`jellyfish merge hash1 hash2 hash3 -o merge.jf`
-
-4. 统计【可选】
-`jellyfish stats mer_counts.jf -o mer_counts_stats.txt`
-
-可以用stats模块来统计出k-mer总数（Total），特异的k-mer数目（Distinct），只出现过一次的k-mer数量（Unique），频数最高的k-mer数量（Max_count）等信息。
-
-5. K-mer频率
-`jellyfish histo -t 12 sample.jf > sample.histo`
-
-统计K-mer计数(sample.jf)得到K-mer频数分布直方表(sample.histo)，包含空格分隔的两列数据，第一列代表k值出现的次数x(x=1,2,3...)，第二列是出现了x次的kmer的种类的数量y。sample.histo的两列即是kmer分布频率直方图的x和y轴的值。
-
-参数：
-- -t 12：线程12。
-- -l 1：x的最小值，默认是1。结果会将小于此值的所有的k-mer的数目作为(x‐1)的值总结到一行。
-- -h 10000：x的最大值，默认是10000。结果会将大于此值的所有的k-mer的数目作为(x+1)的值总结到一行。
-- -i 1：x轴取值间隔，每隔该数值取值，默认为1。
-
-6. 画图
-获得K-mer频数分布表sample.histo后，推荐用[GenomeScope2.0](http://qb.cshl.edu/genomescope/genomescope2.0/)或者[GenomeScope1.0](http://qb.cshl.edu/genomescope)或者GenomeScope的R脚本来做基因组特征评估和画图。也可直接用sample.histo绘制频率分布直方图/频率分布曲线。
-
-### gce
-
-
-```
-kmer_freq_hash -k 17 -L 150 -l fastq_list.txt -t 4 -o 0 -p sample &> sample.kmer.log
-
-kmerfreq -k 17 -t 24 -p k17 path.txt
-# K-mer长度为17，设定统计用的reads最大长度150bp，线程4，为节省时间不输出K-mer序列，结果文件前缀名sample
-```
-
-结果文件K-mer频数分布表“sample.freq.stat”和运行log文件“sample.kmer.log”
-sample.freq.stat文件只统计到第255行，第255行之后的数据合并至第255行，表示K-mer出现频数>=255的片段总数。
-
-sample.kmer.log为程序运行的日志文件，同时对测序数据进行了简要统计。该文件的最下方，统计了K-mer片段总数、K-mer种类数、K-mer平均频数、碱基总数、reads平均长度、基因组大小的粗略估计等信息。
-
-频数分布表sample.histo/sample.kmer.freq.stat文件有两列，第一列是K-mer频数，第二列是频数对应的K-mer数量，预期是泊松分布，在K-mer频数中间有K-mer数量的峰值；频数小于5的那几列对应的K-mer数量高是测序错误造成的，频数最大的那列对应的K-mer数量高是把所有大于该列的频数进行合计数量造成的，两端都可以忽略。
-
-3. gce
-
-峰值对应的K-mer频数(假设为n)。
-```
-gce -f sample.freq.stat -c n -b 1 -H 0 -m 1 -D 8 -M 256 > sample.gce.stat 2> sample.gce.log
-# -c n频数峰值为n；-b 1数据有bias；-H 0单倍体模式；-m 1估算模型使用连续型；-D 8期望值精度；-M 256支持的最大K-mer频数，若输入jellyfish获得的sample.histo，则设置-M 10001。
-```
-结果文件sample.gce.stat和sample.gce.log，在log文件最后记录了基因组特征评估结果，包括估算的kmer平均深度cvg，基因组大小genome_size。
-
-
-### KmerGenie
-2. [KmerGenie](http://blog.sciencenet.cn/blog-3406804-1159967.html)
-```
-$cat fastq_list.txt
-path_to_sample_1.fastuniq.clean.fq
-path_to_sample_2.fastuniq.clean.fq
-$kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 > sample.log1.txt 2> sample.log2.txt
-# 默认单倍体模式，以K-mer长度17为起始，121为终止，10为间隔逐一测试；程序运行线程数4。结果输出在当前路径下，以sample为结果文件前缀名。“sample.log1.txt”和“sample.log2.txt”分别为程序运行时的正确/错误输出日志。
-```
-生成结果报告文件*_report.html，报告开头以折线图的形式展示出在每种长度K-mer下，估算的基因组大小，同时给出了“最佳K-mer”选择数值（其实就是将评估基因组总大小最高的那个K-mer值判定为“最佳K-mer”，为基因组组装时K-mer的选择提供参考）。
-
-生成各K-mer取值下的频数分布表*.histo和对应的频数分布图*.histo.pdf，以及所有K-mer取值的总计*.dat和*.dat.pdf
-
-2. KmerGenie
-
-生成结果报告文件*_report.html展示了在每种长度K-mer下，估算的基因组大小，同时给出了“最佳K-mer”选择数值，给组装基因组提供参考。
-
-## 基因组特征评估
-### genomescope
-
-使用[genomescope网页版](http://qb.cshl.edu/genomescope/)上传第一步获得的kmer频数分布表histo文件，设置参数Kmer length为第一步选择的K-mer长度值，这里是17；参数Read length为序列读长，一般为150；最后一个参数Max kmer coverage建议修改成10000，以统计更准确。
-
-结果显示预估的基因组大小，杂合度，重复率等信息。
 
 ### R绘制
 3. ggplot绘制
