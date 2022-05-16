@@ -42,12 +42,12 @@ GenomeScope有网页版和Linux本地版，功能一样。
 
 结果显示预估的基因组大小，杂合度，重复率等信息。
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0_k21.png?raw=true" width=60% title="GenomeScope1.0结果示例" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true" width=70% title="GenomeScope1.0结果示例" align=center/>
 
 **<p align="center">Figure 1. GenomeScope1.0结果示例</p>**
 
 ### GenomeScope2.0 网页版
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope2.0_k21.png?raw=true" width=60% title="GenomeScope2.0结果示例" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope2.0.png?raw=true" width=70% title="GenomeScope2.0结果示例" align=center/>
 
 **<p align="center">Figure 2. GenomeScope2.0结果示例</p>**
 
