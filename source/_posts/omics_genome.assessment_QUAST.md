@@ -51,7 +51,7 @@ QUAST会在第一次使用时自动编译所有子部分，因此不需要安装
 - -1和-2：PE测序的FASTQ文件，可选
 - -o quast_out：指定结果输出目录
 - -t 12：线程
-- --large：大基因组推荐加上这个参数，相当于`-e -m 3000 -i 500 -x -k --k-mer-stats`
+- --large：大基因组推荐加上这个参数，相当于`-e -m 3000 -i 500 -x -k --k-mer-stats`，加上这个参数后运行时间长非常多，因为有-e会做基因组的基因预测，推荐大基因组使用完整参数`-m 3000 -i 500 -x -k`来节省时间。
 - -f：--gene-finding，用GeneMarkS(原核生物)或GeneMark-ES(真核生物)预测基因
 - -e：即--eukaryote，默认是用GeneMarkS预测原核生物，这个参数指定基因组是真核生物，主要影响基因预测。类似的还有--fungus。还有许多与基因预测相关的参数可选。
 - --rna-finding：用Barrnap预测ribosomal RNA genes

@@ -76,13 +76,5 @@ dev.off()
 
 
 # references
-1. https://en.wikipedia.org/wiki/K-mer
-2. https://xuzhougeng.top/archives/genome-survey-using-kmers
-3. [xuzhougeng's blog](https://www.jianshu.com/p/85de8f025899)
-4. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
-5. [jellyfish github](https://github.com/gmarcais/Jellyfish)
-6. [GenomeScope github](https://github.com/schatzlab/genomescope)
-7. [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)
-8. [K-mer分析和原理](https://www.bbsmax.com/A/lk5aQMxP51/)
-9. [jellyfish参数推荐](https://www.bilibili.com/read/cv16360242)
-10. [chenlianfu blog: jellyfish参数推荐](http://www.chenlianfu.com/?p=806)
+1. [GenomeScope github](https://github.com/schatzlab/genomescope)
+2. [GenomeScope 2.0 github](https://github.com/tbenavi1/genomescope2.0)

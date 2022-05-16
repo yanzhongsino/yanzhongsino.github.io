@@ -76,7 +76,7 @@ jellyfish是Center for Bioinformatics and Computational Biology在2011年研发�
 - -i 1：x轴取值间隔，每隔该数值取值，默认为1。
 
 6. 画图
-获得K-mer频数分布表sample.histo后，推荐用[GenomeScope2.0](http://qb.cshl.edu/genomescope/genomescope2.0/)或者[GenomeScope1.0](http://qb.cshl.edu/genomescope)或者GenomeScope的R脚本来做基因组特征评估和画图。也可直接用sample.histo绘制频率分布直方图/频率分布曲线。
+获得K-mer频数分布表sample.histo后，推荐用[GenomeScope1.0](http://qb.cshl.edu/genomescope)或者[GenomeScope2.0](http://qb.cshl.edu/genomescope/genomescope2.0/)或者GenomeScope的R脚本来做基因组特征评估和画图。也可直接用sample.histo绘制频率分布直方图/频率分布曲线。
 
 
 
