@@ -18,7 +18,7 @@ description: 记录基因组评估的方法，用测序reads（包括pacbio，il
 
 评估组装的基因组的常用方法有：
 1. mapping rates：包括pacbio，illumina，RNA-seq reads等数据都可以映射回基因组，然后计算比对率来判断基因组的精确度。
-2. QUAST
+2. QUAST：
 3. BUSCO：基因组和预测的蛋白组都可以用BUSCO评估基因组的完整度(completeness)。
 4. LAI：通过LTR组装指数评估基因组的连贯性(continuity)。
 
