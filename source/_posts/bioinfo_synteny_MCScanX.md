@@ -123,8 +123,10 @@ chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor
 ```shell
 cat sample.collinearity |grep -v "^#"|cut -f2,3 >sample.homolog #提取blocks的同源gene对
 echo "24" >proc #指定ParaAT.pl使用线程
-ParaAT.pl -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -g -k -o sample.paraat 2> paraat.log & #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子；-o指定生成目录；加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢，推荐手动用KaKs_Calculator的YN模型，生成sample.axt.kaks文件。
+ParaAT.pl -g -t -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -k -o sample.paraat 2> paraat.log & #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；；-o指定生成目录；加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢，推荐手动用KaKs_Calculator的YN模型，生成sample.axt.kaks文件。
 ```
+
+建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in 'ctg00816-ctg08844' is not equal。
 
 4. 用KaKs_Calculator手动计算共线性基因对的KaKs和4dtv值
 ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。

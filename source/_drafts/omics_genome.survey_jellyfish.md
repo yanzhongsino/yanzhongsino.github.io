@@ -39,7 +39,7 @@ jellyfish是Center for Bioinformatics and Computational Biology在2011年研发�
 - 在[github：jellyfish](https://github.com/gmarcais/Jellyfish)上通过源码安装。
 
 2. K-mer计数
-`jellyfish count -m 17 -s 10G -t 12 -o sample.jf -C <(zcat sample_1.fq.gz) <(zcat sample_2.fq.gz)`
+`jellyfish count -m 17 -s 10G -t 12 -C -o sample.jf <(zcat sample_1.fq.gz) <(zcat sample_2.fq.gz)`
 
 参数：
 - sample_1.clean.fq sample_2.clean.fq：使用的PE reads，不支持压缩格式*.fq.gz输入文件，如果不解压缩，也可以用`<(zcat sample_1.fq.gz) <(zcat sample_2.fq.gz)`代替`sample_1.fq sample_2.fq`; 或者使用这种形式`zcat *fq.gz | jellyfish count /dev/fd/0`，其中`/dev/fd/0`是进程输入标志，代表管道前结果传递。

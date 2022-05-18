@@ -64,15 +64,15 @@ ParaAT2.0目录下有两个脚本，ParaAT.pl用于成对比对的转换（可�
 - `echo "12" >proc`
 指定ParaAT.pl使用线程，也可以不指定，默认是6个线程
 
-- `ParaAT.pl -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o paraat.out 2>paraat.log`
+- `ParaAT.pl -g -t -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o paraat.out 2>paraat.log`
 先根据sample.id指定的id做蛋白的成对比对，然后根据蛋白的比对结果转换成对应的CDS的比对结果。
 -h,-n,-a分别指定三个输入文件，-m指定比对软件，-p指定线程，-f指定输出的cds序列的格式（WGD计算KaKs一般用axt格式比较多），-o指定输出文件目录(如果不存在会新建目录)。
 
 其他参数：
 
 - -n：好像可以包含多核苷酸序列比对；
-- -g：移除比对后包含gap的密码子；
-- -t：移除mismatched codons；
+- -g：移除比对后包含gap的密码子；建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in 'ctg00816-ctg08844' is not equal。
+- -t：移除mismatched codons；建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in 'ctg00816-ctg08844' is not equal。
 - -k：用KaKs_Calculator计算(需要输出axt格式)Ka和Ks，获得axt文件后自动计算kaks值，使用MA模型，比YN模型慢，推荐输出axt后自己用KaKs_Calculator计算并用YN模型。
 
 ## 2.2. 多序列比对(multiple sequence alignment)
