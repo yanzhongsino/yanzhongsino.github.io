@@ -30,6 +30,8 @@ gff3_sort：根据scaffold，coordinates坐标来排序gff3文件
 gff3_to_fasta：根据基因组fasta和注释gff生成gene/cds/protein/exon
 
 
+gff3_to_fasta:
+用来操作gff3格式文件，包括提取gene,cds,exon,pep等序列。
 
 
 fastq
