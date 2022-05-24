@@ -77,6 +77,16 @@ done
 ```
 
 # 2. 基因组注释整理【注释结果整理】
+## GFF3toolkit【推荐】
+推荐使用GFF3toolkit来进行gff3注释文件的整理，具体介绍参考博客[GFF3toolkit blog](https://yanzhongsino.github.io/2022/05/24/biosoft_fileformat_GFF3toolkit/)。
+
+GFF3toolkit包含许多模块：
+- gff3_QC：检测gff3格式错误
+- gff3_fix：修正gff3格式错误
+- gff3_merge：合并两个gff3文件
+- gff3_sort：根据scaffold，coordinates坐标来排序gff3文件
+- gff3_to_fasta：根据基因组fasta和注释gff生成gene/cds/protein/exon等序列
+
 ## 2.1. 合并多个注释结果
 基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。
 

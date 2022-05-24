@@ -258,10 +258,12 @@ NCBI给出了[Validation and Discrepancy Report Error Explanations](https://www.
 12. 当gff的product属性不符合蛋白产物名称规定时，会生成Adiantum.nelumboides.fixedproducts文件，记录把不符合规定的product属性值改为**hypothetical protein**。可以提取不符合规定的product属性值用于product的filter。
 
 ##### 4.2.3.3.2. sample.stats/sample.val文件中的报警**WARNING**
-部分WARNING也最好修复；比如**SEQ_FEAT.SeqFeatXrefNotReciprocal**和**SEQ_FEAT.DuplicateFeat**虽然是在WARNING-level messages中，但上传给NCBI后会发邮件让修改后重新提交。
+部分WARNING也最好修复；比如**SEQ_FEAT.SeqFeatXrefNotReciprocal**和**SEQ_FEAT.DuplicateFeat**虽然是在WARNING-level messages中，但上传给NCBI后收到邮件让修改后重新提交。
+
 1. **SEQ_FEAT.SeqFeatXrefNotReciprocal**
    - exon和CDS的位置或数量不一致且有中间终止密码子导致
    - 可以调整exon和CDS的位置和数量；可能引入**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**错误，若引入则在gene行的第九列添加`pseudo=true`属性值；
+   - 发现一个例子，**SEQ_FEAT.SeqFeatXrefNotReciprocal**的数量与**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**一样，上传给NCBI后收到邮件让修改**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**。
 2. **SEQ_FEAT.DuplicateFeat**
    - 当gff在同样的位置注释了多个gene时
    - 需要删除其中一个。

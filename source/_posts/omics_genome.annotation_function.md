@@ -12,6 +12,8 @@ tags:
 - eggnog-mapper
 - interproscan
 - PANNZER2
+- Mercator4
+- GFAP
 
 description: 记录对基因组的基因进行功能注释的方法。
 ---
@@ -379,6 +381,12 @@ notes:
 注意检查是否还有no hits或者not assigned.annotated，有的话都替换掉。
 
 2. 从Mercator4 annotated fasta file中以"not annotated"作为关键词搜索，可以获取未被注释到的基因。
+
+## 2.6. GFAP - functional annotation software for plants
+GFAP是windows下的一款基于python开发的软件，用于为植物基因组做功能注释。
+2022年初发表在bioRxiv上，特地是运行非常快。
+- [GFAP paper](https://www.biorxiv.org/content/10.1101/2022.01.05.475154v1)
+- [GFAP software and manual](https://gitee.com/simon198912167815/gfap-database)
 
 # 3. 基因功能注释的整合
 提交功能注释文件有两种方案：
