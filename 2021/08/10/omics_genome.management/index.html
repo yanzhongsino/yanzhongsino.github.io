@@ -28,7 +28,7 @@
 <meta property="og:description" content="基因组和基因组注释的排序、重命名、合并和提取等整理操作。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-10T08:30:00.000Z">
-<meta property="article:modified_time" content="2022-04-22T02:49:16.179Z">
+<meta property="article:modified_time" content="2022-05-24T09:52:36.338Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome">
 <meta property="article:tag" content="genome annotation">
@@ -205,7 +205,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-22 10:49:16" itemprop="dateModified" datetime="2022-04-22T10:49:16+08:00">2022-04-22</time>
+                <time title="修改时间：2022-05-24 17:52:36" itemprop="dateModified" datetime="2022-05-24T17:52:36+08:00">2022-05-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,7 +280,16 @@
 <p>用下面脚本实现：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">j=1</span><br><span class="line">for i in `seq -w 1 0100` #把相同数字位数的0001-0100依次赋值给变量i</span><br><span class="line">do</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.fa #两次替换，第一次替换scaffold$j为行尾的字符串（比如在基因组序列文件中），第二次替换scaffold$j不为行尾的字符串，[^0-9]代表不为数字的任意一个字符，\1代表替换前括号([^0-9])中的内容。</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.gff #同上，替换其他文件，比如gff文件。</span><br><span class="line">	j=$(($j+1)) #把1-100依次赋值给变量j</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 
-<h1 id="2-基因组注释整理【注释结果整理】"><a href="#2-基因组注释整理【注释结果整理】" class="headerlink" title="2. 基因组注释整理【注释结果整理】"></a>2. 基因组注释整理【注释结果整理】</h1><h2 id="2-1-合并多个注释结果"><a href="#2-1-合并多个注释结果" class="headerlink" title="2.1. 合并多个注释结果"></a>2.1. 合并多个注释结果</h2><p>基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。</p>
+<h1 id="2-基因组注释整理【注释结果整理】"><a href="#2-基因组注释整理【注释结果整理】" class="headerlink" title="2. 基因组注释整理【注释结果整理】"></a>2. 基因组注释整理【注释结果整理】</h1><h2 id="GFF3toolkit【推荐】"><a href="#GFF3toolkit【推荐】" class="headerlink" title="GFF3toolkit【推荐】"></a>GFF3toolkit【推荐】</h2><p>推荐使用GFF3toolkit来进行gff3注释文件的整理，具体介绍参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/05/24/biosoft_fileformat_GFF3toolkit/">GFF3toolkit blog</a>。</p>
+<p>GFF3toolkit包含许多模块：</p>
+<ul>
+<li>gff3_QC：检测gff3格式错误</li>
+<li>gff3_fix：修正gff3格式错误</li>
+<li>gff3_merge：合并两个gff3文件</li>
+<li>gff3_sort：根据scaffold，coordinates坐标来排序gff3文件</li>
+<li>gff3_to_fasta：根据基因组fasta和注释gff生成gene&#x2F;cds&#x2F;protein&#x2F;exon等序列</li>
+</ul>
+<h2 id="2-1-合并多个注释结果"><a href="#2-1-合并多个注释结果" class="headerlink" title="2.1. 合并多个注释结果"></a>2.1. 合并多个注释结果</h2><p>基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。</p>
 <p>合并两个基因注释文件（若是多个就依次合并）</p>
 <ol>
 <li><p>输出A.gff中符合要求的行，即A.gff中与B.gff中位置有overlap的行。<br><code>bedtools intersect -a A.gff -b B.gff -wa &gt;A.dup.gff</code> </p>
@@ -407,7 +416,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%95%B4%E7%90%86%E3%80%90%E7%BB%84%E8%A3%85%E4%B9%8B%E5%90%8E%EF%BC%8C%E6%B3%A8%E9%87%8A%E4%B9%8B%E5%89%8D%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组整理【组装之后，注释之前】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%A2%B1%E5%9F%BA%E6%95%B4%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 基因组碱基整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%A2%B1%E5%9F%BA%E5%B0%8F%E5%86%99%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 基因组碱基小写带来的问题：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%BA%8F%E5%88%97ID%E4%BF%AE%E6%94%B9"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 基因组序列ID修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E6%8E%92%E5%BA%8F%E3%80%90optional%E3%80%91%E2%80%93%E6%A0%B9%E6%8D%AE%E9%9C%80%E8%A6%81%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1. 排序【optional】–根据需要选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E9%87%8D%E5%91%BD%E5%90%8D%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2. 重命名【推荐】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86%E3%80%90%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86%E3%80%91"><span class="nav-number">2.</span> <span class="nav-text">2. 基因组注释整理【注释结果整理】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AA%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 合并多个注释结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%87%8D%E5%91%BD%E5%90%8D%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E3%80%90%E5%8F%AF%E9%80%89%E3%80%91"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 重命名注释结果【可选】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E6%8E%92%E5%BA%8F"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1. 排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E9%87%8D%E5%91%BD%E5%90%8D"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2. 重命名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E4%BB%8E%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96%E5%BA%8F%E5%88%97"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 从注释文件提取序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E4%BB%8E%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96intron%E4%BF%A1%E6%81%AF"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. 从注释文件提取intron信息</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%95%B4%E7%90%86%E3%80%90%E7%BB%84%E8%A3%85%E4%B9%8B%E5%90%8E%EF%BC%8C%E6%B3%A8%E9%87%8A%E4%B9%8B%E5%89%8D%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组整理【组装之后，注释之前】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%A2%B1%E5%9F%BA%E6%95%B4%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 基因组碱基整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%A2%B1%E5%9F%BA%E5%B0%8F%E5%86%99%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 基因组碱基小写带来的问题：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%BA%8F%E5%88%97ID%E4%BF%AE%E6%94%B9"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 基因组序列ID修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E6%8E%92%E5%BA%8F%E3%80%90optional%E3%80%91%E2%80%93%E6%A0%B9%E6%8D%AE%E9%9C%80%E8%A6%81%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1. 排序【optional】–根据需要选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E9%87%8D%E5%91%BD%E5%90%8D%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2. 重命名【推荐】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86%E3%80%90%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86%E3%80%91"><span class="nav-number">2.</span> <span class="nav-text">2. 基因组注释整理【注释结果整理】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GFF3toolkit%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">2.1.</span> <span class="nav-text">GFF3toolkit【推荐】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AA%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-number">2.2.</span> <span class="nav-text">2.1. 合并多个注释结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%87%8D%E5%91%BD%E5%90%8D%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E3%80%90%E5%8F%AF%E9%80%89%E3%80%91"><span class="nav-number">2.3.</span> <span class="nav-text">2.2. 重命名注释结果【可选】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E6%8E%92%E5%BA%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.2.1. 排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E9%87%8D%E5%91%BD%E5%90%8D"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.2.2. 重命名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E4%BB%8E%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96%E5%BA%8F%E5%88%97"><span class="nav-number">2.4.</span> <span class="nav-text">2.3. 从注释文件提取序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E4%BB%8E%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96intron%E4%BF%A1%E6%81%AF"><span class="nav-number">2.5.</span> <span class="nav-text">2.4. 从注释文件提取intron信息</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -421,20 +430,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">190</span>
+        <span class="site-state-item-count">194</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
