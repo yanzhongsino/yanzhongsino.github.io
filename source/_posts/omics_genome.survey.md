@@ -57,7 +57,7 @@ K-mer分析可以用在生物信息学许多方面，这篇博客的K-mer分析�
 2. K-mer概念
 在生物信息学中，K-mer是指包含在一段序列中的长度为k的子串。一段长度为L的核酸序列，以一个碱基为步长滑动，一共可以生成(L-K+1)个K-mers，另外还可以用这段核酸的反向互补序列再生成一次K-mer。
 
-<img src="https://ask.qcloudimg.com/http-save/yehe-6581713/k82jlzu9rb.png?imageView2/2/w/1620" title="K-mer示例" width="90%"/>
+<img src="https://ask.qcloudimg.com/http-save/yehe-6581713/k82jlzu9rb.png" title="K-mer示例" width="90%"/>
 
 **<p align="center">Figure 1. K-mer示例**
 from [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)</p>
