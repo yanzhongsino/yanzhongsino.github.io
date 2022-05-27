@@ -1,6 +1,6 @@
 ---
 title: 用K-mer分析进行基因组调查(genome survey) —— jellyfish
-date: 2022-05-25
+date: 2022-05-27
 categories:
 - omics
 - genome
@@ -11,12 +11,12 @@ tags:
 - K-mer
 - jellyfish
 
-description: 用jellyfish做基因组调查(genome survey)。
+description: 介绍jellyfish，用jellyfish做基因组调查(genome survey)的K-mer频数统计。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283097&auto=1&height=32"></iframe></div>
 
-# K-mer分析软件概况
+# 1. K-mer分析软件概况
 K-mer分析分为**K-mer频数统计**和**基因组特征评估**两步。
 1. jellyfish
 jellyfish可以实现第一步K-mer频数统计。特点是使用Hash表存储数据，能多线程运行；速度快，内存消耗小。
@@ -29,20 +29,20 @@ jellyfish可以实现第一步K-mer频数统计。特点是使用Hash表存储�
 5. KmerGenie
 软件KmerGenie可以同时实现两步。最大优点在于可以实现在多个预设K-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。
 
-# jellyfish
-## jellyfish 简介
+# 2. jellyfish
+## 2.1. jellyfish 简介
 jellyfish是Center for Bioinformatics and Computational Biology在2011年研发的一款对DNA的K-mers计数的软件，用Hash表储存数据，能多线程运行。
 
-## jellyfish 安装
+## 2.2. jellyfish 安装
 1. conda安装
 - `conda install -c bioconda jellyfish` #安装的是v2.2.10
 2. github安装
 - 在[github：jellyfish](https://github.com/gmarcais/Jellyfish)上通过源码安装。
 
-## jellyfish 运行
+## 2.3. jellyfish 运行
 一般先用`jellyfish count`进行K-mer计数，然后用`jellyfish histo`对结果进行统计，获得K-mer的频数分布直方表sample.histo。
 
-### count —— K-mer计数
+### 2.3.1. count —— K-mer计数
 1. 命令
 `jellyfish count -m 17 -s 10G -t 12 -C -o sample.jf <(zcat sample_1.fq.gz) <(zcat sample_2.fq.gz)`
 
@@ -62,41 +62,46 @@ jellyfish是Center for Bioinformatics and Computational Biology在2011年研发�
 3. 输出
 - sample.jf：hash格式储存的K-mer频数文件
 
-### histo —— 统计K-mer频率
+### 2.3.2. histo —— 统计K-mer频率
+1. 命令
 `jellyfish histo -t 12 sample.jf > sample.histo`
 
-统计K-mer计数(sample.jf)得到K-mer频数分布直方表(sample.histo)，包含空格分隔的两列数据，第一列代表k值出现的次数x(x=1,2,3...)，第二列是出现了x次的kmer的种类的数量y。sample.histo的两列即是kmer分布频率直方图的x和y轴的值。
+统计K-mer计数(sample.jf)得到K-mer频数分布直方表(sample.histo)。
 
-参数：
+2. 参数
 - -t 12：线程12。
 - -l 1：x的最小值，默认是1。结果会将小于此值的所有的k-mer的数目作为(x‐1)的值总结到一行。
 - -h 10000：x的最大值，默认是10000。结果会将大于此值的所有的k-mer的数目作为(x+1)的值总结到一行。
 - -i 1：x轴取值间隔，每隔该数值取值，默认为1。
 
-### merge 合并【按需选择】
+3. 结果
+- K-mer频数分布直方表(sample.histo)包含空格分隔的两列数据。
+- 第一列代表k值出现的次数x(x=1,2,3...)，第二列是出现了x次的kmer的种类的数量y。
+- sample.histo的两列即是kmer分布频率直方图的x和y轴的值。
+
+### 2.3.3. merge 合并【按需选择】
 如果jellyfish count模块输出结果的二进制hash文件有多个，需要将多个hash文件合并，合并到merge.jf。
 
 `jellyfish merge sample_hash1.jf sample_hash2.jf sample_hash3.jf -o merge.jf`
 
-### stats 统计【可选】
+### 2.3.4. stats 统计【可选】
 `jellyfish stats sample.jf -o counts_stats.txt`
 
 可以用stats模块来统计出k-mer总数（Total），特异的k-mer数目（Distinct），只出现过一次的k-mer数量（Unique），频数最高的k-mer数量（Max_count）等信息。
 
-# 基因组特征评估
-获得K-mer频数分布表sample.histo后，推荐用[GenomeScope1.0](http://qb.cshl.edu/genomescope)或者[GenomeScope2.0](http://qb.cshl.edu/genomescope/genomescope2.0/)或者GenomeScope的R脚本来做基因组特征评估和画图。
+# 3. 基因组特征评估
+获得K-mer频数分布表sample.histo后，推荐用[GenomeScope1.0](http://qb.cshl.edu/genomescope)或者[GenomeScope2.0](http://qb.cshl.edu/genomescope/genomescope2.0/)或者GenomeScope的R脚本来做基因组特征评估和画图。也可直接用R绘制sample.histo的频率分布直方图/频率分布曲线。
 
-也可直接用R绘制sample.histo的频率分布直方图/频率分布曲线。
-
-## [GenomeScope1.0 网页版](http://qb.cshl.edu/genomescope/)
+## 3.1. GenomeScope1.0 网页版
 1. 在[GenomeScope1.0 网页版](http://qb.cshl.edu/genomescope/)上传前一步获得的K-mer频数分布表sample.histo文件。
 2. 设置参数K-mer length为第一步选择的K-mer长度值，这里是17；参数Read length为序列读长，一般为150；最后一个参数Max kmer coverage建议修改成更大的10000，以统计更多的K-mers。
 3. 结果显示预估的基因组大小，杂合度，重复率等信息。
 
 [GenomeScope2.0 网页版](http://qb.cshl.edu/genomescope/genomescope2.0)也是类似的步骤，多一个参数选择物种的倍型。实践经验发现GenomeScope1.0比起2.0估计的结果更接近实际C值。
 
-## R绘制
-R绘制K-mer频数分布曲线初步查看基因组特征
+## 3.2. R绘制
+R绘制K-mer频数分布曲线初步查看基因组特征。
+获得kmer_plot.png为频数分布曲线，可根据曲线峰值对基因组大小进行计算和预估。
 
 ```R
 #R 脚本示例
@@ -109,9 +114,7 @@ plot(Frequency, Number, type = 'l', col = 'blue')
 dev.off()
 ```
 
-获得kmer_plot.png为频数分布曲线，可根据曲线峰值对基因组大小进行计算和预估。
-
-# references
+# 4. references
 1. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
 2. [jellyfish github](https://github.com/gmarcais/Jellyfish)
 3. [GenomeScope github](https://github.com/schatzlab/genomescope)
