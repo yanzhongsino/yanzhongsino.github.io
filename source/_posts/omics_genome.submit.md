@@ -218,9 +218,9 @@ product值的不规范情况：
 在整理基因组结构注释和功能注释时，可以先用table2asn检测错误，以指导注释合并。
 
 #### 4.2.3.3. 报错和修正方案
-table2asn运行结束后要根据输出文件的报错进行调整，并重新运行直至没有报错再提交给NCBI。
-
-NCBI给出了[Validation and Discrepancy Report Error Explanations](https://www.ncbi.nlm.nih.gov/genbank/validation/)和[Validation Error Explanations for Genomes](https://www.ncbi.nlm.nih.gov/genbank/genome_validation/)可以参考报错含义和解决方案。
+- table2asn运行结束后要根据输出文件的报错进行调整，并重新运行直至没有报错再提交给NCBI。
+- 实践中发现修正一个错误后产生新的错误的情况是很常见的，所以多次运行table2asn也是很有必要的。
+- NCBI给出了[Validation and Discrepancy Report Error Explanations](https://www.ncbi.nlm.nih.gov/genbank/validation/)和[Validation Error Explanations for Genomes](https://www.ncbi.nlm.nih.gov/genbank/genome_validation/)可以参考报错含义和解决方案。
 
 下面我总结了一下我遇到的报错类型和修正方案：
 ##### 4.2.3.3.1. sample.stats/sample.val文件中报错ERROR
@@ -235,21 +235,24 @@ NCBI给出了[Validation and Discrepancy Report Error Explanations](https://www.
    - 当gff注释的一个基因的exons位置相邻时。
    - 可以合并两个相邻的exons，更改位置。
 4. **SEQ_FEAT.SeqLocOrder**
-   - 当gff的exon位置有重叠时。
-   - 可以参考mRNA和CDS序列的位置更改重叠的exon位置；exons的边界和mRNA一致，数量和CDS一致。
-5. **SEQ_FEAT.CDSmRNAXrefLocationProblem**或**SEQ_FEAT.CDSwithMultipleMRNAs**
+   - 当gff的exon/CDS间的位置有重叠时。
+   - 可以参考mRNA和CDS序列的位置更改重叠的exon/CDS位置，删除多余的exon/CDS；exons的边界和mRNA一致，数量和CDS一致。
+5. **SEQ_FEAT.CDSmRNAXrefLocationProblem**
    - 当gff注释CDS和exon的位置或数量不一致时
    - 可以更改exon或CDS位置和数量。
-6. **SEQ_FEAT.ShortIntron**
+6. **SEQ_FEAT.CDSwithMultipleMRNAs**
+   - 当gff注释CDS和exon的位置不一致时，这个报错添加`pseudo=true`属性值之后还是存在。实践发现有时与**SEQ_FEAT.CDSmRNAmismatchCount**一同出现且数量一致。
+   - 需要更改exon或CDS位置和数量。
+7. **SEQ_FEAT.ShortIntron**
    - 含有短于11bp的内含子时
    - 可以修正intron的位置使它长于11bp，或者在gene那行第九列添加`pseudo=true`属性值，或者在table2asn的命令中中加上参数`-c s`代表标记为"LOW QUALITY PROTEIN"。
-7. **SEQ_FEAT.TransLen**
+8. **SEQ_FEAT.TransLen**
    - 表示蛋白质长度与预测的蛋白质长度不匹配，运行错误
    - 建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(genomes@ncbi.nlm.nih.gov)让帮忙修改这个错误。
-8. **SEQ_FEAT.BadInternalCharacter**
+9. **SEQ_FEAT.BadInternalCharacter**
    - 表示gff的第9列的属性值attributes中包含不符合规定的字符，例如"|"符号。
    - 删除第9列属性值包含的"|"符号
-9.  **SEQ_FEAT.BadTrailingHyphen**
+10. **SEQ_FEAT.BadTrailingHyphen**
    - 当gff的第9列的属性值attributes中以连字符"-"结尾时
    - 删除第9列属性值包含的"-"符号
 11. **SEQ_FEAT.BadTrailingCharacter**
@@ -258,15 +261,18 @@ NCBI给出了[Validation and Discrepancy Report Error Explanations](https://www.
 12. 当gff的product属性不符合蛋白产物名称规定时，会生成Adiantum.nelumboides.fixedproducts文件，记录把不符合规定的product属性值改为**hypothetical protein**。可以提取不符合规定的product属性值用于product的filter。
 
 ##### 4.2.3.3.2. sample.stats/sample.val文件中的报警**WARNING**
-部分WARNING也最好修复；比如**SEQ_FEAT.SeqFeatXrefNotReciprocal**和**SEQ_FEAT.DuplicateFeat**虽然是在WARNING-level messages中，但上传给NCBI后收到邮件让修改后重新提交。
+部分WARNING也需要修复；比如**SEQ_FEAT.SeqFeatXrefNotReciprocal**和**SEQ_FEAT.DuplicateFeat**虽然是在WARNING-level messages中，但上传给NCBI后收到邮件让修改后重新提交。
 
 1. **SEQ_FEAT.SeqFeatXrefNotReciprocal**
    - exon和CDS的位置或数量不一致且有中间终止密码子导致
-   - 可以调整exon和CDS的位置和数量；可能引入**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**错误，若引入则在gene行的第九列添加`pseudo=true`属性值；
-   - 发现一个例子，**SEQ_FEAT.SeqFeatXrefNotReciprocal**的数量与**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**一样，上传给NCBI后收到邮件让修改**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**。
+   - 可以调整exon和CDS的位置和数量；可能引入**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein** 或 **SEQ_FEAT.ShortIntron** 错误，若引入则在gene行的第九列添加`pseudo=true`属性值；也可以直接添加`pseudo=true`属性值。
+   - 实践发现一个例子，**SEQ_FEAT.SeqFeatXrefNotReciprocal**的数量与**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**一样，上传给NCBI后收到邮件让修改**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**。这种情况修改exon和CDS的位置和数量很可能导致**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**错误，所以建议直接在gene行的第九列添加`pseudo=true`属性值。
 2. **SEQ_FEAT.DuplicateFeat**
-   - 当gff在同样的位置注释了多个gene时
-   - 需要删除其中一个。
+   - 当gff在同样的位置注释了多个gene时。
+   - 需要删除其中一个，或者修改重复gene注释为可变剪切的注释。
+3. **SEQ_FEAT.GeneXrefStrandProblem**
+   - 基因的CDS或exon位置信息不一致时，可能报错
+   - 修改位置信息为一致，或者在gene行的第九列添加`pseudo=true`属性值；
 
 ##### 4.2.3.3.3. sample.dr文件中的报错FATAL
 `cat sample.dr |grep "FATAL"`查看FATAL报错信息，如果物种不是细菌则可以忽略BACTERIAL_开头的报错信息；CONTAINED_CDS开头的信息不影响提交，也可暂时忽略。
@@ -281,10 +287,19 @@ NCBI给出了[Validation and Discrepancy Report Error Explanations](https://www.
 下面记录了我遇到的邮件中提到的错误和修改方案：
 
 1. **SEQ_FEAT.SeqFeatXrefNotReciprocal**
-exon和CDS的位置或数量不一致且有中间终止密码子导致。可以调整exon和CDS的位置和数量；可能引入**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**错误，若引入则在gene行的第九列添加`pseudo=true`属性值；
+实践经验1
+- exon和CDS的位置或数量不一致且有中间终止密码子导致。
+- 可以调整exon和CDS的位置和数量；可能引入**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**错误；若引入则在gene行的第九列添加`pseudo=true`属性值；
+
+实践经验2
+- exon和CDS的位置或数量不一致且有中间终止密码子导致。同时存在数量一致的**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**。
+- 在gene行的第九列添加`pseudo=true`属性值后，**SEQ_FEAT.SeqFeatXrefNotReciprocal**和**CDSmRNAMismatchLocation**消失并转化成ERROR水平信息**SEQ_FEAT.CDSwithMultipleMRNAs**，数量与**SEQ_FEAT.CDSmRNAmismatchCount**一致。
+- 调整exon和CDS的位置和数量，并且在gene行的第九列添加`pseudo=true`属性值。
 
 2. **SEQ_FEAT.DuplicateFeat**
-这个错误是同一位置注释到多个基因引起的，可以提取邮件中的gene ID(重复基因的第二个)信息，保存成gene ID list，然后用命令`grep -v -f geneID.list sample.gff >sample.revised.gff`删除list里的注释信息。
+- 这个错误是同一位置注释到多个基因引起的，可以提取邮件中的gene ID(重复基因的第二个)信息，保存成gene ID list，然后用命令`grep -v -f geneID.list sample.gff >sample.revised.gff`删除list里的注释信息。
+- 如果邮件里没有gene ID信息，可以用`cat sample.val |grep DuplicateFeat`里查看错误的位置信息，根据位置信息查找gff的重复注释位置，并删除其中一个基因注释。
+- 除了直接删除重复的整个基因注释外，还可以把重复基因的注释变成一个基因的多个可变剪切注释(删除重复基因的gene注释，把重复基因的mRNA注释的parent属性改为另一个基因)。
 
 3. **Discrepancy**
 Discrepancy.txt文件中保存了一些不符合标准的报错，比如product属性值中有横杠起始的元素，或者括号不完全，根据Discrepancy.txt文件指出的错误一条条修改。

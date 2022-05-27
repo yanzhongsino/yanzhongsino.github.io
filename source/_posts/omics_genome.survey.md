@@ -1,6 +1,6 @@
 ---
 title: 用K-mer分析进行基因组调查(genome survey)
-date: 2022-05-15
+date: 2022-05-25
 categories:
 - omics
 - genome
@@ -9,14 +9,19 @@ tags:
 - genome
 - genome survey
 - K-mer
+- jellyfish
+- GenomeScope
+- KAT
+- gce
+- KmerGenie
 
-description: 记录基因组调查(genome survey)的概念和方法，K-mer分析的原理，利用K-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息）。
+description: 基因组调查(genome survey)的概念和方法，K-mer分析的原理，利用K-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283096&auto=1&height=32"></iframe></div>
 
-# 基因组调查(genome survey)
-## 基因组调查
+# 1. 基因组调查(genome survey)
+## 1.1. 基因组调查
 基因组调查(genome survey)指基因组特征评估，一般指通过K-mer分析二代测序数据，获得基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等基因组信息的手段。
 1. 基因组调查介绍
 对于高等真核生物(特别是高等植物)来说，在进行基因组denovo测序和正式组装之前，首先构建DNA小片段文库进行中低深度的二代测序，使用测序所得的reads(通常是illumina的PE reads)进行基因组调查(genome survey)，来初步评估基因组特征，包括基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等，从而为后续的基因组测序、组装和结构注释方案提供参考依据。
@@ -34,7 +39,7 @@ description: 记录基因组调查(genome survey)的概念和方法，K-mer分�
 - 预估基因组大小可以通过已有研究粗略判断，包括流式细胞研究，近缘种研究，也推荐植物在[C值数据库网站](https://cvalues.science.kew.org/)里查询。
 - 基因组调查(genome survey)常常使用**K-mer分析**来实现。
 
-## 基因组复杂程度
+## 1.2. 基因组复杂程度
 基因组复杂程序的判断标准包括：基因组大小，倍性，杂合度，重复序列比例，GC含量等。
 
 一般而言，基因组越大，重复序列比例越高; GC含量异常低或异常高，重复序列比例也会很高；多倍体基因组的杂合度高于二倍体。
@@ -44,10 +49,10 @@ description: 记录基因组调查(genome survey)的概念和方法，K-mer分�
 - 复杂基因组: 杂合度在0.5%~1.2%之间，或重复序列高于50%，或GC含量异常(<35%或>65%)的二倍体，或者多倍体。
 - 高复杂基因组: 杂合度>1.2%；或重复序列占比大于65%。
 
-# K-mer分析
+# 2. K-mer分析
 K-mer分析可以用在生物信息学许多方面，这篇博客的K-mer分析特指用于基因组调查的K-mer分析方法。
 
-## K-mer相关概念
+## 2.1. K-mer相关概念
 1. monomeric unit (mer): 单体单元，单位是nt或者bp。通常用于双链核酸中的单位，100 mer DNA相当于每一条链有100nt，那么整条链就是100bp。
 2. K-mer概念
 在生物信息学中，K-mer是指包含在一段序列中的长度为k的子串。一段长度为L的核酸序列，以一个碱基为步长滑动，一共可以生成(L-K+1)个K-mers，另外还可以用这段核酸的反向互补序列再生成一次K-mer。
@@ -57,7 +62,7 @@ K-mer分析可以用在生物信息学许多方面，这篇博客的K-mer分析�
 **<p align="center">Figure 1. K-mer示例**
 from [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)</p>
 
-## K-mer分析步骤
+## 2.2. K-mer分析步骤
 1. 通过切割二代测序的reads为K-mers
 2. 统计K-mer的总数和每一种K-mer的频数
 3. 绘制K-mer的频数分布图
@@ -66,7 +71,7 @@ from [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/arti
 6. 根据低频K-mer估计数据错误率，并修正基因组大小的估计。
 7. 根据K-mer的其他峰估计K-mer的杂合度和重复序列比例。
 
-## K-mer原理
+## 2.3. K-mer原理
 K-mer分析应用的前提假设是测序的reads是随机分布在基因组上的。
 
 首先定义几个变量，方便解释原理：
@@ -75,12 +80,12 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 - 总reads条数：n
 - K-mer长度：K
 
-### 碱基深度分布
+### 2.3.1. 碱基深度分布
 1. 单条read测序覆盖到某一个碱基的概率：L/G。
 2. 因为L/G很小，n很大，每个碱基覆盖深度服从泊松分布。
 3. 则每个碱基的覆盖深度的期望为：d=(L/G)*n。
 
-### K-mer深度分布
+### 2.3.2. K-mer深度分布
 1. 一个大小为G的基因组可以产生的K-mer种类约为G
 - 假设一个基因组产生的K都是unique的，从一个大小为G的基因组可以得到(G-K+1)种不同的K-mer，
 - 一般而言，基因组大小G在几百Mb或者Gb为单位，远大于K和1，所以K和1可以忽略不计，约等于G种K-mer。
@@ -92,7 +97,7 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 4. 每种K-mer的覆盖深度的期望为：D=((L-K+1)/G)*n
 5. 由此可以得到，基因组大小为：G=(L-K+1)*n/D
 
-### 基因组大小
+### 2.3.3. 基因组大小
 1. 计算总K-mer个数N和K-mer期望深度D
 - 对测序reads进行K-mer分割，获得总K-mer个数N。
 - 统计所有分割的K-mer，绘制频数分布图。
@@ -103,7 +108,7 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 - K-mer的总数量N=(L-K+1)*n
 - K-mer的期望深度D=((L-K+1)/G)*n
 
-### 基因组调查
+### 2.3.4. 基因组调查
 在不考虑测序错误、序列重复性和杂合序列的条件下，K-mer的深度分布遵循泊松分布。但实际情况是三者都存在，所以需要计算错误率，重复序列占比和杂合度，并根据计算结果修正对基因组大小的估计。
 1. 错误率
 - 测序错误：一般认为低频K-mer(K=1,2...)是测序错误引起的，去除低频K-mer并计算错误率以修正基因组大小的估计。
@@ -132,7 +137,7 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 
 **<p align="center">Figure 2. K-mer分析(GenomeScope)结果示例</p>**
 
-## K-mer用途
+## 2.4. K-mer用途
 许多分析都会用到K-mer的处理方法，把测序得到的reads通过截取K-mer后用于分析。比如评估基因组特征，组装基因组，物种样品污染评估等。评估基因组特征(genome survey)包括评估基因组大小(size)，杂合度，重复序列比例等。
 
 1. 组装基因组
@@ -141,7 +146,7 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 2. 评估基因组大小(size)
 在K-mer原理部分解释了用K-mer评估基因组大小的公式：
 
-基因组大小G=总K-mer数量N/K-mer期望深度D
+>基因组大小G=总K-mer数量N/K-mer期望深度D
 
 在不考虑测序错误、序列重复性的条件下，K-mer的深度分布遵循泊松分布，可以将深度分布曲线的峰值作为期望测序深度。
 
@@ -160,7 +165,7 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 
 除了通过K-mer频数分布评估DNA样品的污染程度外，还可以通过GC含量分布图判断，查看图中是否存在多个密度集中的类群。
 
-## K-mer的特点
+## 2.5. K-mer的特点
 1. 增加准确率
 - 二代测序的准确率已达到99.9%，但测序量非常大时，错误碱基的绝对数量(比如10亿碱基里错误碱基数量会达到1000万个)还是会对分析有很大的影响。
 - 由于测序错误具有随机性，通过将reads切割产生的K-mer中，测序错误生成的K-mer绝大多数都是测序物种中不存在的K-mer，因此都只出现1次(或很少的几次)，要是将这些低频的K-mer去掉，就有较大可能去除测序错误，从而使得分析(基因组调查，组装基因组)结果更可靠。
@@ -168,7 +173,7 @@ K-mer分析应用的前提假设是测序的reads是随机分布在基因组上�
 2. 不适用过于复杂的基因组
 - K-mer分析适用于分析唯一主峰区域所占比例较大的基因组，当基因组杂合非常高或者重复序列比例非常大时，其影响可能导致无法通过K-mer分析正确估计基因组大小。
 
-## K-mer的选择
+## 2.6. K-mer的选择
 K-mer的大小选择：K应该足够大到K-mer可以映射到基因组的唯一位置；但太大的K-mer会降低去除低频K-mer代表的错误碱基的概率(增加错误率)，也会降低K-mer深度(使得K-mer频数分布的峰不明显)，而且大的K-mer会增加计算资源的使用。基因组调查一般选17，21比较常见。
 1. K-mer只能是奇数？
 把K-mer设置成奇数是为了防止通过K-mer组装时，正反链混淆。偶数的K-mer的反向互补序列常常与自身一样，从而组装K-mer时会混淆正反链的组装，奇数的K-mer就不存在这个问题。
@@ -177,61 +182,36 @@ K-mer的大小选择：K应该足够大到K-mer可以映射到基因组的唯一
 4. 由于reads上的碱基错误率的存在，选择较长的K-mer会带来较高的错误率，这也可以加大测序深度来弥补。
 5. 如果是用于组装基因组，为了得到更加完整的基因组，要尽可能使用较长的K-mer用于组装。
 
-# K-mer分析软件概况
+# 3. K-mer分析软件概况
 K-mer分析分为**K-mer频数统计**和**基因组特征评估**两步。
-- 软件KmerGenie可以同时实现两步。
-- 软件gce可以分别实现两步。
-- 软件jellyfish可以实现第一步K-mer频数统计。
-- 软件genomescope可以利用K-mer频数统计结果进行基因组特征评估。
-- 软件KmerGenie，gce和jellyfish获取的频数分布表，都可用于软件genomescope和gce第二步骤的分析。
-
-- KAT(The K-mer Analysis Toolkit)
-
-这几个软件的特点：
-- jellyfish：使用Hash表存储数据，能多线程运行；速度快，内存消耗小。
-- KAT(The K-mer Analysis Toolkit)：包含多个工具来帮助用户通过使用k-mer对测序数据进行简单分析，如组装完整性、测序错误、是否有污染等。
-- gce：
-- KmerGenie：最大优点在于可以实现在多个预设k-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。
-
+1. jellyfish
+jellyfish可以实现第一步K-mer频数统计。特点是使用Hash表存储数据，能多线程运行；速度快，内存消耗小。
+2. GenomeScope
+软件GenomeScope可以利用K-mer频数统计结果进行基因组特征评估。
+3. KAT(The K-mer Analysis Toolkit)
+软件KAT(The K-mer Analysis Toolkit)可以实现两步。包含多个工具来帮助用户通过使用k-mer对测序数据进行简单分析，如组装完整性、测序错误、是否有污染等。
+4. gce
+可以分别实现两步骤。
+5. KmerGenie
+软件KmerGenie可以同时实现两步。最大优点在于可以实现在多个预设K-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。
 
 notes：
-- 推荐使用**jellyfish+genomescope**进行K-mer分析。
+- 推荐使用**jellyfish**+**GenomeScope**进行K-mer分析。
+- K-mer长度常用17/21。
+- 软件KmerGenie，gce和jellyfish获取的频数分布表，都可用于软件genomescope和gce第二步骤的分析。
 - 由于gce第一步骤支持的最大K-mer频数为255，大于255的数据被合并；而jellyfish统计到10000行，预估结果会更为准确。
-- Genomescope对于高重复序列的基因组统计的基因组大小会偏小，建议max kmer coverage设置成10000。
-- K-mer长度常用17/21/25。
+- GenomeScope对于高重复序列的基因组统计的基因组大小会偏小，建议max kmer coverage设置大一点，大于等于10000。
+- 有些软件有另一个参数需注意和设定，单倍体模式还是杂合模式，可以两种模式都分析，查看差别。
+- 实践经验发现，K-mer值设置得越高，估计出来的基因组size会越大；
+- 另外，在jellyfish里的jellyfish histo统计频数分布时，用参数-h 10000把统计上限调高，以及在GenomeScope阶段，Max kmer coverage设置的大一些(即统计进的kmer数量越多)，估算出来的基因组大小也会略大一些。
 
-另一个参数需注意和设定，单倍体模式还是杂合模式，可以两种模式都分析，查看差别。
-
-实践经验发现，K-mer值设置得越高，估计出来的基因组size会越大；
-
-另外，在jellyfish里的jellyfish histo统计频数分布时，用参数-h 10000把统计上限调高，以及在GenomeScope阶段，Max kmer coverage设置的大一些(即统计进的kmer数量越多)，估算出来的基因组大小也会略大一些。
-
-### R绘制
-3. ggplot绘制
-
-R脚本绘制K-mer频数分布曲线初步查看基因组特征
-```R
-#R 脚本示例
-kmer <- read.table('sample.histo')
-kmer <- subset(kmer, V1 >=5 & V1 <=500) #对频数范围5-500的数据进行绘制 
-Frequency <- kmer$V1
-Number <- kmer$V2
-png('kmer_plot.png')
-plot(Frequency, Number, type = 'l', col = 'blue')
-dev.off()
-```
-获得kmer_plot.png为频数分布曲线，可查看曲线峰值对基因组大小进行计算和预估。
-
-
-# references
-1. https://en.wikipedia.org/wiki/K-mer
-2. https://xuzhougeng.top/archives/genome-survey-using-kmers
+# 4. references
+1. [wiki:K-mer](https://en.wikipedia.org/wiki/K-mer)
+2. [xuzhougeng's blog: genome survey](https://xuzhougeng.top/archives/genome-survey-using-kmers)
 3. [xuzhougeng's blog](https://www.jianshu.com/p/85de8f025899)
-4. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
-5. [jellyfish github](https://github.com/gmarcais/Jellyfish)
-6. [GenomeScope github](https://github.com/schatzlab/genomescope)
-7. [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)
-8. [K-mer分析和原理](https://www.bbsmax.com/A/lk5aQMxP51/)
-9. [jellyfish参数推荐](https://www.bilibili.com/read/cv16360242)
-10. [chenlianfu blog: jellyfish参数推荐](http://www.chenlianfu.com/?p=806)
-11. [KAT](https://github.com/TGAC/KAT)
+4. [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)
+5. [K-mer分析和原理](https://www.bbsmax.com/A/lk5aQMxP51/)
+6. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
+7. [jellyfish github](https://github.com/gmarcais/Jellyfish)
+8. [GenomeScope github](https://github.com/schatzlab/genomescope)
+9. [KAT](https://github.com/TGAC/KAT)
