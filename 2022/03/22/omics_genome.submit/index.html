@@ -28,7 +28,7 @@
 <meta property="og:description" content="此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-22T13:30:00.000Z">
-<meta property="article:modified_time" content="2022-05-24T07:23:22.478Z">
+<meta property="article:modified_time" content="2022-05-27T04:24:30.890Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome">
 <meta property="article:tag" content="genome submit">
@@ -203,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-24 15:23:22" itemprop="dateModified" datetime="2022-05-24T15:23:22+08:00">2022-05-24</time>
+                <time title="修改时间：2022-05-27 12:24:30" itemprop="dateModified" datetime="2022-05-27T12:24:30+08:00">2022-05-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -425,8 +425,11 @@
 <li>括号（包括圆括号和中括号）不完整的</li>
 </ul>
 <p>在整理基因组结构注释和功能注释时，可以先用table2asn检测错误，以指导注释合并。</p>
-<h4 id="4-2-3-3-报错和修正方案"><a href="#4-2-3-3-报错和修正方案" class="headerlink" title="4.2.3.3. 报错和修正方案"></a>4.2.3.3. 报错和修正方案</h4><p>table2asn运行结束后要根据输出文件的报错进行调整，并重新运行直至没有报错再提交给NCBI。</p>
-<p>NCBI给出了<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/validation/">Validation and Discrepancy Report Error Explanations</a>和<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/genome_validation/">Validation Error Explanations for Genomes</a>可以参考报错含义和解决方案。</p>
+<h4 id="4-2-3-3-报错和修正方案"><a href="#4-2-3-3-报错和修正方案" class="headerlink" title="4.2.3.3. 报错和修正方案"></a>4.2.3.3. 报错和修正方案</h4><ul>
+<li>table2asn运行结束后要根据输出文件的报错进行调整，并重新运行直至没有报错再提交给NCBI。</li>
+<li>实践中发现修正一个错误后产生新的错误的情况是很常见的，所以多次运行table2asn也是很有必要的。</li>
+<li>NCBI给出了<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/validation/">Validation and Discrepancy Report Error Explanations</a>和<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/genome_validation/">Validation Error Explanations for Genomes</a>可以参考报错含义和解决方案。</li>
+</ul>
 <p>下面我总结了一下我遇到的报错类型和修正方案：</p>
 <h5 id="4-2-3-3-1-sample-stats-x2F-sample-val文件中报错ERROR"><a href="#4-2-3-3-1-sample-stats-x2F-sample-val文件中报错ERROR" class="headerlink" title="4.2.3.3.1. sample.stats&#x2F;sample.val文件中报错ERROR"></a>4.2.3.3.1. sample.stats&#x2F;sample.val文件中报错ERROR</h5><p>添加<code>pseudo=true</code>属性值的命令举例：<code>sed -i &#39;/ID=Bv00639;/ &#123;s/$/pseudo=true;/g&#125;&#39; sample.gff</code></p>
 <ol>
@@ -446,13 +449,18 @@
 </ul>
 </li>
 <li><strong>SEQ_FEAT.SeqLocOrder</strong><ul>
-<li>当gff的exon位置有重叠时。</li>
-<li>可以参考mRNA和CDS序列的位置更改重叠的exon位置；exons的边界和mRNA一致，数量和CDS一致。</li>
+<li>当gff的exon&#x2F;CDS间的位置有重叠时。</li>
+<li>可以参考mRNA和CDS序列的位置更改重叠的exon&#x2F;CDS位置，删除多余的exon&#x2F;CDS；exons的边界和mRNA一致，数量和CDS一致。</li>
 </ul>
 </li>
-<li><strong>SEQ_FEAT.CDSmRNAXrefLocationProblem</strong>或<strong>SEQ_FEAT.CDSwithMultipleMRNAs</strong><ul>
+<li><strong>SEQ_FEAT.CDSmRNAXrefLocationProblem</strong><ul>
 <li>当gff注释CDS和exon的位置或数量不一致时</li>
 <li>可以更改exon或CDS位置和数量。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.CDSwithMultipleMRNAs</strong><ul>
+<li>当gff注释CDS和exon的位置不一致时，这个报错添加<code>pseudo=true</code>属性值之后还是存在。实践发现有时与<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>一同出现且数量一致。</li>
+<li>需要更改exon或CDS位置和数量。</li>
 </ul>
 </li>
 <li><strong>SEQ_FEAT.ShortIntron</strong><ul>
@@ -462,7 +470,7 @@
 </li>
 <li><strong>SEQ_FEAT.TransLen</strong><ul>
 <li>表示蛋白质长度与预测的蛋白质长度不匹配，运行错误</li>
-<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#x67;&#x65;&#x6e;&#x6f;&#109;&#101;&#115;&#64;&#110;&#99;&#98;&#x69;&#x2e;&#110;&#108;&#x6d;&#x2e;&#x6e;&#x69;&#104;&#46;&#x67;&#111;&#118;">&#x67;&#x65;&#x6e;&#x6f;&#109;&#101;&#115;&#64;&#110;&#99;&#98;&#x69;&#x2e;&#110;&#108;&#x6d;&#x2e;&#x6e;&#x69;&#104;&#46;&#x67;&#111;&#118;</a>)让帮忙修改这个错误。</li>
+<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#x67;&#x65;&#x6e;&#x6f;&#109;&#x65;&#115;&#64;&#x6e;&#99;&#x62;&#105;&#x2e;&#x6e;&#x6c;&#109;&#46;&#x6e;&#105;&#104;&#x2e;&#103;&#111;&#x76;">&#x67;&#x65;&#x6e;&#x6f;&#109;&#x65;&#115;&#64;&#x6e;&#99;&#x62;&#105;&#x2e;&#x6e;&#x6c;&#109;&#46;&#x6e;&#105;&#104;&#x2e;&#103;&#111;&#x76;</a>)让帮忙修改这个错误。</li>
 </ul>
 </li>
 <li><strong>SEQ_FEAT.BadInternalCharacter</strong><ul>
@@ -484,17 +492,22 @@
 </li>
 <li>当gff的product属性不符合蛋白产物名称规定时，会生成Adiantum.nelumboides.fixedproducts文件，记录把不符合规定的product属性值改为<strong>hypothetical protein</strong>。可以提取不符合规定的product属性值用于product的filter。</li>
 </ol>
-<h5 id="4-2-3-3-2-sample-stats-x2F-sample-val文件中的报警WARNING"><a href="#4-2-3-3-2-sample-stats-x2F-sample-val文件中的报警WARNING" class="headerlink" title="4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警WARNING"></a>4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警<strong>WARNING</strong></h5><p>部分WARNING也最好修复；比如<strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong>和<strong>SEQ_FEAT.DuplicateFeat</strong>虽然是在WARNING-level messages中，但上传给NCBI后收到邮件让修改后重新提交。</p>
+<h5 id="4-2-3-3-2-sample-stats-x2F-sample-val文件中的报警WARNING"><a href="#4-2-3-3-2-sample-stats-x2F-sample-val文件中的报警WARNING" class="headerlink" title="4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警WARNING"></a>4.2.3.3.2. sample.stats&#x2F;sample.val文件中的报警<strong>WARNING</strong></h5><p>部分WARNING也需要修复；比如<strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong>和<strong>SEQ_FEAT.DuplicateFeat</strong>虽然是在WARNING-level messages中，但上传给NCBI后收到邮件让修改后重新提交。</p>
 <ol>
 <li><strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong><ul>
 <li>exon和CDS的位置或数量不一致且有中间终止密码子导致</li>
-<li>可以调整exon和CDS的位置和数量；可能引入<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong>错误，若引入则在gene行的第九列添加<code>pseudo=true</code>属性值；</li>
-<li>发现一个例子，<strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong>的数量与<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>和<strong>SEQ_FEAT.CDSmRNAMismatchLocation</strong>一样，上传给NCBI后收到邮件让修改<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>和<strong>SEQ_FEAT.CDSmRNAMismatchLocation</strong>。</li>
+<li>可以调整exon和CDS的位置和数量；可能引入<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong> 或 <strong>SEQ_FEAT.ShortIntron</strong> 错误，若引入则在gene行的第九列添加<code>pseudo=true</code>属性值；也可以直接添加<code>pseudo=true</code>属性值。</li>
+<li>实践发现一个例子，<strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong>的数量与<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>和<strong>SEQ_FEAT.CDSmRNAMismatchLocation</strong>一样，上传给NCBI后收到邮件让修改<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>和<strong>SEQ_FEAT.CDSmRNAMismatchLocation</strong>。这种情况修改exon和CDS的位置和数量很可能导致<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong>错误，所以建议直接在gene行的第九列添加<code>pseudo=true</code>属性值。</li>
 </ul>
 </li>
 <li><strong>SEQ_FEAT.DuplicateFeat</strong><ul>
-<li>当gff在同样的位置注释了多个gene时</li>
-<li>需要删除其中一个。</li>
+<li>当gff在同样的位置注释了多个gene时。</li>
+<li>需要删除其中一个，或者修改重复gene注释为可变剪切的注释。</li>
+</ul>
+</li>
+<li><strong>SEQ_FEAT.GeneXrefStrandProblem</strong><ul>
+<li>基因的CDS或exon位置信息不一致时，可能报错</li>
+<li>修改位置信息为一致，或者在gene行的第九列添加<code>pseudo=true</code>属性值；</li>
 </ul>
 </li>
 </ol>
@@ -503,12 +516,28 @@
 <h3 id="4-2-5-提交后修改"><a href="#4-2-5-提交后修改" class="headerlink" title="4.2.5. 提交后修改"></a>4.2.5. 提交后修改</h3><p>提交给NCBI后会收到邮件通知处理进度，如果有错误，会在提交网站显示Error提交状态，并收到需要更改的邮件。根据邮件提示修正注释错误，重复table2asn生成sqn文件和修正错误的步骤直至没有错误在NCBI修正错误(提交新的sqn文件)。</p>
 <p>下面记录了我遇到的邮件中提到的错误和修改方案：</p>
 <ol>
-<li><p><strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong><br>exon和CDS的位置或数量不一致且有中间终止密码子导致。可以调整exon和CDS的位置和数量；可能引入<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong>错误，若引入则在gene行的第九列添加<code>pseudo=true</code>属性值；</p>
-</li>
-<li><p><strong>SEQ_FEAT.DuplicateFeat</strong><br>这个错误是同一位置注释到多个基因引起的，可以提取邮件中的gene ID(重复基因的第二个)信息，保存成gene ID list，然后用命令<code>grep -v -f geneID.list sample.gff &gt;sample.revised.gff</code>删除list里的注释信息。</p>
-</li>
-<li><p><strong>Discrepancy</strong><br>Discrepancy.txt文件中保存了一些不符合标准的报错，比如product属性值中有横杠起始的元素，或者括号不完全，根据Discrepancy.txt文件指出的错误一条条修改。</p>
-</li>
+<li><strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong><br>实践经验1</li>
+</ol>
+<ul>
+<li>exon和CDS的位置或数量不一致且有中间终止密码子导致。</li>
+<li>可以调整exon和CDS的位置和数量；可能引入<strong>SEQ_FEAT.InternalStop</strong> 和 <strong>SEQ_INST.StopInProtein</strong>错误；若引入则在gene行的第九列添加<code>pseudo=true</code>属性值；</li>
+</ul>
+<p>实践经验2</p>
+<ul>
+<li>exon和CDS的位置或数量不一致且有中间终止密码子导致。同时存在数量一致的<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>和<strong>SEQ_FEAT.CDSmRNAMismatchLocation</strong>。</li>
+<li>在gene行的第九列添加<code>pseudo=true</code>属性值后，<strong>SEQ_FEAT.SeqFeatXrefNotReciprocal</strong>和<strong>CDSmRNAMismatchLocation</strong>消失并转化成ERROR水平信息<strong>SEQ_FEAT.CDSwithMultipleMRNAs</strong>，数量与<strong>SEQ_FEAT.CDSmRNAmismatchCount</strong>一致。</li>
+<li>调整exon和CDS的位置和数量，并且在gene行的第九列添加<code>pseudo=true</code>属性值。</li>
+</ul>
+<ol start="2">
+<li><strong>SEQ_FEAT.DuplicateFeat</strong></li>
+</ol>
+<ul>
+<li>这个错误是同一位置注释到多个基因引起的，可以提取邮件中的gene ID(重复基因的第二个)信息，保存成gene ID list，然后用命令<code>grep -v -f geneID.list sample.gff &gt;sample.revised.gff</code>删除list里的注释信息。</li>
+<li>如果邮件里没有gene ID信息，可以用<code>cat sample.val |grep DuplicateFeat</code>里查看错误的位置信息，根据位置信息查找gff的重复注释位置，并删除其中一个基因注释。</li>
+<li>除了直接删除重复的整个基因注释外，还可以把重复基因的注释变成一个基因的多个可变剪切注释(删除重复基因的gene注释，把重复基因的mRNA注释的parent属性改为另一个基因)。</li>
+</ul>
+<ol start="3">
+<li><strong>Discrepancy</strong><br>Discrepancy.txt文件中保存了一些不符合标准的报错，比如product属性值中有横杠起始的元素，或者括号不完全，根据Discrepancy.txt文件指出的错误一条条修改。</li>
 </ol>
 <p><code>cat sample.dr |grep &quot;FATAL&quot;</code>查看FATAL报错信息，如果物种不是细菌则可以忽略BACTERIAL_开头的报错信息；CONTAINED_CDS开头的信息不影响提交，也可暂时忽略。<br>如果product属性值中有不完整的括号，会显示<strong>FATAL: SUSPECT_PRODUCT_NAMES: 9 features contain unbalanced brackets or parentheses</strong>，需要处理需要处理(添加括号或者删除括号)。</p>
 <h2 id="4-3-提交状态"><a href="#4-3-提交状态" class="headerlink" title="4.3. 提交状态"></a>4.3. 提交状态</h2><p>在提交网页，提交后会显示提交状态，经过一轮机器自动验证和两轮人工检查后可公开数据。</p>
@@ -674,20 +703,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">194</span>
+        <span class="site-state-item-count">201</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

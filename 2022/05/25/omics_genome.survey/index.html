@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="基因组调查(genome survey)的概念和方法，K-mer分析的原理，利用K-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用K-mer分析进行基因组调查(genome survey)">
+<meta property="og:url" content="http://example.com/2022/05/25/omics_genome.survey/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="基因组调查(genome survey)的概念和方法，K-mer分析的原理，利用K-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-6581713/k82jlzu9rb.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true">
+<meta property="article:published_time" content="2022-05-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-27T09:37:56.513Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="genome survey">
+<meta property="article:tag" content="K-mer">
+<meta property="article:tag" content="jellyfish">
+<meta property="article:tag" content="GenomeScope">
+<meta property="article:tag" content="KAT">
+<meta property="article:tag" content="gce">
+<meta property="article:tag" content="KmerGenie">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ask.qcloudimg.com/http-save/yehe-6581713/k82jlzu9rb.png?imageView2/2/w/1620">
+
+<link rel="canonical" href="http://example.com/2022/05/25/omics_genome.survey/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>用K-mer分析进行基因组调查(genome survey) | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/25/omics_genome.survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用K-mer分析进行基因组调查(genome survey)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-25T00:00:00+08:00">2022-05-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-27 17:37:56" itemprop="dateModified" datetime="2022-05-27T17:37:56+08:00">2022-05-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/genome-survey/" itemprop="url" rel="index"><span itemprop="name">genome survey</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/05/25/omics_genome.survey/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/05/25/omics_genome.survey/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">基因组调查(genome survey)的概念和方法，K-mer分析的原理，利用K-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283096&auto=1&height=32"></iframe></div>
+
+<h1 id="1-基因组调查-genome-survey"><a href="#1-基因组调查-genome-survey" class="headerlink" title="1. 基因组调查(genome survey)"></a>1. 基因组调查(genome survey)</h1><h2 id="1-1-基因组调查"><a href="#1-1-基因组调查" class="headerlink" title="1.1. 基因组调查"></a>1.1. 基因组调查</h2><p>基因组调查(genome survey)指基因组特征评估，一般指通过K-mer分析二代测序数据，获得基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等基因组信息的手段。</p>
+<ol>
+<li><p>基因组调查介绍<br>对于高等真核生物(特别是高等植物)来说，在进行基因组denovo测序和正式组装之前，首先构建DNA小片段文库进行中低深度的二代测序，使用测序所得的reads(通常是illumina的PE reads)进行基因组调查(genome survey)，来初步评估基因组特征，包括基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等，从而为后续的基因组测序、组装和结构注释方案提供参考依据。</p>
+</li>
+<li><p>基因组调查的目的<br>基因组调查主要目的是获取两个方面的信息，一个是基因组的大小，一个是基因组复杂程度。</p>
+</li>
+</ol>
+<ul>
+<li>基因组大小(genome size)<br>因为测序费用是以测序量为单价计算，所以基因组越大，测序费用越高。</li>
+<li>基因组复杂程度<br>基因组越复杂(杂合度越高，重复序列占比越高)，意味着测序难度和组装难度越大。</li>
+</ul>
+<ol start="3">
+<li>基因组调查实践</li>
+</ol>
+<ul>
+<li>为了准确估计基因组信息，建议测序深度为50X，即预估基因组大小的50倍，最小也不低于25X。</li>
+<li>做基因组调查和后续做基因组denovo测序需要使用同一个个体，因为有些物种个体间的基因组特征有较大的差异，且同一个个体做survey的illumina数据可用于优化组装。</li>
+<li>预估基因组大小可以通过已有研究粗略判断，包括流式细胞研究，近缘种研究，也推荐植物在<a target="_blank" rel="noopener" href="https://cvalues.science.kew.org/">C值数据库网站</a>里查询。</li>
+<li>基因组调查(genome survey)常常使用<strong>K-mer分析</strong>来实现。</li>
+</ul>
+<h2 id="1-2-基因组复杂程度"><a href="#1-2-基因组复杂程度" class="headerlink" title="1.2. 基因组复杂程度"></a>1.2. 基因组复杂程度</h2><p>基因组复杂程序的判断标准包括：基因组大小，倍性，杂合度，重复序列比例，GC含量等。</p>
+<p>一般而言，基因组越大，重复序列比例越高; GC含量异常低或异常高，重复序列比例也会很高；多倍体基因组的杂合度高于二倍体。</p>
+<p>判断基因组复杂程度可以参考以下经验性标准：</p>
+<ul>
+<li>简单基因组: 单倍体；或纯合二倍体；或杂合度低于0.5%, 且重复序列低于50%, 且GC含量在35%-65%的二倍体。</li>
+<li>复杂基因组: 杂合度在0.5%~1.2%之间，或重复序列高于50%，或GC含量异常(&lt;35%或&gt;65%)的二倍体，或者多倍体。</li>
+<li>高复杂基因组: 杂合度&gt;1.2%；或重复序列占比大于65%。</li>
+</ul>
+<h1 id="2-K-mer分析"><a href="#2-K-mer分析" class="headerlink" title="2. K-mer分析"></a>2. K-mer分析</h1><p>K-mer分析可以用在生物信息学许多方面，这篇博客的K-mer分析特指用于基因组调查的K-mer分析方法。</p>
+<h2 id="2-1-K-mer相关概念"><a href="#2-1-K-mer相关概念" class="headerlink" title="2.1. K-mer相关概念"></a>2.1. K-mer相关概念</h2><ol>
+<li>monomeric unit (mer): 单体单元，单位是nt或者bp。通常用于双链核酸中的单位，100 mer DNA相当于每一条链有100nt，那么整条链就是100bp。</li>
+<li>K-mer概念<br>在生物信息学中，K-mer是指包含在一段序列中的长度为k的子串。一段长度为L的核酸序列，以一个碱基为步长滑动，一共可以生成(L-K+1)个K-mers，另外还可以用这段核酸的反向互补序列再生成一次K-mer。</li>
+</ol>
+<img src="https://ask.qcloudimg.com/http-save/yehe-6581713/k82jlzu9rb.png?imageView2/2/w/1620" title="K-mer示例" width="90%"/>
+
+<p><strong><p align="center">Figure 1. K-mer示例</strong><br>from <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613847">博客：k-mer与基因组组装</a></p></p>
+<h2 id="2-2-K-mer分析步骤"><a href="#2-2-K-mer分析步骤" class="headerlink" title="2.2. K-mer分析步骤"></a>2.2. K-mer分析步骤</h2><ol>
+<li>通过切割二代测序的reads为K-mers</li>
+<li>统计K-mer的总数和每一种K-mer的频数</li>
+<li>绘制K-mer的频数分布图</li>
+<li>根据K-mer的频数分布的主峰峰值判定K-mer的期望深度(即主峰对应的K-mer频数)。</li>
+<li>根据K-mer的期望深度和K-mer的总数估计基因组大小。</li>
+<li>根据低频K-mer估计数据错误率，并修正基因组大小的估计。</li>
+<li>根据K-mer的其他峰估计K-mer的杂合度和重复序列比例。</li>
+</ol>
+<h2 id="2-3-K-mer原理"><a href="#2-3-K-mer原理" class="headerlink" title="2.3. K-mer原理"></a>2.3. K-mer原理</h2><p>K-mer分析应用的前提假设是测序的reads是随机分布在基因组上的。</p>
+<p>首先定义几个变量，方便解释原理：</p>
+<ul>
+<li>基因组大小：G</li>
+<li>read读长：L</li>
+<li>总reads条数：n</li>
+<li>K-mer长度：K</li>
+</ul>
+<h3 id="2-3-1-碱基深度分布"><a href="#2-3-1-碱基深度分布" class="headerlink" title="2.3.1. 碱基深度分布"></a>2.3.1. 碱基深度分布</h3><ol>
+<li>单条read测序覆盖到某一个碱基的概率：L&#x2F;G。</li>
+<li>因为L&#x2F;G很小，n很大，每个碱基覆盖深度服从泊松分布。</li>
+<li>则每个碱基的覆盖深度的期望为：d&#x3D;(L&#x2F;G)*n。</li>
+</ol>
+<h3 id="2-3-2-K-mer深度分布"><a href="#2-3-2-K-mer深度分布" class="headerlink" title="2.3.2. K-mer深度分布"></a>2.3.2. K-mer深度分布</h3><ol>
+<li>一个大小为G的基因组可以产生的K-mer种类约为G</li>
+</ol>
+<ul>
+<li>假设一个基因组产生的K都是unique的，从一个大小为G的基因组可以得到(G-K+1)种不同的K-mer，</li>
+<li>一般而言，基因组大小G在几百Mb或者Gb为单位，远大于K和1，所以K和1可以忽略不计，约等于G种K-mer。</li>
+</ul>
+<ol start="2">
+<li>单条read测序完全覆盖某种K-mer的概率：(L-K+1)&#x2F;G</li>
+</ol>
+<ul>
+<li>K-mer种类的总数约为G</li>
+<li>单条read能产生的K-mer种类数量为(L-K+1)</li>
+<li>假设read随机分布在基因组上，单条read测序完全覆盖某种K-mer的概率就为：(L-K+1)&#x2F;G</li>
+</ul>
+<ol start="3">
+<li>同样因为(L-K+1)&#x2F;G很小，n很大，每种K-mer的覆盖深度服从泊松分布。</li>
+<li>每种K-mer的覆盖深度的期望为：D&#x3D;((L-K+1)&#x2F;G)*n</li>
+<li>由此可以得到，基因组大小为：G&#x3D;(L-K+1)*n&#x2F;D</li>
+</ol>
+<h3 id="2-3-3-基因组大小"><a href="#2-3-3-基因组大小" class="headerlink" title="2.3.3. 基因组大小"></a>2.3.3. 基因组大小</h3><ol>
+<li>计算总K-mer个数N和K-mer期望深度D</li>
+</ol>
+<ul>
+<li>对测序reads进行K-mer分割，获得总K-mer个数N。</li>
+<li>统计所有分割的K-mer，绘制频数分布图。</li>
+<li>理想情况下(不考虑测序错误、序列重复性和杂合序列的条件下)，K-mer的频数分布遵循泊松分布，可以将频数分布峰值的K-mer频数作为K-mer的期望深度D。</li>
+</ul>
+<ol start="2">
+<li>通过下面公式可知，基因组大小G&#x3D;N&#x2F;D。<br>只要通过K-mer分析计算得到K-mer的总数量N和K-mer的期望深度D，则可以算出基因组大小G。</li>
+</ol>
+<ul>
+<li>K-mer的总数量N&#x3D;(L-K+1)*n</li>
+<li>K-mer的期望深度D&#x3D;((L-K+1)&#x2F;G)*n</li>
+</ul>
+<h3 id="2-3-4-基因组调查"><a href="#2-3-4-基因组调查" class="headerlink" title="2.3.4. 基因组调查"></a>2.3.4. 基因组调查</h3><p>在不考虑测序错误、序列重复性和杂合序列的条件下，K-mer的深度分布遵循泊松分布。但实际情况是三者都存在，所以需要计算错误率，重复序列占比和杂合度，并根据计算结果修正对基因组大小的估计。</p>
+<ol>
+<li>错误率</li>
+</ol>
+<ul>
+<li>测序错误：一般认为低频K-mer(K&#x3D;1,2…)是测序错误引起的，去除低频K-mer并计算错误率以修正基因组大小的估计。</li>
+<li>一般把拐点前的低频K-mer当作错误去除。</li>
+</ul>
+<ol start="2">
+<li>重复序列占比</li>
+</ol>
+<ul>
+<li>基因组中存在的重复序列会使对应的K-mer频数高于K-mer期望深度D。</li>
+<li>在K-mer频数分布图中重复序列对应的K-mer会表现为频数大于主峰的一个重复峰。</li>
+<li>根据主峰右侧的重复峰可以估计基因组的重复序列比例。<ul>
+<li>通过模型计算一个阈值，比如阈值为1.6倍主峰，理论上单拷贝序列(非重复序列)出现在1.6倍主峰右边的概率很低，可以把1.6倍主峰之后的看作重复K-mer，统计重复K-mer的总数量m，从而可以算出：重复序列的大小R&#x3D;重复K-mer的总数量m&#x2F;K-mer的期望深度D。</li>
+<li>R&#x2F;G即为重复序列占基因组的比例。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>杂合度</li>
+</ol>
+<ul>
+<li>基因组中存在的杂合序列会对应两种类型的K-mer，并使得这些K-mer频数低于K-mer期望深度D。</li>
+<li>假设两种K-mer数量大致相等，在K-mer频数分布图中杂合序列对应的K-mer会表现为频数约为主峰一半的一个杂合峰。</li>
+<li>根据主峰左侧的杂合峰可以估计基因组的杂合度。<ul>
+<li><p>假设基因组中的杂合率为 h（每个碱基为杂合点的概率）,一个K-mer是纯合k-mer的概率为 P1 &#x3D; (1-h)^k, 则是杂合的概率 P2 &#x3D; 1-P1 &#x3D; 1-(1-h)^k。</p>
+</li>
+<li><p>假设产生的K-mer种类的总数为M，其中属于单拷贝序列(非重复序列)的K-mer种类</p>
+</li>
+<li><p>在二倍体中，单拷贝序列(非重复序列)的同源区域，会产生 U×P2 的杂合K-mer，这个数是可以通过计算得到的：只要统计非重复K-mer的总数 M , M-U即为产生的杂合K-mer数。则 M-U &#x3D; U×P2 &#x3D; U×(1-(1-h)^k)。</p>
+</li>
+<li><p>通过计算，即可通过M和U的值得到基因组的杂合率h。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在实际应用过程中，估计了基因组的错误率、杂合度和重复序列比例后，重新修正基因组大小的估计，从而得到基因组调查的结果。</p>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true" width=70% title="K-mer分析(GenomeScope)结果示例" align=center/>
+
+<p><strong><p align="center">Figure 2. K-mer分析(GenomeScope)结果示例</p></strong></p>
+<h2 id="2-4-K-mer用途"><a href="#2-4-K-mer用途" class="headerlink" title="2.4. K-mer用途"></a>2.4. K-mer用途</h2><p>许多分析都会用到K-mer的处理方法，把测序得到的reads通过截取K-mer后用于分析。比如评估基因组特征，组装基因组，物种样品污染评估等。评估基因组特征(genome survey)包括评估基因组大小(size)，杂合度，重复序列比例等。</p>
+<ol>
+<li><p>组装基因组<br>组装基因组使用K-mer的目的主要是去除低频率的K-mer以提高组装结果准确性。</p>
+</li>
+<li><p>评估基因组大小(size)<br>在K-mer原理部分解释了用K-mer评估基因组大小的公式：</p>
+</li>
+</ol>
+<blockquote>
+<p>基因组大小G&#x3D;总K-mer数量N&#x2F;K-mer期望深度D</p>
+</blockquote>
+<p>在不考虑测序错误、序列重复性的条件下，K-mer的深度分布遵循泊松分布，可以将深度分布曲线的峰值作为期望测序深度。</p>
+<ol start="3">
+<li><p>评估基因组杂合度<br>根据K-mer频数分布图的杂合峰，可以估计基因组的杂合度。</p>
+</li>
+<li><p>评估基因组重复序列比例<br>根据K-mer频数分布图的重复峰，可以估计基因组的重复序列比例。</p>
+</li>
+<li><p>评估物种样品污染<br>根据K-mer频数分布图，可以评估测序样品污染情况。</p>
+</li>
+</ol>
+<ul>
+<li>如果K-mer频数分布图出现两个明显的峰，但两个峰的横坐标又不是二倍关系，那就可能是DNA污染导致的。</li>
+<li>因为一个物种的杂合峰的频数约为主峰的一半，重复峰的频数约为主峰的两倍。</li>
+<li>如果DNA中存在两个物种的样品(即有污染)，期望会出现对应的两个峰，且两个峰的横坐标之间也非两倍的关系，由此可以初步判定该测序样本存在污染。</li>
+<li>至于具体是因为什么物种造成污染，则可以通过blast比对nr库进行简单的判断。</li>
+</ul>
+<p>除了通过K-mer频数分布评估DNA样品的污染程度外，还可以通过GC含量分布图判断，查看图中是否存在多个密度集中的类群。</p>
+<h2 id="2-5-K-mer的特点"><a href="#2-5-K-mer的特点" class="headerlink" title="2.5. K-mer的特点"></a>2.5. K-mer的特点</h2><ol>
+<li>增加准确率</li>
+</ol>
+<ul>
+<li>二代测序的准确率已达到99.9%，但测序量非常大时，错误碱基的绝对数量(比如10亿碱基里错误碱基数量会达到1000万个)还是会对分析有很大的影响。</li>
+<li>由于测序错误具有随机性，通过将reads切割产生的K-mer中，测序错误生成的K-mer绝大多数都是测序物种中不存在的K-mer，因此都只出现1次(或很少的几次)，要是将这些低频的K-mer去掉，就有较大可能去除测序错误，从而使得分析(基因组调查，组装基因组)结果更可靠。</li>
+</ul>
+<ol start="2">
+<li>不适用过于复杂的基因组</li>
+</ol>
+<ul>
+<li>K-mer分析适用于分析唯一主峰区域所占比例较大的基因组，当基因组杂合非常高或者重复序列比例非常大时，其影响可能导致无法通过K-mer分析正确估计基因组大小。</li>
+</ul>
+<h2 id="2-6-K-mer的选择"><a href="#2-6-K-mer的选择" class="headerlink" title="2.6. K-mer的选择"></a>2.6. K-mer的选择</h2><p>K-mer的大小选择：K应该足够大到K-mer可以映射到基因组的唯一位置；但太大的K-mer会降低去除低频K-mer代表的错误碱基的概率(增加错误率)，也会降低K-mer深度(使得K-mer频数分布的峰不明显)，而且大的K-mer会增加计算资源的使用。基因组调查一般选17，21比较常见。</p>
+<ol>
+<li>K-mer只能是奇数？<br>把K-mer设置成奇数是为了防止通过K-mer组装时，正反链混淆。偶数的K-mer的反向互补序列常常与自身一样，从而组装K-mer时会混淆正反链的组装，奇数的K-mer就不存在这个问题。</li>
+<li>K-mer的长度代表了可能存在的K-mer种类的数量(4的K次方)，越长的K-mer片段映射的物种特异性越强。基因组越大，需要的K-mer越长。</li>
+<li>当基因组中有较多重复序列时，可以用较大的K-mer来跨过高重复的区域，从而获得更加准确及完整的基因组草图；</li>
+<li>由于reads上的碱基错误率的存在，选择较长的K-mer会带来较高的错误率，这也可以加大测序深度来弥补。</li>
+<li>如果是用于组装基因组，为了得到更加完整的基因组，要尽可能使用较长的K-mer用于组装。</li>
+</ol>
+<h1 id="3-K-mer分析软件概况"><a href="#3-K-mer分析软件概况" class="headerlink" title="3. K-mer分析软件概况"></a>3. K-mer分析软件概况</h1><p>K-mer分析分为<strong>K-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。</p>
+<ol>
+<li>jellyfish<br>jellyfish可以实现第一步K-mer频数统计。特点是使用Hash表存储数据，能多线程运行；速度快，内存消耗小。</li>
+<li>GenomeScope<br>软件GenomeScope可以利用K-mer频数统计结果进行基因组特征评估。</li>
+<li>KAT(The K-mer Analysis Toolkit)<br>软件KAT(The K-mer Analysis Toolkit)可以实现两步。包含多个工具来帮助用户通过使用k-mer对测序数据进行简单分析，如组装完整性、测序错误、是否有污染等。</li>
+<li>gce<br>可以分别实现两步骤。</li>
+<li>KmerGenie<br>软件KmerGenie可以同时实现两步。最大优点在于可以实现在多个预设K-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。</li>
+</ol>
+<p>notes：</p>
+<ul>
+<li>推荐使用<strong>jellyfish</strong>+<strong>GenomeScope</strong>进行K-mer分析。</li>
+<li>K-mer长度常用17&#x2F;21。</li>
+<li>软件KmerGenie，gce和jellyfish获取的频数分布表，都可用于软件genomescope和gce第二步骤的分析。</li>
+<li>由于gce第一步骤支持的最大K-mer频数为255，大于255的数据被合并；而jellyfish统计到10000行，预估结果会更为准确。</li>
+<li>GenomeScope对于高重复序列的基因组统计的基因组大小会偏小，建议max kmer coverage设置大一点，大于等于10000。</li>
+<li>有些软件有另一个参数需注意和设定，单倍体模式还是杂合模式，可以两种模式都分析，查看差别。</li>
+<li>实践经验发现，K-mer值设置得越高，估计出来的基因组size会越大；</li>
+<li>另外，在jellyfish里的jellyfish histo统计频数分布时，用参数-h 10000把统计上限调高，以及在GenomeScope阶段，Max kmer coverage设置的大一些(即统计进的kmer数量越多)，估算出来的基因组大小也会略大一些。</li>
+</ul>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/K-mer">wiki:K-mer</a></li>
+<li><a target="_blank" rel="noopener" href="https://xuzhougeng.top/archives/genome-survey-using-kmers">xuzhougeng’s blog: genome survey</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/85de8f025899">xuzhougeng’s blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613847">博客：k-mer与基因组组装</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bbsmax.com/A/lk5aQMxP51/">K-mer分析和原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true">jellyfish paper</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gmarcais/Jellyfish">jellyfish github</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/schatzlab/genomescope">GenomeScope github</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/TGAC/KAT">KAT</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
+              <a href="/tags/K-mer/" rel="tag"># K-mer</a>
+              <a href="/tags/jellyfish/" rel="tag"># jellyfish</a>
+              <a href="/tags/GenomeScope/" rel="tag"># GenomeScope</a>
+              <a href="/tags/KAT/" rel="tag"># KAT</a>
+              <a href="/tags/gce/" rel="tag"># gce</a>
+              <a href="/tags/KmerGenie/" rel="tag"># KmerGenie</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/24/biosoft_fileformat_GFF3toolkit/" rel="prev" title="GFF3文件处理软件 —— GFF3toolkit工具包的介绍和使用">
+      <i class="fa fa-chevron-left"></i> GFF3文件处理软件 —— GFF3toolkit工具包的介绍和使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5-genome-survey"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组调查(genome survey)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 基因组调查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 基因组复杂程度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-K-mer%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2. K-mer分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-K-mer%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. K-mer相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-K-mer%E5%88%86%E6%9E%90%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. K-mer分析步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-K-mer%E5%8E%9F%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. K-mer原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E7%A2%B1%E5%9F%BA%E6%B7%B1%E5%BA%A6%E5%88%86%E5%B8%83"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. 碱基深度分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-K-mer%E6%B7%B1%E5%BA%A6%E5%88%86%E5%B8%83"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2. K-mer深度分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3. 基因组大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4. 基因组调查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-K-mer%E7%94%A8%E9%80%94"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. K-mer用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-K-mer%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">2.5.</span> <span class="nav-text">2.5. K-mer的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-K-mer%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">2.6.</span> <span class="nav-text">2.6. K-mer的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-K-mer%E5%88%86%E6%9E%90%E8%BD%AF%E4%BB%B6%E6%A6%82%E5%86%B5"><span class="nav-number">3.</span> <span class="nav-text">3. K-mer分析软件概况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">201</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/05/25/omics_genome.survey/";
+    this.page.identifier = "2022/05/25/omics_genome.survey/";
+    this.page.title = "用K-mer分析进行基因组调查(genome survey)";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
