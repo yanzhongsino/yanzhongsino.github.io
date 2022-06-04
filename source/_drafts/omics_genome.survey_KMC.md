@@ -4,14 +4,17 @@ date: 2022-05-15
 categories:
 - omics
 - genome
+- genome survey
 tags:
+- genome
 - genome survey
 - k-mer
+- KMC
 
 description: 记录基因组调查(genome survey)的方法，利用k-mer分析来估计基因组大小，杂合度等基本信息。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283101&auto=1&height=32"></iframe></div>
 
 
 
