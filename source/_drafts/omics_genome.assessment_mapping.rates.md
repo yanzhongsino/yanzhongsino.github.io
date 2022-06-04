@@ -23,12 +23,30 @@ description: 记录基因组评估的方法，用测序reads（包括pacbio，il
 4. LAI：通过LTR组装指数评估基因组的连贯性(continuity)。
 
 
-## 基因组评估
-1. mapping rates
+## 基因组评估的方法
+### mapping rates
+1. Bwa+samtools
 Illumina genomic and RNA-seq reads were aligned to the genome using BWA-MEM53 and HISAT2, respectively, to calculate mapping rate.
 
 用BWA+SAMtools映射illumina reads到基因组，然后用samtools flagstat统计mapping rates
 
+```
+40229566 + 0 in total (QC-passed reads + QC-failed reads) #共有40229566条reads通过QC+0条reads未通过QC。
+628216 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+40229566 + 0 mapped (100.00% : N/A) # 100%比例的reads通过QC
+39601350 + 0 paired in sequencing
+19817401 + 0 read1 # read1的总数
+19783949 + 0 read2 # read2的总数
+33475942 + 0 properly paired (84.53% : N/A) # 84.53%比例的reads成对的映射上
+35671144 + 0 with itself and mate mapped # read映射上但配对read没映射上的数量
+3930206 + 0 singletons (9.92% : N/A) # 9.92%比例的read没映射上的同时，配对read映射上了，the read itself is unmapped, the mate is mapped
+2100134 + 0 with mate mapped to a different chr # reads和配对reads映射到不同染色体的情况下的reads数量
+1730635 + 0 with mate mapped to a different chr (mapQ>=5) # reads和配对reads映射到不同染色体，且映射质量大于等于5的情况下的reads数量
+```
+
+2. HISAT2
 用HISAT2映射RNA-seq reads到基因组
 hisat2-build -p 24 ../../../genome/Adiantum.nelumboides.fa Adiantum.nelumboides.hisat2 &
 hisat2 --dta -p 8 -x Adiantum.nelumboides.hisat2 -1../Leaf.clean.R1.fq.gz -2 ../Leaf.clean.R2.fq.gz |samtools sort -@ 12 > root.bam & #这一步会输出关于mapping rates的信息。

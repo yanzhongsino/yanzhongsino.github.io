@@ -36,3 +36,5 @@ gff
 gtf
 
 
+# references
+1. https://mp.weixin.qq.com/s/r0R0oY7StKjX91QaEtjzaA

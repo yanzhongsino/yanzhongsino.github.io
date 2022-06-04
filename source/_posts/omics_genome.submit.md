@@ -269,14 +269,23 @@ product值的不规范情况：
    - 实践发现一个例子，**SEQ_FEAT.SeqFeatXrefNotReciprocal**的数量与**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**一样，上传给NCBI后收到邮件让修改**SEQ_FEAT.CDSmRNAmismatchCount**和**SEQ_FEAT.CDSmRNAMismatchLocation**。这种情况修改exon和CDS的位置和数量很可能导致**SEQ_FEAT.InternalStop** 和 **SEQ_INST.StopInProtein**错误，所以建议直接在gene行的第九列添加`pseudo=true`属性值。
 2. **SEQ_FEAT.DuplicateFeat**
    - 当gff在同样的位置注释了多个gene时。
-   - 需要删除其中一个，或者修改重复gene注释为可变剪切的注释。
+   - 需要删除其中一个，或者修改重复gene注释为一个gene的多个可变剪切的注释。
 3. **SEQ_FEAT.GeneXrefStrandProblem**
    - 基因的CDS或exon位置信息不一致时，可能报错
    - 修改位置信息为一致，或者在gene行的第九列添加`pseudo=true`属性值；
 
 ##### 4.2.3.3.3. sample.dr文件中的报错FATAL
+1. **FATAL**
 `cat sample.dr |grep "FATAL"`查看FATAL报错信息，如果物种不是细菌则可以忽略BACTERIAL_开头的报错信息；CONTAINED_CDS开头的信息不影响提交，也可暂时忽略。
+
+2. **FATAL: SUSPECT_PRODUCT_NAMES**
 如果product属性值中有错误格式会报错，比如含有不完整的括号，会显示**FATAL: SUSPECT_PRODUCT_NAMES: 9 features contain unbalanced brackets or parentheses**，需要处理(添加括号或者删除括号)。
+
+3. **GENES_OPPOSITE_STRANDS**
+- 在sample.dr文件里搜索“DUP_GENES”，如果得到下面的信息，代表有24个基因重复注释到了相同位置的正反链。
+- 类似**SEQ_FEAT.DuplicateFeat**报错，但是是重复注释到正反链。
+> DUP_GENES_OPPOSITE_STRANDS: 24 genes match other genes in the same location, but on the opposite strand
+- 这条信息后面会给出24个基因的位置，删除重复的12条注释，或者修改重复gene注释为一个gene的多个可变剪切的注释。
 
 ### 4.2.4. 在线提交
 根据上一个部分**提交基因组到NCBI的GenBank**的步骤提交sqn文件到NCBI
