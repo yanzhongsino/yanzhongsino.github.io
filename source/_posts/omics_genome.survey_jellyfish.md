@@ -17,6 +17,8 @@ description: 介绍jellyfish，用jellyfish做基因组调查(genome survey)的k
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283097&auto=1&height=32"></iframe></div>
 
+**【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。**
+
 # 1. k-mer进行基因组调查的软件
 k-mer进行基因组调查分为**k-mer频数统计**和**基因组特征评估**两步。
 - jellyfish可以实现第一步k-mer频数统计。
