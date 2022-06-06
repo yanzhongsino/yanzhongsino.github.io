@@ -1,21 +1,37 @@
 ---
-title: genome survey
-date: 2022-05-15
+title: 用k-mer分析进行基因组调查(genome survey) —— 用gce
+date: 2022-06-06
 categories:
 - omics
 - genome
+- genome survey
 tags:
+- genome
 - genome survey
 - k-mer
+- gce
 
-description: 记录基因组调查(genome survey)的方法，利用k-mer分析来估计基因组大小，杂合度等基本信息。
+description: 介绍gce，用gce做基因组调查(genome survey)的k-mer频数统计和基因组特征评估。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
 
+**【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。**
+
+# 1. k-mer进行基因组调查的软件
+k-mer进行基因组调查分为**k-mer频数统计**和**基因组特征评估**两步。
+- gce可以分步实现两步。第一步k-mer频数统计和第二步基因组特征评估。
+- gce第一步的结果sample.histo可以用在GenomeScope和其他基因组特征评估的软件上，实现第二步。
+
+# gce 简介
 
 
-### gce
+# gce 安装
+
+
+
+# gce 运行
+## k-mer频数统计
 
 
 ```
@@ -45,32 +61,7 @@ gce -f sample.freq.stat -c n -b 1 -H 0 -m 1 -D 8 -M 256 > sample.gce.stat 2> sam
 
 
 ## 基因组特征评估
-### GenomeScope
-GenomeScope有网页版和Linux本地版。网页版又分为1.0和2.0两个版本。
 
-#### GenomeScope1.0 网页版
-使用[GenomeScope1.0 网页版](http://qb.cshl.edu/genomescope/)上传第一步获得的kmer频数分布表histo文件，设置参数Kmer length为第一步选择的k-mer长度值，这里是17；参数Read length为序列读长，一般为150；最后一个参数Max kmer coverage建议修改成10000，以统计更准确。
-
-结果显示预估的基因组大小，杂合度，重复率等信息。
-
-[GenomeScope2.0 网页版](http://qb.cshl.edu/genomescope/genomescope2.0)
-
-
-### R绘制
-3. ggplot绘制
-
-R脚本绘制k-mer频数分布曲线初步查看基因组特征
-```R
-#R 脚本示例
-kmer <- read.table('sample.histo')
-kmer <- subset(kmer, V1 >=5 & V1 <=500) #对频数范围5-500的数据进行绘制 
-Frequency <- kmer$V1
-Number <- kmer$V2
-png('kmer_plot.png')
-plot(Frequency, Number, type = 'l', col = 'blue')
-dev.off()
-```
-获得kmer_plot.png为频数分布曲线，可查看曲线峰值对基因组大小进行计算和预估。
 
 
 # references
