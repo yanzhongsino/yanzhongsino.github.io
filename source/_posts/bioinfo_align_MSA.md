@@ -4,6 +4,7 @@ date: 2021-09-06 18:00:00
 categories: 
 - bio
 - bioinfo
+- align
 tags:
 - Multiple Sequence Alignment
 - MSA

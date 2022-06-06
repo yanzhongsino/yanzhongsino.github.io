@@ -4,6 +4,7 @@ date: 2021-10-29 17:50:00
 categories:
 - bio
 - bioinfo
+- align
 tags:
 - tutorial
 - sequence alignment

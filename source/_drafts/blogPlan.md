@@ -33,6 +33,11 @@ tags:
 #### 遗传参数
 - Fst
 
+## general
+1. alignment：mafft, clustral
+2. trim：trimAl
+
+
 ## plastome
 1. assemble
 2. annotation
@@ -70,59 +75,3 @@ tags:
 5. pseudo gene
 
 
-
-
-# markdown格式blog文件的categories和tags
-categories和tags的记录
-
-```
----
-title: blog
-date: 2021-04-20 16:50:00
-categories: 
-
-- bio
-	- taxon
-	- biosoftware
-	- experiment
-	- theory
-
-- omics
-	- genome
-	- transcriptome
-	- plastome
-	- mitochondrion
-
-
-
-- computer
-	- system
-		- Windows
-		- Linux
-	- programming language
-		- python
-		- R
-		- perl
-		- java
-		- C
-	- IDE
-		- vim
-		- VScode
-		- git
-	- script
-	- web
-
-- blog
-
-
-tags: 
-- genome assemble
-- genome annotation
-- phylogeny
-- divergence time
-- WGD
-- HGT
-- molecular experiment
-
----  
-```
