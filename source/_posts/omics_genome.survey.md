@@ -14,7 +14,7 @@ tags:
 - GenomeScope
 - Smudgeplot
 - KAT
-- gce
+- GCE
 - KmerGenie
 
 description: 基因组调查(genome survey)的概念和方法，k-mer分析的原理，利用k-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。
@@ -199,8 +199,8 @@ k-mer分析分为**k-mer频数统计**和**基因组特征评估**两步。此�
 4. KAT(The k-mer Analysis Toolkit)
 - KAT(The k-mer Analysis Toolkit)可以实现k-mer频数统计和基因组特征评估两步。
 - 包含多个工具来帮助用户通过使用k-mer对测序数据进行简单分析，如组装完整性、测序错误、是否有污染等。
-5. gce
-- gce可以分别实现k-mer频数统计和基因组特征评估两步。
+5. GCE
+- GCE可以分别实现k-mer频数统计和基因组特征评估两步。
 6. KmerGenie
 - KmerGenie可以同时实现k-mer频数统计和基因组特征评估两步。
 - 最大优点在于可以实现在多个预设k-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。
@@ -208,8 +208,8 @@ k-mer分析分为**k-mer频数统计**和**基因组特征评估**两步。此�
 notes：
 - 【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。
 - k-mer长度常用17/21。
-- 软件KmerGenie，gce和jellyfish获取的频数分布表，都可用于软件genomescope和gce第二步骤的分析。
-- 由于gce第一步骤支持的最大k-mer频数为255，大于255的数据被合并；而jellyfish统计到10000行，预估结果会更为准确。
+- 软件KmerGenie，GCE和jellyfish获取的频数分布表，都可用于软件genomescope和GCE第二步骤的分析。
+- 由于GCE第一步骤支持的最大k-mer频数为255，大于255的数据被合并；而jellyfish统计到10000行，预估结果会更为准确。
 - GenomeScope对于高重复序列的基因组统计的基因组大小会偏小，建议max kmer coverage设置大一点，大于等于10000。
 - 有些软件有另一个参数需注意和设定，单倍体模式还是杂合模式，可以两种模式都分析，查看差别。
 - 实践经验发现，k-mer值设置得越高，估计出来的基因组size会越大；
@@ -224,4 +224,5 @@ notes：
 6. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
 7. [jellyfish github](https://github.com/gmarcais/Jellyfish)
 8. [GenomeScope1.0 github](https://github.com/schatzlab/genomescope)
-9. [KAT](https://github.com/TGAC/KAT)
+9. [KAT github](https://github.com/TGAC/KAT)
+10. [GCE github](https://github.com/fanagislab/GCE)

@@ -1,14 +1,17 @@
 ---
-title: genome survey
-date: 2022-05-15
+title: 用k-mer分析进行基因组调查(genome survey) —— 用KmerGenie一步实现
+date: 2022-06-15
 categories:
 - omics
 - genome
+- genome survey
 tags:
+- genome
 - genome survey
 - k-mer
+- KmerGenie
 
-description: 记录基因组调查(genome survey)的方法，利用k-mer分析来估计基因组大小，杂合度等基本信息。
+description: 介绍KmerGenie，用KmerGenie做基因组调查(genome survey)的k-mer频数统计和基因组特征评估。
 ---
 
 <div align="middle"><music URL></div>
@@ -32,43 +35,7 @@ $kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 > sample.log1.txt 
 
 生成结果报告文件*_report.html展示了在每种长度k-mer下，估算的基因组大小，同时给出了“最佳k-mer”选择数值，给组装基因组提供参考。
 
-## 基因组特征评估
-### GenomeScope
-GenomeScope有网页版和Linux本地版。网页版又分为1.0和2.0两个版本。
 
-#### GenomeScope1.0 网页版
-使用[GenomeScope1.0 网页版](http://qb.cshl.edu/genomescope/)上传第一步获得的kmer频数分布表histo文件，设置参数Kmer length为第一步选择的k-mer长度值，这里是17；参数Read length为序列读长，一般为150；最后一个参数Max kmer coverage建议修改成10000，以统计更准确。
-
-结果显示预估的基因组大小，杂合度，重复率等信息。
-
-[GenomeScope2.0 网页版](http://qb.cshl.edu/genomescope/genomescope2.0)
-
-
-### R绘制
-3. ggplot绘制
-
-R脚本绘制k-mer频数分布曲线初步查看基因组特征
-```R
-#R 脚本示例
-kmer <- read.table('sample.histo')
-kmer <- subset(kmer, V1 >=5 & V1 <=500) #对频数范围5-500的数据进行绘制 
-Frequency <- kmer$V1
-Number <- kmer$V2
-png('kmer_plot.png')
-plot(Frequency, Number, type = 'l', col = 'blue')
-dev.off()
-```
-获得kmer_plot.png为频数分布曲线，可查看曲线峰值对基因组大小进行计算和预估。
 
 
 # references
-1. https://en.wikipedia.org/wiki/k-mer
-2. https://xuzhougeng.top/archives/genome-survey-using-kmers
-3. [xuzhougeng's blog](https://www.jianshu.com/p/85de8f025899)
-4. [jellyfish paper](https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true)
-5. [jellyfish github](https://github.com/gmarcais/Jellyfish)
-6. [GenomeScope github](https://github.com/schatzlab/genomescope)
-7. [博客：k-mer与基因组组装](https://cloud.tencent.com/developer/article/1613847)
-8. [k-mer分析和原理](https://www.bbsmax.com/A/lk5aQMxP51/)
-9. [jellyfish参数推荐](https://www.bilibili.com/read/cv16360242)
-10. [chenlianfu blog: jellyfish参数推荐](http://www.chenlianfu.com/?p=806)
