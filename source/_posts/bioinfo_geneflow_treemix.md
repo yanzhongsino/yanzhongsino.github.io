@@ -1,6 +1,6 @@
 ---
 title: 系统发育网络推断 —— TreeMix
-date: 2022-03-20 22:00:00
+date: 2022-03-20
 categories: 
 - bio
 - bioinfo
