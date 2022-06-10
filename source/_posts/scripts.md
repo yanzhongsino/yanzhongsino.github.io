@@ -408,12 +408,12 @@ print binascii.unhexlify(quote_dict[z])+'\n'
 ```
 
 3. 运行
-`python2 ROUSFinder2.0.py mito.genome.fa`
+`python2 ROUSFinder2.0.py mito.genome.fa -m 100 -b /path/to/blastn/ -gb -o sample`
 
-- -m参数指定注释重复序列的最小长度，默认是50bp
-- -b参数指定blastn的所在路径
-- -o指定输出文件
-- -gb生成GenBank格式文件
+- -m 100：指定注释重复序列的最小长度为100bp，默认是50bp。
+- -b /path/to/blastn/：参数指定blastn的所在路径，默认是/usr/bin/。
+- -o sample：指定输出文件前缀。
+- -gb：生成GenBank格式文件。
 
 4. 输出文件
 输出文件有四个，mito.genome.fa_binned.txt, mito.genome.fa_rep.fasta, mito.genome.fa_rep_counts.txt, mito.genome.fa_rep_table.txt。

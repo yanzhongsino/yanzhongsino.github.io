@@ -16,9 +16,26 @@ description: 介绍KmerGenie，用KmerGenie做基因组调查(genome survey)的k
 
 <div align="middle"><music URL></div>
 
+**【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。**
+
+# 1. k-mer进行基因组调查的软件
+k-mer进行基因组调查分为**k-mer频数统计**和**基因组特征评估**两步。
+- KmerGenie可以同时实现两步。第一步k-mer频数统计和第二步基因组特征评估。
+- KmerGenie可以同时分析多个预设的k-mer，并选出一个最佳基因组组装k-mer值。
+
+# KmerGenie 简介
+KmerGenie
 
 
-### KmerGenie
+# KmerGenie 安装
+
+
+
+# KmerGenie 运行
+
+
+
+
 2. [KmerGenie](http://blog.sciencenet.cn/blog-3406804-1159967.html)
 ```
 $cat fastq_list.txt
@@ -27,6 +44,8 @@ path_to_sample_2.fastuniq.clean.fq
 $kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 > sample.log1.txt 2> sample.log2.txt
 # 默认单倍体模式，以k-mer长度17为起始，121为终止，10为间隔逐一测试；程序运行线程数4。结果输出在当前路径下，以sample为结果文件前缀名。“sample.log1.txt”和“sample.log2.txt”分别为程序运行时的正确/错误输出日志。
 ```
+
+
 生成结果报告文件*_report.html，报告开头以折线图的形式展示出在每种长度k-mer下，估算的基因组大小，同时给出了“最佳k-mer”选择数值（其实就是将评估基因组总大小最高的那个k-mer值判定为“最佳k-mer”，为基因组组装时k-mer的选择提供参考）。
 
 生成各k-mer取值下的频数分布表*.histo和对应的频数分布图*.histo.pdf，以及所有k-mer取值的总计*.dat和*.dat.pdf
@@ -39,3 +58,4 @@ $kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 > sample.log1.txt 
 
 
 # references
+1. [KmerGenie websit](http://kmergenie.bx.psu.edu/)
