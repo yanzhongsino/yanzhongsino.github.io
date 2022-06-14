@@ -1,5 +1,5 @@
 ---
-title: 用k-mer分析进行基因组调查(genome survey) —— 用jellyfish进行k-mer频数统计
+title: 用k-mer分析进行基因组调查：（二）用jellyfish进行k-mer频数统计
 date: 2022-05-27
 categories:
 - omics
