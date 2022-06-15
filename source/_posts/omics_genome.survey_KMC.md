@@ -1,5 +1,5 @@
 ---
-title: 用k-mer分析进行基因组调查(genome survey) —— 用KMC进行k-mer频数统计
+title: 用k-mer分析进行基因组调查(genome survey)：（三）用KMC进行k-mer频数统计
 date: 2022-06-05
 categories:
 - omics
@@ -26,7 +26,8 @@ k-mer进行基因组调查分为**k-mer频数统计**和**基因组特征评估*
 
 # 2. KMC 简介
 - KMC是一个用来从FASTQ/FASTA文件中计算k-mers的基于KMC二进制数据库的程序。
-- KMC是波兰的Silesian University of Technology的算法和软件学院的[REFRESH Bioinformatics Group](https://refresh-bio.github.io/)开发的工具，目前持续在更新中。
+- KMC是波兰的Silesian University of Technology的算法和软件学院的[REFRESH Bioinformatics Group](https://refresh-bio.github.io/)开发的工具。
+- 2017年发布了第三个版本，KMC3。
 - KMC是主要基于C语言的程序。
 
 # 3. KMC 安装
@@ -106,5 +107,6 @@ dev.off()
 ```
 
 # 6. references
-1. [refresh-bio/KMC](https://github.com/refresh-bio/KMC)
-2. [tbenavi1/KMC github](https://github.com/tbenavi1/KMC)
+1. KMC3 paper：https://academic.oup.com/bioinformatics/article/33/17/2759/3796399
+2. refresh-bio/KMC：https://github.com/refresh-bio/KMC
+3. tbenavi1/KMC github：https://github.com/tbenavi1/KMC
