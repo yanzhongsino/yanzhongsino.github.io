@@ -1,5 +1,5 @@
 ---
-title: 用k-mer分析进行基因组调查(genome survey) —— 用KmerGenie一步实现
+title: 用k-mer分析进行基因组调查 —— 用KmerGenie一步实现
 date: 2022-06-15
 categories:
 - omics
@@ -24,8 +24,7 @@ k-mer进行基因组调查分为**k-mer频数统计**和**基因组特征评估*
 - KmerGenie可以同时分析多个预设的k-mer，并选出一个最佳基因组组装k-mer值。
 
 # KmerGenie 简介
-KmerGenie
-
+KmerGenie在2014年第一次发表，2018年最近一次更新。用于基因组组装的参数k的最佳值的选择。
 
 # KmerGenie 安装
 
@@ -58,4 +57,5 @@ $kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 > sample.log1.txt 
 
 
 # references
-1. [KmerGenie websit](http://kmergenie.bx.psu.edu/)
+1. KmerGenie websit：http://kmergenie.bx.psu.edu/
+2. KmerGenie paper：https://academic.oup.com/bioinformatics/article/30/1/31/235479

@@ -27,7 +27,7 @@ description: 介绍GenBank格式文件转换成tbl格式的工具，包括可用
 - 这篇文章介绍了几种把GenBank格式文件转换成tbl格式的方法。包括在线工具GB2sequin（此工具还包含验证和运行tbl2asn功能，可用于准备上传NCBI的注释文件），以及两个python2写的转换脚本。
 
 ## 1.1. GenBank格式
-GenBank是美国国立卫生研究院维护的基因序列数据库，数据库中用gb格式文件（后缀.gb）记录基因注释信息。
+GenBank是美国国立卫生研究院维护的基因序列数据库，数据库中用gb格式文件（后缀.gb，.gbk）记录基因注释信息。
 
 GenBank文件格式标准参考：https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html
 
