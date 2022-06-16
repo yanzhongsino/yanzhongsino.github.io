@@ -22,7 +22,7 @@
 
   <meta name="description" content="基因组调查(genome survey)的概念和方法，k-mer分析的原理，利用k-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用k-mer分析进行基因组调查(genome survey)">
+<meta property="og:title" content="用k-mer分析进行基因组调查：（一）基本原理">
 <meta property="og:url" content="http://example.com/2022/05/25/omics_genome.survey/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="基因组调查(genome survey)的概念和方法，k-mer分析的原理，利用k-mer分析来进行基因组调查（估计基因组大小，杂合度，重复序列占比等基本信息），以及简介做基因组调查的软件。">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_Kmer.png?raw=true">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true">
 <meta property="article:published_time" content="2022-05-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-07T07:58:58.545Z">
+<meta property="article:modified_time" content="2022-06-14T12:51:52.239Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome survey">
 <meta property="article:tag" content="genome">
@@ -58,7 +58,7 @@
   };
 </script>
 
-  <title>用k-mer分析进行基因组调查(genome survey) | 生信技工</title>
+  <title>用k-mer分析进行基因组调查：（一）基本原理 | 生信技工</title>
   
 
 
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          用k-mer分析进行基因组调查(genome survey)
+          用k-mer分析进行基因组调查：（一）基本原理
         </h1>
 
         <div class="post-meta">
@@ -212,7 +212,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-07 15:58:58" itemprop="dateModified" datetime="2022-06-07T15:58:58+08:00">2022-06-07</time>
+                <time title="修改时间：2022-06-14 20:51:52" itemprop="dateModified" datetime="2022-06-14T20:51:52+08:00">2022-06-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -263,7 +263,7 @@
 <p><strong>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</strong></p>
 <h1 id="1-基因组调查-genome-survey"><a href="#1-基因组调查-genome-survey" class="headerlink" title="1. 基因组调查(genome survey)"></a>1. 基因组调查(genome survey)</h1><h2 id="1-1-基因组调查"><a href="#1-1-基因组调查" class="headerlink" title="1.1. 基因组调查"></a>1.1. 基因组调查</h2><p>基因组调查(genome survey)指基因组特征评估，一般指通过k-mer分析二代测序数据，获得基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等基因组信息的手段。</p>
 <ol>
-<li><p>基因组调查介绍<br>对于高等真核生物(特别是高等植物)来说，在进行基因组denovo测序和正式组装之前，首先构建DNA小片段文库进行中低深度的二代测序，使用测序所得的reads(通常是illumina的PE reads)进行基因组调查(genome survey)，来初步评估基因组特征，包括基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等，从而为后续的基因组测序、组装和结构注释方案提供参考依据。</p>
+<li><p>基因组调查介绍<br>在无参考基因组的情况下，使用中低深度的短片段测序所得的reads进行基因组调查(genome survey)，初步评估基因组特征，包括基因组大小(genome size)，杂合度(heterozygosity)，重复序列比例，GC含量等，从而为后续的基因组测序、组装和结构注释方案提供参考依据。</p>
 </li>
 <li><p>基因组调查的目的<br>基因组调查主要目的是获取两个方面的信息，一个是基因组的大小，一个是基因组复杂程度。</p>
 </li>
@@ -276,8 +276,8 @@
 <li>基因组调查实践</li>
 </ol>
 <ul>
-<li>为了准确估计基因组信息，建议测序深度为50X，即预估基因组大小的50倍，最小也不低于25X。</li>
-<li>做基因组调查和后续做基因组denovo测序需要使用同一个个体，因为有些物种个体间的基因组特征有较大的差异，且同一个个体做survey的illumina数据可用于优化组装。</li>
+<li>为了准确估计基因组信息，建议测序深度为50X（即预估基因组大小的50倍），最小也不低于25X。</li>
+<li>做基因组调查和后续做基因组denovo测序需要使用同一个个体，因为有些物种个体间的基因组特征有较大的差异，且同一个个体做survey的illumina数据可用于组装。</li>
 <li>预估基因组大小可以通过已有研究粗略判断，包括流式细胞研究，近缘种研究，也推荐植物在<a target="_blank" rel="noopener" href="https://cvalues.science.kew.org/">C值数据库网站</a>里查询。</li>
 <li>基因组调查(genome survey)常常使用<strong>k-mer分析</strong>来实现。</li>
 </ul>
@@ -285,9 +285,9 @@
 <p>一般而言，基因组越大，重复序列比例越高; GC含量异常低或异常高，重复序列比例也会很高；多倍体基因组的杂合度高于二倍体。</p>
 <p>判断基因组复杂程度可以参考以下经验性标准：</p>
 <ul>
-<li>简单基因组: 单倍体；或纯合二倍体；或杂合度低于0.5%, 且重复序列低于50%, 且GC含量在35%-65%的二倍体。</li>
-<li>复杂基因组: 杂合度在0.5%~1.2%之间，或重复序列高于50%，或GC含量异常(&lt;35%或&gt;65%)的二倍体，或者多倍体。</li>
-<li>高复杂基因组: 杂合度&gt;1.2%；或重复序列占比大于65%。</li>
+<li><strong>简单基因组</strong>: 单倍体；或纯合二倍体；或杂合度低于0.5%, 且重复序列低于50%, 且GC含量在35%-65%的二倍体。</li>
+<li><strong>复杂基因组</strong>: 杂合度在0.5%~1.2%之间，或重复序列高于50%，或GC含量异常(&lt;35%或&gt;65%)的二倍体，或者多倍体。</li>
+<li><strong>高复杂基因组</strong>: 杂合度&gt;1.2%；或重复序列占比大于65%。</li>
 </ul>
 <h1 id="2-k-mer分析"><a href="#2-k-mer分析" class="headerlink" title="2. k-mer分析"></a>2. k-mer分析</h1><p>k-mer分析可以用在生物信息学许多方面，这篇博客的k-mer分析特指用于基因组调查的k-mer分析方法。</p>
 <h2 id="2-1-k-mer相关概念"><a href="#2-1-k-mer相关概念" class="headerlink" title="2.1. k-mer相关概念"></a>2.1. k-mer相关概念</h2><ol>
@@ -296,7 +296,7 @@
 </ol>
 <img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_Kmer.png?raw=true" title="k-mer示例" width="90%" align=center/>
 
-<p><strong><p align="center">Figure 1. k-mer示例</strong><br>from <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613847">博客：k-mer与基因组组装</a></p></p>
+<p><strong><p align="center">Figure 1. k-mer示例，图片来源： <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613847">k-mer与基因组</a></p></strong></p>
 <h2 id="2-2-k-mer分析步骤"><a href="#2-2-k-mer分析步骤" class="headerlink" title="2.2. k-mer分析步骤"></a>2.2. k-mer分析步骤</h2><ol>
 <li>通过切割二代测序的reads为k-mers</li>
 <li>统计k-mer的总数和每一种k-mer的频数</li>
@@ -311,33 +311,33 @@
 <ul>
 <li>基因组大小：G</li>
 <li>read读长：L</li>
-<li>总reads条数：n</li>
+<li>reads总条数：n</li>
 <li>k-mer长度：K</li>
 </ul>
 <h3 id="2-3-1-碱基深度分布"><a href="#2-3-1-碱基深度分布" class="headerlink" title="2.3.1. 碱基深度分布"></a>2.3.1. 碱基深度分布</h3><ol>
-<li>单条read测序覆盖到某一个碱基的概率：L&#x2F;G。</li>
+<li>单条read测序覆盖到某一个碱基的概率：$L&#x2F;G$。</li>
 <li>因为L&#x2F;G很小，n很大，每个碱基覆盖深度服从泊松分布。</li>
-<li>则每个碱基的覆盖深度的期望为：d&#x3D;(L&#x2F;G)*n。</li>
+<li>则每个碱基的覆盖深度的期望为：$d&#x3D;(L&#x2F;G)*n$。</li>
 </ol>
 <h3 id="2-3-2-k-mer深度分布"><a href="#2-3-2-k-mer深度分布" class="headerlink" title="2.3.2. k-mer深度分布"></a>2.3.2. k-mer深度分布</h3><ol>
-<li>一个大小为G的基因组可以产生的k-mer种类约为G</li>
+<li>一个大小为G的基因组可以产生的k-mer种类约为G。</li>
 </ol>
 <ul>
-<li>假设一个基因组产生的K都是unique的，从一个大小为G的基因组可以得到(G-K+1)种不同的k-mer，</li>
+<li>假设一个基因组产生的K都是unique的，从一个大小为G的基因组可以得到$(G-K+1)$种不同的k-mer。</li>
 <li>一般而言，基因组大小G在几百Mb或者Gb为单位，远大于K和1，所以K和1可以忽略不计，约等于G种k-mer。</li>
 </ul>
 <ol start="2">
-<li>单条read测序完全覆盖某种k-mer的概率：(L-K+1)&#x2F;G</li>
+<li>单条read测序完全覆盖某种k-mer的概率：$(L-K+1)&#x2F;G$。</li>
 </ol>
 <ul>
 <li>k-mer种类的总数约为G</li>
-<li>单条read能产生的k-mer种类数量为(L-K+1)</li>
-<li>假设read随机分布在基因组上，单条read测序完全覆盖某种k-mer的概率就为：(L-K+1)&#x2F;G</li>
+<li>单条read能产生的k-mer种类数量为$(L-K+1)$。</li>
+<li>假设read随机分布在基因组上，单条read测序完全覆盖某种k-mer的概率就为：$(L-K+1)&#x2F;G$。</li>
 </ul>
 <ol start="3">
-<li>同样因为(L-K+1)&#x2F;G很小，n很大，每种k-mer的覆盖深度服从泊松分布。</li>
-<li>每种k-mer的覆盖深度的期望为：D&#x3D;((L-K+1)&#x2F;G)*n</li>
-<li>由此可以得到，基因组大小为：G&#x3D;(L-K+1)*n&#x2F;D</li>
+<li>同样因为$(L-K+1)&#x2F;G$很小，n很大，每种k-mer的覆盖深度服从泊松分布。</li>
+<li>每种k-mer的覆盖深度的期望为：$D&#x3D;((L-K+1)&#x2F;G)*n$。</li>
+<li>由此可以得到，基因组大小为：$G&#x3D;(L-K+1)*n&#x2F;D$。</li>
 </ol>
 <h3 id="2-3-3-基因组大小"><a href="#2-3-3-基因组大小" class="headerlink" title="2.3.3. 基因组大小"></a>2.3.3. 基因组大小</h3><ol>
 <li>计算总k-mer个数N和k-mer期望深度D</li>
@@ -348,65 +348,53 @@
 <li>理想情况下(不考虑测序错误、序列重复性和杂合序列的条件下)，k-mer的频数分布遵循泊松分布，可以将频数分布峰值的k-mer频数作为k-mer的期望深度D。</li>
 </ul>
 <ol start="2">
-<li>通过下面公式可知，基因组大小G&#x3D;N&#x2F;D。<br>只要通过k-mer分析计算得到k-mer的总数量N和k-mer的期望深度D，则可以算出基因组大小G。</li>
+<li>通过下面公式可知，基因组大小$G&#x3D;N&#x2F;D$。</li>
 </ol>
 <ul>
-<li>k-mer的总数量N&#x3D;(L-K+1)*n</li>
-<li>k-mer的期望深度D&#x3D;((L-K+1)&#x2F;G)*n</li>
+<li>k-mer的总数量$N&#x3D;(L-K+1)*n$</li>
+<li>k-mer的期望深度$D&#x3D;((L-K+1)&#x2F;G)*n$</li>
 </ul>
+<p>只要通过k-mer分析计算得到k-mer的总数量N和k-mer的期望深度D，则可以算出基因组大小G。</p>
 <h3 id="2-3-4-基因组调查"><a href="#2-3-4-基因组调查" class="headerlink" title="2.3.4. 基因组调查"></a>2.3.4. 基因组调查</h3><p>在不考虑测序错误、序列重复性和杂合序列的条件下，k-mer的深度分布遵循泊松分布。但实际情况是三者都存在，所以需要计算错误率，重复序列占比和杂合度，并根据计算结果修正对基因组大小的估计。</p>
-<ol>
-<li>错误率</li>
-</ol>
-<ul>
+<h4 id="2-3-4-1-错误率"><a href="#2-3-4-1-错误率" class="headerlink" title="2.3.4.1. 错误率"></a>2.3.4.1. 错误率</h4><ul>
 <li>测序错误：一般认为低频k-mer(K&#x3D;1,2…)是测序错误引起的，去除低频k-mer并计算错误率以修正基因组大小的估计。</li>
 <li>一般把拐点前的低频k-mer当作错误去除。</li>
 </ul>
-<ol start="2">
-<li>重复序列占比</li>
-</ol>
-<ul>
+<h4 id="2-3-4-2-重复序列占比"><a href="#2-3-4-2-重复序列占比" class="headerlink" title="2.3.4.2. 重复序列占比"></a>2.3.4.2. 重复序列占比</h4><ol>
 <li>基因组中存在的重复序列会使对应的k-mer频数高于k-mer期望深度D。</li>
 <li>在k-mer频数分布图中重复序列对应的k-mer会表现为频数大于主峰的一个重复峰。</li>
 <li>根据主峰右侧的重复峰可以估计基因组的重复序列比例。<ul>
-<li>通过模型计算一个阈值，比如阈值为1.6倍主峰，理论上单拷贝序列(非重复序列)出现在1.6倍主峰右边的概率很低，可以把1.6倍主峰之后的看作重复k-mer，统计重复k-mer的总数量m，从而可以算出：重复序列的大小R&#x3D;重复k-mer的总数量m&#x2F;k-mer的期望深度D。</li>
+<li>通过模型计算一个阈值，比如阈值为1.6倍主峰，理论上单拷贝序列(非重复序列)出现在1.6倍主峰右边的概率很低，可以把1.6倍主峰之后的看作重复k-mer。</li>
+<li>统计重复k-mer的总数量m，从而可以算出：重复序列的大小R&#x3D;重复k-mer的总数量m&#x2F;k-mer的期望深度D。</li>
 <li>R&#x2F;G即为重复序列占基因组的比例。</li>
 </ul>
 </li>
-</ul>
-<ol start="3">
-<li>杂合度</li>
 </ol>
-<ul>
+<h4 id="2-3-4-3-杂合度"><a href="#2-3-4-3-杂合度" class="headerlink" title="2.3.4.3. 杂合度"></a>2.3.4.3. 杂合度</h4><ol>
 <li>基因组中存在的杂合序列会对应两种类型的k-mer，并使得这些k-mer频数低于k-mer期望深度D。</li>
 <li>假设两种k-mer数量大致相等，在k-mer频数分布图中杂合序列对应的k-mer会表现为频数约为主峰一半的一个杂合峰。</li>
 <li>根据主峰左侧的杂合峰可以估计基因组的杂合度。<ul>
-<li><p>假设基因组中的杂合率为 h（每个碱基为杂合点的概率）,一个k-mer是纯合k-mer的概率为 P1 &#x3D; (1-h)^k, 则是杂合的概率 P2 &#x3D; 1-P1 &#x3D; 1-(1-h)^k。</p>
-</li>
-<li><p>假设产生的k-mer种类的总数为M，其中属于单拷贝序列(非重复序列)的k-mer种类</p>
-</li>
-<li><p>在二倍体中，单拷贝序列(非重复序列)的同源区域，会产生 U×P2 的杂合k-mer，这个数是可以通过计算得到的：只要统计非重复k-mer的总数 M , M-U即为产生的杂合k-mer数。则 M-U &#x3D; U×P2 &#x3D; U×(1-(1-h)^k)。</p>
-</li>
-<li><p>通过计算，即可通过M和U的值得到基因组的杂合率h。</p>
-</li>
+<li>假设基因组中的杂合率为 h（每个碱基为杂合点的概率）,一个k-mer是纯合k-mer的概率为 $P1 &#x3D; (1-h)^k$, 则是杂合的概率 $P2 &#x3D; 1-P1 &#x3D; 1-(1-h)^k$。</li>
+<li>假设产生的k-mer种类的总数为M，其中属于单拷贝序列(非重复序列)的k-mer种类。</li>
+<li>在二倍体中，单拷贝序列(非重复序列)的同源区域，会产生 U×P2 的杂合k-mer，这个数是可以通过计算得到的：只要统计非重复k-mer的总数 M , M-U即为产生的杂合k-mer数。则 $M-U &#x3D; U×P2 &#x3D; U×(1-(1-h)^k)$。</li>
+<li>通过计算，即可通过M和U的值得到基因组的杂合率h。</li>
 </ul>
 </li>
-</ul>
+</ol>
 <p>在实际应用过程中，估计了基因组的错误率、杂合度和重复序列比例后，重新修正基因组大小的估计，从而得到基因组调查的结果。</p>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true" width=70% title="k-mer分析(GenomeScope)结果示例" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true" width=70% title="k-mer分析(软件GenomeScope)结果示例" align=center/>
 
 <p><strong><p align="center">Figure 2. k-mer分析(GenomeScope)结果示例</p></strong></p>
-<h2 id="2-4-k-mer用途"><a href="#2-4-k-mer用途" class="headerlink" title="2.4. k-mer用途"></a>2.4. k-mer用途</h2><p>许多分析都会用到k-mer的处理方法，把测序得到的reads通过截取k-mer后用于分析。比如评估基因组特征，组装基因组，物种样品污染评估等。评估基因组特征(genome survey)包括评估基因组大小(size)，杂合度，重复序列比例等。</p>
+<h2 id="2-4-k-mer用途"><a href="#2-4-k-mer用途" class="headerlink" title="2.4. k-mer用途"></a>2.4. k-mer用途</h2><p>许多分析都会用到k-mer的处理方法，把测序得到的reads通过截取k-mer后用于分析。</p>
+<p>比如评估基因组特征，组装基因组，物种样品污染评估等。评估基因组特征(genome survey)包括评估基因组大小(size)，杂合度，重复序列比例等。</p>
 <ol>
 <li><p>组装基因组<br>组装基因组使用k-mer的目的主要是去除低频率的k-mer以提高组装结果准确性。</p>
 </li>
-<li><p>评估基因组大小(size)<br>在k-mer原理部分解释了用k-mer评估基因组大小的公式：</p>
+<li><p>评估基因组大小(size)<br>在不考虑测序错误、序列重复性的条件下，k-mer的深度分布遵循泊松分布，可以将深度分布曲线的峰值作为期望测序深度。</p>
 </li>
 </ol>
-<blockquote>
-<p>基因组大小G&#x3D;总k-mer数量N&#x2F;k-mer期望深度D</p>
-</blockquote>
-<p>在不考虑测序错误、序列重复性的条件下，k-mer的深度分布遵循泊松分布，可以将深度分布曲线的峰值作为期望测序深度。</p>
+<p>在k-mer原理部分解释了用k-mer评估基因组大小的公式：</p>
+<p>$$基因组大小G&#x3D;总k-mer数量N&#x2F;k-mer期望深度D$$</p>
 <ol start="3">
 <li><p>评估基因组杂合度<br>根据k-mer频数分布图的杂合峰，可以估计基因组的杂合度。</p>
 </li>
@@ -422,7 +410,7 @@
 <li>至于具体是因为什么物种造成污染，则可以通过blast比对nr库进行简单的判断。</li>
 </ul>
 <p>除了通过k-mer频数分布评估DNA样品的污染程度外，还可以通过GC含量分布图判断，查看图中是否存在多个密度集中的类群。</p>
-<h2 id="2-5-k-mer的特点"><a href="#2-5-k-mer的特点" class="headerlink" title="2.5. k-mer的特点"></a>2.5. k-mer的特点</h2><ol>
+<h2 id="2-5-k-mer的优势和局限"><a href="#2-5-k-mer的优势和局限" class="headerlink" title="2.5. k-mer的优势和局限"></a>2.5. k-mer的优势和局限</h2><ol>
 <li>增加准确率</li>
 </ol>
 <ul>
@@ -433,17 +421,28 @@
 <li>不适用过于复杂的基因组</li>
 </ol>
 <ul>
-<li>k-mer分析适用于分析唯一主峰区域所占比例较大的基因组，当基因组杂合非常高或者重复序列比例非常大时，其影响可能导致无法通过k-mer分析正确估计基因组大小。</li>
+<li>k-mer分析适用于分析唯一主峰区域所占比例较大的基因组。</li>
+<li>当基因组杂合非常高或者重复序列比例非常大时，其影响可能导致无法通过k-mer分析正确估计基因组大小。</li>
 </ul>
-<h2 id="2-6-k-mer的选择"><a href="#2-6-k-mer的选择" class="headerlink" title="2.6. k-mer的选择"></a>2.6. k-mer的选择</h2><p>k-mer的大小选择：K应该足够大到k-mer可以映射到基因组的唯一位置；但太大的k-mer会降低去除低频k-mer代表的错误碱基的概率(增加错误率)，也会降低k-mer深度(使得k-mer频数分布的峰不明显)，而且大的k-mer会增加计算资源的使用。基因组调查一般选17，21比较常见。</p>
-<ol>
-<li>k-mer只能是奇数？<br>把k-mer设置成奇数是为了防止通过k-mer组装时，正反链混淆。偶数的k-mer的反向互补序列常常与自身一样，从而组装k-mer时会混淆正反链的组装，奇数的k-mer就不存在这个问题。</li>
+<h2 id="2-6-k-mer的选择"><a href="#2-6-k-mer的选择" class="headerlink" title="2.6. k-mer的选择"></a>2.6. k-mer的选择</h2><h3 id="2-6-1-k-mer的大小选择"><a href="#2-6-1-k-mer的大小选择" class="headerlink" title="2.6.1. k-mer的大小选择"></a>2.6.1. k-mer的大小选择</h3><ol>
+<li>K应该足够大到k-mer可以映射到基因组的唯一位置。</li>
+<li>太大的k-mer会降低去除低频k-mer代表的错误碱基的概率(增加错误率)，也会降低k-mer深度(使得k-mer频数分布的峰不明显)，而且大的k-mer会增加计算资源的使用。</li>
+<li>基因组调查一般选17，21比较常见。</li>
+</ol>
+<h3 id="2-6-2-选择k-mer的考虑"><a href="#2-6-2-选择k-mer的考虑" class="headerlink" title="2.6.2. 选择k-mer的考虑"></a>2.6.2. 选择k-mer的考虑</h3><ol>
+<li>k-mer只能是奇数？</li>
+</ol>
+<ul>
+<li>把k-mer设置成奇数是为了防止通过k-mer组装时，正反链混淆。</li>
+<li>偶数的k-mer的反向互补序列常常与自身一样，从而组装k-mer时会混淆正反链的组装，奇数的k-mer就不存在这个问题。</li>
+</ul>
+<ol start="2">
 <li>k-mer的长度代表了可能存在的k-mer种类的数量(4的K次方)，越长的k-mer片段映射的物种特异性越强。基因组越大，需要的k-mer越长。</li>
 <li>当基因组中有较多重复序列时，可以用较大的k-mer来跨过高重复的区域，从而获得更加准确及完整的基因组草图；</li>
 <li>由于reads上的碱基错误率的存在，选择较长的k-mer会带来较高的错误率，这也可以加大测序深度来弥补。</li>
 <li>如果是用于组装基因组，为了得到更加完整的基因组，要尽可能使用较长的k-mer用于组装。</li>
 </ol>
-<h1 id="3-k-mer分析软件概况"><a href="#3-k-mer分析软件概况" class="headerlink" title="3. k-mer分析软件概况"></a>3. k-mer分析软件概况</h1><p>k-mer分析分为<strong>k-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。此外，Smudgeplot还可以用k-mer分析评估物种的倍性。</p>
+<h1 id="3-k-mer分析软件"><a href="#3-k-mer分析软件" class="headerlink" title="3. k-mer分析软件"></a>3. k-mer分析软件</h1><h2 id="3-1-k-mer分析软件简介"><a href="#3-1-k-mer分析软件简介" class="headerlink" title="3.1. k-mer分析软件简介"></a>3.1. k-mer分析软件简介</h2><p>k-mer分析分为<strong>k-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。此外，Smudgeplot还可以用k-mer分析评估物种的倍性。</p>
 <ol>
 <li>jellyfish</li>
 </ol>
@@ -461,7 +460,8 @@
 <li>GenomeScope</li>
 </ol>
 <ul>
-<li>GenomeScope可以实现第二步，利用k-mer频数统计结果进行基因组特征评估。1.0版本用于二倍体物种，2.0版本用于多倍体物种。</li>
+<li>GenomeScope可以实现第二步，利用k-mer频数统计结果进行基因组特征评估。</li>
+<li>1.0版本用于二倍体物种，2.0版本用于多倍体物种。</li>
 </ul>
 <ol start="4">
 <li>KAT(The k-mer Analysis Toolkit)</li>
@@ -483,8 +483,7 @@
 <li>KmerGenie可以同时实现k-mer频数统计和基因组特征评估两步。</li>
 <li>最大优点在于可以实现在多个预设k-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。</li>
 </ul>
-<p>notes：</p>
-<ul>
+<h2 id="3-2-一些使用软件的经验总结"><a href="#3-2-一些使用软件的经验总结" class="headerlink" title="3.2. 一些使用软件的经验总结"></a>3.2. 一些使用软件的经验总结</h2><ul>
 <li>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</li>
 <li>k-mer长度常用17&#x2F;21。</li>
 <li>软件KmerGenie，GCE和jellyfish获取的频数分布表，都可用于软件genomescope和GCE第二步骤的分析。</li>
@@ -495,16 +494,16 @@
 <li>另外，在jellyfish里的jellyfish histo统计频数分布时，用参数-h 10000把统计上限调高，以及在GenomeScope阶段，Max kmer coverage设置的大一些(即统计进的kmer数量越多)，估算出来的基因组大小也会略大一些。</li>
 </ul>
 <h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/k-mer">wiki:k-mer</a></li>
-<li><a target="_blank" rel="noopener" href="https://xuzhougeng.top/archives/genome-survey-using-kmers">xuzhougeng’s blog: genome survey</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/85de8f025899">xuzhougeng’s blog</a></li>
-<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613847">博客：k-mer与基因组组装</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.bbsmax.com/A/lk5aQMxP51/">k-mer分析和原理</a></li>
-<li><a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true">jellyfish paper</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/gmarcais/Jellyfish">jellyfish github</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/schatzlab/genomescope">GenomeScope1.0 github</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/TGAC/KAT">KAT github</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/fanagislab/GCE">GCE github</a></li>
+<li>wiki_k-mer: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/k-mer">https://en.wikipedia.org/wiki/k-mer</a></li>
+<li>genome survey：<a target="_blank" rel="noopener" href="https://xuzhougeng.top/archives/genome-survey-using-kmers">https://xuzhougeng.top/archives/genome-survey-using-kmers</a></li>
+<li>xuzhougeng’s blog：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/85de8f025899">https://www.jianshu.com/p/85de8f025899</a></li>
+<li>k-mer与基因组组装：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613847">https://cloud.tencent.com/developer/article/1613847</a></li>
+<li>k-mer分析和原理：<a target="_blank" rel="noopener" href="https://www.bbsmax.com/A/lk5aQMxP51/">https://www.bbsmax.com/A/lk5aQMxP51/</a></li>
+<li>jellyfish paper：<a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true">https://academic.oup.com/bioinformatics/article/27/6/764/234905?login=true</a></li>
+<li>jellyfish github：<a target="_blank" rel="noopener" href="https://github.com/gmarcais/Jellyfish">https://github.com/gmarcais/Jellyfish</a></li>
+<li>GenomeScope1.0 github：<a target="_blank" rel="noopener" href="https://github.com/schatzlab/genomescope">https://github.com/schatzlab/genomescope</a></li>
+<li>KAT github：<a target="_blank" rel="noopener" href="https://github.com/TGAC/KAT">https://github.com/TGAC/KAT</a></li>
+<li>GCE github：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/GCE">https://github.com/fanagislab/GCE</a></li>
 </ol>
 
     </div>
@@ -537,8 +536,8 @@
       <i class="fa fa-chevron-left"></i> GFF3文件处理软件 —— GFF3toolkit工具包的介绍和使用
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/05/27/omics_genome.survey_jellyfish/" rel="next" title="用k-mer分析进行基因组调查(genome survey) —— 用jellyfish进行k-mer频数统计">
-      用k-mer分析进行基因组调查(genome survey) —— 用jellyfish进行k-mer频数统计 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/05/27/omics_genome.survey_jellyfish/" rel="next" title="用k-mer分析进行基因组调查：（二）用jellyfish进行k-mer频数统计">
+      用k-mer分析进行基因组调查：（二）用jellyfish进行k-mer频数统计 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -605,7 +604,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5-genome-survey"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组调查(genome survey)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 基因组调查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 基因组复杂程度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-k-mer%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2. k-mer分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-k-mer%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. k-mer相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-k-mer%E5%88%86%E6%9E%90%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. k-mer分析步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-k-mer%E5%8E%9F%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. k-mer原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E7%A2%B1%E5%9F%BA%E6%B7%B1%E5%BA%A6%E5%88%86%E5%B8%83"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. 碱基深度分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-k-mer%E6%B7%B1%E5%BA%A6%E5%88%86%E5%B8%83"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2. k-mer深度分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3. 基因组大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4. 基因组调查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-k-mer%E7%94%A8%E9%80%94"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. k-mer用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-k-mer%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">2.5.</span> <span class="nav-text">2.5. k-mer的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-k-mer%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">2.6.</span> <span class="nav-text">2.6. k-mer的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-k-mer%E5%88%86%E6%9E%90%E8%BD%AF%E4%BB%B6%E6%A6%82%E5%86%B5"><span class="nav-number">3.</span> <span class="nav-text">3. k-mer分析软件概况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5-genome-survey"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组调查(genome survey)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 基因组调查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 基因组复杂程度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-k-mer%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2. k-mer分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-k-mer%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. k-mer相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-k-mer%E5%88%86%E6%9E%90%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. k-mer分析步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-k-mer%E5%8E%9F%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. k-mer原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E7%A2%B1%E5%9F%BA%E6%B7%B1%E5%BA%A6%E5%88%86%E5%B8%83"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. 碱基深度分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-k-mer%E6%B7%B1%E5%BA%A6%E5%88%86%E5%B8%83"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2. k-mer深度分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3. 基因组大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4. 基因组调查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-1-%E9%94%99%E8%AF%AF%E7%8E%87"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">2.3.4.1. 错误率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-2-%E9%87%8D%E5%A4%8D%E5%BA%8F%E5%88%97%E5%8D%A0%E6%AF%94"><span class="nav-number">2.3.4.2.</span> <span class="nav-text">2.3.4.2. 重复序列占比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-3-%E6%9D%82%E5%90%88%E5%BA%A6"><span class="nav-number">2.3.4.3.</span> <span class="nav-text">2.3.4.3. 杂合度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-k-mer%E7%94%A8%E9%80%94"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. k-mer用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-k-mer%E7%9A%84%E4%BC%98%E5%8A%BF%E5%92%8C%E5%B1%80%E9%99%90"><span class="nav-number">2.5.</span> <span class="nav-text">2.5. k-mer的优势和局限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-k-mer%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">2.6.</span> <span class="nav-text">2.6. k-mer的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-1-k-mer%E7%9A%84%E5%A4%A7%E5%B0%8F%E9%80%89%E6%8B%A9"><span class="nav-number">2.6.1.</span> <span class="nav-text">2.6.1. k-mer的大小选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-2-%E9%80%89%E6%8B%A9k-mer%E7%9A%84%E8%80%83%E8%99%91"><span class="nav-number">2.6.2.</span> <span class="nav-text">2.6.2. 选择k-mer的考虑</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-k-mer%E5%88%86%E6%9E%90%E8%BD%AF%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">3. k-mer分析软件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-k-mer%E5%88%86%E6%9E%90%E8%BD%AF%E4%BB%B6%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. k-mer分析软件简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E4%B8%80%E4%BA%9B%E4%BD%BF%E7%94%A8%E8%BD%AF%E4%BB%B6%E7%9A%84%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 一些使用软件的经验总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -619,7 +618,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -632,7 +631,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">204</span>
+        <span class="site-state-item-count">212</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -739,7 +738,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2022/05/25/omics_genome.survey/";
     this.page.identifier = "2022/05/25/omics_genome.survey/";
-    this.page.title = "用k-mer分析进行基因组调查(genome survey)";
+    this.page.title = "用k-mer分析进行基因组调查：（一）基本原理";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

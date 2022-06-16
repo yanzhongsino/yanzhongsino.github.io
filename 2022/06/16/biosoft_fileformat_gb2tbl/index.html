@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍GenBank格式文件转换成tbl格式的工具，包括可用于准备上传NCBI注释文件的在线工具GB2sequin，脚本gbf2tbl.pl，脚本genbank_to_tbl.py和脚本Genbank2Sequin.py。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="转换GenBank文件为tbl格式，为提交注释做准备">
+<meta property="og:url" content="http://example.com/2022/06/16/biosoft_fileformat_gb2tbl/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍GenBank格式文件转换成tbl格式的工具，包括可用于准备上传NCBI注释文件的在线工具GB2sequin，脚本gbf2tbl.pl，脚本genbank_to_tbl.py和脚本Genbank2Sequin.py。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-16T03:42:09.636Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="GenBank">
+<meta property="article:tag" content="tbl">
+<meta property="article:tag" content="organellar genome">
+<meta property="article:tag" content="genome annotation">
+<meta property="article:tag" content="genome submit">
+<meta property="article:tag" content="Sequin">
+<meta property="article:tag" content="tbl2asn">
+<meta property="article:tag" content="GB2sequin">
+<meta property="article:tag" content="gbf2tbl.pl">
+<meta property="article:tag" content="genbank_to_tbl.py">
+<meta property="article:tag" content="Genbank2Sequin.py">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/06/16/biosoft_fileformat_gb2tbl/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>转换GenBank文件为tbl格式，为提交注释做准备 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/16/biosoft_fileformat_gb2tbl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          转换GenBank文件为tbl格式，为提交注释做准备
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-16 00:00:00 / 修改时间：11:42:09" itemprop="dateCreated datePublished" datetime="2022-06-16T00:00:00+08:00">2022-06-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/biosoft/" itemprop="url" rel="index"><span itemprop="name">biosoft</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/biosoft/fileformat/" itemprop="url" rel="index"><span itemprop="name">fileformat</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/06/16/biosoft_fileformat_gb2tbl/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/16/biosoft_fileformat_gb2tbl/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">介绍GenBank格式文件转换成tbl格式的工具，包括可用于准备上传NCBI注释文件的在线工具GB2sequin，脚本gbf2tbl.pl，脚本genbank_to_tbl.py和脚本Genbank2Sequin.py。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=157092&auto=1&height=32"></iframe></div>
+
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><ul>
+<li>GenBank格式常常出现在细胞器基因组的注释软件的结果中，但上传细胞器注释到公共数据库（eg NCBI）需要tbl格式文件。</li>
+<li>这篇文章介绍了几种把GenBank格式文件转换成tbl格式的方法。包括在线工具GB2sequin（此工具还包含验证和运行tbl2asn功能，可用于准备上传NCBI的注释文件），以及两个python2写的转换脚本。</li>
+</ul>
+<h2 id="1-1-GenBank格式"><a href="#1-1-GenBank格式" class="headerlink" title="1.1. GenBank格式"></a>1.1. GenBank格式</h2><p>GenBank是美国国立卫生研究院维护的基因序列数据库，数据库中用gb格式文件（后缀.gb）记录基因注释信息。</p>
+<p>GenBank文件格式标准参考：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html">https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html</a></p>
+<h2 id="1-2-tbl格式-for-Sequin"><a href="#1-2-tbl格式-for-Sequin" class="headerlink" title="1.2. tbl格式(for Sequin)"></a>1.2. tbl格式(for Sequin)</h2><p>用于提交基因注释到GenBank的一种tab分隔的五栏的特征表（feature table）文件格式（后缀.tbl）。</p>
+<p>tbl文件格式标准参考：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/feature_table/">https://www.ncbi.nlm.nih.gov/genbank/feature_table/</a></p>
+<h1 id="2-GB2sequin在线工具【推荐】"><a href="#2-GB2sequin在线工具【推荐】" class="headerlink" title="2. GB2sequin在线工具【推荐】"></a>2. GB2sequin在线工具【推荐】</h1><h2 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1. 简介"></a>2.1. 简介</h2><p>GB2sequin是用于转换GenBank格式文件为NCBI提交格式Sequin（包括tbl文件和sqn文件）的在线工具，包含验证GenBank注释的功能和运行tbl2asn的功能。</p>
+<p>网址是：</p>
+<p><a target="_blank" rel="noopener" href="https://chlorobox.mpimp-golm.mpg.de/GenBank2Sequin.html">https://chlorobox.mpimp-golm.mpg.de/GenBank2Sequin.html</a></p>
+<h2 id="2-2-优势"><a href="#2-2-优势" class="headerlink" title="2.2. 优势"></a>2.2. 优势</h2><ol>
+<li>通过网页在线转换，方便快捷。</li>
+<li>自动对注释进行验证，并生成错误报告，可根据错误报告修正注释。</li>
+<li>支持在输入中加入作者信息的template等文件。</li>
+<li>自动运行tbl2asn，生成sqn文件，方便提交tbl文件到NCBI。</li>
+<li>自动生成标准的GenBank格式文件，去除冗余。</li>
+</ol>
+<h2 id="2-3-使用步骤"><a href="#2-3-使用步骤" class="headerlink" title="2.3. 使用步骤"></a>2.3. 使用步骤</h2><ol>
+<li>上传GenBank格式文件，要在文件末包含注释的序列，否则运行结果空白。</li>
+<li>【可选】上传Author Submission Template，Source Modifier Table，Gene Product Specification Table。</li>
+<li>选择分子类别”Molecule Type”，一般默认genomic DNA即可。</li>
+<li>选择是否是完整(complete)，环状(circular)的基因。</li>
+<li>选择编码方式”Genetic Code”，植物样品选标准Standard。</li>
+<li>选择基因位置Location，包括叶绿体chloroplast，线粒体mitochondrion等。</li>
+<li>点击Start Conversion，等待几分钟即可得到结果，点击每项结果然后下载（大多是文本文件）。</li>
+<li>根据验证结果文件的错误ERROR和警告WARNING逐一修改原始GenBank文件。</li>
+<li>再次运行，重复以上操作，直至无错误和警告，即可使用sqn文件上传至NCBI。</li>
+</ol>
+<p>验证结果的含义（tbl2asn运行的部分）可以参考之前写的<strong>基因组提交的博客</strong>：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/03/22/omics_genome.submit/">https://yanzhongsino.github.io/2022/03/22/omics_genome.submit/</a></p>
+<h2 id="2-4-结果"><a href="#2-4-结果" class="headerlink" title="2.4. 结果"></a>2.4. 结果</h2><p>结果文件包括：</p>
+<ol>
+<li>FASTA：从GenBank提取的fasta文件。</li>
+<li>Annotation Table：tbl文件。</li>
+<li>tbl2asn log：tbl2asn运行的log文件。</li>
+<li>Sequin：sqn文件，用于提交给NCBI。</li>
+<li>GenBank：标准化的GenBank文件。</li>
+<li>Validation：验证结果文件，包括细节。</li>
+<li>Validation Summary：验证结果的概括。</li>
+</ol>
+<h1 id="3-genbank2tbl的脚本"><a href="#3-genbank2tbl的脚本" class="headerlink" title="3. genbank2tbl的脚本"></a>3. genbank2tbl的脚本</h1><ul>
+<li><strong>只要GB2sequin可以用，就强烈推荐GB2sequin，毕竟自带验证功能和自动运行tbl2asn。</strong></li>
+<li>如果GB2sequin不可用（比如要用的时候服务器宕机了之类的原因，我才不会告诉你我就是这么走运才探索了一下脚本），可用脚本进行GenBank到tbl的格式转换。</li>
+<li>由于都是陈年老脚本，以下脚本都是用python2写的，并且调用了biopython（提前安装biopython）。</li>
+</ul>
+<h2 id="脚本gbf2tbl-pl【NCBI-官方出品】"><a href="#脚本gbf2tbl-pl【NCBI-官方出品】" class="headerlink" title="脚本gbf2tbl.pl【NCBI 官方出品】"></a>脚本gbf2tbl.pl【NCBI 官方出品】</h2><ol>
+<li>简介</li>
+</ol>
+<ul>
+<li>脚本gbf2tbl.pl是NCBI官方提供的perl脚本。</li>
+<li>我暂时还没用过，先记在这。</li>
+</ul>
+<ol start="2">
+<li>下载<br><code>wget ftp://ftp.ncbi.nlm.nih.gov//toolbox/ncbi_tools/converters/scripts/gbf2tbl.pl</code></li>
+</ol>
+<h2 id="3-1-脚本genbank-to-tbl-py【推荐】"><a href="#3-1-脚本genbank-to-tbl-py【推荐】" class="headerlink" title="3.1. 脚本genbank_to_tbl.py【推荐】"></a>3.1. 脚本genbank_to_tbl.py【推荐】</h2><h3 id="3-1-1-简介"><a href="#3-1-1-简介" class="headerlink" title="3.1.1. 简介"></a>3.1.1. 简介</h3><p>genbank_to_tbl.py脚本用于转换genbank格式的gene，CDS，exon，intron，tRNA，rRNA，pseudo genes等注释为tbl格式。</p>
+<h3 id="3-1-2-脚本"><a href="#3-1-2-脚本" class="headerlink" title="3.1.2. 脚本"></a>3.1.2. 脚本</h3><p>下载地址：<a target="_blank" rel="noopener" href="https://gist.github.com/nickloman/2660685">https://gist.github.com/nickloman/2660685</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># requires biopython</span></span><br><span class="line"><span class="comment"># run like:</span></span><br><span class="line"><span class="comment">#   genbank_to_tbl.py &quot;my organism name&quot; &quot;my strain ID&quot; &quot;ncbi project id&quot; &lt; my_sequence.gbk</span></span><br><span class="line"><span class="comment">#   writes seq.fsa, seq.tbl as output</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">from</span> Bio <span class="keyword">import</span> SeqIO</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_gene_entry</span>(<span class="params">features, locus_tag</span>):</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> features:</span><br><span class="line">        <span class="keyword">if</span> f.<span class="built_in">type</span> == <span class="string">&#x27;gene&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> f.qualifiers[<span class="string">&#x27;locus_tag&#x27;</span>][<span class="number">0</span>] == locus_tag:</span><br><span class="line">                <span class="keyword">return</span> f</span><br><span class="line">    <span class="built_in">print</span> locus_tag</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br><span class="line"></span><br><span class="line">coding = [<span class="string">&#x27;CDS&#x27;</span>, <span class="string">&#x27;tRNA&#x27;</span>, <span class="string">&#x27;rRNA&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">go</span>():</span><br><span class="line">    seqid = <span class="number">0</span></span><br><span class="line">    fasta_fh = <span class="built_in">open</span>(<span class="string">&quot;seq.fsa&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line">    feature_fh = <span class="built_in">open</span>(<span class="string">&quot;seq.tbl&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line">    allowed_tags = [<span class="string">&#x27;locus_tag&#x27;</span>, <span class="string">&#x27;gene&#x27;</span>, <span class="string">&#x27;product&#x27;</span>, <span class="string">&#x27;pseudo&#x27;</span>, <span class="string">&#x27;protein_id&#x27;</span>, <span class="string">&#x27;gene_desc&#x27;</span>, <span class="string">&#x27;old_locus_tag&#x27;</span>]</span><br><span class="line">    records = <span class="built_in">list</span>(SeqIO.parse(sys.stdin, <span class="string">&quot;genbank&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> rec <span class="keyword">in</span> records:</span><br><span class="line">        <span class="keyword">for</span> f <span class="keyword">in</span> rec.features:</span><br><span class="line">            <span class="keyword">if</span> f.<span class="built_in">type</span> <span class="keyword">in</span> coding <span class="keyword">and</span> <span class="string">&#x27;gene&#x27;</span> <span class="keyword">in</span> f.qualifiers:</span><br><span class="line">                <span class="built_in">print</span> f.qualifiers[<span class="string">&#x27;locus_tag&#x27;</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">                f2 = find_gene_entry(rec.features, f.qualifiers[<span class="string">&#x27;locus_tag&#x27;</span>][<span class="number">0</span>])</span><br><span class="line">                f2.qualifiers[<span class="string">&#x27;gene&#x27;</span>] = f.qualifiers[<span class="string">&#x27;gene&#x27;</span>]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">del</span> f.qualifiers[<span class="string">&#x27;gene&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> rec <span class="keyword">in</span> records:</span><br><span class="line">        seqid += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(rec) &lt;= <span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span> &gt;&gt;sys.stderr, <span class="string">&quot;skipping small contig %s&quot;</span> % (rec.<span class="built_in">id</span>,)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#        rec.id = rec.name = &quot;%s%08d&quot; % (sys.argv[4], seqid,)</span></span><br><span class="line"></span><br><span class="line">        circular = rec.annotations.get(<span class="string">&#x27;molecule&#x27;</span>, <span class="string">&#x27;linear&#x27;</span>)</span><br><span class="line">        rec.description = <span class="string">&quot;[organism=%s] [strain=%s] [topology=%s] [molecule=DNA] [tech=wgs] [gcode=11]&quot;</span> % (sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>], circular)</span><br><span class="line">        SeqIO.write([rec], fasta_fh, <span class="string">&quot;fasta&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span> &gt;&gt;feature_fh, <span class="string">&quot;&gt;Feature %s&quot;</span> % (rec.name,)</span><br><span class="line">        <span class="keyword">for</span> f <span class="keyword">in</span> rec.features:</span><br><span class="line">            <span class="keyword">if</span> f.strand == <span class="number">1</span>:</span><br><span class="line">                <span class="built_in">print</span> &gt;&gt;feature_fh, <span class="string">&quot;%d\t%d\t%s&quot;</span> % (f.location.nofuzzy_start + <span class="number">1</span>, f.location.nofuzzy_end, f.<span class="built_in">type</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span> &gt;&gt;feature_fh, <span class="string">&quot;%d\t%d\t%s&quot;</span> % (f.location.nofuzzy_end, f.location.nofuzzy_start + <span class="number">1</span>, f.<span class="built_in">type</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> f.<span class="built_in">type</span> == <span class="string">&#x27;CDS&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;product&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> f.qualifiers:</span><br><span class="line">                f.qualifiers[<span class="string">&#x27;product&#x27;</span>] = [<span class="string">&#x27;hypothetical protein&#x27;</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> f.<span class="built_in">type</span> == <span class="string">&#x27;CDS&#x27;</span>:</span><br><span class="line">                f.qualifiers[<span class="string">&#x27;protein_id&#x27;</span>] = [<span class="string">&quot;gnl|ProjectID_%s|%s&quot;</span> % (sys.argv[<span class="number">3</span>], f.qualifiers[<span class="string">&#x27;locus_tag&#x27;</span>][<span class="number">0</span>])]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> f.<span class="built_in">type</span> <span class="keyword">in</span> coding:</span><br><span class="line">                <span class="keyword">del</span> f.qualifiers[<span class="string">&#x27;locus_tag&#x27;</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> key, vals <span class="keyword">in</span> f.qualifiers.iteritems():</span><br><span class="line">                my_allowed_tags = copy(allowed_tags)</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&#x27;pseudo&#x27;</span> <span class="keyword">in</span> f.qualifiers:</span><br><span class="line">                    my_allowed_tags.append(<span class="string">&#x27;note&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> my_allowed_tags:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> v <span class="keyword">in</span> vals:</span><br><span class="line">                    <span class="keyword">if</span> <span class="built_in">len</span>(v) <span class="keyword">or</span> key == <span class="string">&#x27;pseudo&#x27;</span>:</span><br><span class="line">                        <span class="built_in">print</span> &gt;&gt;feature_fh, <span class="string">&quot;\t\t\t%s\t%s&quot;</span> % (key, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">go()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-3-使用"><a href="#3-1-3-使用" class="headerlink" title="3.1.3. 使用"></a>3.1.3. 使用</h3><ol>
+<li><p>命令<br><code>python2 genbank_to_tbl.py sample mc_01 ncbi_id &lt; sample.gb</code></p>
+</li>
+<li><p>参数</p>
+</li>
+</ol>
+<ul>
+<li>sample：样品名称，organism name</li>
+<li>mc_01：品种编号，strain ID</li>
+<li>ncbi_id：NCBI项目ID</li>
+<li>&lt; sample.gb：输入genbank格式文件</li>
+</ul>
+<p>四个参数都是必需参数。</p>
+<ol start="3">
+<li>输出</li>
+</ol>
+<ul>
+<li>seq.fsa：基因组序列</li>
+<li>seq.tbl：tbl格式文件</li>
+</ul>
+<ol start="4">
+<li>notes</li>
+</ol>
+<ul>
+<li>seq.tbl结果中包含genbank注释的gene，CDS，exon，intron，tRNA，rRNA，pseudo genes等结果。</li>
+<li>需要在输入的genbank文件中包含locus_tag的值（可以用基因名称），否则报错。</li>
+</ul>
+<h2 id="3-2-Genbank2Sequin-py"><a href="#3-2-Genbank2Sequin-py" class="headerlink" title="3.2. Genbank2Sequin.py"></a>3.2. Genbank2Sequin.py</h2><h3 id="3-2-1-简介"><a href="#3-2-1-简介" class="headerlink" title="3.2.1. 简介"></a>3.2.1. 简介</h3><p>Genbank2Sequin.py脚本用于批量转换genbank格式的gene和CDS注释为tbl格式。</p>
+<h3 id="3-2-2-脚本"><a href="#3-2-2-脚本" class="headerlink" title="3.2.2. 脚本"></a>3.2.2. 脚本</h3><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/Van-Doorslaer/Genbank2sequin/blob/master/Genbank2Sequin.py">https://github.com/Van-Doorslaer/Genbank2sequin/blob/master/Genbank2Sequin.py</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Bio <span class="keyword">import</span> SeqIO</span><br><span class="line"><span class="keyword">import</span> re, glob, os</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> glob.glob(<span class="string">&quot;*.gb&quot;</span>):</span><br><span class="line">    ID = f.split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> SeqIO.parse(f,<span class="string">&quot;genbank&quot;</span>):</span><br><span class="line">        <span class="comment">#print r.features</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(ID+<span class="string">&#x27;.fsa&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> fasta, <span class="built_in">open</span>(ID+<span class="string">&quot;.tbl&quot;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> table:</span><br><span class="line">            <span class="built_in">print</span> &gt;&gt; fasta, <span class="string">&quot;&gt;%s [organism=Human papillomavirus %s]\n%s&quot;</span> %(ID, ID, r.seq)</span><br><span class="line">            <span class="built_in">print</span> &gt;&gt;table, <span class="string">&quot;&gt;Feature &quot;</span>+ID </span><br><span class="line">            <span class="keyword">for</span> (index, feature) <span class="keyword">in</span> <span class="built_in">enumerate</span>(r.features):</span><br><span class="line">                <span class="keyword">if</span> feature.<span class="built_in">type</span> ==  <span class="string">&#x27;CDS&#x27;</span>:</span><br><span class="line">                    m=re.search(<span class="string">&#x27;\[(\d*)\:(\d*)\]&#x27;</span>,<span class="built_in">str</span>(feature.location))</span><br><span class="line">                    <span class="keyword">if</span> m:</span><br><span class="line">                        <span class="comment">#print feature.qualifiers</span></span><br><span class="line">                        <span class="built_in">print</span> &gt;&gt;table, <span class="string">&quot;%s\t%s\tgene\n\t\t\tgene\t%s&quot;</span> %(<span class="built_in">int</span>(m.groups()[<span class="number">0</span>])+<span class="number">1</span>, m.groups()[<span class="number">1</span>],feature.qualifiers[<span class="string">&#x27;note&#x27;</span>][<span class="number">0</span>])</span><br><span class="line">                        <span class="built_in">print</span> &gt;&gt;table, <span class="string">&quot;%s\t%s\tCDS\n\t\t\tproduct\t%s\n\t\t\tgene\t%s\n\t\t\tcodon_start\t1&quot;</span> %(<span class="built_in">int</span>(m.groups()[<span class="number">0</span>])+<span class="number">1</span>, m.groups()[<span class="number">1</span>], feature.qualifiers[<span class="string">&#x27;note&#x27;</span>][<span class="number">0</span>], feature.qualifiers[<span class="string">&#x27;note&#x27;</span>][<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-3-使用"><a href="#3-2-3-使用" class="headerlink" title="3.2.3. 使用"></a>3.2.3. 使用</h3><ol>
+<li>命令<br><code>python2 Genbank2Sequin.py</code></li>
+</ol>
+<ul>
+<li>运行后会自动搜索当前文件夹下的所有.gb后缀文件，然后把gene和CDS的注释转换为.tbl文件。</li>
+</ul>
+<ol start="2">
+<li>输出</li>
+</ol>
+<ul>
+<li>*.tbl：tbl格式文件。</li>
+</ul>
+<ol start="3">
+<li>notes</li>
+</ol>
+<ul>
+<li>*.tbl结果中只包含genbank注释的gene，CDS结果。</li>
+<li>需要在输入的genbank文件中包含note的值（可以用基因名称），否则报错。</li>
+<li>可批量操作多个gb文件。</li>
+</ul>
+<h1 id="4-reference"><a href="#4-reference" class="headerlink" title="4. reference"></a>4. reference</h1><ol>
+<li>GB2sequin paper：<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0888754318301897?via=ihub">https://www.sciencedirect.com/science/article/pii/S0888754318301897?via%3Dihub</a></li>
+<li>GB2sequin：<a target="_blank" rel="noopener" href="https://chlorobox.mpimp-golm.mpg.de/GenBank2Sequin.html">https://chlorobox.mpimp-golm.mpg.de/GenBank2Sequin.html</a></li>
+<li>genbank_to_tbl.py：<a target="_blank" rel="noopener" href="https://gist.github.com/nickloman/2660685">https://gist.github.com/nickloman/2660685</a></li>
+<li>Genbank2Sequin.py：<a target="_blank" rel="noopener" href="https://github.com/Van-Doorslaer/Genbank2sequin/blob/master/Genbank2Sequin.py">https://github.com/Van-Doorslaer/Genbank2sequin/blob/master/Genbank2Sequin.py</a></li>
+<li>genbank格式：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html">https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html</a></li>
+<li>tbl格式：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/feature_table/">https://www.ncbi.nlm.nih.gov/genbank/feature_table/</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GenBank/" rel="tag"># GenBank</a>
+              <a href="/tags/tbl/" rel="tag"># tbl</a>
+              <a href="/tags/organellar-genome/" rel="tag"># organellar genome</a>
+              <a href="/tags/genome-annotation/" rel="tag"># genome annotation</a>
+              <a href="/tags/genome-submit/" rel="tag"># genome submit</a>
+              <a href="/tags/Sequin/" rel="tag"># Sequin</a>
+              <a href="/tags/tbl2asn/" rel="tag"># tbl2asn</a>
+              <a href="/tags/GB2sequin/" rel="tag"># GB2sequin</a>
+              <a href="/tags/gbf2tbl-pl/" rel="tag"># gbf2tbl.pl</a>
+              <a href="/tags/genbank-to-tbl-py/" rel="tag"># genbank_to_tbl.py</a>
+              <a href="/tags/Genbank2Sequin-py/" rel="tag"># Genbank2Sequin.py</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/07/omics_genome.survey_GCE/" rel="prev" title="用k-mer分析进行基因组调查(genome survey) —— 用GCE分步实现">
+      <i class="fa fa-chevron-left"></i> 用k-mer分析进行基因组调查(genome survey) —— 用GCE分步实现
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">1. 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-GenBank%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. GenBank格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-tbl%E6%A0%BC%E5%BC%8F-for-Sequin"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. tbl格式(for Sequin)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GB2sequin%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">2.</span> <span class="nav-text">2. GB2sequin在线工具【推荐】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%BC%98%E5%8A%BF"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 使用步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%BB%93%E6%9E%9C"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. 结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-genbank2tbl%E7%9A%84%E8%84%9A%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">3. genbank2tbl的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%ACgbf2tbl-pl%E3%80%90NCBI-%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81%E3%80%91"><span class="nav-number">3.1.</span> <span class="nav-text">脚本gbf2tbl.pl【NCBI 官方出品】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E8%84%9A%E6%9C%ACgenbank-to-tbl-py%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">3.2.</span> <span class="nav-text">3.1. 脚本genbank_to_tbl.py【推荐】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E7%AE%80%E4%BB%8B"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.1.1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E8%84%9A%E6%9C%AC"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.1.2. 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.1.3. 使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Genbank2Sequin-py"><span class="nav-number">3.3.</span> <span class="nav-text">3.2. Genbank2Sequin.py</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E7%AE%80%E4%BB%8B"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.2.1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E8%84%9A%E6%9C%AC"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.2.2. 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E4%BD%BF%E7%94%A8"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.2.3. 使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-reference"><span class="nav-number">4.</span> <span class="nav-text">4. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">212</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/06/16/biosoft_fileformat_gb2tbl/";
+    this.page.identifier = "2022/06/16/biosoft_fileformat_gb2tbl/";
+    this.page.title = "转换GenBank文件为tbl格式，为提交注释做准备";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
