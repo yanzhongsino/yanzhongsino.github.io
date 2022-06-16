@@ -9,6 +9,7 @@ tags:
 - genome submit
 - GenBank
 - table2asn
+- tbl2asn
 
 description: 此文记录提交基因组到NCBI的GenBank数据库的步骤，常见错误和修改，以及注意事项。
 ---
