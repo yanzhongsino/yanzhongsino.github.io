@@ -30,7 +30,9 @@ k-mer进行基因组调查分为**k-mer频数统计**和**基因组特征评估*
 - 官网包含软件的下载地址，示例报告，和版本更新记录。
 
 # 3. KmerGenie 安装
-在KmerGenie官网：http://kmergenie.bx.psu.edu/ 下载，目前最新版是18年更新的1.7051，安装前需要python（>=2.7）和R支持，我用的anaconda的python，安装运行完成后自动把kmergenie命令添加到了`/anaconda3/bin/`下面，所以不用再次把kmergenie命令添加到环境变量了。
+在KmerGenie官网：http://kmergenie.bx.psu.edu/ 下载，目前最新版是18年更新的1.7051。
+
+安装前需要python（>=2.7）和R支持，我用的anaconda的python，安装运行完成后自动把kmergenie命令添加到了`/anaconda3/bin/`下面，所以不用再次把kmergenie命令添加到环境变量了。
 
 ```
 wget http://kmergenie.bx.psu.edu/kmergenie-1.7051.tar.gz
