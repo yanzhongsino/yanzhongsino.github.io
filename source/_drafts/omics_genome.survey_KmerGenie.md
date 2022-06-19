@@ -1,6 +1,6 @@
 ---
 title: 用k-mer分析进行基因组调查 —— 用KmerGenie一步实现
-date: 2022-06-15
+date: 2022-06-18
 categories:
 - omics
 - genome
