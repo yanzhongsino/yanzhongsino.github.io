@@ -1,5 +1,5 @@
 ---
-title: 富集分析概述
+title: 富集分析：（一）概述
 date: 2021-11-12
 categories: 
 - bio
@@ -19,6 +19,8 @@ description: 介绍了富集分析和分析软件，包括在线富集分析工�
 ---
 
 <div align="middle"><iframe width="298" height="52" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+
+（全文约​6600字）
 
 # 1. 富集分析
 ## 1.1. 富集分析概念
@@ -305,7 +307,7 @@ topGO是一个R包，用于半自动的GO terms的富集分析。topGO的结果�
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图" alt="DAG图" align=center/>
 
-**<p align="center">Figure 1. DAG图示例**
+**<p align="center">Figure 2. DAG图示例**
 from [wikipedia:directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph)</p>
 
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
@@ -330,20 +332,20 @@ ORA是用于判断已知的生物功能或过程在实验产生的基因列表�
 3. Leading edge analysis and core enriched genes
 
 # 5. references
-1. [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
-2. [paper:Ten Years of Pathway Analysis: Current Approaches and Outstanding Challenges](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375)
-3. [paper:Progress in Gene Functional Enrichment Analysis](https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&scroll=)
-4. [enrichment analysis](https://www.jianshu.com/p/be8fe1318850)
-5. [enrichment analysis methods](https://www.jianshu.com/p/042b888d5520)
-6. [enrichment analysis methods](https://blog.csdn.net/fjsd155/article/details/103064166)
-7. [GOEAST introduction](https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect)
-8. [topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
-9. [topGO blog](https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/)
-10. [R topGO](https://www.codenong.com/cs105162324/)
-11. [enrichment](https://www.jianshu.com/p/47b5ea646932)
-12. [GO explanation](https://www.jianshu.com/p/7177c372243f)
-13. [GO overview](http://geneontology.org/docs/ontology-documentation/)
-14. [KEGG](https://en.wikipedia.org/wiki/KEGG)
-15. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-16. [universal enrichment analysis using clusterProfiler](http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html)
-17. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
+1. GSEA wiki：https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis
+2. paper-Ten Years of Pathway Analysis: Current Approaches and Outstanding Challenges：https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375
+3. paper-Progress in Gene Functional Enrichment Analysis：https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&scroll=
+4. enrichment analysis：https://www.jianshu.com/p/be8fe1318850
+5. enrichment analysis methods：https://www.jianshu.com/p/042b888d5520
+6. enrichment analysis methods：https://blog.csdn.net/fjsd155/article/details/103064166
+7. GOEAST introduction：https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect
+8. topGO tutorial：https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf
+9. topGO blog：https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/
+10. R topGO：https://www.codenong.com/cs105162324/
+11. enrichment：https://www.jianshu.com/p/47b5ea646932
+12. GO explanation：https://www.jianshu.com/p/7177c372243f
+13. GO overview：http://geneontology.org/docs/ontology-documentation/
+14. KEGG：https://en.wikipedia.org/wiki/KEGG
+15. clusterProfiler github：https://github.com/YuLab-SMU/clusterProfiler
+16. universal enrichment analysis using clusterProfiler：http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html
+17. clusterProfiler paper：https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue
