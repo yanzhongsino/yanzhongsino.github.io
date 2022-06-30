@@ -22,7 +22,7 @@
 
   <meta name="description" content="介绍了富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="富集分析概述">
+<meta property="og:title" content="富集分析：（一）概述">
 <meta property="og:url" content="http://example.com/2021/11/12/bioinfo_enrichment/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="介绍了富集分析和分析软件，包括在线富集分析工具KOBAS-i和GOEAST，富集分析R包topGO，clusterProfiler。">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://www.sciengine.com/figures/figures-29603243e0234a3cb08e1f7155debca6-picobject1.png">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png">
 <meta property="article:published_time" content="2021-11-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-03T06:31:47.731Z">
+<meta property="article:modified_time" content="2022-06-27T03:36:03.320Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene set enrichment analysis">
 <meta property="article:tag" content="GSEA">
@@ -57,7 +57,7 @@
   };
 </script>
 
-  <title>富集分析概述 | 生信技工</title>
+  <title>富集分析：（一）概述 | 生信技工</title>
   
 
 
@@ -194,7 +194,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          富集分析概述
+          富集分析：（一）概述
         </h1>
 
         <div class="post-meta">
@@ -211,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-03 14:31:47" itemprop="dateModified" datetime="2022-05-03T14:31:47+08:00">2022-05-03</time>
+                <time title="修改时间：2022-06-27 11:36:03" itemprop="dateModified" datetime="2022-06-27T11:36:03+08:00">2022-06-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,6 +259,7 @@
       
         <div align="middle"><iframe width="298" height="52" src="https://www.youtube.com/embed/wcOM3Rx43ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
+<p>（全文约​6600字）</p>
 <h1 id="1-富集分析"><a href="#1-富集分析" class="headerlink" title="1. 富集分析"></a>1. 富集分析</h1><h2 id="1-1-富集分析概念"><a href="#1-1-富集分析概念" class="headerlink" title="1.1. 富集分析概念"></a>1.1. 富集分析概念</h2><ol>
 <li><p>富集分析<br>富集分析，本质上是对数据的分布检验，如果分布集中在某个区域，则认为富集。<br>常用的分布检验方法有卡方检验、Fisher精确检验以及KS检验等方法。</p>
 </li>
@@ -518,7 +519,7 @@
 <p>topGO是一个R包，用于半自动的GO terms的富集分析。topGO的结果可以展示为有向无环图。</p>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图" alt="DAG图" align=center/>
 
-<p><strong><p align="center">Figure 1. DAG图示例</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">wikipedia:directed acyclic graph</a></p></p>
+<p><strong><p align="center">Figure 2. DAG图示例</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">wikipedia:directed acyclic graph</a></p></p>
 <p>注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。</p>
 <h2 id="4-2-clusterProfiler"><a href="#4-2-clusterProfiler" class="headerlink" title="4.2. clusterProfiler"></a>4.2. clusterProfiler</h2><p>clusterProfiler包的具体使用参考博文<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">blog_clusterProfiler</a>。</p>
 <h3 id="4-2-1-clusterProfiler"><a href="#4-2-1-clusterProfiler" class="headerlink" title="4.2.1. clusterProfiler"></a>4.2.1. clusterProfiler</h3><p>clusterProfiler是一个R包，是一个解释组学数据的通用富集工具，支持Gene Ontology(GO), Kyoto Encyclopedia of Genes and Genomes(KEGG), Disease Ontology(DO), Disease Gene Network(DisGeNET), Molecular Signatures Database(MSigDb), wikiPathways和许多其他的基因集的功能注释和富集分析，以及富集分析结果的可视化。2021年07月发布了clusterProfiler 4.0版本。</p>
@@ -536,23 +537,23 @@
 <li>Leading edge analysis and core enriched genes</li>
 </ol>
 <h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis">GSEA wiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375">paper:Ten Years of Pathway Analysis: Current Approaches and Outstanding Challenges</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&scroll=">paper:Progress in Gene Functional Enrichment Analysis</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/be8fe1318850">enrichment analysis</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/042b888d5520">enrichment analysis methods</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fjsd155/article/details/103064166">enrichment analysis methods</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&mid=2247484456&idx=1&sn=bbcd0b5d10ba9312d92b7baae777ccde&scene=21#wechat_redirect">GOEAST introduction</a></li>
-<li><a target="_blank" rel="noopener" href="https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf">topGO tutorial</a></li>
-<li><a target="_blank" rel="noopener" href="https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/">topGO blog</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.codenong.com/cs105162324/">R topGO</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/47b5ea646932">enrichment</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7177c372243f">GO explanation</a></li>
-<li><a target="_blank" rel="noopener" href="http://geneontology.org/docs/ontology-documentation/">GO overview</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/KEGG">KEGG</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">clusterProfiler github</a></li>
-<li><a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html">universal enrichment analysis using clusterProfiler</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">clusterProfiler paper</a></li>
+<li>GSEA wiki：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis">https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis</a></li>
+<li>paper-Ten Years of Pathway Analysis: Current Approaches and Outstanding Challenges：<a target="_blank" rel="noopener" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375">https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002375</a></li>
+<li>paper-Progress in Gene Functional Enrichment Analysis：<a target="_blank" rel="noopener" href="https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&amp;scroll=">https://www.sciengine.com/SSV/article?doi=10.1360/N052016-00139&amp;scroll=</a></li>
+<li>enrichment analysis：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/be8fe1318850">https://www.jianshu.com/p/be8fe1318850</a></li>
+<li>enrichment analysis methods：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/042b888d5520">https://www.jianshu.com/p/042b888d5520</a></li>
+<li>enrichment analysis methods：<a target="_blank" rel="noopener" href="https://blog.csdn.net/fjsd155/article/details/103064166">https://blog.csdn.net/fjsd155/article/details/103064166</a></li>
+<li>GOEAST introduction：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&amp;mid=2247484456&amp;idx=1&amp;sn=bbcd0b5d10ba9312d92b7baae777ccde&amp;scene=21#wechat_redirect">https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&amp;mid=2247484456&amp;idx=1&amp;sn=bbcd0b5d10ba9312d92b7baae777ccde&amp;scene=21#wechat_redirect</a></li>
+<li>topGO tutorial：<a target="_blank" rel="noopener" href="https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf">https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf</a></li>
+<li>topGO blog：<a target="_blank" rel="noopener" href="https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/">https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/</a></li>
+<li>R topGO：<a target="_blank" rel="noopener" href="https://www.codenong.com/cs105162324/">https://www.codenong.com/cs105162324/</a></li>
+<li>enrichment：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/47b5ea646932">https://www.jianshu.com/p/47b5ea646932</a></li>
+<li>GO explanation：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7177c372243f">https://www.jianshu.com/p/7177c372243f</a></li>
+<li>GO overview：<a target="_blank" rel="noopener" href="http://geneontology.org/docs/ontology-documentation/">http://geneontology.org/docs/ontology-documentation/</a></li>
+<li>KEGG：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/KEGG">https://en.wikipedia.org/wiki/KEGG</a></li>
+<li>clusterProfiler github：<a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">https://github.com/YuLab-SMU/clusterProfiler</a></li>
+<li>universal enrichment analysis using clusterProfiler：<a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html">http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html</a></li>
+<li>clusterProfiler paper：<a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue</a></li>
 </ol>
 
     </div>
@@ -584,8 +585,8 @@
       <i class="fa fa-chevron-left"></i> 基因组间的同线性分析 —— MCscan
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/11/13/bioinfo_enrichment_topGO/" rel="next" title="富集分析 —— topGO">
-      富集分析 —— topGO <i class="fa fa-chevron-right"></i>
+    <a href="/2021/11/13/bioinfo_enrichment_topGO/" rel="next" title="富集分析：（二）topGO">
+      富集分析：（二）topGO <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -666,20 +667,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">212</span>
+        <span class="site-state-item-count">215</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -786,7 +787,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2021/11/12/bioinfo_enrichment/";
     this.page.identifier = "2021/11/12/bioinfo_enrichment/";
-    this.page.title = "富集分析概述";
+    this.page.title = "富集分析：（一）概述";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
