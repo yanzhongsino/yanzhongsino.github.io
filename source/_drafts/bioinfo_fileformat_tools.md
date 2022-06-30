@@ -33,25 +33,33 @@ gff3_to_fasta：根据基因组fasta和注释gff生成gene/cds/protein/exon
 gff3_to_fasta:
 用来操作gff3格式文件，包括提取gene,cds,exon,pep等序列。
 
+# fasta&fastq
+seqkit
+
 
 fastq
 
 fasta
 
-sam
-
-bam
-
-vcf
+# sam&bam
+sam文件是tab分隔的文本文件，bam文件是sam文件的二进制格式，以节约储存空间。
 
 
-bed
+samtools
+
+bamtools
+
+# vcf&gvcf
+vcftools
+
+bcftools
+
+# bed
+bedtools
+
 tab分隔，0开始
 
-gff
-
-
-gtf
+# gff&gtf
 
 
 

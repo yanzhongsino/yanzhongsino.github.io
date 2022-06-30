@@ -28,4 +28,29 @@ nucmer -h
 ```
 
 
+# 使用
+## nucmer
+nucmer ref.fa query.fa -p out
+
+生成
+- out.delta
+
+## dnadiff
+dnadiff -d out.delta
+
+生成
+- out.1coords
+- out.1delta
+- out.mcoords
+- out.mdelta
+- out.qdiff
+- out.rdiff
+- out.report
+- out.snps
+
+
+dnadiff ref.fa query.fa
+
+# references
+1. https://www.jianshu.com/p/c12f2a117892
 

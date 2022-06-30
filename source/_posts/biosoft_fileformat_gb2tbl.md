@@ -53,14 +53,15 @@ https://chlorobox.mpimp-golm.mpg.de/GenBank2Sequin.html
 
 ## 2.3. 使用步骤
 1. 上传GenBank格式文件，要在文件末包含注释的序列，否则运行结果空白。
-2. 【可选】上传Author Submission Template，Source Modifier Table，Gene Product Specification Table。
-3. 选择分子类别"Molecule Type"，一般默认genomic DNA即可。
-4. 选择是否是完整(complete)，环状(circular)的基因。
-5. 选择编码方式"Genetic Code"，植物样品选标准Standard。
-6. 选择基因位置Location，包括叶绿体chloroplast，线粒体mitochondrion等。
-7. 点击Start Conversion，等待几分钟即可得到结果，点击每项结果然后下载（大多是文本文件）。
-8. 根据验证结果文件的错误ERROR和警告WARNING逐一修改原始GenBank文件。
-9. 再次运行，重复以上操作，直至无错误和警告，即可使用sqn文件上传至NCBI。
+2. 【推荐】上传Author Submission Template。可以在https://submit.ncbi.nlm.nih.gov/genbank/template/submission/上填写信息后导出template.sbt文件用于上传。
+3. 【可选】上传Source Modifier Table，Gene Product Specification Table。
+4. 选择分子类别"Molecule Type"，一般默认genomic DNA即可。
+5. 选择是否是完整(complete)，环状(circular)的基因。
+6. 选择编码方式"Genetic Code"，植物样品选标准Standard。
+7. 选择基因位置Location，包括叶绿体chloroplast，线粒体mitochondrion等。
+8. 点击Start Conversion，等待几分钟即可得到结果，点击每项结果然后下载（大多是文本文件）。
+9. 根据验证结果文件的错误ERROR和警告WARNING逐一修改原始GenBank文件。
+10. 再次运行，重复以上操作，直至无错误和警告，即可使用sqn文件上传至NCBI。
 
 验证结果的含义（tbl2asn运行的部分）可以参考之前写的**基因组提交的博客**：https://yanzhongsino.github.io/2022/03/22/omics_genome.submit/
 
