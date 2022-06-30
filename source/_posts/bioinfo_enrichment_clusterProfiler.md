@@ -1,5 +1,5 @@
 ---
-title: 富集分析 —— clusterProfiler
+title: 富集分析：（三）clusterProfiler概述
 date: 2021-12-13
 categories: 
 - bio
@@ -18,12 +18,12 @@ description: 介绍了基因富集分析R包clusterProfiler。
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1336867002&auto=1&height=32"></iframe></div>
 
 clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：
-- 博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
-- 博客[富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
-- 博客[富集分析 —— clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
+- 博客[富集分析：（三）clusterProfiler概述](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
+- 博客[富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
+- 博客[富集分析：（五）clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
 
 # 1. 基因富集分析(gene set enrichment analysis, GSEA)
-富集分析概述参考[博客：富集分析概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
+富集分析概述参考[博客：富集分析：（一）概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
 
 # 2. clusterProfiler介绍
 clusterProfiler是一个R包，是一个解释组学数据的通用富集工具许多基因集的功能注释和富集分析，以及富集分析结果的可视化。
@@ -33,7 +33,7 @@ clusterProfiler是一个R包，是一个解释组学数据的通用富集工具�
 <img src="https://yulab-smu.top/biomedical-knowledge-mining-book/figures/clusterProfiler-diagram.png" width=100% title="clusterProfiler function and workflow" alt="clusterProfiler function and workflow" align=center/>
 
 **<p align="center">Figure 1. clusterProfiler function and workflow**
-from [yulab's book](https://yulab-smu.top/biomedical-knowledge-mining-book/)</p>
+图片来源： [yulab's book](https://yulab-smu.top/biomedical-knowledge-mining-book/)</p>
 
 # 3. clusterProfiler支持的基因集(gene sets)或基因通路数据库
 1. Gene Ontology(GO)
@@ -183,7 +183,7 @@ GSEA分析通过置换检验来计算p值
 #### 6.2.2.1. GSEA的输入文件
 1. GSEA分析的输入文件是一个基因排序列表，有三个要点：
 - numeric vector：倍数变化或者其他类型的数字变量，比如差异表达分析里的logFC值
-- named vector：每个数字倍对应的gene ID命名
+- named vector：每个数字对应的gene ID命名
 - sorted vector；数字应该以降序排序
 即包含两列，一列基因ID名称，一列数据，并以数据降序排序。
 
@@ -491,13 +491,13 @@ clusterProfiler提供了用于hypergeometric test的enricher()函数和用于基
 
 
 # 7. references
-1. [GSEA wiki](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis)
-2. [enrichment](https://www.jianshu.com/p/47b5ea646932)
-3. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-4. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
-5. [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/index.html)
-6. [clusterProfiler manual](https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf)7. 
-7. [clusterProfiler ducumentation](https://guangchuangyu.github.io/software/clusterProfiler/documentation/)
-8. [clusterProfiler blog](https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/)
-9. [tutorial](https://www.cnblogs.com/jessepeng/p/12159139.html)
-10. [函数simplify](http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/)
+1. GSEA wiki: https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis
+2. enrichment: https://www.jianshu.com/p/47b5ea646932
+3. clusterProfiler github: https://github.com/YuLab-SMU/clusterProfiler
+4. clusterProfiler paper: https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue
+5. clusterProfiler book: http://yulab-smu.top/biomedical-knowledge-mining-book/index.html
+6. clusterProfiler manual: https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf 
+7. clusterProfiler ducumentation: https://guangchuangyu.github.io/software/clusterProfiler/documentation/
+8. clusterProfiler blog: https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/
+9. tutorial: https://www.cnblogs.com/jessepeng/p/12159139.html
+10. 函数simplify: http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/
