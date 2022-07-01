@@ -59,7 +59,7 @@ library('RIdeogram') #载入RIdeogram
 ka <- read.table("karyotype.txt",sep="\t",header = TRUE,stringsAsFactors = F) #读取karyotype.txt文件
 sy <- read.table("synteny.txt",sep="\t",header = TRUE,stringsAsFactors = F) #读取synteny.txt文件
 ideogram(karyotype = ka, synteny = sy) #使用ideogram函数，生成chromosome.svg文件用于绘图
-convertSVG("chromosome.svg", device = "pdf",dpi=1200) #转化成chromosome.pdf文件，还可选择转化的格式：tiff，png，jpg，分辨率1200。
+convertSVG("chromosome.svg", device = "pdf",dpi=1600) #转化成chromosome.pdf文件，还可选择转化的格式：tiff，png，jpg，分辨率1600。
 
 ```
 
