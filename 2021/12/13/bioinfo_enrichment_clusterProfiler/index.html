@@ -22,14 +22,14 @@
 
   <meta name="description" content="介绍了基因富集分析R包clusterProfiler。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="富集分析 —— clusterProfiler">
+<meta property="og:title" content="富集分析：（三）clusterProfiler概述">
 <meta property="og:url" content="http://example.com/2021/12/13/bioinfo_enrichment_clusterProfiler/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="介绍了基因富集分析R包clusterProfiler。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yulab-smu.top/biomedical-knowledge-mining-book/figures/clusterProfiler-diagram.png">
 <meta property="article:published_time" content="2021-12-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-29T13:50:16.353Z">
+<meta property="article:modified_time" content="2022-07-01T02:39:20.534Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene set enrichment analysis">
 <meta property="article:tag" content="GSEA">
@@ -53,7 +53,7 @@
   };
 </script>
 
-  <title>富集分析 —— clusterProfiler | 生信技工</title>
+  <title>富集分析：（三）clusterProfiler概述 | 生信技工</title>
   
 
 
@@ -190,7 +190,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          富集分析 —— clusterProfiler
+          富集分析：（三）clusterProfiler概述
         </h1>
 
         <div class="post-meta">
@@ -207,7 +207,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-29 21:50:16" itemprop="dateModified" datetime="2022-04-29T21:50:16+08:00">2022-04-29</time>
+                <time title="修改时间：2022-07-01 10:39:20" itemprop="dateModified" datetime="2022-07-01T10:39:20+08:00">2022-07-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,16 +257,16 @@
 
 <p>clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：</p>
 <ul>
-<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">富集分析 —— clusterProfiler</a></li>
-<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析</a></li>
-<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">富集分析 —— clusterProfiler：Visualization</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">富集分析：（三）clusterProfiler概述</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">富集分析：（五）clusterProfiler：Visualization</a></li>
 </ul>
-<h1 id="1-基因富集分析-gene-set-enrichment-analysis-GSEA"><a href="#1-基因富集分析-gene-set-enrichment-analysis-GSEA" class="headerlink" title="1. 基因富集分析(gene set enrichment analysis, GSEA)"></a>1. 基因富集分析(gene set enrichment analysis, GSEA)</h1><p>富集分析概述参考<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/">博客：富集分析概述</a>。</p>
+<h1 id="1-基因富集分析-gene-set-enrichment-analysis-GSEA"><a href="#1-基因富集分析-gene-set-enrichment-analysis-GSEA" class="headerlink" title="1. 基因富集分析(gene set enrichment analysis, GSEA)"></a>1. 基因富集分析(gene set enrichment analysis, GSEA)</h1><p>富集分析概述参考<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/">博客：富集分析：（一）概述</a>。</p>
 <h1 id="2-clusterProfiler介绍"><a href="#2-clusterProfiler介绍" class="headerlink" title="2. clusterProfiler介绍"></a>2. clusterProfiler介绍</h1><p>clusterProfiler是一个R包，是一个解释组学数据的通用富集工具许多基因集的功能注释和富集分析，以及富集分析结果的可视化。</p>
 <p>2021年07月发布了clusterProfiler 4.0版本。</p>
 <img src="https://yulab-smu.top/biomedical-knowledge-mining-book/figures/clusterProfiler-diagram.png" width=100% title="clusterProfiler function and workflow" alt="clusterProfiler function and workflow" align=center/>
 
-<p><strong><p align="center">Figure 1. clusterProfiler function and workflow</strong><br>from <a target="_blank" rel="noopener" href="https://yulab-smu.top/biomedical-knowledge-mining-book/">yulab’s book</a></p></p>
+<p><strong><p align="center">Figure 1. clusterProfiler function and workflow</strong><br>图片来源： <a target="_blank" rel="noopener" href="https://yulab-smu.top/biomedical-knowledge-mining-book/">yulab’s book</a></p></p>
 <h1 id="3-clusterProfiler支持的基因集-gene-sets-或基因通路数据库"><a href="#3-clusterProfiler支持的基因集-gene-sets-或基因通路数据库" class="headerlink" title="3. clusterProfiler支持的基因集(gene sets)或基因通路数据库"></a>3. clusterProfiler支持的基因集(gene sets)或基因通路数据库</h1><ol>
 <li>Gene Ontology(GO)</li>
 <li>Kyoto Encyclopedia of Genes and Genomes(KEGG)</li>
@@ -345,7 +345,7 @@
 </ol>
 <ul>
 <li>numeric vector：倍数变化或者其他类型的数字变量，比如差异表达分析里的logFC值</li>
-<li>named vector：每个数字倍对应的gene ID命名</li>
+<li>named vector：每个数字对应的gene ID命名</li>
 <li>sorted vector；数字应该以降序排序<br>即包含两列，一列基因ID名称，一列数据，并以数据降序排序。</li>
 </ul>
 <ol start="2">
@@ -474,16 +474,16 @@
 </ul>
 <p>在GO和KEGG富集分析的用户自行提供注释文件的分析部分，使用的enricher()和GSEA()函数。</p>
 <h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis">GSEA wiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/47b5ea646932">enrichment</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">clusterProfiler github</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">clusterProfiler paper</a></li>
-<li><a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/index.html">clusterProfiler book</a></li>
-<li><a target="_blank" rel="noopener" href="https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf">clusterProfiler manual</a>7. </li>
-<li><a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/software/clusterProfiler/documentation/">clusterProfiler ducumentation</a></li>
-<li><a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/">clusterProfiler blog</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jessepeng/p/12159139.html">tutorial</a></li>
-<li><a target="_blank" rel="noopener" href="http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/">函数simplify</a></li>
+<li>GSEA wiki: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis">https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis</a></li>
+<li>enrichment: <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/47b5ea646932">https://www.jianshu.com/p/47b5ea646932</a></li>
+<li>clusterProfiler github: <a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">https://github.com/YuLab-SMU/clusterProfiler</a></li>
+<li>clusterProfiler paper: <a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue</a></li>
+<li>clusterProfiler book: <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/index.html">http://yulab-smu.top/biomedical-knowledge-mining-book/index.html</a></li>
+<li>clusterProfiler manual: <a target="_blank" rel="noopener" href="https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf">https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf</a> </li>
+<li>clusterProfiler ducumentation: <a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/software/clusterProfiler/documentation/">https://guangchuangyu.github.io/software/clusterProfiler/documentation/</a></li>
+<li>clusterProfiler blog: <a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/">https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/</a></li>
+<li>tutorial: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/jessepeng/p/12159139.html">https://www.cnblogs.com/jessepeng/p/12159139.html</a></li>
+<li>函数simplify: <a target="_blank" rel="noopener" href="http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/">http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</a></li>
 </ol>
 
     </div>
@@ -594,7 +594,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -607,7 +607,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">215</span>
+        <span class="site-state-item-count">220</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -714,7 +714,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2021/12/13/bioinfo_enrichment_clusterProfiler/";
     this.page.identifier = "2021/12/13/bioinfo_enrichment_clusterProfiler/";
-    this.page.title = "富集分析 —— clusterProfiler";
+    this.page.title = "富集分析：（三）clusterProfiler概述";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

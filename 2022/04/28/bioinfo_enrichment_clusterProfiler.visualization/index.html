@@ -22,7 +22,7 @@
 
   <meta name="description" content="介绍了富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="富集分析 —— clusterProfiler：Visualization">
+<meta property="og:title" content="富集分析：（五）clusterProfiler：Visualization">
 <meta property="og:url" content="http://example.com/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="介绍了富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/goplot-1.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_GSEA_clusterProfiler_wordcloud.png?raw=true">
 <meta property="article:published_time" content="2022-04-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-05T07:43:00.956Z">
+<meta property="article:modified_time" content="2022-07-02T08:44:29.225Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene set enrichment analysis">
 <meta property="article:tag" content="GSEA">
@@ -64,7 +64,7 @@
   };
 </script>
 
-  <title>富集分析 —— clusterProfiler：Visualization | 生信技工</title>
+  <title>富集分析：（五）clusterProfiler：Visualization | 生信技工</title>
   
 
 
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          富集分析 —— clusterProfiler：Visualization
+          富集分析：（五）clusterProfiler：Visualization
         </h1>
 
         <div class="post-meta">
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-05 15:43:00" itemprop="dateModified" datetime="2022-05-05T15:43:00+08:00">2022-05-05</time>
+                <time title="修改时间：2022-07-02 16:44:29" itemprop="dateModified" datetime="2022-07-02T16:44:29+08:00">2022-07-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,11 +266,12 @@
       
         <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283091&auto=1&height=32"></iframe></div>
 
+<p>(全文约4000字)</p>
 <p>clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：</p>
 <ul>
-<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">富集分析 —— clusterProfiler</a></li>
-<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析</a></li>
-<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">富集分析 —— clusterProfiler：Visualization</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">富集分析：（三）clusterProfiler概述</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">富集分析：（五）clusterProfiler：Visualization</a></li>
 </ul>
 <h1 id="1-可视化的输入数据"><a href="#1-可视化的输入数据" class="headerlink" title="1. 可视化的输入数据"></a>1. 可视化的输入数据</h1><p>clusterProfiler的可视化一般只支持clusterProfiler富集分析结果的可视化，通过认识clusterProfiler可视化接受的输入数据的格式，可以修改其他富集分析结果文件的格式，来用clusterProfiler进行可视化绘图。</p>
 <h2 id="1-1-可视化输入数据格式"><a href="#1-1-可视化输入数据格式" class="headerlink" title="1.1. 可视化输入数据格式"></a>1.1. 可视化输入数据格式</h2><ol>
@@ -412,19 +413,20 @@
 
 <p><strong><p align="center">Figure 11. wordcloud词云图</strong><br>from <a target="_blank" rel="noopener" href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/">NGS Analysis ebook</a></p></p>
 <h1 id="3-导出可视化结果"><a href="#3-导出可视化结果" class="headerlink" title="3. 导出可视化结果"></a>3. 导出可视化结果</h1><ol>
-<li><p>Rstudio<br>如果是在Rstudio中，可以直接看到绘图结果，导出需要的文件格式即可。</p>
-</li>
-<li><p>代码导出</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pdf<span class="punctuation">(</span><span class="string">&quot;ego.pdf&quot;</span><span class="punctuation">)</span> <span class="comment">#如果保存png，就改成png(&quot;ego.png&quot;)</span></span><br><span class="line">ego_fig<span class="operator">&lt;-</span>barplot<span class="punctuation">(</span>x<span class="punctuation">)</span> <span class="comment">#画图函数</span></span><br><span class="line">print<span class="punctuation">(</span>ego_fig<span class="punctuation">)</span> <span class="comment">#画到pdf文件</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#关闭pdf画板</span></span><br></pre></td></tr></table></figure></li>
+<li>Rstudio</li>
+</ol>
+<p>如果是在Rstudio中，可以直接看到绘图结果，导出需要的文件格式即可。</p>
+<ol start="2">
+<li>代码导出<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pdf<span class="punctuation">(</span><span class="string">&quot;ego.pdf&quot;</span><span class="punctuation">)</span> <span class="comment">#如果保存png，就改成png(&quot;ego.png&quot;)</span></span><br><span class="line">ego_fig<span class="operator">&lt;-</span>barplot<span class="punctuation">(</span>x<span class="punctuation">)</span> <span class="comment">#画图函数</span></span><br><span class="line">print<span class="punctuation">(</span>ego_fig<span class="punctuation">)</span> <span class="comment">#画到pdf文件</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#关闭pdf画板</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">clusterProfiler github</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">clusterProfiler paper</a></li>
-<li><a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/index.html">clusterProfiler book</a></li>
-<li><a target="_blank" rel="noopener" href="https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf">clusterProfiler manual</a></li>
-<li><a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/software/clusterProfiler/documentation/">clusterProfiler ducumentation</a></li>
-<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613815">其他来源结果可视化</a></li>
-<li><a target="_blank" rel="noopener" href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/">wordcloud</a></li>
+<li>clusterProfiler github：<a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">https://github.com/YuLab-SMU/clusterProfiler</a></li>
+<li>clusterProfiler paper：<a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue</a></li>
+<li>clusterProfiler book：<a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/index.html">http://yulab-smu.top/biomedical-knowledge-mining-book/index.html</a></li>
+<li>clusterProfiler manual：<a target="_blank" rel="noopener" href="https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf">https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf</a></li>
+<li>clusterProfiler ducumentation：<a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/software/clusterProfiler/documentation/">https://guangchuangyu.github.io/software/clusterProfiler/documentation/</a></li>
+<li>其他来源结果可视化：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613815">https://cloud.tencent.com/developer/article/1613815</a></li>
+<li>wordcloud：<a target="_blank" rel="noopener" href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/">https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/</a></li>
 </ol>
 
     </div>
@@ -450,8 +452,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/26/bioinfo_enrichment_clusterProfiler.species/" rel="prev" title="富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析">
-      <i class="fa fa-chevron-left"></i> 富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析
+    <a href="/2022/04/26/bioinfo_enrichment_clusterProfiler.species/" rel="prev" title="富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析">
+      <i class="fa fa-chevron-left"></i> 富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析
     </a></div>
       <div class="post-nav-item">
     <a href="/2022/05/02/linux_operation.and.maintenance_top/" rel="next" title="Linux运维命令 —— top">
@@ -536,7 +538,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -549,7 +551,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">215</span>
+        <span class="site-state-item-count">220</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -656,7 +658,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/";
     this.page.identifier = "2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/";
-    this.page.title = "富集分析 —— clusterProfiler：Visualization";
+    this.page.title = "富集分析：（五）clusterProfiler：Visualization";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
