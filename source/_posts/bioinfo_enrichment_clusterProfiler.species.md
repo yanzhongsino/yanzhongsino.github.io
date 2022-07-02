@@ -1,5 +1,5 @@
 ---
-title: 富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析
+title: 富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析
 date: 2022-04-26
 categories: 
 - bio
@@ -23,9 +23,9 @@ description: 记录使用clusterProfiler进行GO/KEGG富集分析时，根据分
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283092&auto=1&height=32"></iframe></div>
 
 clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：
-- 博客[富集分析 —— clusterProfiler](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
-- 博客[富集分析 —— clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
-- 博客[富集分析 —— clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
+- 博客[富集分析：（三）clusterProfiler概述](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
+- 博客[富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
+- 博客[富集分析：（五）clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
 
 **总结**
 
@@ -150,7 +150,7 @@ keys(Cgriseus, keytype = "GO") #查看GO数据集下的ID
 
 ## 1.3. 通用富集分析（非模式物种）—— AnnotationForge
 - 如果以上两个方法都没有找到你分析的物种，可以选择近缘种来代替。
-- 如果有分析物种的基因组注释数据，更好地方案是使用通用富集分析。
+- 如果有分析物种的基因组注释数据，更好的方案是使用通用富集分析。
 - AnnotationForge是用来创建OrgDb包的R包。
 
 ### 1.3.1. 准备
@@ -475,10 +475,10 @@ write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #�
 使用前面**提取注释的KEGG信息**第4步骤得到的pathway2name.txt文件，获取KEGG Pathway ID对应的描述信息(Name列)。
 
 # 5. references
-1. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-2. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
-3. [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/index.html)
-4. [clusterProfiler manual](https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf)5. 
-5. [clusterProfiler ducumentation](https://guangchuangyu.github.io/software/clusterProfiler/documentation/)
-6. [用AnnotationForge进行非模式物种注释构建](https://www.jieandze1314.com/post/cnposts/208/)
-7. [用AnnotationHub获取非模式物种注释信息](https://www.bioinfo-scrounger.com/archives/512/)
+1. clusterProfiler github：https://github.com/YuLab-SMU/clusterProfiler
+2. clusterProfiler paper：https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue
+3. clusterProfiler book：http://yulab-smu.top/biomedical-knowledge-mining-book/index.html
+4. clusterProfiler manual：https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf 
+5. clusterProfiler ducumentation：https://guangchuangyu.github.io/software/clusterProfiler/documentation/
+6. 用AnnotationForge进行非模式物种注释构建：https://www.jieandze1314.com/post/cnposts/208/
+7. 用AnnotationHub获取非模式物种注释信息：https://www.bioinfo-scrounger.com/archives/512/

@@ -258,6 +258,6 @@ from [clusterProfiler blog](https://guangchuangyu.github.io/2016/01/go-analysis-
 注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。
 
 # 3. references
-topGO tutorial：https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf
-topGO blog：https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/
-R topGO：https://www.codenong.com/cs105162324/
+1. topGO tutorial：https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf
+2. topGO blog：https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/
+3. R topGO：https://www.codenong.com/cs105162324/
