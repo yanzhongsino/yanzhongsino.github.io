@@ -306,10 +306,10 @@ dev.off() #关闭pdf画板
 ```
 
 # 4. references
-1. [clusterProfiler github](https://github.com/YuLab-SMU/clusterProfiler)
-2. [clusterProfiler paper](https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue)
-3. [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/index.html)
-4. [clusterProfiler manual](https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf)
-5. [clusterProfiler ducumentation](https://guangchuangyu.github.io/software/clusterProfiler/documentation/)
-6. [其他来源结果可视化](https://cloud.tencent.com/developer/article/1613815)
-7. [wordcloud](https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/)
+1. clusterProfiler github：https://github.com/YuLab-SMU/clusterProfiler
+2. clusterProfiler paper：https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue
+3. clusterProfiler book：http://yulab-smu.top/biomedical-knowledge-mining-book/index.html
+4. clusterProfiler manual：https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf
+5. clusterProfiler ducumentation：https://guangchuangyu.github.io/software/clusterProfiler/documentation/
+6. 其他来源结果可视化：https://cloud.tencent.com/developer/article/1613815
+7. wordcloud：https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/

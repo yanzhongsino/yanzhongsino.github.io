@@ -13,11 +13,7 @@ description: 在香港回归25周年的日子里，我们来聊聊香港市花�
 
 （全文约2000字）
 
-分为三个部分：
-- 香港市花的前世今生
-- 羊蹄甲属三个物种的分类特征
-- 简单区分三个种
-
+# 香港市花
 ## 香港市花的前世今生
 ### 前世
 **香港市花** —— 红花羊蹄甲的故事要从1880年说起，一位来自法国巴黎的传教士在香港偶然发现了这种植物，并以插枝栽种在薄扶林道一带的伯大尼修道院。由于红花羊蹄甲无法产生有繁殖力的后代，所以今天见到的所有红花羊蹄甲都来自这个传教士栽种的0号个体。
@@ -61,7 +57,7 @@ Dunn用前任香港英国总督的名字给这个新种命名为“**Sir Henry a
 
 接下来，干得不能再干的知识点来啦！！！
 
-## **羊蹄甲属常见三种类群的分类特征**
+## 羊蹄甲属常见三种类群的分类特征
 
 |羊蹄甲属（*Bauhinia*）学名|*B. purpurea*|*B. variegata*|*B. variegata* var. *candida*|*Bauhinia purpurea* x *variegata* '*Blakeana*', cv. nov.|
 |---|---|---|---|---|
@@ -87,7 +83,7 @@ Dunn用前任香港英国总督的名字给这个新种命名为“**Sir Henry a
 
 你~~记住~~记晕了吗？
 
-## **简单来说，三个物种可以这样来分**
+## 简单来说，三个物种可以这样来分
 1. 如果看到全树的粉花，几乎没有叶子，花瓣有点宽，那就是洋紫荆（*B. variegata*），开白花的大概率也是这个物种的白花变种——白花洋紫荆。
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Bauhinia_variegata_flower.jpg/440px-Bauhinia_variegata_flower.jpg" width=100% title="洋紫荆" alt="洋紫荆" align=center/>
@@ -107,7 +103,7 @@ Dunn用前任香港英国总督的名字给这个新种命名为“**Sir Henry a
 **<p align="center">Figure 7. 羊蹄甲 图片来源：wiki</p>**
 
 
-## **课后习题**
+## 课后习题
 紫荆，洋紫荆，羊蹄甲，红花羊蹄甲这四个里面到底哪个是香港市花？
 
 # reference
