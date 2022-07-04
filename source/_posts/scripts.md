@@ -20,7 +20,7 @@ description: store some scripts using in biology and bioinformatics
 
 # 1. 我写的脚本
 ## 1.1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测
-[multi-transcriptome_assembly_with_ref.sh](https://github.com/yanzhongsino/bioscripts/blob/main/myscripts/multi-transcriptome_assembly_with_ref.sh)
+[multi-transcriptome_assembly_with_ref.sh](https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/multi-transcriptome_assembly_with_ref.sh)
 
 ## 1.2. 提取，合并，和比对单拷贝基因和蛋白
 [extract_single_copy_genes.sh](https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/extract_single_copy_genes.sh)
