@@ -23,20 +23,20 @@
   <meta name="description" content="记录评估基因组组装和注释完整性的工具BUSCO的安装使用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="评估基因组组装和注释完整性 —— BUSCO">
-<meta property="og:url" content="http://example.com/2021/07/24/omics_genome.assessment_BUSCO/index.html">
+<meta property="og:url" content="http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="记录评估基因组组装和注释完整性的工具BUSCO的安装使用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-24T03:20:00.000Z">
-<meta property="article:modified_time" content="2022-04-22T02:51:02.467Z">
+<meta property="article:modified_time" content="2022-07-07T03:22:51.287Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="quality assessment">
 <meta property="article:tag" content="genome">
-<meta property="article:tag" content="genome assessment">
+<meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="BUSCO">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2021/07/24/omics_genome.assessment_BUSCO/">
+<link rel="canonical" href="http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/">
 
 
 <script id="page-configurations">
@@ -173,7 +173,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/24/omics_genome.assessment_BUSCO/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -203,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-22 10:51:02" itemprop="dateModified" datetime="2022-04-22T10:51:02+08:00">2022-04-22</time>
+                <time title="修改时间：2022-07-07 11:22:51" itemprop="dateModified" datetime="2022-07-07T11:22:51+08:00">2022-07-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -219,7 +219,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/omics/genome/assessment/" itemprop="url" rel="index"><span itemprop="name">assessment</span></a>
+                  <a href="/categories/omics/genome/quality-assessment/" itemprop="url" rel="index"><span itemprop="name">quality assessment</span></a>
                 </span>
             </span>
 
@@ -232,8 +232,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2021/07/24/omics_genome.assessment_BUSCO/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/07/24/omics_genome.assessment_BUSCO/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2021/07/24/omics_genome_quality.assessment_BUSCO/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/07/24/omics_genome_quality.assessment_BUSCO/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -253,10 +253,19 @@
 
 <h1 id="1-busco简介"><a href="#1-busco简介" class="headerlink" title="1. busco简介"></a>1. busco简介</h1><p>Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组装和注释的完整性的工具。通过与已有单拷贝直系同源数据库的比较，得到有多少比例的数据库能够有比对，比例越高代表基因组完整度越好。</p>
 <p>可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。</p>
-<p><a target="_blank" rel="noopener" href="https://busco.ezlab.org/">BUSCO官网</a><br><a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/">BUSCO v5数据库</a></p>
-<h1 id="2-busco安装"><a href="#2-busco安装" class="headerlink" title="2. busco安装"></a>2. busco安装</h1><p><code>conda install -c bioconda busco=5.1.3</code> #安装版本是5.1.3</p>
+<p>BUSCO官网：<a target="_blank" rel="noopener" href="https://busco.ezlab.org/">https://busco.ezlab.org</a><br>BUSCO v5数据库：<a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/">https://busco-data.ezlab.org/v5/data/lineages/</a></p>
+<h1 id="2-busco安装"><a href="#2-busco安装" class="headerlink" title="2. busco安装"></a>2. busco安装</h1><ol>
+<li><p>conda安装<br><code>conda install -c conda-forge -c bioconda busco=5.3.2</code> #安装版本是5.3.2</p>
+</li>
+<li><p>手动安装</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://gitlab.com/ezlab/busco.git</span><br><span class="line">cd busco</span><br><span class="line">python3 setup.py install --user</span><br><span class="line">./bin/busco -h</span><br></pre></td></tr></table></figure>
+
 <h1 id="3-busco数据库下载"><a href="#3-busco数据库下载" class="headerlink" title="3. busco数据库下载"></a>3. busco数据库下载</h1><p><code>busco --list-datasets</code> #查看busco可用的数据库。</p>
-<p>下载对应的busco数据库(wget + 数据库网址）；目前有v1-v5版本，根据需要评估的物种，尽量选用最新版本的最多基因的数据库。</p>
+<p>下载对应的busco数据库；目前有v1-v5版本，根据需要评估的物种，尽量选用最新版本的最多基因的数据库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://busco-data.ezlab.org/v5/data/lineages/eudicots_odb10.2020-09-10.tar.gz</span><br><span class="line">tar -xzf eudicots_odb10.2020-09-10.tar.gz #会生成eudicots_odb10，这个就可以直接用了，注意不要修改后缀，必需是_odb10</span><br></pre></td></tr></table></figure>
+
 <p>植物相关的数据库有：</p>
 <table>
 <thead>
@@ -322,10 +331,16 @@
 </code></pre>
 <p>结果的解释：<br>使用的eudicots_odb10真双子叶植物数据库中共有2326个BUSCO groups，其中2162（92.9%）个BUSCO groups被完整比对上（包括1685个单拷贝和477个多拷贝），41个部分比对上，123个没有比对上。</p>
 <p>通常用完整比对上的占总共的BUSCO groups的比例作为BUSCO的重要结果，越高越好，这里是92.9%&#x3D;2162&#x2F;2326。</p>
-<h1 id="6-busco结果画图"><a href="#6-busco结果画图" class="headerlink" title="6. busco结果画图"></a>6. busco结果画图</h1><p>在执行完毕之后，可以使用generate_plot.py画条形图，可以多个物种间比较。</p>
-<p>首先把所有的经过BUSCO检测的物种结果short_summary.txt后缀文件放到一个文件夹（result）下；然后运行<code>python busco/scripts/generate_plot.py –wd result</code></p>
+<h1 id="6-busco结果画图"><a href="#6-busco结果画图" class="headerlink" title="6. busco结果画图"></a>6. busco结果画图</h1><p>在执行完毕之后，可以使用generate_plot.py画条形图，可以进行多个物种间同一个库结果的比较。</p>
+<ol>
+<li>首先把所有的经过BUSCO检测的物种结果short_summary.txt后缀文件放到一个文件夹（result）下；</li>
+<li>然后运行<code>python busco/scripts/generate_plot.py –wd result</code>；</li>
+<li>generate_plot.py会在指定的目录下识别short_summary.specific&#x2F;genetic前缀文件，载入所有符合这个模式的文件，然后在result下生成busco_figure.R脚本。</li>
+<li>然后运行这个脚本调用ggplot2生成图。如果当前环境的R中没有安装ggplot2，可以安装后自行运行脚本生成图。</li>
+<li>可以修改busco_figure.R脚本以适应需要，比如修改标题（my_title），基因数量标签的尺寸（labsize）。</li>
+</ol>
 <h1 id="7-调用augustus【optional】"><a href="#7-调用augustus【optional】" class="headerlink" title="7. 调用augustus【optional】"></a>7. 调用augustus【optional】</h1><p>AUGUSTUS运行的时候需要额外设定2个环境变量，AUGUSTUS_CONFIG_PATH和BUSCO_CONFIG_FILE, 通过conda安装的这两个配置文件都在&#x2F;path&#x2F;to&#x2F;miniconda3&#x2F;envs&#x2F;busco5&#x2F;config目录下。</p>
-<p>所以需要在.bashrc或.zshrc中加入下面这一行</p>
+<p>所以需要在.bashrc或.zshrc中加入下面这一行：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export AUGUSTUS_CONFIG_PATH=&quot;/path/to/anaconda3/envs/busco5/config</span><br><span class="line">export BUSCO_CONFIG_FILE=&quot;/path/to/anaconda3/envs/busco5/config/config.ini</span><br></pre></td></tr></table></figure>
 <p>实现AUGUSTUS和BUSCO的设置。</p>
 <h1 id="8-notes"><a href="#8-notes" class="headerlink" title="8. notes"></a>8. notes</h1><p>2021年06月23日开始写，07月24日今天终于完结。</p>
@@ -338,9 +353,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/quality-assessment/" rel="tag"># quality assessment</a>
               <a href="/tags/genome/" rel="tag"># genome</a>
-              <a href="/tags/genome-assessment/" rel="tag"># genome assessment</a>
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
               <a href="/tags/BUSCO/" rel="tag"># BUSCO</a>
           </div>
 
@@ -554,8 +569,8 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2021/07/24/omics_genome.assessment_BUSCO/";
-    this.page.identifier = "2021/07/24/omics_genome.assessment_BUSCO/";
+    this.page.url = "http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/";
+    this.page.identifier = "2021/07/24/omics_genome_quality.assessment_BUSCO/";
     this.page.title = "评估基因组组装和注释完整性 —— BUSCO";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
