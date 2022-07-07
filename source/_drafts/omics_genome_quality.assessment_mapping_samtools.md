@@ -4,10 +4,16 @@ date: 2022-05-16
 categories:
 - omics
 - genome
-- genome assessment
+- quality assessment
 tags:
+- quality assessment
 - genome
-- genome assessment
+- organelle
+- transcriptome
+- mapping rates
+- BWA
+- HiSat2
+- minimap2
 
 description: 记录基因组评估的方法，用测序reads（包括pacbio，illumina，RNA-seq reads） mapping回
 基因组，得到mapping rates，mapping rates越高代表基因组的。
@@ -196,19 +202,20 @@ $$mapping rate = mapped reads number/total reads number = (mapped recorder numbe
 ## Hi-C reads：Juicer
 
 
-
-2. QUAST
-quast.py genome.fsa -g Adiantum.nelumboides.gff -1 ./illumina/Adiantum.reniforme_illumina.clean_R1.fq.gz -2 ./illumina/Adiantum.reniforme_illumina.clean_R2.fq.gz -t 12 --large -o an_quast
-
-3. BUSCO
-We also performed BUSCO evaluation to examine completeness of the assembly with the Eukaryota_odb10 database.
-
-4. LAI
-The LTR assembly index10 was used to assess continuity
-
+# genome coverage
+利用samtools depth计算genome coverage
+```
+samtools depth -aa sample.bam >depth.out # 计算所有位点的深度
+u = $(cat depth.out |awk '$3 == 0 {print $0}'|wc -l) # 统计没有mapped碱基的长度，并赋值给u
+t = $(cat depth.out |wc -l) # 统计所有位点的长度，并赋值给t。这个值与与基因组大小一致。
+echo "scale=5; 1-$u/$t" | bc #计算基因组覆盖度
+```
 
 
+# bedtools
+`bedtools genomecov`可以统计coverage
 
+`bedtools genomecov -ibam sample.bam -d >sample.depth`
 
 
 # 基因组组装质量的评估

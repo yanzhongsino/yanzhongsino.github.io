@@ -4,10 +4,16 @@ date: 2022-05-16
 categories:
 - omics
 - genome
-- genome assessment
+- quality assessment
 tags:
+- quality assessment
 - genome
-- genome assessment
+- organelle
+- transcriptome
+- mapping rates
+- BWA
+- HiSat2
+- minimap2
 
 description: 记录基因组评估的方法，用测序reads（包括pacbio，illumina，RNA-seq reads） mapping回
 基因组，得到mapping rates，mapping rates越高代表基因组的。
@@ -24,9 +30,16 @@ description: 记录基因组评估的方法，用测序reads（包括pacbio，il
 4. LAI：通过LTR组装指数评估基因组的连贯性(continuity)。
 
 
-## 基因组评估的方法
+## 基因组评估的方法——mapping
 
-把reads回mapping到组装好的基因组，通过计算两个值：sequence coverage 和 mapping rate来判断组装的
+把测序reads与组装好的基因组做alignment，这个操作常被称为mapping。mapping之后生成SAM/BAM格式文件，通过分析SAM/BAM格式文件，获取reads mapping回参考基因组的信息，从而评估基因组组装的质量。
+
+主要是通过以下三个量化信息来评估：
+- reads的mapping rate：mapped reads number/total reads number
+- genome coverage：mapped genome length/total genome length
+- depth的分布：基因组上每个碱基mapped碱基的数量称为单碱基的深度（depth），或者通过滑窗统计基因组上每个固定大小（比如1000bp）的窗口的mapped碱基的平均数量作为窗口深度，分析深度在基因组上的分布可以判断基因组组装的质量。
+
+此外，通过可视化软件直观地查看reads在基因组上具体的mapping情况，也可以判断基因组组装是否存在问题和评估质量。
 
 ## Illumina reads
 
@@ -195,16 +208,6 @@ $$mapping rate = mapped reads number/total reads number = (mapped recorder numbe
 
 ## Hi-C reads：Juicer
 
-
-
-2. QUAST
-quast.py genome.fsa -g Adiantum.nelumboides.gff -1 ./illumina/Adiantum.reniforme_illumina.clean_R1.fq.gz -2 ./illumina/Adiantum.reniforme_illumina.clean_R2.fq.gz -t 12 --large -o an_quast
-
-3. BUSCO
-We also performed BUSCO evaluation to examine completeness of the assembly with the Eukaryota_odb10 database.
-
-4. LAI
-The LTR assembly index10 was used to assess continuity
 
 
 

@@ -1,12 +1,12 @@
 ---
-title: title
-date: 2021-03-27 16:50:00
+title: 共线性分析软件——MUMmer
+date: 2022-07-08
 categories: 
 tags: 
 description: 
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe></div>
 
 
 
@@ -30,15 +30,16 @@ nucmer -h
 
 # 使用
 ## nucmer
-nucmer ref.fa query.fa -p out
+`nucmer ref.fa query.fa -p out`
 
 生成
 - out.delta
 
 ## dnadiff
-dnadiff -d out.delta
+`dnadiff ref.fa query.fa`
 
 生成
+- out.delta
 - out.1coords
 - out.1delta
 - out.mcoords
@@ -48,8 +49,9 @@ dnadiff -d out.delta
 - out.report
 - out.snps
 
+已有delta文件，则可运行
 
-dnadiff ref.fa query.fa
+`dnadiff -d out.delta`
 
 # references
 1. https://www.jianshu.com/p/c12f2a117892

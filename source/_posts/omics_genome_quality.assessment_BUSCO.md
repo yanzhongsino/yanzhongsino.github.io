@@ -4,10 +4,10 @@ date: 2021-07-24 11:20:00
 categories: 
 - omics
 - genome
-- assessment
+- quality assessment
 tags: 
 - genome
-- genome assessment
+- quality assessment
 - biosoft
 - BUSCO
 description: 记录评估基因组组装和注释完整性的工具BUSCO的安装使用。
@@ -20,16 +20,31 @@ Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组�
 
 可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。
 
-[BUSCO官网](https://busco.ezlab.org)
-[BUSCO v5数据库](https://busco-data.ezlab.org/v5/data/lineages/)
+BUSCO官网：https://busco.ezlab.org
+BUSCO v5数据库：https://busco-data.ezlab.org/v5/data/lineages/
 
 # 2. busco安装
-`conda install -c bioconda busco=5.1.3` #安装版本是5.1.3
+1. conda安装
+`conda install -c conda-forge -c bioconda busco=5.3.2` #安装版本是5.3.2
+
+2. 手动安装
+
+```
+git clone https://gitlab.com/ezlab/busco.git
+cd busco
+python3 setup.py install --user
+./bin/busco -h
+```
 
 # 3. busco数据库下载
 `busco --list-datasets` #查看busco可用的数据库。
 
-下载对应的busco数据库(wget + 数据库网址）；目前有v1-v5版本，根据需要评估的物种，尽量选用最新版本的最多基因的数据库。
+下载对应的busco数据库；目前有v1-v5版本，根据需要评估的物种，尽量选用最新版本的最多基因的数据库。
+
+```
+wget https://busco-data.ezlab.org/v5/data/lineages/eudicots_odb10.2020-09-10.tar.gz
+tar -xzf eudicots_odb10.2020-09-10.tar.gz #会生成eudicots_odb10，这个就可以直接用了，注意不要修改后缀，必需是_odb10
+```
 
 植物相关的数据库有：
 
@@ -194,14 +209,18 @@ command = prodigal
 通常用完整比对上的占总共的BUSCO groups的比例作为BUSCO的重要结果，越高越好，这里是92.9%=2162/2326。
 
 # 6. busco结果画图
-在执行完毕之后，可以使用generate_plot.py画条形图，可以多个物种间比较。
+在执行完毕之后，可以使用generate_plot.py画条形图，可以进行多个物种间同一个库结果的比较。
 
-首先把所有的经过BUSCO检测的物种结果short_summary.txt后缀文件放到一个文件夹（result）下；然后运行`python busco/scripts/generate_plot.py –wd result`
+1. 首先把所有的经过BUSCO检测的物种结果short_summary.txt后缀文件放到一个文件夹（result）下；
+2. 然后运行`python busco/scripts/generate_plot.py –wd result`；
+3. generate_plot.py会在指定的目录下识别short_summary.specific/genetic前缀文件，载入所有符合这个模式的文件，然后在result下生成busco_figure.R脚本。
+4. 然后运行这个脚本调用ggplot2生成图。如果当前环境的R中没有安装ggplot2，可以安装后自行运行脚本生成图。
+5. 可以修改busco_figure.R脚本以适应需要，比如修改标题（my_title），基因数量标签的尺寸（labsize）。
 
 # 7. 调用augustus【optional】
 AUGUSTUS运行的时候需要额外设定2个环境变量，AUGUSTUS_CONFIG_PATH和BUSCO_CONFIG_FILE, 通过conda安装的这两个配置文件都在/path/to/miniconda3/envs/busco5/config目录下。
 
-所以需要在.bashrc或.zshrc中加入下面这一行
+所以需要在.bashrc或.zshrc中加入下面这一行：
 ```
 export AUGUSTUS_CONFIG_PATH="/path/to/anaconda3/envs/busco5/config
 export BUSCO_CONFIG_FILE="/path/to/anaconda3/envs/busco5/config/config.ini

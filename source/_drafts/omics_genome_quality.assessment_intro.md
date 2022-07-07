@@ -1,24 +1,28 @@
 ---
-title: 基因组评估：（一）概述
+title: 基因组质量评估：（一）概述
 date: 2022-06-30
 categories:
 - omics
 - genome
-- genome assessment
+- quality assessment
 tags:
+- quality assessment
 - genome
-- genome assessment
+- organelle
+- transcriptome
 
-description: 基因组组装和注释的评估，对基因组组装的完整性、准确性和连续性等进行质量评估，对基因组注释的质量进行评估。
+description: 基因组的组装和注释的质量评估，包括基因组组装的完整性、准确性和连续性等质量评估，以及对基因组注释的质量进行评估。这里讨论的质量评估主要用于核基因组，但许多质量评估方法也适用于细胞器基因组（包括线粒体和叶绿体）和转录组的质量评估。
 ---
 
 <div align="middle"><music URL></div>
 
 # 基因组质量评估
-随着越来越多的组学测序数据的产生，基因组组装和注释变得越来越常见。基因组组装和注释结果的质量评估对加强下游分析的科学性是非常有必要的。
+随着越来越多的组学测序数据的产生，基因组组装和注释变得越来越常见。
+
+基因组组装和注释结果的质量评估对加强下游分析的科学性是非常有必要的。
 
 # 评估标准
-Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的基因组组装质量标准报告。
+Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组组装质量标准报告。
 
 可参考：https://www.earthbiogenome.org/assembly-standards。
 
@@ -94,7 +98,14 @@ Blobtools
 # genome annotation
 ## RNA-seq reads mapping percentages
 
+2. QUAST
+quast.py genome.fsa -g Adiantum.nelumboides.gff -1 ./illumina/Adiantum.reniforme_illumina.clean_R1.fq.gz -2 ./illumina/Adiantum.reniforme_illumina.clean_R2.fq.gz -t 12 --large -o an_quast
 
+3. BUSCO
+We also performed BUSCO evaluation to examine completeness of the assembly with the Eukaryota_odb10 database.
+
+4. LAI
+The LTR assembly index10 was used to assess continuity
 
 # references
 1. https://www.earthbiogenome.org/assembly-standards

@@ -131,7 +131,7 @@ RepeatMasker是基因组重复序列检测的常用工具。一般依赖于已�
 
 - 强烈建议加载[Repbase数据库](https://www.girinst.org/server/RepBase/index.php)，遗传信息研究所发布的重复DNA数据库，收录了非常多的物种基因组的重复序列信息，目前是需要付费的，加载后重复序列注释率得到很大提升。
 
-- 我上传了一个20181026的版本到百度云盘，可以下载：
+- 上传了一个20181026的版本到百度云盘，可以下载：
 链接：https://pan.baidu.com/s/1g43z1DyHtiGxAGJMiC4nZQ 
 提取码：ckc4
 

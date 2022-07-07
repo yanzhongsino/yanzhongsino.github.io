@@ -4,10 +4,10 @@ date: 2021-08-23 14:30:00
 categories: 
 - omics
 - genome
-- assessment
+- quality assessment
 tags:
 - genome
-- genome assessment
+- quality assessment
 - biosoft
 - QUAST
 
