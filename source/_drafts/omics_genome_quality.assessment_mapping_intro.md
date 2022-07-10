@@ -15,8 +15,7 @@ tags:
 - HiSat2
 - minimap2
 
-description: 记录基因组评估的方法，用测序reads（包括pacbio，illumina，RNA-seq reads） mapping回
-基因组，得到mapping rates，mapping rates越高代表基因组的。
+description: 记录基因组评估的方法，用测序reads，包括pacbio，illumina，RNA-seq reads，mapping回基因组，得到mapping rates，mapping rates越高代表基因组的。
 ---
 
 <div align="middle"><music URL></div>
