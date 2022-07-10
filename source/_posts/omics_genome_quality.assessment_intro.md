@@ -14,7 +14,7 @@ tags:
 description: 基因组的组装和注释的质量评估，包括基因组组装的完整性、准确性和连续性等质量评估，以及对基因组注释的质量进行评估。这里讨论的质量评估主要用于核基因组，但许多质量评估方法也适用于细胞器基因组（包括线粒体和叶绿体）和转录组的质量评估。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
 
 # 1. 基因组质量评估
 - 随着越来越多的组学测序数据的产生，基因组组装和注释变得越来越常见。

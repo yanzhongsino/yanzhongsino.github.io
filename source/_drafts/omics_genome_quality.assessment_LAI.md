@@ -1,5 +1,5 @@
 ---
-title: 基因组质量评估：（一）概述
+title: 基因组质量评估：（四）用LAI评估基因组的连贯性
 date: 2022-06-30
 categories:
 - omics

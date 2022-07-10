@@ -124,11 +124,11 @@ seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contrac
 
 
 ## 3.4. 把每个节点收缩扩张的基因数量画在树上
-有看到一个画图脚本。
+有看到一个画图脚本，不适用于CAFE5，暂且记录在此。
 `python python_scripts/cafetutorial_draw_tree.py -i reports/summary_run1_node.txt -t '((((cat:68.7105,horse:68.7105):4.56678,cow:73.2773):20.7227,(((((chimp:4.44417,human:4.44417):6.68268,orang:11.1268):2.28586,gibbon:13.4127):7.21153,(macaque:4.56724,baboon:4.56724):16.057):16.0607,marmoset:36.6849):57.3151):38.738,(rat:36.3024,mouse:36.3024):96.4356)' -d '((((cat<0>,horse<2>)<1>,cow<4>)<3>,(((((chimp<6>,human<8>)<7>,orang<10>)<9>,gibbon<12>)<11>,(macaque<14>,baboon<16>)<15>)<13>,marmoset<18>)<17>)<5>,(rat<20>,mouse<22>)<21>)<19>' -o reports/summary_run1_tree_rapid.png -y Rapid`
 
 没有试过这个脚本，发表的图还是用R包ggtree自己画。
 
 # 4. references
-https://academic.oup.com/bioinformatics/article-abstract/36/22-23/5516/6039105?redirectedFrom=fulltext
-https://github.com/hahnlab/CAFE5
+1. https://academic.oup.com/bioinformatics/article-abstract/36/22-23/5516/6039105?redirectedFrom=fulltext
+2. https://github.com/hahnlab/CAFE5

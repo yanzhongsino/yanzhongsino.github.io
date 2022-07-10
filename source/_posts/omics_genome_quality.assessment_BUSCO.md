@@ -1,5 +1,5 @@
 ---
-title: 评估基因组组装和注释完整性 —— BUSCO
+title: 基因组质量评估：（三）用BUSCO评估基因组的完整性
 date: 2021-07-24 11:20:00
 categories: 
 - omics

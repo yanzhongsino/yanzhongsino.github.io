@@ -1,5 +1,5 @@
 ---
-title: QUAST评估基因组组装
+title: 基因组质量评估：（二）用QUAST评估基因组组装
 date: 2021-08-23 14:30:00
 categories: 
 - omics
