@@ -31,9 +31,9 @@ Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组�
 - 连续性（contiguity）：contig N50和scaffold N50达到Mbp级别
 - 错误率（error rate）：小于1/10000的错误率
 - <5% false duplications
-- >90% kmer completeness
-- >90%的序列可以align到候选染色体上
-- >90%的单拷贝保守基因是完整且单拷贝的，例如用BUSCO评估
+- \>90% kmer completeness
+- \>90%的序列可以align到候选染色体上
+- \>90%的单拷贝保守基因是完整且单拷贝的，例如用BUSCO评估
 - 来自同一个组织的>90%转录本可以mapping到基因组
 - ...
 
@@ -71,7 +71,7 @@ Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组�
 - ToLID介绍：https://id.tol.sanger.ac.uk/
 - ToLID的组成，前两个小写字母是目及以上分类地位的代表（历史原因脊椎动物这里只有一个字母），接着是属名的前三个字母（第一个字母大写），和种加词的前四个字母（第一个字母大写），最后加上一个代表采样个体的数字（这个数字是按这个物种的采样顺序给的），更完整的版本还会在数字之后加上.version代表基因组的组装版本。
 - ToLID的一个例子，**dhBauVari1.2**。代表洋紫荆（Bauhinia variegata）物种的第一个个体的第二个组装版本。
-- 其中**d**代表双子叶植物，**h**代表豆目，**Bau**是羊蹄甲属Bauhinia的前三个字母，**Vari**是种加词variegata的前四个字母，**1**代表第一个组装个体，**.2**代表第二个组装版本。
+- 其中**d**代表双子叶植物，**h**代表豆目，**Bau**是羊蹄甲属Bauhinia的前三个字母，**Vari**是种加词variegata的前四个字母，**1**代表第一个组装个体，**\.2**代表第二个组装版本。
 - 代表目及以上分类地位的前两个字母可以在https://gitlab.com/wtsi-grit/darwin-tree-of-life-sample-naming/-/tree/master/上的prefix_assignment.xlsx文件里查询到。
 
 # 3. 评估指标和评估工具
