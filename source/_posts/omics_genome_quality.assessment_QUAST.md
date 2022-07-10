@@ -22,18 +22,21 @@ QUAST(Quality Assessment Tool for Genome Assemblies)是基因组质量评估工�
 QUAST基于python开发，matplotlib绘图。
 
 # 2. QUAST网站
-主页：http://bioinf.spbau.ru/quast
-github: https://github.com/ablab/quast
+- 主页：http://quast.sourceforge.net/
+- github: https://github.com/ablab/quast
 
 # 3. QUAST安装
 1. 下载解压缩即可使用
+
 QUAST会在第一次使用时自动编译所有子部分，因此不需要安装，解压缩即可使用。
+
 - `wget -c https://github.com/ablab/quast/releases/download/quast_5.1.0rc1/quast-5.1.0rc1.tar.gz`
 - `tar -zxvf quast-5.1.0rc1.tar.gz`
 - `python quast.py --help`
 - `python quast.py --version`
 
 2. conda安装
+
 `conda install -y quast`
 
 3. Ubuntu 20.04系统上安装
@@ -41,10 +44,15 @@ QUAST会在第一次使用时自动编译所有子部分，因此不需要安装
 
 
 # 4. QUAST使用
-简化版：`quast.py contigs.fas`
+1. 简化版
 
-全面版：`quast.py contigs_1.fa contigs_2.fa -r reference.fa -g genome.gff -1 reads1.fastq.gz -2 reads2.fastq.gz -o quast_out -t 12`
+`quast.py contigs.fas`
 
+2. 全面版
+
+`quast.py contigs_1.fa contigs_2.fa -r reference.fa -g genome.gff -1 reads1.fastq.gz -2 reads2.fastq.gz -o quast_out -t 12`
+
+3. 参数
 - contigs.fa是必须提供的，即等待评估组装质量的基因组，可以多个同时评估。
 - -r reference.fa：参考基因组，可选；提供后有比较基因组的结果。
 - -g genome.gff：参考基因组的features文件，GFF,BED等格式
@@ -108,3 +116,6 @@ L50                         5
 L90                         11
 # N's per 100 kbp           66.54
 ```
+
+references
+1. http://quast.sourceforge.net/

@@ -16,6 +16,8 @@ description: 基因组的组装和注释的质量评估，包括基因组组装�
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
 
+(全文约1600字)
+
 # 1. 基因组质量评估
 - 随着越来越多的组学测序数据的产生，基因组组装和注释变得越来越常见。
 - 基因组组装和注释结果的质量评估对加强下游分析的科学性是非常有必要的。
@@ -101,3 +103,5 @@ Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组�
 
 # 4. references
 1. https://www.earthbiogenome.org/assembly-standards
+
+<img src="" width=100% title="wechat_public_QRcode.png" align=center/>
