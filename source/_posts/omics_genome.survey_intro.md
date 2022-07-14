@@ -238,3 +238,5 @@ k-mer分析分为**k-mer频数统计**和**基因组特征评估**两步。此�
 8. GenomeScope1.0 github：https://github.com/schatzlab/genomescope
 9. KAT github：https://github.com/TGAC/KAT
 10. GCE github：https://github.com/fanagislab/GCE
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/f6110d8b0ac09d0115b4673c8fcde65d7aa36bc6/source/wechat/%E7%BA%BF%E4%B8%8B%E7%89%A9%E6%96%99%E7%B4%A0%E6%9D%90/%E6%90%9C%E4%B8%80%E6%90%9C%E5%85%AC%E4%BC%97%E5%8F%B7%E6%8E%A8%E5%B9%BF%E7%89%A9%E6%96%99%E5%9B%BE%E7%89%87-png/%E6%89%AB%E7%A0%81_%E6%90%9C%E7%B4%A2%E8%81%94%E5%90%88%E4%BC%A0%E6%92%AD%E6%A0%B7%E5%BC%8F-%E7%99%BD%E8%89%B2%E7%89%88.png?raw=true" width=100% title="wechat_public_QRcode.png" align=center/>

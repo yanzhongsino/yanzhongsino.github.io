@@ -48,8 +48,13 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 - -b patterns of collinear blocks。0:intra- and inter-species (default); 1:intra-species; 2:inter-species。
 
 ## 2.3. 结果文件
-- 主要的结果文件是**sample.collinearity**。以#开头的参数(parameters)和基本统计信息(statistics)，以及Alignment 0起始的共线性区块列表信息。
-- sample.html #目录，内含多个文件
+1. sample.collinearity
+
+共线性结果文件，包括三部分内容：
+
+- 参数(parameters)
+- 基本统计信息(statistics)：共线性基因的总数，总基因数，共线性基因占比。
+- 共线性区块(block)信息：一个Alignment代表一个共线性区块（0起始编号）。后面跟着这个共线性区块的基因对的信息。第一列：block编号；第二列：基因对编号；第三列和第四列：基因对名称；第五列：blast比对的e_value值。
 
 ```sample.collinearity示例
 ############### Parameters ###############
@@ -83,10 +88,31 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 ... ...
 ```
 
+2. sample.html
+
+网页文件所在的文件夹，里面有每条染色体一个html文件。html文件用浏览器打开，包含三列信息。
+- 第一列是复制深度。
+- 第二列是这条染色体上所有基因的排列顺序，串联重复基因的背景为红色。
+- 第三列和之后列是对应的比对上的基因名称。
+
+3. sample.tandem
+
+包含基因组内**串联重复**的基因ID的list。
+
 # 3. MCScanX下游分析
+## 绘图脚本
+MCScanX的downstream_analyses目录包含一些下游脚本。
+
+许多java脚本可以实现绘图功能，包括：
+- 共线性点图：dot_plotter
+- 双染色体共线性图：dual_synteny_plotter
+- 共线性圈图：circle_plotter
+- 染色体块图：bar_plotter
+- ...
+
 ## 3.1. 计算共线性区块Ks
 tips:需要检查得到的结果中Ks值是否有负值或NA等无效数据，并过滤无效数据。
-### 3.1.1. 方案一：MCScanX的downstream_analyses目录包含一些下游脚本，其中有计算kaks的脚本add_ka_and_ks_to_collinearity.pl
+### 3.1.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）
 `add_ka_and_ks_to_collinearity.pl -i sample.collinearity -d sample.cds.fa -o sample.kaks > out.log 2>&1` #注意算出的部分kaks值为-2的问题，未找到解决方案
 
 ### 3.1.2. 方案二：ParaAT.pl+KaKs_Calculator2.0

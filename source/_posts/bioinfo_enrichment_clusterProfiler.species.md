@@ -482,3 +482,5 @@ write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #�
 5. clusterProfiler ducumentation：https://guangchuangyu.github.io/software/clusterProfiler/documentation/
 6. 用AnnotationForge进行非模式物种注释构建：https://www.jieandze1314.com/post/cnposts/208/
 7. 用AnnotationHub获取非模式物种注释信息：https://www.bioinfo-scrounger.com/archives/512/
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/f6110d8b0ac09d0115b4673c8fcde65d7aa36bc6/source/wechat/%E7%BA%BF%E4%B8%8B%E7%89%A9%E6%96%99%E7%B4%A0%E6%9D%90/%E6%90%9C%E4%B8%80%E6%90%9C%E5%85%AC%E4%BC%97%E5%8F%B7%E6%8E%A8%E5%B9%BF%E7%89%A9%E6%96%99%E5%9B%BE%E7%89%87-png/%E6%89%AB%E7%A0%81_%E6%90%9C%E7%B4%A2%E8%81%94%E5%90%88%E4%BC%A0%E6%92%AD%E6%A0%B7%E5%BC%8F-%E7%99%BD%E8%89%B2%E7%89%88.png?raw=true" width=100% title="wechat_public_QRcode.png" align=center/>

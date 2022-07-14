@@ -18,13 +18,19 @@ description: 记录评估基因组组装和注释完整性的工具BUSCO的安�
 # 1. busco简介
 Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组装和注释的完整性的工具。通过与已有单拷贝直系同源数据库的比较，得到有多少比例的数据库能够有比对，比例越高代表基因组完整度越好。
 
-可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。
+可以评估三种数据类型：
+1. 组装的基因组；
+2. 转录组；
+3. 蛋白组（或者基因组注释基因对应的氨基酸序列）。
 
-BUSCO官网：https://busco.ezlab.org
-BUSCO v5数据库：https://busco-data.ezlab.org/v5/data/lineages/
+使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。
+
+- BUSCO官网：https://busco.ezlab.org
+- BUSCO v5数据库：https://busco-data.ezlab.org/v5/data/lineages/
 
 # 2. busco安装
 1. conda安装
+
 `conda install -c conda-forge -c bioconda busco=5.3.2` #安装版本是5.3.2
 
 2. 手动安装
@@ -70,7 +76,7 @@ tar -xzf eudicots_odb10.2020-09-10.tar.gz #会生成eudicots_odb10，这个就�
 
 ## 4.2. 在设置文件中给出参数【需设置的参数较多时】
 `nohup busco --config config.ini`
-通过conda安装的这config.ini配置文件在/path/to/miniconda3/envs/busco5/config/目录下；直接复制一份到工作目录，修改使用即可。
+通过conda安装的config.ini配置文件在/path/to/miniconda3/envs/busco5/config/目录下；直接复制一份到工作目录，修改使用即可。
 
 把config.ini的示例文件中行首的分号;去掉，并把等号后的内容修改成设置的内容。
 
