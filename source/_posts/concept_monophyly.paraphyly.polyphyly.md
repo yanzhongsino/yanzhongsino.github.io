@@ -74,9 +74,16 @@ from [wikipedia: monophyly](https://en.wikipedia.org/wiki/Monophyly)</p>
 - 猴子Monkey-人猿总科Hominoidea-类人猿目Simiiformes
 
 # 6. references
-1. [wiki:cladistics](https://en.wikipedia.org/wiki/Cladistics)
-2. [wiki:monophyly](https://en.wikipedia.org/wiki/Monophyly)
-3. [wiki:paraphyly](https://en.wikipedia.org/wiki/Paraphyly)
-4. [wiki:polyphyly](https://en.wikipedia.org/wiki/Polyphyly)
-5. [ArtemisiaLiu's weibo](https://www.weibo.com/ttarticle/p/show?id=2309404308383288185230)
+1. wiki:cladistics：https://en.wikipedia.org/wiki/Cladistics
+2. wiki:monophyly：https://en.wikipedia.org/wiki/Monophyly
+3. wiki:paraphyly：https://en.wikipedia.org/wiki/Paraphyly
+4. wiki:polyphyly：https://en.wikipedia.org/wiki/Polyphyly
+5. ArtemisiaLiu's weibo：https://www.weibo.com/ttarticle/p/show?id=2309404308383288185230
 6. http://wap.sciencenet.cn/blog-3454407-1262077.html?mobile=1
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

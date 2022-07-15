@@ -121,3 +121,11 @@ tags:
 3. `git add .`,`git commit -m "commit notes"`,`git push`把修改备份到github端
 4. 下次写作重复以上三个步骤
 5. 直至blog完善成熟后，用命令`hexo clean & hexo g -d`生成网站并部署到github.io
+
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

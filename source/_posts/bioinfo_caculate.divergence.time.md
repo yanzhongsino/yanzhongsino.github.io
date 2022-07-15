@@ -383,15 +383,20 @@ describe plot=chrono_description;
 
 -b是batch process the datafile，-f用于指定输入文件
 
-
 结果保存在r8s.out文件中
 
-
 # 5. references
+1. mcmctree manual：http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf
+2. 陈连福的paml mcmctree教程：http://www.chenlianfu.com/?p=2974
+3. r8s paper：https://academic.oup.com/bioinformatics/article/19/2/301/372781
+4. r8s manual：https://naturalis.github.io/mebioda/doc/week1/w1d5/r8s1.7.manual.pdf
+5. r8s manual 中文：http://image.sciencenet.cn/olddata/kexue.com.cn/upload/blog/file/2010/3/201032420201531842.0.pdf
+6. 陈连福的r8s教程：http://www.chenlianfu.com/?p=2280
 
-[mcmctree manual](http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf); 
-[陈连福的paml mcmctree教程](http://www.chenlianfu.com/?p=2974)
-[r8s paper](https://academic.oup.com/bioinformatics/article/19/2/301/372781)
-[r8s manual](https://naturalis.github.io/mebioda/doc/week1/w1d5/r8s1.7.manual.pdf)
-[r8s manual 中文](http://image.sciencenet.cn/olddata/kexue.com.cn/upload/blog/file/2010/3/201032420201531842.0.pdf)
-[陈连福的r8s教程](http://www.chenlianfu.com/?p=2280)
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

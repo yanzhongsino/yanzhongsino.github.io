@@ -348,11 +348,18 @@ Discrepancy.txt文件中保存了一些不符合标准的报错，比如product�
 - 数据已被公开释放，在这之前做的任何更改都会包含在释放数据中，但在提交网站不会显示修改。
 
 # 5. references
-1. [genomes submission guide](https://www.ncbi.nlm.nih.gov/genbank/genomesubmit/)
-2. [table2asn](https://www.ncbi.nlm.nih.gov/genbank/table2asn/)
-3. [table2asn documentation](https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/table2asn/DOCUMENTATION/)
-4. [Validation and Discrepancy Report Error Explanations](https://www.ncbi.nlm.nih.gov/genbank/validation/)
-5. [Validation Error Explanations for Genomes](https://www.ncbi.nlm.nih.gov/genbank/genome_validation/)
-6. [Discrepancy Report](https://www.ncbi.nlm.nih.gov/genbank/asndisc/)
-7. [MODULE valid](https://github.com/genome-vendor/sequin/blob/master/errmsg/valid.msg)
-8. [annotating genomes with gff3](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
+1. genomes submission guide：https://www.ncbi.nlm.nih.gov/genbank/genomesubmit/
+2. table2asn：https://www.ncbi.nlm.nih.gov/genbank/table2asn/
+3. table2asn documentation：https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/table2asn/DOCUMENTATION/
+4. Validation and Discrepancy Report Error Explanations：https://www.ncbi.nlm.nih.gov/genbank/validation/
+5. Validation Error Explanations for Genomes：https://www.ncbi.nlm.nih.gov/genbank/genome_validation/
+6. Discrepancy Report：https://www.ncbi.nlm.nih.gov/genbank/asndisc/
+7. MODULE valid：https://github.com/genome-vendor/sequin/blob/master/errmsg/valid.msg
+8. annotating genomes with gff3：https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

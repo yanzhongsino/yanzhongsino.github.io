@@ -67,8 +67,15 @@ from [wikipedia: sequence homology](https://en.wikipedia.org/wiki/Sequence_homol
 - 基因家族(gene family)：是指在一个物种中，起源于一个基因的复制，通常具有相似生化功能的一套基因。
 
 **reference**
-[wiki：homology](https://en.wikipedia.org/wiki/Homology_(biology))
-[wiki：sequence homology](https://en.wikipedia.org/wiki/Sequence_homology#Homoeology)
-[Paper：Orthologs, Paralogs, and Evolutionary Genomics](https://www.annualreviews.org/doi/abs/10.1146/annurev.genet.39.073003.114725)
-[Paper：analog和xenolog的由来和定义](https://academic.oup.com/sysbio/article-abstract/19/2/99/1655771?redirectedFrom=fulltext)
-[Paper：ohnolog的由来和定义](https://www.nature.com/articles/ng0500_3)
+1. wiki：homology：https://en.wikipedia.org/wiki/Homology_(biology)
+2. wiki：sequence homology：https://en.wikipedia.org/wiki/Sequence_homology#Homoeology
+3. Paper：Orthologs, Paralogs, and Evolutionary Genomics：https://www.annualreviews.org/doi/abs/10.1146/annurev.genet.39.073003.114725
+4. Paper：analog和xenolog的由来和定义：https://academic.oup.com/sysbio/article-abstract/19/2/99/1655771?redirectedFrom=fulltext
+5. Paper：ohnolog的由来和定义：https://www.nature.com/articles/ng0500_3
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

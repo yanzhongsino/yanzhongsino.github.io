@@ -422,9 +422,16 @@ bedtools coverage -a genome.windows -b col.bed |cut -f 1-4 >col.txt #统计共�
 ```
 
 # 3. references
-[Circos paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752132/)
-[xuzhougeng 1](https://www.jianshu.com/p/3a31ceef711b)
-[xuzhougeng 2](https://www.jianshu.com/p/4b3d3809ac07)
-[xuzhougeng 3](https://www.jianshu.com/p/ea3a8933ace9)
-[xuzhougeng 4](https://www.jianshu.com/p/1658e702ba17)
-[xuzhougeng 5](https://www.jianshu.com/p/31f26d1e5974)
+1. Circos paper：https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752132/
+2. xuzhougeng 1：https://www.jianshu.com/p/3a31ceef711b
+3. xuzhougeng 2：https://www.jianshu.com/p/4b3d3809ac07
+4. xuzhougeng 3：https://www.jianshu.com/p/ea3a8933ace9
+5. xuzhougeng 4：https://www.jianshu.com/p/1658e702ba17
+6. xuzhougeng 5：https://www.jianshu.com/p/31f26d1e5974
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

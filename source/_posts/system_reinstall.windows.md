@@ -67,3 +67,10 @@ description: 这篇教程的目的是指导小白重装windows系统。
 - 进入BIOS界面后，有些主板不显示U盘，可以UEFI设置的“Secure Boot”选项disable掉。
 - 有些主板不支持U盘是NTFS文件格式使用UEFI启动，但FAT32最大支持4G文件，所以网上有建议U盘分区，把系统文件放在NTFS区，启动文件放在FAT32区，但我亲试用Rufus制作的NTFS格式U盘可以在Dell inspire 3881上使用（UltraISO制作的就不行）。
 - 如果选择U盘名称后键盘鼠标不工作，可以换个USB接口试试，可能系统内的USB驱动版本不匹配。
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

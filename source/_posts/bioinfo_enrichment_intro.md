@@ -352,4 +352,10 @@ ORA是用于判断已知的生物功能或过程在实验产生的基因列表�
 16. universal enrichment analysis using clusterProfiler：http://yulab-smu.top/biomedical-knowledge-mining-book/universal-api.html
 17. clusterProfiler paper：https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/f6110d8b0ac09d0115b4673c8fcde65d7aa36bc6/source/wechat/%E7%BA%BF%E4%B8%8B%E7%89%A9%E6%96%99%E7%B4%A0%E6%9D%90/%E6%90%9C%E4%B8%80%E6%90%9C%E5%85%AC%E4%BC%97%E5%8F%B7%E6%8E%A8%E5%B9%BF%E7%89%A9%E6%96%99%E5%9B%BE%E7%89%87-png/%E6%89%AB%E7%A0%81_%E6%90%9C%E7%B4%A2%E8%81%94%E5%90%88%E4%BC%A0%E6%92%AD%E6%A0%B7%E5%BC%8F-%E7%99%BD%E8%89%B2%E7%89%88.png?raw=true" width=100% title="wechat_public_QRcode.png" align=center/>
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

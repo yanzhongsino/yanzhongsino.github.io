@@ -19,8 +19,15 @@ description: 绘制分布密度图及标记峰值
 stat_peaks()
 
 
-**ref:**
-http://ianmadd.github.io/pages/PeakDensityDistribution.html#find-the-trough-in-the-distribution-between-the-peaks
-https://cloud.tencent.com/developer/ask/202981
-https://www.jianshu.com/p/c0426739c792
+references
 
+1. http://ianmadd.github.io/pages/PeakDensityDistribution.html#find-the-trough-in-the-distribution-between-the-peaks
+2. https://cloud.tencent.com/developer/ask/202981
+3. https://www.jianshu.com/p/c0426739c792
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

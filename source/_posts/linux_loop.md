@@ -44,3 +44,10 @@ description: shell的几种循环语法的差异
 `&&`和`;`都是用于连接同一行的两条命令的；代表前一条命令执行完再接着执行下一条命令；区别在于`&&`需要上一条命令执行成功才执行下一条命令；`;`则只是命令分隔符，上一条命令执行成功与否不影响下一条命令的执行。
 
 再多介绍一个命令符`||`，当用`||`连接两条命令时，表示前一条命令执行成功时，停止执行后面的命令；只有当前一条命令执行失败时，才执行后一条命令。
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

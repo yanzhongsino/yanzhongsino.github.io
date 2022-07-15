@@ -141,3 +141,10 @@ Others	41
 2. http://www.360doc.com/content/18/1119/05/52645714_795799901.shtml
 3. https://genehub.wordpress.com/2019/08/08/%E6%A4%8D%E7%89%A9%E5%9F%BA%E5%9B%A0%E7%BB%84ncrna%E9%A2%84%E6%B5%8B%EF%BC%88trna%E3%80%81rrna%E3%80%81snrna%E3%80%81mirna%EF%BC%89/
 4. http://embracethesky.cn/2018/07/08/%e4%bd%bf%e7%94%a8infernal%e5%af%b9rfam-12%e8%bf%9b%e8%a1%8crna%e6%b3%a8%e9%87%8a/#more-99
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

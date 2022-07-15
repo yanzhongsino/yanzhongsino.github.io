@@ -185,14 +185,19 @@ R包OptM分析treemix的结果，确认最佳m值(Deltam值最小情况下的m�
 >plot_tree("sample.treemix.3.1") #用sample.treemix.3.1结果作图
 ```
 
-
-
 **notes**：
 - 虽然TreeMix的输入是个体的snp.vcf计算的基因型频率数据，但推断的系统发育网是居群的(居群名称组成的系统结构)，不是个体的系统发育。
 - sample.tre是居群树(据群名称组成的树)，不是个体树
 - treemix的参数-root指定的也是居群名称
 
 # 2. reference
-1. [TreeMix paper](https://www.nature.com/articles/npre.2012.6956.1)
-2. [TreeMix software](https://bitbucket.org/nygcresearch/treemix/downloads/)
-3. [TreeMix manual](https://bitbucket.org/nygcresearch/treemix/downloads/treemix_manual_10_1_2012.pdf)
+1. TreeMix paper：https://www.nature.com/articles/npre.2012.6956.1
+2. TreeMix software：https://bitbucket.org/nygcresearch/treemix/downloads/
+3. TreeMix manual：https://bitbucket.org/nygcresearch/treemix/downloads/treemix_manual_10_1_2012.pdf
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

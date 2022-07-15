@@ -42,5 +42,3 @@ bootstrap是一个用于快速开发web应用和网站的前端框架。
 3.  使用**normalize.css**来建立跨浏览器的一致性。
 
 4.  .container 类用于固定宽度并支持响应式布局的容器。.container-fluid 类用于 100\% 宽度，占据全部视口（viewport）的容器。
-
-# 4. 网格系统

@@ -150,6 +150,13 @@ KEGG PATHWAY Database是KEGG资源的核心，是一组手工绘制的KEGG通路
 [Xfam](http://xfam.org/)包含了许多数据库，比如Pfam，Rfam，Dfam，Treefam，Antifam等。
 
 # 3. references
-[topGO tutorial](https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf)
-[topGO blog](https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/)
-[R topGO](https://www.codenong.com/cs105162324/)
+1. topGO tutorial：https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf
+2. topGO blog：https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/
+3. R topGO：https://www.codenong.com/cs105162324/
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

@@ -71,3 +71,10 @@ description: 从按照密码子规则（即三个三个对齐）比对的cds序�
 `for i in $(echo ${sps[*]}); do seqkit subseq --bed ${i}.4dtv.bed ${cds} | grep -v ">"|xargs echo |sed "1i\>${i}" >${i}.4dtv.aln.temp; done`
 4. 合并物种的4dtv位点
 `cat *.4dtv.aln.temp >4dtv.aln` #合并
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

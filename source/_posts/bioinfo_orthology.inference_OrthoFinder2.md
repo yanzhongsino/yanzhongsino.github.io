@@ -219,8 +219,15 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
 - 记录了程序通过 CMSA 算法过滤后的 orthogroup 中各序列串联后的多序列比对结果，同时比对结果中空位数 > 50% 的列已被删除。
 
 # 3. references
-1. [tutorial](https://davidemms.github.io/)
-2. [github](https://github.com/davidemms/OrthoFinder)
-3. [paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1832-y)
-4. [xuzhougeng's blog](https://xuzhougeng.top/archives/OrthoFinder2-fast-and-accurate-phylogenomic-orthology-analysis-from-gene-sequences)
-5. [website](https://blog.csdn.net/weixin_44614936/article/details/101640473)
+1. tutorial：https://davidemms.github.io/
+2. github：https://github.com/davidemms/OrthoFinder
+3. paper：https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1832-y
+4. xuzhougeng's blog：https://xuzhougeng.top/archives/OrthoFinder2-fast-and-accurate-phylogenomic-orthology-analysis-from-gene-sequences
+5. https://blog.csdn.net/weixin_44614936/article/details/101640473
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

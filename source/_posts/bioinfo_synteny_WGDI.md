@@ -436,9 +436,16 @@ savefig =  all_ks.pdf #保存的拟合图
 得到all_ks.pdf拟合图
 
 # 4. references
-[WGDI's documentation](https://WGDI.readthedocs.io/en/latest/)
-[WGDI's github](https://github.com/SunPengChuan/wgdi)
-[xuzhougeng's WGDI上](https://www.jianshu.com/p/a50548e81ac0)
-[xuzhougeng's WGDI中](https://www.jianshu.com/p/0e4a2807468d)
-[xuzhougeng's WGDI下](https://www.jianshu.com/p/28a4c3045919)
-[xuzhougeng's WGDI blockinfo blog](https://www.jianshu.com/p/e97fdcf5d06f)
+1. WGDI's documentation：https://WGDI.readthedocs.io/en/latest/
+2. WGDI's github：https://github.com/SunPengChuan/wgdi
+3. xuzhougeng's WGDI上：https://www.jianshu.com/p/a50548e81ac0
+4. xuzhougeng's WGDI中：https://www.jianshu.com/p/0e4a2807468d
+5. xuzhougeng's WGDI下：https://www.jianshu.com/p/28a4c3045919
+6. xuzhougeng's WGDI blockinfo blog：https://www.jianshu.com/p/e97fdcf5d06f
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

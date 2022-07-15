@@ -374,7 +374,7 @@ ERROR: Raw Helitron results not found in sample.fa.mod.EDTA.raw/sample.fa.mod.He
 	If you believe the program is working properly, this may be caused by the lack of intact Helitrons in your genome. Consider to use the --force 1 parameter to overwrite this check
 ```
 
-**ref：**
+references
 
 1. https://en.wikipedia.org/wiki/Tandem_repeat
 2. https://en.wikipedia.org/wiki/Microsatellite
@@ -383,3 +383,10 @@ ERROR: Raw Helitron results not found in sample.fa.mod.EDTA.raw/sample.fa.mod.He
 5. https://www.jianshu.com/p/ddd1c9a74fde
 6. https://www.jianshu.com/p/dfa89f394882
 7. https://wheat.pw.usda.gov/ITMI/Repeats/Repeat_types.html
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>

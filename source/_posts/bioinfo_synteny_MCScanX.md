@@ -56,7 +56,9 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 - 基本统计信息(statistics)：共线性基因的总数，总基因数，共线性基因占比。
 - 共线性区块(block)信息：一个Alignment代表一个共线性区块（0起始编号）。后面跟着这个共线性区块的基因对的信息。第一列：block编号；第二列：基因对编号；第三列和第四列：基因对名称；第五列：blast比对的e_value值。
 
-```sample.collinearity示例
+sample.collinearity示例：
+
+```
 ############### Parameters ###############
 # MATCH_SCORE: 50
 # MATCH_SIZE: 5
@@ -99,8 +101,18 @@ blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 
 
 包含基因组内**串联重复**的基因ID的list。
 
+notes：MCScanX 会根据 gff 文件中染色体号的前缀（前2个字符）将染色体划分为不同的物种，若 MCScanX 识别到输入数据中包含多个物种，则不会生成 tandem 文件。
+
 # 3. MCScanX下游分析
-## 绘图脚本
+## 提取block位置
+
+```
+cat sample.collinearity|grep -C 1 "Alignment"|sed '/^--$/d' >block.tem #提取block首尾基因对
+tail -1 sample.collinearity >>block.tem #提取block首尾基因对
+cat block.tem |sed -e "s/## //g" -e "s/.*gene/gene/g"|tr '\n' ' '|sed "s/Alignment /\nAlignment/g" |sed -e "/^$/d" -e "s/ /\t/g"|sed -e "s/\t\+/\t/g" -e "s/\://g"|awk -v FS="\t" -v OFS="\t" '{print $1,$2,$3,$4,$5,$6,$7,$10,$8,$11}' >block.txt #整理成一个block一行信息的格式，其中"s/.*gene/gene/g"部分的gene修改成geneID的前缀用来去除多余信息。
+```
+
+## 3.1. 绘图脚本
 MCScanX的downstream_analyses目录包含一些下游脚本。
 
 许多java脚本可以实现绘图功能，包括：
@@ -110,12 +122,41 @@ MCScanX的downstream_analyses目录包含一些下游脚本。
 - 染色体块图：bar_plotter
 - ...
 
-## 3.1. 计算共线性区块Ks
+## 3.2. 复制事件分类
+### 3.2.1. duplicate_gene_classifier
+1. duplicate_gene_classifier
+
+MCScanX的`duplicate_gene_classifier`脚本用来分析与各种复制类别相关的基因数量
+
+2. 输入
+
+`duplicate_gene_classifier sample` # 输入与MCScanX一致，读取当前目录下的sample.gff和sample.blast作为输入
+
+3. 输出示例
+
+```
+Type of dup	Code	Number
+Singleton	0	88907
+Dispersed	1	13573
+Proximal	2	463
+Tandem	3	847
+WGD or segmental	4	1055
+```
+
+4. 结果解释
+
+其中 Singleton 表示单拷贝重复，Proximal 表示在相同染色体上相近但不相连的重复，Dispersed 表示除 Tandem、WGD、Proximal 以外的重复。Number代表相应复制类别相关的基因数量。
+
+## 解析结果文件sample.collinearity的脚本
+
+推荐这里https://github.com/reubwn/collinearity有许多可以解析果文件sample.collinearity的脚本
+
+## 3.3. 计算共线性区块Ks
 tips:需要检查得到的结果中Ks值是否有负值或NA等无效数据，并过滤无效数据。
-### 3.1.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）
+### 3.3.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）
 `add_ka_and_ks_to_collinearity.pl -i sample.collinearity -d sample.cds.fa -o sample.kaks > out.log 2>&1` #注意算出的部分kaks值为-2的问题，未找到解决方案
 
-### 3.1.2. 方案二：ParaAT.pl+KaKs_Calculator2.0
+### 3.3.2. 方案二：ParaAT.pl+KaKs_Calculator2.0
 - ParaAT.pl用于根据同源基因对list生成比对的gene对cds序列，并可以指定输出格式，如axt格式；
 - KaKs_Calculator用于计算基因对的kaks。
 
@@ -171,8 +212,8 @@ join all.kaks all.4dtv |sed "s/ /\t/g" |awk '$3 != "NA" {print $0}' |sed '1i\gen
 rm all.kaks* all.4dtv* #删除中间文件
 ```
 
-## 3.2. ggplot2画密度分布图和峰值
-### 3.2.1. ggplot2画密度分布图
+## 3.4. ggplot2画密度分布图和峰值
+### 3.4.1. ggplot2画密度分布图
 ```R
 library(ggplot2)
 library(ggpmisc)
@@ -181,7 +222,7 @@ p <- ggplot(data, aes(Ks)) + geom_density(size=1,color="black")+xlab("Synonymous
 ggsave(file="Ks.pdf",plot=p,width=10,height=5)
 ```
 
-### 3.2.2. ggplot2峰值标定
+### 3.4.2. ggplot2峰值标定
 ```R
 pb <- ggplot_build(p)
 pic <- p + stat_peaks(data = pb[['data']][[1]], aes(x=x, y=density), geom= 'text', color="red", ,vjust=-0.5)
@@ -190,29 +231,29 @@ ggsave(file="Ks_peaks.pdf",plot=pic,width=10,height=5)
 
 在密度分布图里得到红色标记的峰值。
 
-### 3.2.3. 多个密度图
+### 3.4.3. 多个密度图
 同时展示多组Ks数据分布，可以把数据合并，添加一列作为分类标签，通过colour颜色参数指定这个分类标签列，则可以实现一张图上展示多个密度图。
 
 `ggplot(data)+geom_density(aes(x=V3,colour=V5),adjust=2)+xlim(0,0.5)+theme_classic()` #指定第三列V3为数据，第五列V5为分类依据并赋予不同颜色。
 
-### 3.2.4. 通过密度分布图判断WGD
+### 3.4.4. 通过密度分布图判断WGD
 一般认为，Ks密度分布图如果有明显的峰，一个峰代表对应一次WGD事件。
 通过峰的数量和对应的Ks大小可以判断WGD事件的次数和发生时间。
 
-## 3.3. WGD发生的时间
+## 3.5. WGD发生的时间
 通过Ks的密度分布图鉴定得到WGD事件发生的证据之后，有多种方法可以估算WGD发生的时间。
-### 3.3.1. 通过Ks=2μT计算时间
+### 3.5.1. 通过Ks=2μT计算时间
 依据公式Ks=2μT来计算时间T，依赖准确的进化速率μ，μ通常引用近缘类群的已有权威研究。
 
 进化速率μ：
 - 蕨类植物的同义突变率：4.79e-9 subst./syn. site/year :the first estimate of fern nuclear genome evolutionary rates with polypodiaceous nuclear genomes (Barker 2009)
 - 水稻：2.5e-8 subst./syn. site/year
 
-### 3.3.2. 通过进化树估算时间
+### 3.5.2. 通过进化树估算时间
 - 用代表WGD的Ks值附近的同线性基因对制作两套样品的单倍型数据，然后选取一到多个近缘种的蛋白序列与其中一套单倍型做直系同源基因分析，用找到的直系同源单拷贝基因建树（把两套单倍型数据当作两个物种来建树），通过化石或者二次标定的方法用paml的mcmctree模块计算两套单倍型的分化时间，即为WGD发生的时间。
 - 如果物种分化时间的尺度太大而不能准确估算WGD时间，可以先用大尺度的系统发育树做近缘种和目标物种的分化时间的估算，然后在做WGD时间估算时只用一个近缘种加上近缘种与目标物种的分化时间标定来获得更准确的WGD时间估计结果。
 
-#### 3.3.2.1. 获取sample发生WGD的两套基因
+#### 3.5.2.1. 获取sample发生WGD的两套基因
 1. 前面分析中计算Ks的分布峰值假设在**0.05**，取Ks值在0.05正负25%的范围，即[0.0375-0.0625]之间的基因对。
 `cat all.results |awk '$3>0.0375 && $3>0.0625 {print $1} |sed "s/-/\t/g" >wgd.homologs`
 2. 基因对中若有一个基因对多个基因的情况，则选取Ks最接近0.05的那对。
@@ -220,12 +261,12 @@ ggsave(file="Ks_peaks.pdf",plot=pic,width=10,height=5)
 `cut -f1 wgd.homologs >wgd_H1.homologs`;
 `cut -f2 wgd.homologs >wgd_H2.homologs`
 
-#### 3.3.2.2. 选近缘种和分化时间
+#### 3.5.2.2. 选近缘种和分化时间
 1. 参考近年发表的权威组学系统发育文章选取近缘种和物种分化时间数据。
 2. 这里假设选取了两个近缘物种sampleA和sampleB。sample发生WGD形成的两套单倍型H1和H2，目标物种sample与近缘种sampleA的分化时间已知为88Ma。
 3. 确定物种树拓扑结构：`(((sampleH1,sampleH2),sampleA)'<0.88>0.88),sampleB;`，以sampleB为外类群。
 
-#### 3.3.2.3. orthofinder找直系同源基因
+#### 3.5.2.3. orthofinder找直系同源基因
 1. 根据基因对提取蛋白序列，任意用一个（这里用wgd_H1.homologs)提取蛋白序列：`seqkit grep -n -f wgd_H1.homologs sample.pep > wgd_H1.pep`
 2. 与其他两个近缘种的蛋白序列一起，用orthofinder找直系同源基因。
 - orthofinder使用方法：把所有物种的pep蛋白序列（两个近缘物种加上wgd_H1.pep）放进一个文件夹(directory)，注意蛋白序列中不能有./*等符号（常用来代表终止密码子）。
@@ -234,7 +275,7 @@ ggsave(file="Ks_peaks.pdf",plot=pic,width=10,height=5)
 - 根据Orthogroups_SingleCopyOrthologues.txt把Orthogroups.txt里基因信息提取出来,`grep -f Orthogroups_SingleCopyOrthologues.txt Orthogroups.tsv >OG.txt`。OG.txt文件内容是singlecopyorthologues列表，第一列orthogroupID，后面3列每套蛋白序列ID，共4列，这个文件的每行数据为一个homologs对应的每套数据的蛋白ID。
 - 合并wgd.homologs和OG.txt文件为OG.list：`join -1 1 -2 2 wgd.homologs OG.txt > OG.list`。OG.list文件是在OG.txt基础上增加了wgd_H2.homologs的一套蛋白ID数据，共有四套蛋白ID数据。
 
-#### 3.3.2.4. 建单基因树
+#### 3.5.2.4. 建单基因树
 1. 建树脚本
 用下面的脚本singlegenetree.sh，提取每个homologs序列，并通过raxml-ng（raxmlHPC建氨基酸树只有bootstrap结果，没有bestTree）为每个homologs基因比对（mafft）和建树。
 OG.list文件包含第一列ogID和后4列4套样本ID。
@@ -265,7 +306,7 @@ done
 2. 筛选homologs
 判断生成的每个OG的树文件besttree.${sample_id}，只保留符合物种树拓扑结构`(((sampleH1,sampleH2),sampleA)),sampleB;`的基因，保存成OG.filtered。
 
-#### 3.3.2.5. paml估计分化时间
+#### 3.5.2.5. paml估计分化时间
 此节参考博客[估算系统树分歧时间](https://yanzhongsino.github.io/2021/03/25/bioinfo_caculate.divergence.time/)的paml部分。
 
 1. 在OG.filtered最后一列添加每个OG的序列长度信息，保存成OG.filtered.list。
@@ -355,3 +396,11 @@ ndata = 261表示有261个数据，与sample.phy包含的子phy数量对应；se
 # 4. references
 1. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3326336/
 2. https://github.com/wyp1125/MCScanX
+3. https://its201.com/article/sinat_41621566/113359074
+
+-------
+
+- 欢迎关注微信公众号：**生信技工**
+- 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
