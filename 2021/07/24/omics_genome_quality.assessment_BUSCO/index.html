@@ -22,19 +22,21 @@
 
   <meta name="description" content="记录评估基因组组装和注释完整性的工具BUSCO的安装使用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="评估基因组组装和注释完整性 —— BUSCO">
+<meta property="og:title" content="基因组质量评估：（三）用BUSCO评估基因组的完整性">
 <meta property="og:url" content="http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="记录评估基因组组装和注释完整性的工具BUSCO的安装使用。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-07-24T03:20:00.000Z">
-<meta property="article:modified_time" content="2022-07-07T03:22:51.287Z">
+<meta property="article:modified_time" content="2022-07-15T11:35:42.860Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="quality assessment">
 <meta property="article:tag" content="genome">
 <meta property="article:tag" content="BUSCO">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
 <link rel="canonical" href="http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/">
 
@@ -49,7 +51,7 @@
   };
 </script>
 
-  <title>评估基因组组装和注释完整性 —— BUSCO | 生信技工</title>
+  <title>基因组质量评估：（三）用BUSCO评估基因组的完整性 | 生信技工</title>
   
 
 
@@ -186,7 +188,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          评估基因组组装和注释完整性 —— BUSCO
+          基因组质量评估：（三）用BUSCO评估基因组的完整性
         </h1>
 
         <div class="post-meta">
@@ -203,7 +205,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-07 11:22:51" itemprop="dateModified" datetime="2022-07-07T11:22:51+08:00">2022-07-07</time>
+                <time title="修改时间：2022-07-15 19:35:42" itemprop="dateModified" datetime="2022-07-15T19:35:42+08:00">2022-07-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,13 +254,23 @@
         <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=3986241&auto=1&height=32"></iframe></div>
 
 <h1 id="1-busco简介"><a href="#1-busco简介" class="headerlink" title="1. busco简介"></a>1. busco简介</h1><p>Benchmarking Universal Single-Copy Orthologs (BUSCO)是用于评估基因组组装和注释的完整性的工具。通过与已有单拷贝直系同源数据库的比较，得到有多少比例的数据库能够有比对，比例越高代表基因组完整度越好。</p>
-<p>可以评估三种数据类型（1.组装的基因组；2.转录组；3.注释到的基因对应的氨基酸序列），使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。</p>
-<p>BUSCO官网：<a target="_blank" rel="noopener" href="https://busco.ezlab.org/">https://busco.ezlab.org</a><br>BUSCO v5数据库：<a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/">https://busco-data.ezlab.org/v5/data/lineages/</a></p>
+<p>可以评估三种数据类型：</p>
+<ol>
+<li>组装的基因组；</li>
+<li>转录组；</li>
+<li>蛋白组（或者基因组注释基因对应的氨基酸序列）。</li>
+</ol>
+<p>使用需要评估的生物类别所属的数据库（从busco数据库下载）比对，得出比对上数据库的完整性比例的信息。</p>
+<ul>
+<li>BUSCO官网：<a target="_blank" rel="noopener" href="https://busco.ezlab.org/">https://busco.ezlab.org</a></li>
+<li>BUSCO v5数据库：<a target="_blank" rel="noopener" href="https://busco-data.ezlab.org/v5/data/lineages/">https://busco-data.ezlab.org/v5/data/lineages/</a></li>
+</ul>
 <h1 id="2-busco安装"><a href="#2-busco安装" class="headerlink" title="2. busco安装"></a>2. busco安装</h1><ol>
-<li><p>conda安装<br><code>conda install -c conda-forge -c bioconda busco=5.3.2</code> #安装版本是5.3.2</p>
-</li>
-<li><p>手动安装</p>
-</li>
+<li>conda安装</li>
+</ol>
+<p><code>conda install -c conda-forge -c bioconda busco=5.3.2</code> #安装版本是5.3.2</p>
+<ol start="2">
+<li>手动安装</li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://gitlab.com/ezlab/busco.git</span><br><span class="line">cd busco</span><br><span class="line">python3 setup.py install --user</span><br><span class="line">./bin/busco -h</span><br></pre></td></tr></table></figure>
 
@@ -311,7 +323,7 @@
 <li>使用–offline离线模式</li>
 </ul>
 <p>非常不建议用busco的–auto-lineage模式，这个模式在运行busco时下载数据库，网络不好时连接的失败率非常高。推荐用<code>-l busco_downloads/eudicots_odb10 --offline</code>指定下载好的本地数据库，并使用离线模式。</p>
-<h2 id="4-2-在设置文件中给出参数【需设置的参数较多时】"><a href="#4-2-在设置文件中给出参数【需设置的参数较多时】" class="headerlink" title="4.2. 在设置文件中给出参数【需设置的参数较多时】"></a>4.2. 在设置文件中给出参数【需设置的参数较多时】</h2><p><code>nohup busco --config config.ini</code><br>通过conda安装的这config.ini配置文件在&#x2F;path&#x2F;to&#x2F;miniconda3&#x2F;envs&#x2F;busco5&#x2F;config&#x2F;目录下；直接复制一份到工作目录，修改使用即可。</p>
+<h2 id="4-2-在设置文件中给出参数【需设置的参数较多时】"><a href="#4-2-在设置文件中给出参数【需设置的参数较多时】" class="headerlink" title="4.2. 在设置文件中给出参数【需设置的参数较多时】"></a>4.2. 在设置文件中给出参数【需设置的参数较多时】</h2><p><code>nohup busco --config config.ini</code><br>通过conda安装的config.ini配置文件在&#x2F;path&#x2F;to&#x2F;miniconda3&#x2F;envs&#x2F;busco5&#x2F;config&#x2F;目录下；直接复制一份到工作目录，修改使用即可。</p>
 <p>把config.ini的示例文件中行首的分号;去掉，并把等号后的内容修改成设置的内容。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"># This is the BUSCOv5 configuration file template.</span><br><span class="line"># It is not necessary to use this, as BUSCO will use the dependencies available on your PATH by default.</span><br><span class="line"># The busco run parameters can all be set on the command line. See the help prompt (busco -h) for details.</span><br><span class="line">#</span><br><span class="line"># To use this file for an alternative configuration, or to specify particular versions of dependencies:</span><br><span class="line"># 1) edit the path and command values to match your desired dependency versions.</span><br><span class="line">#    WARNING: passing a parameter through the command line overrides the value specified in this file.</span><br><span class="line">#</span><br><span class="line"># 2) Enable a parameter by removing &quot;;&quot;</span><br><span class="line">#</span><br><span class="line"># 3) Make this config file available to BUSCO either by setting an environment variable</span><br><span class="line">#</span><br><span class="line">#                   export BUSCO_CONFIG_FILE=&quot;/path/to/myconfig.ini&quot;</span><br><span class="line">#</span><br><span class="line">#    or by passing it as a command line argument</span><br><span class="line">#</span><br><span class="line">#                   busco &lt;args&gt; --config /path/to/config.ini</span><br><span class="line">#</span><br><span class="line">[busco_run]</span><br><span class="line"># Input file</span><br><span class="line">;in = /path/to/input_file.fna</span><br><span class="line"># Run name, used in output files and folder</span><br><span class="line">;out = BUSCO_run</span><br><span class="line"># Where to store the output directory</span><br><span class="line">;out_path = /path/to/output_folder</span><br><span class="line"># Path to the BUSCO dataset</span><br><span class="line">;lineage_dataset = bacteria</span><br><span class="line"># Which mode to run (genome / proteins / transcriptome)</span><br><span class="line">;mode = genome</span><br><span class="line"># Run lineage auto selector</span><br><span class="line">;auto-lineage = True</span><br><span class="line"># Run auto selector only for non-eukaryote datasets</span><br><span class="line">;auto-lineage-prok = True</span><br><span class="line"># Run auto selector only for eukaryote datasets</span><br><span class="line">;auto-lineage-euk = True</span><br><span class="line"># How many threads to use for multithreaded steps</span><br><span class="line">;cpu = 16</span><br><span class="line"># Force rewrite if files already exist (True/False)</span><br><span class="line">;force = False</span><br><span class="line"># Restart a previous BUSCO run (True/False)</span><br><span class="line">;restart = False</span><br><span class="line"># Blast e-value</span><br><span class="line">;evalue = 1e-3</span><br><span class="line"># How many candidate regions (contigs, scaffolds) to consider for each BUSCO</span><br><span class="line">;limit = 3</span><br><span class="line"># Metaeuk parameters for initial run</span><br><span class="line">;metaeuk_parameters=&#x27;--param1=value1,--param2=value2&#x27;</span><br><span class="line"># Metaeuk parameters for rerun</span><br><span class="line">;metaeuk_rerun_parameters=&quot;&quot;</span><br><span class="line"># Augustus parameters</span><br><span class="line">;augustus_parameters=&#x27;--param1=value1,--param2=value2&#x27;</span><br><span class="line"># Quiet mode (True/False)</span><br><span class="line">;quiet = False</span><br><span class="line"># Local destination path for downloaded lineage datasets</span><br><span class="line">;download_path = ./busco_downloads/</span><br><span class="line"># Run offline</span><br><span class="line">;offline=True</span><br><span class="line"># Ortho DB Datasets version</span><br><span class="line">;datasets_version = odb10</span><br><span class="line"># URL to BUSCO datasets</span><br><span class="line">;download_base_url = https://busco-data.ezlab.org/v4/data/</span><br><span class="line"># Download most recent BUSCO data and files</span><br><span class="line">;update-data = True</span><br><span class="line"># Use Augustus gene predictor instead of metaeuk</span><br><span class="line">;use_augustus = True</span><br><span class="line"></span><br><span class="line">[tblastn]</span><br><span class="line">path = /ncbi-blast-2.10.1+/bin/</span><br><span class="line">command = tblastn</span><br><span class="line"></span><br><span class="line">[makeblastdb]</span><br><span class="line">path = /ncbi-blast-2.10.1+/bin/</span><br><span class="line">command = makeblastdb</span><br><span class="line"></span><br><span class="line">[metaeuk]</span><br><span class="line">path = /metaeuk/build/bin/</span><br><span class="line">command = metaeuk</span><br><span class="line"></span><br><span class="line">[augustus]</span><br><span class="line">path = /augustus/bin/</span><br><span class="line">command = augustus</span><br><span class="line"></span><br><span class="line">[etraining]</span><br><span class="line">path = /augustus/bin/</span><br><span class="line">command = etraining</span><br><span class="line"></span><br><span class="line">[gff2gbSmallDNA.pl]</span><br><span class="line">path = /augustus/scripts/</span><br><span class="line">command = gff2gbSmallDNA.pl</span><br><span class="line"></span><br><span class="line">[new_species.pl]</span><br><span class="line">path = /augustus/scripts/</span><br><span class="line">command = new_species.pl</span><br><span class="line"></span><br><span class="line">[optimize_augustus.pl]</span><br><span class="line">path = /augustus/scripts/</span><br><span class="line">command = optimize_augustus.pl</span><br><span class="line"></span><br><span class="line">[hmmsearch]</span><br><span class="line">path = /usr/local/bin/</span><br><span class="line">command = hmmsearch</span><br><span class="line"></span><br><span class="line">[sepp]</span><br><span class="line">path = /home/biodocker/sepp/</span><br><span class="line">command = run_sepp.py</span><br><span class="line"></span><br><span class="line">[prodigal]</span><br><span class="line">path = /usr/local/bin/</span><br><span class="line">command = prodigal</span><br></pre></td></tr></table></figure>
 
@@ -344,7 +356,12 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export AUGUSTUS_CONFIG_PATH=&quot;/path/to/anaconda3/envs/busco5/config</span><br><span class="line">export BUSCO_CONFIG_FILE=&quot;/path/to/anaconda3/envs/busco5/config/config.ini</span><br></pre></td></tr></table></figure>
 <p>实现AUGUSTUS和BUSCO的设置。</p>
 <h1 id="8-notes"><a href="#8-notes" class="headerlink" title="8. notes"></a>8. notes</h1><p>2021年06月23日开始写，07月24日今天终于完结。</p>
-
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
     </div>
 
     
@@ -451,7 +468,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -464,7 +481,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">220</span>
+        <span class="site-state-item-count">221</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -571,7 +588,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2021/07/24/omics_genome_quality.assessment_BUSCO/";
     this.page.identifier = "2021/07/24/omics_genome_quality.assessment_BUSCO/";
-    this.page.title = "评估基因组组装和注释完整性 —— BUSCO";
+    this.page.title = "基因组质量评估：（三）用BUSCO评估基因组的完整性";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
