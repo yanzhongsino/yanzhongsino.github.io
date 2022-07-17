@@ -11,15 +11,15 @@ tags:
 - SV
 - insertion
 - deletion
-- tandem duplication
-- tandem contraction
+- duplication
+- contraction
 - inversion
 - translocation
 
 description: 介绍了分析两个基因组间的结构变异的软件MUMandCo，用它检测插入，缺失，倒位，易位，串联重复复制，串联重复收缩等结构变异。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18031133&auto=1&height=32"></iframe></div>
 
 # 1. MUMandCo简介
 MUMandCo是用于**两个基因组间**的**结构变异（structural variant，SV）**检测分析的软件，基于MUMmer(v4)的nucmer比对结果检测全基因组范围内的插入，缺失，串联重复，倒位和易位等结构变异。
