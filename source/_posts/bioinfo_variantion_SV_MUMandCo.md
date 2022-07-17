@@ -118,7 +118,7 @@ MCscaf254	LG05	13407	16116	2709	deletion_mobile	10455842	10467408	complicated
 
 我整理了一个这样的表格，用来一览SV的概况，供参考。
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true" title="结构变异概况" width="90%" />
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/structural_variants_sum.png?raw=true" title="结构变异概况" width="90%" align=center/>
 
 **<p align="center">结构变异概况</p>**
 
