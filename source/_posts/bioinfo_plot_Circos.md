@@ -18,8 +18,7 @@ description: 记录了绘制圈图的软件Circos的使用逻辑和参数。
 
 <img src="http://circos.ca/img/circos-sample-panel.png" title="Circos圈图" width="100%"/>
 
-**<p align="center">Figure 1. circos圈图示例**
-from [circos官网](http://circos.ca/)</p>
+**<p align="center">Figure 1. circos圈图示例 图源：[circos官网](http://circos.ca/)</p>**
 
 circos圈图的内核是把矩形掰弯成环状，矩形信息的展示以行和列为基础，环形除了行和列，还可以增加环的不同位置之间的关系，比如基因组特征的Circos图中间常见的染色体共线性关系的展示。
 

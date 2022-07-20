@@ -223,6 +223,11 @@ test1 引用test test2 引用test test3 引用test test4 引用test test5 引用
 
 **<p align="center">Figure 8. centerquote标签引用效果**
 
+## 1.4. 插入网页
+1. 使用iframe嵌套网页
+
+<iframe height=450 width=90% src="https://academic.oup.com/view-large/126092648" frameborder=0 allowfullscreen></iframe>
+
 # 2. references
 1. hexo 标签插件:blockquote：https://hexo.io/docs/tag-plugins.html
 

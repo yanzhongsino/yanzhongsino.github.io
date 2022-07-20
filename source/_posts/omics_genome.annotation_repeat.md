@@ -244,7 +244,7 @@ consensi.fa.classified文件即为训练结果，重复序列数据库，用作�
 - 第十一列：比上重复序列的分类，和- repeatmolder 中*.classed 是一样的
 - 第十二列：比上的在数据库中的起始位置
 - 第十三列：比上的在数据库中的终止位置
-- 第十四列：在第十列上超出比对区域碱基的数- 目，也就是没有比对上的碱基数
+- 第十四列：在第十列上超出比对区域碱基的数目，也就是没有比对上的碱基数
 - 第十五列：比对区域的ID，随机给的
 
 # 3. EDTA(The Extensive de novo TE Annotator)
@@ -329,7 +329,6 @@ singularity和docker安装我没用过，参考开发者说明吧。
 简化推荐版：
 `nohup EDTA.pl --genome sample.fa --cds sample.cds --species others --step all --anno 1 -t 36 &`
 
-
 ## 3.4. 结果文件
 - genome.mod.EDTA.TElib.fa：最终结果，非冗余的TE库。如果在输入文件中用--curatedlib指定的修正版TE库，则该文件中也将包含这部分序列。
 - genome.mod.EDTA.TElib.novel.fa: 新TE类型。该文件包括在输入文件中用--curatedlib指定的修正版TE库没有的TE序列，即genome.mod.EDTA.TElib.fa减去--curatedlib指定库(需要--curatedlib参数)。
@@ -344,8 +343,11 @@ singularity和docker安装我没用过，参考开发者说明吧。
 当已有TE库结果，想要与其他软件（比如RepeatMasker）预测结果比较，可以用EDTA的脚本`lib-test.pl`进行，评估是通过与参考注释进行比较来进行的。
 
 1. 用RepeatMasker根据已有TE库进行注释
+
 `RepeatMasker -pa 36 -q -no_is -norna -nolow -div 40 -lib sample.TE.lib.fasta -cutoff 225 sample.fa`
+
 2. 用lib-test.pl进行TE注释的比较和评估
+
 ```
 perl lib-test.pl -genome genome.fasta -std genome.stdlib.RM.out -tst genome.testlib.RM.out -cat [options]
 	-genome	[file]	FASTA format genomesequence
@@ -374,8 +376,7 @@ ERROR: Raw Helitron results not found in sample.fa.mod.EDTA.raw/sample.fa.mod.He
 	If you believe the program is working properly, this may be caused by the lack of intact Helitrons in your genome. Consider to use the --force 1 parameter to overwrite this check
 ```
 
-references
-
+# references
 1. https://en.wikipedia.org/wiki/Tandem_repeat
 2. https://en.wikipedia.org/wiki/Microsatellite
 3. http://www.repeatmasker.org/RepeatModeler/

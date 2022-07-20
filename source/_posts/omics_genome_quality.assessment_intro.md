@@ -22,7 +22,7 @@ description: 基因组的组装和注释的质量评估，包括基因组组装�
 - 随着越来越多的组学测序数据的产生，基因组组装和注释变得越来越常见。
 - 基因组组装和注释结果的质量评估对加强下游分析的科学性是非常有必要的。
 
-# 2. 评估标准
+# 2. EBP的评估标准
 Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组组装质量标准报告。
 
 可参考：https://www.earthbiogenome.org/assembly-standards。
@@ -78,6 +78,14 @@ Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组�
 
 # 3. 评估指标和评估工具
 参考：https://www.earthbiogenome.org/assembly-standards。
+
+常用的评估指标和评估工具包括：
+1. 连贯性(continuity)：contig和scaffolds的N50，gaps数量，LAI
+2. 碱基准确性(base accuracy)：mapping rates
+3. 结构准确性(structural accuracy)：mapped reads的depth分布
+4. 组装和注释完整度(completeness)：BUSCO
+5. 染色体状态(chromosome status)：是否是染色体水平，染色体碱基占基因组的比例，尤其是性染色体。
+6. 单倍体相位(haplotype phasing)
 
 ## 3.1. 评估指标
 
