@@ -1,10 +1,634 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这篇博客记录的是用TreeMix软件推测居群间系统网络，确定最佳基因流数量的具体方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统发育网络推断 —— TreeMix">
+<meta property="og:url" content="http://example.com/2022/03/20/bioinfo_geneflow_TreeMix/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="这篇博客记录的是用TreeMix软件推测居群间系统网络，确定最佳基因流数量的具体方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_evanno.png?raw=true">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_linear.png?raw=true">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-03-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T11:26:45.594Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="gene flow">
+<meta property="article:tag" content="hybridization">
+<meta property="article:tag" content="introgressive">
+<meta property="article:tag" content="population networks">
+<meta property="article:tag" content="TreeMix">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_evanno.png?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/03/20/bioinfo_geneflow_TreeMix/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>系统发育网络推断 —— TreeMix | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/20/bioinfo_geneflow_TreeMix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统发育网络推断 —— TreeMix
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-20T00:00:00+08:00">2022-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 19:26:45" itemprop="dateModified" datetime="2022-07-15T19:26:45+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/gene-flow/" itemprop="url" rel="index"><span itemprop="name">gene flow</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/03/20/bioinfo_geneflow_TreeMix/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/03/20/bioinfo_geneflow_TreeMix/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">这篇博客记录的是用TreeMix软件推测居群间系统网络，确定最佳基因流数量的具体方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1296539261&auto=1&height=32"></iframe></div>
+
+<p>这篇博客记录的分析步骤是：</p>
+<ol>
+<li>使用基因组尺度的snp数据计算等位基因频率</li>
+<li>转换成TreeMix的输入文件格式</li>
+<li>用TreeMix推断基因流</li>
+<li>确定最佳基因流数量</li>
+<li>绘制系统发育网络图</li>
+</ol>
+<h1 id="1-TreeMix"><a href="#1-TreeMix" class="headerlink" title="1. TreeMix"></a>1. TreeMix</h1><p>TreeMix是一个利用全基因组尺度的等位基因频率数据推断居群的分化和和杂合（基因流动或基因渗入）的一个软件，适用于推断一个物种多个居群的系统发育网。TreeMix用多居群的等位基因频率来推测最大似然树(ML树)，并可推断指定数量基因流事件。</p>
+<ol>
+<li>TreeMix简介<ul>
+<li>TreeMix利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）</li>
+</ul>
+</li>
+<li>TreeMix输入输出<ul>
+<li>输入：基因组snp的vcf文件，和居群系统树(可选optional)</li>
+<li>输出：最佳杂交次数和系统发育网络(包含杂交方向和强度)</li>
+</ul>
+</li>
+<li>TreeMix优势和不足<ul>
+<li>TreeMix和PhyloNetworks一样，也是推断系统发育网络。</li>
+<li>我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。</li>
+<li>不足是比PhyloNetworks更耗时。</li>
+</ul>
+</li>
+</ol>
+<h2 id="1-1-TreeMix-install"><a href="#1-1-TreeMix-install" class="headerlink" title="1.1. TreeMix install"></a>1.1. TreeMix install</h2><ol>
+<li><p><code>conda install -c bioconda treemix</code> #现在conda可以下到最新版本treemix 1.13</p>
+</li>
+<li><p>在<a target="_blank" rel="noopener" href="https://bitbucket.org/nygcresearch/treemix/downloads/">treemix software</a>下载压缩包再安装</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf treemix-1.0.tar.gz</span><br><span class="line">cd treemix-1.0</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-准备文件"><a href="#1-2-准备文件" class="headerlink" title="1.2. 准备文件"></a>1.2. 准备文件</h2><ol>
+<li>sample.snp.vcf.gz：基因组尺度的snp文件，vcf格式</li>
+<li>sample.tre【optional】：居群的系统发育树文件，Newick格式，把支持率等信息删除；也可以不提供，用TreeMix推断ML树。<strong>这个树文件是居群树文件，不是个体树文件</strong>。</li>
+</ol>
+<h2 id="1-3-分析步骤"><a href="#1-3-分析步骤" class="headerlink" title="1.3. 分析步骤"></a>1.3. 分析步骤</h2><h3 id="1-3-1-计算等位基因频率"><a href="#1-3-1-计算等位基因频率" class="headerlink" title="1.3.1. 计算等位基因频率"></a>1.3.1. 计算等位基因频率</h3><ol>
+<li><p><code>vcftools --gzvcf sample.snp.vcf.gz --plink-tped --out sample</code> # 转换为tped格式，生成sample.tped和sample.tfam文件。<br>如果报错<strong>Unrecognized values used for CHROM: scaffold_1 - Replacing with 0</strong>，可以用<code>bcftools view -H sample.snp.vcf.gz | cut -f 1 | uniq | awk &#39;&#123;print $0&quot;\t&quot;$0&#125;&#39; &gt; chrom-map.txt</code>生成染色体ID的文件，然后再用–chrom-map指定文件来运行<code>vcftools --gzvcf sample.snp.vcf.gz --plink-tped --chrom-map chrom-map.txt --out sample</code>。</p>
+</li>
+<li><p>sample.tfam文件共6列，前两列都为样本ID，修改第一列数据为群体ID。（可以是同一物种不同种群作为单独群体，也可以是一个物种作为一个群体，这里sample的一个物种作为一个群体，群体ID为物种名）。</p>
+</li>
+<li><p><code>cat sample.tfam |awk &#39;&#123;print $1&quot;\t&quot;$2&quot;\t&quot;$1&#125;&#39; &gt;sample.pop.cov</code>编辑文件sample.pop.cov，格式为：共三列，前两列与修改后的sample.tfam前两列一样，为群体ID和样本ID，第三列和第一列一致，tab分隔。</p>
+</li>
+<li><p>计算等位基因组的频率</p>
+</li>
+</ol>
+<ul>
+<li><code>plink --threads 12 --tfile sample --freq --allow-extra-chr --within sample.pop.cov</code> # 计算等位基因组的频率，生成plink.frq.strat和plink.nosex文件，加上–allow-extra-chr是防止识别不了染色体名称。</li>
+<li><code>pigz plink.frq.strat</code> #压缩等位基因频率文件</li>
+</ul>
+<ol start="5">
+<li>转换格式【耗时小时计】</li>
+</ol>
+<ul>
+<li><code>python2 /path/to/plink2treemix.py plink.frq.strat.gz sample.treemix.in.gz</code> #用treemix自带脚本进行格式转换，notes：输入输出都为压缩文件，plink2treemix.py使用python2并需要绝对路径（否则报错）。</li>
+</ul>
+<h3 id="1-3-2-treemix推断基因流"><a href="#1-3-2-treemix推断基因流" class="headerlink" title="1.3.2. treemix推断基因流"></a>1.3.2. treemix推断基因流</h3><ol>
+<li><p>treemix默认功能<br><code>treemix -i sample.treemix.in.gz -o sample</code> # treemix的默认功能是在所有位点都独立的假设下建一棵种群ML树</p>
+</li>
+<li><p>TreeMix参数解释</p>
+</li>
+</ol>
+<ul>
+<li>-i 指定基因频率输入文件</li>
+<li>-o 指定输出文件前缀</li>
+<li>-tf 【可选】指定树文件，指定后就使用指定树的拓扑结构(最好把支持率和其他无关信息都删除，只留最简单的Newick格式)，否则treemix会推断拓扑</li>
+<li>-root 【可选】指定外类群(指定的是居群名称)，多个用逗号分隔；最好指定，否则后面plot_tree画树没找到更换外类群的参数会很麻烦</li>
+<li>-m 为the number of migration edges即基因渗入的次数</li>
+<li>-k 1000 因为SNP之间不是独立位点，为了避免连锁不平衡，用k参数指定SNP数量有连锁，比如这里指定用1000个SNP组成的blocks评估协方差矩阵</li>
+<li>-se 计算迁移权重的标准误差(计算成本高)，如果想省时间可以不用这个参数</li>
+<li>-bootstrap 为了判断给定树拓扑的可信度，在blocks运行bootstrap重复，没太理解</li>
+<li>-global 在增加所有种群后做一轮全局重组。</li>
+<li>noss 关闭样本量校正。TreeMix计算协方差会考虑每个种群的样本量，有些情况(如果有种群的样本只有1个)会过度校正，可以关闭。</li>
+<li>-g old.vertices.gz old.edges.gz #使用之前生成的树和图结果，用-g指定之前的两个结果文件</li>
+<li>-cor_mig known_events and -climb #合并已知的迁移事件</li>
+</ul>
+<ol start="3">
+<li><p>推荐参数<br>检测物种间基因流，每个物种一个个体或多个个体的数据，用的参数：<br><code>treemix -i sample.treemix.in.gz -o sample -tf sample.tre -root outgroup1,outgroup2 -m 3 -k 1000 -se -bootstrap -global -noss</code></p>
+</li>
+<li><p>多次分析以评估最佳m值<br>比如m取1-10(常用1-5,1-10)，每个m值重复5次(至少两次)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">for m in &#123;1..10&#125;</span><br><span class="line">do</span><br><span class="line">	&#123;</span><br><span class="line">	for i in &#123;1..5&#125;</span><br><span class="line">	do</span><br><span class="line">		&#123;</span><br><span class="line">			nohup time treemix -i sample.treemix.in.gz -o sample.$&#123;m&#125;.$&#123;i&#125; -tf sample.tre -root outgroup1,outgroup2 -m $&#123;m&#125; -k 1000 -se -bootstrap -global -noss&gt;$&#123;m&#125;.$&#123;i&#125;.out 2&gt;&amp;1 &amp;</span><br><span class="line">		&#125;</span><br><span class="line">	done</span><br><span class="line">	&#125;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行结果<br>每一次运行都将生成一套后缀为llik,modelcov,treeout,vertices,cov,covse,edges的文件，这些文件都不大(KB级别)，但还会生成一个300+MB的out文件(out文件没报错就可以删除了)。</p>
+</li>
+</ol>
+<ul>
+<li>.llik：保存了从0到指定基因渗入次数m的始末似然值</li>
+<li>.treeout.gz: 拟合树模型(fitted tree model)和迁移事件(migration events)。第一行是Newick格式的ML树，剩下行包含迁移边界(migration edges)</li>
+<li>.cov.gz: 种群间的协方差矩阵(covariance matrix)</li>
+<li>.covse.gz: 协方差矩阵的标准误差(standard errors)</li>
+<li>.modelcov.gz: 模型的拟合协方差(fitted covariance)</li>
+<li>.vertices.gz和.edges.gz: 包含推断图的内部结构</li>
+</ul>
+<h3 id="1-3-3-确认最佳m值"><a href="#1-3-3-确认最佳m值" class="headerlink" title="1.3.3. 确认最佳m值"></a>1.3.3. 确认最佳m值</h3><p>R包OptM分析treemix的结果，确认最佳m值(Deltam值最小情况下的m值)。</p>
+<p>在treemix运行的结果目录下运行R，需要使用每一次运行的.llik,.cov.gz,.modelcov.gz三个配套结果文件，每个m值至少重复&#x2F;迭代两次，否则报错。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span>library<span class="punctuation">(</span>OptM<span class="punctuation">)</span> <span class="comment">#载入OptM包</span></span><br><span class="line"><span class="operator">&gt;</span>evanno<span class="operator">=</span>optM<span class="punctuation">(</span><span class="string">&quot;./&quot;</span><span class="punctuation">,</span>method <span class="operator">=</span> <span class="string">&quot;Evanno&quot;</span>，tsv<span class="operator">=</span><span class="string">&quot;evanno.txt&quot;</span><span class="punctuation">)</span> <span class="comment">#用Evanno方法(默认)分析treemix结果文件，保存结果到evanno.txt文件，里面就有每个m对应的Deltam值(第15列)，Deltam值最小时对应的m即时最佳m值，这里的例子是m=3时最低。</span></span><br><span class="line">  m runs   mean<span class="punctuation">(</span>Lm<span class="punctuation">)</span>   sd<span class="punctuation">(</span>Lm<span class="punctuation">)</span>   <span class="built_in">min</span><span class="punctuation">(</span>Lm<span class="punctuation">)</span>   <span class="built_in">max</span><span class="punctuation">(</span>Lm<span class="punctuation">)</span></span><br><span class="line"><span class="number">1</span> <span class="number">0</span>   <span class="number">32</span> <span class="operator">-</span><span class="number">329764.72</span> <span class="number">4802.416</span> <span class="operator">-</span><span class="number">336972.0</span> <span class="operator">-</span><span class="number">320838.0</span></span><br><span class="line"><span class="number">2</span> <span class="number">1</span>    <span class="number">5</span> <span class="operator">-</span><span class="number">239329.60</span> <span class="number">3018.974</span> <span class="operator">-</span><span class="number">243918.0</span> <span class="operator">-</span><span class="number">236221.0</span></span><br><span class="line"><span class="number">3</span> <span class="number">2</span>    <span class="number">5</span> <span class="operator">-</span><span class="number">139018.20</span> <span class="number">5332.074</span> <span class="operator">-</span><span class="number">147433.0</span> <span class="operator">-</span><span class="number">134177.0</span></span><br><span class="line"><span class="number">4</span> <span class="number">3</span>    <span class="number">5</span> <span class="operator">-</span><span class="number">116765.80</span> <span class="number">1533.134</span> <span class="operator">-</span><span class="number">119301.0</span> <span class="operator">-</span><span class="number">115329.0</span></span><br><span class="line"><span class="number">5</span> <span class="number">4</span>    <span class="number">5</span>  <span class="operator">-</span><span class="number">94811.20</span> <span class="number">2239.830</span>  <span class="operator">-</span><span class="number">97001.2</span>  <span class="operator">-</span><span class="number">91664.1</span></span><br><span class="line"><span class="number">6</span> <span class="number">5</span>    <span class="number">2</span>  <span class="operator">-</span><span class="number">86727.45</span> <span class="number">1860.469</span>  <span class="operator">-</span><span class="number">88043.0</span>  <span class="operator">-</span><span class="number">85411.9</span></span><br><span class="line"><span class="number">7</span> <span class="number">6</span>    <span class="number">5</span>  <span class="operator">-</span><span class="number">79769.74</span> <span class="number">1545.658</span>  <span class="operator">-</span><span class="number">82041.1</span>  <span class="operator">-</span><span class="number">77782.6</span></span><br><span class="line"><span class="number">8</span> <span class="number">7</span>    <span class="number">5</span>  <span class="operator">-</span><span class="number">68844.08</span> <span class="number">2924.953</span>  <span class="operator">-</span><span class="number">73560.4</span>  <span class="operator">-</span><span class="number">66420.4</span></span><br><span class="line">      L<span class="string">&#x27;(m)   sdL&#x27;</span><span class="punctuation">(</span>m<span class="punctuation">)</span>  minL<span class="string">&#x27;(m)   maxL&#x27;</span><span class="punctuation">(</span>m<span class="punctuation">)</span>    L<span class="string">&#x27;&#x27;</span><span class="punctuation">(</span>m<span class="punctuation">)</span></span><br><span class="line"><span class="number">1</span>        <span class="literal">NA</span>        <span class="literal">NA</span>        <span class="literal">NA</span>         <span class="literal">NA</span>        <span class="literal">NA</span></span><br><span class="line"><span class="number">2</span>  <span class="number">90435.12</span> <span class="number">1783.4423</span> <span class="number">88651.676</span>  <span class="number">92218.561</span>  <span class="number">9876.281</span></span><br><span class="line"><span class="number">3</span> <span class="number">100311.40</span> <span class="number">2313.0997</span> <span class="number">97998.300</span> <span class="number">102624.500</span> <span class="number">78059.000</span></span><br><span class="line"><span class="number">4</span>  <span class="number">22252.40</span> <span class="number">3798.9398</span> <span class="number">18453.460</span>  <span class="number">26051.340</span>   <span class="number">297.800</span></span><br><span class="line"><span class="number">5</span>  <span class="number">21954.60</span>  <span class="number">706.6962</span> <span class="number">21247.904</span>  <span class="number">22661.296</span> <span class="number">13870.850</span></span><br><span class="line"><span class="number">6</span>   <span class="number">8083.75</span>  <span class="number">379.3613</span>  <span class="number">7704.389</span>   <span class="number">8463.111</span>  <span class="number">1126.040</span></span><br><span class="line"><span class="number">7</span>   <span class="number">6957.71</span>  <span class="number">314.8111</span>  <span class="number">6642.899</span>   <span class="number">7272.521</span>  <span class="number">3967.950</span></span><br><span class="line"><span class="number">8</span>  <span class="number">10925.66</span> <span class="number">1379.2958</span>  <span class="number">9546.364</span>  <span class="number">12304.956</span>        <span class="literal">NA</span></span><br><span class="line">    sdL<span class="string">&#x27;&#x27;</span><span class="punctuation">(</span>m<span class="punctuation">)</span> minL<span class="string">&#x27;&#x27;</span><span class="punctuation">(</span>m<span class="punctuation">)</span> maxL<span class="string">&#x27;&#x27;</span><span class="punctuation">(</span>m<span class="punctuation">)</span>     Deltam</span><br><span class="line"><span class="number">1</span>         <span class="literal">NA</span>        <span class="literal">NA</span>        <span class="literal">NA</span>         <span class="literal">NA</span></span><br><span class="line"><span class="number">2</span>  <span class="number">529.65744</span>  <span class="number">9346.624</span> <span class="number">10405.939</span>  <span class="number">3.2714033</span></span><br><span class="line"><span class="number">3</span> <span class="number">1485.84010</span> <span class="number">76573.160</span> <span class="number">79544.840</span> <span class="number">14.6395203</span></span><br><span class="line"><span class="number">4</span> <span class="number">3092.24366</span> <span class="operator">-</span><span class="number">2794.444</span>  <span class="number">3390.044</span>  <span class="number">0.1942427</span></span><br><span class="line"><span class="number">5</span>  <span class="number">327.33487</span> <span class="number">13543.515</span> <span class="number">14198.185</span>  <span class="number">6.1928138</span></span><br><span class="line"><span class="number">6</span>   <span class="number">64.55023</span>  <span class="number">1061.490</span>  <span class="number">1190.590</span>  <span class="number">0.6052453</span></span><br><span class="line"><span class="number">7</span> <span class="number">1064.48476</span>  <span class="number">2903.465</span>  <span class="number">5032.435</span>  <span class="number">2.5671598</span></span><br><span class="line"><span class="number">8</span>         <span class="literal">NA</span>        <span class="literal">NA</span>        <span class="literal">NA</span>         <span class="literal">NA</span></span><br><span class="line">    mean<span class="punctuation">(</span>f<span class="punctuation">)</span>        sd<span class="punctuation">(</span>f<span class="punctuation">)</span></span><br><span class="line"><span class="number">1</span>        <span class="literal">NA</span>           <span class="literal">NA</span></span><br><span class="line"><span class="number">2</span> <span class="number">0.9776741</span> <span class="number">1.214193e-04</span></span><br><span class="line"><span class="number">3</span> <span class="number">0.9837528</span> <span class="number">7.790282e-04</span></span><br><span class="line"><span class="number">4</span> <span class="number">0.9867460</span> <span class="number">2.483868e-04</span></span><br><span class="line"><span class="number">5</span> <span class="number">0.9897553</span> <span class="number">8.854187e-05</span></span><br><span class="line"><span class="number">6</span> <span class="number">0.9909923</span> <span class="number">5.825696e-05</span></span><br><span class="line"><span class="number">7</span> <span class="number">0.9915973</span> <span class="number">8.194263e-05</span></span><br><span class="line"><span class="number">8</span> <span class="number">0.9923055</span> <span class="number">2.114830e-04</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&gt;</span>plot_optM<span class="punctuation">(</span>evanno<span class="punctuation">,</span>method <span class="operator">=</span> <span class="string">&quot;Evanno&quot;</span><span class="punctuation">,</span>pdf<span class="operator">=</span><span class="string">&quot;evanno.pdf&quot;</span><span class="punctuation">)</span> <span class="comment">#把结果作图，更直观判断最佳m值，保存成evanno.pdf</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&gt;</span>linear<span class="operator">=</span>optM<span class="punctuation">(</span><span class="string">&quot;./&quot;</span><span class="punctuation">,</span>method <span class="operator">=</span> <span class="string">&quot;linear&quot;</span><span class="punctuation">,</span>tsv<span class="operator">=</span><span class="string">&quot;linear.txt&quot;</span><span class="punctuation">)</span> <span class="comment">#还可以换linear线性回归方法分析一下treemix结果，m作为横坐标，Log Likelihood做纵坐标，保存结果到linear.txt文件，但不知道为啥没报错但没有结果文件输出</span></span><br><span class="line"><span class="operator">&gt;</span>plot_optM<span class="punctuation">(</span>linear<span class="punctuation">,</span>method <span class="operator">=</span> <span class="string">&quot;linear&quot;</span><span class="punctuation">,</span>pdf<span class="operator">=</span><span class="string">&quot;linear.pdf&quot;</span><span class="punctuation">)</span> <span class="comment">#结果作图，这个结果我没找到怎么看最佳m值，猜测是在图中斜率变化最大的位置对应的m值，标记了黑色的change points处，这里是m在2-3的位置，接近2。</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_evanno.png?raw=true" width=80% title="linear" align=center/>
+
+<p><strong><p align="center">Figure 1. evanno 示例</p></strong></p>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_geneflow.treemix_linear.png?raw=true" width=80% title="linear" align=center/>
+
+<p><strong><p align="center">Figure 2. linear 示例</p></strong></p>
+<h3 id="1-3-4-最佳m值作图"><a href="#1-3-4-最佳m值作图" class="headerlink" title="1.3.4. 最佳m值作图"></a>1.3.4. 最佳m值作图</h3><p>用最佳m值对应的结果文件作图</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span>source<span class="punctuation">(</span><span class="string">&quot;path/to/plotting_funcs.R&quot;</span><span class="punctuation">)</span> <span class="comment">#载入treemix/src文件夹中的R脚本</span></span><br><span class="line"><span class="operator">&gt;</span>plot_tree<span class="punctuation">(</span><span class="string">&quot;sample.treemix.3.1&quot;</span><span class="punctuation">)</span> <span class="comment">#用sample.treemix.3.1结果作图</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>notes</strong>：</p>
+<ul>
+<li>虽然TreeMix的输入是个体的snp.vcf计算的基因型频率数据，但推断的系统发育网是居群的(居群名称组成的系统结构)，不是个体的系统发育。</li>
+<li>sample.tre是居群树(据群名称组成的树)，不是个体树</li>
+<li>treemix的参数-root指定的也是居群名称</li>
+</ul>
+<h1 id="2-reference"><a href="#2-reference" class="headerlink" title="2. reference"></a>2. reference</h1><ol>
+<li>TreeMix paper：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/npre.2012.6956.1">https://www.nature.com/articles/npre.2012.6956.1</a></li>
+<li>TreeMix software：<a target="_blank" rel="noopener" href="https://bitbucket.org/nygcresearch/treemix/downloads/">https://bitbucket.org/nygcresearch/treemix/downloads/</a></li>
+<li>TreeMix manual：<a target="_blank" rel="noopener" href="https://bitbucket.org/nygcresearch/treemix/downloads/treemix_manual_10_1_2012.pdf">https://bitbucket.org/nygcresearch/treemix/downloads/treemix_manual_10_1_2012.pdf</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gene-flow/" rel="tag"># gene flow</a>
+              <a href="/tags/hybridization/" rel="tag"># hybridization</a>
+              <a href="/tags/introgressive/" rel="tag"># introgressive</a>
+              <a href="/tags/population-networks/" rel="tag"># population networks</a>
+              <a href="/tags/TreeMix/" rel="tag"># TreeMix</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/24/bioinfo_evolutionary.tree_ggtree/" rel="prev" title="绘制进化树 —— R包treeio+ggtree">
+      <i class="fa fa-chevron-left"></i> 绘制进化树 —— R包treeio+ggtree
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/22/omics_genome_submit/" rel="next" title="提交基因组到公共数据库 —— 以GenBank为例">
+      提交基因组到公共数据库 —— 以GenBank为例 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-TreeMix"><span class="nav-number">1.</span> <span class="nav-text">1. TreeMix</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-TreeMix-install"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. TreeMix install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%87%86%E5%A4%87%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 准备文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%88%86%E6%9E%90%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 分析步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E8%AE%A1%E7%AE%97%E7%AD%89%E4%BD%8D%E5%9F%BA%E5%9B%A0%E9%A2%91%E7%8E%87"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1. 计算等位基因频率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-treemix%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2. treemix推断基因流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-%E7%A1%AE%E8%AE%A4%E6%9C%80%E4%BD%B3m%E5%80%BC"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3. 确认最佳m值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-4-%E6%9C%80%E4%BD%B3m%E5%80%BC%E4%BD%9C%E5%9B%BE"><span class="nav-number">1.3.4.</span> <span class="nav-text">1.3.4. 最佳m值作图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-reference"><span class="nav-number">2.</span> <span class="nav-text">2. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/03/20/bioinfo_geneflow_TreeMix/";
+    this.page.identifier = "2022/03/20/bioinfo_geneflow_TreeMix/";
+    this.page.title = "系统发育网络推断 —— TreeMix";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

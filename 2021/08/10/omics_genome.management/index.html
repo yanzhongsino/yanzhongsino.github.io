@@ -1,10 +1,583 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="基因组和基因组注释的排序、重命名、合并和提取等整理操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组组装和注释结果的整理">
+<meta property="og:url" content="http://example.com/2021/08/10/omics_genome.management/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="基因组和基因组注释的排序、重命名、合并和提取等整理操作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2021-08-10T08:30:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T11:33:56.651Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="genome annotation">
+<meta property="article:tag" content="sort">
+<meta property="article:tag" content="rename">
+<meta property="article:tag" content="combine">
+<meta property="article:tag" content="extract">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/08/10/omics_genome.management/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基因组组装和注释结果的整理 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/10/omics_genome.management/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因组组装和注释结果的整理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-10 16:30:00" itemprop="dateCreated datePublished" datetime="2021-08-10T16:30:00+08:00">2021-08-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 19:33:56" itemprop="dateModified" datetime="2022-07-15T19:33:56+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/08/10/omics_genome.management/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/08/10/omics_genome.management/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">基因组和基因组注释的排序、重命名、合并和提取等整理操作。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1833352&auto=1&height=32"></iframe></div>
+
+
+<h1 id="1-基因组整理【组装之后，注释之前】"><a href="#1-基因组整理【组装之后，注释之前】" class="headerlink" title="1. 基因组整理【组装之后，注释之前】"></a>1. 基因组整理【组装之后，注释之前】</h1><h2 id="1-1-基因组碱基整理"><a href="#1-1-基因组碱基整理" class="headerlink" title="1.1. 基因组碱基整理"></a>1.1. 基因组碱基整理</h2><p>基因组碱基-u修改成大写字母形式，同时建议使用-w 0把序列输出限定为一行序列。</p>
+<p><code>seqkit seq -u -w 0 genome.old.fa&gt;genome.new.fa</code></p>
+<h2 id="1-2-基因组碱基小写带来的问题："><a href="#1-2-基因组碱基小写带来的问题：" class="headerlink" title="1.2. 基因组碱基小写带来的问题："></a>1.2. 基因组碱基小写带来的问题：</h2><ol>
+<li>edta运行TIR预测时，报错并中断运行。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EDTA/bin/TIR-Learner2.5/Module2/RunGRF.py&quot;, line 79, in &lt;module&gt;</span><br><span class="line">    if (len(str(records[0].seq))&gt;int(length)+500):</span><br><span class="line">IndexError: list index out of range</span><br><span class="line">cp: cannot stat &#x27;TIR-Learner/*-p&#x27;: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>geta生成基因注释结果减少。<br>前期运行不受影响，会在geta生成的&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;中合并前面步骤预测结果时把许多基因预测结果识别为partial而筛除掉本为完整的基因，可看到&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.gff3的gene数量是正常的，而out.tmp&#x2F;6.combineGeneModels&#x2F;genome.completed.gff3明显降低，&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.partial.gff3明显升高。out.tmp&#x2F;6.combineGeneModels&#x2F;genome.filter.gff3是最后的基因注释结果，即out.gff3也相应减少。</li>
+<li>maker的某些运行步骤也会出错。</li>
+</ol>
+<h2 id="1-3-基因组序列ID修改"><a href="#1-3-基因组序列ID修改" class="headerlink" title="1.3. 基因组序列ID修改"></a>1.3. 基因组序列ID修改</h2><h3 id="1-3-1-排序【optional】–根据需要选择"><a href="#1-3-1-排序【optional】–根据需要选择" class="headerlink" title="1.3.1. 排序【optional】–根据需要选择"></a>1.3.1. 排序【optional】–根据需要选择</h3><p>按长度对基因组contigs进行从长到短的排序</p>
+<p><code>seqkit sort -l -r -w 0 genome.old.fa &gt;genome.sort.fa</code> </p>
+<h3 id="1-3-2-重命名【推荐】"><a href="#1-3-2-重命名【推荐】" class="headerlink" title="1.3.2. 重命名【推荐】"></a>1.3.2. 重命名【推荐】</h3><p>最好重命名成长度一致的数字，避免后期分析遇到contig1和contig11同时被匹配的问题。</p>
+<ol>
+<li>solution A【速度最快，推荐】<br>序列IDs按顺序命名为1-n的数字，–nr-width可以设置数字的长度，长度为5时第一条序列名称为00001。</li>
+</ol>
+<p><code>seqkit replace -p &#39;.*&#39; -r &#123;nr&#125; --nr-width 5 genome.sort.fa</code> </p>
+<ol start="2">
+<li>solution B<br>把序列id重命名成1-n的数字</li>
+</ol>
+<p><code>awk &#39;BEGIN&#123;i=0 ; FS=&quot;,&quot; ; OFS=&quot;,&quot;&#125;&#123; if(/&gt;/)&#123;gsub($1,&quot;&gt;&quot;++i,$1);print $0&#125;else&#123;print $0&#125;&#125;&#39; genome.sort.fa&gt;genome.fa</code> </p>
+<p>基因组的序列id改为scaf001的形式</p>
+<p><code>sed -i &quot;s/&gt;/&gt;scaf/g&quot; genome.fa</code> </p>
+<ol start="3">
+<li>solution C<br>把基因组序列id的数字1-100改成0001-0100这种数字位数相同的格式。这个没有solution A快，只推荐在不想做大规模更改的情况下使用。</li>
+</ol>
+<p>用下面脚本实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">j=1</span><br><span class="line">for i in `seq -w 1 0100` #把相同数字位数的0001-0100依次赋值给变量i</span><br><span class="line">do</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.fa #两次替换，第一次替换scaffold$j为行尾的字符串（比如在基因组序列文件中），第二次替换scaffold$j不为行尾的字符串，[^0-9]代表不为数字的任意一个字符，\1代表替换前括号([^0-9])中的内容。</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.gff #同上，替换其他文件，比如gff文件。</span><br><span class="line">	j=$(($j+1)) #把1-100依次赋值给变量j</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-基因组注释整理【注释结果整理】"><a href="#2-基因组注释整理【注释结果整理】" class="headerlink" title="2. 基因组注释整理【注释结果整理】"></a>2. 基因组注释整理【注释结果整理】</h1><h2 id="GFF3toolkit【推荐】"><a href="#GFF3toolkit【推荐】" class="headerlink" title="GFF3toolkit【推荐】"></a>GFF3toolkit【推荐】</h2><p>推荐使用GFF3toolkit来进行gff3注释文件的整理，具体介绍参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/05/24/biosoft_fileformat_GFF3toolkit/">GFF3toolkit blog</a>。</p>
+<p>GFF3toolkit包含许多模块：</p>
+<ul>
+<li>gff3_QC：检测gff3格式错误</li>
+<li>gff3_fix：修正gff3格式错误</li>
+<li>gff3_merge：合并两个gff3文件</li>
+<li>gff3_sort：根据scaffold，coordinates坐标来排序gff3文件</li>
+<li>gff3_to_fasta：根据基因组fasta和注释gff生成gene&#x2F;cds&#x2F;protein&#x2F;exon等序列</li>
+</ul>
+<h2 id="2-1-合并多个注释结果"><a href="#2-1-合并多个注释结果" class="headerlink" title="2.1. 合并多个注释结果"></a>2.1. 合并多个注释结果</h2><p>基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。</p>
+<p>合并两个基因注释文件（若是多个就依次合并）</p>
+<ol>
+<li><p>输出A.gff中符合要求的行，即A.gff中与B.gff中位置有overlap的行。<br><code>bedtools intersect -a A.gff -b B.gff -wa &gt;A.dup.gff</code> </p>
+</li>
+<li><p>输出只在A.gff存在的行，即把A.dup.gff从A.gff中删除，需要两个文件都已排序，若未排序先sort排序再处理。<br><code>comm -1 A.gff A.dup.gff &gt;A.filter.gff</code> </p>
+</li>
+<li><p>合并B.gff和A.gff中与B.gff不重复的部分。<br><code>cat B.gff A.filter.gff &gt;sample.gff</code></p>
+</li>
+</ol>
+<h2 id="2-2-重命名注释结果【可选】"><a href="#2-2-重命名注释结果【可选】" class="headerlink" title="2.2. 重命名注释结果【可选】"></a>2.2. 重命名注释结果【可选】</h2><p>根据需要选择【非必要的】，根据染色体位置顺序对注释的基因结果进行排序和重命名整理。<br>除了基因注释外，不同分析源都可能发现新的基因，增加注释的基因数量，从而打乱顺序。</p>
+<h3 id="2-2-1-排序"><a href="#2-2-1-排序" class="headerlink" title="2.2.1. 排序"></a>2.2.1. 排序</h3><ol>
+<li>把sample.gff3中gene替换成1gene，mRNA替换成2mRNA，exon替换成3exon，CDS替换成4CDS；目的是确保排序后单个基因内部的顺序是1-2-3-4。<br><code>sed -i -e &quot;s/gene/1gene/g&quot; -e &quot;s/mRNA/2mRNA/g&quot; -e &quot;s/exon/3exon/g&quot; -e &quot;s/CDS/4CDS/g&quot; sample.gff3</code></li>
+<li>根据染色体位置排序。按照第一列第四个字符，第四列数值，第五列数值逆序依次排序。<br><code>cat sample.gff3 |sort -k 1.4n -k 4n -k 5nr &gt;sample.sort.gff3</code></li>
+<li>获得的sample.sort.gff3文件再1gene替换成gene，234类似替换。<br><code>sed -i -e &quot;s/1gene/gene/g&quot; -e &quot;s/2mRNA/mRNA/g&quot; -e &quot;s/3exon/exon/g&quot; -e &quot;s/4CDS/CDS/g&quot; sample.sort.gff3</code></li>
+</ol>
+<h3 id="2-2-2-重命名"><a href="#2-2-2-重命名" class="headerlink" title="2.2.2. 重命名"></a>2.2.2. 重命名</h3><ol>
+<li>复制一份注释文件用于修改和替换<br><code>cp sample.sort.gff3 sample.new.gff3</code></li>
+<li>获取旧ID的list。获取sample.sort.gff3第九列中的ID值。<br><code>cat sample.new.gff3 | awk &#39;$3==&quot;gene&quot; &#123;print $9&#125;&#39;|sed -e &quot;s/;.*//g&quot; -e &quot;s/ID=//g&quot; &gt;old.name</code></li>
+<li>获取新ID的list。<br><code>for i in $(seq -w 1 </code>cat old.name|wc -l<code>); do echo scaf$i; done &gt;new.name</code></li>
+<li>合并旧的和新的ID。<br><code>paste -d &quot;/&quot; old.name new.name &gt; old2new.name</code></li>
+<li>生成替换脚本old2new.sh。<br><code>sed -e &quot;s/^/sed -i \&quot;s\//g&quot; -e &quot;s/$/\/g sample.new.gff3/g\&quot;&quot; old2new.name &gt;old2new.sh</code></li>
+<li>运行替换脚本，会直接替换sample.new.gff3文件的旧ID为新ID，可能会运行较长时间。<br><code>sh old2new.sh</code></li>
+</ol>
+<p>ps：这部分代码可实现，但是是非常冗余的代码量（水平有限），且未必适用所有注释文件，谨慎参考。</p>
+<h2 id="2-3-从注释文件提取序列"><a href="#2-3-从注释文件提取序列" class="headerlink" title="2.3. 从注释文件提取序列"></a>2.3. 从注释文件提取序列</h2><p>用gffread根据注释文件从基因组提取基因序列:</p>
+<ul>
+<li>从基因组genome.fa和注释文件sample.gff3获取cds序列<br><code>gffread -x sample.cds.fa -g genome.fa sample.gff3</code></li>
+<li>从基因组genome.fa和注释文件sample.gff3获取exon序列<br><code>gffread -w sample.exon.fa -g genome.fa sample.gff3</code></li>
+<li>从基因组genome.fa和注释文件sample.gff3获取protein序列<br><code>gffread -y sample.protein.fa -g genome.fa sample.gff3</code></li>
+</ul>
+<h2 id="2-4-从注释文件提取intron信息"><a href="#2-4-从注释文件提取intron信息" class="headerlink" title="2.4. 从注释文件提取intron信息"></a>2.4. 从注释文件提取intron信息</h2><p>脚本<a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/modifiedscripts/extract_intron_info.pl">extract_intron_info.pl</a></p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/genome-annotation/" rel="tag"># genome annotation</a>
+              <a href="/tags/sort/" rel="tag"># sort</a>
+              <a href="/tags/rename/" rel="tag"># rename</a>
+              <a href="/tags/combine/" rel="tag"># combine</a>
+              <a href="/tags/extract/" rel="tag"># extract</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/02/omics_genome.annotation_repeat/" rel="prev" title="基因组注释（一）：重复序列注释">
+      <i class="fa fa-chevron-left"></i> 基因组注释（一）：重复序列注释
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/23/omics_genome_quality.assessment_QUAST/" rel="next" title="基因组质量评估：（二）用QUAST评估基因组组装">
+      基因组质量评估：（二）用QUAST评估基因组组装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%95%B4%E7%90%86%E3%80%90%E7%BB%84%E8%A3%85%E4%B9%8B%E5%90%8E%EF%BC%8C%E6%B3%A8%E9%87%8A%E4%B9%8B%E5%89%8D%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组整理【组装之后，注释之前】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%A2%B1%E5%9F%BA%E6%95%B4%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 基因组碱基整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%A2%B1%E5%9F%BA%E5%B0%8F%E5%86%99%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 基因组碱基小写带来的问题：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%BA%8F%E5%88%97ID%E4%BF%AE%E6%94%B9"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 基因组序列ID修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E6%8E%92%E5%BA%8F%E3%80%90optional%E3%80%91%E2%80%93%E6%A0%B9%E6%8D%AE%E9%9C%80%E8%A6%81%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1. 排序【optional】–根据需要选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E9%87%8D%E5%91%BD%E5%90%8D%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2. 重命名【推荐】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E6%B3%A8%E9%87%8A%E6%95%B4%E7%90%86%E3%80%90%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86%E3%80%91"><span class="nav-number">2.</span> <span class="nav-text">2. 基因组注释整理【注释结果整理】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GFF3toolkit%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">2.1.</span> <span class="nav-text">GFF3toolkit【推荐】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%90%88%E5%B9%B6%E5%A4%9A%E4%B8%AA%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C"><span class="nav-number">2.2.</span> <span class="nav-text">2.1. 合并多个注释结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%87%8D%E5%91%BD%E5%90%8D%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9C%E3%80%90%E5%8F%AF%E9%80%89%E3%80%91"><span class="nav-number">2.3.</span> <span class="nav-text">2.2. 重命名注释结果【可选】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E6%8E%92%E5%BA%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.2.1. 排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E9%87%8D%E5%91%BD%E5%90%8D"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.2.2. 重命名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E4%BB%8E%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96%E5%BA%8F%E5%88%97"><span class="nav-number">2.4.</span> <span class="nav-text">2.3. 从注释文件提取序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E4%BB%8E%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96intron%E4%BF%A1%E6%81%AF"><span class="nav-number">2.5.</span> <span class="nav-text">2.4. 从注释文件提取intron信息</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/08/10/omics_genome.management/";
+    this.page.identifier = "2021/08/10/omics_genome.management/";
+    this.page.title = "基因组组装和注释结果的整理";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

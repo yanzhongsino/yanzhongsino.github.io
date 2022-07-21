@@ -1,10 +1,630 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍了基因流相关概念，推断基因流常用软件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因流及其推断">
+<meta property="og:url" content="http://example.com/2022/04/10/bioinfo_geneflow_intro/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍了基因流相关概念，推断基因流常用软件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-04-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T11:25:33.274Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Dsuite">
+<meta property="article:tag" content="gene flow">
+<meta property="article:tag" content="hybridization">
+<meta property="article:tag" content="introgressive">
+<meta property="article:tag" content="PhyloNetworks">
+<meta property="article:tag" content="population networks">
+<meta property="article:tag" content="TreeMix">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/04/10/bioinfo_geneflow_intro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基因流及其推断 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/10/bioinfo_geneflow_intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因流及其推断
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-10 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-10T00:00:00+08:00">2022-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 19:25:33" itemprop="dateModified" datetime="2022-07-15T19:25:33+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/gene-flow/" itemprop="url" rel="index"><span itemprop="name">gene flow</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/04/10/bioinfo_geneflow_intro/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/10/bioinfo_geneflow_intro/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">介绍了基因流相关概念，推断基因流常用软件。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=210766&auto=1&height=32"></iframe></div>
+
+<h1 id="1-基因流-gene-flow-x2F-杂交-hybridization-x2F-渐渗-introgressive"><a href="#1-基因流-gene-flow-x2F-杂交-hybridization-x2F-渐渗-introgressive" class="headerlink" title="1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)"></a>1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</h1><p>基因流，杂交和渐渗通常一起讨论，有些情况下甚至三者在说同一件事。从定义判断，基因流通常发生在种内群体间，杂交则是发生在种间，渐渗是指杂交加回交产生的一种现象。<br>可以这样理解，杂交和渐渗都是基因流的具体结果。</p>
+<ol>
+<li>基因流(gene flow)</li>
+</ol>
+<ul>
+<li>基因流是指遗传物质在不同群体间的流动。</li>
+<li>造成基因流动的原因可能是个体或配子(例如花粉)在群体间的迁徙，或者不同群体间个体的交配等。</li>
+<li>基因流可能发生在同一物种的不同群体间，也可能发生在不同物种间。</li>
+</ul>
+<ol start="2">
+<li>杂交(hybridization)</li>
+</ol>
+<ul>
+<li>杂交指不同物种间通过有性生殖实现配子融合形成下一代的过程。</li>
+</ul>
+<ol start="3">
+<li>渐渗(introgressive)</li>
+</ol>
+<ul>
+<li>渐渗是指通过种间杂种与亲本物种之一的反复回交，将遗传物质从一个物种转移到另一个物种的基因库中，是一个长期的过程。</li>
+</ul>
+<h1 id="2-推断基因流-x2F-杂交"><a href="#2-推断基因流-x2F-杂交" class="headerlink" title="2. 推断基因流&#x2F;杂交"></a>2. 推断基因流&#x2F;杂交</h1><p>通常在物种内检测不同地区的群体间是否存在基因流，也可以在物种间检测基因流来判断杂交&#x2F;渐渗，物种间的基因流会导致系统发育树的不稳定或核质冲突等问题，所以可以推断系统发育网络来检测所有物种对的基因流。</p>
+<h2 id="2-1-推断基因流的软件"><a href="#2-1-推断基因流的软件" class="headerlink" title="2.1. 推断基因流的软件"></a>2.1. 推断基因流的软件</h2><ol>
+<li>通过计算Patterson’s D值(ABBA-BABA值)和相关统计量来判断基因流：Dsuite(2020),ADMIXTOOLS(2012),HyDe(2018),ANGSD(2011,2018),POPGENOME(2014,2019),COMP-D(2020)。</li>
+<li>推断系统发育网络：PhyloNetworks(2017),PhyloNet(2008,2018),TreeMix(2012),BEAST2(2017)。</li>
+</ol>
+<p>有几个软件单独写了博客：</p>
+<h3 id="2-1-1-Dsuite【推荐】"><a href="#2-1-1-Dsuite【推荐】" class="headerlink" title="2.1.1. Dsuite【推荐】"></a>2.1.1. Dsuite【推荐】</h3><p><a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/10/bioinfo_geneflow_Dsuite/">Dsuite blog</a></p>
+<ol>
+<li>Dsuite简介<ul>
+<li>Dsuite是通过计算Patterson’s D统计量(即ABBA统计量)和f4等统计量来评估种群间或近缘种间基因流的基于C语言的软件。</li>
+</ul>
+</li>
+<li>Dsuite 原理<ul>
+<li>D值（即ABBA统计量）和f4-ratio统计可以表示为适用于四个分类群的双等位基因SNP：P1,P2,P3,O，拓扑是 (((P1,P2),P3),O)。</li>
+<li>其中外类群O携带祖先等位基因A，衍生等位基因用B表示。BBAA,ABBA,BABA分别代表四个分类群携带等位的三种模式。</li>
+<li>在没有基因流的零假设下，由于具有相同频率的不完全谱系分类，预计P3与P1或P2共享衍生等位基因B的两种模式ABBA和BABA的频率相等，如果ABBA和BABA的频率有显著差异则代表在P3和P1或P2间存在基因渐渗。</li>
+<li>D&#x3D;(nABBA-nBABA)&#x2F;(nABBA+nBABA)；在外群对于祖先等位基因A是固定的（外群中B的频率为0）假设下，D统计量是等位基因模式计数的归一化差异。</li>
+<li>如果外群中衍生等位基因B不为0，则Dsuite的D值是Patterson’s D，适用于无根的四分类群树。</li>
+</ul>
+</li>
+<li>Dsuite输入输出<ul>
+<li>输入：基因组snp的vcf格式文件，居群树文件(可选optional)</li>
+<li>输出：D值统计，f4-ratio统计，f-branch统计，f-branch树矩阵热图</li>
+</ul>
+</li>
+<li>Dsuite优势和不足<ul>
+<li>Dsuite的优势是运行非常快(时间以小时计算)</li>
+<li>不足是Dsuite分析结果不包含基因流的方向</li>
+</ul>
+</li>
+<li>Dsuite适用范围<ul>
+<li>Dsuite适用于基因组学大数据和多样本(超过十个)数据</li>
+<li>适用于居群间或物种间的基因流推测</li>
+<li>即使每个群体只有一个个体也可以推测基因流</li>
+<li>还可以计算pool-seq数据的基因流</li>
+<li>相较其他计算D值软件，Dsuite还同时可以计算f4-ratio和f-branch，以及滑窗统计f相关值。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-1-2-PhyloNetworks"><a href="#2-1-2-PhyloNetworks" class="headerlink" title="2.1.2. PhyloNetworks"></a>2.1.2. PhyloNetworks</h3><p><a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/14/bioinfo_geneflow_PhyloNetworks/">PhyloNetworks blog</a></p>
+<ol>
+<li>PhyloNetworks简介<ul>
+<li>PhyloNetworks是通过基因树或多位点序列(SNaQ)的最大伪似然进行推断系统发育网络的一个Julia包。</li>
+</ul>
+</li>
+<li>PhyloNetworks原理<ul>
+<li>原理：通过SNaQ来实现网络推断，SNaQ通过估计4分类群子集的最大伪似然来加速运算，估计的网络不受根的影响。</li>
+</ul>
+</li>
+<li>PhyloNetworks输入输出<ul>
+<li>输入：newick格式基因树(多个基因树组成的文件)</li>
+<li>输出：系统发育网络，基因流方向和杂交节点贡献比例</li>
+</ul>
+</li>
+<li>PhyloNetworks优势和不足<ul>
+<li>推断系统发育网络，包括基因流的方向和强度。</li>
+<li>相较于其他推断系统发育网络的软件，PhyloNetworks集成了上游分析，网络估计，引导分析，下游特征进化分析，绘图等功能。</li>
+<li>不足是运行多样本(超过十个个体)和数据量大(超过1000个)会非常耗时(常常以星期&#x2F;月计时)。</li>
+</ul>
+</li>
+<li>PhyloNetworks适用范围<ul>
+<li>PhyloNetworks适用于基因树数据</li>
+<li>适用于居群间或物种间的基因流推测</li>
+<li>适用于推断基因流方向和强度</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-1-3-TreeMix"><a href="#2-1-3-TreeMix" class="headerlink" title="2.1.3. TreeMix"></a>2.1.3. TreeMix</h3><p><a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/03/20/bioinfo_geneflow_treemix/">TreeMix blog</a></p>
+<ol>
+<li>TreeMix简介<ul>
+<li>TreeMix利用等位基因频率来推断群体间分化和杂合（基因流动或基因渗入）</li>
+</ul>
+</li>
+<li>TreeMix输入输出<ul>
+<li>输入：基因组snp的vcf文件，和居群系统树(可选optional)</li>
+<li>输出：最佳杂交次数和系统发育网络(包含杂交方向和强度)</li>
+</ul>
+</li>
+<li>TreeMix优势和不足<ul>
+<li>TreeMix和PhyloNetworks一样，也是推断系统发育网络。</li>
+<li>我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。</li>
+<li>不足是比PhyloNetworks更耗时。</li>
+</ul>
+</li>
+</ol>
+<h1 id="3-reference"><a href="#3-reference" class="headerlink" title="3. reference"></a>3. reference</h1><ol>
+<li>wiki: gene flow：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_flow">https://en.wikipedia.org/wiki/Gene_flow</a></li>
+<li>wiki: introgression：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Introgression">https://en.wikipedia.org/wiki/Introgression</a></li>
+<li>Dsuite paper：<a target="_blank" rel="noopener" href="https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13265">https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13265</a></li>
+<li>PhyloNetworks paper：<a target="_blank" rel="noopener" href="https://academic.oup.com/mbe/article/34/12/3292/4103410">https://academic.oup.com/mbe/article/34/12/3292/4103410</a></li>
+<li>TreeMix paper：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/npre.2012.6956.1">https://www.nature.com/articles/npre.2012.6956.1</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Dsuite/" rel="tag"># Dsuite</a>
+              <a href="/tags/gene-flow/" rel="tag"># gene flow</a>
+              <a href="/tags/hybridization/" rel="tag"># hybridization</a>
+              <a href="/tags/introgressive/" rel="tag"># introgressive</a>
+              <a href="/tags/PhyloNetworks/" rel="tag"># PhyloNetworks</a>
+              <a href="/tags/population-networks/" rel="tag"># population networks</a>
+              <a href="/tags/TreeMix/" rel="tag"># TreeMix</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/22/omics_genome_submit/" rel="prev" title="提交基因组到公共数据库 —— 以GenBank为例">
+      <i class="fa fa-chevron-left"></i> 提交基因组到公共数据库 —— 以GenBank为例
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/10/bioinfo_geneflow_Dsuite/" rel="next" title="基因流推断 —— Dsuite">
+      基因流推断 —— Dsuite <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E6%B5%81-gene-flow-x2F-%E6%9D%82%E4%BA%A4-hybridization-x2F-%E6%B8%90%E6%B8%97-introgressive"><span class="nav-number">1.</span> <span class="nav-text">1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81-x2F-%E6%9D%82%E4%BA%A4"><span class="nav-number">2.</span> <span class="nav-text">2. 推断基因流&#x2F;杂交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 推断基因流的软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-Dsuite%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. Dsuite【推荐】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-PhyloNetworks"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. PhyloNetworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-TreeMix"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3. TreeMix</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-reference"><span class="nav-number">3.</span> <span class="nav-text">3. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/04/10/bioinfo_geneflow_intro/";
+    this.page.identifier = "2022/04/10/bioinfo_geneflow_intro/";
+    this.page.title = "基因流及其推断";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

@@ -1,10 +1,691 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍了富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="富集分析：（五）clusterProfiler：Visualization">
+<meta property="og:url" content="http://example.com/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍了富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Barplot-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Dotplotcap-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Networkplot-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Heatplot-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/treeplot-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Enrichment-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/upsetORA-1.png">
+<meta property="og:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/ridgeplot-1.png">
+<meta property="og:image" content="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png">
+<meta property="og:image" content="https://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/goplot-1.png">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_GSEA_clusterProfiler_wordcloud.png?raw=true">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-04-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T10:49:51.327Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="gene set enrichment analysis">
+<meta property="article:tag" content="GSEA">
+<meta property="article:tag" content="enrichment analysis">
+<meta property="article:tag" content="over representation analysis">
+<meta property="article:tag" content="ORA">
+<meta property="article:tag" content="clusterProfiler">
+<meta property="article:tag" content="visualization">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Barplot-1.png">
+
+<link rel="canonical" href="http://example.com/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>富集分析：（五）clusterProfiler：Visualization | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          富集分析：（五）clusterProfiler：Visualization
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-28 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-28T00:00:00+08:00">2022-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 18:49:51" itemprop="dateModified" datetime="2022-07-15T18:49:51+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/enrichment/" itemprop="url" rel="index"><span itemprop="name">enrichment</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">介绍了富集分析R包clusterProfiler富集结果的可视化，以及其他富集分析结果使用clusterProfiler进行可视化的操作。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283091&auto=1&height=32"></iframe></div>
+
+<p>(全文约4000字)</p>
+<p>clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：</p>
+<ul>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">富集分析：（三）clusterProfiler概述</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">富集分析：（五）clusterProfiler：Visualization</a></li>
+</ul>
+<h1 id="1-可视化的输入数据"><a href="#1-可视化的输入数据" class="headerlink" title="1. 可视化的输入数据"></a>1. 可视化的输入数据</h1><p>clusterProfiler的可视化一般只支持clusterProfiler富集分析结果的可视化，通过认识clusterProfiler可视化接受的输入数据的格式，可以修改其他富集分析结果文件的格式，来用clusterProfiler进行可视化绘图。</p>
+<h2 id="1-1-可视化输入数据格式"><a href="#1-1-可视化输入数据格式" class="headerlink" title="1.1. 可视化输入数据格式"></a>1.1. 可视化输入数据格式</h2><ol>
+<li>查看ego格式<br>clusterProfiler的可视化包接受的输入数据是前面富集分析得到的结果(比如ego&#x2F;kk)，用<code>str(ego)</code>或<code>class(ego)</code>可以看到ego的格式是叫enrichResult的R的数据类型。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>clusterProfiler<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> <span class="built_in">class</span><span class="punctuation">(</span>ego<span class="punctuation">)</span> <span class="comment">#查看ego的数据类型/类</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="string">&quot;enrichResult&quot;</span></span><br><span class="line"><span class="built_in">attr</span><span class="punctuation">(</span><span class="punctuation">,</span><span class="string">&quot;package&quot;</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="string">&quot;DOSE&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>如果手头没有ego数据，可以用clusterProfiler的样例数据快速得到一个edo，与ego格式一样。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>clusterProfiler<span class="punctuation">)</span></span><br><span class="line">data<span class="punctuation">(</span>geneList<span class="punctuation">)</span> <span class="comment">#导入示例数据</span></span><br><span class="line">de <span class="operator">&lt;-</span> <span class="built_in">names</span><span class="punctuation">(</span>geneList<span class="punctuation">)</span><span class="punctuation">[</span><span class="built_in">abs</span><span class="punctuation">(</span>geneList<span class="punctuation">)</span> <span class="operator">&gt;</span> <span class="number">2</span><span class="punctuation">]</span> <span class="comment">#得到差异表达的基因</span></span><br><span class="line">edo <span class="operator">&lt;-</span> enrichDGN<span class="punctuation">(</span>de<span class="punctuation">)</span> <span class="comment">#进行富集分析</span></span><br><span class="line"><span class="built_in">class</span><span class="punctuation">(</span>ego<span class="punctuation">)</span> <span class="comment">#查看edo的数据类型/类</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>enrichResult(R的class类型)格式<br>在DOSE包中查到，enrichResult具体格式如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">setClass<span class="punctuation">(</span><span class="string">&quot;enrichResult&quot;</span><span class="punctuation">,</span></span><br><span class="line">         representation<span class="operator">=</span>representation<span class="punctuation">(</span></span><br><span class="line">           result         <span class="operator">=</span> <span class="string">&quot;data.frame&quot;</span><span class="punctuation">,</span></span><br><span class="line">           pvalueCutoff   <span class="operator">=</span> <span class="string">&quot;numeric&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           pAdjustMethod  <span class="operator">=</span> <span class="string">&quot;character&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           qvalueCutoff   <span class="operator">=</span> <span class="string">&quot;numeric&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           organism       <span class="operator">=</span> <span class="string">&quot;character&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           style<span class="operator">=</span><span class="string">&quot;margin: 0px; padding: 0px; color: rgb(221, 17, 68);&quot;</span><span class="operator">&gt;</span><span class="string">&quot;character&quot;</span><span class="punctuation">,</span>          </span><br><span class="line">           gene           <span class="operator">=</span> <span class="string">&quot;character&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           keytype        <span class="operator">=</span> <span class="string">&quot;character&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           universe       <span class="operator">=</span> <span class="string">&quot;character&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           gene2Symbol    <span class="operator">=</span> <span class="string">&quot;character&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           geneSets       <span class="operator">=</span> <span class="string">&quot;list&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">           readable       <span class="operator">=</span> <span class="string">&quot;logical&quot;</span> </span><br><span class="line">         <span class="punctuation">)</span><span class="punctuation">,</span>         </span><br><span class="line">         prototype<span class="operator">=</span>prototype<span class="punctuation">(</span>readable <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>result变量格式<br>enrichResult中最重要的是result，是储存富集结果的dataframe。<br>result变量与clusterProfiler富集分析中保存ego的结果文件是一致的。</p>
+</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ego<span class="operator">@</span>result<span class="punctuation">[</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">13</span><span class="punctuation">,</span><span class="number">14</span><span class="punctuation">)</span><span class="punctuation">,</span><span class="punctuation">]</span> <span class="comment">#查看ego的result变量的13，14行</span></span><br><span class="line">   ONTOLOGY         ID                        Description GeneRatio   BgRatio   pvalue    p.adjust      qvalue      geneID   Count</span><br><span class="line"><span class="number">13</span>       BP GO<span class="operator">:</span><span class="number">0010051</span> xylem and phloem pattern formation    <span class="number">3</span><span class="operator">/</span><span class="number">349</span> <span class="number">129</span><span class="operator">/</span><span class="number">16975</span>    <span class="number">1.431350e-05</span> <span class="number">0.001294821</span> <span class="number">0.001099880</span>   mc40782<span class="operator">/</span>mc40784<span class="operator">/</span>mc40918   <span class="number">3</span></span><br><span class="line"><span class="number">14</span>       BP GO<span class="operator">:</span><span class="number">0048598</span>            embryonic morphogenesis    <span class="number">2</span><span class="operator">/</span><span class="number">349</span> <span class="number">131</span><span class="operator">/</span><span class="number">16975</span>    <span class="number">1.673394e-05</span> <span class="number">0.001405651</span> <span class="number">0.001194023</span>   mc40784<span class="operator">/</span>mc40918   <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>一般而言result有9列。这里因为用enrichGO富集时ont参数选择ALL，结果就会在第一列前多一列ONTOLOGY。</p>
+<ul>
+<li>第一列是ID,也就是富集通路的编号(GO:0010222)；</li>
+<li>第二列是Description，也就是富集通路的名称；</li>
+<li>第三列是GeneRatio，也就是要富集的基因中在对应通路中的比例；</li>
+<li>第4列是BgRation,也就是对应通过的基因在全基因组注释中的比例；</li>
+<li>第5,6,7列都是统计检验的结果；</li>
+<li>第8列是geneID，也就是富集到基因的名字，多个geneID是以斜线隔开的；</li>
+<li>第9列是Count，也就是富集到的基因数目。</li>
+</ul>
+<h2 id="1-2-输入数据准备"><a href="#1-2-输入数据准备" class="headerlink" title="1.2. 输入数据准备"></a>1.2. 输入数据准备</h2><p>根据不同情况为clusterProfiler的可视化准备输入数据。</p>
+<ol>
+<li><p>接着clusterProfiler富集分析做可视化<br>如果是接着clusterProfiler的enrichGO(),gseGO(),enricher(),gseGO()等函数的结果<code>ego</code>，不要关闭R环境，在R里直接进行用于下一步可视化即可。</p>
+</li>
+<li><p>保存的clusterProfiler富集分析结果做可视化</p>
+</li>
+</ol>
+<ul>
+<li>如果是clusterProfiler的enrichGO(),gseGO(),enricher(),gseGO()等函数的结果<code>ego</code>保存成的文件，已关闭R环境。</li>
+<li>可导入文件，新建enrichResult对象ego，再进行下一步可视化。</li>
+<li>这里假设用R命令<code>write.table(as.data.frame(ego),&quot;go_enrich.csv&quot;,sep=&quot;\t&quot;,row.names =F,quote=F)</code>保存<code>ego</code>在<code>go_enrich.csv</code>文件。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">data<span class="operator">&lt;-</span>read.table<span class="punctuation">(</span><span class="string">&quot;go_enrich.csv&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span></span><br><span class="line">head<span class="punctuation">(</span>data<span class="punctuation">,</span><span class="number">2</span><span class="punctuation">)</span> <span class="comment">#查看data前2行</span></span><br><span class="line">  ONTOLOGY         ID                                 Description GeneRatio</span><br><span class="line"><span class="number">1</span>       BP GO<span class="operator">:</span><span class="number">0010222</span>      stem vascular tissue pattern formation    <span class="number">12</span><span class="operator">/</span><span class="number">349</span></span><br><span class="line"><span class="number">2</span>       BP GO<span class="operator">:</span><span class="number">0010588</span> cotyledon vascular tissue pattern formation    <span class="number">12</span><span class="operator">/</span><span class="number">349</span></span><br><span class="line">   BgRatio       pvalue     p.adjust       qvalue</span><br><span class="line"><span class="number">1</span> <span class="number">29</span><span class="operator">/</span><span class="number">16975</span> <span class="number">1.792157e-13</span> <span class="number">2.107577e-10</span> <span class="number">1.790270e-10</span></span><br><span class="line"><span class="number">2</span> <span class="number">39</span><span class="operator">/</span><span class="number">16975</span> <span class="number">1.122611e-11</span> <span class="number">6.600951e-09</span> <span class="number">5.607145e-09</span></span><br><span class="line">           geneID</span><br><span class="line"><span class="number">1</span> mc11300<span class="operator">/</span>mc11301<span class="operator">/</span>mc19080<span class="operator">/</span>mc19081<span class="operator">/</span>mc26300<span class="operator">/</span>mc31693<span class="operator">/</span>mc37850<span class="operator">/</span>mc40780<span class="operator">/</span>mc40781<span class="operator">/</span>mc40782<span class="operator">/</span>mc40784<span class="operator">/</span>mc40918</span><br><span class="line"><span class="number">2</span> mc11300<span class="operator">/</span>mc11301<span class="operator">/</span>mc19080<span class="operator">/</span>mc19081<span class="operator">/</span>mc26300<span class="operator">/</span>mc31693<span class="operator">/</span>mc37850<span class="operator">/</span>mc40780<span class="operator">/</span>mc40781<span class="operator">/</span>mc40782<span class="operator">/</span>mc40784<span class="operator">/</span>mc40918</span><br><span class="line">  Count</span><br><span class="line"><span class="number">1</span>    <span class="number">12</span></span><br><span class="line"><span class="number">2</span>    <span class="number">12</span></span><br><span class="line"></span><br><span class="line">geneID_all <span class="operator">&lt;-</span> unlist<span class="punctuation">(</span>apply<span class="punctuation">(</span>as.matrix<span class="punctuation">(</span>data<span class="operator">$</span>geneID<span class="punctuation">)</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">,</span><span class="keyword">function</span><span class="punctuation">(</span>x<span class="punctuation">)</span> unlist<span class="punctuation">(</span>strsplit<span class="punctuation">(</span>x<span class="punctuation">,</span><span class="string">&#x27;/&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#得到富集到的所用geneID</span></span><br><span class="line"></span><br><span class="line">ego<span class="operator">&lt;-</span>new<span class="punctuation">(</span><span class="string">&quot;enrichResult&quot;</span><span class="punctuation">,</span> result<span class="operator">=</span>data<span class="punctuation">,</span> gene<span class="operator">=</span>geneID_all<span class="punctuation">,</span> pvalueCutoff<span class="operator">=</span><span class="number">0.01</span><span class="punctuation">,</span>pAdjustMethod<span class="operator">=</span><span class="string">&quot;BH&quot;</span><span class="punctuation">,</span>qvalueCutoff<span class="operator">=</span><span class="number">0.05</span><span class="punctuation">,</span>ontology<span class="operator">=</span><span class="string">&quot;BP&quot;</span><span class="punctuation">,</span>keytype<span class="operator">=</span><span class="string">&quot;GID&quot;</span><span class="punctuation">,</span>universe<span class="operator">=</span><span class="string">&#x27;Unknown&#x27;</span><span class="punctuation">,</span>geneSets<span class="operator">=</span><span class="built_in">list</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span>organism<span class="operator">=</span><span class="string">&quot;Unknown&quot;</span><span class="punctuation">,</span>readable<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span> <span class="comment">#把data内容赋值给ego的result，geneID_all赋值给gene，每个富集到的GO对应的gene集应该赋值给geneSets(数据是字典(键值对是GOID和geneIDs)组成的列表，这里直接给了空的)，ontology与enrichGO分析的ont参数一致，这里的pvalueCutoff=0.01,pAdjustMethod=&quot;BH&quot;,qvalueCutoff=0.05根据富集分析参数的设置，或者随意设置或者不设置也不会影响可视化。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>其他来源富集分析结果可视化<br>如果是其他软件的富集分析结果，可以根据ego的result变量格式进行修改格式，改成go_enrich.csv相同的格式的文件，再按照上面的步骤导入文件，并保存到新建的ego对象。即可用clusterProfiler的可视化包可视化其他软件的富集分析结果了。</li>
+</ol>
+<h1 id="2-功能富集结果可视化"><a href="#2-功能富集结果可视化" class="headerlink" title="2. 功能富集结果可视化"></a>2. 功能富集结果可视化</h1><p>下面的可视化大多基于在R中已获得富集分析的结果ego。</p>
+<h2 id="2-1-enrichplot包"><a href="#2-1-enrichplot包" class="headerlink" title="2.1. enrichplot包"></a>2.1. enrichplot包</h2><p>enrichplot包有几种可视化方法来解释富集结果，支持clusterProfiler获得的ORA和GSEA富集结果。</p>
+<h3 id="2-1-1-安装和载入"><a href="#2-1-1-安装和载入" class="headerlink" title="2.1.1. 安装和载入"></a>2.1.1. 安装和载入</h3><p>安装和载入enrichplot包</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;enrichplot&quot;</span><span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>enrichplot<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-2-可视化包"><a href="#2-1-2-可视化包" class="headerlink" title="2.1.2. 可视化包"></a>2.1.2. 可视化包</h3><ol>
+<li>可视化barplot —— 条形图<br>将富集分数（例如p 值）和基因计数或比率描述为条形高度和颜色。横轴为该GO term下的差异基因个数，纵轴为富集到的GO Terms的描述信息， showCategory指定展示的GO Terms的个数为20个，默认展示显著富集的top10个，即p.adjust最小的10个。</li>
+</ol>
+<p><code>barplot(ego, showCategory=20, title=&quot;EnrichmentGO_MF&quot;)</code></p>
+<p>使用mutate导出的其他变量也可以用作条形高度或颜色。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mutate<span class="punctuation">(</span>ego<span class="punctuation">,</span> qscore <span class="operator">=</span> <span class="operator">-</span><span class="built_in">log</span><span class="punctuation">(</span>p.adjust<span class="punctuation">,</span> base<span class="operator">=</span><span class="number">10</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">    barplot<span class="punctuation">(</span>x<span class="operator">=</span><span class="string">&quot;qscore&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Barplot-1.png" title="Bar plot of enriched terms" width="90%"/>
+
+<p><strong><p align="center">Figure 1. Bar plot of enriched terms</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="2">
+<li>可视化dotplot —— 点阵图<br><code>dotplot(edo, showCategory=30) + ggtitle(&quot;dotplot for ORA&quot;)</code></li>
+</ol>
+<p><code>dotplot(edo2, showCategory=30) + ggtitle(&quot;dotplot for GSEA&quot;)</code></p>
+<p>散点图，横坐标为GeneRatio，纵坐标为富集到的GO Terms的描述信息，showCategory指定展示的GO Terms的个数，默认展示显著富集的top10个，即p.adjust最小的10个。</p>
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Dotplotcap-1.png" title="Dot plot of enriched terms" width="90%"/>
+
+<p><strong><p align="center">Figure 2. Dot plot of enriched terms</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="3">
+<li>可视化cnetplot —— 类别网络图<br>cnetplot 将基因和生物学概念（例如 GO 术语或 KEGG 通路）的联系描述为一个网络（有助于查看哪些基因涉及富集通路和可能属于多个注释类别的基因）。对于基因和富集的GO terms之间的对应关系进行展示，如果一个基因位于一个GO Terms下，则将该基因与GO连线。图中灰色的点代表基因，黄色的点代表富集到的GO terms, 默认画top5富集到的GO terms, GO 节点的大小对应富集到的基因个数。</li>
+</ol>
+<p><code>cnetplot(ego, categorySize = &quot;pvalue&quot;, foldChange = gene_list</code></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## convert gene ID to Symbol</span></span><br><span class="line">edox <span class="operator">&lt;-</span> setReadable<span class="punctuation">(</span>ego<span class="punctuation">,</span> <span class="string">&#x27;org.Hs.eg.db&#x27;</span><span class="punctuation">,</span> <span class="string">&#x27;ENTREZID&#x27;</span><span class="punctuation">)</span></span><br><span class="line">p1 <span class="operator">&lt;-</span> cnetplot<span class="punctuation">(</span>edox<span class="punctuation">,</span> foldChange<span class="operator">=</span>geneList<span class="punctuation">)</span></span><br><span class="line"><span class="comment">## categorySize can be scaled by &#x27;pvalue&#x27; or &#x27;geneNum&#x27;</span></span><br><span class="line">p2 <span class="operator">&lt;-</span> cnetplot<span class="punctuation">(</span>edox<span class="punctuation">,</span> categorySize<span class="operator">=</span><span class="string">&quot;pvalue&quot;</span><span class="punctuation">,</span> foldChange<span class="operator">=</span>geneList<span class="punctuation">)</span></span><br><span class="line">p3 <span class="operator">&lt;-</span> cnetplot<span class="punctuation">(</span>edox<span class="punctuation">,</span> foldChange<span class="operator">=</span>geneList<span class="punctuation">,</span> circular <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span> colorEdge <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span> </span><br><span class="line">cowplot<span class="operator">::</span>plot_grid<span class="punctuation">(</span>p1<span class="punctuation">,</span> p2<span class="punctuation">,</span> p3<span class="punctuation">,</span> ncol<span class="operator">=</span><span class="number">3</span><span class="punctuation">,</span> labels<span class="operator">=</span><span class="built_in">LETTERS</span><span class="punctuation">[</span><span class="number">1</span><span class="operator">:</span><span class="number">3</span><span class="punctuation">]</span><span class="punctuation">,</span> rel_widths<span class="operator">=</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">.8</span><span class="punctuation">,</span> <span class="number">.8</span><span class="punctuation">,</span> <span class="number">1.2</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Networkplot-1.png" title="Network plot of enriched terms" width="90%"/>
+
+<p><strong><p align="center">Figure 3. Network plot of enriched terms</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="4">
+<li>可视化heatplot —— 类热图功能分类<br>同样使用edox。<br>heatplot类似cnetplot，而显示为热图的关系。<br>如果用户想要显示大量重要术语，那么类别网络图可能会过于复杂。在heatplot能够简化结果和更容易识别的表达模式。</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p1 <span class="operator">&lt;-</span> heatplot<span class="punctuation">(</span>edox<span class="punctuation">,</span> showCategory<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br><span class="line">p2 <span class="operator">&lt;-</span> heatplot<span class="punctuation">(</span>edox<span class="punctuation">,</span> foldChange<span class="operator">=</span>geneList<span class="punctuation">,</span> showCategory<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br><span class="line">cowplot<span class="operator">::</span>plot_grid<span class="punctuation">(</span>p1<span class="punctuation">,</span> p2<span class="punctuation">,</span> ncol<span class="operator">=</span><span class="number">1</span><span class="punctuation">,</span> labels<span class="operator">=</span><span class="built_in">LETTERS</span><span class="punctuation">[</span><span class="number">1</span><span class="operator">:</span><span class="number">2</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Heatplot-1.png" title="Heatmap plot of enriched terms" width="90%"/>
+
+<p><strong><p align="center">Figure 4. Heatmap plot of enriched terms</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="5">
+<li>可视化treeplot —— 树状图<br>treeplot()函数执行丰富术语的层次聚类。它依赖于pairwise_termsim()函数计算的丰富项的成对相似性，默认情况下使用 Jaccard 的相似性指数 (JC)。如果支持，用户还可以使用语义相似度值（例如，GO、DO和MeSH）。</li>
+</ol>
+<p>默认聚合方法treeplot()是ward.D，用户可以通过hclust_method参数指定其他方法（例如，’average’、’complete’、’median’、’centroid’等。</p>
+<p>treeplot()函数会将树切割成几个子树（由nCluster参数指定（默认为 5））并使用高频词标记子树。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">edox2 <span class="operator">&lt;-</span> pairwise_termsim<span class="punctuation">(</span>edox<span class="punctuation">)</span></span><br><span class="line">p1 <span class="operator">&lt;-</span> treeplot<span class="punctuation">(</span>edox2<span class="punctuation">)</span></span><br><span class="line">p2 <span class="operator">&lt;-</span> treeplot<span class="punctuation">(</span>edox2<span class="punctuation">,</span> hclust_method <span class="operator">=</span> <span class="string">&quot;average&quot;</span><span class="punctuation">)</span></span><br><span class="line">aplot<span class="operator">::</span>plot_list<span class="punctuation">(</span>p1<span class="punctuation">,</span> p2<span class="punctuation">,</span> tag_levels<span class="operator">=</span><span class="string">&#x27;A&#x27;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/treeplot-1.png" title="Tree plot of enriched terms" width="90%"/>
+
+<p><strong><p align="center">Figure 5. Tree plot of enriched terms</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="6">
+<li>可视化emapplot —— 富集图<br>对于富集到的GO terms之间的基因重叠关系进行展示，如果两个GO terms系的差异基因存在重叠，说明这两个节点存在overlap关系，在图中用线条连接起来。每个节点是一个富集到的GO term, 默认画top30个富集到的GO terms, 节点大小对应该GO terms下富集到的差异基因个数，节点的颜色对应p.adjust的值，从小到大，对应蓝色到红色。</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ego2 <span class="operator">&lt;-</span> pairwise_termsim<span class="punctuation">(</span>ego<span class="punctuation">)</span></span><br><span class="line">p1 <span class="operator">&lt;-</span> emapplot<span class="punctuation">(</span>ego2<span class="punctuation">)</span></span><br><span class="line">p2 <span class="operator">&lt;-</span> emapplot<span class="punctuation">(</span>ego2<span class="punctuation">,</span> cex_category<span class="operator">=</span><span class="number">1.5</span><span class="punctuation">)</span></span><br><span class="line">p3 <span class="operator">&lt;-</span> emapplot<span class="punctuation">(</span>ego2<span class="punctuation">,</span> layout<span class="operator">=</span><span class="string">&quot;kk&quot;</span><span class="punctuation">)</span></span><br><span class="line">p4 <span class="operator">&lt;-</span> emapplot<span class="punctuation">(</span>ego2<span class="punctuation">,</span> cex_category<span class="operator">=</span><span class="number">1.5</span><span class="punctuation">,</span>layout<span class="operator">=</span><span class="string">&quot;kk&quot;</span><span class="punctuation">)</span> </span><br><span class="line">cowplot<span class="operator">::</span>plot_grid<span class="punctuation">(</span>p1<span class="punctuation">,</span> p2<span class="punctuation">,</span> p3<span class="punctuation">,</span> p4<span class="punctuation">,</span> ncol<span class="operator">=</span><span class="number">2</span><span class="punctuation">,</span> labels<span class="operator">=</span><span class="built_in">LETTERS</span><span class="punctuation">[</span><span class="number">1</span><span class="operator">:</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/Enrichment-1.png" title="Plot for results obtained from hypergeometric test and gene set enrichment analysis" width="90%"/>
+
+<p><strong><p align="center">Figure 6. Plot for results obtained from hypergeometric test and gene set enrichment analysis. default (A), cex_category&#x3D;1.5 (B), layout&#x3D;”kk” (C) and cex_category&#x3D;1.5,layout&#x3D;”kk” (D).</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="7">
+<li>可视化upsetplot —— upset图<br>upsetplot是cnetplot可视化基因和基因集之间复杂关联的替代方法。它强调不同基因集之间的基因重叠。</li>
+</ol>
+<p><code>upsetplot(ego)</code></p>
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/upsetORA-1.png" title=" Upsetplot for over-representation analysis" width="90%"/>
+
+<p><strong><p align="center">Figure 7. Upsetplot for over-representation analysis.</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<ol start="8">
+<li>可视化ridgeplot —— 脊线图<br>ridgeplot将可视化核心富集基因的表达分布为GSEA富集类别。它帮助用户解释上调&#x2F;下调的途径。</li>
+</ol>
+<p><code>ridgeplot(ego)</code></p>
+<img src="http://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/ridgeplot-1.png" title=" Ridgeplot for gene set enrichment analysis" width="90%"/>
+
+<p><strong><p align="center">Figure 8. Ridgeplot for gene set enrichment analysis.</strong><br>from <a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html">clusterProfiler book</a></p></p>
+<h2 id="2-2-可视化plotGOgraph-x2F-goplot-——-有向无环图"><a href="#2-2-可视化plotGOgraph-x2F-goplot-——-有向无环图" class="headerlink" title="2.2. 可视化plotGOgraph&#x2F;goplot —— 有向无环图"></a>2.2. 可视化plotGOgraph&#x2F;goplot —— 有向无环图</h2><ol>
+<li><code>plotGOgraph(ego)</code></li>
+</ol>
+<ul>
+<li>有向无环图(Directed acyclic graph, DAG)，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。和<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/">topGO做富集分析</a>的DAG图一样。</li>
+</ul>
+<p>当enrichGO富集分析时ont参数选了ALL时，结果文件会在第一列前增加一列ONTOLOGY为子类，这时直接用于plotGOgraph画图会报错。<br><strong>试了下，下面两种方案还是会报错Error in if (!ont %in% c(“BP”, “MF”, “CC”)) { :argument is of length zero。</strong>。还是尽量在enrichGO分析时就用ont&#x3D;”BP”吧。</p>
+<ul>
+<li>可以在结果文件中筛选出特定子类(比如BP)的结果行，并删除第一列ONTOLOGY后保存文件，再读进R用于plotGOgraph画图。</li>
+<li>也可以在R内用命令<code>ego2&lt;-ego%&gt;%filter(ONTOLOGY== &quot;BP&quot;)</code>筛选BP子类，接着用<code>ego3&lt;-ego2%&gt;%select(!ONTOLOGY)</code>或者<code>ego3&lt;-ego2[,-1]</code>删除第一列(即ONTOLOGY列)，然后用<code>plotGOgraph(ego3)</code>作图。</li>
+</ul>
+<img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png" title=" DAG图" width="90%"/>
+
+<p><strong><p align="center">Figure 9. DAG图</strong><br>from <a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/">clusterProfiler blog</a></p></p>
+<ol>
+<li><code>goplot(ego, showCategory = 10)</code><br>igraph布局方式的有向无环图</li>
+</ol>
+<img src="https://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/goplot-1.png" title=" goplot的DAG图" width="90%"/>
+
+<p><strong><p align="center">Figure 10. goplot的DAG图</strong><br>from <a target="_blank" rel="noopener" href="https://yulab-smu.top/biomedical-knowledge-mining-book/clusterprofiler-go.html">clusterProfiler book</a></p></p>
+<h2 id="2-3-可视化-——-wordcloud"><a href="#2-3-可视化-——-wordcloud" class="headerlink" title="2.3. 可视化 —— wordcloud"></a>2.3. 可视化 —— wordcloud</h2><p>词云的方式显示结果</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;wordcloud&quot;</span><span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>wordcloud<span class="punctuation">)</span></span><br><span class="line">wcdf <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span>text <span class="operator">=</span> ego<span class="operator">$</span>GeneRatio<span class="punctuation">,</span> sep <span class="operator">=</span> <span class="string">&quot;/&quot;</span><span class="punctuation">)</span><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span></span><br><span class="line">wcdf<span class="operator">$</span>term <span class="operator">&lt;-</span>  ego<span class="punctuation">[</span><span class="punctuation">,</span><span class="number">2</span><span class="punctuation">]</span></span><br><span class="line">wordcloud<span class="punctuation">(</span>words <span class="operator">=</span> wcdf<span class="operator">$</span>term<span class="punctuation">,</span> freq <span class="operator">=</span> wcdf<span class="operator">$</span>V1<span class="punctuation">,</span> scale<span class="operator">=</span><span class="punctuation">(</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">4</span><span class="punctuation">,</span> <span class="number">.1</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">,</span> colors<span class="operator">=</span>brewer.pal<span class="punctuation">(</span><span class="number">8</span><span class="punctuation">,</span> <span class="string">&quot;Dark2&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> max.words <span class="operator">=</span> <span class="number">25</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_GSEA_clusterProfiler_wordcloud.png?raw=true" title="wordcloud词云图" width="60%"/>
+
+<p><strong><p align="center">Figure 11. wordcloud词云图</strong><br>from <a target="_blank" rel="noopener" href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/">NGS Analysis ebook</a></p></p>
+<h1 id="3-导出可视化结果"><a href="#3-导出可视化结果" class="headerlink" title="3. 导出可视化结果"></a>3. 导出可视化结果</h1><ol>
+<li>Rstudio</li>
+</ol>
+<p>如果是在Rstudio中，可以直接看到绘图结果，导出需要的文件格式即可。</p>
+<ol start="2">
+<li>代码导出<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pdf<span class="punctuation">(</span><span class="string">&quot;ego.pdf&quot;</span><span class="punctuation">)</span> <span class="comment">#如果保存png，就改成png(&quot;ego.png&quot;)</span></span><br><span class="line">ego_fig<span class="operator">&lt;-</span>barplot<span class="punctuation">(</span>x<span class="punctuation">)</span> <span class="comment">#画图函数</span></span><br><span class="line">print<span class="punctuation">(</span>ego_fig<span class="punctuation">)</span> <span class="comment">#画到pdf文件</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#关闭pdf画板</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li>clusterProfiler github：<a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">https://github.com/YuLab-SMU/clusterProfiler</a></li>
+<li>clusterProfiler paper：<a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue</a></li>
+<li>clusterProfiler book：<a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/index.html">http://yulab-smu.top/biomedical-knowledge-mining-book/index.html</a></li>
+<li>clusterProfiler manual：<a target="_blank" rel="noopener" href="https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf">https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf</a></li>
+<li>clusterProfiler ducumentation：<a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/software/clusterProfiler/documentation/">https://guangchuangyu.github.io/software/clusterProfiler/documentation/</a></li>
+<li>其他来源结果可视化：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1613815">https://cloud.tencent.com/developer/article/1613815</a></li>
+<li>wordcloud：<a target="_blank" rel="noopener" href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/">https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gene-set-enrichment-analysis/" rel="tag"># gene set enrichment analysis</a>
+              <a href="/tags/GSEA/" rel="tag"># GSEA</a>
+              <a href="/tags/enrichment-analysis/" rel="tag"># enrichment analysis</a>
+              <a href="/tags/over-representation-analysis/" rel="tag"># over representation analysis</a>
+              <a href="/tags/ORA/" rel="tag"># ORA</a>
+              <a href="/tags/clusterProfiler/" rel="tag"># clusterProfiler</a>
+              <a href="/tags/visualization/" rel="tag"># visualization</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/26/bioinfo_enrichment_clusterProfiler.species/" rel="prev" title="富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析">
+      <i class="fa fa-chevron-left"></i> 富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/02/linux_operation.and.maintenance_top/" rel="next" title="Linux运维命令 —— top">
+      Linux运维命令 —— top <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">1. 可视化的输入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%8F%AF%E8%A7%86%E5%8C%96%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 可视化输入数据格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 输入数据准备</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%8A%9F%E8%83%BD%E5%AF%8C%E9%9B%86%E7%BB%93%E6%9E%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">2. 功能富集结果可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-enrichplot%E5%8C%85"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. enrichplot包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%AE%89%E8%A3%85%E5%92%8C%E8%BD%BD%E5%85%A5"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. 安装和载入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%8C%85"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. 可视化包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%8F%AF%E8%A7%86%E5%8C%96plotGOgraph-x2F-goplot-%E2%80%94%E2%80%94-%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 可视化plotGOgraph&#x2F;goplot —— 有向无环图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%8F%AF%E8%A7%86%E5%8C%96-%E2%80%94%E2%80%94-wordcloud"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 可视化 —— wordcloud</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AF%BC%E5%87%BA%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BB%93%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">3. 导出可视化结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/";
+    this.page.identifier = "2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/";
+    this.page.title = "富集分析：（五）clusterProfiler：Visualization";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

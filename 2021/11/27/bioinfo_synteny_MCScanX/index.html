@@ -1,10 +1,718 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator">
+<meta property="og:url" content="http://example.com/2021/11/27/bioinfo_synteny_MCScanX/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2021-11-27T09:50:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T11:27:24.380Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="divergence time">
+<meta property="article:tag" content="paml">
+<meta property="article:tag" content="synteny">
+<meta property="article:tag" content="colinearity">
+<meta property="article:tag" content="Ks">
+<meta property="article:tag" content="WGD">
+<meta property="article:tag" content="MCScanX">
+<meta property="article:tag" content="ParaAT.pl">
+<meta property="article:tag" content="KaKs_Calculator">
+<meta property="article:tag" content="ggplot2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/11/27/bioinfo_synteny_MCScanX/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/27/bioinfo_synteny_MCScanX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-27 17:50:00" itemprop="dateCreated datePublished" datetime="2021-11-27T17:50:00+08:00">2021-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 19:27:24" itemprop="dateModified" datetime="2022-07-15T19:27:24+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/11/27/bioinfo_synteny_MCScanX/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/27/bioinfo_synteny_MCScanX/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=29808885&auto=1&height=32"></iframe></div>
+
+<h1 id="1-MCScanX介绍"><a href="#1-MCScanX介绍" class="headerlink" title="1. MCScanX介绍"></a>1. MCScanX介绍</h1><p>MCScanX调整<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/">MCScan算法</a>进行检测基因组间或基因组内的同线性，并附加了14个下游分析和可视化的脚本。</p>
+<h1 id="2-MCScanX同线性分析"><a href="#2-MCScanX同线性分析" class="headerlink" title="2. MCScanX同线性分析"></a>2. MCScanX同线性分析</h1><h2 id="2-1-准备输入文件"><a href="#2-1-准备输入文件" class="headerlink" title="2.1. 准备输入文件"></a>2.1. 准备输入文件</h2><p>MCScanX做同线性分析需要两个输入文件sample.gff(四列数据)和sample.blast。</p>
+<p>如果是多个物种，则把多个物种的gff3文件和pep.fa文件合并后再准备sample.gff和sample.blast输入文件。</p>
+<ol>
+<li>sample.gff<br><code>cat sample.gene.gff3 |awk &#39;&#123;if($3==&quot;gene&quot;)&#123;print $1,$9,$4,$5&#125;&#125;&#39;|sed &quot;s/;.*;//g&quot;|sed &quot;s/ID=//g&quot;|sed &quot;s/ /\t/g&quot; &gt;sample.gff #准备gff文件</code></li>
+<li>sample.blast<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -in sample.pep.fa -dbtype prot -out index/sample.pep #给蛋白序列建库</span><br><span class="line">blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 -num_threads 12 -outfmt 6 -num_alignments 5 &amp; #进行自我比对，生成6号格式的比对结果sample.blast</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-2-运行MCScanX"><a href="#2-2-运行MCScanX" class="headerlink" title="2.2. 运行MCScanX"></a>2.2. 运行MCScanX</h2><p>在有sample.gff和sample.blast两个文件的目录下，指定前缀sample运行<code>MCScanX sample</code>。</p>
+<p>重要参数解释：</p>
+<ul>
+<li>-s MATCH_SIZE,default: 5。每个共线性区块包含的基因数量的下限。</li>
+<li>-m MAX_GAPS，default：25。在共线性区块中允许的最大gaps数量。</li>
+<li>-b patterns of collinear blocks。0:intra- and inter-species (default); 1:intra-species; 2:inter-species。</li>
+</ul>
+<h2 id="2-3-结果文件"><a href="#2-3-结果文件" class="headerlink" title="2.3. 结果文件"></a>2.3. 结果文件</h2><ol>
+<li>sample.collinearity</li>
+</ol>
+<p>共线性结果文件，包括三部分内容：</p>
+<ul>
+<li>参数(parameters)</li>
+<li>基本统计信息(statistics)：共线性基因的总数，总基因数，共线性基因占比。</li>
+<li>共线性区块(block)信息：一个Alignment代表一个共线性区块（0起始编号）。后面跟着这个共线性区块的基因对的信息。第一列：block编号；第二列：基因对编号；第三列和第四列：基因对名称；第五列：blast比对的e_value值。</li>
+</ul>
+<p>sample.collinearity示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">############### Parameters ###############</span><br><span class="line"># MATCH_SCORE: 50</span><br><span class="line"># MATCH_SIZE: 5</span><br><span class="line"># GAP_PENALTY: -1</span><br><span class="line"># OVERLAP_WINDOW: 5</span><br><span class="line"># E_VALUE: 1e-05</span><br><span class="line"># MAX GAPS: 25</span><br><span class="line">############### Statistics ###############</span><br><span class="line"># Number of collinear genes: 21371, Percentage: 56.25</span><br><span class="line"># Number of all genes: 37996</span><br><span class="line">##########################################</span><br><span class="line">## Alignment 0: score=352.0 e_value=1.2e-17 N=8 scaf014&amp;scaf014 plus</span><br><span class="line">477-  0:	bv37796	bv37889	  3e-06</span><br><span class="line">477-  1:	bv37820	bv37905	  6e-24</span><br><span class="line">477-  2:	bv37822	bv37926	  9e-29</span><br><span class="line">477-  3:	bv37826	bv37930	  4e-62</span><br><span class="line">477-  4:	bv37828	bv37931	  1e-74</span><br><span class="line">477-  5:	bv37829	bv37932	 3e-142</span><br><span class="line">477-  6:	bv37830	bv37933	  6e-78</span><br><span class="line">477-  7:	bv37832	bv37934	  3e-76</span><br><span class="line">## Alignment 1: score=300.0 e_value=6.1e-08 N=6 scaf014&amp;scaf014 minus</span><br><span class="line">478-  0:	bv35514	bv35525	      0</span><br><span class="line">478-  1:	bv35515	bv35524	      0</span><br><span class="line">478-  2:	bv35516	bv35523	  1e-81</span><br><span class="line">478-  3:	bv35517	bv35522	      0</span><br><span class="line">478-  4:	bv35518	bv35521	 1e-115</span><br><span class="line">478-  5:	bv35519	bv35520	      0</span><br><span class="line">... ...</span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>sample.html</li>
+</ol>
+<p>网页文件所在的文件夹，里面有每条染色体一个html文件。html文件用浏览器打开，包含三列信息。</p>
+<ul>
+<li>第一列是复制深度。</li>
+<li>第二列是这条染色体上所有基因的排列顺序，串联重复基因的背景为红色。</li>
+<li>第三列和之后列是对应的比对上的基因名称。</li>
+</ul>
+<ol start="3">
+<li>sample.tandem</li>
+</ol>
+<p>包含基因组内<strong>串联重复</strong>的基因ID的list。</p>
+<p>notes：MCScanX 会根据 gff 文件中染色体号的前缀（前2个字符）将染色体划分为不同的物种，若 MCScanX 识别到输入数据中包含多个物种，则不会生成 tandem 文件。</p>
+<h1 id="3-MCScanX下游分析"><a href="#3-MCScanX下游分析" class="headerlink" title="3. MCScanX下游分析"></a>3. MCScanX下游分析</h1><h2 id="提取block位置"><a href="#提取block位置" class="headerlink" title="提取block位置"></a>提取block位置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat sample.collinearity|grep -C 1 &quot;Alignment&quot;|sed &#x27;/^--$/d&#x27; &gt;block.tem #提取block首尾基因对</span><br><span class="line">tail -1 sample.collinearity &gt;&gt;block.tem #提取block首尾基因对</span><br><span class="line">cat block.tem |sed -e &quot;s/## //g&quot; -e &quot;s/.*gene/gene/g&quot;|tr &#x27;\n&#x27; &#x27; &#x27;|sed &quot;s/Alignment /\nAlignment/g&quot; |sed -e &quot;/^$/d&quot; -e &quot;s/ /\t/g&quot;|sed -e &quot;s/\t\+/\t/g&quot; -e &quot;s/\://g&quot;|awk -v FS=&quot;\t&quot; -v OFS=&quot;\t&quot; &#x27;&#123;print $1,$2,$3,$4,$5,$6,$7,$10,$8,$11&#125;&#x27; &gt;block.txt #整理成一个block一行信息的格式，其中&quot;s/.*gene/gene/g&quot;部分的gene修改成geneID的前缀用来去除多余信息。</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-1-绘图脚本"><a href="#3-1-绘图脚本" class="headerlink" title="3.1. 绘图脚本"></a>3.1. 绘图脚本</h2><p>MCScanX的downstream_analyses目录包含一些下游脚本。</p>
+<p>许多java脚本可以实现绘图功能，包括：</p>
+<ul>
+<li>共线性点图：dot_plotter</li>
+<li>双染色体共线性图：dual_synteny_plotter</li>
+<li>共线性圈图：circle_plotter</li>
+<li>染色体块图：bar_plotter</li>
+<li>…</li>
+</ul>
+<h2 id="3-2-复制事件分类"><a href="#3-2-复制事件分类" class="headerlink" title="3.2. 复制事件分类"></a>3.2. 复制事件分类</h2><h3 id="3-2-1-duplicate-gene-classifier"><a href="#3-2-1-duplicate-gene-classifier" class="headerlink" title="3.2.1. duplicate_gene_classifier"></a>3.2.1. duplicate_gene_classifier</h3><ol>
+<li>duplicate_gene_classifier</li>
+</ol>
+<p>MCScanX的<code>duplicate_gene_classifier</code>脚本用来分析与各种复制类别相关的基因数量</p>
+<ol start="2">
+<li>输入</li>
+</ol>
+<p><code>duplicate_gene_classifier sample</code> # 输入与MCScanX一致，读取当前目录下的sample.gff和sample.blast作为输入</p>
+<ol start="3">
+<li>输出示例</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Type of dup	Code	Number</span><br><span class="line">Singleton	0	88907</span><br><span class="line">Dispersed	1	13573</span><br><span class="line">Proximal	2	463</span><br><span class="line">Tandem	3	847</span><br><span class="line">WGD or segmental	4	1055</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>结果解释</li>
+</ol>
+<p>其中 Singleton 表示单拷贝重复，Proximal 表示在相同染色体上相近但不相连的重复，Dispersed 表示除 Tandem、WGD、Proximal 以外的重复。Number代表相应复制类别相关的基因数量。</p>
+<h2 id="解析结果文件sample-collinearity的脚本"><a href="#解析结果文件sample-collinearity的脚本" class="headerlink" title="解析结果文件sample.collinearity的脚本"></a>解析结果文件sample.collinearity的脚本</h2><p>推荐这里<a target="_blank" rel="noopener" href="https://github.com/reubwn/collinearity%E6%9C%89%E8%AE%B8%E5%A4%9A%E5%8F%AF%E4%BB%A5%E8%A7%A3%E6%9E%90%E6%9E%9C%E6%96%87%E4%BB%B6sample.collinearity%E7%9A%84%E8%84%9A%E6%9C%AC">https://github.com/reubwn/collinearity有许多可以解析果文件sample.collinearity的脚本</a></p>
+<h2 id="3-3-计算共线性区块Ks"><a href="#3-3-计算共线性区块Ks" class="headerlink" title="3.3. 计算共线性区块Ks"></a>3.3. 计算共线性区块Ks</h2><p>tips:需要检查得到的结果中Ks值是否有负值或NA等无效数据，并过滤无效数据。</p>
+<h3 id="3-3-1-方案一：add-ka-and-ks-to-collinearity-pl（MCScanX的downstream-analyses目录下自带脚本）"><a href="#3-3-1-方案一：add-ka-and-ks-to-collinearity-pl（MCScanX的downstream-analyses目录下自带脚本）" class="headerlink" title="3.3.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）"></a>3.3.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）</h3><p><code>add_ka_and_ks_to_collinearity.pl -i sample.collinearity -d sample.cds.fa -o sample.kaks &gt; out.log 2&gt;&amp;1</code> #注意算出的部分kaks值为-2的问题，未找到解决方案</p>
+<h3 id="3-3-2-方案二：ParaAT-pl-KaKs-Calculator2-0"><a href="#3-3-2-方案二：ParaAT-pl-KaKs-Calculator2-0" class="headerlink" title="3.3.2. 方案二：ParaAT.pl+KaKs_Calculator2.0"></a>3.3.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</h3><ul>
+<li>ParaAT.pl用于根据同源基因对list生成比对的gene对cds序列，并可以指定输出格式，如axt格式；</li>
+<li>KaKs_Calculator用于计算基因对的kaks。</li>
+</ul>
+<p>用还会用到两个脚本:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py">axt2one-line.py</a>转换axt格式为单行</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl">calculate_4DTV_correction.pl</a>计算4dtv。</li>
+</ul>
+<ol>
+<li>安装ParaAT.pl<br>参考<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align.pep2cds/">blog.ParaAT</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装KaKs_Calculator2.0<br><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">KaKs_Calculator2.0下载地址</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
+
+<p>然后把.&#x2F;KaKs_Calculator2.0&#x2F;bin&#x2F;Linux&#x2F;和.&#x2F;KaKs_Calculator2.0&#x2F;src&#x2F;添加到环境变量即可使用KaKs_Calculator和AXTConvertor命令。</p>
+<ol start="3">
+<li>用ParaAT.pl获取共线性基因对比对序列<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat sample.collinearity |grep -v &quot;^#&quot;|cut -f2,3 &gt;sample.homolog #提取blocks的同源gene对</span><br><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -k -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；；-o指定生成目录；加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢，推荐手动用KaKs_Calculator的YN模型，生成sample.axt.kaks文件。</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in ‘ctg00816-ctg08844’ is not equal。</p>
+<ol start="4">
+<li>用KaKs_Calculator手动计算共线性基因对的KaKs和4dtv值<br>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd sample.paraat</span><br><span class="line">for i in `ls |grep &quot;axt&quot;`;do KaKs_Calculator -i $i -o $&#123;i&#125;.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br><span class="line">- 计算4dtv</span><br><span class="line">for i in `ls |grep &quot;axt&quot;`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br><span class="line">cd ..</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line"></span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-ggplot2画密度分布图和峰值"><a href="#3-4-ggplot2画密度分布图和峰值" class="headerlink" title="3.4. ggplot2画密度分布图和峰值"></a>3.4. ggplot2画密度分布图和峰值</h2><h3 id="3-4-1-ggplot2画密度分布图"><a href="#3-4-1-ggplot2画密度分布图" class="headerlink" title="3.4.1. ggplot2画密度分布图"></a>3.4.1. ggplot2画密度分布图</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>ggplot2<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>ggpmisc<span class="punctuation">)</span></span><br><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;all.results&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">)</span></span><br><span class="line">p <span class="operator">&lt;-</span> ggplot<span class="punctuation">(</span>data<span class="punctuation">,</span> aes<span class="punctuation">(</span>Ks<span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">+</span> geom_density<span class="punctuation">(</span>size<span class="operator">=</span><span class="number">1</span><span class="punctuation">,</span>color<span class="operator">=</span><span class="string">&quot;black&quot;</span><span class="punctuation">)</span><span class="operator">+</span>xlab<span class="punctuation">(</span><span class="string">&quot;Synonymous substitution rate(Ks)&quot;</span><span class="punctuation">)</span><span class="operator">+</span>ylab<span class="punctuation">(</span><span class="string">&quot;Percent of Total Paralogs&quot;</span><span class="punctuation">)</span><span class="operator">+</span>theme_classic<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">+</span>scale_y_continuous<span class="punctuation">(</span>breaks<span class="operator">=</span>seq<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">2.5</span><span class="punctuation">,</span> <span class="number">0.2</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="operator">+</span>xlim<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">3</span><span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;Ks.pdf&quot;</span><span class="punctuation">,</span>plot<span class="operator">=</span>p<span class="punctuation">,</span>width<span class="operator">=</span><span class="number">10</span><span class="punctuation">,</span>height<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-2-ggplot2峰值标定"><a href="#3-4-2-ggplot2峰值标定" class="headerlink" title="3.4.2. ggplot2峰值标定"></a>3.4.2. ggplot2峰值标定</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pb <span class="operator">&lt;-</span> ggplot_build<span class="punctuation">(</span>p<span class="punctuation">)</span></span><br><span class="line">pic <span class="operator">&lt;-</span> p <span class="operator">+</span> stat_peaks<span class="punctuation">(</span>data <span class="operator">=</span> pb<span class="punctuation">[[</span><span class="string">&#x27;data&#x27;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="number">1</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">,</span> aes<span class="punctuation">(</span>x<span class="operator">=</span>x<span class="punctuation">,</span> y<span class="operator">=</span>density<span class="punctuation">)</span><span class="punctuation">,</span> geom<span class="operator">=</span> <span class="string">&#x27;text&#x27;</span><span class="punctuation">,</span> color<span class="operator">=</span><span class="string">&quot;red&quot;</span><span class="punctuation">,</span> <span class="punctuation">,</span>vjust<span class="operator">=</span><span class="operator">-</span><span class="number">0.5</span><span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;Ks_peaks.pdf&quot;</span><span class="punctuation">,</span>plot<span class="operator">=</span>pic<span class="punctuation">,</span>width<span class="operator">=</span><span class="number">10</span><span class="punctuation">,</span>height<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>在密度分布图里得到红色标记的峰值。</p>
+<h3 id="3-4-3-多个密度图"><a href="#3-4-3-多个密度图" class="headerlink" title="3.4.3. 多个密度图"></a>3.4.3. 多个密度图</h3><p>同时展示多组Ks数据分布，可以把数据合并，添加一列作为分类标签，通过colour颜色参数指定这个分类标签列，则可以实现一张图上展示多个密度图。</p>
+<p><code>ggplot(data)+geom_density(aes(x=V3,colour=V5),adjust=2)+xlim(0,0.5)+theme_classic()</code> #指定第三列V3为数据，第五列V5为分类依据并赋予不同颜色。</p>
+<h3 id="3-4-4-通过密度分布图判断WGD"><a href="#3-4-4-通过密度分布图判断WGD" class="headerlink" title="3.4.4. 通过密度分布图判断WGD"></a>3.4.4. 通过密度分布图判断WGD</h3><p>一般认为，Ks密度分布图如果有明显的峰，一个峰代表对应一次WGD事件。<br>通过峰的数量和对应的Ks大小可以判断WGD事件的次数和发生时间。</p>
+<h2 id="3-5-WGD发生的时间"><a href="#3-5-WGD发生的时间" class="headerlink" title="3.5. WGD发生的时间"></a>3.5. WGD发生的时间</h2><p>通过Ks的密度分布图鉴定得到WGD事件发生的证据之后，有多种方法可以估算WGD发生的时间。</p>
+<h3 id="3-5-1-通过Ks-x3D-2μT计算时间"><a href="#3-5-1-通过Ks-x3D-2μT计算时间" class="headerlink" title="3.5.1. 通过Ks&#x3D;2μT计算时间"></a>3.5.1. 通过Ks&#x3D;2μT计算时间</h3><p>依据公式Ks&#x3D;2μT来计算时间T，依赖准确的进化速率μ，μ通常引用近缘类群的已有权威研究。</p>
+<p>进化速率μ：</p>
+<ul>
+<li>蕨类植物的同义突变率：4.79e-9 subst.&#x2F;syn. site&#x2F;year :the first estimate of fern nuclear genome evolutionary rates with polypodiaceous nuclear genomes (Barker 2009)</li>
+<li>水稻：2.5e-8 subst.&#x2F;syn. site&#x2F;year</li>
+</ul>
+<h3 id="3-5-2-通过进化树估算时间"><a href="#3-5-2-通过进化树估算时间" class="headerlink" title="3.5.2. 通过进化树估算时间"></a>3.5.2. 通过进化树估算时间</h3><ul>
+<li>用代表WGD的Ks值附近的同线性基因对制作两套样品的单倍型数据，然后选取一到多个近缘种的蛋白序列与其中一套单倍型做直系同源基因分析，用找到的直系同源单拷贝基因建树（把两套单倍型数据当作两个物种来建树），通过化石或者二次标定的方法用paml的mcmctree模块计算两套单倍型的分化时间，即为WGD发生的时间。</li>
+<li>如果物种分化时间的尺度太大而不能准确估算WGD时间，可以先用大尺度的系统发育树做近缘种和目标物种的分化时间的估算，然后在做WGD时间估算时只用一个近缘种加上近缘种与目标物种的分化时间标定来获得更准确的WGD时间估计结果。</li>
+</ul>
+<h4 id="3-5-2-1-获取sample发生WGD的两套基因"><a href="#3-5-2-1-获取sample发生WGD的两套基因" class="headerlink" title="3.5.2.1. 获取sample发生WGD的两套基因"></a>3.5.2.1. 获取sample发生WGD的两套基因</h4><ol>
+<li>前面分析中计算Ks的分布峰值假设在<strong>0.05</strong>，取Ks值在0.05正负25%的范围，即[0.0375-0.0625]之间的基因对。<br><code>cat all.results |awk &#39;$3&gt;0.0375 &amp;&amp; $3&gt;0.0625 &#123;print $1&#125; |sed &quot;s/-/\t/g&quot; &gt;wgd.homologs</code></li>
+<li>基因对中若有一个基因对多个基因的情况，则选取Ks最接近0.05的那对。</li>
+<li>获取两套基因list。<br><code>cut -f1 wgd.homologs &gt;wgd_H1.homologs</code>;<br><code>cut -f2 wgd.homologs &gt;wgd_H2.homologs</code></li>
+</ol>
+<h4 id="3-5-2-2-选近缘种和分化时间"><a href="#3-5-2-2-选近缘种和分化时间" class="headerlink" title="3.5.2.2. 选近缘种和分化时间"></a>3.5.2.2. 选近缘种和分化时间</h4><ol>
+<li>参考近年发表的权威组学系统发育文章选取近缘种和物种分化时间数据。</li>
+<li>这里假设选取了两个近缘物种sampleA和sampleB。sample发生WGD形成的两套单倍型H1和H2，目标物种sample与近缘种sampleA的分化时间已知为88Ma。</li>
+<li>确定物种树拓扑结构：<code>(((sampleH1,sampleH2),sampleA)&#39;&lt;0.88&gt;0.88),sampleB;</code>，以sampleB为外类群。</li>
+</ol>
+<h4 id="3-5-2-3-orthofinder找直系同源基因"><a href="#3-5-2-3-orthofinder找直系同源基因" class="headerlink" title="3.5.2.3. orthofinder找直系同源基因"></a>3.5.2.3. orthofinder找直系同源基因</h4><ol>
+<li>根据基因对提取蛋白序列，任意用一个（这里用wgd_H1.homologs)提取蛋白序列：<code>seqkit grep -n -f wgd_H1.homologs sample.pep &gt; wgd_H1.pep</code></li>
+<li>与其他两个近缘种的蛋白序列一起，用orthofinder找直系同源基因。</li>
+</ol>
+<ul>
+<li>orthofinder使用方法：把所有物种的pep蛋白序列（两个近缘物种加上wgd_H1.pep）放进一个文件夹(directory)，注意蛋白序列中不能有.&#x2F;*等符号（常用来代表终止密码子）。</li>
+<li>运行<code>orthofinder -f directory -t 24</code> # -t指定线程</li>
+<li>结果文件的Orthogroups目录下，Orthogroups.txt包含所有直系同源基因，Orthogroups_SingleCopyOrthologues.txt包含单拷贝的直系同源基因。</li>
+<li>根据Orthogroups_SingleCopyOrthologues.txt把Orthogroups.txt里基因信息提取出来,<code>grep -f Orthogroups_SingleCopyOrthologues.txt Orthogroups.tsv &gt;OG.txt</code>。OG.txt文件内容是singlecopyorthologues列表，第一列orthogroupID，后面3列每套蛋白序列ID，共4列，这个文件的每行数据为一个homologs对应的每套数据的蛋白ID。</li>
+<li>合并wgd.homologs和OG.txt文件为OG.list：<code>join -1 1 -2 2 wgd.homologs OG.txt &gt; OG.list</code>。OG.list文件是在OG.txt基础上增加了wgd_H2.homologs的一套蛋白ID数据，共有四套蛋白ID数据。</li>
+</ul>
+<h4 id="3-5-2-4-建单基因树"><a href="#3-5-2-4-建单基因树" class="headerlink" title="3.5.2.4. 建单基因树"></a>3.5.2.4. 建单基因树</h4><ol>
+<li>建树脚本<br>用下面的脚本singlegenetree.sh，提取每个homologs序列，并通过raxml-ng（raxmlHPC建氨基酸树只有bootstrap结果，没有bestTree）为每个homologs基因比对（mafft）和建树。<br>OG.list文件包含第一列ogID和后4列4套样本ID。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">singlegenetree.sh</span></span><br><span class="line">cat ./OG.list | while read line</span><br><span class="line">do</span><br><span class="line">        sample_id=$(echo $line |awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">        sample_a=$(echo $line |awk &#x27;&#123;print $2&#125;&#x27;)</span><br><span class="line">        sample_b=$(echo $line |awk &#x27;&#123;print $3&#125;&#x27;)</span><br><span class="line">        sample_c=$(echo $line |awk &#x27;&#123;print $4&#125;&#x27;)        </span><br><span class="line">        sample_d=$(echo $line |awk &#x27;&#123;print $5&#125;&#x27;)</span><br><span class="line">        mkdir ./singlegenetree/$&#123;sample_id&#125;</span><br><span class="line">        seqkit grep -n $&#123;sample_a&#125; sample.pep &gt;./singlegenetree/$&#123;sample_id&#125;/H1_$&#123;sample_a&#125;.pep</span><br><span class="line">        seqkit grep -n $&#123;sample_b&#125; sample.pep &gt;./singlegenetree/$&#123;sample_id&#125;/H2_$&#123;sample_b&#125;.pep</span><br><span class="line">        seqkit grep -n $&#123;sample_c&#125; sampleA.pep &gt;./singlegenetree/$&#123;sample_id&#125;/$&#123;sample_c&#125;.pep</span><br><span class="line">        seqkit grep -n $&#123;sample_d&#125; sampleB.pep &gt;./singlegenetree/$&#123;sample_id&#125;/$&#123;sample_d&#125;.pep</span><br><span class="line">        cd ./singlegenetree/$&#123;sample_id&#125;/</span><br><span class="line">        cat H1_$&#123;sample_a&#125;.pep H2_$&#123;sample_b&#125;.pep $&#123;sample_c&#125;.pep $&#123;sample_d&#125;.pep &gt; $&#123;sample_id&#125;.pep</span><br><span class="line">        mafft $&#123;sample_id&#125;.pep &gt;$&#123;sample_id&#125;.mafft.pep</span><br><span class="line">        raxml-ng --all --msa $&#123;sample_id&#125;.mafft.pep --data-type AA --threads 8 --bs-trees 100 --model LG+G8+F --tree pars&#123;10&#125; --outgroup $&#123;sample_d&#125; --redo</span><br><span class="line">        sed -E &quot;s/:[0-9]\.[0-9]*//g&quot; $&#123;sample_id&#125;.mafft.pep.raxml.bestTree  &gt;besttree.$&#123;sample_id&#125; #删除不必要的枝长等信息</span><br><span class="line">        cd ../../</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>筛选homologs<br>判断生成的每个OG的树文件besttree.${sample_id}，只保留符合物种树拓扑结构<code>(((sampleH1,sampleH2),sampleA)),sampleB;</code>的基因，保存成OG.filtered。</li>
+</ol>
+<h4 id="3-5-2-5-paml估计分化时间"><a href="#3-5-2-5-paml估计分化时间" class="headerlink" title="3.5.2.5. paml估计分化时间"></a>3.5.2.5. paml估计分化时间</h4><p>此节参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/03/25/bioinfo_caculate.divergence.time/">估算系统树分歧时间</a>的paml部分。</p>
+<ol>
+<li>在OG.filtered最后一列添加每个OG的序列长度信息，保存成OG.filtered.list。</li>
+<li>准备输入文件sample.phy<br>上一步脚本提取的每个homologs的比对后的四套数据蛋白序列${sample_id}.mafft.pep，用脚本fa2phylip.sh换成phylip格式（用python的SeqIO库换的格式mcmctree识别不了）。<br>并合并提取的所有homologs序列。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">fa2phylip.sh</span></span><br><span class="line">cat ./OG.filtered.list | while read line</span><br><span class="line">do</span><br><span class="line">        sample_id=$(echo $line |awk &#x27;&#123;print $1&#125;&#x27;) #获取OG.ID</span><br><span class="line">        sample_a=$(echo $line |awk &#x27;&#123;print $6&#125;&#x27;) #获取序列长度</span><br><span class="line">        sed &quot;s/_.*//g&quot; ../singlegenetree/$&#123;sample_id&#125;/$&#123;sample_id&#125;.mafft.pep|seqkit seq -w 0|sed -E &quot;:a;N;s/\n/ /g;ta&quot; |sed &quot;s/ &gt;/\n/g&quot; |sed &quot;s/&gt;//g&quot;|sed &quot;s/ /  /g&quot;|sed &quot;1i\5  $&#123;sample_a&#125;&quot; |sed &#x27;1i\ &#x27; &gt; ./phy/$&#123;sample_id&#125;.phy #把上一步获取的$&#123;sample_id&#125;.mafft.pep改为phylip格式，并在首行添加空格行（为了合并后每个OG用空行隔开）</span><br><span class="line"></span><br><span class="line">done</span><br><span class="line">cat ./phy/*phy &gt;sample.phy #合并所有phy文件为一个sample.phy文件，假设共有261个子phy文件被合并</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>准备输入文件sample.tre</li>
+</ol>
+<ul>
+<li>sample.tre包含两行，第一行表述树中有5个样本，共计1个树，两个数值之间用空格分割；<br>第二行则是Newick格式树信息。</li>
+<li>其中第二行Newick格式树包含有校准点信息，校准点信息一般指95%HPD（Highest Posterior Density）对应的置信区间，这里用的校准点时间只有一个点，所以写成’&lt;0.88&gt;0.88’形式；校准点单位是100MYA（软件说明文档中使用该单位，也推荐使用该单位，若使用其它单位，后续配置文件中的相关参数也需要对应修改）。</li>
+<li>此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。</li>
+<li>sample.tre内容为：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4 1</span><br><span class="line">(((sampleH1,sampleH2),sampleA)&#x27;&lt;0.88&gt;0.88),sampleB;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>准备配置文件mcmctree3.ctl<br>ndata &#x3D; 261表示有261个数据，与sample.phy包含的子phy数量对应；seqtype &#x3D; 2表示这里用的氨基酸序列；model &#x3D; 0暂时选用0，后面要改；</li>
+</ol>
+<figure class="highlight plaintext"><figcaption><span>mcmctree3.ctl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">          seed = -1</span><br><span class="line">       seqfile = sample.phy</span><br><span class="line">      treefile = sample.tre</span><br><span class="line">       outfile = mcmc.out</span><br><span class="line">      mcmcfile = mcmc.txt</span><br><span class="line"></span><br><span class="line">       seqtype = 2    *0: DNA data; 1: codon data; 2: AAs data</span><br><span class="line">        ndata = 261</span><br><span class="line">       usedata = 3    * 0: no data; 1:seq like; 2:normal approximation</span><br><span class="line">         clock = 3    * 1: global clock; 2: independent rates; 3: correlated rates</span><br><span class="line">*      TipDate = 1 100</span><br><span class="line">        RootAge = &#x27;&lt;10&#x27;  * constraint on root age, used if no fossil for root.</span><br><span class="line"></span><br><span class="line">         model = 0    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85</span><br><span class="line">         alpha = 0.5   * alpha for gamma rates at sites</span><br><span class="line">         ncatG = 4    * No. categories in discrete gamma</span><br><span class="line"></span><br><span class="line">     cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?</span><br><span class="line"></span><br><span class="line">       BDparas = 1 1 0.1   * birth, death, sampling</span><br><span class="line">   kappa_gamma = 6 2      * gamma prior for kappa</span><br><span class="line">   alpha_gamma = 1 1      * gamma prior for alpha</span><br><span class="line"></span><br><span class="line">   rgene_gamma = 2 20 1   * gamma prior for rate for genes</span><br><span class="line">  sigma2_gamma = 1 10 1    * gamma prior for sigma^2     (for clock=2 or 3)</span><br><span class="line"></span><br><span class="line">      finetune = 1: .1 .1 .1 .1 .1 .1  * times, rates, mixing, paras, RateParas</span><br><span class="line"></span><br><span class="line">         print = 1</span><br><span class="line">        burnin = 1000000</span><br><span class="line">      sampfreq = 10</span><br><span class="line">       nsample = 500000</span><br><span class="line"></span><br><span class="line">*** Note: Make your window wider (100 columns) when running this program.</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>运行<code>mcmctree mcmctree3.ctl</code></li>
+</ol>
+<ul>
+<li>此步骤的目的是为了获取in.BV文件；</li>
+<li>用命令<code>mcmctree mcmctree3.ctl</code>运行起来后，ctrl+C多次中断运行（共261个序列，会依次调用261次codeml，中断后会自动进入下一次调用，目的是完成261次调用生成261个序列的临时文件）；由于单个序列短，很快会完成分析，也可以不ctrl+C中断，等待完成，只要生成261套tmp*文件即可。</li>
+<li>删除rst2文件和mcmc.out,mcmc.txt,out.BV文件；把paml软件下的wag.dat文件复制到当前目录下<code>cp ~/software/anaconda3/dat/wag.dat ./</code>；</li>
+<li>用命令<code>sed -i -e &quot;s/model = 0/model =2\naaRatefile = wag.dat/&quot; -e &quot;s/method = 0/method = 1/&quot; tmp*.ctl</code>把所有tmp*.ctl文件的model修改成model &#x3D; 2，method修改成method &#x3D; 1,并添加一行aaRatefile &#x3D; wag.dat；</li>
+<li>用命令<code>for i in $(ls tmp*.ctl);do codeml $&#123;i&#125; ; mv rst2 $&#123;i&#125;.rst2; done</code>调用codeml进行261次分析（每次codeml都生成rst2文件，所以每次生成后把rst2改名，否则rst2被覆盖）；</li>
+<li>然后<code>cat *rst2 &gt;in.BV</code>合并所有rst2文件到in.BV文件；</li>
+</ul>
+<ol start="6">
+<li>运行<code>mcmctree mcmctree2.ctl</code></li>
+</ol>
+<ul>
+<li>新建目录并复制四个文件sample.phy,sample.tre,mcmctree3.ctl,in.BV到新目录<code>mkdir mcmctree2 &amp;&amp; cd mcmctree2 &amp;&amp; cp ../Ane.* ./ &amp;&amp; cp ../mcmctree3.ctl ./ &amp;&amp; cp ../in.BV ./</code>;</li>
+<li>把mcmctree3.ctl文件内的usedata &#x3D; 3改为usedata &#x3D; 2，并重命名成mcmctree2.ctl；</li>
+<li>然后运行<code>mcmctree mcmctree2.ctl</code>；</li>
+<li>等待两三天获取结果，FigTree.tre文件包含了所有节点的95%HPD的时间，是nexus格式。</li>
+<li>根据FigTree.tre结果：<code>((sampleA: 0.408365, (sampleH1: 0.107333, sampleH2: 0.107333) [&amp;95%=&#123;0.0749432, 0.126365&#125;]: 0.301032) [&amp;95%=&#123;0.285365, 0.478163&#125;]: 0.362000, sampleB: 0.770366) [&amp;95%=&#123;0.53864, 0.90012&#125;];</code>的sampleH1和sampleH2分化的时间，可以看出WGD发生的时间在**10.7Ma[7.5-12.6]**之间。</li>
+</ul>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3326336/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3326336/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wyp1125/MCScanX">https://github.com/wyp1125/MCScanX</a></li>
+<li><a target="_blank" rel="noopener" href="https://its201.com/article/sinat_41621566/113359074">https://its201.com/article/sinat_41621566/113359074</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/divergence-time/" rel="tag"># divergence time</a>
+              <a href="/tags/paml/" rel="tag"># paml</a>
+              <a href="/tags/synteny/" rel="tag"># synteny</a>
+              <a href="/tags/colinearity/" rel="tag"># colinearity</a>
+              <a href="/tags/Ks/" rel="tag"># Ks</a>
+              <a href="/tags/WGD/" rel="tag"># WGD</a>
+              <a href="/tags/MCScanX/" rel="tag"># MCScanX</a>
+              <a href="/tags/ParaAT-pl/" rel="tag"># ParaAT.pl</a>
+              <a href="/tags/KaKs-Calculator/" rel="tag"># KaKs_Calculator</a>
+              <a href="/tags/ggplot2/" rel="tag"># ggplot2</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/20/bio_evolutionary.tree/" rel="prev" title="进化树相关知识">
+      <i class="fa fa-chevron-left"></i> 进化树相关知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/06/bioinfo_orthology.inference_OrthoFinder2/" rel="next" title="用OrthoFinder做直系同源推断">
+      用OrthoFinder做直系同源推断 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCScanX%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">1. MCScanX介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MCScanX%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2. MCScanX同线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%BF%90%E8%A1%8CMCScanX"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 运行MCScanX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 结果文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MCScanX%E4%B8%8B%E6%B8%B8%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">3. MCScanX下游分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8F%96block%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">提取block位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E7%BB%98%E5%9B%BE%E8%84%9A%E6%9C%AC"><span class="nav-number">3.2.</span> <span class="nav-text">3.1. 绘图脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%A4%8D%E5%88%B6%E4%BA%8B%E4%BB%B6%E5%88%86%E7%B1%BB"><span class="nav-number">3.3.</span> <span class="nav-text">3.2. 复制事件分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-duplicate-gene-classifier"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.2.1. duplicate_gene_classifier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6sample-collinearity%E7%9A%84%E8%84%9A%E6%9C%AC"><span class="nav-number">3.4.</span> <span class="nav-text">解析结果文件sample.collinearity的脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E8%AE%A1%E7%AE%97%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97Ks"><span class="nav-number">3.5.</span> <span class="nav-text">3.3. 计算共线性区块Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9Aadd-ka-and-ks-to-collinearity-pl%EF%BC%88MCScanX%E7%9A%84downstream-analyses%E7%9B%AE%E5%BD%95%E4%B8%8B%E8%87%AA%E5%B8%A6%E8%84%9A%E6%9C%AC%EF%BC%89"><span class="nav-number">3.5.1.</span> <span class="nav-text">3.3.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AParaAT-pl-KaKs-Calculator2-0"><span class="nav-number">3.5.2.</span> <span class="nav-text">3.3.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%92%8C%E5%B3%B0%E5%80%BC"><span class="nav-number">3.6.</span> <span class="nav-text">3.4. ggplot2画密度分布图和峰值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE"><span class="nav-number">3.6.1.</span> <span class="nav-text">3.4.1. ggplot2画密度分布图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-ggplot2%E5%B3%B0%E5%80%BC%E6%A0%87%E5%AE%9A"><span class="nav-number">3.6.2.</span> <span class="nav-text">3.4.2. ggplot2峰值标定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E5%A4%9A%E4%B8%AA%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="nav-number">3.6.3.</span> <span class="nav-text">3.4.3. 多个密度图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-4-%E9%80%9A%E8%BF%87%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%88%A4%E6%96%ADWGD"><span class="nav-number">3.6.4.</span> <span class="nav-text">3.4.4. 通过密度分布图判断WGD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-WGD%E5%8F%91%E7%94%9F%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-number">3.7.</span> <span class="nav-text">3.5. WGD发生的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-1-%E9%80%9A%E8%BF%87Ks-x3D-2%CE%BCT%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-number">3.7.1.</span> <span class="nav-text">3.5.1. 通过Ks&#x3D;2μT计算时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-2-%E9%80%9A%E8%BF%87%E8%BF%9B%E5%8C%96%E6%A0%91%E4%BC%B0%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-number">3.7.2.</span> <span class="nav-text">3.5.2. 通过进化树估算时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-1-%E8%8E%B7%E5%8F%96sample%E5%8F%91%E7%94%9FWGD%E7%9A%84%E4%B8%A4%E5%A5%97%E5%9F%BA%E5%9B%A0"><span class="nav-number">3.7.2.1.</span> <span class="nav-text">3.5.2.1. 获取sample发生WGD的两套基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-2-%E9%80%89%E8%BF%91%E7%BC%98%E7%A7%8D%E5%92%8C%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-number">3.7.2.2.</span> <span class="nav-text">3.5.2.2. 选近缘种和分化时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-3-orthofinder%E6%89%BE%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-number">3.7.2.3.</span> <span class="nav-text">3.5.2.3. orthofinder找直系同源基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-4-%E5%BB%BA%E5%8D%95%E5%9F%BA%E5%9B%A0%E6%A0%91"><span class="nav-number">3.7.2.4.</span> <span class="nav-text">3.5.2.4. 建单基因树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-5-paml%E4%BC%B0%E8%AE%A1%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-number">3.7.2.5.</span> <span class="nav-text">3.5.2.5. paml估计分化时间</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/11/27/bioinfo_synteny_MCScanX/";
+    this.page.identifier = "2021/11/27/bioinfo_synteny_MCScanX/";
+    this.page.title = "基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

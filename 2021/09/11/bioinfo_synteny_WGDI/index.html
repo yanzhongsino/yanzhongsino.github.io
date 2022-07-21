@@ -1,10 +1,735 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="记录软件WGDI的安装和使用。这里记录了WGDI用于基因组内共线性区块的鉴定，Ks计算，WGD鉴定。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分析基因组共线性、计算Ks和鉴定WGD —— WGDI">
+<meta property="og:url" content="http://example.com/2021/09/11/bioinfo_synteny_WGDI/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录软件WGDI的安装和使用。这里记录了WGDI用于基因组内共线性区块的鉴定，Ks计算，WGD鉴定。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2021-09-11T06:30:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T10:07:36.511Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="synteny">
+<meta property="article:tag" content="colinearity">
+<meta property="article:tag" content="Ks">
+<meta property="article:tag" content="WGD">
+<meta property="article:tag" content="WGDI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/09/11/bioinfo_synteny_WGDI/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分析基因组共线性、计算Ks和鉴定WGD —— WGDI | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/11/bioinfo_synteny_WGDI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分析基因组共线性、计算Ks和鉴定WGD —— WGDI
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-11 14:30:00" itemprop="dateCreated datePublished" datetime="2021-09-11T14:30:00+08:00">2021-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 18:07:36" itemprop="dateModified" datetime="2022-07-15T18:07:36+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/09/11/bioinfo_synteny_WGDI/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/09/11/bioinfo_synteny_WGDI/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">记录软件WGDI的安装和使用。这里记录了WGDI用于基因组内共线性区块的鉴定，Ks计算，WGD鉴定。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+
+<h1 id="1-WGDI介绍"><a href="#1-WGDI介绍" class="headerlink" title="1. WGDI介绍"></a>1. WGDI介绍</h1><p>WGDI (Whole-Genome Duplication Integrated analysis)是python写的命令行工具，用于多倍化和跨物种基因组比对的综合分析，包括鉴定基因组内共线性区块，Ks计算，全基因组复制事件(WGD, whole genome duplication)的数量和时间的鉴定。</p>
+<p>WGDI主要的三个功能是：</p>
+<ul>
+<li>多倍体推断</li>
+<li>基因组同源性的层次推断</li>
+<li>祖先染色体核型分析</li>
+</ul>
+<h1 id="2-WGDI安装"><a href="#2-WGDI安装" class="headerlink" title="2. WGDI安装"></a>2. WGDI安装</h1><p>WGDI的依赖：PAML,MAFFT,MUSCLE,PAL2NAL,IQTREE。</p>
+<p>安装有三种方法:</p>
+<ol>
+<li>conda<br><code>conda create -c bioconda -c conda-forge -n wgdi wgdi</code> 建议新建一个环境</li>
+<li>pip<br><code>pip install wgdi</code></li>
+<li>github<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/SunPengChuan/wgdi.git</span><br><span class="line">cd wgdi</span><br><span class="line">python setup.py install</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="3-WGDI进行共线性分析"><a href="#3-WGDI进行共线性分析" class="headerlink" title="3. WGDI进行共线性分析"></a>3. WGDI进行共线性分析</h1><h2 id="3-1-初始输入文件"><a href="#3-1-初始输入文件" class="headerlink" title="3.1. 初始输入文件"></a>3.1. 初始输入文件</h2><h3 id="3-1-1-输入文件"><a href="#3-1-1-输入文件" class="headerlink" title="3.1.1. 输入文件"></a>3.1.1. 输入文件</h3><p>WGDI需要三个输入文件，分别是基因的位置信息文件sample.gff，染色体长度信息文件sample.len和BLAST的输出文件sample.blast.txt，要求格式如下：</p>
+<ul>
+<li>input.gff: 一共七列，以tab分隔，分别为chr(chromosome number)，geneid(gene name)，start，end，direction(strand+&#x2F;-)，order(order of each chromosome,starting from 1, 每个chr内部从1开始的顺序），original(original id and not read,旧的id，不会读入)。<br>  和典型的GFF格式不一样</li>
+<li>input.len: 一共三列，以tab分隔，染色体长度信息和染色体上的基因个数，chr(chromosome number), chr_length(染色体长度bp), chr_gene_number(注释到单个染色体的基因数量)</li>
+<li>sample.blast.txt：蛋白质序列的自我比对，BLAST的-outfmt 6输出格式的文件sample.blast.txt</li>
+</ul>
+<h3 id="3-1-2-准备输入文件"><a href="#3-1-2-准备输入文件" class="headerlink" title="3.1.2. 准备输入文件"></a>3.1.2. 准备输入文件</h3><ol>
+<li>sample.blastp.txt<br>用蛋白序列建库，blastp进行蛋白序列的自我比对，获取-outfmt 6格式的输出文件sample.blastp.txt。命令如下：<br><code>makeblastdb -in sample.pep.fa -dbtype prot</code><br><code>blastp -num_threads 32 -db sample.pep.fasta -query sample.pep.fa -outfmt 6 -evalue 1e-5 -num_alignments 20 -out sample.blastp.txt &amp;</code></li>
+</ol>
+<p>使用脚本<a target="_blank" rel="noopener" href="https://github.com/xuzhougeng/myscripts/blob/master/comparative/generate_conf.py">generate_conf.py</a>从基因组genome.fa和注释文件sample.gff3中获取input.gff和input.len文件。命令是<code>python generate_conf.py -p input genome.fa sample.gff3</code>。</p>
+<ol start="2">
+<li><p>input.gff<br>用generate_conf.py脚本获取输入文件input.gff和input.len<br><code>python generate_conf.py -p input genome.fa sample.gff3</code> # 用脚本生成WGDI的输入文件input.gff和input.len,如果存在contig没被注释到基因，会报错:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;generate_conf.py&quot;, line 117, in &lt;module&gt;</span><br><span class="line">    chrom=chrom,lens=lens,count=gene_count[chrom]), file=len_file)</span><br><span class="line">KeyError: &#x27;contig030&#x27;</span><br></pre></td></tr></table></figure>
+<p>并在contig030的地方停止继续写入input.len，input.gff不受影响。</p>
+</li>
+<li><p>input.len<br>可以用下面的脚本get_len.sh获取input.len</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">## 获取contig的长度</span><br><span class="line">samtools faidx genome.fa</span><br><span class="line">cat genome.fa.fai |cut -f1,2 &gt;chrom.len</span><br><span class="line"></span><br><span class="line">## 获取contig的基因计数</span><br><span class="line">cat sample.gff3 |awk &#x27;$3 == &quot;gene&quot; &#123;print $1&#125;&#x27; &gt;chrom.tem</span><br><span class="line">contig=$(head -1 chrom.tem |sed &quot;s/[0-9]//g&quot;)</span><br><span class="line">c_number=$(tail -1 chrom.tem|sed &quot;s/[A-Za-z]//g&quot;)</span><br><span class="line">for i in $(seq -w 1 $c_number); do echo -e $contig$i&quot;\t&quot;$(grep &quot;$contig$i&quot; chrom.tem |wc -l);done &gt;chrom.count</span><br><span class="line"></span><br><span class="line">## 合并生成input.len</span><br><span class="line">join chrom.len chrom.count|sed &quot;s/ /\t/g&quot; &gt;input.len</span><br><span class="line"></span><br><span class="line">## 删除中间文件</span><br><span class="line">rm chrom.tem chrom.len chrom.count</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-共线性分析"><a href="#3-2-共线性分析" class="headerlink" title="3.2. 共线性分析"></a>3.2. 共线性分析</h2><p>WGDI的分析的参数都是在配置文件中进行设置，所以分析都需要先创建配置文件，然后修改配置文件，最后运行程序。<br>每个配置项中都有gff1，gff2；lens1，lens2；blast这五个参数，是相同的。</p>
+<h3 id="3-2-1-绘制共线性点阵图"><a href="#3-2-1-绘制共线性点阵图" class="headerlink" title="3.2.1. 绘制共线性点阵图"></a>3.2.1. 绘制共线性点阵图</h3><p>WGDI的d模块绘制基因组内的共线性点阵图，初略估计是否有基因复制区域。<br>共线性点阵图是把两个基因组（做WGD分析则是把一个基因组的两份复制）分别作为横纵坐标，把检测到的同源匹配基因在相应位置做点标记；点数量多且相邻时，会有点组成的线出现，线代表比较长的共线性区块，代表着历史上的复制事件。</p>
+<ol>
+<li>创建配置文件input.conf<br><code>wgdi -d \? &gt;input.conf</code></li>
+</ol>
+<p>创建input.conf配置文件，里面包含[dotplot]配置参数。</p>
+<ol start="2">
+<li>修改配置文件</li>
+</ol>
+<ul>
+<li><p>input.conf配置文件的信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[dotplot]</span><br><span class="line">blast = blast file # sample.blastp.txt文件</span><br><span class="line">gff1 =  gff1 file # 比对项1的input.gff文件</span><br><span class="line">gff2 =  gff2 file # 比对项2的input.gff文件，如果是自我比对，则gff1和gff2一样</span><br><span class="line">lens1 = lens1 file # 比对项1的input.len文件</span><br><span class="line">lens2 = lens2 file # 比对项2的input.len文件，如果是自我比对，则lens1和lens2一样</span><br><span class="line">genome1_name =  Genome1 name # 比对项1的基因组名称</span><br><span class="line">genome2_name =  Genome2 name # 比对项2的基因组名称，如果是自我比对，与genome1_name一致</span><br><span class="line">multiple  = 1 # 最好的同源基因对数量，输出结果图中会用红点表示</span><br><span class="line">score = 100 # blast输出的score过滤</span><br><span class="line">evalue = 1e-5 # blast输出的evalue过滤</span><br><span class="line">repeat_number = 10 # 允许去除超过部分种群的同源基因数量</span><br><span class="line">position = order</span><br><span class="line">blast_reverse = false</span><br><span class="line">ancestor_left = ancestor file or none # 点阵图左侧物种的祖先染色体区域，一般设置成none就好</span><br><span class="line">ancestor_top = ancestor file or none # 点阵图顶侧物种的祖先染色体区域，一般设置成none就好</span><br><span class="line">markersize = 0.5 # 点的尺寸</span><br><span class="line">figsize = 10,10 # 图的尺寸</span><br><span class="line">savefig = savefile(.png, .pdf, .svg) # 保存的图片结果名称和格式</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>input.conf配置文件示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[dotplot]</span><br><span class="line">blast = sample.blastp.txt</span><br><span class="line">gff1 =  input.gff</span><br><span class="line">gff2 =  input.gff</span><br><span class="line">lens1 = input.len</span><br><span class="line">lens2 = input.len</span><br><span class="line">genome1_name =  sample</span><br><span class="line">genome2_name =  sample</span><br><span class="line">multiple  = 1</span><br><span class="line">score = 100</span><br><span class="line">evalue = 1e-5</span><br><span class="line">repeat_number = 10</span><br><span class="line">position = order</span><br><span class="line">blast_reverse = false</span><br><span class="line">ancestor_left = none</span><br><span class="line">ancestor_top = none</span><br><span class="line">markersize = 0.5</span><br><span class="line">figsize = 10,10</span><br><span class="line">savefig = out.pdf</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><p>运行<br><code>wgdi -d input.conf</code></p>
+</li>
+<li><p>结果<br>结果保存在out.pdf的图中。</p>
+</li>
+</ol>
+<p>结果解释：</p>
+<ul>
+<li>图中有三种颜色，红色表示genome2的基因在genome1中的最优同源匹配，次优的四个基因是蓝色，其余的是灰色。</li>
+<li>WGDI会过滤掉自身与自身的比对结果，所以图中对角线出现的片段不是自身比对结果，而是串联基因（tandem）形成的共线性区块。</li>
+<li>如果基因组存在加倍事件，则基因组不同区域的同源基因的排布顺序会比较一致，在图上就能观察到多个点排列组成的“线”。</li>
+</ul>
+<h3 id="3-2-2-获取共线性区块"><a href="#3-2-2-获取共线性区块" class="headerlink" title="3.2.2. 获取共线性区块"></a>3.2.2. 获取共线性区块</h3><p>WGDI的icl(Improved version of ColinearScan)模块用于获取共线性区块的具体位置信息。与MCScanX软件功能一致。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -icl \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[collinearity]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[collinearity]</span><br><span class="line">gff1 =  gff1 file # 比对项1的input.gff文件</span><br><span class="line">gff2 =  gff2 file # 比对项2的input.gff文件，如果是自我比对，则gff1和gff2一样</span><br><span class="line">lens1 = lens1 file # 比对项1的input.len文件</span><br><span class="line">lens2 = lens2 file # 比对项2的input.len文件，如果是自我比对，则lens1和lens2一样</span><br><span class="line">blast = blast file # sample.blastp.txt文件</span><br><span class="line">blast_reverse = false</span><br><span class="line">multiple  = 1 # 最好的同源基因对数量，输出结果图中会用红点表示</span><br><span class="line">process = 8 # 线程</span><br><span class="line">evalue = 1e-5 # blast输出的evalue过滤</span><br><span class="line">score = 100 # blast输出的score过滤</span><br><span class="line">grading = 50,25,10 # 为red,blue,gray三种颜色的点指定不同的分数</span><br><span class="line">mg = 25,25 # 检测共线性区域的最大gap值，即共线性区块内含的最大空缺基因数量。</span><br><span class="line">pvalue = 1 # 显著性，评估共线性blocks的紧密程度和独特程度的参数，取值范围是0-1，更好的共线性范围是0-0.2。</span><br><span class="line">repeat_number = 10 # 允许去除超过部分种群的同源基因数量</span><br><span class="line">positon = order</span><br><span class="line">savefile = out.collinearity # 保存共线性结果的文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -icl input.conf</code></p>
+</li>
+<li><p>结果<br>结果out.collinearity中记录着共线性区域。</p>
+</li>
+</ol>
+<p># Alignment起始的行记录着共线性区块的信息，包括得分(score),显著性(pvalue),基因对数(N)，strand(plus&#x2F;minus)。</p>
+<h3 id="3-2-3-计算KaKs"><a href="#3-2-3-计算KaKs" class="headerlink" title="3.2.3. 计算KaKs"></a>3.2.3. 计算KaKs</h3><p>WGDI的ks模块计算共线性区块的基因对间的ka和ks。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -ks \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[ks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ks]</span><br><span class="line">cds_file =  input.cds.fa # 基因组(一个或多个)的cds序列</span><br><span class="line">pep_file =  input.pep.fa # 基因组(一个或多个)的氨基酸序列；可选参数，如果不设置，将用biopython模块翻译cds文件获得。</span><br><span class="line">align_software = muscle # 选择多序列比对软件:&#123;muscle,mafft&#125;</span><br><span class="line">pairs_file = out.collinearity # tab分隔的共线性基因对。上一步共线性分析的结果文件，也支持MCScanX的共线性分析结果文件。</span><br><span class="line">ks_file = out.ks # 保存ks结果的文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -ks input.conf</code></p>
+</li>
+</ol>
+<p>WGDI会用muscle根据氨基酸序列进行联配，然后用pal2pal.pl基于cds序列将氨基酸联配转为密码子联配，最后用paml中的yn00和ng86两种方法计算ka和ks。</p>
+<ol start="4">
+<li>结果<br>out.ks结果有6列，对应的是每个基因的ka和ks。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ head -2 out.ks</span><br><span class="line">id1  id2  ka_NG86  ks_NG86  ka_YN00  ks_YN00</span><br><span class="line">vvi161s1g00311	vvi161s1g00312	0.2986	1.2027	0.3047	1.3864</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-4-整合共线性区块信息"><a href="#3-2-4-整合共线性区块信息" class="headerlink" title="3.2.4. 整合共线性区块信息"></a>3.2.4. 整合共线性区块信息</h3><p>WGDI的bi模块可以整合共线性区块和ks信息成一个可读性更强的csv文件。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -bi \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[blockinfo]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[blockinfo]</span><br><span class="line">blast = input.blastp.txt</span><br><span class="line">gff1 =  input.gff</span><br><span class="line">gff2 =  input.gff</span><br><span class="line">lens1 = input.len</span><br><span class="line">lens2 = input.len</span><br><span class="line">collinearity = out.collinearity # 共线性区域结果文件</span><br><span class="line">score = 100</span><br><span class="line">evalue = 1e-5</span><br><span class="line">repeat_number = 20</span><br><span class="line">position = order</span><br><span class="line">ks = out.ks # ks结果文件</span><br><span class="line">ks_col = ks_NG86 # 声明使用ks结果文件的列名</span><br><span class="line">savefile = block_info.csv</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -bi input.conf</code></p>
+</li>
+<li><p>结果</p>
+</li>
+</ol>
+<p>结果文件block_info.csv共11列：</p>
+<ul>
+<li>id：共线性结果的id</li>
+<li>chr1,start1,end1：点图左边的基因组共线性区块的位置范围</li>
+<li>chr2,start2,end2：点图上边的基因组共线性区块的位置范围</li>
+<li>pvalue：共线性结果评估，一般认为&lt;0.01更合理</li>
+<li>length：共线性区块长度</li>
+<li>ks_median：共线性区块上所有基因对ks的中位数，用于评估ks分布</li>
+<li>ks_average：共线性区块上所有基因对ks的平均值</li>
+<li>homo1-n：multiple参数为n，则有n列，表示一个基因有n个最佳匹配时的取值，对应点阵图中的红点</li>
+<li>block1,block2：共线性区块上基因order的位置</li>
+<li>ks：共线性区块上基因对的ks值</li>
+<li>density1,density2：共线性区块的基因分布密集程度，值越大越密集</li>
+<li>class1,class2：在alignment模块中用到，对应两个block分组。默认值是0，表示两个block是同一组。这两列需要根据覆盖率、染色体核型等多个方面进行确定。</li>
+</ul>
+<h2 id="3-3-根据ks分布拟合单次WGD事件"><a href="#3-3-根据ks分布拟合单次WGD事件" class="headerlink" title="3.3. 根据ks分布拟合单次WGD事件"></a>3.3. 根据ks分布拟合单次WGD事件</h2><ol>
+<li>背景知识<br>在Lynch和Conery在2000年发表在Science的论文中，他们证明了小规模基因复制的Ks分布是L型，而在L型分布背景上叠加的峰则是来自于演化历史中某个突然的大规模复制事件。<br>L型分布（呈指数分布, exponential distribution), 最初的峰可能是近期的串联复制引起，随着时间推移基因丢失，形成一个向下的坡。正态分布(normal distribution)的峰则是由全基因组复制引起。</li>
+</ol>
+<p>这就意味着我们可以根据ks频率分布图的正态分布峰来判断物种历史上发生过的全基因组复制事件，并通过ks值拟合峰值获得WGD事件发生的时间。</p>
+<ol start="2">
+<li>根据ks分布拟合单次WGD事件的峰</li>
+</ol>
+<ul>
+<li>通过kspeaks(-kp)模块过滤blockinfo文件，根据ks峰值分布设置ks_area过滤参数，同时可以调整homo参数看看效果，得到单独一个WGD事件形成的共线性区块和相应的ks值。</li>
+<li>接着用PeaksFit(-pf)模块对值的峰进行拟合得到模型参数。</li>
+<li>最后用KsFigures(-kf)将拟合结果绘制到一张图上。</li>
+<li>想看单个WGD事件的ks点阵图还可以把blockks的blockinfo参数换成kspeaks(-kp)模块过滤后得到的ks_median.distri.csv，跑一遍绘制ks点阵图(-bk)模块获取过滤后的ks点阵图。</li>
+</ul>
+<p>因为用WGDI对ks频率分布图的峰进行拟合时，一次只能拟合一个峰。当发现两次或多次WGD事件后，需要两次或多次重复以上分析过程，分别获取WGD的ks拟合图。</p>
+<h2 id="3-4-ks拟合和可视化"><a href="#3-4-ks拟合和可视化" class="headerlink" title="3.4. ks拟合和可视化"></a>3.4. ks拟合和可视化</h2><h3 id="3-4-1-ks可视化——绘制ks点阵图"><a href="#3-4-1-ks可视化——绘制ks点阵图" class="headerlink" title="3.4.1. ks可视化——绘制ks点阵图"></a>3.4.1. ks可视化——绘制ks点阵图</h3><p>第一步绘制的点阵图里包含基因组上检测到的所有同源基因对（所以点特别多），bk模块绘制的ks点阵图的点只包含确认了共线性的基因对，用ks值作为点的颜色信息，可以根据ks点阵图的共线性区域的颜色来区分不同时期的多倍化事件。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -bk \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[blockks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[blockks]</span><br><span class="line">lens1 = input.len</span><br><span class="line">lens2 = input.len</span><br><span class="line">genome1_name =  sample</span><br><span class="line">genome2_name =  sample</span><br><span class="line">blockinfo =  block_info.csv # bi模块整合结果</span><br><span class="line">pvalue = 0.2 # 共线性区块的显著性，对应blockinfo的pvalue列</span><br><span class="line">tandem = true # 是否过滤串联基因形成的共线性区（在点阵图上对角线附近）</span><br><span class="line">tandem_length = 200 # 如果tandem=true，那么评估tandem的标准为两个区块的物理距离</span><br><span class="line">markersize = 1</span><br><span class="line">area = 0,2 # 输出结果中ks的取值范围</span><br><span class="line">block_length =  5 # 一个共线性区块的最小基因对数量，对应blockinfo的length列</span><br><span class="line">figsize = 8,8</span><br><span class="line">savefig = ks.dotplot.pdf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -bk input.conf</code></p>
+</li>
+<li><p>结果<br>结果保存在ks.dotplot.pdf文件中。</p>
+</li>
+</ol>
+<p>结果解释：</p>
+<ul>
+<li>图中每个点都是共线性区块的基因对，点的颜色是ks值。</li>
+<li>可以用共线性区块的ks中位数来初步判断复制发生的时间，所以图中颜色相近的共线性区块看作同时发生的复制，当图中大致观察到两种颜色的点和线时，表示对应的两次全基因组复制事件。</li>
+</ul>
+<h3 id="3-4-2-ks可视化——过滤后绘制ks频率分布图"><a href="#3-4-2-ks可视化——过滤后绘制ks频率分布图" class="headerlink" title="3.4.2. ks可视化——过滤后绘制ks频率分布图"></a>3.4.2. ks可视化——过滤后绘制ks频率分布图</h3><p>通过计算共线性区块的基因对ks值，可以获得基因对复制发生的时间，如果有全基因组复制（WGD）发生，那么现有物种的基因组会留下许多ks相近的基因对，通过ks频率分布图可以看到峰，由此判断WGD的发生次数和发生时间。</p>
+<ol>
+<li>建立配置文件<br><code>wgdi -kp \? &gt;&gt;input.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[kspeaks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[kspeaks]</span><br><span class="line">blockinfo = block_info.csv</span><br><span class="line">pvalue = 0.2 # 共线性区块的显著性，对应blockinfo的pvalue列</span><br><span class="line">tandem = true # 是否过滤串联重复基因形成的共线性区（在点阵图上对角线附近）</span><br><span class="line">block_length = 5 # 共线性区块的基因对的数目</span><br><span class="line">ks_area = 0,10 # 对应blockinfo的ks列，0-10表示只保留ks在0-10的基因对。</span><br><span class="line">multiple  = 1 # 选择homo中的哪列用于后续过滤，一般选homo1</span><br><span class="line">homo = -1,1 # 根据homo的共线性区块中基因对的总体得分（取值范围-1，1，值越大表示最佳匹配的基因对越多，也就是越近期的WGD事件得到的基因对）对共线性区块进行过滤，只取得分在-1-1之间的共线性区块，即不根据homo过滤。</span><br><span class="line">fontsize = 9</span><br><span class="line">area = 0,3</span><br><span class="line">figsize = 10,6.18</span><br><span class="line">savefig = ks_median.distri.pdf # ks频率分布图结果</span><br><span class="line">savefile = ks_median.distri.csv # 对block_info.csv的过滤后结果，与block_info.csv格式一致</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -kp input.conf</code></p>
+</li>
+</ol>
+<p>根据配置参数过滤blockinfo文件的低质量数据，再绘制频率分布图。</p>
+<ol start="4">
+<li>结果<br>结果保存在ks_median.distri.pdf（ks峰图）和ks_median.distri.csv（输入文件block_info.csv过滤后结果，与block_info.csv格式一致）。</li>
+</ol>
+<p>从峰图的峰的数量可以估计WGD的数量。</p>
+<ol start="5">
+<li>说明<br>因为用WGDI对ks频率分布图的峰进行拟合时，一次只能拟合一个峰。当发现两次或多次WGD事件后，需要两次或多次重复以上分析过程，分别获取WGD的ks拟合图。</li>
+</ol>
+<p>所以也可以先不过滤绘制ks频率分布图，初步查看ks的分布情况；再根据每次WGD事件的分布设置ks_area,multiple,homo三个参数来分离单次WGD事件的数据，再进行过滤-拟合-作图。</p>
+<p>三个参数的设置：</p>
+<ul>
+<li>ks_area：根据单次WGD的ks分布范围设置，过滤出单次WGD的数据。</li>
+<li>multiple：选择不同的homo，一般没有特殊需求，选择最优的，即1。</li>
+<li>homo：设置不同的homo范围，观察做出的图中峰的变化来确定homo范围是否合理。</li>
+</ul>
+<h3 id="3-4-3-拟合ks频率分布图的峰"><a href="#3-4-3-拟合ks频率分布图的峰" class="headerlink" title="3.4.3. 拟合ks频率分布图的峰"></a>3.4.3. 拟合ks频率分布图的峰</h3><ol>
+<li>建立配置文件<br><code>wgdi -pf \? &gt;&gt;peak.conf</code></li>
+</ol>
+<p>在已有配置文件input.conf的基础上添加[kspeaks]配置参数。</p>
+<ol start="2">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[peaksfit]</span><br><span class="line">blockinfo  =  ks.distri.csv</span><br><span class="line">mode  =  median</span><br><span class="line">bins_number  =  200</span><br><span class="line">ks_area  =  0,10</span><br><span class="line">fontsize  =  9</span><br><span class="line">area  =  0,3</span><br><span class="line">figsize  =  10,6.18</span><br><span class="line">savefig  =  ks.peaksfit.pdf </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -pf peak.conf</code></p>
+</li>
+</ol>
+<p>得到拟合图ks.peaksfit.pdf和一些参数(包括一个R-square和3个拟合参数the gaussian fitting curve parameters）;拟合参数用于后续ksfigure模块分析。</p>
+<h3 id="3-4-4-拟合结果作图——kf模块"><a href="#3-4-4-拟合结果作图——kf模块" class="headerlink" title="3.4.4. 拟合结果作图——kf模块"></a>3.4.4. 拟合结果作图——kf模块</h3><ol>
+<li><p>建立配置文件<br>在已有配置文件input.conf的基础上添加[ksfigure]配置参数。<br><code>wgdi -kf \? &gt;&gt;input.conf</code></p>
+</li>
+<li><p>创建all_ks.csv文件</p>
+</li>
+</ol>
+<ul>
+<li><p>all_ks.csv文件内容<br>第一行为标题行，之后行为数据行。<br>共有4+3n列(n是peak数量，即WGD的次数），逗号分隔，第一列是样本信息，第2-3列对应线条属性(color,linewidth,linestyle)，后面列都是拟合参数（the gaussian fitting curve parameters拟合参数，每个peak有3个拟合参数，n个peaks有3n个，依次列出。<br>标题行要包含所有列（可为空）；数据行根据各自的峰数量可能有不同列数（比如一个峰的7列，两个峰的10列）。</p>
+</li>
+<li><p>all_ks.csv文件示例<br>两个样本，三次比对(sample1_sample1,sample2_sample2,sample1_sample2)，两个峰的all_ks.csv文件示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">,color,linewidth,linestyle,,,,,,</span><br><span class="line">sample1_sample1,green,1,--,5.02360835744403,0.8319599832352784,0.10382203381206191,2.084853812322066,1.8332872127128195,0.2506813629824027</span><br><span class="line">sample2_sample2,red,1,--,5.02360835744403,0.8319599832352784,0.10382203381206191,2.084853812322066,1.8332872127128195,0.2506813629824027</span><br><span class="line">sample1_sample2,yellow,1,-,3.00367275,1.288717936,0.177816426</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><p>修改配置参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[ksfigure]</span><br><span class="line">ksfit = all_ks.csv # 拟合参数文件</span><br><span class="line">labelfontsize = 15</span><br><span class="line">legendfontsize = 15</span><br><span class="line">xlabel = none</span><br><span class="line">ylabel = none</span><br><span class="line">title = none</span><br><span class="line">area = 0,4</span><br><span class="line">figsize = 10,6.18</span><br><span class="line">savefig =  all_ks.pdf #保存的拟合图</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<br><code>wgdi -kf input.conf</code></p>
+</li>
+</ol>
+<p>得到all_ks.pdf拟合图</p>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li>WGDI’s documentation：<a target="_blank" rel="noopener" href="https://wgdi.readthedocs.io/en/latest/">https://WGDI.readthedocs.io/en/latest/</a></li>
+<li>WGDI’s github：<a target="_blank" rel="noopener" href="https://github.com/SunPengChuan/wgdi">https://github.com/SunPengChuan/wgdi</a></li>
+<li>xuzhougeng’s WGDI上：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a50548e81ac0">https://www.jianshu.com/p/a50548e81ac0</a></li>
+<li>xuzhougeng’s WGDI中：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0e4a2807468d">https://www.jianshu.com/p/0e4a2807468d</a></li>
+<li>xuzhougeng’s WGDI下：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/28a4c3045919">https://www.jianshu.com/p/28a4c3045919</a></li>
+<li>xuzhougeng’s WGDI blockinfo blog：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e97fdcf5d06f">https://www.jianshu.com/p/e97fdcf5d06f</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/synteny/" rel="tag"># synteny</a>
+              <a href="/tags/colinearity/" rel="tag"># colinearity</a>
+              <a href="/tags/Ks/" rel="tag"># Ks</a>
+              <a href="/tags/WGD/" rel="tag"># WGD</a>
+              <a href="/tags/WGDI/" rel="tag"># WGDI</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/06/bioinfo_align_MSA/" rel="prev" title="多序列比对(Multiple Sequence Alignment,MSA)">
+      <i class="fa fa-chevron-left"></i> 多序列比对(Multiple Sequence Alignment,MSA)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/20/concept_monophyly.paraphyly.polyphyly/" rel="next" title="单系(monophyly)、并系(paraphyly)和复系(polyphyly)及相关定义">
+      单系(monophyly)、并系(paraphyly)和复系(polyphyly)及相关定义 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-WGDI%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">1. WGDI介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-WGDI%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">2. WGDI安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-WGDI%E8%BF%9B%E8%A1%8C%E5%85%B1%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">3. WGDI进行共线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%88%9D%E5%A7%8B%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 初始输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1. 输入文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2. 准备输入文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%85%B1%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 共线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E7%BB%98%E5%88%B6%E5%85%B1%E7%BA%BF%E6%80%A7%E7%82%B9%E9%98%B5%E5%9B%BE"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1. 绘制共线性点阵图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E8%8E%B7%E5%8F%96%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2. 获取共线性区块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E8%AE%A1%E7%AE%97KaKs"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3. 计算KaKs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-4-%E6%95%B4%E5%90%88%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97%E4%BF%A1%E6%81%AF"><span class="nav-number">3.2.4.</span> <span class="nav-text">3.2.4. 整合共线性区块信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%A0%B9%E6%8D%AEks%E5%88%86%E5%B8%83%E6%8B%9F%E5%90%88%E5%8D%95%E6%AC%A1WGD%E4%BA%8B%E4%BB%B6"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. 根据ks分布拟合单次WGD事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-ks%E6%8B%9F%E5%90%88%E5%92%8C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">3.4.</span> <span class="nav-text">3.4. ks拟合和可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-ks%E5%8F%AF%E8%A7%86%E5%8C%96%E2%80%94%E2%80%94%E7%BB%98%E5%88%B6ks%E7%82%B9%E9%98%B5%E5%9B%BE"><span class="nav-number">3.4.1.</span> <span class="nav-text">3.4.1. ks可视化——绘制ks点阵图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-ks%E5%8F%AF%E8%A7%86%E5%8C%96%E2%80%94%E2%80%94%E8%BF%87%E6%BB%A4%E5%90%8E%E7%BB%98%E5%88%B6ks%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83%E5%9B%BE"><span class="nav-number">3.4.2.</span> <span class="nav-text">3.4.2. ks可视化——过滤后绘制ks频率分布图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E6%8B%9F%E5%90%88ks%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83%E5%9B%BE%E7%9A%84%E5%B3%B0"><span class="nav-number">3.4.3.</span> <span class="nav-text">3.4.3. 拟合ks频率分布图的峰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-4-%E6%8B%9F%E5%90%88%E7%BB%93%E6%9E%9C%E4%BD%9C%E5%9B%BE%E2%80%94%E2%80%94kf%E6%A8%A1%E5%9D%97"><span class="nav-number">3.4.4.</span> <span class="nav-text">3.4.4. 拟合结果作图——kf模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/09/11/bioinfo_synteny_WGDI/";
+    this.page.identifier = "2021/09/11/bioinfo_synteny_WGDI/";
+    this.page.title = "分析基因组共线性、计算Ks和鉴定WGD —— WGDI";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

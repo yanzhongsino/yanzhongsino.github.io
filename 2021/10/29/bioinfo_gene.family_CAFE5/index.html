@@ -1,10 +1,566 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="记录了分析基因家族扩张收缩的软件CAFE5的安装与使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分析基因家族扩张和收缩 —— CAFE5">
+<meta property="og:url" content="http://example.com/2021/10/29/bioinfo_gene.family_CAFE5/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了分析基因家族扩张收缩的软件CAFE5的安装与使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2021-10-29T08:50:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T11:24:46.603Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="phylogeny">
+<meta property="article:tag" content="gene family">
+<meta property="article:tag" content="CAFE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/10/29/bioinfo_gene.family_CAFE5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分析基因家族扩张和收缩 —— CAFE5 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/29/bioinfo_gene.family_CAFE5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分析基因家族扩张和收缩 —— CAFE5
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-29 16:50:00" itemprop="dateCreated datePublished" datetime="2021-10-29T16:50:00+08:00">2021-10-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 19:24:46" itemprop="dateModified" datetime="2022-07-15T19:24:46+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/10/29/bioinfo_gene.family_CAFE5/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/10/29/bioinfo_gene.family_CAFE5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">记录了分析基因家族扩张收缩的软件CAFE5的安装与使用。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=17059176&auto=1&height=32"></iframe></div>
+
+<h1 id="1-CAFE"><a href="#1-CAFE" class="headerlink" title="1. CAFE"></a>1. CAFE</h1><p>CAFE(Computational Analysis of gene Family Evolution)是一款以解释系统发育历史的方式分析基因家族大小变化的软件，这种分析常被称为基因家族收缩扩张(Gene family expansions and contractions)分析。</p>
+<p>CAFE使用出生和死亡过程来模拟用户指定的系统发育树中的基因获得和丢失，可计算由父节点到子节点的基因家族大小转移率，也可推断祖先物种的基因家族大小，在该模型下生成的基因家族规模分布可以为评估观察到的类群之间家族规模差异的显著性提供基础。</p>
+<p>自2005年Hahn课题组提出评估基因家族进化速度和模式的算法，2006年第一个版本CAFE发表后，2020年推出了最新版本<a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article-abstract/36/22-23/5516/6039105?redirectedFrom=fulltext">CAFE5</a>，之前旧版本的基本模型假设所有基因家族都具有相同的进化速率。新版本支持伽马分布速率类别对家族之间的速率变化进行显式建模。</p>
+<h1 id="2-CAFE5安装"><a href="#2-CAFE5安装" class="headerlink" title="2. CAFE5安装"></a>2. CAFE5安装</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/hahnlab/CAFE5.git</span><br><span class="line">cd CAFE5</span><br><span class="line">./configure</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>conda可以安装CAFE4<br><code>conda install -c bioconda cafe</code>安装的是CAFE4</p>
+<h1 id="3-CAFE5使用"><a href="#3-CAFE5使用" class="headerlink" title="3. CAFE5使用"></a>3. CAFE5使用</h1><h2 id="3-1-CAFE5输入文件"><a href="#3-1-CAFE5输入文件" class="headerlink" title="3.1. CAFE5输入文件"></a>3.1. CAFE5输入文件</h2><p>CAFE5需要至少两个输入文件，一个是基因家族计数文件gene_families.txt，一个是树文件tree.txt</p>
+<h3 id="3-1-1-gene-families-txt"><a href="#3-1-1-gene-families-txt" class="headerlink" title="3.1.1. gene_families.txt"></a>3.1.1. gene_families.txt</h3><ol>
+<li>gene_families.txt文件格式<br>制表符分隔的基因家族计数文件，通常用OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue, OrthoFinder等软件获取计数信息。</li>
+</ol>
+<p>第一列是功能描述Desc，可以为null，第二列是Family ID，其余列是每个物种以及包含对应的基因家族基因的数量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Desc	Family ID	human	chimp	orang	baboon	gibbon	macaque	marmoset rat	mouse	cat	horse	cow</span><br><span class="line">ATPase	ORTHOMCL1	 52	 55	 54	 57	 54	  56	  56	 53	 52	57	55	 54</span><br><span class="line">(null)	ORTHOMCL2	 76	 51	 41	 39	 45	  36	  37	 67	 79	37	41	 49</span><br><span class="line">HMG box	ORTHOMCL3	 50	 49	 48	 48	 46	  49	  48	 55	 52	51	47	 55</span><br><span class="line">(null)	ORTHOMCL4	 43	 43	 47	 53	 44	  47	  46	 59	 58	51	50	 55</span><br><span class="line">Dynamin	ORTHOMCL5	 43	 40	 43	 44	 31	  46	  33	 79	 70	43	49	 50</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>用orthofinder2的结果文件Orthogroups.GeneCount.tsv转换成gene_families.txt文件<br><code>awk -v OFS=&quot;\t&quot; &#39;&#123;$NF=null;print $1,$0&#125;&#39; Orthogroups.GeneCount.tsv |sed -E -e &#39;s/Orthogroup/desc/&#39; -e &#39;s/_[^\t]+//g&#39; &gt;gene_families.txt</code></p>
+</li>
+<li><p>如果是MCL获得的基因家族数据。cafe5的tutorials目录下有脚本mcl2rawcafe.py用于把mcl的输出转化成cafe5的输入。<br><code>python mcl2rawcafe.py -i dump.blast_output.mci.I30 -o gene_families.txt -sp &quot;ENSG00 ENSPTR ENSPPY ENSPAN ENSNLE ENSMMU ENSCJA ENSRNO ENSMUS ENSFCA ENSECA ENSBTA&quot;</code>。</p>
+</li>
+<li><p>剔除不同物种间的基因拷贝数变异特别大的基因家族。<br>否则可能无法估计参数，运行中断报错Failed to initialize any reasonable values</p>
+</li>
+</ol>
+<ul>
+<li>cafe5的tutorial目录下脚本clade_and_size_filter.py可以筛除一个或以上物种有超过100个基因拷贝的基因家族。<br><code>python clade_and_size_filter.py -s -i gene_families.txt -o gene_familie_filter.txt</code></li>
+</ul>
+<p>脚本运行失败。</p>
+<ul>
+<li>也可以用awk命令来筛除3-13列中基因家族数量大于等于100的行，可以根据自己的数据更改。<br><code>awk &#39;NR==1 || $3&lt;100 &amp;&amp; $4&lt;100 &amp;&amp; $5&lt;100 &amp;&amp; $6&lt;100 &amp;&amp; $7&lt;100 &amp;&amp; $8&lt;100 &amp;&amp; $9&lt;100 &amp;&amp; $10&lt;100 &amp;&amp; $11&lt;100 &amp;&amp; $12&lt;100 &amp;&amp; $13&lt;100 &#123;print $0&#125;&#39; gene_families.txt &gt;gene_families_filter.txt</code></li>
+</ul>
+<h3 id="3-1-2-tree-txt"><a href="#3-1-2-tree-txt" class="headerlink" title="3.1.2. tree.txt"></a>3.1.2. tree.txt</h3><ol>
+<li>tree.txt文件格式<br>tree.txt是二叉的（binary），有根的（rooted），超度量(时间树，ultrametric)的newick格式树。</li>
+</ol>
+<p>可以用R包Ape的函数<code>is.binary</code>, <code>is.rooted</code>, <code>is.ultrametric</code>对树是否是二叉有根超度量做检验。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((((cat:68.710507,horse:68.710507):4.566782,cow:73.277289):20.722711,(((((chimp:4.444172,human:4.444172):6.682678,orang:11.126850):2.285855,gibbon:13.412706):7.211527,(macaque:4.567240,baboon:4.567240):16.056992):16.060702,marmoset:36.684935):57.315065):38.738021,(rat:36.302445,mouse:36.302445):96.435575);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>用paml的Figtree转换成tree.txt文件（newick格式）<br><code>grep -E -v &quot;NEXUS|BEGIN|END&quot; FigTree.tre|sed -E -e &quot;s/\[[^]]*\]//g&quot; -e &quot;s/[ \t]//g&quot; -e &quot;/^$/d&quot; -e &quot;s/UTREE/tree tree/&quot; &gt;tree.txt</code></p>
+</li>
+<li><p>CAFE5软件下脚本prep_r8s.py用于构建r8s的批量运行脚本，可用批量运行脚本获得tree。</p>
+</li>
+</ol>
+<h2 id="3-2-运行CAFE5"><a href="#3-2-运行CAFE5" class="headerlink" title="3.2. 运行CAFE5"></a>3.2. 运行CAFE5</h2><p><code>cafe5 -i gene_families_filter.txt -t tree.txt -p -k 2 -o k2p</code><br>参数：<br>-p代表指定root frequency distribution为泊松分布（默认是均匀分布uniform distribution）。<br>-k 3代表使用GAMMA模型（默认是base模型）并且使用3种gamma rate（代表不同基因家族有着不同的进化速率）。-k的值需要运行多次比较likelihood并确保收敛后才知道使用哪个最好，一般来说2-5之间试一试。<br>-o 指定输出目录，默认是results。</p>
+<h2 id="3-3-CAFE5的结果"><a href="#3-3-CAFE5的结果" class="headerlink" title="3.3. CAFE5的结果"></a>3.3. CAFE5的结果</h2><h3 id="3-3-1-结果文件"><a href="#3-3-1-结果文件" class="headerlink" title="3.3.1. 结果文件"></a>3.3.1. 结果文件</h3><ul>
+<li>model_asr.tre：每个基因家族的树的合集</li>
+<li>model_clade_results.txt：进化树上每个节点扩张或者收缩了多少基因家族</li>
+<li>model_family_results.txt：基因家族变化的p值和是否显著的结果</li>
+<li>model_results.txt：模型，最终似然值，最终Lambda值等参数信息。</li>
+</ul>
+<p>还生成了一些其他文件。</p>
+<h3 id="3-3-2-选择最优结果"><a href="#3-3-2-选择最优结果" class="headerlink" title="3.3.2. 选择最优结果"></a>3.3.2. 选择最优结果</h3><p>k值的结果比较：<br>查看k2p，k3p，k5p，k6p等不同的结果文件Gamma_results.txt文件中的第一行信息，Model Gamma Final Likelihood (-lnL)值，挑选最大的为最优结果。</p>
+<h3 id="结果整理"><a href="#结果整理" class="headerlink" title="结果整理"></a>结果整理</h3><p>对特定物种扩张和收缩基因的提取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat Gamma_change.tab |cut -f1,15|grep &quot;+[1-9]&quot; &gt;sample.expanded #提取Gamma_change.tab第15列代表物种sample的扩张的orthogroupsID</span><br><span class="line">cat Gamma_change.tab |cut -f1,15|grep &quot;-&quot; &gt;sample.contracted  #提取Gamma_change.tab第15列代表物种sample的收缩的orthogroupsID</span><br><span class="line">cat Gamma_family_results.txt |grep &quot;y&quot;|cut -f1 &gt;p0.05.significant #提取显著扩张或收缩的orthogroupsID</span><br><span class="line">grep -f p0.05.significant sample.expanded |cut -f1&gt;sample.expanded.significant #提取显著扩张的sample物种的orthogroupsID</span><br><span class="line">grep -f p0.05.significant sample.contracted |cut -f1 &gt;sample.contracted.significant #提取显著收缩的sample物种的orthogroupsID</span><br><span class="line"></span><br><span class="line">grep -f sample.expanded.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed &quot;s/ /\n/g&quot;|grep &quot;bv&quot; |sort -k 1.3n |uniq &gt;sample.expanded.significant.genes #提取显著扩张的基因列表，假设基因ID是bv的前缀。</span><br><span class="line">grep -f sample.contracted.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt sed &quot;s/ /\n/g&quot;|grep &quot;bv&quot; |sort -k 1.3n |uniq &gt;sample.contracted.significant.genes #提取显著收缩的基因列表，假设基因ID是bv的前缀。</span><br><span class="line"></span><br><span class="line">seqkit grep -f sample.expanded.significant.genes sample.pep.fa &gt;sample.expanded.significant.pep.fa #提取显著扩张的基因序列</span><br><span class="line">seqkit grep -f sample.contracted.significant.genes sample.pep.fa &gt;sample.contracted.significant.pep.fa #提取显著收缩的基因序列</span><br></pre></td></tr></table></figure>
+
+<p>提取出指定物种的显著扩张和收缩的蛋白序列之后，就可以拿去做GO注释和基因富集分析。</p>
+<h2 id="3-4-把每个节点收缩扩张的基因数量画在树上"><a href="#3-4-把每个节点收缩扩张的基因数量画在树上" class="headerlink" title="3.4. 把每个节点收缩扩张的基因数量画在树上"></a>3.4. 把每个节点收缩扩张的基因数量画在树上</h2><p>有看到一个画图脚本，不适用于CAFE5，暂且记录在此。<br><code>python python_scripts/cafetutorial_draw_tree.py -i reports/summary_run1_node.txt -t &#39;((((cat:68.7105,horse:68.7105):4.56678,cow:73.2773):20.7227,(((((chimp:4.44417,human:4.44417):6.68268,orang:11.1268):2.28586,gibbon:13.4127):7.21153,(macaque:4.56724,baboon:4.56724):16.057):16.0607,marmoset:36.6849):57.3151):38.738,(rat:36.3024,mouse:36.3024):96.4356)&#39; -d &#39;((((cat&lt;0&gt;,horse&lt;2&gt;)&lt;1&gt;,cow&lt;4&gt;)&lt;3&gt;,(((((chimp&lt;6&gt;,human&lt;8&gt;)&lt;7&gt;,orang&lt;10&gt;)&lt;9&gt;,gibbon&lt;12&gt;)&lt;11&gt;,(macaque&lt;14&gt;,baboon&lt;16&gt;)&lt;15&gt;)&lt;13&gt;,marmoset&lt;18&gt;)&lt;17&gt;)&lt;5&gt;,(rat&lt;20&gt;,mouse&lt;22&gt;)&lt;21&gt;)&lt;19&gt;&#39; -o reports/summary_run1_tree_rapid.png -y Rapid</code></p>
+<p>没有试过这个脚本，发表的图还是用R包ggtree自己画。</p>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article-abstract/36/22-23/5516/6039105?redirectedFrom=fulltext">https://academic.oup.com/bioinformatics/article-abstract/36/22-23/5516/6039105?redirectedFrom=fulltext</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hahnlab/CAFE5">https://github.com/hahnlab/CAFE5</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/phylogeny/" rel="tag"># phylogeny</a>
+              <a href="/tags/gene-family/" rel="tag"># gene family</a>
+              <a href="/tags/CAFE/" rel="tag"># CAFE</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/10/bioinfo_extract.4dtv.from.cds/" rel="prev" title="从codon比对的cds序列中提取四倍简并位点">
+      <i class="fa fa-chevron-left"></i> 从codon比对的cds序列中提取四倍简并位点
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/29/bioinfo_align_pep2cds/" rel="next" title="蛋白质比对转换成CDS比对 —— ParaAT,PAL2NAL">
+      蛋白质比对转换成CDS比对 —— ParaAT,PAL2NAL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-CAFE"><span class="nav-number">1.</span> <span class="nav-text">1. CAFE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-CAFE5%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">2. CAFE5安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-CAFE5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">3. CAFE5使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-CAFE5%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. CAFE5输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-gene-families-txt"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1. gene_families.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-tree-txt"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2. tree.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%90%E8%A1%8CCAFE5"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 运行CAFE5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-CAFE5%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. CAFE5的结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1. 结果文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BC%98%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2. 选择最优结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="nav-number">3.3.3.</span> <span class="nav-text">结果整理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%8A%8A%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E6%94%B6%E7%BC%A9%E6%89%A9%E5%BC%A0%E7%9A%84%E5%9F%BA%E5%9B%A0%E6%95%B0%E9%87%8F%E7%94%BB%E5%9C%A8%E6%A0%91%E4%B8%8A"><span class="nav-number">3.4.</span> <span class="nav-text">3.4. 把每个节点收缩扩张的基因数量画在树上</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-number">4.</span> <span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2021/10/29/bioinfo_gene.family_CAFE5/";
+    this.page.identifier = "2021/10/29/bioinfo_gene.family_CAFE5/";
+    this.page.title = "分析基因家族扩张和收缩 —— CAFE5";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>

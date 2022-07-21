@@ -1,10 +1,748 @@
 <!DOCTYPE html>
-<html>
-  {{ partial('./_partial/head.swig') }}
-  <body>
-  {{ partial('./_partial/resume.swig') }}
-  {% if theme.footer.enable %}
-  {{ partial('./_partial/foot.swig') }}
-  {%endif%}
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="记录使用clusterProfiler进行GO&#x2F;KEGG富集分析时，根据分析的物种来选择和准备背景数据集，包括支持的模式物种的获取，非模式物种Orgdb包的构建，通用富集分析等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析">
+<meta property="og:url" content="http://example.com/2022/04/26/bioinfo_enrichment_clusterProfiler.species/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录使用clusterProfiler进行GO&#x2F;KEGG富集分析时，根据分析的物种来选择和准备背景数据集，包括支持的模式物种的获取，非模式物种Orgdb包的构建，通用富集分析等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-04-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T10:49:44.463Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="gene set enrichment analysis">
+<meta property="article:tag" content="GSEA">
+<meta property="article:tag" content="enrichment analysis">
+<meta property="article:tag" content="over representation analysis">
+<meta property="article:tag" content="ORA">
+<meta property="article:tag" content="clusterProfiler">
+<meta property="article:tag" content="GO">
+<meta property="article:tag" content="KEGG">
+<meta property="article:tag" content="AnnotationHub">
+<meta property="article:tag" content="AnnotationForge">
+<meta property="article:tag" content="enricher">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-26 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-26T00:00:00+08:00">2022-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-15 18:49:44" itemprop="dateModified" datetime="2022-07-15T18:49:44+08:00">2022-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/enrichment/" itemprop="url" rel="index"><span itemprop="name">enrichment</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/04/26/bioinfo_enrichment_clusterProfiler.species/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/26/bioinfo_enrichment_clusterProfiler.species/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">记录使用clusterProfiler进行GO/KEGG富集分析时，根据分析的物种来选择和准备背景数据集，包括支持的模式物种的获取，非模式物种Orgdb包的构建，通用富集分析等。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283092&auto=1&height=32"></iframe></div>
+
+<p>clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：</p>
+<ul>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">富集分析：（三）clusterProfiler概述</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/">富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析</a></li>
+<li>博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/">富集分析：（五）clusterProfiler：Visualization</a></li>
+</ul>
+<p><strong>总结</strong></p>
+<p>用clusterProfiler进行GO&#x2F;KEGG富集分析中的过表达分析(ORA)时，根据分析的物种来选择和准备背景数据集。</p>
+<ol>
+<li>GO数据库过表达分析(ORA)根据物种选择背景数据集：</li>
+</ol>
+<ul>
+<li>先在Bioconductor库查询是否已有OrgDb的物种(大部分是模式物种)</li>
+<li>如果没有，再在AnnotationHub上查询是否有在线注释可以创建OrgDb对象</li>
+<li>如果没有，就准备分析物种基因组的功能注释集，通过AnnotationForge创建OrgDb包；或者通过通用富集分析函数enricher进行富集分析</li>
+</ul>
+<ol start="2">
+<li>KEGG数据库过表达分析(ORA)根据物种选择背景数据集：</li>
+</ol>
+<ul>
+<li>先在KEGG数据库查询是否已有基因组物种</li>
+<li>如果没有，就准备分析物种基因组的功能注释集，通过AnnotationForge创建OrgDb包；或者通过通用富集分析函数enricher进行富集分析</li>
+</ul>
+<h1 id="1-GO数据库过表达分析-ORA-的背景数据集选择"><a href="#1-GO数据库过表达分析-ORA-的背景数据集选择" class="headerlink" title="1. GO数据库过表达分析(ORA)的背景数据集选择"></a>1. GO数据库过表达分析(ORA)的背景数据集选择</h1><p>GO富集分析需要物种的注释数据库作为背景，根据分析物种的具体情况，选择不同的数据库作为背景数据库。</p>
+<p>groupGO(),enrichGO(),gseGO()函数支持具有OrgDb数据库的生物物种，enricher()和gseGO()函数支持用户自己提供的GO注释文件。</p>
+<h2 id="1-1-已有OrgDb的物种-——-Bioconductor"><a href="#1-1-已有OrgDb的物种-——-Bioconductor" class="headerlink" title="1.1. 已有OrgDb的物种 —— Bioconductor"></a>1.1. 已有OrgDb的物种 —— Bioconductor</h2><ol>
+<li><p>查询<br><a target="_blank" rel="noopener" href="http://bioconductor.org/packages/release/BiocViews.html#___OrgDb">OrgDb数据库</a>查询，目前Bioconductor大概有20个，都是模式物种，植物只有拟南芥<strong>org.At.tair.db</strong>一个数据库。</p>
+</li>
+<li><p>安装和加载<br>OrgDb数据库本质是一个R包，需要<code>BiocManager::install(&quot;org.At.tair.db&quot;)</code>安装和<code>library(org.At.tair.db)</code>加载后才能使用。</p>
+</li>
+<li><p>使用<br>如果有的话，加载后在<code>groupGO(OrgDb = org.At.eg.db)</code>,<code>enrichGO(OrgDb = org.At.eg.db)</code>,<code>gseGO(OrgDb = org.At.eg.db)</code>等函数里直接赋值给<code>OrgDb</code>参数即可使用。</p>
+</li>
+</ol>
+<h2 id="1-2-获取在线注释创建OrgDb对象-——-AnnotationHub"><a href="#1-2-获取在线注释创建OrgDb对象-——-AnnotationHub" class="headerlink" title="1.2. 获取在线注释创建OrgDb对象 —— AnnotationHub"></a>1.2. 获取在线注释创建OrgDb对象 —— AnnotationHub</h2><p>如果物种不在Bioconductor的OrgDb列表里，可以用<a target="_blank" rel="noopener" href="http://bioconductor.org/packages/release/bioc/html/AnnotationHub.html">AnnotationHub</a>包在线查询和获取其他可用的物种注释信息，并制作OrgDb包使用。<br>AnnotationHub包连接的Bioconductor数据库是实时更新的，所以需要用到的时候再在线查询和使用。</p>
+<ol>
+<li><p>查询和制作OrgDb库</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;AnnotationHub&quot;</span><span class="punctuation">)</span> <span class="comment">#安装AnnotationHub</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;AnnotationDbi&quot;</span><span class="punctuation">)</span> <span class="comment">#安装AnnotationDbi</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;rtracklayer&quot;</span><span class="punctuation">)</span> <span class="comment">#安装rtracklayer</span></span><br><span class="line">library<span class="punctuation">(</span>AnnotationHub<span class="punctuation">)</span> <span class="comment">#加载AnnotationHub</span></span><br><span class="line">hub <span class="operator">&lt;-</span> AnnotationHub<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#建立AnnotationHub对象保存到hub</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看AnnotationHub内容</span></span><br><span class="line">display<span class="punctuation">(</span>hub<span class="punctuation">)</span> <span class="comment">#会调出一个网页，以交互式表格的形式查看，但有些服务器不支持</span></span><br><span class="line">unique<span class="punctuation">(</span>hub<span class="operator">$</span>species<span class="punctuation">)</span> <span class="comment">#查看hub里包含的所有物种，目前有2700+个物种。</span></span><br><span class="line">unique<span class="punctuation">(</span>hub<span class="operator">$</span>rdataclass<span class="punctuation">)</span> <span class="comment">#查看hub里的数据类型，我们这里需要的是最后一种OrgDb类型数据</span></span><br><span class="line">hub<span class="punctuation">[</span>hub<span class="operator">$</span>rdataclass <span class="operator">==</span> <span class="string">&quot;OrgDb&quot;</span><span class="punctuation">]</span> <span class="comment">#查看hub里OrgDb类型的数据</span></span><br><span class="line"></span><br><span class="line">query<span class="punctuation">(</span>hub<span class="punctuation">,</span> <span class="string">&quot;Cricetulus&quot;</span><span class="punctuation">)</span> <span class="comment">#查询包含Cricetulus的物种信息，一共查询到229条信息。输出如下：</span></span><br><span class="line"><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span></span><br><span class="line">AnnotationHub with <span class="number">229</span> records</span><br><span class="line"><span class="comment"># snapshotDate(): 2021-10-20</span></span><br><span class="line"><span class="comment"># $dataprovider: Ensembl, ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/, UCSC, FANTO...</span></span><br><span class="line"><span class="comment"># $species: cricetulus griseus crigri, cricetulus griseus chok1gshd, cricetu...</span></span><br><span class="line"><span class="comment"># $rdataclass: TwoBitFile, GRanges, SQLiteFile, OrgDb, Inparanoid8Db, ChainFile</span></span><br><span class="line"><span class="comment"># additional mcols(): taxonomyid, genome, description,</span></span><br><span class="line"><span class="comment">#   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,</span></span><br><span class="line"><span class="comment">#   rdatapath, sourceurl, sourcetype</span></span><br><span class="line"><span class="comment"># retrieve records with, e.g., &#x27;object[[&quot;AH10393&quot;]]&#x27;</span></span><br><span class="line"></span><br><span class="line">            title</span><br><span class="line">  AH10393 <span class="operator">|</span> hom.Cricetulus_griseus.inp8.sqlite</span><br><span class="line">  AH13980 <span class="operator">|</span> criGri1.2bit</span><br><span class="line">  AH14346 <span class="operator">|</span> criGri1ToHg19.over.chain.gz</span><br><span class="line">  AH57104 <span class="operator">|</span> Cricetulus_griseus_chok1gshd.CHOK1GS_HDv1.90.abinitio.gtf</span><br><span class="line">  AH57105 <span class="operator">|</span> Cricetulus_griseus_chok1gshd.CHOK1GS_HDv1.90.gtf</span><br><span class="line">  ...       ...</span><br><span class="line">  AH99348 <span class="operator">|</span> Cricetulus_griseus_crigri.CriGri_1.0.ncrna.2bit</span><br><span class="line">  AH99349 <span class="operator">|</span> Cricetulus_griseus_picr.CriGri<span class="operator">-</span>PICR.cdna.all.2bit</span><br><span class="line">  AH99350 <span class="operator">|</span> Cricetulus_griseus_picr.CriGri<span class="operator">-</span>PICR.dna_rm.toplevel.2bit</span><br><span class="line">  AH99351 <span class="operator">|</span> Cricetulus_griseus_picr.CriGri<span class="operator">-</span>PICR.dna_sm.toplevel.2bit</span><br><span class="line">  AH99352 <span class="operator">|</span> Cricetulus_griseus_picr.CriGri<span class="operator">-</span>PICR.ncrna.2bi</span><br><span class="line"><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span></span><br><span class="line"></span><br><span class="line">query<span class="punctuation">(</span>hub<span class="punctuation">[</span>hub<span class="operator">$</span>rdataclass <span class="operator">==</span> <span class="string">&quot;OrgDb&quot;</span><span class="punctuation">]</span> <span class="punctuation">,</span> <span class="string">&quot;Cricetulus&quot;</span><span class="punctuation">)</span> <span class="comment">#query(hub, &quot;Cricetulus&quot;)的查询结果中有各种类型的数据，如果我们需要OrgDb类型，可以这样筛选后查询，也可以这样`query(hub,&#x27;org.Cricetulus&#x27;)`搜索。输出如下：</span></span><br><span class="line"><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span></span><br><span class="line">AnnotationHub with <span class="number">2</span> records</span><br><span class="line"><span class="comment"># snapshotDate(): 2021-10-20</span></span><br><span class="line"><span class="comment"># $dataprovider: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/</span></span><br><span class="line"><span class="comment"># $species: Cricetulus griseus, Cricetulus barabensis_griseus</span></span><br><span class="line"><span class="comment"># $rdataclass: OrgDb</span></span><br><span class="line"><span class="comment"># additional mcols(): taxonomyid, genome, description,</span></span><br><span class="line"><span class="comment">#   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,</span></span><br><span class="line"><span class="comment">#   rdatapath, sourceurl, sourcetype</span></span><br><span class="line"><span class="comment"># retrieve records with, e.g., &#x27;object[[&quot;AH96227&quot;]]&#x27;</span></span><br><span class="line"></span><br><span class="line">            title</span><br><span class="line">  AH96227 <span class="operator">|</span> org.Cricetulus_barabensis_griseus.eg.sqlite</span><br><span class="line">  AH96228 <span class="operator">|</span> org.Cricetulus_griseus.eg.sqlite</span><br><span class="line"><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span></span><br><span class="line"></span><br><span class="line">Cgriseus <span class="operator">&lt;-</span> hub<span class="punctuation">[[</span><span class="string">&quot;AH96228&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="comment">#制作Cricetulus_griseus的OrgDb库。AH96228是Cricetulus_griseus对应的编号。下载和检索后即保存在缓存目录下（我这是/home/user/.cache/R/AnnotationHub/5f01212f7210_102705）。</span></span><br><span class="line">Cgriseus <span class="comment">#查看Cgriseus，输出如下：</span></span><br><span class="line"><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span></span><br><span class="line">OrgDb object<span class="operator">:</span></span><br><span class="line"><span class="operator">|</span> DBSCHEMAVERSION<span class="operator">:</span> <span class="number">2.1</span></span><br><span class="line"><span class="operator">|</span> DBSCHEMA<span class="operator">:</span> NOSCHEMA_DB</span><br><span class="line"><span class="operator">|</span> ORGANISM<span class="operator">:</span> Cricetulus barabensis_griseus</span><br><span class="line"><span class="operator">|</span> SPECIES<span class="operator">:</span> Cricetulus barabensis_griseus</span><br><span class="line"><span class="operator">|</span> CENTRALID<span class="operator">:</span> GID</span><br><span class="line"><span class="operator">|</span> Taxonomy ID<span class="operator">:</span> <span class="number">10029</span></span><br><span class="line"><span class="operator">|</span> Db type<span class="operator">:</span> OrgDb</span><br><span class="line"><span class="operator">|</span> Supporting package<span class="operator">:</span> AnnotationDbi</span><br><span class="line"></span><br><span class="line">Please see<span class="operator">:</span> help<span class="punctuation">(</span><span class="string">&#x27;select&#x27;</span><span class="punctuation">)</span> <span class="keyword">for</span> usage information</span><br><span class="line"><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span><span class="operator">-</span></span><br><span class="line"></span><br><span class="line">library<span class="punctuation">(</span>AnnotationDbi<span class="punctuation">)</span></span><br><span class="line">saveDb<span class="punctuation">(</span>Cgriseus<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;Cgriseus.OrgDb&quot;</span><span class="punctuation">)</span> <span class="comment">#把Cgriseus对象保存成Cgriseus.OrgDb文件</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>载入和查看<br>保存为文件后使用时加载Cgriseus.OrgDb文件即可使用。常用的函数包括columns()，keys()，keytypes()，select()等。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>AnnotationDbi<span class="punctuation">)</span></span><br><span class="line">Cgriseus<span class="operator">&lt;-</span>loadDb<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;Cgriseus.OrgDb&quot;</span><span class="punctuation">)</span> <span class="comment">#载入Cgriseus.OrgDb文件，保存到Cgriseus</span></span><br><span class="line"><span class="built_in">length</span><span class="punctuation">(</span>keys<span class="punctuation">(</span>Cgriseus<span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#查看包含的基因数量</span></span><br><span class="line">columns<span class="punctuation">(</span>Cgriseus<span class="punctuation">)</span> <span class="comment">#查看OrgDb对象的数据类型</span></span><br><span class="line">keys<span class="punctuation">(</span>Cgriseus<span class="punctuation">,</span> keytype <span class="operator">=</span> <span class="string">&quot;GO&quot;</span><span class="punctuation">)</span> <span class="comment">#查看GO数据集下的ID</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<br>载入后在<code>groupGO(OrgDb = Cgriseus)</code>,<code>enrichGO(OrgDb = Cgriseus)</code>,<code>gseGO(OrgDb = Cgriseus)</code>等函数里直接赋值给<code>OrgDb</code>参数即可。</p>
+</li>
+</ol>
+<h2 id="1-3-通用富集分析（非模式物种）——-AnnotationForge"><a href="#1-3-通用富集分析（非模式物种）——-AnnotationForge" class="headerlink" title="1.3. 通用富集分析（非模式物种）—— AnnotationForge"></a>1.3. 通用富集分析（非模式物种）—— AnnotationForge</h2><ul>
+<li>如果以上两个方法都没有找到你分析的物种，可以选择近缘种来代替。</li>
+<li>如果有分析物种的基因组注释数据，更好的方案是使用通用富集分析。</li>
+<li>AnnotationForge是用来创建OrgDb包的R包。</li>
+</ul>
+<h3 id="1-3-1-准备"><a href="#1-3-1-准备" class="headerlink" title="1.3.1. 准备"></a>1.3.1. 准备</h3><ul>
+<li>这里使用的基因组注释数据是eggNOG注释结果emapper.annotations.tsv。</li>
+<li>准备步骤之后的步骤大多在R环境里操作，有些需要在shell环境处理，建议开两个shell窗口操作。</li>
+</ul>
+<ol>
+<li><p>删除冗余<br>把emapper.annotations.tsv的##开头的行和标题行前的#删除，保存到文件eggnog.anno。<br><code>sed &#39;/^##/d&#39; emapper.annotations.tsv |sed &#39;s/#//&#39; &gt;eggnog.anno</code></p>
+</li>
+<li><p>读取数据</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">egg<span class="operator">&lt;-</span>read.csv<span class="punctuation">(</span><span class="string">&quot;eggnog.anno&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">)</span> <span class="comment">#如果用read.csv报错，尝试read.table(&quot;eggnog.anno&quot;,header=T,sep=&quot;\t&quot;)，或者试试egg &lt;- rio::import(&#x27;emapper.annotations.tsv&#x27;)。</span></span><br><span class="line">egg<span class="punctuation">[</span>egg<span class="operator">==</span><span class="string">&quot;&quot;</span><span class="punctuation">]</span> <span class="operator">&lt;-</span> <span class="literal">NA</span> <span class="comment">#把空行标记上NA</span></span><br><span class="line"></span><br><span class="line">colnames<span class="punctuation">(</span>egg<span class="punctuation">)</span> <span class="comment">#列出标题行</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="string">&quot;query&quot;</span>          <span class="string">&quot;seed_ortholog&quot;</span>  <span class="string">&quot;evalue&quot;</span>         <span class="string">&quot;score&quot;</span></span><br><span class="line"> <span class="punctuation">[</span><span class="number">5</span><span class="punctuation">]</span> <span class="string">&quot;eggNOG_OGs&quot;</span>     <span class="string">&quot;max_annot_lvl&quot;</span>  <span class="string">&quot;COG_category&quot;</span>   <span class="string">&quot;Description&quot;</span></span><br><span class="line"> <span class="punctuation">[</span><span class="number">9</span><span class="punctuation">]</span> <span class="string">&quot;Preferred_name&quot;</span> <span class="string">&quot;GOs&quot;</span>            <span class="string">&quot;EC&quot;</span>             <span class="string">&quot;KEGG_ko&quot;</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">13</span><span class="punctuation">]</span> <span class="string">&quot;KEGG_Pathway&quot;</span>   <span class="string">&quot;KEGG_Module&quot;</span>    <span class="string">&quot;KEGG_Reaction&quot;</span>  <span class="string">&quot;KEGG_rclass&quot;</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">17</span><span class="punctuation">]</span> <span class="string">&quot;BRITE&quot;</span>          <span class="string">&quot;KEGG_TC&quot;</span>        <span class="string">&quot;CAZy&quot;</span>           <span class="string">&quot;BiGG_Reaction&quot;</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">21</span><span class="punctuation">]</span> <span class="string">&quot;PFAMs&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="1-3-2-提取注释的GO信息"><a href="#1-3-2-提取注释的GO信息" class="headerlink" title="1.3.2. 提取注释的GO信息"></a>1.3.2. 提取注释的GO信息</h3><p>从egg中提取GO注释并整理成gene2go.txt文件</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">gene_info <span class="operator">&lt;-</span> egg <span class="operator">%&gt;%</span>dplyr<span class="operator">::</span>select<span class="punctuation">(</span>GID <span class="operator">=</span> query<span class="punctuation">,</span> GENENAME <span class="operator">=</span> seed_ortholog<span class="punctuation">)</span> <span class="operator">%&gt;%</span> na.omit<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#根据egg第一和第二列的标题提取前两列。</span></span><br><span class="line">goterms <span class="operator">&lt;-</span> egg <span class="operator">%&gt;%</span>dplyr<span class="operator">::</span>select<span class="punctuation">(</span>query<span class="punctuation">,</span> GOs<span class="punctuation">)</span> <span class="operator">%&gt;%</span> na.omit<span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> filter<span class="punctuation">(</span>str_detect<span class="punctuation">(</span>GO<span class="punctuation">,</span><span class="string">&quot;GO&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#根据egg第一列和GO列的标题提取基因的GO注释。后面的`%&gt;% filter(str_detect(GO,&quot;GO&quot;))`是筛选GO列值包含&quot;GO&quot;的行，删除空值。</span></span><br><span class="line"></span><br><span class="line">library<span class="punctuation">(</span>stringr<span class="punctuation">)</span></span><br><span class="line">all_go_list<span class="operator">=</span>str_split<span class="punctuation">(</span>goterms<span class="operator">$</span>GOs<span class="punctuation">,</span><span class="string">&quot;,&quot;</span><span class="punctuation">)</span> <span class="comment">#分隔goterms的GOs值，逗号是分隔符</span></span><br><span class="line">gene2go <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span>GID <span class="operator">=</span> <span class="built_in">rep</span><span class="punctuation">(</span>goterms<span class="operator">$</span>query<span class="punctuation">,</span> times <span class="operator">=</span> sapply<span class="punctuation">(</span>all_go_list<span class="punctuation">,</span> <span class="built_in">length</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">,</span> GO <span class="operator">=</span> unlist<span class="punctuation">(</span>all_go_list<span class="punctuation">)</span><span class="punctuation">,</span> EVIDENCE <span class="operator">=</span> <span class="string">&quot;IEA&quot;</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> filter<span class="punctuation">(</span>str_detect<span class="punctuation">(</span>GO<span class="punctuation">,</span><span class="string">&quot;GO&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#注释换成单个GO编号一行的格式。eggnog里每个基因一行注释，GOs注释里可能有多个GO编号信息，要转换成每个GO编号一行的格式（看下面）。</span></span><br><span class="line">write.table<span class="punctuation">(</span>gene2go<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;gene2go.txt&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>row.names<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#保存成文件gene2go.txt</span></span><br><span class="line"></span><br><span class="line">head<span class="punctuation">(</span>gene2go<span class="punctuation">)</span> <span class="comment">#查看gene2go前六行</span></span><br><span class="line">      GID         GO EVIDENCE</span><br><span class="line"><span class="number">1</span> mc00002 GO<span class="operator">:</span><span class="number">0000003</span>      IEA</span><br><span class="line"><span class="number">2</span> mc00002 GO<span class="operator">:</span><span class="number">0000323</span>      IEA</span><br><span class="line"><span class="number">3</span> mc00002 GO<span class="operator">:</span><span class="number">0000325</span>      IEA</span><br><span class="line"><span class="number">4</span> mc00002 GO<span class="operator">:</span><span class="number">0002376</span>      IEA</span><br><span class="line"><span class="number">5</span> mc00002 GO<span class="operator">:</span><span class="number">0003006</span>      IEA</span><br><span class="line"><span class="number">6</span> mc00002 GO<span class="operator">:</span><span class="number">0003674</span>      IEA</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-3-提取注释的KEGG信息"><a href="#1-3-3-提取注释的KEGG信息" class="headerlink" title="1.3.3. 提取注释的KEGG信息"></a>1.3.3. 提取注释的KEGG信息</h3><p>从egg中提取KEGG注释并整理成gene2pathway.txt文件</p>
+<ol>
+<li><p>提取KEGG信息</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">koterms <span class="operator">&lt;-</span> egg <span class="operator">%&gt;%</span>dplyr<span class="operator">::</span>select<span class="punctuation">(</span>GID <span class="operator">=</span> query<span class="punctuation">,</span> KO<span class="operator">=</span>KEGG_ko<span class="punctuation">)</span><span class="operator">%&gt;%</span>na.omit<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">%&gt;%</span> filter<span class="punctuation">(</span>str_detect<span class="punctuation">(</span>KO<span class="punctuation">,</span><span class="string">&quot;ko&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#根据egg第一列和KEGG_ko列的标题提取基因的KEGG注释。</span></span><br><span class="line">head<span class="punctuation">(</span>koterms<span class="punctuation">)</span> <span class="comment">#查看koterms前六行</span></span><br><span class="line">      GID                  KO</span><br><span class="line"><span class="number">1</span> mc00001 ko<span class="operator">:</span>K14524<span class="punctuation">,</span>ko<span class="operator">:</span>K22674</span><br><span class="line"><span class="number">2</span> mc00002           ko<span class="operator">:</span>K16292</span><br><span class="line"><span class="number">3</span> mc00003           ko<span class="operator">:</span>K16392</span><br><span class="line"><span class="number">4</span> mc00004           ko<span class="operator">:</span>K16167</span><br><span class="line"><span class="number">5</span> mc00006           ko<span class="operator">:</span>K16253</span><br><span class="line"><span class="number">6</span> mc00007 ko<span class="operator">:</span>K14664<span class="punctuation">,</span>ko<span class="operator">:</span>K21604</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载ko00001.json<br>在网页<a target="_blank" rel="noopener" href="https://www.genome.jp/kegg-bin/get_htext?ko00001%E7%82%B9%E5%87%BB**Download">https://www.genome.jp/kegg-bin/get_htext?ko00001点击**Download</a> json**即可下载ko00001.json，是KEGG的K与ko，ko与通路的对应关系。</p>
+</li>
+<li><p>运行R脚本ko_json2data.R<br><code>Rscript ko_json2data.R</code>运行R脚本ko_json2data.R，用ko00001.json生成ko与通路和ko与K的对应关系文件kegg_info.RData。</p>
+</li>
+</ol>
+<ul>
+<li>ko_json2data.R脚本如下：<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>file.exists<span class="punctuation">(</span><span class="string">&#x27;kegg_info.RData&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">&#123;</span></span><br><span class="line">  </span><br><span class="line">  library<span class="punctuation">(</span>jsonlite<span class="punctuation">)</span></span><br><span class="line">  library<span class="punctuation">(</span>purrr<span class="punctuation">)</span></span><br><span class="line">  library<span class="punctuation">(</span>RCurl<span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line">  update_kegg <span class="operator">&lt;-</span> <span class="keyword">function</span><span class="punctuation">(</span>json <span class="operator">=</span> <span class="string">&quot;ko00001.json&quot;</span><span class="punctuation">,</span>file<span class="operator">=</span><span class="literal">NULL</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">    pathway2name <span class="operator">&lt;-</span> tibble<span class="punctuation">(</span>Pathway <span class="operator">=</span> character<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span> Name <span class="operator">=</span> character<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">    ko2pathway <span class="operator">&lt;-</span> tibble<span class="punctuation">(</span>Ko <span class="operator">=</span> character<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span> Pathway <span class="operator">=</span> character<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">    </span><br><span class="line">    kegg <span class="operator">&lt;-</span> fromJSON<span class="punctuation">(</span>json<span class="punctuation">)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> <span class="punctuation">(</span>a <span class="keyword">in</span> <span class="built_in">seq_along</span><span class="punctuation">(</span>kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">      A <span class="operator">&lt;-</span> kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;name&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>a<span class="punctuation">]</span><span class="punctuation">]</span></span><br><span class="line">      </span><br><span class="line">      <span class="keyword">for</span> <span class="punctuation">(</span>b <span class="keyword">in</span> <span class="built_in">seq_along</span><span class="punctuation">(</span>kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>a<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">        B <span class="operator">&lt;-</span> kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>a<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;name&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>b<span class="punctuation">]</span><span class="punctuation">]</span> </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> <span class="punctuation">(</span><span class="built_in">c</span> <span class="keyword">in</span> <span class="built_in">seq_along</span><span class="punctuation">(</span>kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>a<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>b<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">          pathway_info <span class="operator">&lt;-</span> kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>a<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>b<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;name&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="built_in">c</span><span class="punctuation">]</span><span class="punctuation">]</span></span><br><span class="line">          </span><br><span class="line">          pathway_id <span class="operator">&lt;-</span> str_match<span class="punctuation">(</span>pathway_info<span class="punctuation">,</span> <span class="string">&quot;ko[0-9]&#123;5&#125;&quot;</span><span class="punctuation">)</span><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span></span><br><span class="line">          pathway_name <span class="operator">&lt;-</span> str_replace<span class="punctuation">(</span>pathway_info<span class="punctuation">,</span> <span class="string">&quot; \\[PATH:ko[0-9]&#123;5&#125;\\]&quot;</span><span class="punctuation">,</span> <span class="string">&quot;&quot;</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> str_replace<span class="punctuation">(</span><span class="string">&quot;[0-9]&#123;5&#125; &quot;</span><span class="punctuation">,</span> <span class="string">&quot;&quot;</span><span class="punctuation">)</span></span><br><span class="line">          pathway2name <span class="operator">&lt;-</span> rbind<span class="punctuation">(</span>pathway2name<span class="punctuation">,</span> tibble<span class="punctuation">(</span>Pathway <span class="operator">=</span> pathway_id<span class="punctuation">,</span> Name <span class="operator">=</span> pathway_name<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">          </span><br><span class="line">          kos_info <span class="operator">&lt;-</span> kegg<span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>a<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span>b<span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;children&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="built_in">c</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">[[</span><span class="string">&quot;name&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span></span><br><span class="line">          </span><br><span class="line">          kos <span class="operator">&lt;-</span> str_match<span class="punctuation">(</span>kos_info<span class="punctuation">,</span> <span class="string">&quot;K[0-9]*&quot;</span><span class="punctuation">)</span><span class="punctuation">[</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">]</span></span><br><span class="line">          </span><br><span class="line">          ko2pathway <span class="operator">&lt;-</span> rbind<span class="punctuation">(</span>ko2pathway<span class="punctuation">,</span> tibble<span class="punctuation">(</span>Ko <span class="operator">=</span> kos<span class="punctuation">,</span> Pathway <span class="operator">=</span> <span class="built_in">rep</span><span class="punctuation">(</span>pathway_id<span class="punctuation">,</span> <span class="built_in">length</span><span class="punctuation">(</span>kos<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">    </span><br><span class="line">    save<span class="punctuation">(</span>pathway2name<span class="punctuation">,</span> ko2pathway<span class="punctuation">,</span> file <span class="operator">=</span> file<span class="punctuation">)</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line">  </span><br><span class="line">  update_kegg<span class="punctuation">(</span>json <span class="operator">=</span> <span class="string">&quot;ko00001.json&quot;</span><span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;kegg_info.RData&quot;</span><span class="punctuation">)</span></span><br><span class="line">  </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="4">
+<li><p>读取kegg_info.RData文件<br>在R里用<code>load(&quot;kegg_info.RData&quot;)</code>读取kegg_info.RData文件，会得到ko2pathway和pathway2name两个对象。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">head<span class="punctuation">(</span>ko2pathway<span class="punctuation">)</span> <span class="comment">#查看前六行</span></span><br><span class="line"><span class="comment"># A tibble: 6 × 2</span></span><br><span class="line">  Ko     Pathway</span><br><span class="line">  <span class="operator">&lt;</span>chr<span class="operator">&gt;</span>  <span class="operator">&lt;</span>chr<span class="operator">&gt;</span></span><br><span class="line"><span class="number">1</span> K00844 ko00010</span><br><span class="line"><span class="number">2</span> K12407 ko00010</span><br><span class="line"><span class="number">3</span> K00845 ko00010</span><br><span class="line"><span class="number">4</span> K25026 ko00010</span><br><span class="line"><span class="number">5</span> K01810 ko00010</span><br><span class="line"><span class="number">6</span> K06859 ko00010</span><br><span class="line"></span><br><span class="line">head<span class="punctuation">(</span>pathway2name<span class="punctuation">)</span> <span class="comment">#查看前六行</span></span><br><span class="line"><span class="comment"># A tibble: 6 × 2</span></span><br><span class="line">  Pathway Name</span><br><span class="line">  <span class="operator">&lt;</span>chr<span class="operator">&gt;</span>   <span class="operator">&lt;</span>chr<span class="operator">&gt;</span></span><br><span class="line"><span class="number">1</span> ko00010 Glycolysis <span class="operator">/</span> Gluconeogenesis</span><br><span class="line"><span class="number">2</span> ko00020 Citrate cycle <span class="punctuation">(</span>TCA cycle<span class="punctuation">)</span></span><br><span class="line"><span class="number">3</span> ko00030 Pentose phosphate pathway</span><br><span class="line"><span class="number">4</span> ko00040 Pentose and glucuronate interconversions</span><br><span class="line"><span class="number">5</span> ko00051 Fructose and mannose metabolism</span><br><span class="line"><span class="number">6</span> ko00052 Galactose metabolism</span><br><span class="line"></span><br><span class="line">write.table<span class="punctuation">(</span>pathway2name<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;pathway2name.txt&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>row.names<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#【optional】保存成文件pathway2name.txt，可以给通用KEGG富集分析的结果注释KEGG Pathway的描述(Name)用。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获得gene2pathway</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>stringr<span class="punctuation">)</span></span><br><span class="line">colnames<span class="punctuation">(</span>ko2pathway<span class="punctuation">)</span><span class="operator">=</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;KO&quot;</span><span class="punctuation">,</span><span class="string">&#x27;Pathway&#x27;</span><span class="punctuation">)</span> <span class="comment">#把ko2pathway的列名改为KO和Pathway，与koterms一致。</span></span><br><span class="line">koterms<span class="operator">$</span>KO<span class="operator">=</span>str_replace_all<span class="punctuation">(</span>koterms<span class="operator">$</span>KO<span class="punctuation">,</span><span class="string">&quot;ko:&quot;</span><span class="punctuation">,</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span> <span class="comment">#把koterms的KO值的前缀ko:去掉，与ko2pathway格式一致。</span></span><br><span class="line">gene2pathway <span class="operator">&lt;-</span> koterms <span class="operator">%&gt;%</span> left_join<span class="punctuation">(</span>ko2pathway<span class="punctuation">,</span> by <span class="operator">=</span> <span class="string">&quot;KO&quot;</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span>dplyr<span class="operator">::</span>select<span class="punctuation">(</span>GID<span class="punctuation">,</span> Pathway<span class="punctuation">)</span> <span class="operator">%&gt;%</span>na.omit<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#合并koterms和ko2pathway到gene2pathway，将基因与pathway的对应关系整理出来</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##【optional】下面为可选步骤</span></span><br><span class="line">gene2pathway_name<span class="operator">&lt;-</span>left_join<span class="punctuation">(</span>gene2pathway<span class="punctuation">,</span>pathway2name<span class="punctuation">,</span>by<span class="operator">=</span><span class="string">&quot;Pathway&quot;</span><span class="punctuation">)</span> <span class="comment">#合并gene2pathway和pathway2name</span></span><br><span class="line">write.table<span class="punctuation">(</span>gene2pathway_name<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;gene2pathway_name.txt&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>row.names<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#【optional】保存成文件gene2pathway_name.txt，可以给通用KEGG富集分析用。</span></span><br><span class="line"></span><br><span class="line">head<span class="punctuation">(</span>gene2pathway<span class="punctuation">)</span>  <span class="comment">#查看前六行</span></span><br><span class="line">       GID Pathway</span><br><span class="line"><span class="number">3</span>  mc00003 ko01002</span><br><span class="line"><span class="number">8</span>  mc00009 ko01002</span><br><span class="line"><span class="number">13</span> mc00016 ko03012</span><br><span class="line"><span class="number">14</span> mc00016 ko03029</span><br><span class="line"><span class="number">16</span> mc00018 ko03037</span><br><span class="line"><span class="number">17</span> mc00018 ko04812</span><br><span class="line"></span><br><span class="line">head<span class="punctuation">(</span>gene2pathway_name<span class="punctuation">)</span> <span class="comment">#查看前六行</span></span><br><span class="line">       GID Pathway                                                Name</span><br><span class="line"><span class="number">1</span> mc01138 ko00511                            Other glycan degradation</span><br><span class="line"><span class="number">2</span> mc00017 ko04142                                            Lysosome</span><br><span class="line"><span class="number">3</span> mc01022 ko00930                             Caprolactam degradation</span><br><span class="line"><span class="number">4</span> mc00072 ko01002              Peptidases and inhibitors <span class="punctuation">[</span>BR<span class="operator">:</span>ko01002<span class="punctuation">]</span></span><br><span class="line"><span class="number">5</span> mc01058 ko00130 Ubiquinone and other terpenoid<span class="operator">-</span>quinone biosynthesis</span><br><span class="line"><span class="number">6</span> mc00288 ko03440                            Homologous recombination</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="1-3-4-创建OrgDb包"><a href="#1-3-4-创建OrgDb包" class="headerlink" title="1.3.4. 创建OrgDb包"></a>1.3.4. 创建OrgDb包</h3><ol>
+<li>参数准备</li>
+</ol>
+<ul>
+<li>Taxonomy ID(tax_id)<br>在<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi">NCBI的Taxonomy网站</a>，通过搜索物种的学名，点击结果中的学名就可以链接到Taxonomy ID信息，比如Melastoma candidum的Taxonomy ID为119954。</li>
+<li>gene_info, gene2go, koterms, gene2pathway是前面步骤生成的四个对象</li>
+<li>version：格式是0.0.1</li>
+<li>maintainer和author的格式包括名字和邮箱</li>
+<li>outputDir是创建的OrgDb包的输出路径</li>
+<li>genus是属名，species是种加词。</li>
+<li>goTable：生成GO的详细注释信息。需要go参数值的标题行是”GID, GO and EVIDENCE”。</li>
+</ul>
+<ol start="2">
+<li>创建命令<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">makeOrgPackage<span class="punctuation">(</span>gene_info<span class="operator">=</span>gene_info<span class="punctuation">,</span> go<span class="operator">=</span>gene2go<span class="punctuation">,</span> ko<span class="operator">=</span>koterms<span class="punctuation">,</span>  pathway<span class="operator">=</span>gene2pathway<span class="punctuation">,</span> version<span class="operator">=</span><span class="string">&quot;0.0.1&quot;</span><span class="punctuation">,</span> maintainer<span class="operator">=</span><span class="string">&#x27;yanzhong &lt;yan.zhong.sino@gmail.com&gt;&#x27;</span><span class="punctuation">,</span> author<span class="operator">=</span><span class="string">&#x27;yanzhong &lt;yan.zhong.sino@gmail.com&gt;&#x27;</span><span class="punctuation">,</span>outputDir<span class="operator">=</span><span class="string">&quot;.&quot;</span><span class="punctuation">,</span> tax_id<span class="operator">=</span><span class="string">&quot;119954&quot;</span><span class="punctuation">,</span> genus<span class="operator">=</span><span class="string">&quot;Melastoma&quot;</span><span class="punctuation">,</span> species<span class="operator">=</span><span class="string">&quot;candidum&quot;</span><span class="punctuation">,</span>goTable<span class="operator">=</span><span class="string">&quot;go&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>生成org.Mcandidum.eg.db文件夹，即为制作的Orgdb包。</p>
+<ul>
+<li>notes:如果报错<code>GO Ids must be formatted like &#39;GO:XXXXXXX&#39;</code>则需要检查gene2go数据的GO值是否有冗余或污染。</li>
+</ul>
+<h3 id="1-3-5-使用OrgDb包"><a href="#1-3-5-使用OrgDb包" class="headerlink" title="1.3.5. 使用OrgDb包"></a>1.3.5. 使用OrgDb包</h3><ol>
+<li>安装加载<br>创建的org.Mcandidum.eg.db文件夹本质上是个R包，需要安装和加载才能使用。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="string">&#x27;org.Mcandidum.eg.db&#x27;</span><span class="punctuation">,</span>repos <span class="operator">=</span> <span class="literal">NULL</span><span class="punctuation">,</span> type<span class="operator">=</span><span class="string">&quot;source&quot;</span><span class="punctuation">)</span> <span class="comment">#安装包</span></span><br><span class="line">library<span class="punctuation">(</span>org.Mcandidum.eg.db<span class="punctuation">)</span> <span class="comment">#加载包</span></span><br></pre></td></tr></table></figure></li>
+<li>用于GO分析<br><code>enrichGO(keyType=&quot;GID&quot;, OrgDb = org.Mcandidum.eg.db)</code></li>
+</ol>
+<p>加载后在<code>groupGO(keyType=&quot;GID&quot;, OrgDb = org.Mcandidum.eg.db)</code>,<code>enrichGO(keyType=&quot;GID&quot;, OrgDb = org.Mcandidum.eg.db)</code>,<code>gseGO(keyType=&quot;GID&quot;, OrgDb = org.Mcandidum.eg.db)</code>等函数里把包赋值给<code>OrgDb</code>参数，<code>keyType</code>参数指定GID即可使用。</p>
+<ol start="3">
+<li>用于KEGG分析<br>waiting…</li>
+</ol>
+<h2 id="1-4-GO富集分析"><a href="#1-4-GO富集分析" class="headerlink" title="1.4. GO富集分析"></a>1.4. GO富集分析</h2><p>上面三种方法获取了背景数据集，接下来就可以使用enrichGO()函数进行GO富集分析。</p>
+<p>下面是用enrichGO做go富集分析的例子。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;gene.list&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#读取gene ID list</span></span><br><span class="line">genes <span class="operator">&lt;-</span> <span class="built_in">as.character</span><span class="punctuation">(</span>data<span class="operator">$</span>V1<span class="punctuation">)</span> <span class="comment">#转换成字符格式</span></span><br><span class="line">ego <span class="operator">&lt;-</span> enrichGO<span class="punctuation">(</span>gene          <span class="operator">=</span> genes<span class="punctuation">,</span> <span class="comment"># list of entrez gene id</span></span><br><span class="line">                OrgDb         <span class="operator">=</span> org.At.tair.db<span class="punctuation">,</span> <span class="comment"># 背景使用分析物种的org包，这里示例使用拟南芥的数据库</span></span><br><span class="line">                keyType       <span class="operator">=</span> <span class="string">&#x27;ENSEMBL&#x27;</span><span class="punctuation">,</span> <span class="comment"># 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；</span></span><br><span class="line">                ont           <span class="operator">=</span> <span class="string">&quot;BP&quot;</span><span class="punctuation">,</span> <span class="comment">#  &quot;BP&quot;, &quot;MF&quot;, &quot;CC&quot;, &quot;ALL&quot;。GO三个子类。如果选ALL，会同时获得三个子类的结果(相当于单独做三个子类的结果合并在一起)，结果中增加一列ONTOLOGY为子类。</span></span><br><span class="line">                pAdjustMethod <span class="operator">=</span> <span class="string">&quot;BH&quot;</span><span class="punctuation">,</span> <span class="comment"># 指定多重假设检验矫正的方法，选项包含 &quot;holm&quot;, &quot;hochberg&quot;, &quot;hommel&quot;, &quot;bonferroni&quot;, &quot;BH&quot;, &quot;BY&quot;, &quot;fdr&quot;, &quot;none&quot;</span></span><br><span class="line">                pvalueCutoff  <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span> <span class="comment"># 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01</span></span><br><span class="line">                qvalueCutoff  <span class="operator">=</span> <span class="number">0.2</span><span class="punctuation">,</span> <span class="comment"># 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05</span></span><br><span class="line">                readable      <span class="operator">=</span> <span class="literal">TRUE</span> <span class="punctuation">)</span> <span class="comment"># 是否将gene ID转换到 gene symbol</span></span><br><span class="line">write.table<span class="punctuation">(</span>as.data.frame<span class="punctuation">(</span>ego<span class="punctuation">)</span><span class="punctuation">,</span><span class="string">&quot;go_enrich.csv&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>row.names <span class="operator">=</span><span class="built_in">F</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-KEGG数据库过表达分析-ORA-的背景数据集选择"><a href="#2-KEGG数据库过表达分析-ORA-的背景数据集选择" class="headerlink" title="2. KEGG数据库过表达分析(ORA)的背景数据集选择"></a>2. KEGG数据库过表达分析(ORA)的背景数据集选择</h1><h2 id="2-1-支持的物种"><a href="#2-1-支持的物种" class="headerlink" title="2.1. 支持的物种"></a>2.1. 支持的物种</h2><p>有些物种在KEGG数据库里有参考基因组数据库的支持，可以直接用于KEGG分析。</p>
+<h3 id="2-1-1-查询"><a href="#2-1-1-查询" class="headerlink" title="2.1.1. 查询"></a>2.1.1. 查询</h3><ol>
+<li>网页查看</li>
+</ol>
+<ul>
+<li>通过<a target="_blank" rel="noopener" href="http://www.genome.jp/kegg/catalog/org_list.html">KEGG Organisms</a>访问 KEGG 支持的生物的完整列表，目前包含700+真核生物。</li>
+<li>ctrl+F搜索学名来查看是不是已有参考基因组</li>
+<li>如果在其中，就记录下物种简写(kegg_code,比如hsa)</li>
+</ul>
+<ol start="2">
+<li>代码搜索</li>
+</ol>
+<ul>
+<li>clusterProfiler包提供search_kegg_organism()可以搜索支持的物种。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>clusterProfiler<span class="punctuation">)</span></span><br><span class="line">search_kegg_organism<span class="punctuation">(</span><span class="string">&#x27;Eucalyptus&#x27;</span><span class="punctuation">,</span> by<span class="operator">=</span><span class="string">&#x27;scientific_name&#x27;</span><span class="punctuation">)</span></span><br><span class="line">    kegg_code    scientific_name common_name</span><br><span class="line"><span class="number">313</span>       egr Eucalyptus grandis    rose gum</span><br></pre></td></tr></table></figure></li>
+<li>记录物种对应的物种简写(kegg_code,这里是egr)</li>
+</ul>
+<h3 id="2-1-2-使用"><a href="#2-1-2-使用" class="headerlink" title="2.1.2. 使用"></a>2.1.2. 使用</h3><p>查询到有分析物种时，在<code>enrichKEGG(organism=&#39;egr&#39;)</code>,<code>gseKEGG(organism=&#39;egr&#39;)</code>,<code>enrichMKEGG(organism=&#39;egr&#39;)</code>,<code>gseMKEGG(organism=&#39;egr&#39;)</code>函数里直接把物种简写(kegg_code)赋值给<code>organism</code>参数即可使用。</p>
+<h2 id="2-2-其他物种"><a href="#2-2-其他物种" class="headerlink" title="2.2. 其他物种"></a>2.2. 其他物种</h2><p>如果分析物种不在上面支持的物种里，那么就选择下面的通用富集分析 —— enricher()和GSEA()啦~</p>
+<h1 id="3-通用富集分析-——-enricher-和GSEA"><a href="#3-通用富集分析-——-enricher-和GSEA" class="headerlink" title="3. 通用富集分析 —— enricher()和GSEA()"></a>3. 通用富集分析 —— enricher()和GSEA()</h1><ul>
+<li>以上介绍的方法都是寻找&#x2F;创建OrgDb对象或已有数据集，并用enrichGO(),enrichKEGG(),gseGO(),gseKEGG()函数实现GO和KEGG分析的。</li>
+<li>clusterProfiler开发者还专门开发了通用的富集分析函数enricher()和GSEA()，可以实现适用性更广的分析。</li>
+</ul>
+<p>基因组功能注释的软件和输出参考这篇博客:<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/05/17/omics_genome.annotation_function/">基因组功能注释</a></p>
+<h2 id="3-1-enricher的背景数据集"><a href="#3-1-enricher的背景数据集" class="headerlink" title="3.1. enricher的背景数据集"></a>3.1. enricher的背景数据集</h2><p>整理分析物种基因组的功能注释成enricher接受的格式。</p>
+<ol>
+<li>注释文件annotation.txt的格式</li>
+</ol>
+<ul>
+<li>数据表格data.frame格式，包含三列。</li>
+<li>第一列为Gene ID，第二列为 GO ID(单个GO ID)，第三列为GO_Description(如果没有可以用任意单词替代，富集分析后再做GO到GO_Description的注释)，行间的顺序无要求。</li>
+<li>enricher同样适用KEGG的富集分析，注释文件格式是一样的，第一列Gene ID，第二列为单个KEGG Pathway ID(ko01001)，第三列为KEGG_Pathway_Description(如果没有也可以用任意单词替代)。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>GeneID</th>
+<th>GO</th>
+<th>GO_Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gene00001</td>
+<td>GO:0005819</td>
+<td>spindle</td>
+</tr>
+<tr>
+<td>gene00002</td>
+<td>GO:0072686</td>
+<td>mitotic spindle</td>
+</tr>
+<tr>
+<td>gene00003</td>
+<td>GO:0000776</td>
+<td>kinetochore</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>PANNZER功能注释整理</li>
+</ol>
+<ul>
+<li>pannzer2_GO.out.txt是pannzer2的GO注释结果，提取第1(Gene ID)，3(GO ID)，4(description)列，保存为pannzer_go_annotation.txt。<br><code>cat pannzer2_GO.out.txt |awk &#39;&#123;print $1&quot;\tGO:&quot;$3&quot;\t&quot;$4&#125;&#39; &gt;pannzer_go_annotation.txt</code></li>
+<li>PANNZER的注释是一个GO ID一行的格式，所以不需更多整理了。</li>
+</ul>
+<ol start="3">
+<li>Interproscan功能注释整理</li>
+</ol>
+<ul>
+<li>iprscan.tsv是interproscan的注释结果，提取第1(Gene ID)和第14(GO IDs)列，保存为iprscan_gos.txt。<br><code>cat interproscan/mc.iprscan.tsv |cut -f1,14 |grep &quot;GO&quot;|sed &quot;s/|/,/g&quot; &gt;iprscan_gos.txt</code></li>
+<li>Interproscan的注释是一个基因的所有GO IDs都在第14列，所以需要处理成单个GO ID一行的格式。下面的R脚本示例处理iprscan_gos.txt成iprscan_go_annotation.txt文件。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>stringr<span class="punctuation">)</span></span><br><span class="line">iprscan_go<span class="operator">&lt;-</span>read.table<span class="punctuation">(</span><span class="string">&quot;iprscan_gos.txt&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span></span><br><span class="line">all_go_list<span class="operator">=</span>str_split<span class="punctuation">(</span>iprscan_go<span class="operator">$</span>V2<span class="punctuation">,</span><span class="string">&quot;,&quot;</span><span class="punctuation">)</span> <span class="comment">#分隔iprscan_go的GOs值，逗号是分隔符</span></span><br><span class="line">ip_gene2go <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span>GID <span class="operator">=</span> <span class="built_in">rep</span><span class="punctuation">(</span>iprscan_go<span class="operator">$</span>V1<span class="punctuation">,</span> times <span class="operator">=</span> sapply<span class="punctuation">(</span>all_go_list<span class="punctuation">,</span> <span class="built_in">length</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">,</span> GO <span class="operator">=</span> unlist<span class="punctuation">(</span>all_go_list<span class="punctuation">)</span><span class="punctuation">,</span> EVIDENCE <span class="operator">=</span> <span class="string">&quot;IEA&quot;</span><span class="punctuation">)</span> <span class="comment">#把多个GO编号一行的格式转换成每个GO编号一行的格式，并添加标题行，添加EVIDENCE列作为GO_Description。</span></span><br><span class="line">write.table<span class="punctuation">(</span>ip_gene2go<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;iprscan_go_annotation.txt&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>row.names<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#保存成文件iprscan_go_annotation.txt</span></span><br><span class="line">head<span class="punctuation">(</span>ip_gene2go<span class="punctuation">)</span> <span class="comment">#查看ip_gene2go前六行</span></span><br><span class="line">      GID         GO EVIDENCE</span><br><span class="line"><span class="number">1</span> mc16959 GO<span class="operator">:</span><span class="number">0003779</span>      IEA</span><br><span class="line"><span class="number">2</span> mc16959 GO<span class="operator">:</span><span class="number">0003779</span>      IEA</span><br><span class="line"><span class="number">3</span> mc32011 GO<span class="operator">:</span><span class="number">0000148</span>      IEA</span><br><span class="line"><span class="number">4</span> mc32011 GO<span class="operator">:</span><span class="number">0003843</span>      IEA</span><br><span class="line"><span class="number">5</span> mc32011 GO<span class="operator">:</span><span class="number">0006075</span>      IEA</span><br><span class="line"><span class="number">6</span> mc32011 GO<span class="operator">:</span><span class="number">0016020</span>      IEA</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="4">
+<li>其他功能注释</li>
+</ol>
+<ul>
+<li>功能注释软件有很多，结果文件的格式也各有差别，如果有注释到GO，都可以整理成这种格式，作为背景数据集，用作enricher的富集分析。</li>
+<li>在前面节<strong>通用富集分析 —— AnnotationForge</strong>中从eggNOG注释结果中提取的gene2go.txt文件格式与这里也一致，适用于enricher分析。</li>
+</ul>
+<h2 id="3-2-enricher富集分析"><a href="#3-2-enricher富集分析" class="headerlink" title="3.2. enricher富集分析"></a>3.2. enricher富集分析</h2><p>可以使用enricher()和gseGO()函数进行ORA和GSEA分析。</p>
+<p>下面是用enricher做go富集分析的例子，KEGG的enricher富集分析也类似。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;gene.list&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#读取gene ID list</span></span><br><span class="line">genes <span class="operator">&lt;-</span> <span class="built_in">as.character</span><span class="punctuation">(</span>data<span class="operator">$</span>V1<span class="punctuation">)</span> <span class="comment">#转换成字符格式</span></span><br><span class="line">go_anno <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;go_annotation.txt&quot;</span><span class="punctuation">,</span>header <span class="operator">=</span> <span class="built_in">T</span><span class="punctuation">,</span>sep <span class="operator">=</span> <span class="string">&quot;\t&quot;</span><span class="punctuation">)</span> <span class="comment">#读取go_annotation.txt，可以是pannzer_go_annotation.txt或者iprscan_go_annotation.txt</span></span><br><span class="line">go2gene <span class="operator">&lt;-</span> go_anno<span class="punctuation">[</span><span class="punctuation">,</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">2</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">)</span><span class="punctuation">]</span> <span class="comment">#读取第1，2列</span></span><br><span class="line">go2name <span class="operator">&lt;-</span> go_anno<span class="punctuation">[</span><span class="punctuation">,</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">2</span><span class="punctuation">,</span> <span class="number">3</span><span class="punctuation">)</span><span class="punctuation">]</span> <span class="comment">#读取第2，3列</span></span><br><span class="line">ego <span class="operator">&lt;-</span> enricher<span class="punctuation">(</span>genes<span class="punctuation">,</span> TERM2GENE <span class="operator">=</span> go2gene<span class="punctuation">,</span> TERM2NAME <span class="operator">=</span> go2name<span class="punctuation">,</span> pAdjustMethod <span class="operator">=</span> <span class="string">&quot;BH&quot;</span><span class="punctuation">,</span>pvalueCutoff  <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span> qvalueCutoff  <span class="operator">=</span> <span class="number">0.2</span><span class="punctuation">)</span> <span class="comment">#enricher分析，并保存在ego。</span></span><br><span class="line">write.table<span class="punctuation">(</span>as.data.frame<span class="punctuation">(</span>ego<span class="punctuation">)</span><span class="punctuation">,</span><span class="string">&quot;go_enrich.csv&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span>row.names <span class="operator">=</span><span class="built_in">F</span><span class="punctuation">,</span><span class="built_in">quote</span><span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-GO和KEGG描述查询"><a href="#4-GO和KEGG描述查询" class="headerlink" title="4. GO和KEGG描述查询"></a>4. GO和KEGG描述查询</h1><p>如果在通用富集分析中准备的背景数据集第三列描述栏没有信息，可以在富集结果出来后根据GO ID或者KEGG Pathway ID查询。</p>
+<h2 id="4-1-GO-term-查询"><a href="#4-1-GO-term-查询" class="headerlink" title="4.1. GO term 查询"></a>4.1. GO term 查询</h2><ol>
+<li>AmiGO2查询</li>
+</ol>
+<ul>
+<li>在<a target="_blank" rel="noopener" href="http://geneontology.org/">GO官网</a>)使用的<a target="_blank" rel="noopener" href="http://amigo.geneontology.org/amigo/landing">AmiGO2网站</a>查询GO ID和GO term信息。</li>
+<li><a target="_blank" rel="noopener" href="https://wego.genomics.cn/">WEGO 2.0</a>也可以查询。</li>
+<li><strong>查询方法</strong>：在<a target="_blank" rel="noopener" href="http://amigo.geneontology.org/amigo/landing">AmiGO2网站</a>的搜索框输入GO ID(格式是 GO:0000000)即可查到GO term information。</li>
+</ul>
+<h2 id="4-2-KEGG-Pathway-查询"><a href="#4-2-KEGG-Pathway-查询" class="headerlink" title="4.2. KEGG Pathway 查询"></a>4.2. KEGG Pathway 查询</h2><ol>
+<li>KEGG官网查询</li>
+</ol>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.kegg.jp/kegg/">KEGG网站</a>提供了KEGG信息查询入口，包括<a target="_blank" rel="noopener" href="https://www.kegg.jp/kegg/pathway.html">KEGG Pathway</a>中查询KEGG Pathway ID(格式是 ko00000)的详细信息。</li>
+<li><strong>查询方法</strong>：把<a target="_blank" rel="noopener" href="https://www.kegg.jp/kegg/pathway.html">KEGG Pathway</a>的搜索前缀(Select prefix)改成ko，在搜索框(Enter keywords)输入KEGG Pathway ID(格式是5个数字 00000)，点击查询Go即可得到KEGG Pathway information。</li>
+<li>官网查询只发现了单个查询的方法，批量查询还是推荐使用文件查询方法。</li>
+</ul>
+<ol start="2">
+<li>文件查询【推荐】<br>使用前面<strong>提取注释的KEGG信息</strong>第4步骤得到的pathway2name.txt文件，获取KEGG Pathway ID对应的描述信息(Name列)。</li>
+</ol>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li>clusterProfiler github：<a target="_blank" rel="noopener" href="https://github.com/YuLab-SMU/clusterProfiler">https://github.com/YuLab-SMU/clusterProfiler</a></li>
+<li>clusterProfiler paper：<a target="_blank" rel="noopener" href="https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https://linkinghub.elsevier.com/retrieve/pii/S2666675821000667?showall=true">https://www.cell.com/the-innovation/fulltext/S2666-6758(21)00066-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666675821000667%3Fshowall%3Dtrue</a></li>
+<li>clusterProfiler book：<a target="_blank" rel="noopener" href="http://yulab-smu.top/biomedical-knowledge-mining-book/index.html">http://yulab-smu.top/biomedical-knowledge-mining-book/index.html</a></li>
+<li>clusterProfiler manual：<a target="_blank" rel="noopener" href="https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf">https://bioconductor.org/packages/devel/bioc/manuals/clusterProfiler/man/clusterProfiler.pdf</a> </li>
+<li>clusterProfiler ducumentation：<a target="_blank" rel="noopener" href="https://guangchuangyu.github.io/software/clusterProfiler/documentation/">https://guangchuangyu.github.io/software/clusterProfiler/documentation/</a></li>
+<li>用AnnotationForge进行非模式物种注释构建：<a target="_blank" rel="noopener" href="https://www.jieandze1314.com/post/cnposts/208/">https://www.jieandze1314.com/post/cnposts/208/</a></li>
+<li>用AnnotationHub获取非模式物种注释信息：<a target="_blank" rel="noopener" href="https://www.bioinfo-scrounger.com/archives/512/">https://www.bioinfo-scrounger.com/archives/512/</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gene-set-enrichment-analysis/" rel="tag"># gene set enrichment analysis</a>
+              <a href="/tags/GSEA/" rel="tag"># GSEA</a>
+              <a href="/tags/enrichment-analysis/" rel="tag"># enrichment analysis</a>
+              <a href="/tags/over-representation-analysis/" rel="tag"># over representation analysis</a>
+              <a href="/tags/ORA/" rel="tag"># ORA</a>
+              <a href="/tags/clusterProfiler/" rel="tag"># clusterProfiler</a>
+              <a href="/tags/GO/" rel="tag"># GO</a>
+              <a href="/tags/KEGG/" rel="tag"># KEGG</a>
+              <a href="/tags/AnnotationHub/" rel="tag"># AnnotationHub</a>
+              <a href="/tags/AnnotationForge/" rel="tag"># AnnotationForge</a>
+              <a href="/tags/enricher/" rel="tag"># enricher</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/22/omics_genome.annotation_ncRNA/" rel="prev" title="基因组注释（四）：非编码RNA的注释-用Infernal软件对Rfam 12进行RNA注释">
+      <i class="fa fa-chevron-left"></i> 基因组注释（四）：非编码RNA的注释-用Infernal软件对Rfam 12进行RNA注释
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/" rel="next" title="富集分析：（五）clusterProfiler：Visualization">
+      富集分析：（五）clusterProfiler：Visualization <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-GO%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%87%E8%A1%A8%E8%BE%BE%E5%88%86%E6%9E%90-ORA-%E7%9A%84%E8%83%8C%E6%99%AF%E6%95%B0%E6%8D%AE%E9%9B%86%E9%80%89%E6%8B%A9"><span class="nav-number">1.</span> <span class="nav-text">1. GO数据库过表达分析(ORA)的背景数据集选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%B7%B2%E6%9C%89OrgDb%E7%9A%84%E7%89%A9%E7%A7%8D-%E2%80%94%E2%80%94-Bioconductor"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 已有OrgDb的物种 —— Bioconductor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%8E%B7%E5%8F%96%E5%9C%A8%E7%BA%BF%E6%B3%A8%E9%87%8A%E5%88%9B%E5%BB%BAOrgDb%E5%AF%B9%E8%B1%A1-%E2%80%94%E2%80%94-AnnotationHub"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 获取在线注释创建OrgDb对象 —— AnnotationHub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E9%80%9A%E7%94%A8%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%9E%E6%A8%A1%E5%BC%8F%E7%89%A9%E7%A7%8D%EF%BC%89%E2%80%94%E2%80%94-AnnotationForge"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 通用富集分析（非模式物种）—— AnnotationForge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E5%87%86%E5%A4%87"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1. 准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E6%8F%90%E5%8F%96%E6%B3%A8%E9%87%8A%E7%9A%84GO%E4%BF%A1%E6%81%AF"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2. 提取注释的GO信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-%E6%8F%90%E5%8F%96%E6%B3%A8%E9%87%8A%E7%9A%84KEGG%E4%BF%A1%E6%81%AF"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3. 提取注释的KEGG信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-4-%E5%88%9B%E5%BB%BAOrgDb%E5%8C%85"><span class="nav-number">1.3.4.</span> <span class="nav-text">1.3.4. 创建OrgDb包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-5-%E4%BD%BF%E7%94%A8OrgDb%E5%8C%85"><span class="nav-number">1.3.5.</span> <span class="nav-text">1.3.5. 使用OrgDb包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-GO%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. GO富集分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-KEGG%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%87%E8%A1%A8%E8%BE%BE%E5%88%86%E6%9E%90-ORA-%E7%9A%84%E8%83%8C%E6%99%AF%E6%95%B0%E6%8D%AE%E9%9B%86%E9%80%89%E6%8B%A9"><span class="nav-number">2.</span> <span class="nav-text">2. KEGG数据库过表达分析(ORA)的背景数据集选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%94%AF%E6%8C%81%E7%9A%84%E7%89%A9%E7%A7%8D"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 支持的物种</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1. 查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2. 使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%85%B6%E4%BB%96%E7%89%A9%E7%A7%8D"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 其他物种</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%80%9A%E7%94%A8%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90-%E2%80%94%E2%80%94-enricher-%E5%92%8CGSEA"><span class="nav-number">3.</span> <span class="nav-text">3. 通用富集分析 —— enricher()和GSEA()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-enricher%E7%9A%84%E8%83%8C%E6%99%AF%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. enricher的背景数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-enricher%E5%AF%8C%E9%9B%86%E5%88%86%E6%9E%90"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. enricher富集分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-GO%E5%92%8CKEGG%E6%8F%8F%E8%BF%B0%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.</span> <span class="nav-text">4. GO和KEGG描述查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-GO-term-%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. GO term 查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-KEGG-Pathway-%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. KEGG Pathway 查询</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-number">5.</span> <span class="nav-text">5. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/04/26/bioinfo_enrichment_clusterProfiler.species/";
+    this.page.identifier = "2022/04/26/bioinfo_enrichment_clusterProfiler.species/";
+    this.page.title = "富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
 </html>
