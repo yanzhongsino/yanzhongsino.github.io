@@ -39,7 +39,7 @@ header {
 
 .contact-item {
     margin-top: 0rem;
-    display: inline-grid;
+    white-space: nowrap;
 }
 
 .portrait {
