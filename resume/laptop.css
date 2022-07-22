@@ -38,7 +38,8 @@ header {
 }
 
 .contact-item {
-    margin-top: 0rem; 
+    margin-top: 0rem;
+    display: inline-grid;
 }
 
 .portrait {
