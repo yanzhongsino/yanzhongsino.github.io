@@ -11,7 +11,8 @@ keywords:
 - skills
 - tools
 author: 南方枝叶
-language: zh-CN
+language: en
+# language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
@@ -239,7 +240,7 @@ theme_config:
     #schedule: /schedule/ || fa fa-calendar
     #sitemap: /sitemap.xml || fa fa-sitemap
     #commonweal: /404/ || fa fa-heartbeat
-    resume: /resume/index.html || fa fa-file-user
+    resume: /resume/index.html || fa fa-file
 
   # Enable / Disable menu icons / item badges.
   menu_settings:
