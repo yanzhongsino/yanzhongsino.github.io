@@ -502,7 +502,6 @@ math:
   # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.
   mathjax:
     enable: true
-    per_page: true
     cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
     # Han Support docs: https://hanzi.pro/
     # See: https://mhchem.github.io/MathJax-mhchem/
