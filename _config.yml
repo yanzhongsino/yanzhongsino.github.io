@@ -617,7 +617,10 @@ theme_config:
 
     # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.
     mathjax:
-      enable: false
+    enable: true
+    per_page: true
+    cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
+    # Han Support docs: https://hanzi.pro/
       # See: https://mhchem.github.io/MathJax-mhchem/
       mhchem: false
 
@@ -1112,3 +1115,12 @@ theme_config:
   css: css
   js: js
   images: images
+
+  markdown:
+    plugins:
+      - markdown-it-footnote
+      - markdown-it-sup
+      - markdown-it-sub
+      - markdown-it-abbr
+      - markdown-it-emoji
+      - hexo-math

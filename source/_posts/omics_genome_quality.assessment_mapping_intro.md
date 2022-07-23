@@ -1,5 +1,5 @@
 ---
-title: 基因组质量评估：（五）mapping法 —— 1. 简介
+title: 基因组质量评估：（五）mapping法：1. 简介
 date: 2022-07-23
 categories:
 - omics
@@ -20,7 +20,7 @@ tags:
 description: mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2192010&auto=1&height=32"></iframe></div>
 
 # 1. 基因组评估的方法——mapping法
 把测序reads与组装好的基因组做alignment，这个操作常被称为mapping。mapping之后生成SAM/BAM格式文件，通过分析SAM/BAM格式文件，获取reads mapping回参考基因组的信息（比如mapping rate，coverage，depth），从而评估基因组组装的质量。
@@ -32,16 +32,16 @@ description: mapping法评估基因组组装质量。把测序的reads（包括P
 |---|---|
 |Illumina reads|BWA|
 |Pacbio reads|minimap2|
-|RNA-seq|Hisat2|
+|RNA-seq|HiSat2|
 
 ## 1.2. 评估指标
 主要是通过以下三个量化指标来评估组装质量：
 1. mapping rate
-- reads的mapping rate：mapped reads number/total reads number
+- reads的mapping rate：$mapped reads number/total reads number$
 - HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中
 - samtools，bamdst等软件也可以统计mapping rate
 2. genome coverage
-- genome coverage：mapped genome length/total genome length
+- genome coverage：$mapped genome length/total genome length$
 - samtools，bedtools，bamdst等软件也可以统计genome coverage
 3. depth
 - 平均depth：计算基因组的平均深度作为参考指标
@@ -76,14 +76,14 @@ description: mapping法评估基因组组装质量。把测序的reads（包括P
 对于RNA-seq数据，用HiSat2进行reads的mapping。
 
 1. 建索引
-`hisat2-build ref.fa ref.hisat`
+- `hisat2-build ref.fa ref.hisat`
 
 2. mapping
-`hisat2 --dta -p 8 -x ref.index -1 rna1_1.fa -2 rna1_2.fa 2>rna1_hisat.log |samtools sort -@ 12 > rna1_hisat.bam &` #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。
+- `hisat2 --dta -p 8 -x ref.index -1 rna1_1.fa -2 rna1_2.fa 2>rna1_hisat.log |samtools sort -@ 12 > rna1_hisat.bam &` #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。
+- `hisat2 --dta -p 8 -x ref.index -1 rna2_1.fa -2 rna2_2.fa 2>rna2_hisat.log |samtools sort -@ 12 > rna2_hisat.bam &` #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。
 
-`hisat2 --dta -p 8 -x ref.index -1 rna2_1.fa -2 rna2_2.fa 2>rna2_hisat.log |samtools sort -@ 12 > rna2_hisat.bam &` #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。
-
-`samtools merge -@ 8 merged_hisat.bam rna1_hisat.bam rna2_hisat.bam`  #合并多个bam文件到一个bam文件
+3. merge
+- `samtools merge -@ 8 merged_hisat.bam rna1_hisat.bam rna2_hisat.bam`  #合并多个bam文件到一个bam文件
 
 
 -------

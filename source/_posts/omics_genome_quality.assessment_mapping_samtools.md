@@ -1,5 +1,5 @@
 ---
-title: 基因组质量评估：（五）mapping法 —— 2. samtools计算mapping rate
+title: 基因组质量评估：（五）mapping法：2. samtools计算mapping rate
 date: 2022-07-23
 categories:
 - omics
@@ -16,9 +16,11 @@ tags:
 - samtools flagstat
 
 description: mapping法评估基因组组装质量。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。
+
+mathjax: true
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18600061&auto=1&height=32"></iframe></div>
 
 # 1. mapping rate
 通过mapping把reads与组装好的基因组进行alignment，然后分析mapped reads的sam/bam格式文件，统计mapping rate来评估基因组组装质量。期望mapping rate越接近100%，组装质量越高。
@@ -52,18 +54,19 @@ description: mapping法评估基因组组装质量。通过samtools计算mapping
 - 在`2022476 mates make up the pairs; of these:`及之后包含的信息中，代表配对的reads数量，双端测序的reads是统计了配对的所有reads，总reads数量就是2022476条。
 
 3. hisat2的mapping rate的计算
+
 96.88%的overall alignment rate即为mapping rate，计算方法是：
 
 $$mapping rate=mapped reads number/total reads number$$
 
-  - total reads number用的$19429766*2$。
-  - mapped reads number包含：$concordantly exactly 1 time(14853850*2)$，$aligned concordantly >1 times(3509724*2)$，$aligned discordantly 1 time(54954*2)$，$mates make up the pairs$中的$aligned exactly 1 time(607196)$和$aligned >1 times(203633)$。
+  - total reads number用的$19429766\*2$。
+  - mapped reads number包含：concordantly exactly 1 time(14853850\*2)，aligned concordantly >1 times(3509724\*2)，aligned discordantly 1 time(54954\*2)，mates make up the pairs中的aligned exactly 1 time(607196)和aligned >1 times(203633)。
 
-  $$mapping rate=((14853850+3509724+54954)*2+607196+203633)/(19429766*2) = 37647885/38859532*100\%=96.88\%$$
+  $$mapping rate=((14853850+3509724+54954)\*2+607196+203633)/(19429766\*2) = 37647885/38859532*100\%=96.88\%$$
 
-  - mapped reads number的另一种计算方法：$concordantly exactly 1 time(14853850)$，$aligned concordantly >1 times(3509724)$，$aligned concordantly 0 times(1066192)$中aligned到的所有reads，即除了$aligned concordantly 0 times(1066192)$中的$aligned 0 times(1211647/2)$以外的所有reads。
+  - mapped reads number的另一种计算方法：concordantly exactly 1 time(14853850)，aligned concordantly >1 times(3509724)，aligned concordantly 0 times(1066192)中aligned到的所有reads，即除了aligned concordantly 0 times(1066192)中的aligned 0 times(1211647/2)以外的所有reads。
 
-  $$mapping rate=(14853850+3509724+54954+1066192-(1211647/2))/19429766*100\%=96.88\%$$
+  $$mapping rate=(14853850+3509724+54954+1066192-(1211647/2))/19429766\*100\%=96.88\%$$
 
 # 3. samtools flagstat统计mapping rate
 1. samtools flagstat
@@ -96,9 +99,9 @@ $$mapping rate=mapped reads number/total reads number$$
 
 $$mapping record rate=mapped recorder number/total recorder number=((primary) mapped reads number + secondary mapped reads number)/(total reads number + secondary mapped reads number)$$
 
-其中，$recorder number$代表sam文件中去除header部分的比对记录数量（每行一条比对记录，即行数）。
+其中，recorder number代表sam文件中去除header部分的比对记录数量（每行一条比对记录，即行数）。
 
-同一reads可能多次mapping，有多条记录，所以$recorder number$的数量会比$reads number$多。
+同一reads可能多次mapping，有多条记录，所以recorder number的数量会比reads number多。
 
 - mapped recorder number用的是50020312；
 - total recorder number用的是51231959；
