@@ -86,7 +86,11 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -193,7 +197,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/07/23/omics_genome_quality.assessment_mapping_intro/" class="post-title-link" itemprop="url">基因组质量评估：（五）mapping法 —— 1. 简介</a>
+            <a href="/2022/07/23/omics_genome_quality.assessment_mapping_intro/" class="post-title-link" itemprop="url">基因组质量评估：（五）mapping法：1. 简介</a>
         </h2>
 
         <div class="post-meta">
@@ -204,7 +208,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-07-23 00:00:00 / Modified: 21:27:46" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
+              <time title="Created: 2022-07-23 00:00:00 / Modified: 21:45:27" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,7 +294,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/07/23/omics_genome_quality.assessment_mapping_samtools/" class="post-title-link" itemprop="url">基因组质量评估：（五）mapping法 —— 2. samtools计算mapping rate</a>
+            <a href="/2022/07/23/omics_genome_quality.assessment_mapping_samtools/" class="post-title-link" itemprop="url">基因组质量评估：（五）mapping法：2. samtools计算mapping rate</a>
         </h2>
 
         <div class="post-meta">
@@ -301,7 +305,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-07-23 00:00:00 / Modified: 21:27:43" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
+              <time title="Created: 2022-07-23 00:00:00 / Modified: 22:25:49" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1345,6 +1349,61 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
