@@ -66,6 +66,20 @@ depth.out有三列数据，tab分隔。
 - `samtools mpileup`默认过滤掉测序质量<13的碱基；
 - `samtools mpileup`默认过滤掉PE reads中比对异常的reads（包括双端都比上，但是两条配对reads之间的比对距离明显偏离了插入片段的长度分布，或者一端比对上而另一端没比对上）。除非加上-A参数保留异常reads，才与`samtools depth`一致。
 
+# genome coverage
+利用samtools depth计算genome coverage
+```
+samtools depth -aa sample.bam >depth.out # 计算所有位点的深度
+u = $(cat depth.out |awk '$3 == 0 {print $0}'|wc -l) # 统计没有mapped碱基的长度，并赋值给u
+t = $(cat depth.out |wc -l) # 统计所有位点的长度，并赋值给t。这个值与与基因组大小一致。
+echo "scale=5; 1-$u/$t" | bc #计算基因组覆盖度
+```
+
+
+# bedtools
+`bedtools genomecov`可以统计coverage
+
+`bedtools genomecov -ibam sample.bam -d >sample.depth`
 
 # 基因组组装质量的评估
 用clean reads映射（mapping）回组装好的初始基因组，然后查看mapping的效果。

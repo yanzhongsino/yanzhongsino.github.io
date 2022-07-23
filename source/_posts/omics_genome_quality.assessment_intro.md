@@ -104,7 +104,7 @@ Earth Biogenome Project（EBP）在2021年3月发布了4.0版本的核基因组�
 1. QUAST：评估基因组scaffold N50，L50等指数。
 2. BUSCO：基因组和预测的蛋白组都可以用BUSCO评估基因组组装或注释的完整度(completeness)。
 3. LAI：通过LTR组装指数评估基因组的连贯性(continuity)。
-4. raw data mapping：把测序的reads（包括pacbio，Illumina，RNA-seq reads等）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标。这有非常多工具可用。
+4. raw reads mapping法：把测序的reads（包括pacbio，Illumina，RNA-seq reads等）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标。这有非常多工具可用。
 5. 除了EBP建议的工具，还有许多其他工具。
 - 比如FastaSeqStats用来评估基因组组装。
 - 对于污染（contaminations），尤其是小的contigs的污染，还可以用blobtools进行评估和处理。
