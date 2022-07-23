@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基因组质量评估：（五）mapping法 —— 1. 简介">
+<meta property="og:url" content="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_intro/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-07-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-23T13:27:46.194Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="quality assessment">
+<meta property="article:tag" content="mapping">
+<meta property="article:tag" content="organelle">
+<meta property="article:tag" content="transcriptome">
+<meta property="article:tag" content="BWA">
+<meta property="article:tag" content="HiSat2">
+<meta property="article:tag" content="minimap2">
+<meta property="article:tag" content="sam">
+<meta property="article:tag" content="bam">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_intro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>基因组质量评估：（五）mapping法 —— 1. 简介 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基因组质量评估：（五）mapping法 —— 1. 简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-23 00:00:00 / Modified: 21:27:46" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/quality-assessment/" itemprop="url" rel="index"><span itemprop="name">quality assessment</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/07/23/omics_genome_quality.assessment_mapping_intro/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/07/23/omics_genome_quality.assessment_mapping_intro/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><music URL></div>
+
+<h1 id="1-基因组评估的方法——mapping法"><a href="#1-基因组评估的方法——mapping法" class="headerlink" title="1. 基因组评估的方法——mapping法"></a>1. 基因组评估的方法——mapping法</h1><p>把测序reads与组装好的基因组做alignment，这个操作常被称为mapping。mapping之后生成SAM&#x2F;BAM格式文件，通过分析SAM&#x2F;BAM格式文件，获取reads mapping回参考基因组的信息（比如mapping rate，coverage，depth），从而评估基因组组装的质量。</p>
+<h2 id="1-1-mapping工具"><a href="#1-1-mapping工具" class="headerlink" title="1.1. mapping工具"></a>1.1. mapping工具</h2><p>不同的reads可以用不同的软件进行mapping</p>
+<table>
+<thead>
+<tr>
+<th>reads</th>
+<th>mapping tools</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Illumina reads</td>
+<td>BWA</td>
+</tr>
+<tr>
+<td>Pacbio reads</td>
+<td>minimap2</td>
+</tr>
+<tr>
+<td>RNA-seq</td>
+<td>Hisat2</td>
+</tr>
+</tbody></table>
+<h2 id="1-2-评估指标"><a href="#1-2-评估指标" class="headerlink" title="1.2. 评估指标"></a>1.2. 评估指标</h2><p>主要是通过以下三个量化指标来评估组装质量：</p>
+<ol>
+<li>mapping rate</li>
+</ol>
+<ul>
+<li>reads的mapping rate：mapped reads number&#x2F;total reads number</li>
+<li>HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中</li>
+<li>samtools，bamdst等软件也可以统计mapping rate</li>
+</ul>
+<ol start="2">
+<li>genome coverage</li>
+</ol>
+<ul>
+<li>genome coverage：mapped genome length&#x2F;total genome length</li>
+<li>samtools，bedtools，bamdst等软件也可以统计genome coverage</li>
+</ul>
+<ol start="3">
+<li>depth</li>
+</ol>
+<ul>
+<li>平均depth：计算基因组的平均深度作为参考指标</li>
+<li>depth的分布：基因组上每个碱基mapped碱基的数量称为单碱基的深度（depth），或者通过滑窗统计基因组上每个固定大小（比如1000bp）的窗口的mapped碱基的平均数量作为窗口深度，分析深度在基因组上的分布可以判断基因组组装的质量。</li>
+<li>此外，通过可视化软件直观地查看reads在基因组上具体的mapping情况，也可以判断基因组组装是否存在错误碱基、组装结构问题。</li>
+<li>samtools，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息</li>
+</ul>
+<h1 id="2-mapping实操"><a href="#2-mapping实操" class="headerlink" title="2. mapping实操"></a>2. mapping实操</h1><p>用特定工具对各种reads进行mapping，生成SAM&#x2F;BAM文件。</p>
+<h2 id="2-1-Illumina-reads：BWA"><a href="#2-1-Illumina-reads：BWA" class="headerlink" title="2.1. Illumina reads：BWA"></a>2.1. Illumina reads：BWA</h2><p>用BWA-MEM+samtools对Illumina reads进行mapping</p>
+<ol>
+<li>建索引</li>
+</ol>
+<ul>
+<li><code>bwa index ref.fa</code></li>
+</ul>
+<ol start="2">
+<li>bwa mapping</li>
+</ol>
+<ul>
+<li><code>bwa mem -t 4 ref.fa R1.clean.fq r2.clean.fq | samtools sort -@ 4 -m 4G &gt; illumina.bam &amp;</code></li>
+</ul>
+<h2 id="2-2-PacBio-x2F-Nanopore-reads：minimap2"><a href="#2-2-PacBio-x2F-Nanopore-reads：minimap2" class="headerlink" title="2.2. PacBio&#x2F;Nanopore reads：minimap2"></a>2.2. PacBio&#x2F;Nanopore reads：minimap2</h2><p>用minimap2对三代reads进行mapping</p>
+<ol>
+<li>直接mapping</li>
+</ol>
+<ul>
+<li><code>minimap2 -t 8 -ax map-pb ref.fa pacbio_reads.fq &gt;pacbio.sam &amp;</code></li>
+<li><code>minimap2 -t 8 -ax map-ont ref.fa ont_reads.fq &gt;nanopore.sam &amp;</code></li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-t 8：线程</li>
+<li>-a：输出sam格式，默认是PAF格式</li>
+<li>-x: 选择数据类型，map-pb是pacbio数据，map-ont是nanopore数据。</li>
+</ul>
+<h2 id="2-3-RNA-seq-reads：HiSat2"><a href="#2-3-RNA-seq-reads：HiSat2" class="headerlink" title="2.3. RNA-seq reads：HiSat2"></a>2.3. RNA-seq reads：HiSat2</h2><h3 id="2-3-1-mapping"><a href="#2-3-1-mapping" class="headerlink" title="2.3.1. mapping"></a>2.3.1. mapping</h3><p>对于RNA-seq数据，用HiSat2进行reads的mapping。</p>
+<ol>
+<li><p>建索引<br><code>hisat2-build ref.fa ref.hisat</code></p>
+</li>
+<li><p>mapping<br><code>hisat2 --dta -p 8 -x ref.index -1 rna1_1.fa -2 rna1_2.fa 2&gt;rna1_hisat.log |samtools sort -@ 12 &gt; rna1_hisat.bam &amp;</code> #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。</p>
+</li>
+</ol>
+<p><code>hisat2 --dta -p 8 -x ref.index -1 rna2_1.fa -2 rna2_2.fa 2&gt;rna2_hisat.log |samtools sort -@ 12 &gt; rna2_hisat.bam &amp;</code> #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。</p>
+<p><code>samtools merge -@ 8 merged_hisat.bam rna1_hisat.bam rna2_hisat.bam</code>  #合并多个bam文件到一个bam文件</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/quality-assessment/" rel="tag"># quality assessment</a>
+              <a href="/tags/mapping/" rel="tag"># mapping</a>
+              <a href="/tags/organelle/" rel="tag"># organelle</a>
+              <a href="/tags/transcriptome/" rel="tag"># transcriptome</a>
+              <a href="/tags/BWA/" rel="tag"># BWA</a>
+              <a href="/tags/HiSat2/" rel="tag"># HiSat2</a>
+              <a href="/tags/minimap2/" rel="tag"># minimap2</a>
+              <a href="/tags/sam/" rel="tag"># sam</a>
+              <a href="/tags/bam/" rel="tag"># bam</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/23/omics_genome_quality.assessment_mapping_samtools/" rel="prev" title="基因组质量评估：（五）mapping法 —— 2. samtools计算mapping rate">
+      <i class="fa fa-chevron-left"></i> 基因组质量评估：（五）mapping法 —— 2. samtools计算mapping rate
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%AF%84%E4%BC%B0%E7%9A%84%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94mapping%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组评估的方法——mapping法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-mapping%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. mapping工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 评估指标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-mapping%E5%AE%9E%E6%93%8D"><span class="nav-number">2.</span> <span class="nav-text">2. mapping实操</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Illumina-reads%EF%BC%9ABWA"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. Illumina reads：BWA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-PacBio-x2F-Nanopore-reads%EF%BC%9Aminimap2"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. PacBio&#x2F;Nanopore reads：minimap2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-RNA-seq-reads%EF%BC%9AHiSat2"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. RNA-seq reads：HiSat2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-mapping"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. mapping</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">241</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_intro/";
+    this.page.identifier = "2022/07/23/omics_genome_quality.assessment_mapping_intro/";
+    this.page.title = "基因组质量评估：（五）mapping法 —— 1. 简介";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
