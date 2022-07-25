@@ -369,8 +369,17 @@ theme_config:
   # Dependencies: https://github.com/theme-next/hexo-symbols-count-time
   symbols_count_time:
     separated_meta: true
-    item_text_post: true
-    item_text_total: false
+    item_text_post: false
+    item_text_total: false    
+    symbols: true
+    time: true
+    total_symbols: true
+    total_time: true
+    exclude_codeblock: false
+    awl: 2
+    wpm: 300
+    suffix: "mins."
+
 
   # Use icon instead of the symbol # to indicate the tag at the bottom of the post
   tag_icon: false
