@@ -1,6 +1,6 @@
 ---
-title: 基因组质量评估：（二）统计mapped reads的深度分布
-date: 2022-05-16
+title: 基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布
+date: 2022-07-25
 categories:
 - omics
 - genome
@@ -8,8 +8,10 @@ categories:
 tags:
 - quality assessment
 - genome
-- organelle
-- transcriptome
+- mapping
+- sam
+- bam
+- depth
 
 description: 记录基因组评估的方法，用测序reads，包括pacbio，illumina，RNA-seq reads，mapping回基因组，得到mapping rates，mapping rates越高代表基因组的。
 ---
@@ -17,10 +19,9 @@ description: 记录基因组评估的方法，用测序reads，包括pacbio，il
 <div align="middle"><music URL></div>
 
 ## 基因组评估的方法
+在测序是随机分布的情况下，期望在基因组的所有染色体上，mapped reads的depth是均匀分布的。
 
 把reads回mapping到组装好的基因组，通过计算depth，观察depth的分布来判断组装的质量。
-
-期望在基因组的所有染色体上，depth是均匀分布的。
 
 ### BWA mapping
 1. 工具

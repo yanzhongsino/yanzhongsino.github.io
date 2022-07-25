@@ -1,6 +1,6 @@
 ---
-title: 基因组质量评估：（）统计BAM文件深度的软件mosdepth
-date: 2022-07-06
+title: 基因组质量评估：（五）mapping法：6. 统计BAM文件深度的软件mosdepth
+date: 2022-07-25
 categories:
 - omics
 - genome
@@ -8,10 +8,10 @@ categories:
 tags:
 - quality assessment
 - genome
-- coverage
-- depth
 - mapping
-- BAM
+- sam
+- bam
+- depth
 - biosoft
 - mosdepth
 

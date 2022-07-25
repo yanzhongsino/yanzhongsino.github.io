@@ -12,6 +12,8 @@ tags:
 - mapping
 - mapping rate
 - HiSat2
+- sam
+- bam
 - samtools
 - samtools flagstat
 

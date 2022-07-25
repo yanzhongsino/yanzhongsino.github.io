@@ -84,6 +84,29 @@ menu:
 # 2. 小图标
 博客首页的每个选项卡前的小图标可以参照这个网址自行修改：https://fontawesome.com/icons?from=io
 
+# 添加搜索功能
+1. 安装hexo-generator-search
+在项目根目录下运行`npm install hexo-generator-searchdb --save`
+
+2. 更改站点配置文件./_config.yml
+
+在最底部添加下面内容：
+
+```
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+```
+
+3. 修改主题配置文件themes/next/_config.yml
+
+将local_search下的enable从false改为true
+
+# 添加访问量统计
+
+
 # 3. references
 1. https://mrlsm.github.io/2018/07/30/%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BD%91%E9%A1%B5/
 2. https://zhuanlan.zhihu.com/p/525469921
