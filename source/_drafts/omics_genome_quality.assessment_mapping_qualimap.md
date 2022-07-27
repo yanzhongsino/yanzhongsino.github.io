@@ -1,5 +1,5 @@
 ---
-title: 基因组质量评估：（五）mapping法：4. 软件qualimap
+title: 基因组质量评估：（五）mapping法：5. 软件qualimap
 date: 2022-07-25
 categories:
 - omics

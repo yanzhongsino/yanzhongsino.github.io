@@ -20,7 +20,7 @@ tags:
 description: mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单概述了mapping法的其中一个评估指标：depth，主要介绍了统计mapped reads的深度分布的一般方法。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2117115&auto=1&height=32"></iframe></div>
 
 # 1. 前情提要：mapping
 此篇博客在已经通过mapping获得SAM/BAM文件的基础上进行分析，
