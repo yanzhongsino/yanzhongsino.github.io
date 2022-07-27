@@ -15,7 +15,7 @@ tags:
 - biosoft
 - mosdepth
 
-description: 记录统计BAM文件深度的软件mosdepth的安装和使用。
+description: mapping法评估基因组组装质量。这篇文章主要介绍了统计BAM文件深度的软件mosdepth的安装和使用。
 ---
 
 <div align="middle"><music URL></div>

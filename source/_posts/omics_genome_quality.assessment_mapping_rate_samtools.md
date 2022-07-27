@@ -17,7 +17,7 @@ tags:
 - samtools
 - samtools flagstat
 
-description: mapping法评估基因组组装质量。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。
+description: mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的其中一个评估指标：mapping rate。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。
 
 mathjax: true
 ---

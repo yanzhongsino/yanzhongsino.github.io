@@ -15,7 +15,7 @@ tags:
 - biosoft
 - bamdst
 
-description: 介绍统计BAM文件深度和覆盖度的软件bamdst的使用和结果解释。
+description: mapping法评估基因组组装质量。这篇文章主要介绍了统计BAM文件深度和覆盖度的软件bamdst的使用和结果解释。
 ---
 
 <div align="middle"><music URL></div>

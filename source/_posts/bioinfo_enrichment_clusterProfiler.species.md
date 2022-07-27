@@ -23,7 +23,7 @@ description: 记录使用clusterProfiler进行GO/KEGG富集分析时，根据分
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283092&auto=1&height=32"></iframe></div>
 
 clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: ：
-- 博客[富集分析：（三）clusterProfiler概述](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/)
+- 博客[富集分析：（三）clusterProfiler概述](https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler.intro/)
 - 博客[富集分析：（四） clusterProfiler：不同物种的GO+KEGG富集分析](https://yanzhongsino.github.io/2022/04/26/bioinfo_enrichment_clusterProfiler.species/)
 - 博客[富集分析：（五）clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
 
@@ -153,6 +153,15 @@ keys(Cgriseus, keytype = "GO") #查看GO数据集下的ID
 - 如果有分析物种的基因组注释数据，更好的方案是使用通用富集分析。
 - AnnotationForge是用来创建OrgDb包的R包。
 
+### 安装
+
+```R
+install.packages('GO.db')
+library(GO.db)
+BiocManager::install("AnnotationForge") #安装
+library(AnnotationForge) #加载
+```
+
 ### 1.3.1. 准备
 - 这里使用的基因组注释数据是eggNOG注释结果emapper.annotations.tsv。
 - 准备步骤之后的步骤大多在R环境里操作，有些需要在shell环境处理，建议开两个shell窗口操作。
@@ -177,12 +186,13 @@ colnames(egg) #列出标题行
 ### 1.3.2. 提取注释的GO信息
 从egg中提取GO注释并整理成gene2go.txt文件
 ```R
+library(dplyr)
 gene_info <- egg %>%dplyr::select(GID = query, GENENAME = seed_ortholog) %>% na.omit() #根据egg第一和第二列的标题提取前两列。
 goterms <- egg %>%dplyr::select(query, GOs) %>% na.omit() %>% filter(str_detect(GO,"GO")) #根据egg第一列和GO列的标题提取基因的GO注释。后面的`%>% filter(str_detect(GO,"GO"))`是筛选GO列值包含"GO"的行，删除空值。
 
 library(stringr)
 all_go_list=str_split(goterms$GOs,",") #分隔goterms的GOs值，逗号是分隔符
-gene2go <- data.frame(GID = rep(goterms$query, times = sapply(all_go_list, length)), GO = unlist(all_go_list), EVIDENCE = "IEA") %>% filter(str_detect(GO,"GO")) #注释换成单个GO编号一行的格式。eggnog里每个基因一行注释，GOs注释里可能有多个GO编号信息，要转换成每个GO编号一行的格式（看下面）。
+gene2go <- data.frame(GID = rep(goterms$query, times = sapply(all_go_list, length)), GO = unlist(all_go_list), EVIDENCE = "IEA") %>% filter(str_detect(GOs,"GO")) #注释换成单个GO编号一行的格式。eggnog里每个基因一行注释，GOs注释里可能有多个GO编号信息，要转换成每个GO编号一行的格式（看下面）。
 write.table(gene2go,file="gene2go.txt",sep="\t",row.names=F,quote=F) #保存成文件gene2go.txt
 
 head(gene2go) #查看gene2go前六行
@@ -340,12 +350,17 @@ makeOrgPackage(gene_info=gene_info, go=gene2go, ko=koterms,  pathway=gene2pathwa
 
 ### 1.3.5. 使用OrgDb包
 1. 安装加载
-创建的org.Mcandidum.eg.db文件夹本质上是个R包，需要安装和加载才能使用。
+- 创建的org.Mcandidum.eg.db文件夹本质上是个R包，需要安装和加载才能使用。
+
 ```R
 install.packages('org.Mcandidum.eg.db',repos = NULL, type="source") #安装包
 library(org.Mcandidum.eg.db) #加载包
 ```
+
+- 安装后会在R包存放位置生成org.Mcandidum.eg.db文件夹，这个位置下面`C:\Users\name\Documents\R\win-library\4.1`，以后使用即可直接加载包
+
 2. 用于GO分析
+
 `enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`
 
 加载后在`groupGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`,`enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`,`gseGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`等函数里把包赋值给`OrgDb`参数，`keyType`参数指定GID即可使用。
@@ -358,12 +373,13 @@ waiting...
 
 下面是用enrichGO做go富集分析的例子。
 ```R
+library(clusterProfiler)
 data <- read.table("gene.list",header=F) #读取gene ID list
 genes <- as.character(data$V1) #转换成字符格式
 ego <- enrichGO(gene          = genes, # list of entrez gene id
-                OrgDb         = org.At.tair.db, # 背景使用分析物种的org包，这里示例使用拟南芥的数据库
-                keyType       = 'ENSEMBL', # 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；
-                ont           = "BP", #  "BP", "MF", "CC", "ALL"。GO三个子类。如果选ALL，会同时获得三个子类的结果(相当于单独做三个子类的结果合并在一起)，结果中增加一列ONTOLOGY为子类。
+                OrgDb         = org.Mcandidum.eg.db, # 背景使用分析物种的org包
+                keyType       = 'GID', # 输入基因的类型，命令keytypes(org.Mcandidum.eg.db)会列出可用的所有类型，如果按上面步骤制备的数据库，则使用GID；
+                ont           = "ALL", #  "BP", "MF", "CC", "ALL"。GO三个子类。如果选ALL，会同时获得三个子类的结果(相当于单独做三个子类的结果合并在一起)，结果中增加一列ONTOLOGY为子类。
                 pAdjustMethod = "BH", # 指定多重假设检验矫正的方法，选项包含 "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
                 pvalueCutoff  = 0.05, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01
                 qvalueCutoff  = 0.2, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05

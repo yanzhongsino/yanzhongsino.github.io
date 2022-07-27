@@ -84,9 +84,10 @@ menu:
 # 2. 小图标
 博客首页的每个选项卡前的小图标可以参照这个网址自行修改：https://fontawesome.com/icons?from=io
 
-# 添加搜索功能
+# 添加统计
 基于hexo的next主题进行设置
 
+## 添加搜索功能
 1. 安装hexo-generator-search
 - 在项目根目录下运行`npm install hexo-generator-searchdb --save`
 
@@ -105,9 +106,7 @@ search:
 
 将local_search下的enable值改为true
 
-# 添加访问量统计
-基于hexo的next主题进行设置
-
+## 添加访问量统计
 1. 修改主题配置文件themes/next/_config.yml
 - 在footer下添加counter项，值为true
 
@@ -132,9 +131,7 @@ busuanzi_count:
 
 这样则会在博客的所有页面的底部（footer）展示博客的总访客数和访问数，在每篇文章的开头（header）展示单篇文章的阅读数。
 
-# 添加字数统计和阅读时长估计
-基于hexo的next主题进行设置
-
+## 添加字数统计和阅读时长估计
 1. 安装字数统计插件
 - 在项目根目录下运行`npm install --save hexo-word-counter`
 

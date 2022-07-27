@@ -93,16 +93,19 @@ Translocations	356
 - 第九列info包含以下三种情况：
   - 'complicated': 在一个区域（region）有多个calls，一般是插入和缺失的重叠造成。
   - 'double': 在相同的坐标位置（coordinates）有几个calls; 一般是串联重复复制或者串联重复收缩有多个拷贝的改变造成。
-  - ']chrX:xxxxxx]' : 标记易位片段与其他片段的关联的VCF指示符。
+  - ']chrX:xxxxxx]' : 标记**易位**片段与其他片段的关联的VCF指示符。
 
 ```
 ref_chr	query_chr	ref_start	ref_stop	size	SV_type	query_start  query_stop	info
-MCscaf001	Contig151	257669	257671	188	insertion_mobile	18955     19143
 MCscaf001	LG12	674171	698315	10734	insertion_mobile	12964720     12975454
+MCscaf007	LG03	17862	8197142	8179280	transloc	27635100	19266429	[MCscaf007:8384299[
+MCscaf007	LG03	17862	8197142	8179280	transloc	27635100	19266429	]MCscaf004:7287153]
 ... ...
-MCscaf254	LG05	9960	45987	36027	transloc	10452396	10497136	]MCscaf012:3067777]
 MCscaf254	LG05	13407	16116	2709	deletion_mobile	10455842	10467408	complicated
 ```
+
+- 每个易位片段保留一行记录，如果易位片段的两端都涉及到易位，则有两行信息记录一次易位事件的两端。
+- 所以其他事件是每行一次，在out.SVs_all.tsv文件中的行数即为事件次数；易位事件是一次事件有1-2行。
 
 3. out.SVs_all.withfragment.tsv
 - 与out.SVs_all.tsv格式和内容类似，多一列fragment信息，保存了对应的参考基因组的碱基序列（插入的序列来自query基因组）。

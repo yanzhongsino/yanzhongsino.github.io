@@ -9,6 +9,8 @@ tags:
 - quality assessment
 - genome
 - organelle
+- plastome
+- mitogenome
 - transcriptome
 - mapping
 - BWA
@@ -17,7 +19,7 @@ tags:
 - sam
 - bam
 
-description: mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。
+description: mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的评估工具和评估指标。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2192010&auto=1&height=32"></iframe></div>
@@ -39,15 +41,15 @@ description: mapping法评估基因组组装质量。把测序的reads（包括P
 1. mapping rate
 - reads的mapping rate：$mapped reads number/total reads number$
 - HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中
-- samtools，bamdst等软件也可以统计mapping rate
+- `samtools flagstat`，bamdst等软件也可以统计mapping rate
 2. genome coverage
 - genome coverage：$mapped genome length/total genome length$
-- samtools，bedtools，bamdst等软件也可以统计genome coverage
+- `samtools depth`，bedtools，bamdst等软件也可以统计genome coverage
 3. depth
 - 平均depth：计算基因组的平均深度作为参考指标
 - depth的分布：基因组上每个碱基mapped碱基的数量称为单碱基的深度（depth），或者通过滑窗统计基因组上每个固定大小（比如1000bp）的窗口的mapped碱基的平均数量作为窗口深度，分析深度在基因组上的分布可以判断基因组组装的质量。
 - 此外，通过可视化软件直观地查看reads在基因组上具体的mapping情况，也可以判断基因组组装是否存在错误碱基、组装结构问题。
-- samtools，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息
+- `samtools mpileup`,`samtools depth`，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息。
 
 # 2. mapping实操
 用特定工具对各种reads进行mapping，生成SAM/BAM文件。
@@ -84,6 +86,44 @@ description: mapping法评估基因组组装质量。把测序的reads（包括P
 
 3. merge
 - `samtools merge -@ 8 merged_hisat.bam rna1_hisat.bam rna2_hisat.bam`  #合并多个bam文件到一个bam文件
+
+# 3. 评估指标
+## 3.1. mapping rate
+1. mapping rate的计算公式
+- reads的mapping rate：$mapped reads number/total reads number$
+2. mapping rate的计算工具
+- HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中
+- `samtools flagstat`可用于统计mapping rate
+- bamdst等软件也可以统计mapping rate
+
+## 3.2. genome coverage
+1. genome coverage的计算公式
+- genome coverage：$mapped genome length/total genome length$
+
+2. `samtools depth`统计genome coverage
+
+```
+samtools depth -aa sample.bam >depth.out # 计算所有位点的深度
+u = $(cat depth.out |awk '$3 == 0 {print $0}'|wc -l) # 统计没有mapped碱基的长度，并赋值给u
+t = $(cat depth.out |wc -l) # 统计所有位点的长度，并赋值给t。这个值与与基因组大小一致。
+echo "scale=5; 1-$u/$t" | bc #计算基因组覆盖度
+```
+
+3. bedtools
+- `bedtools genomecov`可以统计coverage，具体参数和结果还没看，留个坑。
+- `bedtools genomecov -ibam sample.bam -d >sample.depth`
+
+## 3.3. depth
+### 3.3.1. depth分布的统计工具
+- `samtools mpileup`,`samtools depth`，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息。
+
+### 3.3.2. depth的具体指标
+1. 平均depth
+- 计算基因组的平均深度作为参考指标。
+2. depth分布
+- 基因组上每个碱基mapped碱基的数量称为单碱基的深度（depth），或者通过滑窗统计基因组上每个固定大小（比如1000bp）的窗口的mapped碱基的平均数量作为窗口深度，分析深度在基因组上的分布可以判断基因组组装的质量。
+3. 直接观察depth
+- 此外，通过可视化软件直观地查看reads在基因组上具体的mapping情况，也可以判断基因组组装是否存在错误碱基、组装结构问题。
 
 
 -------

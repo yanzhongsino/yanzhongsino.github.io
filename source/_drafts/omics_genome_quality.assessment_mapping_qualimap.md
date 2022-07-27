@@ -15,7 +15,7 @@ tags:
 - biosoft
 - qualimap
 
-description: 记录软件qualimap
+description: mapping法评估基因组组装质量。这篇文章主要介绍了软件qualimap的安装和使用。
 ---
 
 <div align="middle"><music URL></div>
