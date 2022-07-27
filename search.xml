@@ -10242,4 +10242,107 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>submit</tag>
       </tags>
   </entry>
+  <entry>
+    <title>基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布</title>
+    <url>/2022/07/27/omics_genome_quality.assessment_mapping_depth_samtools/</url>
+    <content><![CDATA[<div align="middle"><music URL></div>
+
+<h1 id="1-前情提要：mapping"><a href="#1-前情提要：mapping" class="headerlink" title="1. 前情提要：mapping"></a>1. 前情提要：mapping</h1><p>此篇博客在已经通过mapping获得SAM&#x2F;BAM文件的基础上进行分析，</p>
+<ol>
+<li>关于mapping获得SAM&#x2F;BAM文件的操作可以参考博客：</li>
+</ol>
+<p>基因组质量评估：（五）mapping法：1. 简介：<a href="https://yanzhongsino.github.io/2022/07/23/omics_genome_quality.assessment_mapping_intro/">https://yanzhongsino.github.io/2022/07/23/omics_genome_quality.assessment_mapping_intro/</a></p>
+<h1 id="2-深度（depth）分布"><a href="#2-深度（depth）分布" class="headerlink" title="2. 深度（depth）分布"></a>2. 深度（depth）分布</h1><ul>
+<li>在测序是随机分布的情况下，期望在基因组的所有染色体上，mapped reads的depth是均匀分布的。</li>
+<li>把reads回mapping到组装好的基因组，通过计算depth，观察depth在基因组上的分布来判断组装的质量。</li>
+</ul>
+<h1 id="3-统计深度（depth）"><a href="#3-统计深度（depth）" class="headerlink" title="3. 统计深度（depth）"></a>3. 统计深度（depth）</h1><h2 id="3-1-samtools统计"><a href="#3-1-samtools统计" class="headerlink" title="3.1. samtools统计"></a>3.1. samtools统计</h2><p><code>samtools</code>的<code>depth</code>调用<code>mpileup</code>模块进行mapped reads的深度统计。</p>
+<h3 id="3-1-1-samtools-mpileup统计"><a href="#3-1-1-samtools-mpileup统计" class="headerlink" title="3.1.1. samtools mpileup统计"></a>3.1.1. samtools mpileup统计</h3><ol>
+<li>运行</li>
+</ol>
+<ul>
+<li><code>samtools mpileup -A -Q sample.bam &gt; mpileup.out</code></li>
+</ul>
+<ol start="2">
+<li>输出</li>
+</ol>
+<ul>
+<li>mpileup.out共有6列数据，tab分隔。</li>
+<li>第一列参考序列（染色体）名称；</li>
+<li>第二列位置；</li>
+<li>第三列参考序列的碱基；</li>
+<li>第四列比对上的reads数量（即depth）；</li>
+<li>第五列比对上的情况；</li>
+<li>第六列比对上的碱基的质量。</li>
+</ul>
+<ol start="3">
+<li>第五列比对上的情况，具体解释：</li>
+</ol>
+<ul>
+<li>*表示模糊碱基</li>
+<li>大写表示在正链不匹配</li>
+<li>小写表示在负链不匹配</li>
+<li>^表示匹配的碱基是一个reads的开始，^后紧跟的ascii码减去33代表比对质量，修饰的是后面的碱基，后面紧跟的碱基代表该read的第一个碱基</li>
+<li>$代表一个read的结束，该符号修饰前面的碱基</li>
+<li>正则表达式式<code>+[0-9]+[ACGTNacgtn]+</code>代表在该位点后插入的碱基。举例中chr1的2003928A后面有个+6GGGCCG，很可能是indel</li>
+<li>正则表达式<code>-[0-9]+[ACGTNacgtn]+</code>代表在该位点后缺失的碱基</li>
+</ul>
+<h3 id="3-1-2-samtools-depth统计"><a href="#3-1-2-samtools-depth统计" class="headerlink" title="3.1.2. samtools depth统计"></a>3.1.2. samtools depth统计</h3><ol>
+<li>samtools depth统计</li>
+</ol>
+<ul>
+<li><code>samtools depth illumina.bam &gt; depth.out</code></li>
+</ul>
+<ol start="2">
+<li>输出</li>
+</ol>
+<ul>
+<li>depth.out有三列数据，tab分隔。</li>
+<li>第一列参考序列（染色体）名称；</li>
+<li>第二列位置；</li>
+<li>第三列比对上的reads数量（即depth）。</li>
+</ul>
+<h3 id="3-1-3-samtools-mpileup和samtools-depth的差异"><a href="#3-1-3-samtools-mpileup和samtools-depth的差异" class="headerlink" title="3.1.3. samtools mpileup和samtools depth的差异"></a>3.1.3. samtools mpileup和samtools depth的差异</h3><ol>
+<li>差异</li>
+</ol>
+<ul>
+<li><code>samtools depth</code>是调用了<code>samtools mpileup</code>进行的。</li>
+<li>所以<code>samtools mpileup</code>可以设置更多参数进行过滤，也有一些默认的过滤参数；而<code>samtools depth</code>没有进行过滤。</li>
+</ul>
+<ol start="2">
+<li><code>samtools mpileup</code>的默认过滤</li>
+</ol>
+<ul>
+<li><code>samtools mpileup</code>默认过滤掉测序质量&lt;13的碱基；</li>
+<li><code>samtools mpileup</code>默认过滤掉PE reads中比对异常的reads（包括双端都比上，但是两条配对reads之间的比对距离明显偏离了插入片段的长度分布，或者一端比对上而另一端没比对上）。除非加上-A参数保留异常reads，才与<code>samtools depth</code>一致。</li>
+</ul>
+<h2 id="3-2-其他方法"><a href="#3-2-其他方法" class="headerlink" title="3.2. 其他方法"></a>3.2. 其他方法</h2><p>除了这里提到的统计深度的方法，还有mosdepth,bamdst,quallimap等软件可以实现，在接下来的博客里会详细介绍。</p>
+<h1 id="4-深度分布作图"><a href="#4-深度分布作图" class="headerlink" title="4. 深度分布作图"></a>4. 深度分布作图</h1><p>统计获得滑窗或者位点的深度后，可以作点图&#x2F;折线图来直观地观察深度在整个染色体上的分布。</p>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li>samtools mpileup和samtools depth计算的depth不同的解释：<a href="https://zhuanlan.zhihu.com/p/73208822">https://zhuanlan.zhihu.com/p/73208822</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>omics</category>
+        <category>genome</category>
+        <category>quality assessment</category>
+      </categories>
+      <tags>
+        <tag>quality assessment</tag>
+        <tag>genome</tag>
+        <tag>organelle</tag>
+        <tag>plastome</tag>
+        <tag>mitogenome</tag>
+        <tag>mapping</tag>
+        <tag>sam</tag>
+        <tag>bam</tag>
+        <tag>depth</tag>
+        <tag>samtools</tag>
+      </tags>
+  </entry>
 </search>
