@@ -1,6 +1,6 @@
 ---
-title: 基因组质量评估：（五）mapping法：6. 统计BAM文件深度和覆盖度的软件bamdst
-date: 2022-07-25
+title: 基因组质量评估：（五）mapping法：6. 用软件bamdst统计BAM文件
+date: 2022-07-27
 categories:
 - omics
 - genome
@@ -15,13 +15,13 @@ tags:
 - biosoft
 - bamdst
 
-description: mapping法评估基因组组装质量。这篇文章主要介绍了统计BAM文件深度和覆盖度的软件bamdst的使用和结果解释。
+description: mapping法评估基因组组装质量。这篇文章主要介绍了软件bamdst的安装和使用，可全面统计BAM文件的相关参数，包括mapping rate、coverage和depth。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5351733&auto=1&height=32"></iframe></div>
 
 # 1. bamdst简介
-bamdst（https://github.com/shiquan/bamdst）是一个统计bam文件目标区域深度和覆盖度的工具，统计数据包括coverage，depth，mapping ratio。
+bamdst（https://github.com/shiquan/bamdst）是一个统计bam文件目标区域深度和覆盖度的工具，统计数据全面，包括coverage，depth，mapping rate。
 
 # 2. 下载安装
 
@@ -48,11 +48,9 @@ make
 - -o ./ ：输出目录
 
 # 4. 结果
-结果文件包括：
-
 1. coverage.report
+- 总结的统计信息，包括reads的mapping rate，genome coverage，average depth等数据。示例：
 
-总结的统计信息，包括reads的mapping ratio，genome coverage，average depth等数据。示例：
 ```
 ## The file was created by bamdst
 ## Version : 1.0.9
@@ -62,7 +60,7 @@ make
                                         [Total] Raw Data(Mb)	10773.87
                                         [Total] Paired Reads	86430326
                                         [Total] Mapped Reads	84639699
-                            [Total] Fraction of Mapped Reads	97.93% # mapping ratio
+                            [Total] Fraction of Mapped Reads	97.93% # mapping rate
                                      [Total] Mapped Data(Mb)	10550.19
                          [Total] Fraction of Mapped Data(Mb)	97.92%
                                      [Total] Properly paired	82169742
@@ -121,7 +119,7 @@ make
                                    [flank] Coverage (>=100x)	0.83%
 ```
 
-每个值具体的解释：
+- 每个值具体的解释：
 
 ```
  [Total] Raw Reads (All reads) // All reads in the bam file(s).
@@ -189,8 +187,8 @@ make
 ```
 
 2. chromosomes.report
+- 每条染色体的depth和coverage信息，示例：
 
-每条染色体的depth和coverage信息，示例：
 ```
 #Chromosome	   DATA(%)	 Avg depth	    Median	 Coverage%	  Cov 4x %	 Cov 10x %	 Cov 30x %	Cov 100x %
   MCscaf061	    0.00	   42.69	     41.0	  100.00	  100.00	   99.30	   86.09	    0.00
@@ -198,8 +196,8 @@ make
 ```
 
 3. insertsize.plot
+- 推断的insert size分布。示例：
 
-推断的insert size分布。示例：
 ```
 0	0	0.000000	41302164	1.000000
 1	0	0.000000	41302164	1.000000
@@ -210,8 +208,8 @@ make
 ```
 
 4. uncover.bed
+- 文件包含sample.bam在sample.bed上bad covered或uncovered region的区域。示例：
 
-文件包含sample.bam在sample.bed上bad covered或uncovered region的区域。示例：
 ```
 MCscaf062	3308	3324
 MCscaf062	13172	13219
@@ -223,8 +221,8 @@ MCscaf065	49992	50000
 ```
 
 5. depth_distribution.plot
+- 示例：
 
-示例：
 ```
 0	1080969	0.004219	255137234	0.995781
 1	375560	0.001466	254761674	0.994315
@@ -242,8 +240,7 @@ MCscaf065	49992	50000
 - coverage depth：考虑deletion区域的raw depth，所以值会大于或等于raw depth的值。
 
 7. region.tsv.gz
-
-文件包含输入的sample.bed的每个区域的average depth，median depth，coverage。
+- 文件包含输入的sample.bed的每个区域的average depth，median depth，coverage。
 
 
 # 5. references

@@ -1,6 +1,6 @@
 ---
-title: 基因组质量评估：（五）mapping法：7. 统计BAM文件深度的软件mosdepth
-date: 2022-07-25
+title: 基因组质量评估：（五）mapping法：7. 用软件mosdepth统计BAM文件的深度
+date: 2022-07-27
 categories:
 - omics
 - genome
@@ -23,7 +23,7 @@ description: mapping法评估基因组组装质量。这篇文章主要介绍了
 # 1. mosdepth简介
 mosdepth（https://github.com/brentp/mosdepth）是用于WGS，exome，targeted sequencing的BAM/CRAM文件的测序深度计算的软件，主要是用Nim语言写的（第一次听说这种语言）。
 
-mosdepth可以得到的数据包括：
+# 2. mosdepth可以得到的数据包括
 
 1. 每个碱基深度的计算速度是samtools depth的约2倍。——对于 30X 基因组，大约需要 25 分钟的 CPU 时间。
 2. 给定窗口大小的平均每个窗口深度，可用于 CNV calling。
@@ -35,8 +35,8 @@ mosdepth可以得到的数据包括：
 8. 每条染色体和每条染色体指定区域内的平均深度的总结。
 9. 一个d4文件（比bigwig好）。
 
-# 2. 下载安装
-1. 直接下载已编译文件
+# 3. 下载安装
+直接下载已编译文件，修改权限即可使用。
 
 ```
 wget https://github.com/brentp/mosdepth/releases/download/v0.3.3/mosdepth
@@ -44,7 +44,7 @@ chmod +x mosdepth
 ./mosdepth -h
 ```
 
-# 3. 使用
+# 4. 使用
 1. 准备
 `samtools index sample.bam` # 生成bam文件的索引文件sample.bam.bai
 
@@ -59,10 +59,10 @@ chmod +x mosdepth
 
 还有许多参数等着探索...
 
-# 4. 结果
+# 5. 结果
 1. out.mosdepth.summary.txt
+- 文件包含每条染色体和整个基因组的信息，长度，mapped 碱基数量，平均深度，最小深度和最大深度。示例：
 
-文件包含每条染色体和整个基因组的信息，长度，mapped 碱基数量，平均深度，最小深度和最大深度。示例：
 ```
 chrom	length	bases	mean	min	max
 MCscaf001	12541575	440858440	35.15	0	3561
@@ -74,8 +74,8 @@ total	256218469	10404013912	40.61	0	92318
 ```
 
 2. out.mosdepth.global.dist.txt
+- 文件包含累积分布，指示给定覆盖率阈值下覆盖的总碱基的比例。包含三列：染色体/total，覆盖水平，该级别覆盖的碱基比例。示例：
 
-文件包含累积分布，指示给定覆盖率阈值下覆盖的总碱基的比例。包含三列：染色体/total，覆盖水平，该级别覆盖的碱基比例。示例：
 ```
 MCscaf001	1961	0.00
 MCscaf001	1960	0.00
@@ -89,13 +89,12 @@ total	0	1.00
 还可以用脚本`python scripts/plot-dist.py \*global.dist.txt`画图，输出`dist.html`，可以看出整个基因组的覆盖度的分布。
 
 3. out.per-base.bed.gz
-
-每个碱基的输出数据。
+- 每个碱基的输出数据。
 
 4. out.per-base.bed.gz.csi
 
 
-# 5. references
+# 6. references
 1. https://github.com/brentp/mosdepth
 
 -------

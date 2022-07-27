@@ -1,5 +1,5 @@
 ---
-title: 基因组质量评估：（五）mapping法：5. 软件qualimap
+title: 基因组质量评估：（五）mapping法：5. 用软件qualimap统计BAM文件
 date: 2022-07-25
 categories:
 - omics
@@ -20,12 +20,10 @@ description: mapping法评估基因组组装质量。这篇文章主要介绍了
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18511124&auto=1&height=32"></iframe></div>
 
-
 # qualimap简介
 qualimap（http://qualimap.conesalab.org/）用于分析bam文件，更详细的统计信息，包括每条contig的mapping情况
 
-
-
+# qualimap的模块
 bamqc模块用于单个NGS样本bam文件的统计
 rnaseq模块用于RNA-seq样本bam文件的统计
 multi-bamqc模块用于多样本NGS的bam文件的分组统计，即包含个体数据，又分组比较
