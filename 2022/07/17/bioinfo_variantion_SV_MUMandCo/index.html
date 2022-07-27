@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/structural_variants_sum.png?raw=true">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-07-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-17T09:05:16.800Z">
+<meta property="article:modified_time" content="2022-07-25T08:42:22.932Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="structural variation">
 <meta property="article:tag" content="SV">
@@ -245,10 +245,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-17 00:00:00 / Modified: 17:05:16" itemprop="dateCreated datePublished" datetime="2022-07-17T00:00:00+08:00">2022-07-17</time>
+              <time title="Created: 2022-07-17 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-17T00:00:00+08:00">2022-07-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-25 16:42:22" itemprop="dateModified" datetime="2022-07-25T16:42:22+08:00">2022-07-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -293,7 +299,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>3.3k</span>
+              <span>3.4k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -380,12 +386,16 @@
 <li>第九列info包含以下三种情况：<ul>
 <li>‘complicated’: 在一个区域（region）有多个calls，一般是插入和缺失的重叠造成。</li>
 <li>‘double’: 在相同的坐标位置（coordinates）有几个calls; 一般是串联重复复制或者串联重复收缩有多个拷贝的改变造成。</li>
-<li>‘]chrX:xxxxxx]’ : 标记易位片段与其他片段的关联的VCF指示符。</li>
+<li>‘]chrX:xxxxxx]’ : 标记<strong>易位</strong>片段与其他片段的关联的VCF指示符。</li>
 </ul>
 </li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ref_chr	query_chr	ref_start	ref_stop	size	SV_type	query_start  query_stop	info</span><br><span class="line">MCscaf001	Contig151	257669	257671	188	insertion_mobile	18955     19143</span><br><span class="line">MCscaf001	LG12	674171	698315	10734	insertion_mobile	12964720     12975454</span><br><span class="line">... ...</span><br><span class="line">MCscaf254	LG05	9960	45987	36027	transloc	10452396	10497136	]MCscaf012:3067777]</span><br><span class="line">MCscaf254	LG05	13407	16116	2709	deletion_mobile	10455842	10467408	complicated</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ref_chr	query_chr	ref_start	ref_stop	size	SV_type	query_start  query_stop	info</span><br><span class="line">MCscaf001	LG12	674171	698315	10734	insertion_mobile	12964720     12975454</span><br><span class="line">MCscaf007	LG03	17862	8197142	8179280	transloc	27635100	19266429	[MCscaf007:8384299[</span><br><span class="line">MCscaf007	LG03	17862	8197142	8179280	transloc	27635100	19266429	]MCscaf004:7287153]</span><br><span class="line">... ...</span><br><span class="line">MCscaf254	LG05	13407	16116	2709	deletion_mobile	10455842	10467408	complicated</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>每个易位片段保留一行记录，如果易位片段的两端都涉及到易位，则有两行信息记录一次易位事件的两端。</li>
+<li>所以其他事件是每行一次，在out.SVs_all.tsv文件中的行数即为事件次数；易位事件是一次事件有1-2行。</li>
+</ul>
 <ol start="3">
 <li>out.SVs_all.withfragment.tsv</li>
 </ol>
@@ -587,12 +597,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">403k</span>
+    <span title="Symbols count total">404k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:06</span>
+    <span title="Reading time total">6:07</span>
 </div>
 
         

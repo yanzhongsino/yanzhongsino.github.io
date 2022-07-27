@@ -20,31 +20,31 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="mapping法评估基因组组装质量。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。">
+  <meta name="description" content="mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的其中一个评估指标：mapping rate。通过samtools计算mapping r">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基因组质量评估：（五）mapping法：2. samtools计算mapping rate">
-<meta property="og:url" content="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_samtools/index.html">
+<meta property="og:url" content="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="mapping法评估基因组组装质量。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。">
+<meta property="og:description" content="mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的其中一个评估指标：mapping rate。通过samtools计算mapping r">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-07-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-25T03:05:42.191Z">
+<meta property="article:modified_time" content="2022-07-27T07:31:52.880Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="genome">
 <meta property="article:tag" content="quality assessment">
+<meta property="article:tag" content="genome">
 <meta property="article:tag" content="mapping">
 <meta property="article:tag" content="sam">
 <meta property="article:tag" content="bam">
+<meta property="article:tag" content="samtools">
 <meta property="article:tag" content="transcriptome">
 <meta property="article:tag" content="HiSat2">
 <meta property="article:tag" content="mapping rate">
-<meta property="article:tag" content="samtools">
 <meta property="article:tag" content="samtools flagstat">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
-<link rel="canonical" href="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_samtools/">
+<link rel="canonical" href="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/">
 
 
 <script id="page-configurations">
@@ -223,7 +223,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_samtools/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -253,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-25 11:05:42" itemprop="dateModified" datetime="2022-07-25T11:05:42+08:00">2022-07-25</time>
+                <time title="Modified: 2022-07-27 15:31:52" itemprop="dateModified" datetime="2022-07-27T15:31:52+08:00">2022-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,8 +289,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2022/07/23/omics_genome_quality.assessment_mapping_samtools/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/07/23/omics_genome_quality.assessment_mapping_samtools/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -307,7 +307,7 @@
               </span>
               <span>4 mins.</span>
             </span>
-            <div class="post-description">mapping法评估基因组组装质量。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。</div>
+            <div class="post-description">mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的其中一个评估指标：mapping rate。通过samtools计算mapping rate，和HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中，两者间的差异和转化。</div>
 
         </div>
       </header>
@@ -410,15 +410,15 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/genome/" rel="tag"># genome</a>
               <a href="/tags/quality-assessment/" rel="tag"># quality assessment</a>
+              <a href="/tags/genome/" rel="tag"># genome</a>
               <a href="/tags/mapping/" rel="tag"># mapping</a>
               <a href="/tags/sam/" rel="tag"># sam</a>
               <a href="/tags/bam/" rel="tag"># bam</a>
+              <a href="/tags/samtools/" rel="tag"># samtools</a>
               <a href="/tags/transcriptome/" rel="tag"># transcriptome</a>
               <a href="/tags/HiSat2/" rel="tag"># HiSat2</a>
               <a href="/tags/mapping-rate/" rel="tag"># mapping rate</a>
-              <a href="/tags/samtools/" rel="tag"># samtools</a>
               <a href="/tags/samtools-flagstat/" rel="tag"># samtools flagstat</a>
           </div>
 
@@ -571,12 +571,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">403k</span>
+    <span title="Symbols count total">404k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:06</span>
+    <span title="Reading time total">6:07</span>
 </div>
 
         
@@ -721,8 +721,8 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_samtools/";
-    this.page.identifier = "2022/07/23/omics_genome_quality.assessment_mapping_samtools/";
+    this.page.url = "http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/";
+    this.page.identifier = "2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/";
     this.page.title = "基因组质量评估：（五）mapping法：2. samtools计算mapping rate";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {

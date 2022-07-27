@@ -20,23 +20,25 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。">
+  <meta name="description" content="mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的评估工具和评估指标。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基因组质量评估：（五）mapping法：1. 简介">
 <meta property="og:url" content="http://example.com/2022/07/23/omics_genome_quality.assessment_mapping_intro/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。">
+<meta property="og:description" content="mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的评估工具和评估指标。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-07-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-23T13:45:27.630Z">
+<meta property="article:modified_time" content="2022-07-27T08:21:00.337Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="genome">
 <meta property="article:tag" content="quality assessment">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="organelle">
+<meta property="article:tag" content="plastome">
+<meta property="article:tag" content="mitogenome">
 <meta property="article:tag" content="mapping">
 <meta property="article:tag" content="sam">
 <meta property="article:tag" content="bam">
-<meta property="article:tag" content="organelle">
 <meta property="article:tag" content="transcriptome">
 <meta property="article:tag" content="BWA">
 <meta property="article:tag" content="HiSat2">
@@ -245,10 +247,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-23 00:00:00 / Modified: 21:45:27" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
+              <time title="Created: 2022-07-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-23T00:00:00+08:00">2022-07-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-27 16:21:00" itemprop="dateModified" datetime="2022-07-27T16:21:00+08:00">2022-07-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -293,15 +301,15 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>1.9k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>2 mins.</span>
+              <span>3 mins.</span>
             </span>
-            <div class="post-description">mapping法评估基因组组装质量。把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。</div>
+            <div class="post-description">mapping法评估基因组组装质量。mapping法是指把测序的reads（包括Pacbio，Illumina，RNA-seq 等reads）映射回组装好的基因组，评估mapping rate，genome coverage，depth分布等指标，用这些指标评估基因组组装质量。这篇文章简单介绍了mapping法的评估工具和评估指标。</div>
 
         </div>
       </header>
@@ -343,14 +351,14 @@
 <ul>
 <li>reads的mapping rate：$mapped reads number&#x2F;total reads number$</li>
 <li>HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中</li>
-<li>samtools，bamdst等软件也可以统计mapping rate</li>
+<li><code>samtools flagstat</code>，bamdst等软件也可以统计mapping rate</li>
 </ul>
 <ol start="2">
 <li>genome coverage</li>
 </ol>
 <ul>
 <li>genome coverage：$mapped genome length&#x2F;total genome length$</li>
-<li>samtools，bedtools，bamdst等软件也可以统计genome coverage</li>
+<li><code>samtools depth</code>，bedtools，bamdst等软件也可以统计genome coverage</li>
 </ul>
 <ol start="3">
 <li>depth</li>
@@ -359,7 +367,7 @@
 <li>平均depth：计算基因组的平均深度作为参考指标</li>
 <li>depth的分布：基因组上每个碱基mapped碱基的数量称为单碱基的深度（depth），或者通过滑窗统计基因组上每个固定大小（比如1000bp）的窗口的mapped碱基的平均数量作为窗口深度，分析深度在基因组上的分布可以判断基因组组装的质量。</li>
 <li>此外，通过可视化软件直观地查看reads在基因组上具体的mapping情况，也可以判断基因组组装是否存在错误碱基、组装结构问题。</li>
-<li>samtools，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息</li>
+<li><code>samtools mpileup</code>,<code>samtools depth</code>，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息。</li>
 </ul>
 <h1 id="2-mapping实操"><a href="#2-mapping实操" class="headerlink" title="2. mapping实操"></a>2. mapping实操</h1><p>用特定工具对各种reads进行mapping，生成SAM&#x2F;BAM文件。</p>
 <h2 id="2-1-Illumina-reads：BWA"><a href="#2-1-Illumina-reads：BWA" class="headerlink" title="2.1. Illumina reads：BWA"></a>2.1. Illumina reads：BWA</h2><p>用BWA-MEM+samtools对Illumina reads进行mapping</p>
@@ -411,6 +419,59 @@
 <ul>
 <li><code>samtools merge -@ 8 merged_hisat.bam rna1_hisat.bam rna2_hisat.bam</code>  #合并多个bam文件到一个bam文件</li>
 </ul>
+<h1 id="3-评估指标"><a href="#3-评估指标" class="headerlink" title="3. 评估指标"></a>3. 评估指标</h1><h2 id="3-1-mapping-rate"><a href="#3-1-mapping-rate" class="headerlink" title="3.1. mapping rate"></a>3.1. mapping rate</h2><ol>
+<li>mapping rate的计算公式</li>
+</ol>
+<ul>
+<li>reads的mapping rate：$mapped reads number&#x2F;total reads number$</li>
+</ul>
+<ol start="2">
+<li>mapping rate的计算工具</li>
+</ol>
+<ul>
+<li>HiSat2对RNA-seq进行mapping时把mapping rate统计在log文件中</li>
+<li><code>samtools flagstat</code>可用于统计mapping rate</li>
+<li>bamdst等软件也可以统计mapping rate</li>
+</ul>
+<h2 id="3-2-genome-coverage"><a href="#3-2-genome-coverage" class="headerlink" title="3.2. genome coverage"></a>3.2. genome coverage</h2><ol>
+<li>genome coverage的计算公式</li>
+</ol>
+<ul>
+<li>genome coverage：$mapped genome length&#x2F;total genome length$</li>
+</ul>
+<ol start="2">
+<li><code>samtools depth</code>统计genome coverage</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">samtools depth -aa sample.bam &gt;depth.out # 计算所有位点的深度</span><br><span class="line">u = $(cat depth.out |awk &#x27;$3 == 0 &#123;print $0&#125;&#x27;|wc -l) # 统计没有mapped碱基的长度，并赋值给u</span><br><span class="line">t = $(cat depth.out |wc -l) # 统计所有位点的长度，并赋值给t。这个值与与基因组大小一致。</span><br><span class="line">echo &quot;scale=5; 1-$u/$t&quot; | bc #计算基因组覆盖度</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>bedtools</li>
+</ol>
+<ul>
+<li><code>bedtools genomecov</code>可以统计coverage，具体参数和结果还没看，留个坑。</li>
+<li><code>bedtools genomecov -ibam sample.bam -d &gt;sample.depth</code></li>
+</ul>
+<h2 id="3-3-depth"><a href="#3-3-depth" class="headerlink" title="3.3. depth"></a>3.3. depth</h2><h3 id="3-3-1-depth分布的统计工具"><a href="#3-3-1-depth分布的统计工具" class="headerlink" title="3.3.1. depth分布的统计工具"></a>3.3.1. depth分布的统计工具</h3><ul>
+<li><code>samtools mpileup</code>,<code>samtools depth</code>，qualimap，bamdst，mosdepth等软件可以计算平均深度和深度分布信息。</li>
+</ul>
+<h3 id="3-3-2-depth的具体指标"><a href="#3-3-2-depth的具体指标" class="headerlink" title="3.3.2. depth的具体指标"></a>3.3.2. depth的具体指标</h3><ol>
+<li>平均depth</li>
+</ol>
+<ul>
+<li>计算基因组的平均深度作为参考指标。</li>
+</ul>
+<ol start="2">
+<li>depth分布</li>
+</ol>
+<ul>
+<li>基因组上每个碱基mapped碱基的数量称为单碱基的深度（depth），或者通过滑窗统计基因组上每个固定大小（比如1000bp）的窗口的mapped碱基的平均数量作为窗口深度，分析深度在基因组上的分布可以判断基因组组装的质量。</li>
+</ul>
+<ol start="3">
+<li>直接观察depth</li>
+</ol>
+<ul>
+<li>此外，通过可视化软件直观地查看reads在基因组上具体的mapping情况，也可以判断基因组组装是否存在错误碱基、组装结构问题。</li>
+</ul>
 <hr>
 <ul>
 <li>欢迎关注微信公众号：<strong>生信技工</strong></li>
@@ -425,12 +486,14 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/genome/" rel="tag"># genome</a>
               <a href="/tags/quality-assessment/" rel="tag"># quality assessment</a>
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/organelle/" rel="tag"># organelle</a>
+              <a href="/tags/plastome/" rel="tag"># plastome</a>
+              <a href="/tags/mitogenome/" rel="tag"># mitogenome</a>
               <a href="/tags/mapping/" rel="tag"># mapping</a>
               <a href="/tags/sam/" rel="tag"># sam</a>
               <a href="/tags/bam/" rel="tag"># bam</a>
-              <a href="/tags/organelle/" rel="tag"># organelle</a>
               <a href="/tags/transcriptome/" rel="tag"># transcriptome</a>
               <a href="/tags/BWA/" rel="tag"># BWA</a>
               <a href="/tags/HiSat2/" rel="tag"># HiSat2</a>
@@ -443,7 +506,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/07/23/omics_genome_quality.assessment_mapping_samtools/" rel="prev" title="基因组质量评估：（五）mapping法：2. samtools计算mapping rate">
+    <a href="/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/" rel="prev" title="基因组质量评估：（五）mapping法：2. samtools计算mapping rate">
       <i class="fa fa-chevron-left"></i> 基因组质量评估：（五）mapping法：2. samtools计算mapping rate
     </a></div>
       <div class="post-nav-item"></div>
@@ -512,7 +575,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%AF%84%E4%BC%B0%E7%9A%84%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94mapping%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组评估的方法——mapping法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-mapping%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. mapping工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 评估指标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-mapping%E5%AE%9E%E6%93%8D"><span class="nav-number">2.</span> <span class="nav-text">2. mapping实操</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Illumina-reads%EF%BC%9ABWA"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. Illumina reads：BWA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-PacBio-x2F-Nanopore-reads%EF%BC%9Aminimap2"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. PacBio&#x2F;Nanopore reads：minimap2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-RNA-seq-reads%EF%BC%9AHiSat2"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. RNA-seq reads：HiSat2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-mapping"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. mapping</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%AF%84%E4%BC%B0%E7%9A%84%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94mapping%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">1. 基因组评估的方法——mapping法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-mapping%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. mapping工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 评估指标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-mapping%E5%AE%9E%E6%93%8D"><span class="nav-number">2.</span> <span class="nav-text">2. mapping实操</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Illumina-reads%EF%BC%9ABWA"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. Illumina reads：BWA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-PacBio-x2F-Nanopore-reads%EF%BC%9Aminimap2"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. PacBio&#x2F;Nanopore reads：minimap2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-RNA-seq-reads%EF%BC%9AHiSat2"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. RNA-seq reads：HiSat2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-mapping"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1. mapping</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="nav-number">3.</span> <span class="nav-text">3. 评估指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-mapping-rate"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. mapping rate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-genome-coverage"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. genome coverage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-depth"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. depth</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-depth%E5%88%86%E5%B8%83%E7%9A%84%E7%BB%9F%E8%AE%A1%E5%B7%A5%E5%85%B7"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1. depth分布的统计工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-depth%E7%9A%84%E5%85%B7%E4%BD%93%E6%8C%87%E6%A0%87"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2. depth的具体指标</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -583,12 +646,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">403k</span>
+    <span title="Symbols count total">404k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:06</span>
+    <span title="Reading time total">6:07</span>
 </div>
 
         
