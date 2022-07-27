@@ -27,11 +27,11 @@ description: mapping法评估基因组组装质量。这篇文章简单概述了
 
 1. 关于mapping获得SAM/BAM文件的操作可以参考博客：
 
-基因组质量评估：（五）mapping法：1. 简介：https://yanzhongsino.github.io/2022/07/23/omics_genome_quality.assessment_mapping_intro/
+[基因组质量评估：（五）mapping法：1. 简介](https://yanzhongsino.github.io/2022/07/23/omics_genome_quality.assessment_mapping_intro/)
 
-2. 关于通过SAM/BAM文件统计深度分布可以参考博客：
+1. 关于通过SAM/BAM文件统计深度分布可以参考博客：
 
-基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布: https://yanzhongsino.github.io/2022/07/27/omics_genome_quality.assessment_mapping_depth_samtools/
+[基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布](https://yanzhongsino.github.io/2022/07/27/omics_genome_quality.assessment_mapping_depth_samtools/)
 
 # 2. 深度分布
 - 在测序是随机分布的情况下，期望在基因组的所有染色体上，mapped reads的depth是均匀分布的。
@@ -45,8 +45,8 @@ description: mapping法评估基因组组装质量。这篇文章简单概述了
 
 # 4. 查看深度
 ## 4.1. 背景
-1. 由于叶绿体结构稳定，较少需要用这种方式评估组装质量；核基因组较大，肉眼观察不可实现，所以此方法多用于线粒体基因组组织质量和核基因组部分区域的评估。
-2. 在核与细胞器同时测序情况下，由于数量分布差异，期望测序深度是叶绿体>线粒体>核基因，且三者差异至少在一个数量级。
+1. 由于**叶绿体基因组**结构稳定，较少需要用这种方式评估组装质量；**核基因组**较大，肉眼观察不可实现，所以此方法多用于**线粒体基因组**组装质量和核基因组部分区域的评估。
+2. 在核与细胞器同时测序情况下，由于数量分布差异，期望测序深度是叶绿体>线粒体>核基因，且三者差异是数量级级别的。
 3. 评估线粒体基因组时，可以考虑是否有叶绿体/核的reads映射到基因组上，并同时考虑水平基因转移的可能性。
 
 ## 4.2. 深度分布的查看
