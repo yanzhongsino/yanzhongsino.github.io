@@ -18,7 +18,7 @@ tags:
 description: mapping法评估基因组组装质量。这篇文章主要介绍了统计BAM文件深度和覆盖度的软件bamdst的使用和结果解释。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5351733&auto=1&height=32"></iframe></div>
 
 # 1. bamdst简介
 bamdst（https://github.com/shiquan/bamdst）是一个统计bam文件目标区域深度和覆盖度的工具，统计数据包括coverage，depth，mapping ratio。

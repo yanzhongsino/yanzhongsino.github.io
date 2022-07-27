@@ -18,7 +18,7 @@ tags:
 description: mapping法评估基因组组装质量。这篇文章主要介绍了统计BAM文件深度的软件mosdepth的安装和使用。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1514742&auto=1&height=32"></iframe></div>
 
 # 1. mosdepth简介
 mosdepth（https://github.com/brentp/mosdepth）是用于WGS，exome，targeted sequencing的BAM/CRAM文件的测序深度计算的软件，主要是用Nim语言写的（第一次听说这种语言）。

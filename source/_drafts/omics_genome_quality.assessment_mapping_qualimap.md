@@ -18,7 +18,7 @@ tags:
 description: mapping法评估基因组组装质量。这篇文章主要介绍了软件qualimap的安装和使用。
 ---
 
-<div align="middle"><music URL></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18511124&auto=1&height=32"></iframe></div>
 
 
 # qualimap简介
