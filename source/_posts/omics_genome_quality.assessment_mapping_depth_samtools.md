@@ -23,11 +23,11 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2117115&auto=1&height=32"></iframe></div>
 
 # 1. 前情提要：mapping
-此篇博客在已经通过mapping获得SAM/BAM文件的基础上进行分析，
+此篇博客在已通过mapping获得SAM/BAM文件的基础上进行分析，
 
 1. 关于mapping获得SAM/BAM文件的操作可以参考博客：
 
-基因组质量评估：（五）mapping法：1. 简介：https://yanzhongsino.github.io/2022/07/23/omics_genome_quality.assessment_mapping_intro/
+[基因组质量评估：（五）mapping法：1. 简介](https://yanzhongsino.github.io/2022/07/23/omics_genome_quality.assessment_mapping_intro/)
 
 # 2. 深度（depth）分布
 - 在测序是随机分布的情况下，期望在基因组的所有染色体上，mapped reads的depth是均匀分布的。
@@ -37,7 +37,17 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 ## 3.1. samtools统计
 `samtools`的`depth`调用`mpileup`模块进行mapped reads的深度统计。
 
-### 3.1.1. samtools mpileup统计
+### 3.1.1. samtools depth统计
+1. samtools depth统计
+- `samtools depth illumina.bam > depth.out`
+
+2. 输出
+- depth.out有三列数据，tab分隔。
+- 第一列参考序列（染色体）名称；
+- 第二列位置；
+- 第三列比对上的reads数量（即depth）。
+
+### 3.1.2. samtools mpileup统计
 1. 运行
 - `samtools mpileup -A -Q sample.bam > mpileup.out`
 
@@ -56,18 +66,8 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 - 小写表示在负链不匹配
 - \^表示匹配的碱基是一个reads的开始，\^后紧跟的ascii码减去33代表比对质量，修饰的是后面的碱基，后面紧跟的碱基代表该read的第一个碱基
 - \$代表一个read的结束，该符号修饰前面的碱基
-- 正则表达式式`+[0-9]+[ACGTNacgtn]+`代表在该位点后插入的碱基。举例中chr1的2003928A后面有个+6GGGCCG，很可能是indel
+- 正则表达式`+[0-9]+[ACGTNacgtn]+`代表在该位点后插入的碱基。举例中chr1的2003928A后面有个+6GGGCCG，很可能是indel
 - 正则表达式`-[0-9]+[ACGTNacgtn]+`代表在该位点后缺失的碱基
-
-### 3.1.2. samtools depth统计
-1. samtools depth统计
-- `samtools depth illumina.bam > depth.out`
-
-2. 输出
-- depth.out有三列数据，tab分隔。
-- 第一列参考序列（染色体）名称；
-- 第二列位置；
-- 第三列比对上的reads数量（即depth）。
 
 ### 3.1.3. samtools mpileup和samtools depth的差异
 1. 差异
