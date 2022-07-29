@@ -2,9 +2,9 @@
 title: 结构变异分析软件：MUMandCo
 date: 2022-07-17
 categories: 
+- bio
 - bioinfo
 - variantion
-- structural variation
 tags: 
 - MUMandCo
 - structural variation
