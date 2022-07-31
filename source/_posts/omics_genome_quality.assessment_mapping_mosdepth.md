@@ -45,10 +45,10 @@ chmod +x mosdepth
 
 # 4. 使用
 1. 准备
-`samtools index sample.bam` # 生成bam文件的索引文件sample.bam.bai
+- `samtools index sample.bam` # 生成bam文件的索引文件sample.bam.bai
 
 2. 计算深度
-`mosdepth -t 4 out sample.bam`
+- `mosdepth -t 4 out sample.bam`
 
 3. 参数
 - -t 4：线程，需要<=4
