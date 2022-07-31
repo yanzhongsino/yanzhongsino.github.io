@@ -8868,125 +8868,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
-    <title>基因组质量评估：（五）mapping法：5. 用软件qualimap统计BAM文件</title>
-    <url>/2022/07/31/omics_genome_quality.assessment_mapping_qualimap/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18511124&auto=1&height=32"></iframe></div>
-
-<h1 id="1-QualiMap简介"><a href="#1-QualiMap简介" class="headerlink" title="1. QualiMap简介"></a>1. QualiMap简介</h1><ul>
-<li>QualiMap是用于统计bam文件的基于java的软件，结果包含详细的统计信息和可视化图形，以及每条contig的mapping情况。</li>
-<li>官网（<a href="http://qualimap.conesalab.org/%EF%BC%89%E6%9C%89%E8%BD%AF%E4%BB%B6%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D%E3%80%82">http://qualimap.conesalab.org/）有软件的详细介绍。</a></li>
-<li>每个模块运行的输入输出文件的案例都可以在这里查看：<a href="http://qualimap.conesalab.org/doc_html/samples.html#bam-samples">http://qualimap.conesalab.org/doc_html/samples.html#bam-samples</a></li>
-</ul>
-<h1 id="2-QualiMap的模块"><a href="#2-QualiMap的模块" class="headerlink" title="2. QualiMap的模块"></a>2. QualiMap的模块</h1><ol>
-<li>bamqc模块（BAM QC）：用于单个NGS样本bam文件的QC统计</li>
-<li>rnaseq模块（RNA-seq QC）：用于转录组RNA-seq样本bam文件的QC统计</li>
-<li>multi-bamqc模块（Multi-sample BAM QC）：用于多样本NGS的bam文件的分组QC统计，即包含个体数据，又包含分组比较</li>
-<li>counts模块（Counts QC）：可用于转录组数据计数的统计，用于量化表达水平。</li>
-<li>clustering模块：用于表观基因组（例如甲基化）特征的聚类。</li>
-<li>comp-counts模块：输入bam文件和注释文件，计算映射到每个区域的reads数量。</li>
-</ol>
-<h1 id="3-下载安装"><a href="#3-下载安装" class="headerlink" title="3. 下载安装"></a>3. 下载安装</h1><p>下载解压即可使用</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://bitbucket.org/kokonech/qualimap/downloads/qualimap_v2.2.1.zip</span><br><span class="line">unzip qualimap_v2.2.1.zip</span><br><span class="line">cd qualimap_v2.2.1</span><br><span class="line">./qualimap -h</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-使用"><a href="#4-使用" class="headerlink" title="4. 使用"></a>4. 使用</h1><h2 id="4-1-bamqc模块"><a href="#4-1-bamqc模块" class="headerlink" title="4.1. bamqc模块"></a>4.1. bamqc模块</h2><p>bamqc模块用于单个NGS样本bam文件的统计。</p>
-<ol>
-<li><p>运行<br><code>qualimap bamqc -bam sample.bam -outformat PDF:HTML -outdir out -nt 12 --java-mem-size=10G</code></p>
-</li>
-<li><p>参数</p>
-</li>
-</ol>
-<ul>
-<li>-bam sample.bam：指定bam文件。</li>
-<li>-outformat PDF:HTML：输出文件格式PDF和HTML，默认是HTML。</li>
-<li>-outdir out：输出文件的目录，不指定则生成sample_stats目录。</li>
-<li>-nt 12：线程12，默认是144。</li>
-<li>–java-mem-size&#x3D;10G：设置最大内存为10G，建议每个模块都设置。</li>
-</ul>
-<ol start="3">
-<li>结果</li>
-</ol>
-<p>所有结果下载后，可以用浏览器打开qualimapReport.html或者打开report.pdf，可以参考给出的结果例子：<a href="https://rawgit.com/kokonech/kokonech.github.io/master/qualimap/HG00096.chr20_bamqc/qualimapReport.html%E3%80%82">https://rawgit.com/kokonech/kokonech.github.io/master/qualimap/HG00096.chr20_bamqc/qualimapReport.html。</a></p>
-<p>包括以下几部分内容：</p>
-<ul>
-<li>globals：reads的mapping情况</li>
-<li>ACGT content：四种碱基和N的含量</li>
-<li>Coverage：深度</li>
-<li>Mapping Quality：平均值</li>
-<li>Insert Size：平均值和标准差</li>
-<li>Mismatches and indels：统计值</li>
-<li>Chromosome stats：每条染色体的长度，mapped bases，mean coverage，standard deviation。</li>
-<li>Coverage across reference：贯穿整个基因组的深度（coverage）和GC含量</li>
-<li>Coverage Histogram：深度分布</li>
-<li>genome fraction coverage</li>
-<li>duplication rate histogram</li>
-<li>mapped reads nucleotide content</li>
-<li>mapped reads GC-content distribution</li>
-<li>mapped reads clipping profile</li>
-<li>homopolymer indels</li>
-<li>mapping quality across reference</li>
-<li>mapping quality histogram</li>
-<li>insert size across reference</li>
-<li>insert size histogram</li>
-</ul>
-<p>qualimap的所有coverage都是深度，而不是覆盖度。</p>
-<h2 id="4-2-rnaseq模块"><a href="#4-2-rnaseq模块" class="headerlink" title="4.2. rnaseq模块"></a>4.2. rnaseq模块</h2><p>与bamqc模块相似，用于RNA-seq数据的bam文件的统计。</p>
-<ol>
-<li>运行</li>
-</ol>
-<p><code>qualimap rnaseq -bam rnaseq_sample.bam -outdir rnaseq_out -outformat PDF:HTML --java-mem-size=10G</code></p>
-<ol start="2">
-<li>参数</li>
-</ol>
-<ul>
-<li>-bam rnaseq_sample.bam：输入的bam文件。</li>
-<li>-outdir rnaseq_out：输出文件的目录。</li>
-<li>-outformat PDF:HTML：输出文件格式PDF和HTML，默认是HTML。</li>
-<li>–java-mem-size&#x3D;10G：设置最大内存为10G。</li>
-</ul>
-<h2 id="4-3-multi-bamqc模块"><a href="#4-3-multi-bamqc模块" class="headerlink" title="4.3. multi-bamqc模块"></a>4.3. multi-bamqc模块</h2><p>多样本NGS的bam文件的统计和比较。</p>
-<ol>
-<li>运行</li>
-</ol>
-<p><code>qualimap multi-bamqc -r -d qualimap.list -outdir out -outformat PDF:HTML --java-mem-size=10G</code></p>
-<ol start="2">
-<li>参数</li>
-</ol>
-<ul>
-<li>-r：<code>multi-bamqc</code>模块可以输入bam文件或者<code>bamqc</code>模块的结果，如果输入bam文件则需加-r参数。</li>
-<li>-d qualimap.list：输入文件列表，qualimap有三列，每行一个样本，第一列样品名称，第二列包含路径的bam文件&#x2F;bamqc结果目录，第三列组名。</li>
-<li>如果用-r，qualimap.list的第二列则应为bam文件，此时multi-bamqc模块会先对每个样本运行bamqc，bamqc的结果存放在bam文件所在目录下，再进行multi-bamqc的统计。默认是用4个线程，一个样本一个样本单独跑bamqc。</li>
-<li>-outdir out：结果文件输出目录。</li>
-<li>-outformat PDF:HTML：结果文件格式，pdf和html都要。</li>
-<li>–java-mem-size&#x3D;10G：设置最大内存为10G。</li>
-</ul>
-<h2 id="4-4-counts-clustering-comp-counts模块"><a href="#4-4-counts-clustering-comp-counts模块" class="headerlink" title="4.4. counts,clustering,comp-counts模块"></a>4.4. counts,clustering,comp-counts模块</h2><p>此外，还有counts,clustering,comp-counts模块。</p>
-<h1 id="5-tips"><a href="#5-tips" class="headerlink" title="5. tips"></a>5. tips</h1><p>如果允许遇到报错RAM不足，可以加上参数<code>--java-mem-size=10G</code>指定内存上限。</p>
-<h1 id="6-references"><a href="#6-references" class="headerlink" title="6. references"></a>6. references</h1><ol>
-<li><a href="http://qualimap.conesalab.org/">http://qualimap.conesalab.org/</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>omics</category>
-        <category>genome</category>
-        <category>quality assessment</category>
-      </categories>
-      <tags>
-        <tag>biosoft</tag>
-        <tag>genome</tag>
-        <tag>quality assessment</tag>
-        <tag>mapping</tag>
-        <tag>sam</tag>
-        <tag>bam</tag>
-        <tag>depth</tag>
-        <tag>QualiMap</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>基因组质量评估：（五）mapping法：2. samtools计算mapping rate</title>
     <url>/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18600061&auto=1&height=32"></iframe></div>
@@ -10740,6 +10621,127 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>k-mer</tag>
         <tag>GenomeScope</tag>
         <tag>KMC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基因组质量评估：（五）mapping法：5. 用软件QualiMap统计BAM文件</title>
+    <url>/2022/07/31/omics_genome_quality.assessment_mapping_QualiMap/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18511124&auto=1&height=32"></iframe></div>
+
+<h1 id="1-QualiMap简介"><a href="#1-QualiMap简介" class="headerlink" title="1. QualiMap简介"></a>1. QualiMap简介</h1><ul>
+<li>QualiMap是用于统计bam文件的基于java的软件，结果包含详细的统计信息和可视化图形，以及每条contig的mapping情况。</li>
+<li>官网（<a href="http://qualimap.conesalab.org/%EF%BC%89%E6%9C%89%E8%BD%AF%E4%BB%B6%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D%E3%80%82">http://qualimap.conesalab.org/）有软件的详细介绍。</a></li>
+<li>每个模块运行的输入输出文件的案例都可以在这里查看：<a href="http://qualimap.conesalab.org/doc_html/samples.html#bam-samples">http://qualimap.conesalab.org/doc_html/samples.html#bam-samples</a></li>
+</ul>
+<h1 id="2-QualiMap的模块"><a href="#2-QualiMap的模块" class="headerlink" title="2. QualiMap的模块"></a>2. QualiMap的模块</h1><ol>
+<li><strong>bamqc模块</strong>（BAM QC）：用于单个NGS样本bam文件的QC统计。</li>
+<li><strong>rnaseq模块</strong>（RNA-seq QC）：用于转录组RNA-seq样本bam文件的QC统计。</li>
+<li><strong>multi-bamqc模块</strong>（Multi-sample BAM QC）：用于多样本NGS的bam文件的分组QC统计，即包含个体数据，又包含分组比较。</li>
+<li><strong>counts模块</strong>（Counts QC）：可用于转录组数据计数的统计，用于量化表达水平。</li>
+<li><strong>clustering模块</strong>：用于表观基因组（例如甲基化）特征的聚类。</li>
+<li><strong>comp-counts模块</strong>：输入bam文件和注释文件，计算映射到每个区域的reads数量。</li>
+</ol>
+<h1 id="3-下载安装"><a href="#3-下载安装" class="headerlink" title="3. 下载安装"></a>3. 下载安装</h1><p>下载解压即可使用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://bitbucket.org/kokonech/qualimap/downloads/qualimap_v2.2.1.zip</span><br><span class="line">unzip qualimap_v2.2.1.zip</span><br><span class="line">cd qualimap_v2.2.1</span><br><span class="line">./qualimap -h</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-使用"><a href="#4-使用" class="headerlink" title="4. 使用"></a>4. 使用</h1><h2 id="4-1-bamqc模块"><a href="#4-1-bamqc模块" class="headerlink" title="4.1. bamqc模块"></a>4.1. bamqc模块</h2><p>bamqc模块用于单个NGS样本bam文件的统计。</p>
+<ol>
+<li>运行</li>
+</ol>
+<p><code>qualimap bamqc -bam sample.bam -outformat PDF:HTML -outdir out -nt 12 --java-mem-size=10G</code></p>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-bam sample.bam：指定bam文件。</li>
+<li>-outformat PDF:HTML：输出文件格式PDF和HTML，默认是HTML。</li>
+<li>-outdir out：输出文件的目录，不指定则生成sample_stats目录。</li>
+<li>-nt 12：线程12，默认是144。</li>
+<li>–java-mem-size&#x3D;10G：设置最大内存为10G，建议每个模块都设置。</li>
+</ul>
+<ol start="3">
+<li>结果</li>
+</ol>
+<p>所有结果下载后，可以用浏览器打开qualimapReport.html或者打开report.pdf，可以参考给出的结果例子：<a href="https://rawgit.com/kokonech/kokonech.github.io/master/qualimap/HG00096.chr20_bamqc/qualimapReport.html%E3%80%82">https://rawgit.com/kokonech/kokonech.github.io/master/qualimap/HG00096.chr20_bamqc/qualimapReport.html。</a></p>
+<p>包括以下几部分内容：</p>
+<ul>
+<li>globals：reads的mapping情况</li>
+<li>ACGT content：四种碱基和N的含量</li>
+<li>Coverage：深度</li>
+<li>Mapping Quality：平均值</li>
+<li>Insert Size：平均值和标准差</li>
+<li>Mismatches and indels：统计值</li>
+<li>Chromosome stats：每条染色体的长度，mapped bases，mean coverage，standard deviation。</li>
+<li>Coverage across reference：贯穿整个基因组的深度（coverage）和GC含量</li>
+<li>Coverage Histogram：深度分布</li>
+<li>genome fraction coverage</li>
+<li>duplication rate histogram</li>
+<li>mapped reads nucleotide content</li>
+<li>mapped reads GC-content distribution</li>
+<li>mapped reads clipping profile</li>
+<li>homopolymer indels</li>
+<li>mapping quality across reference</li>
+<li>mapping quality histogram</li>
+<li>insert size across reference</li>
+<li>insert size histogram</li>
+</ul>
+<p>QualiMap的所有coverage都是深度，而不是覆盖度。</p>
+<h2 id="4-2-rnaseq模块"><a href="#4-2-rnaseq模块" class="headerlink" title="4.2. rnaseq模块"></a>4.2. rnaseq模块</h2><p>与bamqc模块相似，用于RNA-seq数据的bam文件的统计。</p>
+<ol>
+<li>运行</li>
+</ol>
+<p><code>qualimap rnaseq -bam rnaseq_sample.bam -outdir rnaseq_out -outformat PDF:HTML --java-mem-size=10G</code></p>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-bam rnaseq_sample.bam：输入的bam文件。</li>
+<li>-outdir rnaseq_out：输出文件的目录。</li>
+<li>-outformat PDF:HTML：输出文件格式PDF和HTML，默认是HTML。</li>
+<li>–java-mem-size&#x3D;10G：设置最大内存为10G。</li>
+</ul>
+<h2 id="4-3-multi-bamqc模块"><a href="#4-3-multi-bamqc模块" class="headerlink" title="4.3. multi-bamqc模块"></a>4.3. multi-bamqc模块</h2><p>多样本NGS的bam文件的统计和比较。</p>
+<ol>
+<li>运行</li>
+</ol>
+<p><code>qualimap multi-bamqc -r -d qualimap.list -outdir out -outformat PDF:HTML --java-mem-size=10G</code></p>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-r：<code>multi-bamqc</code>模块可以输入bam文件或者<code>bamqc</code>模块的结果，如果输入bam文件则需加-r参数。</li>
+<li>-d qualimap.list：输入文件列表，qualimap有三列，每行一个样本，第一列样品名称，第二列包含路径的bam文件&#x2F;bamqc结果目录，第三列组名。</li>
+<li>如果用-r，qualimap.list的第二列则应为bam文件，此时multi-bamqc模块会先对每个样本运行bamqc，bamqc的结果存放在bam文件所在目录下，再进行multi-bamqc的统计。默认是用4个线程，一个样本一个样本单独跑bamqc。</li>
+<li>-outdir out：结果文件输出目录。</li>
+<li>-outformat PDF:HTML：结果文件格式，pdf和html都要。</li>
+<li>–java-mem-size&#x3D;10G：设置最大内存为10G。</li>
+</ul>
+<h2 id="4-4-counts-clustering-comp-counts模块"><a href="#4-4-counts-clustering-comp-counts模块" class="headerlink" title="4.4. counts,clustering,comp-counts模块"></a>4.4. counts,clustering,comp-counts模块</h2><p>此外，还有counts,clustering,comp-counts模块。</p>
+<p>… …</p>
+<h1 id="5-tips"><a href="#5-tips" class="headerlink" title="5. tips"></a>5. tips</h1><p>如果遇到报错RAM不足，可以加上参数<code>--java-mem-size=10G</code>指定内存上限。</p>
+<h1 id="6-references"><a href="#6-references" class="headerlink" title="6. references"></a>6. references</h1><ol>
+<li><a href="http://qualimap.conesalab.org/">http://qualimap.conesalab.org/</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>omics</category>
+        <category>genome</category>
+        <category>quality assessment</category>
+      </categories>
+      <tags>
+        <tag>biosoft</tag>
+        <tag>genome</tag>
+        <tag>quality assessment</tag>
+        <tag>mapping</tag>
+        <tag>sam</tag>
+        <tag>bam</tag>
+        <tag>depth</tag>
+        <tag>QualiMap</tag>
       </tags>
   </entry>
 </search>
