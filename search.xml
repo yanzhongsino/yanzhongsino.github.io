@@ -4818,7 +4818,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 <ul>
 <li>下面的<strong><a href="https://yanzhongsino.github.io/">https://yanzhongsino.github.io</a></strong>需要改成自己的网站首页网址。</li>
 <li><strong>返回主页（您可以进入首页继续搜索）</strong>可以替换成引导用户回到网站首页的引导语。</li>
-<li>腾讯公益404页面的js地址可能会更新，可以以腾讯官方代码：<a href="https://news.qq.com/404/%E5%8F%91%E5%B8%83%E7%9A%84%E4%B8%BA%E5%87%86%E3%80%82">https://news.qq.com/404/发布的为准。</a></li>
+<li>腾讯公益404页面的js地址可能会更新，可以以腾讯官方代码：<a href="https://news.qq.com/404/%EF%BC%8C%E5%8F%91%E5%B8%83%E7%9A%84%E4%B8%BA%E5%87%86%E3%80%82">https://news.qq.com/404/，发布的为准。</a></li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;//www.qq.com/404/search_children.js?edition=small&quot; charset=&quot;utf-8&quot; homePageUrl=&quot;https://yanzhongsino.github.io&quot; homePageName=&quot;返回主页（您可以进入首页继续搜索）&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
