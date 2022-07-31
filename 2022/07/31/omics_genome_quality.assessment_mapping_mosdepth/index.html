@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-07-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-31T07:46:38.502Z">
+<meta property="article:modified_time" content="2022-07-31T08:34:05.359Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="genome">
@@ -245,7 +245,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-07-31 00:00:00 / Modified: 15:46:38" itemprop="dateCreated datePublished" datetime="2022-07-31T00:00:00+08:00">2022-07-31</time>
+              <time title="Created: 2022-07-31 00:00:00 / Modified: 16:34:05" itemprop="dateCreated datePublished" datetime="2022-07-31T00:00:00+08:00">2022-07-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -328,12 +328,19 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/brentp/mosdepth/releases/download/v0.3.3/mosdepth</span><br><span class="line">chmod +x mosdepth</span><br><span class="line">./mosdepth -h</span><br></pre></td></tr></table></figure>
 
 <h1 id="4-使用"><a href="#4-使用" class="headerlink" title="4. 使用"></a>4. 使用</h1><ol>
-<li><p>准备<br><code>samtools index sample.bam</code> # 生成bam文件的索引文件sample.bam.bai</p>
-</li>
-<li><p>计算深度<br><code>mosdepth -t 4 out sample.bam</code></p>
-</li>
-<li><p>参数</p>
-</li>
+<li>准备</li>
+</ol>
+<ul>
+<li><code>samtools index sample.bam</code> # 生成bam文件的索引文件sample.bam.bai</li>
+</ul>
+<ol start="2">
+<li>计算深度</li>
+</ol>
+<ul>
+<li><code>mosdepth -t 4 out sample.bam</code></li>
+</ul>
+<ol start="3">
+<li>参数</li>
 </ol>
 <ul>
 <li>-t 4：线程，需要&lt;&#x3D;4</li>
