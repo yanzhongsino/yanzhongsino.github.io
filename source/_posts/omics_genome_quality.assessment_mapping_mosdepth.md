@@ -1,6 +1,6 @@
 ---
 title: 基因组质量评估：（五）mapping法：7. 用软件mosdepth统计BAM文件的深度
-date: 2022-07-27
+date: 2022-07-31
 categories:
 - omics
 - genome
@@ -24,7 +24,6 @@ description: mapping法评估基因组组装质量。这篇文章主要介绍了
 mosdepth（https://github.com/brentp/mosdepth）是用于WGS，exome，targeted sequencing的BAM/CRAM文件的测序深度计算的软件，主要是用Nim语言写的（第一次听说这种语言）。
 
 # 2. mosdepth可以得到的数据包括
-
 1. 每个碱基深度的计算速度是samtools depth的约2倍。——对于 30X 基因组，大约需要 25 分钟的 CPU 时间。
 2. 给定窗口大小的平均每个窗口深度，可用于 CNV calling。
 3. 给定区域的 BED 文件的每个区域的平均值。
@@ -51,7 +50,7 @@ chmod +x mosdepth
 2. 计算深度
 `mosdepth -t 4 out sample.bam`
 
-参数：
+3. 参数
 - -t 4：线程，需要<=4
 - out：输出文件的前缀
 - sample.bam：待分析的bam文件
@@ -92,7 +91,6 @@ total	0	1.00
 - 每个碱基的输出数据。
 
 4. out.per-base.bed.gz.csi
-
 
 # 6. references
 1. https://github.com/brentp/mosdepth

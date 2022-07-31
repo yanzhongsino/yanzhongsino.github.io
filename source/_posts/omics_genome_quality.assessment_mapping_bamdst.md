@@ -1,6 +1,6 @@
 ---
 title: 基因组质量评估：（五）mapping法：6. 用软件bamdst统计BAM文件
-date: 2022-07-27
+date: 2022-07-31
 categories:
 - omics
 - genome
@@ -47,7 +47,7 @@ make
 - -p sample.bed：指定bed文件
 - -o ./ ：输出目录
 
-# 4. 结果
+## 3.3. 结果
 1. coverage.report
 - 总结的统计信息，包括reads的mapping rate，genome coverage，average depth等数据。示例：
 
@@ -242,8 +242,7 @@ MCscaf065	49992	50000
 7. region.tsv.gz
 - 文件包含输入的sample.bed的每个区域的average depth，median depth，coverage。
 
-
-# 5. references
+# 4. references
 1. https://github.com/shiquan/bamdst
 
 -------
