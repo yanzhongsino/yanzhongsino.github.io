@@ -64,14 +64,34 @@ mathjax: true
 ```
 
 # 文件名大小写导致的404
-### 问题
+## 问题
 1. 用`hexo g -d`部署博客test.md到github pages上之后，正常显示。
-2. 如果这时把博客文件名test.md改成Test.md（修改大小写字母），再`hexo g -d`部署，则会在博客网页显示此篇博客，但点进此篇博客内容，则会显示404网页。原因是部署时还是识别的test.md。
+2. 如果这时把博客文件名test.md改成Test.md（修改大小写字母），再`hexo g -d`部署，则会在博客网页显示此篇博客，但点进此篇博客内容，则会显示404网页。
 
+## 原因
+原因是git命令默认配置中忽略了文件名的大小写。
 
+## 解决方案
+1. 修改git的配置文件。
+2. 修改`.deploy_git/.git/config`文件中`ignorecase = true`为`ignorecase = false`
+3. 删除`.deploy_git/`下所有文件，只保留`.deploy_git/.git/`文件夹
+4. push到github仓库
+
+```
+git commit -m "clean"
+git push
+```
+
+5. 重新部署博客
+  
+```
+hexo clean
+hexo g -d
+```
 
 # references
 1. hexo设置markdown公式支持：https://zhuanlan.zhihu.com/p/105986034
+2. 文件名大小写导致的404：https://trifond.github.io/2018/12/05/hexo-folder-ignore-case/
 
 -------
 

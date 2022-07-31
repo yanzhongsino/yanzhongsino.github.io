@@ -257,8 +257,6 @@ p.s.：PRANK比对过后序列顺序会被打乱，与比对前不一致，做�
 5. https://www.jianshu.com/p/31fb919f1c91
 6. https://zhuanlan.zhihu.com/p/150579075
 
-
-
 -------
 
 - 欢迎关注微信公众号：**生信技工**
