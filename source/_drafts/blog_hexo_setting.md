@@ -63,6 +63,13 @@ mathjax: true
 ---
 ```
 
+# 文件名大小写导致的404
+用`hexo g -d`部署博客test.md到github pages上之后，正常显示。
+
+如果这时把博客文件名test.md改成Test.md再`hexo g -d`部署，则会在博客网页显示此篇博客，但点进此篇博客内容，则会显示404网页。原因是部署时还是识别的test.md。
+
+
+
 # references
 1. hexo设置markdown公式支持：https://zhuanlan.zhihu.com/p/105986034
 
