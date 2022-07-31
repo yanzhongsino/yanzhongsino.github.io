@@ -1,5 +1,5 @@
 ---
-title: 基因组质量评估：（五）mapping法：5. 用软件qualimap统计BAM文件
+title: 基因组质量评估：（五）mapping法：5. 用软件QualiMap统计BAM文件
 date: 2022-07-31
 categories:
 - omics
@@ -26,12 +26,12 @@ description: mapping法评估基因组组装质量。这篇文章主要介绍了
 - 每个模块运行的输入输出文件的案例都可以在这里查看：http://qualimap.conesalab.org/doc_html/samples.html#bam-samples
 
 # 2. QualiMap的模块
-1. bamqc模块（BAM QC）：用于单个NGS样本bam文件的QC统计
-2. rnaseq模块（RNA-seq QC）：用于转录组RNA-seq样本bam文件的QC统计
-3. multi-bamqc模块（Multi-sample BAM QC）：用于多样本NGS的bam文件的分组QC统计，即包含个体数据，又包含分组比较
-4. counts模块（Counts QC）：可用于转录组数据计数的统计，用于量化表达水平。
-5. clustering模块：用于表观基因组（例如甲基化）特征的聚类。
-6. comp-counts模块：输入bam文件和注释文件，计算映射到每个区域的reads数量。
+1. **bamqc模块**（BAM QC）：用于单个NGS样本bam文件的QC统计。
+2. **rnaseq模块**（RNA-seq QC）：用于转录组RNA-seq样本bam文件的QC统计。
+3. **multi-bamqc模块**（Multi-sample BAM QC）：用于多样本NGS的bam文件的分组QC统计，即包含个体数据，又包含分组比较。
+4. **counts模块**（Counts QC）：可用于转录组数据计数的统计，用于量化表达水平。
+5. **clustering模块**：用于表观基因组（例如甲基化）特征的聚类。
+6. **comp-counts模块**：输入bam文件和注释文件，计算映射到每个区域的reads数量。
 
 # 3. 下载安装
 下载解压即可使用
@@ -48,6 +48,7 @@ cd qualimap_v2.2.1
 bamqc模块用于单个NGS样本bam文件的统计。
 
 1. 运行
+
 `qualimap bamqc -bam sample.bam -outformat PDF:HTML -outdir out -nt 12 --java-mem-size=10G`
 
 2. 参数
@@ -83,7 +84,7 @@ bamqc模块用于单个NGS样本bam文件的统计。
 - insert size across reference
 - insert size histogram
 
-qualimap的所有coverage都是深度，而不是覆盖度。
+QualiMap的所有coverage都是深度，而不是覆盖度。
 
 ## 4.2. rnaseq模块
 与bamqc模块相似，用于RNA-seq数据的bam文件的统计。
@@ -116,8 +117,10 @@ qualimap的所有coverage都是深度，而不是覆盖度。
 ## 4.4. counts,clustering,comp-counts模块
 此外，还有counts,clustering,comp-counts模块。
 
+... ...
+
 # 5. tips
-如果允许遇到报错RAM不足，可以加上参数`--java-mem-size=10G`指定内存上限。
+如果遇到报错RAM不足，可以加上参数`--java-mem-size=10G`指定内存上限。
 
 # 6. references
 1. http://qualimap.conesalab.org/
