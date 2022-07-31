@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-11-27T09:50:00.000Z">
-<meta property="article:modified_time" content="2022-07-29T07:43:53.936Z">
+<meta property="article:modified_time" content="2022-07-29T09:23:00.355Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="divergence time">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-29 15:43:53" itemprop="dateModified" datetime="2022-07-29T15:43:53+08:00">2022-07-29</time>
+                <time title="Modified: 2022-07-29 17:23:00" itemprop="dateModified" datetime="2022-07-29T17:23:00+08:00">2022-07-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -409,13 +409,13 @@
 
 <p>然后把.&#x2F;KaKs_Calculator2.0&#x2F;bin&#x2F;Linux&#x2F;和.&#x2F;KaKs_Calculator2.0&#x2F;src&#x2F;添加到环境变量即可使用KaKs_Calculator和AXTConvertor命令。</p>
 <ol start="3">
-<li>用ParaAT.pl获取共线性基因对比对序列<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat sample.collinearity |grep -v &quot;^#&quot;|cut -f2,3 &gt;sample.homolog #提取blocks的同源gene对</span><br><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -k -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；；-o指定生成目录；加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢，推荐手动用KaKs_Calculator的YN模型，生成sample.axt.kaks文件。</span><br></pre></td></tr></table></figure></li>
+<li>用ParaAT.pl获取共线性基因对比对序列<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat sample.collinearity |grep -v &quot;^#&quot;|cut -f2,3 &gt;sample.homolog #提取blocks的同源gene对</span><br><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p proc -f axt -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对共线性基因的蛋白比对和蛋白转cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；；-o指定生成目录；</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <p>建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in ‘ctg00816-ctg08844’ is not equal。</p>
 <ol start="4">
 <li>用KaKs_Calculator手动计算共线性基因对的KaKs和4dtv值<br>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd sample.paraat</span><br><span class="line">for i in `ls |grep &quot;axt&quot;`;do KaKs_Calculator -i $i -o $&#123;i&#125;.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br><span class="line">- 计算4dtv</span><br><span class="line">for i in `ls |grep &quot;axt&quot;`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br><span class="line">cd ..</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line"></span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd sample.paraat</span><br><span class="line">for i in `ls *axt`;do KaKs_Calculator -i $i -o $&#123;i&#125;_yn.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;_yn.kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br><span class="line">- 计算4dtv</span><br><span class="line">for i in `ls *axt`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br><span class="line">cd ..</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line"></span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-6-ggplot2画密度分布图和峰值"><a href="#3-6-ggplot2画密度分布图和峰值" class="headerlink" title="3.6. ggplot2画密度分布图和峰值"></a>3.6. ggplot2画密度分布图和峰值</h2><h3 id="3-6-1-ggplot2画密度分布图"><a href="#3-6-1-ggplot2画密度分布图" class="headerlink" title="3.6.1. ggplot2画密度分布图"></a>3.6.1. ggplot2画密度分布图</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>ggplot2<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>ggpmisc<span class="punctuation">)</span></span><br><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;all.results&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">T</span><span class="punctuation">)</span></span><br><span class="line">p <span class="operator">&lt;-</span> ggplot<span class="punctuation">(</span>data<span class="punctuation">,</span> aes<span class="punctuation">(</span>Ks<span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">+</span> geom_density<span class="punctuation">(</span>size<span class="operator">=</span><span class="number">1</span><span class="punctuation">,</span>color<span class="operator">=</span><span class="string">&quot;black&quot;</span><span class="punctuation">)</span><span class="operator">+</span>xlab<span class="punctuation">(</span><span class="string">&quot;Synonymous substitution rate(Ks)&quot;</span><span class="punctuation">)</span><span class="operator">+</span>ylab<span class="punctuation">(</span><span class="string">&quot;Percent of Total Paralogs&quot;</span><span class="punctuation">)</span><span class="operator">+</span>theme_classic<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">+</span>scale_y_continuous<span class="punctuation">(</span>breaks<span class="operator">=</span>seq<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">2.5</span><span class="punctuation">,</span> <span class="number">0.2</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="operator">+</span>xlim<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">3</span><span class="punctuation">)</span></span><br><span class="line">ggsave<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;Ks.pdf&quot;</span><span class="punctuation">,</span>plot<span class="operator">=</span>p<span class="punctuation">,</span>width<span class="operator">=</span><span class="number">10</span><span class="punctuation">,</span>height<span class="operator">=</span><span class="number">5</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
@@ -633,7 +633,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -646,7 +646,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">242</span>
+        <span class="site-state-item-count">245</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -690,12 +690,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">407k</span>
+    <span title="Symbols count total">420k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:10</span>
+    <span title="Reading time total">6:22</span>
 </div>
 
         
