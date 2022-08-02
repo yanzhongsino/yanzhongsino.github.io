@@ -88,6 +88,9 @@ menu:
   resume: /resume/index.html || fa fa-file-user
 ```
 
+## 1.5. 简历成品
+最后的效果可以参考我的简历：https://yanzhongsino.github.io/resume/index.html
+
 # 2. 添加about页面
 与上面的添加简历页面类似：
 1. 在hexo/source目录下创建文件夹about
@@ -101,23 +104,34 @@ menu:
 1. 在博客主题的source下（比如我的./themes/next/source/）创建404.html文件
 2. 在404.html文件中写入想要在404页面展示的内容
 3. 推荐把腾讯公益404页面的代码写入404页面，为传播失踪儿童信息贡献一点微薄之力。
-- 下面的**https://yanzhongsino.github.io**需要改成自己的网站首页网址。
-- **返回主页（您可以进入首页继续搜索）**可以替换成引导用户回到网站首页的引导语。
-- 腾讯公益404页面的js地址可能会更新，可以以腾讯官方代码：https://news.qq.com/404/发布的为准。
+- 下面的**homePageUrl="https://yanzhongsino.github.io"**用于设置网站首页地址，需要改成自己的网站首页网址。
+- **homePageName="返回主页（您可以进入首页继续搜索）"**设置引导词，可以替换成引导用户回到网站首页的引导语。
+- 腾讯公益404页面的js地址可能会更新，可以以腾讯官方代码：https://news.qq.com/404/，发布的为准。
+- 404.html示例：
 
 ```
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8;"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="robots" content="all" />
+  <meta name="robots" content="index,follow"/>
+  <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css">
 </head>
 <body>
-<script type="text/javascript" src="//www.qq.com/404/search_children.js?edition=small" charset="utf-8" homePageUrl="https://yanzhongsino.github.io" homePageName="返回主页（您可以进入首页继续搜索）"></script>
+  <script type="text/plain" src="http://www.qq.com/404/search_children.js"
+          charset="utf-8" homePageUrl="https://yanzhongsino.github.io"
+          homePageName="返回主页（您可以进入首页继续搜索）">
+  </script>
+  <script src="https://qzone.qq.com/gy/404/data.js" charset="utf-8"></script>
+  <script src="https://qzone.qq.com/gy/404/page.js" charset="utf-8"></script>
 </body>
 </html>
 ```
 
-4. 接着正常部署博客即可。
-5. 测试404页面。在网页域名下输入一个不存在的地址（比如https://yanzhongsino.github.io/111），看404页面是否更新成功。
+1. 接着正常部署博客即可。
+2. 测试404页面。在网页域名下输入一个不存在的地址（比如https://yanzhongsino.github.io/111），看404页面是否更新成功。
 
 
 -------
