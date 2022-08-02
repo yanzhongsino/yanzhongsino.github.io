@@ -23,13 +23,14 @@ description: 介绍了分析两个基因组间的结构变异的软件Assemblyti
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe></div>
 
 # 检测SV的软件
-- Assemblytics
-- MUMandCo
+- MUMandCo：https://yanzhongsino.github.io/2022/07/17/bioinfo_variantion_SV_MUMandCo/
+- Assemblytics：https://yanzhongsino.github.io/2022/08/02/bioinfo_variantion_SV_Assemblytics/
 
 
 
 # 4. references
 1. https://zhuanlan.zhihu.com/p/40290546
+2. https://academic.oup.com/bib/article/16/5/852/217239?login=false
 
 -------
 
