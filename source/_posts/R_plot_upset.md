@@ -4,6 +4,7 @@ date: 2021-09-29 15:56:36
 categories:
 - computer language
 - R
+- plot
 tags:
 - plot
 - R
