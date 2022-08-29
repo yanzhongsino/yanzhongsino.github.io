@@ -23,7 +23,7 @@ clusterProfiler相关的博客共有三篇，共同食用，效果更好 :wink: 
 - 博客[富集分析：（五）clusterProfiler：Visualization](https://yanzhongsino.github.io/2022/04/28/bioinfo_enrichment_clusterProfiler.visualization/)
 
 # 1. 基因富集分析(gene set enrichment analysis, GSEA)
-富集分析概述参考[博客：富集分析：（一）概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
+富集分析概述参考[博客：富集分析：（一）概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment_intro/)。
 
 # 2. clusterProfiler介绍
 clusterProfiler是一个R包，是一个解释组学数据的通用富集工具许多基因集的功能注释和富集分析，以及富集分析结果的可视化。

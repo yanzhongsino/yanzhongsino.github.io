@@ -1,10 +1,11 @@
 ---
-title: 结构变异分析软件：MUMandCo
+title: 结构变异分析软件：MUM&Co
 date: 2022-07-17
 categories: 
 - bio
 - bioinfo
 - variantion
+- structural variation
 tags: 
 - MUMandCo
 - structural variation
@@ -16,17 +17,17 @@ tags:
 - inversion
 - translocation
 
-description: 介绍了分析两个基因组间的结构变异的软件MUMandCo，用它检测插入，缺失，倒位，易位，串联重复复制，串联重复收缩等结构变异。
+description: 介绍了分析两个基因组间的结构变异的软件MUM&Co，用它检测插入，缺失，倒位，易位，串联重复复制，串联重复收缩等结构变异。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=18031133&auto=1&height=32"></iframe></div>
 
-# 1. MUMandCo简介
-MUMandCo是用于**两个基因组间**的**结构变异（structural variant，SV）**检测分析的软件，基于MUMmer(v4)的nucmer比对结果检测全基因组范围内的插入，缺失，串联重复，倒位和易位等结构变异。
+# 1. MUM&Co简介
+MUM&Co是用于**两个基因组间**的**结构变异（structural variant，SV）**检测分析的软件，基于MUMmer(v4)的nucmer比对结果检测全基因组范围内的插入，缺失，串联重复，倒位和易位等结构变异。
 
 2020年发表在Bioinformatics。
 
-# 2. MUMandCo原理
+# 2. MUM&Co原理
 MUMandCo调用MUMmer的nucmer模块做互换的全基因组比对（whole-genome alignmetn，WGA），delta-filter模块做全局（g-）和多对多（m-）的过滤，show-coords模块解析坐标。
 
 1. 选出与参考基因组有最精确、非重叠的alignments的query contigs。其余的alignment都不考虑。
@@ -37,7 +38,7 @@ MUMandCo调用MUMmer的nucmer模块做互换的全基因组比对（whole-genome
 6. 参数`-b`可以调用BLAST来检测插入和缺失是重复的（mobile）还是新的（novel）。
 7. 生成保存了reference和query基因组的SV的类型、坐标等细节的tsv文件。
 
-# 3. MUMandCo可以检测的内容
+# 3. MUM&Co可以检测的内容
 - 插入（insertion）：>=50bp & <=150kb
 - 缺失（deletion）：>=50bp & <=150kb
 - 串联重复复制（tandem duplication）：>=50bp & <=150kb
@@ -45,7 +46,7 @@ MUMandCo调用MUMmer的nucmer模块做互换的全基因组比对（whole-genome
 - 倒位（inversion）：>=1kb
 - 易位（translocation）：>=10kb
 
-# 4. MUMandCo安装
+# 4. MUM&Co安装
 - MUMandCo是个bash脚本，下载后赋予执行权限即可使用。
 - 依赖的软件包括MUMmer(v4)和samtools，如果使用`-b`参数则还需要blast。
 
@@ -54,7 +55,7 @@ git clone https://github.com/SAMtoBAM/MUMandCo.git
 chmod 711 ./MUMandCo/mumandco_v3.8.sh
 ```
 
-# 5. MUMandCo使用
+# 5. MUM&Co使用
 1. 运行
 
 `bash mumandco_v3.8.sh -r genome.fa -q query.fa -g 125500000 -t 24 -b -o out`
@@ -71,7 +72,7 @@ chmod 711 ./MUMandCo/mumandco_v3.8.sh
 3. 时间
 - 两个都是约300Mbp的基因组的SV分析，用了24线程，运行总耗时5小时。
 
-# 6. MUMandCo结果
+# 6. MUM&Co结果
 1. out.summary.txt
 - 总结SV的类型和数量的文件
 

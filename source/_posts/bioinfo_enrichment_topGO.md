@@ -16,7 +16,7 @@ description: 介绍了富集分析的R包topGO。用topGO做富集分析中的�
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=116744&auto=1&height=32"></iframe></div>
 
 # 1. 富集分析(enrichment analysis)
-富集分析(enrichment analysis)的概述参考[博客：富集分析概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment/)。
+富集分析(enrichment analysis)的概述参考[博客：富集分析概述](https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment_intro/)。
 
 # 2. topGO
 ## 2.1. topGO简介

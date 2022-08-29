@@ -136,6 +136,8 @@ library(enrichplot)
 ```
 
 ### 2.1.2. 可视化包
+- 推荐dotplot或barplot可视化前10个GO Terms条目。
+- 推荐goplot有向无环图查看富集的GO Terms间的关系。
 
 1. 可视化barplot —— 条形图
 将富集分数（例如p 值）和基因计数或比率描述为条形高度和颜色。横轴为该GO term下的差异基因个数，纵轴为富集到的GO Terms的描述信息， showCategory指定展示的GO Terms的个数为20个，默认展示显著富集的top10个，即p.adjust最小的10个。
@@ -259,7 +261,7 @@ ridgeplot将可视化核心富集基因的表达分布为GSEA富集类别。它�
 from [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html)</p>
 
 ## 2.2. 可视化plotGOgraph/goplot —— 有向无环图
-1. `plotGOgraph(ego)`
+1. `plotGOgraph(ego, firstSigNodes=10)`
 - 有向无环图(Directed acyclic graph, DAG)，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。和[topGO做富集分析](https://yanzhongsino.github.io/2021/11/13/bioinfo_GSEA_topGO/)的DAG图一样。
 
 当enrichGO富集分析时ont参数选了ALL时，结果文件会在第一列前增加一列ONTOLOGY为子类，这时直接用于plotGOgraph画图会报错。
@@ -272,8 +274,8 @@ from [clusterProfiler book](http://yulab-smu.top/biomedical-knowledge-mining-boo
 **<p align="center">Figure 9. DAG图**
 from [clusterProfiler blog](https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/)</p>
 
-1. `goplot(ego, showCategory = 10)`
-igraph布局方式的有向无环图
+2. `goplot(ego, showCategory = 10)`
+- igraph布局方式的有向无环图
 
 <img src="https://yulab-smu.top/biomedical-knowledge-mining-book/biomedicalKnowledge_files/figure-html/goplot-1.png" title=" goplot的DAG图" width="90%"/>
 
