@@ -153,7 +153,7 @@ keys(Cgriseus, keytype = "GO") #查看GO数据集下的ID
 - 如果有分析物种的基因组注释数据，更好的方案是使用通用富集分析。
 - AnnotationForge是用来创建OrgDb包的R包。
 
-### 安装
+### 1.3.1. 安装
 
 ```R
 install.packages('GO.db')
@@ -162,7 +162,7 @@ BiocManager::install("AnnotationForge") #安装
 library(AnnotationForge) #加载
 ```
 
-### 1.3.1. 准备
+### 1.3.2. 准备
 - 这里使用的基因组注释数据是eggNOG注释结果emapper.annotations.tsv。
 - 准备步骤之后的步骤大多在R环境里操作，有些需要在shell环境处理，建议开两个shell窗口操作。
 1. 删除冗余
@@ -183,7 +183,7 @@ colnames(egg) #列出标题行
 [21] "PFAMs"
 ```
 
-### 1.3.2. 提取注释的GO信息
+### 1.3.3. 提取注释的GO信息
 从egg中提取GO注释并整理成gene2go.txt文件
 ```R
 library(dplyr)
@@ -205,7 +205,7 @@ head(gene2go) #查看gene2go前六行
 6 mc00002 GO:0003674      IEA
 ```
 
-### 1.3.3. 提取注释的KEGG信息
+### 1.3.4. 提取注释的KEGG信息
 从egg中提取KEGG注释并整理成gene2pathway.txt文件
 1. 提取KEGG信息
 ```R
@@ -328,7 +328,7 @@ head(gene2pathway_name) #查看前六行
 6 mc00288 ko03440                            Homologous recombination
 ```
 
-### 1.3.4. 创建OrgDb包
+### 1.3.5. 创建OrgDb包
 1. 参数准备
 - Taxonomy ID(tax_id)
 在[NCBI的Taxonomy网站](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi)，通过搜索物种的学名，点击结果中的学名就可以链接到Taxonomy ID信息，比如Melastoma candidum的Taxonomy ID为119954。
@@ -348,7 +348,7 @@ makeOrgPackage(gene_info=gene_info, go=gene2go, ko=koterms,  pathway=gene2pathwa
 
 - notes:如果报错`GO Ids must be formatted like 'GO:XXXXXXX'`则需要检查gene2go数据的GO值是否有冗余或污染。
 
-### 1.3.5. 使用OrgDb包
+### 1.3.6. 使用OrgDb包
 1. 安装加载
 - 创建的org.Mcandidum.eg.db文件夹本质上是个R包，需要安装和加载才能使用。
 
@@ -361,7 +361,7 @@ library(org.Mcandidum.eg.db) #加载包
 
 2. 用于GO分析
 
-`enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`
+`enrichGO(gene = genes, keyType="GID", OrgDb = org.Mcandidum.eg.db, ont = "ALL", pAdjustMethod = "BH", pvalueCutoff  = 0.05, qvalueCutoff  = 0.2)`
 
 加载后在`groupGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`,`enrichGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`,`gseGO(keyType="GID", OrgDb = org.Mcandidum.eg.db)`等函数里把包赋值给`OrgDb`参数，`keyType`参数指定GID即可使用。
 
@@ -384,7 +384,7 @@ ego <- enrichGO(gene          = genes, # list of entrez gene id
                 pvalueCutoff  = 0.05, # 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01
                 qvalueCutoff  = 0.2, # 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05
                 readable      = TRUE ) # 是否将gene ID转换到 gene symbol
-write.table(as.data.frame(ego),"go_enrich.csv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
+write.table(as.data.frame(ego),"go_enrich.tsv",sep="\t",row.names =F,quote=F) #保存到文件go_enrich.csv。其中as.data.frame(ego)把ego对象转换成数据框dataframe
 ```
 
 # 2. KEGG数据库过表达分析(ORA)的背景数据集选择

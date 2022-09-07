@@ -11,7 +11,7 @@ tags:
 - WGD
 - biosoft
 - MCScanX
-- ParaAT.pl
+- ParaAT
 - KaKs_Calculator
 - ggplot2
 - paml
@@ -194,7 +194,8 @@ ParaAT.pl -g -t -h sample.homolog -n sample.cds.fa -a sample.pep.fa -m mafft -p 
 # 加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。
 ```
 
-建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in 'ctg00816-ctg08844' is not equal。
+- 建议加上-g和-t，免得后面计算Ks时报错Error. The size of two sequences in 'ctg00816-ctg08844' is not equal。
+- axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。
 
 4. 用KaKs_Calculator手动计算共线性基因对的KaKs和4dtv值
 ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。
