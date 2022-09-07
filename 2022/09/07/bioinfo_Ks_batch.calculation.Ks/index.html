@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录了使用ParaAT和KaKs_Calculator2.0批量计算基因对&#x2F;序列对的Ka、Ks和4dtv的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="批量计算Ka和Ks">
+<meta property="og:url" content="http://example.com/2022/09/07/bioinfo_Ks_batch.calculation.Ks/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了使用ParaAT和KaKs_Calculator2.0批量计算基因对&#x2F;序列对的Ka、Ks和4dtv的方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-09-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-07T08:40:34.145Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Ks">
+<meta property="article:tag" content="Ka">
+<meta property="article:tag" content="4dtv">
+<meta property="article:tag" content="ParaAT">
+<meta property="article:tag" content="KaKs_Calculator">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/09/07/bioinfo_Ks_batch.calculation.Ks/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>批量计算Ka和Ks | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/07/bioinfo_Ks_batch.calculation.Ks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          批量计算Ka和Ks
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-07 00:00:00 / Modified: 16:40:34" itemprop="dateCreated datePublished" datetime="2022-09-07T00:00:00+08:00">2022-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/Ks/" itemprop="url" rel="index"><span itemprop="name">Ks</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/09/07/bioinfo_Ks_batch.calculation.Ks/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/09/07/bioinfo_Ks_batch.calculation.Ks/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">记录了使用ParaAT和KaKs_Calculator2.0批量计算基因对/序列对的Ka、Ks和4dtv的方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1901371647&auto=1&height=32"></iframe></div>
+
+<h1 id="1-ParaAT"><a href="#1-ParaAT" class="headerlink" title="1. ParaAT"></a>1. ParaAT</h1><p>参考blog.ParaAT：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
+<h1 id="2-KaKs-Calculator-2-0"><a href="#2-KaKs-Calculator-2-0" class="headerlink" title="2. KaKs_Calculator 2.0"></a>2. KaKs_Calculator 2.0</h1><p>KaKs_Calculator 2.0工具包包含了17种计算Ka和Ks的方法，包含Gamma系列，并可识别基于蛋白编码序列的滑动窗口，基于C++和Java，在Windows和Linux平台都可使用。</p>
+<h1 id="3-Ka和Ks计算"><a href="#3-Ka和Ks计算" class="headerlink" title="3. Ka和Ks计算"></a>3. Ka和Ks计算</h1><ul>
+<li>ParaAT比对指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出格式，如axt格式。</li>
+<li>KaKs_Calculator用于计算比对好的基因对的kaks。</li>
+</ul>
+<p>用还会用到两个脚本:</p>
+<ul>
+<li>axt2one-line.py:<a target="_blank" rel="noopener" href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py%E8%BD%AC%E6%8D%A2axt%E6%A0%BC%E5%BC%8F%E4%B8%BA%E5%8D%95%E8%A1%8C">https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py转换axt格式为单行</a></li>
+<li>calculate_4DTV_correction.pl:<a target="_blank" rel="noopener" href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl%E8%AE%A1%E7%AE%974dtv%E3%80%82">https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl计算4dtv。</a></li>
+</ul>
+<h1 id="4-软件准备"><a href="#4-软件准备" class="headerlink" title="4. 软件准备"></a>4. 软件准备</h1><ol>
+<li>安装ParaAT.pl</li>
+</ol>
+<ul>
+<li>参考blog.ParaAT：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装KaKs_Calculator2.0<br>KaKs_Calculator2.0下载地址：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后把<code>./KaKs_Calculator2.0/bin/Linux/</code>和<code>./KaKs_Calculator2.0/src/</code>添加到环境变量即可使用<code>KaKs_Calculator</code>和<code>AXTConvertor</code>命令。</li>
+</ul>
+<h1 id="5-文件准备"><a href="#5-文件准备" class="headerlink" title="5. 文件准备"></a>5. 文件准备</h1><p>ParaAT.pl需要三个输入文件，参考blog.ParaAT：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
+<ol>
+<li>sample.id</li>
+</ol>
+<ul>
+<li>两列，每行对应两条要做成对比对的序列ID；</li>
+<li>任意行，ParaAT可以批量处理多个成对比对。</li>
+<li>一个例子：<code>cat sample.collinearity |grep &quot;species_prefix&quot;|cut -f2,3 &gt;sample.id</code> 用MCScanX的结果文件提取blocks的同源gene对，获得sample.id文件。</li>
+</ul>
+<ol start="2">
+<li>cds.fa</li>
+</ol>
+<ul>
+<li>包括所有需要比对的cds序列的文件</li>
+</ul>
+<ol start="3">
+<li>pep.fa</li>
+</ol>
+<ul>
+<li>包括所有需要比对的蛋白序列的文件</li>
+</ul>
+<h1 id="6-操作步骤"><a href="#6-操作步骤" class="headerlink" title="6. 操作步骤"></a>6. 操作步骤</h1><h2 id="6-1-用ParaAT获取基因对比对序列"><a href="#6-1-用ParaAT获取基因对比对序列" class="headerlink" title="6.1. 用ParaAT获取基因对比对序列"></a>6.1. 用ParaAT获取基因对比对序列</h2><p>ParaAT比对sample.id指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出为axt格式。</p>
+<ol>
+<li>命令</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对基因的蛋白比对，并把蛋白比对转化成cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；-o指定生成目录；</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>notes</li>
+</ol>
+<ul>
+<li>axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。</li>
+<li>建议加上-g和-t，免得后面计算Ks时报错<code>Error. The size of two sequences in &#39;ctg00816-ctg08844&#39; is not equal。</code></li>
+<li>ParaAT.pl命令中加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐不加-k参数，而是手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。</li>
+</ul>
+<h2 id="6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值"><a href="#6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值" class="headerlink" title="6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值"></a>6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值</h2><p>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</p>
+<p>KaKs_Calculator可计算比对好的CDS序列的Ka和Ks。</p>
+<ol>
+<li>计算Ka和Ks</li>
+</ol>
+<ul>
+<li>获得all.kaks文件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do KaKs_Calculator -i $i -o $&#123;i&#125;_yn.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;_yn.kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li>计算4dtv</li>
+</ol>
+<ul>
+<li>获得all.4dtv文件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>合并和整理结果</li>
+</ol>
+<ul>
+<li>获得all.results文件<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd .. #返回上一级目录</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
+<li>ParaAT paper：<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0006291X12003518">https://www.sciencedirect.com/science/article/pii/S0006291X12003518</a></li>
+<li>KaKs_Calculator2.0 github：<a target="_blank" rel="noopener" href="https://github.com/kullrich/kakscalculator2">https://github.com/kullrich/kakscalculator2</a></li>
+<li>KaKs_Calculator2.0 paper：<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1672022910600083?via=ihub">https://www.sciencedirect.com/science/article/pii/S1672022910600083?via%3Dihub</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ks/" rel="tag"># Ks</a>
+              <a href="/tags/Ka/" rel="tag"># Ka</a>
+              <a href="/tags/4dtv/" rel="tag"># 4dtv</a>
+              <a href="/tags/ParaAT/" rel="tag"># ParaAT</a>
+              <a href="/tags/KaKs-Calculator/" rel="tag"># KaKs_Calculator</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/07/bioinfo_pseudogene_PseudogenePipeline/" rel="prev" title="用PseudogenePipeline鉴定假基因及后续分析">
+      <i class="fa fa-chevron-left"></i> 用PseudogenePipeline鉴定假基因及后续分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-ParaAT"><span class="nav-text">1. ParaAT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-KaKs-Calculator-2-0"><span class="nav-text">2. KaKs_Calculator 2.0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Ka%E5%92%8CKs%E8%AE%A1%E7%AE%97"><span class="nav-text">3. Ka和Ks计算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E8%BD%AF%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">4. 软件准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">5. 文件准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-text">6. 操作步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E7%94%A8ParaAT%E8%8E%B7%E5%8F%96%E5%9F%BA%E5%9B%A0%E5%AF%B9%E6%AF%94%E5%AF%B9%E5%BA%8F%E5%88%97"><span class="nav-text">6.1. 用ParaAT获取基因对比对序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E7%94%A8KaKs-Calculator%E8%AE%A1%E7%AE%97%E5%9F%BA%E5%9B%A0%E5%AF%B9%E7%9A%84Ka%E3%80%81Ks%E5%92%8C4dtv%E5%80%BC"><span class="nav-text">6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-references"><span class="nav-text">7. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">258</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">444k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">6:43</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/09/07/bioinfo_Ks_batch.calculation.Ks/";
+    this.page.identifier = "2022/09/07/bioinfo_Ks_batch.calculation.Ks/";
+    this.page.title = "批量计算Ka和Ks";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
