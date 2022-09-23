@@ -13,7 +13,8 @@ tags:
 - Dsuite
 - PhyloNetworks
 - TreeMix
-description: 介绍了基因流相关概念，推断基因流常用软件。
+- 3s
+description: 介绍了基因流相关概念，推断基因流常用软件Dsuite，PhyloNetworks，TreeMix，3s等。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=210766&auto=1&height=32"></iframe></div>
@@ -36,6 +37,8 @@ description: 介绍了基因流相关概念，推断基因流常用软件。
 ## 2.1. 推断基因流的软件
 1. 通过计算Patterson's D值(ABBA-BABA值)和相关统计量来判断基因流：Dsuite(2020),ADMIXTOOLS(2012),HyDe(2018),ANGSD(2011,2018),POPGENOME(2014,2019),COMP-D(2020)。
 2. 推断系统发育网络：PhyloNetworks(2017),PhyloNet(2008,2018),TreeMix(2012),BEAST2(2017)。
+3. 基于最大似然法：3s(2017)
+4. 基于MCMC算法的：IM, IMA
 
 有几个软件单独写了博客：
 
@@ -92,7 +95,19 @@ description: 介绍了基因流相关概念，推断基因流常用软件。
 3. TreeMix优势和不足
    - TreeMix和PhyloNetworks一样，也是推断系统发育网络。
    - 我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。
-   - 不足是比PhyloNetworks更耗时。
+   - 不足是比PhyloNetworks更耗时，超级耗时。
+
+### 2.1.4. 3s
+[3s blog](https://yanzhongsino.github.io/2022/09/22/bioinfo_geneflow_3s/)
+
+1. 3s简介
+- 3s利用似然率来推断两个物种/群体间的基因流方向和强度
+2. 3s输入
+- 输入：基因组或其他测序序列phylip文件
+- 输出：基因流方向和强度
+3. 3s优势和不足
+- 随着数据量线性增加运算时间，运算快，适合基因组数据。
+- 一次只能检测三个物种/群体，无法建立系统发育网。
 
 # 3. reference
 1. wiki: gene flow：https://en.wikipedia.org/wiki/Gene_flow

@@ -34,7 +34,7 @@ TreeMix是一个利用全基因组尺度的等位基因频率数据推断居群�
 3. TreeMix优势和不足
    - TreeMix和PhyloNetworks一样，也是推断系统发育网络。
    - 我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。
-   - 不足是比PhyloNetworks更耗时。
+   - 不足是比PhyloNetworks更耗时，超级耗时。
 
 ## 1.1. TreeMix install
 
