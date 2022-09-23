@@ -20,24 +20,25 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="介绍了基因流相关概念，推断基因流常用软件。">
+  <meta name="description" content="介绍了基因流相关概念，推断基因流常用软件Dsuite，PhyloNetworks，TreeMix，3s等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基因流及其推断">
 <meta property="og:url" content="http://example.com/2022/04/10/bioinfo_geneflow_intro/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="介绍了基因流相关概念，推断基因流常用软件。">
+<meta property="og:description" content="介绍了基因流相关概念，推断基因流常用软件Dsuite，PhyloNetworks，TreeMix，3s等。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-04-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T11:25:33.274Z">
+<meta property="article:modified_time" content="2022-09-22T07:33:42.435Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="Dsuite">
 <meta property="article:tag" content="gene flow">
 <meta property="article:tag" content="hybridization">
 <meta property="article:tag" content="introgressive">
-<meta property="article:tag" content="TreeMix">
-<meta property="article:tag" content="population networks">
+<meta property="article:tag" content="3s">
+<meta property="article:tag" content="Dsuite">
 <meta property="article:tag" content="PhyloNetworks">
+<meta property="article:tag" content="population networks">
+<meta property="article:tag" content="TreeMix">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
@@ -250,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:25:33" itemprop="dateModified" datetime="2022-07-15T19:25:33+08:00">2022-07-15</time>
+                <time title="Modified: 2022-09-22 15:33:42" itemprop="dateModified" datetime="2022-09-22T15:33:42+08:00">2022-09-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,15 +297,15 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.7k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>2 mins.</span>
+              <span>3 mins.</span>
             </span>
-            <div class="post-description">介绍了基因流相关概念，推断基因流常用软件。</div>
+            <div class="post-description">介绍了基因流相关概念，推断基因流常用软件Dsuite，PhyloNetworks，TreeMix，3s等。</div>
 
         </div>
       </header>
@@ -342,6 +343,8 @@
 <h2 id="2-1-推断基因流的软件"><a href="#2-1-推断基因流的软件" class="headerlink" title="2.1. 推断基因流的软件"></a>2.1. 推断基因流的软件</h2><ol>
 <li>通过计算Patterson’s D值(ABBA-BABA值)和相关统计量来判断基因流：Dsuite(2020),ADMIXTOOLS(2012),HyDe(2018),ANGSD(2011,2018),POPGENOME(2014,2019),COMP-D(2020)。</li>
 <li>推断系统发育网络：PhyloNetworks(2017),PhyloNet(2008,2018),TreeMix(2012),BEAST2(2017)。</li>
+<li>基于最大似然法：3s(2017)</li>
+<li>基于MCMC算法的：IM, IMA</li>
 </ol>
 <p>有几个软件单独写了博客：</p>
 <h3 id="2-1-1-Dsuite【推荐】"><a href="#2-1-1-Dsuite【推荐】" class="headerlink" title="2.1.1. Dsuite【推荐】"></a>2.1.1. Dsuite【推荐】</h3><p><a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/04/10/bioinfo_geneflow_Dsuite/">Dsuite blog</a></p>
@@ -419,10 +422,31 @@
 <li>TreeMix优势和不足<ul>
 <li>TreeMix和PhyloNetworks一样，也是推断系统发育网络。</li>
 <li>我自己用时，有些PhyloNetworks报错无法定根和边缘错误的情况TreeMix可以找到最佳杂交次数。</li>
-<li>不足是比PhyloNetworks更耗时。</li>
+<li>不足是比PhyloNetworks更耗时，超级耗时。</li>
 </ul>
 </li>
 </ol>
+<h3 id="2-1-4-3s"><a href="#2-1-4-3s" class="headerlink" title="2.1.4. 3s"></a>2.1.4. 3s</h3><p><a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/09/22/bioinfo_geneflow_3s/">3s blog</a></p>
+<ol>
+<li>3s简介</li>
+</ol>
+<ul>
+<li>3s利用似然率来推断两个物种&#x2F;群体间的基因流方向和强度</li>
+</ul>
+<ol start="2">
+<li>3s输入</li>
+</ol>
+<ul>
+<li>输入：基因组或其他测序序列phylip文件</li>
+<li>输出：基因流方向和强度</li>
+</ul>
+<ol start="3">
+<li>3s优势和不足</li>
+</ol>
+<ul>
+<li>随着数据量线性增加运算时间，运算快，适合基因组数据。</li>
+<li>一次只能检测三个物种&#x2F;群体，无法建立系统发育网。</li>
+</ul>
 <h1 id="3-reference"><a href="#3-reference" class="headerlink" title="3. reference"></a>3. reference</h1><ol>
 <li>wiki: gene flow：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gene_flow">https://en.wikipedia.org/wiki/Gene_flow</a></li>
 <li>wiki: introgression：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Introgression">https://en.wikipedia.org/wiki/Introgression</a></li>
@@ -444,13 +468,14 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Dsuite/" rel="tag"># Dsuite</a>
               <a href="/tags/gene-flow/" rel="tag"># gene flow</a>
               <a href="/tags/hybridization/" rel="tag"># hybridization</a>
               <a href="/tags/introgressive/" rel="tag"># introgressive</a>
-              <a href="/tags/TreeMix/" rel="tag"># TreeMix</a>
-              <a href="/tags/population-networks/" rel="tag"># population networks</a>
+              <a href="/tags/3s/" rel="tag"># 3s</a>
+              <a href="/tags/Dsuite/" rel="tag"># Dsuite</a>
               <a href="/tags/PhyloNetworks/" rel="tag"># PhyloNetworks</a>
+              <a href="/tags/population-networks/" rel="tag"># population networks</a>
+              <a href="/tags/TreeMix/" rel="tag"># TreeMix</a>
           </div>
 
         
@@ -531,7 +556,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E6%B5%81-gene-flow-x2F-%E6%9D%82%E4%BA%A4-hybridization-x2F-%E6%B8%90%E6%B8%97-introgressive"><span class="nav-text">1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81-x2F-%E6%9D%82%E4%BA%A4"><span class="nav-text">2. 推断基因流&#x2F;杂交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">2.1. 推断基因流的软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-Dsuite%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">2.1.1. Dsuite【推荐】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-PhyloNetworks"><span class="nav-text">2.1.2. PhyloNetworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-TreeMix"><span class="nav-text">2.1.3. TreeMix</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-reference"><span class="nav-text">3. reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E6%B5%81-gene-flow-x2F-%E6%9D%82%E4%BA%A4-hybridization-x2F-%E6%B8%90%E6%B8%97-introgressive"><span class="nav-text">1. 基因流(gene flow)&#x2F;杂交(hybridization)&#x2F;渐渗(introgressive)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81-x2F-%E6%9D%82%E4%BA%A4"><span class="nav-text">2. 推断基因流&#x2F;杂交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%8E%A8%E6%96%AD%E5%9F%BA%E5%9B%A0%E6%B5%81%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">2.1. 推断基因流的软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-Dsuite%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">2.1.1. Dsuite【推荐】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-PhyloNetworks"><span class="nav-text">2.1.2. PhyloNetworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-TreeMix"><span class="nav-text">2.1.3. TreeMix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-3s"><span class="nav-text">2.1.4. 3s</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-reference"><span class="nav-text">3. reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -545,20 +570,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">258</span>
+        <span class="site-state-item-count">265</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -602,12 +627,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">444k</span>
+    <span title="Symbols count total">450k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:43</span>
+    <span title="Reading time total">6:49</span>
 </div>
 
         
