@@ -64,7 +64,7 @@ description: 介绍了两个基因组间的结构变异的分析，和两个分�
 
 下图总结了四种方法可以检测的结构变异的类型。
 
-<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrg2958/MediaObjects/41576_2011_Article_BFnrg2958_Fig1_HTML.jpg?as=webp" width=90% title="结构变异的检测方法" alt="结构变异的检测方法" align=center/>
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrg2958/MediaObjects/41576_2011_Article_BFnrg2958_Fig2_HTML.jpg?as=webp" width=90% title="结构变异的检测方法" alt="结构变异的检测方法" align=center/>
 
 **<p align="center">图2. 结构变异的检测方法**
 图片来源： [paper：Genome structural variation discovery and genotyping](https://www.nature.com/articles/nrg2958)</p>
