@@ -4884,7 +4884,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 <li>Assembly (AS)：通过三代测序和de novo assembly来检测大长度和复杂结构的变异。</li>
 </ol>
 <p>下图总结了四种方法可以检测的结构变异的类型。</p>
-<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrg2958/MediaObjects/41576_2011_Article_BFnrg2958_Fig1_HTML.jpg?as=webp" width=90% title="结构变异的检测方法" alt="结构变异的检测方法" align=center/>
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrg2958/MediaObjects/41576_2011_Article_BFnrg2958_Fig2_HTML.jpg?as=webp" width=90% title="结构变异的检测方法" alt="结构变异的检测方法" align=center/>
 
 <p><strong><p align="center">图2. 结构变异的检测方法</strong><br>图片来源： <a href="https://www.nature.com/articles/nrg2958">paper：Genome structural variation discovery and genotyping</a></p></p>
 <h1 id="3-检测结构变异的软件"><a href="#3-检测结构变异的软件" class="headerlink" title="3. 检测结构变异的软件"></a>3. 检测结构变异的软件</h1><p>检测结构变异的软件有很多，个人用过的两个贴在下面：</p>
