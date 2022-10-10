@@ -4,13 +4,14 @@ date: 2022-08-02
 categories: 
 - bio
 - bioinfo
-- variantion
+- variation
 - structural variation
 tags: 
 - structural variation
 - SV
 - insertion
 - deletion
+- Indel
 - tandem expansion
 - tandem contraction
 - repeat expansion

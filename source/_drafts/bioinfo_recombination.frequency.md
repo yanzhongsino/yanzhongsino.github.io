@@ -1,11 +1,14 @@
 ---
 title: 线粒体的重复介导重组的鉴定和计算重组频率
-date: 2022-09-02
+date: 2022-09-07
 categories: 
 - bio
 - bioinfo
 tags: 
 - mitogenome
+- repeat
+- recombination
+- rearrangement
 description: 线粒体的重复介导重组的鉴定和计算重组频率。
 ---
 

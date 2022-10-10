@@ -124,7 +124,7 @@ species.trees文件最后两行的物种树支持率是[0-100]，是最终的物
 运行log文件。
 
 如果使用-b参数，里面包含每次bootstrap(replicate 0-999)运行的日志，包含每次bootstrap的树结果，支持率范围是[0-1]。
-在bootstrap运行日志后，还有一次Running the main analysis的结果，支持率范围也是[0-1]。(ps:我查看了结果，发现这棵树的拓扑结构与species.tree最后的物种树的拓扑是一致的，枝长也是一致的，支持率不一致。)
+在bootstrap运行日志文件的最后，还有一次Running the main analysis的结果，支持率范围也是[0-1]。(ps:我查看了结果，发现这棵树的拓扑结构与species.tree最后的物种树的拓扑是一致的，枝长也是一致的，支持率不一致。)
 
 
 

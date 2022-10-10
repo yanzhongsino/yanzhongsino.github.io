@@ -4,7 +4,7 @@ date: 2022-07-17
 categories: 
 - bio
 - bioinfo
-- variantion
+- variation
 - structural variation
 tags: 
 - MUMandCo
@@ -12,6 +12,7 @@ tags:
 - SV
 - insertion
 - deletion
+- Indel
 - duplication
 - contraction
 - inversion
