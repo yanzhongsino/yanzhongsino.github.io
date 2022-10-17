@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="用软件PSMC推断有效群体大小的动态历史。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用PSMC推断有效群体大小历史">
+<meta property="og:url" content="http://example.com/2022/10/17/bioinfo_psmc/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="用软件PSMC推断有效群体大小的动态历史。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-10-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-17T04:14:17.759Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="PSMC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/10/17/bioinfo_psmc/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用PSMC推断有效群体大小历史 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/17/bioinfo_psmc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用PSMC推断有效群体大小历史
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-10-17 00:00:00 / Modified: 12:14:17" itemprop="dateCreated datePublished" datetime="2022-10-17T00:00:00+08:00">2022-10-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/10/17/bioinfo_psmc/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/10/17/bioinfo_psmc/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">用软件PSMC推断有效群体大小的动态历史。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2534006&auto=1&height=32"></iframe></div>
+
+<h1 id="PSMC"><a href="#PSMC" class="headerlink" title="PSMC"></a>PSMC</h1><p>Pairwise Sequentially Markovian Coalescent (PSMC) 是李恒开发的一款软件，可以通过一个二倍体个体的基因组的分析获得这个个体代表的群体的有效群体大小的历史动态。</p>
+<h1 id="PSMC分析原理"><a href="#PSMC分析原理" class="headerlink" title="PSMC分析原理"></a>PSMC分析原理</h1><p>通过一个二倍体个体的基因组的等位基因上存在的变异位点计算序列间差异，从而推断序列的分化时间；计算所有等位基因（也可以换成等位片段）的分化时间。认为某个分化时间的等位基因数量越多，代表当时的有效群体大小越大，所以可以通过整个基因组上等位基因的分化时间的分布推断有效群体大小的历史动态。</p>
+<ul>
+<li>这个算法让人惊叹的点在于，我们可以只从一个个体的基因组上看到群体的进化历史。</li>
+<li>有意思的是，前些时候看《自私的基因》那本书的时候，书里的序也详细讲解了PSMC的算法，从等位基因回溯到基因的共同祖先，讲得很清晰，非专业人士也可以读懂，有兴趣的读者可以去看看。</li>
+<li>分析人类的有效群体大小历史时，在三百万年有一次共有的高峰，有可能是人类从猩猩中分化出来时期的群体规模高峰期。不过，这么久远的分化区域意味着高度差异的等位基因片段（高度杂合）。这些高度杂合的片段也有可能来自平衡选择，或重测序比对过程中重复序列不正确比对产生的错误SNP。因此，三百万年的高峰可能并不可信。</li>
+</ul>
+<h1 id="PSMC运行"><a href="#PSMC运行" class="headerlink" title="PSMC运行"></a>PSMC运行</h1><h2 id="文件准备"><a href="#文件准备" class="headerlink" title="文件准备"></a>文件准备</h2><ol>
+<li>基因组文件：genome.fa</li>
+<li>二代测序数据：sample_R1.clean.u.fq和sample_R2.clean.u.fq</li>
+</ol>
+<h2 id="运行步骤"><a href="#运行步骤" class="headerlink" title="运行步骤"></a>运行步骤</h2><h3 id="准备全基因组二倍体一致序列"><a href="#准备全基因组二倍体一致序列" class="headerlink" title="准备全基因组二倍体一致序列"></a>准备全基因组二倍体一致序列</h3><ol>
+<li>二代序列mapping</li>
+</ol>
+<ul>
+<li><code>time bwa mem -t 12 genome.fa sample_R1.clean.u.fq sample_R2.clean.u.fq | samtools sort -@ 12 -m 12G &gt; sample_sort.bam</code> 把二代数据mapping到基因组上</li>
+</ul>
+<ol start="2">
+<li>获取二倍体一致序列</li>
+</ol>
+<ul>
+<li><code>samtools mpileup -C50 -uf genome.fa sample_sort.bam | bcftools view --threads 16 -c - | vcfutils.pl vcf2fq -d 10 -D 100 |pgzip -p 12 &gt;diploid.fq.gz</code> 生成全基因组二倍体一致序列diploid.fq.gz</li>
+<li><code>bcftools view</code>可以换成<code>bcftools call</code></li>
+<li>其中，<code>vcfutils.pl vcf2fq -d 10 -D 100</code>的<code>-d 10</code>参数是最小read depth，作者建议设置成平均depth的三分之一(1&#x2F;3)；<code>-D 100</code>参数是最大read depth，建议设置成平均depth的两倍。</li>
+</ul>
+<ol start="3">
+<li>上一步可分解为以下几步：</li>
+</ol>
+<ul>
+<li><code>samtools mpileup -C50 -uf genome.fa sample_sort.bam | bcftools view --threads 16 -O z -o sample.vcf.gz</code> call snp，得到的是genotype likelihoods的vcf文件</li>
+<li><code>bcftools call sample.vcf.gz -c -v --threads 16 -O z -o sample.variants.vcf.gz</code> 生成只有snp和indel的vcf文件，其中-c代表SNP calling选择consensus-caller算法，另可选-m即multiallelic-caller算法（更适合多种allel和罕见变异的情况）。</li>
+<li><code>bcftools view -H sample.variants.vcf.gz | wc -l</code> 统计snp数量。snp数量除以基因组大小即可得到估计的杂合度。</li>
+<li><code>vcfutils.pl vcf2fq -d 8 -D 50 sample.variants.vcf.gz| pigz -p 12 &gt; diploid.fq.gz</code> 生成二倍体fq文件</li>
+</ul>
+<h3 id="运行单次PSMC"><a href="#运行单次PSMC" class="headerlink" title="运行单次PSMC"></a>运行单次PSMC</h3><ol>
+<li>格式转换</li>
+</ol>
+<ul>
+<li><code>fq2psmcfa -q20 diploid.fq.gz &gt; diploid.psmcfa</code> 格式转换</li>
+</ul>
+<ol start="2">
+<li>PSMC运行</li>
+</ol>
+<ul>
+<li><code>nohup psmc -p &quot;4+25*2+4+6&quot; -t15 -N30 -r4 -o diploid.psmc diploid.psmcfa &amp;</code></li>
+<li>psmc计算二倍体间序列差异</li>
+</ul>
+<ol start="3">
+<li>PSMC参数</li>
+</ol>
+<ul>
+<li>参数-p可根据经验或者近缘类群的文献设定，或者多尝试几个参数看看结果，-t,-N,-r可用默认参数。</li>
+<li>-p：代表psmc有效群体大小变化的图随时间变化划分的时间阶段单位数量，例如默认的-p “4+25*2+4+6”表示从古自今依次经历了一个4单位+25个2单位+一个4单位+一个6单位的时期。数字越大需要的计算资源越多。可根据经验调整。</li>
+<li>-t：maximum 2N0 coalescent time [15]; 2N0的最大世代时间，代表the upper limit of the TMRCA。</li>
+<li>-r: initial theta&#x2F;rho ratio [4]; 起始θ&#x2F;ρ率，默认4。</li>
+<li>-N：maximum number of iterations [30]；迭代的最大次数，默认30。</li>
+<li>-o：指定输出的diploid.psmcfa文件。</li>
+</ul>
+<h3 id="运行bootstrap的PSMC【推荐】"><a href="#运行bootstrap的PSMC【推荐】" class="headerlink" title="运行bootstrap的PSMC【推荐】"></a>运行bootstrap的PSMC【推荐】</h3><p>如果要运行多次抽样的PSMC，则在上面的格式转换后，先分割长序列，再用for循环语句运行。</p>
+<ol>
+<li>分割长序列</li>
+</ol>
+<ul>
+<li><code>splitfa diploid.psmcfa &gt; split.psmcfa</code> 若需要做bootstrap需先把太长序列分割</li>
+</ul>
+<ol start="2">
+<li>bootstrap抽样运行PSMC</li>
+</ol>
+<ul>
+<li><code>for i in &#123;1..100&#125;;do nohup psmc -b -p &quot;6+25*2+6+8&quot; -t15 -N30 -r4 -o round$&#123;i&#125;.psmc split.psmcfa &amp;</code> #-b参数表示bootstrap抽样做psmc，重复100次。估计服务器运算能力，可以10个重复作为一批。</li>
+</ul>
+<ol start="3">
+<li>合并结果</li>
+</ol>
+<ul>
+<li><code>cat diploid.psmc round*.psmc &gt;combine.psmc</code> #psmc结果合并</li>
+</ul>
+<h2 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h2><ol>
+<li>运行</li>
+</ol>
+<ul>
+<li><code>psmc_plot.pl -p -g 1 -u 4.79e-9 combine combine.psmc</code></li>
+<li>画图，生产combine.eps和combine.pdf。</li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-p：指用epstopdf把esp转化成pdf文件，相当于运行完多加一个<code>epstopdf combined.eps</code>一步。</li>
+<li>-g：number of years per generation [25]，指定该物种的平均世代时间（即繁殖一代的时间），比如人的默认为25年，该处值为-g 25；许多草本植物为1年。</li>
+<li>-u：absolute mutation rate per nucleotide [2.5e-08]，指定该物种碱基替换率，单位是subst.&#x2F;syn. site&#x2F;year，比如默认水稻的2.5e-08，文献里提到的蕨类4.79e-9(Barker 2009)。参考已有文献对研究类群的替换率的推断，也可由进化树的枝长除以r8s评估该物种的分歧时间得到。</li>
+</ul>
+<h1 id="references"><a href="#references" class="headerlink" title="references"></a>references</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/lh3/psmc">https://github.com/lh3/psmc</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/PSMC/" rel="tag"># PSMC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/09/bioinfo_variation_SV_intro/" rel="prev" title="结构变异分析">
+      <i class="fa fa-chevron-left"></i> 结构变异分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PSMC"><span class="nav-text">PSMC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PSMC%E5%88%86%E6%9E%90%E5%8E%9F%E7%90%86"><span class="nav-text">PSMC分析原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PSMC%E8%BF%90%E8%A1%8C"><span class="nav-text">PSMC运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%AD%A5%E9%AA%A4"><span class="nav-text">运行步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%85%A8%E5%9F%BA%E5%9B%A0%E7%BB%84%E4%BA%8C%E5%80%8D%E4%BD%93%E4%B8%80%E8%87%B4%E5%BA%8F%E5%88%97"><span class="nav-text">准备全基因组二倍体一致序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%8D%95%E6%AC%A1PSMC"><span class="nav-text">运行单次PSMC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Cbootstrap%E7%9A%84PSMC%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">运行bootstrap的PSMC【推荐】</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-text">画图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-text">references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">269</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">457k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">6:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/10/17/bioinfo_psmc/";
+    this.page.identifier = "2022/10/17/bioinfo_psmc/";
+    this.page.title = "用PSMC推断有效群体大小历史";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
