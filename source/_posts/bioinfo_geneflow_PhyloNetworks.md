@@ -239,16 +239,45 @@ net = snaq!(net0, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)
 ```
 
 2. 使用julia脚本
-举例：`julia runSNaQ.jl 2 12`
+举例：`julia runSNaQ.jl 1 12`
 
-julia运行时间比较长，建议用nohup和&来放后台：`nohup julia runSNaQ.jl 2 12 >h3.log 2>&1 &`
+julia运行时间比较长，建议用nohup和&来放后台：`nohup julia runSNaQ.jl 1 12 >h1.log 2>&1 &`
 
-运行说明：
+3. 运行说明
 - 脚本接受的运行参数有两个，第一个参数设置最大杂交次数hmax，第二个参数设置并行运行的核心数（也代表重复运行次数）。
 - 这里默认输入文件在当前目录下，包括CF表tableCF.csv文件和起始树astraltree.tre文件。
-- 可以通过更改脚本里的起始树astraltree.tre文件，比如改成前面net1的运行结果`bestnet_h1.tre`来从h=1的网络开始搜索h=2的网络。
 
-3. 提交slurm集群
+4. 迭代运行
+- 如果时间充裕，可选迭代运行的方式。
+- 跑完hmax=1参数后，可以用hmax=1的树结果作为运行hmax=2的起点树。跑完hmax=2参数后，可以用hmax=2的树结果作为运行hmax=3的起点树。直到跑到hmax=5或者hmax=10的，能找到最佳hmax值。这就是迭代运行的方式。
+- 用`head -1 net1.networks|sed "s/;.*/;/g" >bestnet_h1.tre`获取hmax=1的最佳网络树。
+- 然后更改脚本里指定的起始树为`bestnet_h1.tre`，开始搜索h=2的网络树。
+- 具体更改julia脚本中的两行为下面的参数。
+
+```
+net1 = readTopology("bestnet_h1.tre");
+net2 = snaq!(net1, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)
+```
+
+- 类似的操作，在获得hmax=2的结果后继续获得hmax=3的结果。依次获得hmax更高的结果。
+
+5. 不迭代并行运行
+- 如果时间不充裕，可选不迭代运行的方式。
+- 即hmax=1，2，3，4，5...的程序同时运行，起始树全部都选择前面获得的astral树。
+- 操作上，可以准备多份runSNaQ.jl文件，分别命名为runSNaQ_h1.jl,runSNaQ_h2.jl,runSNaQ_h3.jl...同时运行`nohup julia runSNaQ_h1.jl 1 12 >h1.log 2>&1 &`,`nohup julia runSNaQ_h2.jl 2 12 >h2.log 2>&1 &`,`nohup julia runSNaQ_h3.jl 3 12 >h3.log 2>&1 &`...
+- julia脚本内需要修改变量名称，以免同时运行时相互干扰。
+
+```
+net0_h1 = readTopology("astraltree.tre");
+net1_h1 = snaq!(net1_h1, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)
+```
+
+```
+net0_h2 = readTopology("astraltree.tre");
+net1_h2 = snaq!(net0_h2, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)
+```
+
+#### 提交slurm集群
 waiting tag...
 
 PhyloNetworks教程里的建议是在上一步运行julia脚本之后用slurm提交julia作业到集群。但我没具体去研究，提交到集群后似乎可以自动化运行h=0到h=3。

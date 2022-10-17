@@ -180,8 +180,11 @@ ggtree(tree)
 
 #### 2.2.2.3. 改变树的结构
 改变树的结构包括取子树(viewClade)，坍塌(collapse)，扩展(expand)，旋转(rotate)，分组(groupClade)等操作，下面两种函数用法是等价的：
+
 - rotate(p,node=12)
 - p %>% rotate(node=12)
+
+当需要多次改变树的结构时，推荐第二种用法，比如`p2 <- p1 %>% flip(37,48) %>% flip(3,4) %>% flip(13,14) %>% flip(25,26) %>% flip(28,29) %>% flip(55,56)`即可依次改变。
 
 1. 显示子树
 ```R

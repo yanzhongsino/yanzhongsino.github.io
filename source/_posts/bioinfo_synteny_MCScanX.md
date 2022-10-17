@@ -26,26 +26,54 @@ description: 用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计
 MCScanX调整[MCScan算法](https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/)进行检测基因组间或基因组内的同线性，并附加了14个下游分析和可视化的脚本。
 
 # 2. MCScanX同线性分析
-## 2.1. 准备输入文件
+## 2.1. 种内同线性分析MCScanX
+### 2.1.1. 准备输入文件
 MCScanX做同线性分析需要两个输入文件sample.gff(四列数据)和sample.blast。
 
 如果是多个物种，则把多个物种的gff3文件和pep.fa文件合并后再准备sample.gff和sample.blast输入文件。
 
 1. sample.gff
-`cat sample.gene.gff3 |awk '{if($3=="gene"){print $1,$9,$4,$5}}'|sed "s/;.*;//g"|sed "s/ID=//g"|sed "s/ /\t/g" >sample.gff #准备gff文件`
+- 与gff3文件格式不一样，这里的sample.gff包含四列数据，第一列染色体ID，第二列基因ID，第三和第四列分别是起始和终止位置。
+- `cat sample.gene.gff3 |awk '{if($3=="gene"){print $1,$9,$4,$5}}'|sed "s/;.*;//g"|sed "s/ID=//g"|sed "s/ /\t/g" >sample.gff` 从gff3文件准备sample.gff文件
+
 2. sample.blast
+
 ```shell
 makeblastdb -in sample.pep.fa -dbtype prot -out index/sample.pep #给蛋白序列建库
 blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 -num_threads 12 -outfmt 6 -num_alignments 5 & #进行自我比对，生成6号格式的比对结果sample.blast
 ```
 
-## 2.2. 运行MCScanX
+### 2.1.2. 运行MCScanX
 在有sample.gff和sample.blast两个文件的目录下，指定前缀sample运行`MCScanX sample`。
 
 重要参数解释：
 - -s MATCH_SIZE,default: 5。每个共线性区块包含的基因数量的下限。
 - -m MAX_GAPS，default：25。在共线性区块中允许的最大gaps数量。
 - -b patterns of collinear blocks。0:intra- and inter-species (default); 1:intra-species; 2:inter-species。
+
+## 2.2. 种间同线性分析MCScanX_h
+MCScanX_h是MCScanX软件下的一个程序，输入文件和运行方式与MCScanX很像。
+
+1. 原理
+- 可用MCScanX_h分析指定基因对的同线性关系，用于确认orthofinder或者OrthoMCL等软件鉴定的物种间的orthologs基因对。
+- 如果要分析物种间orthologs的Ks分布来确定物种分化时间，直接用MCScanX做物种间共线性分析会同时得出orthologs和paralogs的结果，但MCScanX_h则可以指定orthofinder或者OrthoMCL鉴定的orthologs基因对。
+- 可以这样理解，orthofinder鉴定出物种A和物种B的orthologs（物种A和B各只有一个基因的那些行），然后用MCScanX_h确认鉴定的orthologs的同线性关系，从而更加确认orthologs的可靠性。
+
+2. 运行的区别
+- 区别是输入文件用sample.homology代替sample.blast。
+- sample.homology是tab分隔的成对基因ID的list。
+
+### 2.2.1. 输入文件
+1. sample.gff：格式同上面MCScanX的说明。
+2. sample.homology
+- 包含两列数据，是两个物种的基因对，代表一一对应的同源关系。这里用来计算物种间分化，所以指定的是两个物种间一一对应的直系同源关系。
+- 可从orthofinder或者OrthoMCL等软件鉴定的物种间提取。
+- 从orthofinder的`./Results_Apr01/Orthogroups/Orthogroups.txt`文件提取只包含物种A和物种B各有一个基因的行。如果是多物种做的orthofinder，则提取只包含物种A和物种B各有一个基因的行后把其他物种删除。提取后把列间分隔符改成tab。（ps：用不同物种跑的orthofinder提取结果会有一点差异）
+
+### 2.2.2. 运行MCScanX_h
+与运行MCScanX一样:
+- 在有sample.gff和sample.homology两个文件的目录下，指定前缀sample运行`MCScanX_h sample`。
+- 参数也一致。
 
 ## 2.3. 结果文件
 1. sample.collinearity

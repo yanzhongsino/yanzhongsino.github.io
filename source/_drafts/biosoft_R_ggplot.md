@@ -1,6 +1,6 @@
 ---
 title: ggplot
-date: 2021-11-22 19:50:00
+date: 2022-10-17
 categories: 
 - bio
 - bioinfo
@@ -63,6 +63,9 @@ ggsave(file="Ks.pdf",plot=pic,width=6,height=6)
 ## 多个密度图放一起
 可以把数据放在一起，添加一个分类标签列，颜色指定这个分类标签列，则可以实现一张图上展示多个密度图，每个密度图纵坐标（即密度值）是单独计算的。
 ggplot(da)+geom_density(aes(x=V3,colour=V5),adjust=2)+xlim(0,0.5)+theme_classic()
+
+## 分组直方图和密度图
+ggplot(data,aes(x=Ks)) + geom_histogram(data = subset(data, group == "mcmd"), aes(y = ..density..),fill = "red", alpha = 0.2,binwidth = 0.002,size=0.5)+geom_density(data = subset(data, group == "mcmd"), aes(y = ..density..), col = "red", size=1.2)+ geom_histogram(data = subset(data, group == "mdmd"), aes(y = ..density..),fill = "blue", alpha = 0.2,binwidth = 0.002,size=0.5)+geom_density(data = subset(data, group == "mdmd"), aes(y = ..density..), col = "blue", size=1.2)+ geom_histogram(data = subset(data, group == "mcmc"), aes(y = ..density..),fill = "green", alpha = 0.2,binwidth = 0.002,size=0.5)+geom_density(data = subset(data, group == "mcmc"), aes(y = ..density..), col = "green", size=1.2) +xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+theme_classic()+scale_y_continuous(breaks=seq(0, 21, 3))+xlim(0,0.8)+theme(legend.position = c(0.4,0.5), axis.title.x = element_text(size = 16, face = "bold"),axis.title.y = element_text(size = 16, face = "bold"),axis.text.x = element_text(size = 15, face = "bold"),axis.text.y = element_text(size = 15, face = "bold")) + annotate(geom="text",x=0.06,y=20,label="0.03",color="#F8766D",size=6) + annotate(geom="text",x=0.17,y=6,label="0.20",color="#00BA38",size=6) + annotate(geom="text",x=0.72,y=3,label="0.70",color="#00BA38",size=6) + annotate(geom="text",x=0.23,y=6,label="0.21",color="#4169E1",size=6) + annotate(geom="text",x=0.66,y=3,label="0.68",color="#4169E1",size=6)
 
 
 ## theme
