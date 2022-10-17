@@ -29,15 +29,15 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-11-27T09:50:00.000Z">
-<meta property="article:modified_time" content="2022-09-07T08:29:25.869Z">
+<meta property="article:modified_time" content="2022-10-17T02:54:11.374Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="synteny">
-<meta property="article:tag" content="Ks">
 <meta property="article:tag" content="ParaAT">
-<meta property="article:tag" content="KaKs_Calculator">
 <meta property="article:tag" content="divergence time">
 <meta property="article:tag" content="paml">
+<meta property="article:tag" content="Ks">
+<meta property="article:tag" content="KaKs_Calculator">
 <meta property="article:tag" content="colinearity">
 <meta property="article:tag" content="WGD">
 <meta property="article:tag" content="MCScanX">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-07 16:29:25" itemprop="dateModified" datetime="2022-09-07T16:29:25+08:00">2022-09-07</time>
+                <time title="Modified: 2022-10-17 10:54:11" itemprop="dateModified" datetime="2022-10-17T10:54:11+08:00">2022-10-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,13 +296,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>14k</span>
+              <span>15k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>13 mins.</span>
+              <span>14 mins.</span>
             </span>
             <div class="post-description">用MCScanX对基因组进行同线性分析，KaKs_Calculator2.0计算同线性区块的Ks，根据Ks分布和峰值预测全基因组复制事件(Whole genome duplication,WGD)，paml的mcmctree模块估算WGD的发生时间。</div>
 
@@ -318,18 +318,56 @@
         <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=29808885&auto=1&height=32"></iframe></div>
 
 <h1 id="1-MCScanX介绍"><a href="#1-MCScanX介绍" class="headerlink" title="1. MCScanX介绍"></a>1. MCScanX介绍</h1><p>MCScanX调整<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/11/05/bioinfo_MCscan/">MCScan算法</a>进行检测基因组间或基因组内的同线性，并附加了14个下游分析和可视化的脚本。</p>
-<h1 id="2-MCScanX同线性分析"><a href="#2-MCScanX同线性分析" class="headerlink" title="2. MCScanX同线性分析"></a>2. MCScanX同线性分析</h1><h2 id="2-1-准备输入文件"><a href="#2-1-准备输入文件" class="headerlink" title="2.1. 准备输入文件"></a>2.1. 准备输入文件</h2><p>MCScanX做同线性分析需要两个输入文件sample.gff(四列数据)和sample.blast。</p>
+<h1 id="2-MCScanX同线性分析"><a href="#2-MCScanX同线性分析" class="headerlink" title="2. MCScanX同线性分析"></a>2. MCScanX同线性分析</h1><h2 id="2-1-种内同线性分析MCScanX"><a href="#2-1-种内同线性分析MCScanX" class="headerlink" title="2.1. 种内同线性分析MCScanX"></a>2.1. 种内同线性分析MCScanX</h2><h3 id="2-1-1-准备输入文件"><a href="#2-1-1-准备输入文件" class="headerlink" title="2.1.1. 准备输入文件"></a>2.1.1. 准备输入文件</h3><p>MCScanX做同线性分析需要两个输入文件sample.gff(四列数据)和sample.blast。</p>
 <p>如果是多个物种，则把多个物种的gff3文件和pep.fa文件合并后再准备sample.gff和sample.blast输入文件。</p>
 <ol>
-<li>sample.gff<br><code>cat sample.gene.gff3 |awk &#39;&#123;if($3==&quot;gene&quot;)&#123;print $1,$9,$4,$5&#125;&#125;&#39;|sed &quot;s/;.*;//g&quot;|sed &quot;s/ID=//g&quot;|sed &quot;s/ /\t/g&quot; &gt;sample.gff #准备gff文件</code></li>
-<li>sample.blast<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -in sample.pep.fa -dbtype prot -out index/sample.pep #给蛋白序列建库</span><br><span class="line">blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 -num_threads 12 -outfmt 6 -num_alignments 5 &amp; #进行自我比对，生成6号格式的比对结果sample.blast</span><br></pre></td></tr></table></figure></li>
+<li>sample.gff</li>
 </ol>
-<h2 id="2-2-运行MCScanX"><a href="#2-2-运行MCScanX" class="headerlink" title="2.2. 运行MCScanX"></a>2.2. 运行MCScanX</h2><p>在有sample.gff和sample.blast两个文件的目录下，指定前缀sample运行<code>MCScanX sample</code>。</p>
+<ul>
+<li>与gff3文件格式不一样，这里的sample.gff包含四列数据，第一列染色体ID，第二列基因ID，第三和第四列分别是起始和终止位置。</li>
+<li><code>cat sample.gene.gff3 |awk &#39;&#123;if($3==&quot;gene&quot;)&#123;print $1,$9,$4,$5&#125;&#125;&#39;|sed &quot;s/;.*;//g&quot;|sed &quot;s/ID=//g&quot;|sed &quot;s/ /\t/g&quot; &gt;sample.gff</code> 从gff3文件准备sample.gff文件</li>
+</ul>
+<ol start="2">
+<li>sample.blast</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -in sample.pep.fa -dbtype prot -out index/sample.pep #给蛋白序列建库</span><br><span class="line">blastp -query sample.pep.fa -db index/sample.pep -out sample.blast -evalue 1e-5 -num_threads 12 -outfmt 6 -num_alignments 5 &amp; #进行自我比对，生成6号格式的比对结果sample.blast</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-2-运行MCScanX"><a href="#2-1-2-运行MCScanX" class="headerlink" title="2.1.2. 运行MCScanX"></a>2.1.2. 运行MCScanX</h3><p>在有sample.gff和sample.blast两个文件的目录下，指定前缀sample运行<code>MCScanX sample</code>。</p>
 <p>重要参数解释：</p>
 <ul>
 <li>-s MATCH_SIZE,default: 5。每个共线性区块包含的基因数量的下限。</li>
 <li>-m MAX_GAPS，default：25。在共线性区块中允许的最大gaps数量。</li>
 <li>-b patterns of collinear blocks。0:intra- and inter-species (default); 1:intra-species; 2:inter-species。</li>
+</ul>
+<h2 id="2-2-种间同线性分析MCScanX-h"><a href="#2-2-种间同线性分析MCScanX-h" class="headerlink" title="2.2. 种间同线性分析MCScanX_h"></a>2.2. 种间同线性分析MCScanX_h</h2><p>MCScanX_h是MCScanX软件下的一个程序，输入文件和运行方式与MCScanX很像。</p>
+<ol>
+<li>原理</li>
+</ol>
+<ul>
+<li>可用MCScanX_h分析指定基因对的同线性关系，用于确认orthofinder或者OrthoMCL等软件鉴定的物种间的orthologs基因对。</li>
+<li>如果要分析物种间orthologs的Ks分布来确定物种分化时间，直接用MCScanX做物种间共线性分析会同时得出orthologs和paralogs的结果，但MCScanX_h则可以指定orthofinder或者OrthoMCL鉴定的orthologs基因对。</li>
+<li>可以这样理解，orthofinder鉴定出物种A和物种B的orthologs（物种A和B各只有一个基因的那些行），然后用MCScanX_h确认鉴定的orthologs的同线性关系，从而更加确认orthologs的可靠性。</li>
+</ul>
+<ol start="2">
+<li>运行的区别</li>
+</ol>
+<ul>
+<li>区别是输入文件用sample.homology代替sample.blast。</li>
+<li>sample.homology是tab分隔的成对基因ID的list。</li>
+</ul>
+<h3 id="2-2-1-输入文件"><a href="#2-2-1-输入文件" class="headerlink" title="2.2.1. 输入文件"></a>2.2.1. 输入文件</h3><ol>
+<li>sample.gff：格式同上面MCScanX的说明。</li>
+<li>sample.homology</li>
+</ol>
+<ul>
+<li>包含两列数据，是两个物种的基因对，代表一一对应的同源关系。这里用来计算物种间分化，所以指定的是两个物种间一一对应的直系同源关系。</li>
+<li>可从orthofinder或者OrthoMCL等软件鉴定的物种间提取。</li>
+<li>从orthofinder的<code>./Results_Apr01/Orthogroups/Orthogroups.txt</code>文件提取只包含物种A和物种B各有一个基因的行。如果是多物种做的orthofinder，则提取只包含物种A和物种B各有一个基因的行后把其他物种删除。提取后把列间分隔符改成tab。（ps：用不同物种跑的orthofinder提取结果会有一点差异）</li>
+</ul>
+<h3 id="2-2-2-运行MCScanX-h"><a href="#2-2-2-运行MCScanX-h" class="headerlink" title="2.2.2. 运行MCScanX_h"></a>2.2.2. 运行MCScanX_h</h3><p>与运行MCScanX一样:</p>
+<ul>
+<li>在有sample.gff和sample.homology两个文件的目录下，指定前缀sample运行<code>MCScanX_h sample</code>。</li>
+<li>参数也一致。</li>
 </ul>
 <h2 id="2-3-结果文件"><a href="#2-3-结果文件" class="headerlink" title="2.3. 结果文件"></a>2.3. 结果文件</h2><ol>
 <li>sample.collinearity</li>
@@ -533,11 +571,11 @@
           <div class="post-tags">
               <a href="/tags/biosoft/" rel="tag"># biosoft</a>
               <a href="/tags/synteny/" rel="tag"># synteny</a>
-              <a href="/tags/Ks/" rel="tag"># Ks</a>
               <a href="/tags/ParaAT/" rel="tag"># ParaAT</a>
-              <a href="/tags/KaKs-Calculator/" rel="tag"># KaKs_Calculator</a>
               <a href="/tags/divergence-time/" rel="tag"># divergence time</a>
               <a href="/tags/paml/" rel="tag"># paml</a>
+              <a href="/tags/Ks/" rel="tag"># Ks</a>
+              <a href="/tags/KaKs-Calculator/" rel="tag"># KaKs_Calculator</a>
               <a href="/tags/colinearity/" rel="tag"># colinearity</a>
               <a href="/tags/WGD/" rel="tag"># WGD</a>
               <a href="/tags/MCScanX/" rel="tag"># MCScanX</a>
@@ -622,7 +660,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCScanX%E4%BB%8B%E7%BB%8D"><span class="nav-text">1. MCScanX介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MCScanX%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-text">2. MCScanX同线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">2.1. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%BF%90%E8%A1%8CMCScanX"><span class="nav-text">2.2. 运行MCScanX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">2.3. 结果文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MCScanX%E4%B8%8B%E6%B8%B8%E5%88%86%E6%9E%90"><span class="nav-text">3. MCScanX下游分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%8F%90%E5%8F%96block%E4%BD%8D%E7%BD%AE"><span class="nav-text">3.1. 提取block位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%BB%98%E5%9B%BE%E8%84%9A%E6%9C%AC"><span class="nav-text">3.2. 绘图脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%A4%8D%E5%88%B6%E4%BA%8B%E4%BB%B6%E5%88%86%E7%B1%BB"><span class="nav-text">3.3. 复制事件分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-duplicate-gene-classifier"><span class="nav-text">3.3.1. duplicate_gene_classifier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E8%A7%A3%E6%9E%90%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6sample-collinearity%E7%9A%84%E8%84%9A%E6%9C%AC"><span class="nav-text">3.4. 解析结果文件sample.collinearity的脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E8%AE%A1%E7%AE%97%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97Ks"><span class="nav-text">3.5. 计算共线性区块Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9Aadd-ka-and-ks-to-collinearity-pl%EF%BC%88MCScanX%E7%9A%84downstream-analyses%E7%9B%AE%E5%BD%95%E4%B8%8B%E8%87%AA%E5%B8%A6%E8%84%9A%E6%9C%AC%EF%BC%89"><span class="nav-text">3.5.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AParaAT-pl-KaKs-Calculator2-0"><span class="nav-text">3.5.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%92%8C%E5%B3%B0%E5%80%BC"><span class="nav-text">3.6. ggplot2画密度分布图和峰值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-1-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE"><span class="nav-text">3.6.1. ggplot2画密度分布图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-2-ggplot2%E5%B3%B0%E5%80%BC%E6%A0%87%E5%AE%9A"><span class="nav-text">3.6.2. ggplot2峰值标定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-3-%E5%A4%9A%E4%B8%AA%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="nav-text">3.6.3. 多个密度图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-4-%E9%80%9A%E8%BF%87%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%88%A4%E6%96%ADWGD"><span class="nav-text">3.6.4. 通过密度分布图判断WGD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-WGD%E5%8F%91%E7%94%9F%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-text">3.7. WGD发生的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-%E9%80%9A%E8%BF%87Ks-x3D-2%CE%BCT%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.1. 通过Ks&#x3D;2μT计算时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-%E9%80%9A%E8%BF%87%E8%BF%9B%E5%8C%96%E6%A0%91%E4%BC%B0%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.2. 通过进化树估算时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-1-%E8%8E%B7%E5%8F%96sample%E5%8F%91%E7%94%9FWGD%E7%9A%84%E4%B8%A4%E5%A5%97%E5%9F%BA%E5%9B%A0"><span class="nav-text">3.7.2.1. 获取sample发生WGD的两套基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-2-%E9%80%89%E8%BF%91%E7%BC%98%E7%A7%8D%E5%92%8C%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.2.2. 选近缘种和分化时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-3-orthofinder%E6%89%BE%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-text">3.7.2.3. orthofinder找直系同源基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-4-%E5%BB%BA%E5%8D%95%E5%9F%BA%E5%9B%A0%E6%A0%91"><span class="nav-text">3.7.2.4. 建单基因树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-5-paml%E4%BC%B0%E8%AE%A1%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.2.5. paml估计分化时间</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCScanX%E4%BB%8B%E7%BB%8D"><span class="nav-text">1. MCScanX介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MCScanX%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-text">2. MCScanX同线性分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%A7%8D%E5%86%85%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90MCScanX"><span class="nav-text">2.1. 种内同线性分析MCScanX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">2.1.1. 准备输入文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E8%BF%90%E8%A1%8CMCScanX"><span class="nav-text">2.1.2. 运行MCScanX</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%A7%8D%E9%97%B4%E5%90%8C%E7%BA%BF%E6%80%A7%E5%88%86%E6%9E%90MCScanX-h"><span class="nav-text">2.2. 种间同线性分析MCScanX_h</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">2.2.1. 输入文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E8%BF%90%E8%A1%8CMCScanX-h"><span class="nav-text">2.2.2. 运行MCScanX_h</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">2.3. 结果文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MCScanX%E4%B8%8B%E6%B8%B8%E5%88%86%E6%9E%90"><span class="nav-text">3. MCScanX下游分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%8F%90%E5%8F%96block%E4%BD%8D%E7%BD%AE"><span class="nav-text">3.1. 提取block位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%BB%98%E5%9B%BE%E8%84%9A%E6%9C%AC"><span class="nav-text">3.2. 绘图脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%A4%8D%E5%88%B6%E4%BA%8B%E4%BB%B6%E5%88%86%E7%B1%BB"><span class="nav-text">3.3. 复制事件分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-duplicate-gene-classifier"><span class="nav-text">3.3.1. duplicate_gene_classifier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E8%A7%A3%E6%9E%90%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6sample-collinearity%E7%9A%84%E8%84%9A%E6%9C%AC"><span class="nav-text">3.4. 解析结果文件sample.collinearity的脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E8%AE%A1%E7%AE%97%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97Ks"><span class="nav-text">3.5. 计算共线性区块Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-1-%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9Aadd-ka-and-ks-to-collinearity-pl%EF%BC%88MCScanX%E7%9A%84downstream-analyses%E7%9B%AE%E5%BD%95%E4%B8%8B%E8%87%AA%E5%B8%A6%E8%84%9A%E6%9C%AC%EF%BC%89"><span class="nav-text">3.5.1. 方案一：add_ka_and_ks_to_collinearity.pl（MCScanX的downstream_analyses目录下自带脚本）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-2-%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AParaAT-pl-KaKs-Calculator2-0"><span class="nav-text">3.5.2. 方案二：ParaAT.pl+KaKs_Calculator2.0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%92%8C%E5%B3%B0%E5%80%BC"><span class="nav-text">3.6. ggplot2画密度分布图和峰值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-1-ggplot2%E7%94%BB%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE"><span class="nav-text">3.6.1. ggplot2画密度分布图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-2-ggplot2%E5%B3%B0%E5%80%BC%E6%A0%87%E5%AE%9A"><span class="nav-text">3.6.2. ggplot2峰值标定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-3-%E5%A4%9A%E4%B8%AA%E5%AF%86%E5%BA%A6%E5%9B%BE"><span class="nav-text">3.6.3. 多个密度图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-4-%E9%80%9A%E8%BF%87%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83%E5%9B%BE%E5%88%A4%E6%96%ADWGD"><span class="nav-text">3.6.4. 通过密度分布图判断WGD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-WGD%E5%8F%91%E7%94%9F%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-text">3.7. WGD发生的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-%E9%80%9A%E8%BF%87Ks-x3D-2%CE%BCT%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.1. 通过Ks&#x3D;2μT计算时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-%E9%80%9A%E8%BF%87%E8%BF%9B%E5%8C%96%E6%A0%91%E4%BC%B0%E7%AE%97%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.2. 通过进化树估算时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-1-%E8%8E%B7%E5%8F%96sample%E5%8F%91%E7%94%9FWGD%E7%9A%84%E4%B8%A4%E5%A5%97%E5%9F%BA%E5%9B%A0"><span class="nav-text">3.7.2.1. 获取sample发生WGD的两套基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-2-%E9%80%89%E8%BF%91%E7%BC%98%E7%A7%8D%E5%92%8C%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.2.2. 选近缘种和分化时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-3-orthofinder%E6%89%BE%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E5%9F%BA%E5%9B%A0"><span class="nav-text">3.7.2.3. orthofinder找直系同源基因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-4-%E5%BB%BA%E5%8D%95%E5%9F%BA%E5%9B%A0%E6%A0%91"><span class="nav-text">3.7.2.4. 建单基因树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-5-paml%E4%BC%B0%E8%AE%A1%E5%88%86%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">3.7.2.5. paml估计分化时间</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -693,12 +731,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">452k</span>
+    <span title="Symbols count total">454k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:51</span>
+    <span title="Reading time total">6:53</span>
 </div>
 
         

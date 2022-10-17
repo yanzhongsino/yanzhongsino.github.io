@@ -32,10 +32,10 @@
 <meta property="og:image" content="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-01-24T13:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T10:50:19.715Z">
+<meta property="article:modified_time" content="2022-10-11T09:44:12.394Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="tutorial">
 <meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="tutorial">
 <meta property="article:tag" content="phylogeny">
 <meta property="article:tag" content="evolutionary tree">
 <meta property="article:tag" content="R">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 18:50:19" itemprop="dateModified" datetime="2022-07-15T18:50:19+08:00">2022-07-15</time>
+                <time title="Modified: 2022-10-11 17:44:12" itemprop="dateModified" datetime="2022-10-11T17:44:12+08:00">2022-10-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -308,7 +308,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>14 mins.</span>
+              <span>15 mins.</span>
             </span>
             <div class="post-description">记录进化树的绘制，软件的使用，详细介绍了几种树文件的格式，ggtree绘制树和注释树。</div>
 
@@ -454,6 +454,7 @@
 <li>rotate(p,node&#x3D;12)</li>
 <li>p %&gt;% rotate(node&#x3D;12)</li>
 </ul>
+<p>当需要多次改变树的结构时，推荐第二种用法，比如<code>p2 &lt;- p1 %&gt;% flip(37,48) %&gt;% flip(3,4) %&gt;% flip(13,14) %&gt;% flip(25,26) %&gt;% flip(28,29) %&gt;% flip(55,56)</code>即可依次改变。</p>
 <ol>
 <li><p>显示子树</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p <span class="operator">&lt;-</span> ggtree<span class="punctuation">(</span>tree<span class="punctuation">)</span><span class="operator">+</span>geom_tiplab<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line">viewClade<span class="punctuation">(</span>p<span class="punctuation">,</span> MRCA<span class="punctuation">(</span>p<span class="punctuation">,</span> <span class="number">10</span>，<span class="number">15</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment">#显示10-15节点的子树部分</span></span><br></pre></td></tr></table></figure>
@@ -552,8 +553,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/tutorial/" rel="tag"># tutorial</a>
               <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/tutorial/" rel="tag"># tutorial</a>
               <a href="/tags/phylogeny/" rel="tag"># phylogeny</a>
               <a href="/tags/evolutionary-tree/" rel="tag"># evolutionary tree</a>
               <a href="/tags/R/" rel="tag"># R</a>
@@ -717,12 +718,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">452k</span>
+    <span title="Symbols count total">454k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:51</span>
+    <span title="Reading time total">6:53</span>
 </div>
 
         

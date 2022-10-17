@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://crsl4.github.io/PhyloNetworks.jl/latest/assets/figures/snaqplot_net1_2.svg">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-04-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T11:26:05.066Z">
+<meta property="article:modified_time" content="2022-10-12T07:31:09.646Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene flow">
 <meta property="article:tag" content="hybridization">
@@ -252,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:26:05" itemprop="dateModified" datetime="2022-07-15T19:26:05+08:00">2022-07-15</time>
+                <time title="Modified: 2022-10-12 15:31:09" itemprop="dateModified" datetime="2022-10-12T15:31:09+08:00">2022-10-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,13 +298,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>10k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>9 mins.</span>
+              <span>10 mins.</span>
             </span>
             <div class="post-description">这篇博客描述了用Julia包PhyloNetworks来推断系统发育网络，并选择最佳杂交次数和网络可视化的操作。</div>
 
@@ -446,19 +446,46 @@
 <li><p>julia脚本runSNaQ.jl的内容</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env julia</span><br><span class="line"></span><br><span class="line"># file &quot;runSNaQ.jl&quot;. run in the shell like this in general:</span><br><span class="line"># julia runSNaQ.jl hvalue nruns</span><br><span class="line"># example for h=2 and default 10 runs:</span><br><span class="line"># julia runSNaQ.jl 2</span><br><span class="line"># or example for h=3 and 50 runs:</span><br><span class="line"># julia runSNaQ.jl 3 50</span><br><span class="line"></span><br><span class="line">length(ARGS) &gt; 0 ||</span><br><span class="line">    error(&quot;need 1 or 2 arguments: # reticulations (h) and # runs (optional, 10 by default)&quot;)</span><br><span class="line">h = parse(Int, ARGS[1])</span><br><span class="line">nruns = 10</span><br><span class="line">if length(ARGS) &gt; 1</span><br><span class="line">    nruns = parse(Int, ARGS[2])</span><br><span class="line">end</span><br><span class="line">outputfile = string(&quot;net&quot;, h, &quot;_&quot;, nruns, &quot;runs&quot;) # example: &quot;net2_10runs&quot;</span><br><span class="line">seed = 1234 + h # change as desired! Best to have it different for different h</span><br><span class="line">@info &quot;will run SNaQ with h=$h, # of runs=$nruns, seed=$seed, output will go to: $outputfile&quot;</span><br><span class="line"></span><br><span class="line">using Distributed</span><br><span class="line">addprocs(nruns)</span><br><span class="line">@everywhere using PhyloNetworks</span><br><span class="line">net0 = readTopology(&quot;astraltree.tre&quot;);</span><br><span class="line">using DataFrames, CSV</span><br><span class="line">df_sp = DataFrame(CSV.File(&quot;tableCF.csv&quot;, pool=false); copycols=false);</span><br><span class="line">d_sp = readTableCF!(df_sp);</span><br><span class="line">net = snaq!(net0, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>使用julia脚本<br>举例：<code>julia runSNaQ.jl 2 12</code></p>
+<li><p>使用julia脚本<br>举例：<code>julia runSNaQ.jl 1 12</code></p>
 </li>
 </ol>
-<p>julia运行时间比较长，建议用nohup和&amp;来放后台：<code>nohup julia runSNaQ.jl 2 12 &gt;h3.log 2&gt;&amp;1 &amp;</code></p>
-<p>运行说明：</p>
+<p>julia运行时间比较长，建议用nohup和&amp;来放后台：<code>nohup julia runSNaQ.jl 1 12 &gt;h1.log 2&gt;&amp;1 &amp;</code></p>
+<ol start="3">
+<li>运行说明</li>
+</ol>
 <ul>
 <li>脚本接受的运行参数有两个，第一个参数设置最大杂交次数hmax，第二个参数设置并行运行的核心数（也代表重复运行次数）。</li>
 <li>这里默认输入文件在当前目录下，包括CF表tableCF.csv文件和起始树astraltree.tre文件。</li>
-<li>可以通过更改脚本里的起始树astraltree.tre文件，比如改成前面net1的运行结果<code>bestnet_h1.tre</code>来从h&#x3D;1的网络开始搜索h&#x3D;2的网络。</li>
 </ul>
-<ol start="3">
-<li>提交slurm集群<br>waiting tag…</li>
+<ol start="4">
+<li>迭代运行</li>
 </ol>
+<ul>
+<li>如果时间充裕，可选迭代运行的方式。</li>
+<li>跑完hmax&#x3D;1参数后，可以用hmax&#x3D;1的树结果作为运行hmax&#x3D;2的起点树。跑完hmax&#x3D;2参数后，可以用hmax&#x3D;2的树结果作为运行hmax&#x3D;3的起点树。直到跑到hmax&#x3D;5或者hmax&#x3D;10的，能找到最佳hmax值。这就是迭代运行的方式。</li>
+<li>用<code>head -1 net1.networks|sed &quot;s/;.*/;/g&quot; &gt;bestnet_h1.tre</code>获取hmax&#x3D;1的最佳网络树。</li>
+<li>然后更改脚本里指定的起始树为<code>bestnet_h1.tre</code>，开始搜索h&#x3D;2的网络树。</li>
+<li>具体更改julia脚本中的两行为下面的参数。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net1 = readTopology(&quot;bestnet_h1.tre&quot;);</span><br><span class="line">net2 = snaq!(net1, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>类似的操作，在获得hmax&#x3D;2的结果后继续获得hmax&#x3D;3的结果。依次获得hmax更高的结果。</li>
+</ul>
+<ol start="5">
+<li>不迭代并行运行</li>
+</ol>
+<ul>
+<li>如果时间不充裕，可选不迭代运行的方式。</li>
+<li>即hmax&#x3D;1，2，3，4，5…的程序同时运行，起始树全部都选择前面获得的astral树。</li>
+<li>操作上，可以准备多份runSNaQ.jl文件，分别命名为runSNaQ_h1.jl,runSNaQ_h2.jl,runSNaQ_h3.jl…同时运行<code>nohup julia runSNaQ_h1.jl 1 12 &gt;h1.log 2&gt;&amp;1 &amp;</code>,<code>nohup julia runSNaQ_h2.jl 2 12 &gt;h2.log 2&gt;&amp;1 &amp;</code>,<code>nohup julia runSNaQ_h3.jl 3 12 &gt;h3.log 2&gt;&amp;1 &amp;</code>…</li>
+<li>julia脚本内需要修改变量名称，以免同时运行时相互干扰。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net0_h1 = readTopology(&quot;astraltree.tre&quot;);</span><br><span class="line">net1_h1 = snaq!(net1_h1, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net0_h2 = readTopology(&quot;astraltree.tre&quot;);</span><br><span class="line">net1_h2 = snaq!(net0_h2, d_sp, hmax=h, filename=outputfile, seed=seed, runs=nruns)</span><br></pre></td></tr></table></figure>
+
+<h4 id="提交slurm集群"><a href="#提交slurm集群" class="headerlink" title="提交slurm集群"></a>提交slurm集群</h4><p>waiting tag…</p>
 <p>PhyloNetworks教程里的建议是在上一步运行julia脚本之后用slurm提交julia作业到集群。但我没具体去研究，提交到集群后似乎可以自动化运行h&#x3D;0到h&#x3D;3。</p>
 <p>设置slurm的脚本复制到下面：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#SBATCH -o path/to/slurm/log/file/runsnaq_slurm%a.log</span><br><span class="line">#SBATCH -J runsnaq</span><br><span class="line">#SBATCH --array=0-3</span><br><span class="line">#SBATCH -c 30</span><br><span class="line">## --array: to run multiple instances of this script,</span><br><span class="line">##          one for each value in the array.</span><br><span class="line">##          1 instance = 1 task</span><br><span class="line">## -J job name</span><br><span class="line">## -c number of cores (CPUs) per task</span><br><span class="line"></span><br><span class="line">echo &quot;slurm task ID = $SLURM_ARRAY_TASK_ID used as hmax&quot;</span><br><span class="line">echo &quot;start of SNaQ parallel runs on $(hostname)&quot;</span><br><span class="line"># finally: launch the julia script, using Julia executable appropriate for slurm, with full paths:</span><br><span class="line">/workspace/software/bin/julia --history-file=no -- runSNaQ.jl $SLURM_ARRAY_TASK_ID 30 &gt; net$SLURM_ARRAY_TASK_ID_30runs.screenlog 2&gt;&amp;1</span><br><span class="line">echo &quot;end of SNaQ run ...&quot;</span><br></pre></td></tr></table></figure>
@@ -623,7 +650,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-PhyloNetworks"><span class="nav-text">1. PhyloNetworks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PhyloNetworks%E5%AE%89%E8%A3%85"><span class="nav-text">2. PhyloNetworks安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Julia-%E5%AE%89%E8%A3%85"><span class="nav-text">2.1. Julia 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%AE%89%E8%A3%85PhyloNetworks%E5%8C%85"><span class="nav-text">2.2. 安装PhyloNetworks包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PhyloNetworks%E5%88%86%E6%9E%90"><span class="nav-text">3. PhyloNetworks分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.1. 输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E4%BB%8E%E5%9F%BA%E5%9B%A0%E6%A0%91%E5%88%B0CF%E8%A1%A8"><span class="nav-text">3.1.1. 从基因树到CF表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-TICR%EF%BC%9A%E4%BB%8E%E5%AF%B9%E9%BD%90%E5%BA%8F%E5%88%97-sequence-alignment-%E5%88%B0CF%E8%A1%A8"><span class="nav-text">3.1.2. TICR：从对齐序列(sequence alignment)到CF表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C%E3%80%90%E8%80%97%E6%97%B6%E3%80%91"><span class="nav-text">3.2. 构建系统发育网络【耗时】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E6%9E%84%E5%BB%BA%E7%BD%91%E7%BB%9C"><span class="nav-text">3.2.1. 构建网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97"><span class="nav-text">3.2.2. 并行计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-1-%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97"><span class="nav-text">3.2.2.1. 交互式并行计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-2-%E8%84%9A%E6%9C%AC%E5%BC%8F%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">3.2.2.2. 脚本式并行计算【推荐】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BD%B3%E6%9D%82%E4%BA%A4%E6%AC%A1%E6%95%B0"><span class="nav-text">3.3. 选择最佳杂交次数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E8%BF%90%E8%A1%8C%E4%B8%8D%E5%90%8C%E6%9D%82%E4%BA%A4%E6%AC%A1%E6%95%B0"><span class="nav-text">3.3.1. 运行不同杂交次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BD%B3h%E5%80%BC"><span class="nav-text">3.3.2. 选择最佳h值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-text">3.4. 系统发育网络可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E5%AF%B9%E7%BD%91%E7%BB%9C%E9%87%8D%E6%96%B0%E5%AE%9A%E6%A0%B9"><span class="nav-text">3.4.1. 对网络重新定根</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E4%BD%BF%E7%94%A8%E9%85%8D%E5%A5%97%E5%8C%85PhyloPlots%E7%BB%98%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C"><span class="nav-text">3.4.2. 使用配套包PhyloPlots绘制系统发育网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E4%BD%BF%E7%94%A8ggtree%E7%BB%98%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C"><span class="nav-text">3.4.3. 使用ggtree绘制系统发育网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E6%9B%B4%E5%A4%9A%E5%88%86%E6%9E%90"><span class="nav-text">3.5. 更多分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-PhyloNetworks"><span class="nav-text">1. PhyloNetworks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PhyloNetworks%E5%AE%89%E8%A3%85"><span class="nav-text">2. PhyloNetworks安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Julia-%E5%AE%89%E8%A3%85"><span class="nav-text">2.1. Julia 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%AE%89%E8%A3%85PhyloNetworks%E5%8C%85"><span class="nav-text">2.2. 安装PhyloNetworks包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PhyloNetworks%E5%88%86%E6%9E%90"><span class="nav-text">3. PhyloNetworks分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.1. 输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E4%BB%8E%E5%9F%BA%E5%9B%A0%E6%A0%91%E5%88%B0CF%E8%A1%A8"><span class="nav-text">3.1.1. 从基因树到CF表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-TICR%EF%BC%9A%E4%BB%8E%E5%AF%B9%E9%BD%90%E5%BA%8F%E5%88%97-sequence-alignment-%E5%88%B0CF%E8%A1%A8"><span class="nav-text">3.1.2. TICR：从对齐序列(sequence alignment)到CF表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C%E3%80%90%E8%80%97%E6%97%B6%E3%80%91"><span class="nav-text">3.2. 构建系统发育网络【耗时】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E6%9E%84%E5%BB%BA%E7%BD%91%E7%BB%9C"><span class="nav-text">3.2.1. 构建网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97"><span class="nav-text">3.2.2. 并行计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-1-%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97"><span class="nav-text">3.2.2.1. 交互式并行计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-2-%E8%84%9A%E6%9C%AC%E5%BC%8F%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">3.2.2.2. 脚本式并行计算【推荐】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4slurm%E9%9B%86%E7%BE%A4"><span class="nav-text">提交slurm集群</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BD%B3%E6%9D%82%E4%BA%A4%E6%AC%A1%E6%95%B0"><span class="nav-text">3.3. 选择最佳杂交次数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E8%BF%90%E8%A1%8C%E4%B8%8D%E5%90%8C%E6%9D%82%E4%BA%A4%E6%AC%A1%E6%95%B0"><span class="nav-text">3.3.1. 运行不同杂交次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E9%80%89%E6%8B%A9%E6%9C%80%E4%BD%B3h%E5%80%BC"><span class="nav-text">3.3.2. 选择最佳h值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-text">3.4. 系统发育网络可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E5%AF%B9%E7%BD%91%E7%BB%9C%E9%87%8D%E6%96%B0%E5%AE%9A%E6%A0%B9"><span class="nav-text">3.4.1. 对网络重新定根</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E4%BD%BF%E7%94%A8%E9%85%8D%E5%A5%97%E5%8C%85PhyloPlots%E7%BB%98%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C"><span class="nav-text">3.4.2. 使用配套包PhyloPlots绘制系统发育网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E4%BD%BF%E7%94%A8ggtree%E7%BB%98%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E7%BD%91%E7%BB%9C"><span class="nav-text">3.4.3. 使用ggtree绘制系统发育网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E6%9B%B4%E5%A4%9A%E5%88%86%E6%9E%90"><span class="nav-text">3.5. 更多分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -694,12 +721,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">452k</span>
+    <span title="Symbols count total">454k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:51</span>
+    <span title="Reading time total">6:53</span>
 </div>
 
         
