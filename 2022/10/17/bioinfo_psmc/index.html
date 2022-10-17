@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-10-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-10-17T04:14:17.759Z">
+<meta property="article:modified_time" content="2022-10-17T05:23:47.478Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="PSMC">
@@ -239,7 +239,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-10-17 00:00:00 / Modified: 12:14:17" itemprop="dateCreated datePublished" datetime="2022-10-17T00:00:00+08:00">2022-10-17</time>
+              <time title="Created: 2022-10-17 00:00:00 / Modified: 13:23:47" itemprop="dateCreated datePublished" datetime="2022-10-17T00:00:00+08:00">2022-10-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,7 +281,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.9k</span>
+              <span>3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -302,18 +302,18 @@
       
         <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2534006&auto=1&height=32"></iframe></div>
 
-<h1 id="PSMC"><a href="#PSMC" class="headerlink" title="PSMC"></a>PSMC</h1><p>Pairwise Sequentially Markovian Coalescent (PSMC) 是李恒开发的一款软件，可以通过一个二倍体个体的基因组的分析获得这个个体代表的群体的有效群体大小的历史动态。</p>
-<h1 id="PSMC分析原理"><a href="#PSMC分析原理" class="headerlink" title="PSMC分析原理"></a>PSMC分析原理</h1><p>通过一个二倍体个体的基因组的等位基因上存在的变异位点计算序列间差异，从而推断序列的分化时间；计算所有等位基因（也可以换成等位片段）的分化时间。认为某个分化时间的等位基因数量越多，代表当时的有效群体大小越大，所以可以通过整个基因组上等位基因的分化时间的分布推断有效群体大小的历史动态。</p>
+<h1 id="1-PSMC"><a href="#1-PSMC" class="headerlink" title="1. PSMC"></a>1. PSMC</h1><p>Pairwise Sequentially Markovian Coalescent (PSMC) 是李恒开发的一款软件，可以通过一个二倍体个体的基因组的分析获得这个个体代表的群体的有效群体大小的历史动态。</p>
+<h1 id="2-PSMC分析原理"><a href="#2-PSMC分析原理" class="headerlink" title="2. PSMC分析原理"></a>2. PSMC分析原理</h1><p>通过一个二倍体个体的基因组的等位基因上存在的变异位点计算序列间差异，从而推断序列的分化时间；计算所有等位基因（也可以换成等位片段）的分化时间。认为某个分化时间的等位基因数量越多，代表当时的有效群体大小越大，所以可以通过整个基因组上等位基因的分化时间的分布推断有效群体大小的历史动态。</p>
 <ul>
 <li>这个算法让人惊叹的点在于，我们可以只从一个个体的基因组上看到群体的进化历史。</li>
 <li>有意思的是，前些时候看《自私的基因》那本书的时候，书里的序也详细讲解了PSMC的算法，从等位基因回溯到基因的共同祖先，讲得很清晰，非专业人士也可以读懂，有兴趣的读者可以去看看。</li>
 <li>分析人类的有效群体大小历史时，在三百万年有一次共有的高峰，有可能是人类从猩猩中分化出来时期的群体规模高峰期。不过，这么久远的分化区域意味着高度差异的等位基因片段（高度杂合）。这些高度杂合的片段也有可能来自平衡选择，或重测序比对过程中重复序列不正确比对产生的错误SNP。因此，三百万年的高峰可能并不可信。</li>
 </ul>
-<h1 id="PSMC运行"><a href="#PSMC运行" class="headerlink" title="PSMC运行"></a>PSMC运行</h1><h2 id="文件准备"><a href="#文件准备" class="headerlink" title="文件准备"></a>文件准备</h2><ol>
+<h1 id="3-PSMC运行"><a href="#3-PSMC运行" class="headerlink" title="3. PSMC运行"></a>3. PSMC运行</h1><h2 id="3-1-文件准备"><a href="#3-1-文件准备" class="headerlink" title="3.1. 文件准备"></a>3.1. 文件准备</h2><ol>
 <li>基因组文件：genome.fa</li>
 <li>二代测序数据：sample_R1.clean.u.fq和sample_R2.clean.u.fq</li>
 </ol>
-<h2 id="运行步骤"><a href="#运行步骤" class="headerlink" title="运行步骤"></a>运行步骤</h2><h3 id="准备全基因组二倍体一致序列"><a href="#准备全基因组二倍体一致序列" class="headerlink" title="准备全基因组二倍体一致序列"></a>准备全基因组二倍体一致序列</h3><ol>
+<h2 id="3-2-运行步骤"><a href="#3-2-运行步骤" class="headerlink" title="3.2. 运行步骤"></a>3.2. 运行步骤</h2><h3 id="3-2-1-准备全基因组二倍体一致序列"><a href="#3-2-1-准备全基因组二倍体一致序列" class="headerlink" title="3.2.1. 准备全基因组二倍体一致序列"></a>3.2.1. 准备全基因组二倍体一致序列</h3><ol>
 <li>二代序列mapping</li>
 </ol>
 <ul>
@@ -336,7 +336,7 @@
 <li><code>bcftools view -H sample.variants.vcf.gz | wc -l</code> 统计snp数量。snp数量除以基因组大小即可得到估计的杂合度。</li>
 <li><code>vcfutils.pl vcf2fq -d 8 -D 50 sample.variants.vcf.gz| pigz -p 12 &gt; diploid.fq.gz</code> 生成二倍体fq文件</li>
 </ul>
-<h3 id="运行单次PSMC"><a href="#运行单次PSMC" class="headerlink" title="运行单次PSMC"></a>运行单次PSMC</h3><ol>
+<h3 id="3-2-2-运行单次PSMC"><a href="#3-2-2-运行单次PSMC" class="headerlink" title="3.2.2. 运行单次PSMC"></a>3.2.2. 运行单次PSMC</h3><ol>
 <li>格式转换</li>
 </ol>
 <ul>
@@ -360,7 +360,7 @@
 <li>-N：maximum number of iterations [30]；迭代的最大次数，默认30。</li>
 <li>-o：指定输出的diploid.psmcfa文件。</li>
 </ul>
-<h3 id="运行bootstrap的PSMC【推荐】"><a href="#运行bootstrap的PSMC【推荐】" class="headerlink" title="运行bootstrap的PSMC【推荐】"></a>运行bootstrap的PSMC【推荐】</h3><p>如果要运行多次抽样的PSMC，则在上面的格式转换后，先分割长序列，再用for循环语句运行。</p>
+<h3 id="3-2-3-运行bootstrap的PSMC【推荐】"><a href="#3-2-3-运行bootstrap的PSMC【推荐】" class="headerlink" title="3.2.3. 运行bootstrap的PSMC【推荐】"></a>3.2.3. 运行bootstrap的PSMC【推荐】</h3><p>如果要运行多次抽样的PSMC，则在上面的格式转换后，先分割长序列，再用for循环语句运行。</p>
 <ol>
 <li>分割长序列</li>
 </ol>
@@ -379,7 +379,7 @@
 <ul>
 <li><code>cat diploid.psmc round*.psmc &gt;combine.psmc</code> #psmc结果合并</li>
 </ul>
-<h2 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h2><ol>
+<h2 id="3-3-画图"><a href="#3-3-画图" class="headerlink" title="3.3. 画图"></a>3.3. 画图</h2><ol>
 <li>运行</li>
 </ol>
 <ul>
@@ -394,7 +394,7 @@
 <li>-g：number of years per generation [25]，指定该物种的平均世代时间（即繁殖一代的时间），比如人的默认为25年，该处值为-g 25；许多草本植物为1年。</li>
 <li>-u：absolute mutation rate per nucleotide [2.5e-08]，指定该物种碱基替换率，单位是subst.&#x2F;syn. site&#x2F;year，比如默认水稻的2.5e-08，文献里提到的蕨类4.79e-9(Barker 2009)。参考已有文献对研究类群的替换率的推断，也可由进化树的枝长除以r8s评估该物种的分歧时间得到。</li>
 </ul>
-<h1 id="references"><a href="#references" class="headerlink" title="references"></a>references</h1><ol>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://github.com/lh3/psmc">https://github.com/lh3/psmc</a></li>
 </ol>
 <hr>
@@ -490,7 +490,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PSMC"><span class="nav-text">PSMC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PSMC%E5%88%86%E6%9E%90%E5%8E%9F%E7%90%86"><span class="nav-text">PSMC分析原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PSMC%E8%BF%90%E8%A1%8C"><span class="nav-text">PSMC运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%AD%A5%E9%AA%A4"><span class="nav-text">运行步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%85%A8%E5%9F%BA%E5%9B%A0%E7%BB%84%E4%BA%8C%E5%80%8D%E4%BD%93%E4%B8%80%E8%87%B4%E5%BA%8F%E5%88%97"><span class="nav-text">准备全基因组二倍体一致序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%8D%95%E6%AC%A1PSMC"><span class="nav-text">运行单次PSMC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Cbootstrap%E7%9A%84PSMC%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">运行bootstrap的PSMC【推荐】</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-text">画图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-text">references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-PSMC"><span class="nav-text">1. PSMC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PSMC%E5%88%86%E6%9E%90%E5%8E%9F%E7%90%86"><span class="nav-text">2. PSMC分析原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PSMC%E8%BF%90%E8%A1%8C"><span class="nav-text">3. PSMC运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">3.1. 文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%90%E8%A1%8C%E6%AD%A5%E9%AA%A4"><span class="nav-text">3.2. 运行步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%87%86%E5%A4%87%E5%85%A8%E5%9F%BA%E5%9B%A0%E7%BB%84%E4%BA%8C%E5%80%8D%E4%BD%93%E4%B8%80%E8%87%B4%E5%BA%8F%E5%88%97"><span class="nav-text">3.2.1. 准备全基因组二倍体一致序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E8%BF%90%E8%A1%8C%E5%8D%95%E6%AC%A1PSMC"><span class="nav-text">3.2.2. 运行单次PSMC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E8%BF%90%E8%A1%8Cbootstrap%E7%9A%84PSMC%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"><span class="nav-text">3.2.3. 运行bootstrap的PSMC【推荐】</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E7%94%BB%E5%9B%BE"><span class="nav-text">3.3. 画图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
