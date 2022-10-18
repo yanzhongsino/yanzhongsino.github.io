@@ -5,7 +5,7 @@ categories:
 - bio
 - bioinfo
 tags: 
-- OrthoFinder
+- OrthoFinder2
 - orthology
 - OrthoMCL 
 description: 记录了直系同源推断(orthology inference)，以及软件OrthoFinder的原理和使用。
@@ -163,7 +163,7 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
 3. **Orthogroups 文件夹【2.4.0版本后弃用】**
 从 2.4.0 版本开始，主要文件储存在Phylogenetic_Hierarchical_Orthogroups目录下面，orthogroups目录被弃用。
 - Orthogroups.tsv【2.4.0版本后弃用】：制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。应改用 Phylogenetic_Hierarchical_Orthogroups/N0.tsv 中的正交群。
-- Orthogroups.txt【旧格式】：包含 Orthogroups.tsv 文件内容的 OrthoMCL 输出格式文件。
+- Orthogroups.txt【旧格式】：包含 Orthogroups.tsv 文件内容的 OrthoMCL 输出格式文件，列间用空格分隔。第一列是OG开头的orthogroups的ID号，冒号结束；后面不同数量的列是此orthogroup包含的各物种的基因ID。
 - Orthogroups_UnassignedGenes.tsv：是制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含未分配给任何正交群的所有基因，即 MCL 中 未成功聚类（直系同源组中基因数 >= 1）的离散基因。
 - Orthogroups.GeneCount.tsv：是一个制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含每个正交群中每个物种的基因数计数，可用于基因收缩扩张分析。
 - Orthogroups_SingleCopyOrthologues.txt：是一个正交群列表，每个物种只包含一个基因，即它们包含一对一的直向同源物（单拷贝直系同源基因）。它们非常适合物种间比较和物种树推断。
@@ -201,8 +201,21 @@ OrthoFinder的标准输出包括：直系同源组，直系同源基因，有根
 - 未分配基因：未与任何其他基因放在同一个群中的基因。
 
 8. **Gene_Duplication_Events 文件夹**
-- Duplications.tsv：是一个制表符分隔的文本文件，它列出了通过检查每个正群基因树的每个节点识别出的所有基因复制事件。列是“Orthogroup”，“Species Tree node”（发生复制的物种树的分支，参见Species_Tree/SpeciesTree_rooted_node_labels.txt），“Gene tree node”（与基因复制事件对应的节点，参见相应的orthogroup Resolved_Gene_Trees/) 中的树；"Support"（存在复制基因的两个副本的预期物种的比例）；“Type”（"Terminal"：物种树终端分支上的重复，"Non-Terminal"：物种树内部分支上的重复，因此被多个物种共享，"Non-Terminal"：STRIDE检查基因树的拓扑结构在复制后应该是什么）；“Genes 1”（基因列表来自复制基因的一个副本），“Genes 2”（基因列表来自复制基因的另一个副本）。
+- Duplications.tsv是一个制表符分隔的文本文件，它列出了通过检查每个正群基因树的每个节点识别出的所有基因复制事件，每行代表至少一次基因复制事件。
+- Duplications.tsv的列分别是1.“Orthogroup”，2.“Species Tree node”（发生复制的物种树的分支，参见Species_Tree/SpeciesTree_rooted_node_labels.txt），3.“Gene tree node”（与基因复制事件对应的节点，参见相应的orthogroup Resolved_Gene_Trees/) 中的树；4."Support"（存在复制基因的两个副本的预期物种的比例）；5.“Type”（"Terminal"：物种树终端分支上的重复，"Non-Terminal"：物种树内部分支上的重复，因此被多个物种共享，"Non-Terminal"：STRIDE检查基因树的拓扑结构在复制后应该是什么）；6.“Genes 1”（基因列表来自复制基因的一个副本，逗号分隔）；7.“Genes 2”（基因列表来自复制基因的另一个副本，逗号分隔）。
+
+```
+Orthogroup      Species Tree Node       Gene Tree Node  Support Type    Genes 1 Genes 2
+OG0000000       N5      n62     0.5     Non-Terminal    Mcandidum_pep_mc33950   Mdodecandrum_pep_DR005872, Mcandidum_pep_mc01326, Mdodecandrum_pep_DR006000, Mcandidum_pep_mc01492
+OG0000000       N5      n63     1.0     Non-Terminal    Mdodecandrum_pep_DR005872, Mcandidum_pep_mc01326        Mdodecandrum_pep_DR006000, Mcandidum_pep_mc01492
+OG0000000       N5      n177    0.5     Non-Terminal    Mdodecandrum_pep_DR002276, Mdodecandrum_pep_DR013872, Mcandidum_pep_mc36653, Mdodecandrum_pep_DR026891, Mcandidum_pep_mc22876, Mcandidum_pep_mc37513, Mdodecandrum_pep_DR026886 Mdodecandrum_pep_DR004265
+```
+
 - SpeciesTree_Gene_Duplications_0.5_Support.txt：提供了物种树分支上的上述重复的总和。它是一个 newick 格式的文本文件。每个节点或物种名称后面的数字是在导致节点/物种的分支上发生的具有至少 50% 支持度的基因复制事件的数量。分支长度是标准分支长度，如 Species_Tree/SpeciesTree_rooted.txt 中给出的。
+
+```
+(((((Mcandidum.pep_7199:1,Mdodecandrum.pep_3425:1)N5_9299:1,Egrandis.pep_12485:1)N3_296:1,((Ptrichocarpa.pep_13300:1,(Csinensis.pep_5628:1,(Graimondii.pep_15253:1,Athaliana.pep_8750:1)N10_30:1)N8_5:1)N6_61:1,(Ppersica.pep_5798:1,(Mtruncatula.pep_23336:1,Csativus.pep_3576:1)N9_48:1)N7_12:1)N4_19:1)N2_96:1,Vvinifera.pep_7596:1)N1_535:1,Mguttatus.pep_8911:1)N0_1806;
+```
 
 9. **Orthogroup_Sequences 文件夹**
 - FASTA格式文件，每个正交群的 FASTA 文件给出了正交群中每个基因的氨基酸序列。
