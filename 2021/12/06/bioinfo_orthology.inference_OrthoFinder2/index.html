@@ -30,9 +30,9 @@
 <meta property="og:image" content="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-12-06T09:20:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T11:26:54.925Z">
+<meta property="article:modified_time" content="2022-10-17T13:04:10.424Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="OrthoFinder">
+<meta property="article:tag" content="OrthoFinder2">
 <meta property="article:tag" content="orthology">
 <meta property="article:tag" content="OrthoMCL">
 <meta name="twitter:card" content="summary">
@@ -247,7 +247,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:26:54" itemprop="dateModified" datetime="2022-07-15T19:26:54+08:00">2022-07-15</time>
+                <time title="Modified: 2022-10-17 21:04:10" itemprop="dateModified" datetime="2022-10-17T21:04:10+08:00">2022-10-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,13 +289,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>9.1k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>8 mins.</span>
+              <span>9 mins.</span>
             </span>
             <div class="post-description">记录了直系同源推断(orthology inference)，以及软件OrthoFinder的原理和使用。</div>
 
@@ -449,7 +449,7 @@
 </ol>
 <ul>
 <li>Orthogroups.tsv【2.4.0版本后弃用】：制表符分隔的文本文件。每行包含属于单个正交群的基因。来自每个正交群的基因被组织成列，每个物种一个。应改用 Phylogenetic_Hierarchical_Orthogroups&#x2F;N0.tsv 中的正交群。</li>
-<li>Orthogroups.txt【旧格式】：包含 Orthogroups.tsv 文件内容的 OrthoMCL 输出格式文件。</li>
+<li>Orthogroups.txt【旧格式】：包含 Orthogroups.tsv 文件内容的 OrthoMCL 输出格式文件，列间用空格分隔。第一列是OG开头的orthogroups的ID号，冒号结束；后面不同数量的列是此orthogroup包含的各物种的基因ID。</li>
 <li>Orthogroups_UnassignedGenes.tsv：是制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含未分配给任何正交群的所有基因，即 MCL 中 未成功聚类（直系同源组中基因数 &gt;&#x3D; 1）的离散基因。</li>
 <li>Orthogroups.GeneCount.tsv：是一个制表符分隔的文本文件，其格式与 Orthogroups.csv 相同，但包含每个正交群中每个物种的基因数计数，可用于基因收缩扩张分析。</li>
 <li>Orthogroups_SingleCopyOrthologues.txt：是一个正交群列表，每个物种只包含一个基因，即它们包含一对一的直向同源物（单拷贝直系同源基因）。它们非常适合物种间比较和物种树推断。</li>
@@ -510,9 +510,16 @@
 <li><strong>Gene_Duplication_Events 文件夹</strong></li>
 </ol>
 <ul>
-<li>Duplications.tsv：是一个制表符分隔的文本文件，它列出了通过检查每个正群基因树的每个节点识别出的所有基因复制事件。列是“Orthogroup”，“Species Tree node”（发生复制的物种树的分支，参见Species_Tree&#x2F;SpeciesTree_rooted_node_labels.txt），“Gene tree node”（与基因复制事件对应的节点，参见相应的orthogroup Resolved_Gene_Trees&#x2F;) 中的树；”Support”（存在复制基因的两个副本的预期物种的比例）；“Type”（”Terminal”：物种树终端分支上的重复，”Non-Terminal”：物种树内部分支上的重复，因此被多个物种共享，”Non-Terminal”：STRIDE检查基因树的拓扑结构在复制后应该是什么）；“Genes 1”（基因列表来自复制基因的一个副本），“Genes 2”（基因列表来自复制基因的另一个副本）。</li>
+<li>Duplications.tsv是一个制表符分隔的文本文件，它列出了通过检查每个正群基因树的每个节点识别出的所有基因复制事件，每行代表至少一次基因复制事件。</li>
+<li>Duplications.tsv的列分别是1.“Orthogroup”，2.“Species Tree node”（发生复制的物种树的分支，参见Species_Tree&#x2F;SpeciesTree_rooted_node_labels.txt），3.“Gene tree node”（与基因复制事件对应的节点，参见相应的orthogroup Resolved_Gene_Trees&#x2F;) 中的树；4.”Support”（存在复制基因的两个副本的预期物种的比例）；5.“Type”（”Terminal”：物种树终端分支上的重复，”Non-Terminal”：物种树内部分支上的重复，因此被多个物种共享，”Non-Terminal”：STRIDE检查基因树的拓扑结构在复制后应该是什么）；6.“Genes 1”（基因列表来自复制基因的一个副本，逗号分隔）；7.“Genes 2”（基因列表来自复制基因的另一个副本，逗号分隔）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Orthogroup      Species Tree Node       Gene Tree Node  Support Type    Genes 1 Genes 2</span><br><span class="line">OG0000000       N5      n62     0.5     Non-Terminal    Mcandidum_pep_mc33950   Mdodecandrum_pep_DR005872, Mcandidum_pep_mc01326, Mdodecandrum_pep_DR006000, Mcandidum_pep_mc01492</span><br><span class="line">OG0000000       N5      n63     1.0     Non-Terminal    Mdodecandrum_pep_DR005872, Mcandidum_pep_mc01326        Mdodecandrum_pep_DR006000, Mcandidum_pep_mc01492</span><br><span class="line">OG0000000       N5      n177    0.5     Non-Terminal    Mdodecandrum_pep_DR002276, Mdodecandrum_pep_DR013872, Mcandidum_pep_mc36653, Mdodecandrum_pep_DR026891, Mcandidum_pep_mc22876, Mcandidum_pep_mc37513, Mdodecandrum_pep_DR026886 Mdodecandrum_pep_DR004265</span><br></pre></td></tr></table></figure>
+
+<ul>
 <li>SpeciesTree_Gene_Duplications_0.5_Support.txt：提供了物种树分支上的上述重复的总和。它是一个 newick 格式的文本文件。每个节点或物种名称后面的数字是在导致节点&#x2F;物种的分支上发生的具有至少 50% 支持度的基因复制事件的数量。分支长度是标准分支长度，如 Species_Tree&#x2F;SpeciesTree_rooted.txt 中给出的。</li>
 </ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(((((Mcandidum.pep_7199:1,Mdodecandrum.pep_3425:1)N5_9299:1,Egrandis.pep_12485:1)N3_296:1,((Ptrichocarpa.pep_13300:1,(Csinensis.pep_5628:1,(Graimondii.pep_15253:1,Athaliana.pep_8750:1)N10_30:1)N8_5:1)N6_61:1,(Ppersica.pep_5798:1,(Mtruncatula.pep_23336:1,Csativus.pep_3576:1)N9_48:1)N7_12:1)N4_19:1)N2_96:1,Vvinifera.pep_7596:1)N1_535:1,Mguttatus.pep_8911:1)N0_1806;</span><br></pre></td></tr></table></figure>
+
 <ol start="9">
 <li><strong>Orthogroup_Sequences 文件夹</strong></li>
 </ol>
@@ -560,7 +567,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OrthoFinder/" rel="tag"># OrthoFinder</a>
+              <a href="/tags/OrthoFinder2/" rel="tag"># OrthoFinder2</a>
               <a href="/tags/orthology/" rel="tag"># orthology</a>
               <a href="/tags/OrthoMCL/" rel="tag"># OrthoMCL</a>
           </div>
@@ -657,20 +664,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">269</span>
+        <span class="site-state-item-count">272</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -714,12 +721,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">457k</span>
+    <span title="Symbols count total">471k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:56</span>
+    <span title="Reading time total">7:08</span>
 </div>
 
         
