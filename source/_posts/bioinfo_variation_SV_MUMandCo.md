@@ -62,7 +62,7 @@ chmod 711 ./MUMandCo/mumandco_v3.8.sh
 `bash mumandco_v3.8.sh -r genome.fa -q query.fa -g 125500000 -t 24 -b -o out`
 
 2. 参数
-- -r genome.fa：参考基因组
+- -r genome.fa：参考基因组。注意参考基因组和检测基因组的选择不同，结果会有一些差异。
 - -q query.fa：被检测的基因组
 - -g 125500000：参考基因组大小，单位是bp
 - -t 24：线程24，默认1
@@ -118,8 +118,10 @@ MCscaf254	LG05	13407	16116	2709	deletion_mobile	10455842	10467408	complicated
 
 # 7. 结果整理和统计
 1. 通过out.SVs_all.tsv文件的第六列SV_type值把不同的SV类型分开，例如单独获取translocations的信息：`cat out.SVs_all.tsv| awk '$6=="transloc" {print $0}' >transloc.tsv`
-2. 大部分类型都是每个一行记录，所以行数就是总数，总数与out.summary.txt文件是一致的。
-3. translocations这种类型大部分有两行记录，所以行数不是总数，如果想要计算总数可以这样：`cat transloc.tsv |cut -f1-8|uniq |wc -l`。
+- 大部分类型都是每个一行记录，所以行数就是总数，总数与out.summary.txt文件是一致的。
+- translocations这种类型大部分有两行记录，所以行数不是总数，如果想要计算总数可以这样：`cat transloc.tsv |cut -f1-8|uniq |wc -l`。
+2. 可以用`datamash`软件来快速统计常见的值
+- `cat out.SVs_all.tsv |datamash --header-in --header-out --sort groupby 6 min 5 max 5 mean 5`通过对第6列（SV_type）分组，进行组内的第五列(Size)值的统计量（包括最小值，最大值，平均值）进行统计。其中`--header-in`代表输入有标题行，`--header-out`代表输出包含标题行。
 
 我整理了一个这样的表格，用来一览SV的概况，供参考。
 

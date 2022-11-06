@@ -91,13 +91,13 @@ done
 3. 有了Ta,Ra,Rs和Ts值，接下来就可以计算Rvalue=(Rs⁄Ts)/(Ra⁄Ta)了。
 - `cat ath_r.tem|sed "s/ /\t/g"|awk -F"\t" '{print $0,($1*$4)/($2*$3)}'|sed '1i\TF\tRs\tTs\tRa\tTa\tRvalue' >ath_r.txt` 待检查是否有效
 
-### 3.1.4. 画热图
-如果只有一次WGD的TF保留结果，可以直接根据Rvalue判断哪些TF家族保留率高。
-如果有多次WGD的TF保留结果，或者做了多个物种的TF数据库保留结果，可以绘制热图相互比较。
+### 3.1.4. 绘制热图
+热图绘制可以参考博客https://yanzhongsino.github.io/2022/11/06/R_plot_heatmap
 
-(notes: 画热图这里的代码还需根据数据格式调整)
+- 如果只有一次WGD的TF保留结果，可以直接根据Rvalue判断哪些TF家族保留率高。
+- 如果有多次WGD的TF保留结果，或者做了多个物种的TF数据库保留结果，可以绘制热图相互比较。
 
-用R包pheatmap绘制热图，简单快捷。
+用R包pheatmap绘制热图，简单快捷。(notes: 画热图这里的代码还需根据数据格式调整)
 
 ```R
 df<-read.table("tf_rvalue.txt",sep= " ", header = T,row.names = 1)
