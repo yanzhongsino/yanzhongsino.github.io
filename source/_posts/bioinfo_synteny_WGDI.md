@@ -44,34 +44,158 @@ python setup.py install
 ## 3.1. 初始输入文件
 ### 3.1.1. 输入文件
 WGDI需要三个输入文件，分别是基因的位置信息文件sample.gff，染色体长度信息文件sample.len和BLAST的输出文件sample.blast.txt，要求格式如下：
-- input.gff: 一共七列，以tab分隔，分别为chr(chromosome number)，geneid(gene name)，start，end，direction(strand+/-)，order(order of each chromosome,starting from 1, 每个chr内部从1开始的顺序），original(original id and not read,旧的id，不会读入)。
-	和典型的GFF格式不一样
-- input.len: 一共三列，以tab分隔，染色体长度信息和染色体上的基因个数，chr(chromosome number), chr_length(染色体长度bp), chr_gene_number(注释到单个染色体的基因数量)
-- sample.blast.txt：蛋白质序列的自我比对，BLAST的-outfmt 6输出格式的文件sample.blast.txt
+1. input.gff
+- 一共七列，以tab分隔，分别为chr(chromosome number)，geneid(gene name)，start，end，direction(strand+/-)，order(order of each chromosome,starting from 1, 每个chr内部从1开始的顺序），original(original id and not read,旧的id，不会读入)。
+- 和典型的GFF格式不一样
 
-### 3.1.2. 准备输入文件
-1. sample.blastp.txt
-用蛋白序列建库，blastp进行蛋白序列的自我比对，获取-outfmt 6格式的输出文件sample.blastp.txt。命令如下：
-`makeblastdb -in sample.pep.fa -dbtype prot`
-`blastp -num_threads 32 -db sample.pep.fasta -query sample.pep.fa -outfmt 6 -evalue 1e-5 -num_alignments 20 -out sample.blastp.txt &`
+2. input.len
+- 一共三列，以tab分隔，染色体长度信息和染色体上的基因个数，chr(chromosome number), chr_length(染色体长度bp), chr_gene_number(注释到单个染色体的基因数量)。
+- 后面分析作图，比如点图，图中显示的染色体顺序是依据这个文件的顺序来决定的。所以可以通过修改这个文件的染色体顺序来修改图的显示。
 
-使用脚本[generate_conf.py](https://github.com/xuzhougeng/myscripts/blob/master/comparative/generate_conf.py)从基因组genome.fa和注释文件sample.gff3中获取input.gff和input.len文件。命令是`python generate_conf.py -p input genome.fa sample.gff3`。
-
-2. input.gff
-用generate_conf.py脚本获取输入文件input.gff和input.len
-`python generate_conf.py -p input genome.fa sample.gff3` # 用脚本生成WGDI的输入文件input.gff和input.len,如果存在contig没被注释到基因，会报错:
 ```
+LG01	35874591	5368
+LG02	29224816	3939
+LG03	27760256	3620
+```
+
+3. sample.blast.txt
+- 蛋白质序列的自我比对，BLAST的-outfmt 6输出格式的文件sample.blast.txt
+
+### 3.1.2. 用开发者脚本准备input.gff和input.len
+开发者准备的三个脚本来对原始的sample.gff进行处理，对基因名称进行排序和重命名，生成新基因名称，以及输入文件input.gff,input.len，和用来准备sample.blast.txt的input.pep.fa。
+
+脚本地址：https://github.com/SunPengChuan/wgdi-example/tree/main/genome/Aquilegia_coerulea/Aquilegia_coerulea
+
+1. 01.getgff.py
+- 功能：从传统的gff3格式的注释文件sample.gff中提取中间文件temp.gff
+- 用法：`python 01.getgff.py sample.gff temp.gff`
+- temp.gff格式如下：
+
+```temp.gff
+LG01	DR000002	884947	886421	+
+LG01	DR000003	886634	890799	-
+```
+
+- 01.getgff.py脚本：
+
+```python
+import sys
+
+import pandas as pd
+
+data = pd.read_csv(sys.argv[1], sep="\t", header=None,skiprows=3)
+data = data[data[2] == 'mRNA']
+data = data.loc[:, [0, 8, 3, 4, 6]]
+data[8] = data[8].str.split(':|=|;',expand=True)[1]
+data[0] = data[0].str.replace('Chr_0?','')
+data.to_csv(sys.argv[2], sep="\t", header=None, index=False)
+```
+
+2. 02.gff_lens.py
+- 功能：从temp.gff中生成两个输入文件：input.gff和input.len
+- 用法：`python 02.gff_lens.py temp.gff input.gff input.len`
+- 这个脚本还对基因名称做了整理和重命名。先对temp.gff进行排序，再按照物种标识符(md)+染色体名称(LG01)+基因名称(g00001)进行重命名，input.gff的第二列是新名称，第七列是旧名称。
+- 修改物种标识符(md)可以通过修改脚本的md来实现。
+
+```input.gff
+LG01	mdLG01g00001	23987	27163	+	1	DR032173
+LG01	mdLG01g00002	30894	32329	-	2	DR032172
+```
+
+- 02.gff_lens.py脚本：
+
+```python
+#!usr/bin/env python
+# conding: utf-8
+import sys
+
+import pandas as pd
+
+data = pd.read_csv(sys.argv[1], sep="\t", header=None)
+new = data[1].str.split('.').str
+data['id'] = new[0].values
+data['cha'] = data[3]-data[2]
+# print(data['id'])
+# data['a'] = new[2].values
+# # data['b'] = new[3].values
+# print(data.head())
+for name, group in data.groupby(['id']):
+    if len(group) == 1:
+        continue
+    ind = group.sort_values(by='cha', ascending=False).index[1:].values
+    #print(name)
+    # print(group.sort_values(by='cha',ascending=False))
+
+    data.drop(index=ind, inplace=True)
+
+# data = data[data[1].str.contains('\.mRNA1$')]
+data['order'] = ''
+data['newname'] = ''
+data[2] = data[2].astype('int')
+print(data.head())
+for name, group in data.groupby([0]):
+    number = len(group)
+    group = group.sort_values(by=[2])
+    data.loc[group.index, 'order'] = list(range(1, len(group)+1))
+    data.loc[group.index, 'newname'] = list(
+        ['md'+str(name)+'g'+str(i).zfill(5) for i in range(1, len(group)+1)])
+data['order'] = data['order'].astype('int')
+data = data[[0, 'newname', 2, 3, 4, 'order', 1]]
+print(data.head())
+data = data.sort_values(by=[0, 'order'])
+data.to_csv(sys.argv[2], sep="\t", index=False, header=None)
+lens = data.groupby(0).max()[[3, 'order']]
+lens.to_csv(sys.argv[3], sep="\t", header=None)
+```
+
+3. 03.seq_newname.py
+- 功能：根据input.gff的第二列新名称和第七列旧名称，来把旧名称的sample.pep.fa改成新名称input.pep.fa
+- 用法：`python 03.seq_newname.py input.gff sample.pep.fa input.pep.fa`，cds序列也一样修改 `python 03.seq_newname.py input.gff sample.cds.fa input.cds.fa`
+- 脚本最后一行`print(n)`打印一共修改了多少次，可以用来判断是否修改完全。
+
+```python
+import sys
+
+import pandas as pd
+from Bio import SeqIO
+
+data = pd.read_csv(sys.argv[1], sep="\t", header=None, index_col=6)
+id_dict = data[1].to_dict()
+print(data.head())
+seqs = []
+n = 0
+for seq_record in SeqIO.parse(sys.argv[2], "fasta"):
+	if seq_record.id in id_dict:
+		seq_record.id = id_dict[seq_record.id]
+		n += 1
+	else:
+		continue
+	seqs.append(seq_record)
+SeqIO.write(seqs, sys.argv[3], "fasta")
+print(n)
+```
+
+### generate_conf.py脚本准备input.gff和input.len
+1. 脚本generate_conf.py
+- 使用脚本generate_conf.py：https://github.com/xuzhougeng/myscripts/blob/master/comparative/generate_conf.py 从基因组genome.fa和注释文件sample.gff3中获取input.gff和input.len文件。
+
+- 命令是`python generate_conf.py -p input genome.fa sample.gff3`。
+
+2. 可能的错误
+- 如果存在contig没被注释到基因，generate_conf.py会报错:
+
+```shell
 Traceback (most recent call last):
   File "generate_conf.py", line 117, in <module>
     chrom=chrom,lens=lens,count=gene_count[chrom]), file=len_file)
 KeyError: 'contig030'
 ```
-并在contig030的地方停止继续写入input.len，input.gff不受影响。
 
-3. input.len
-可以用下面的脚本get_len.sh获取input.len
+- 并在contig030的地方停止继续写入input.len，input.gff不受影响。
 
-```get_len.sh
+3. 可以用下面的脚本get_len.sh获取input.len
+
+```shell
 ## 获取contig的长度
 samtools faidx genome.fa
 cat genome.fa.fai |cut -f1,2 >chrom.len
@@ -89,6 +213,14 @@ join chrom.len chrom.count|sed "s/ /\t/g" >input.len
 rm chrom.tem chrom.len chrom.count
 ```
 
+### 准备sample.blastp.txt
+用蛋白序列建库，blastp进行蛋白序列的自我比对，获取-outfmt 6格式的输出文件sample.blastp.txt。
+如果用开发者脚本准备的输入文件，则这里需要用重命名的input.pep.fa代替sample.pep.fa。
+命令如下：
+
+- `makeblastdb -in sample.pep.fa -dbtype prot`
+- `blastp -num_threads 32 -db sample.pep.fasta -query sample.pep.fa -outfmt 6 -evalue 1e-5 -num_alignments 20 -out sample.blastp.txt &`
+
 ## 3.2. 共线性分析
 WGDI的分析的参数都是在配置文件中进行设置，所以分析都需要先创建配置文件，然后修改配置文件，最后运行程序。
 每个配置项中都有gff1，gff2；lens1，lens2；blast这五个参数，是相同的。
@@ -98,7 +230,7 @@ WGDI的d模块绘制基因组内的共线性点阵图，初略估计是否有基
 共线性点阵图是把两个基因组（做WGD分析则是把一个基因组的两份复制）分别作为横纵坐标，把检测到的同源匹配基因在相应位置做点标记；点数量多且相邻时，会有点组成的线出现，线代表比较长的共线性区块，代表着历史上的复制事件。
 
 1. 创建配置文件input.conf
-`wgdi -d \? >input.conf`
+`wgdi -d ? >input.conf`
 
 创建input.conf配置文件，里面包含[dotplot]配置参数。
 
@@ -113,11 +245,11 @@ lens1 = lens1 file # 比对项1的input.len文件
 lens2 = lens2 file # 比对项2的input.len文件，如果是自我比对，则lens1和lens2一样
 genome1_name =  Genome1 name # 比对项1的基因组名称
 genome2_name =  Genome2 name # 比对项2的基因组名称，如果是自我比对，与genome1_name一致
-multiple  = 1 # 最好的同源基因对数量，输出结果图中会用红点表示
+multiple  = 1 # 最好的同源基因对数量，输出结果图中会用红点表示。可以先画图，再来修改这个值。
 score = 100 # blast输出的score过滤
 evalue = 1e-5 # blast输出的evalue过滤
-repeat_number = 10 # 允许去除超过部分种群的同源基因数量
-position = order
+repeat_number = 10 # 显示的一个基因对应的同源基因的数量
+position = order # 从order,start,end中选
 blast_reverse = false
 ancestor_left = ancestor file or none # 点阵图左侧物种的祖先染色体区域，一般设置成none就好
 ancestor_top = ancestor file or none # 点阵图顶侧物种的祖先染色体区域，一般设置成none就好
@@ -146,14 +278,14 @@ ancestor_left = none
 ancestor_top = none
 markersize = 0.5
 figsize = 10,10
-savefig = out.pdf
+savefig = out_dotplot.png
 ```
 
 3. 运行
 `wgdi -d input.conf`
 
 4. 结果
-结果保存在out.pdf的图中。
+结果保存在out_dotplot.pdf的图中。
 
 结果解释：
 - 图中有三种颜色，红色表示genome2的基因在genome1中的最优同源匹配，次优的四个基因是蓝色，其余的是灰色。
@@ -164,7 +296,7 @@ savefig = out.pdf
 WGDI的icl(Improved version of ColinearScan)模块用于获取共线性区块的具体位置信息。与MCScanX软件功能一致。
 
 1. 建立配置文件
-`wgdi -icl \? >>input.conf`
+`wgdi -icl ? >>input.conf`
 
 在已有配置文件input.conf的基础上添加[collinearity]配置参数。
 
@@ -192,6 +324,8 @@ savefile = out.collinearity # 保存共线性结果的文件名
 3. 运行
 `wgdi -icl input.conf`
 
+4万基因的数据量，这一步耗时20分钟。
+
 4. 结果
 结果out.collinearity中记录着共线性区域。
 
@@ -201,7 +335,7 @@ savefile = out.collinearity # 保存共线性结果的文件名
 WGDI的ks模块计算共线性区块的基因对间的ka和ks。
 
 1. 建立配置文件
-`wgdi -ks \? >>input.conf`
+`wgdi -ks ? >>input.conf`
 
 在已有配置文件input.conf的基础上添加[ks]配置参数。
 
@@ -218,10 +352,11 @@ ks_file = out.ks # 保存ks结果的文件名
 3. 运行
 `wgdi -ks input.conf`
 
-WGDI会用muscle根据氨基酸序列进行联配，然后用pal2pal.pl基于cds序列将氨基酸联配转为密码子联配，最后用paml中的yn00和ng86两种方法计算ka和ks。
+- WGDI会用muscle根据氨基酸序列进行联配，然后用pal2pal.pl基于cds序列将氨基酸联配转为密码子联配，最后用paml中的yn00和ng86两种方法计算ka和ks。
+- 4万基因的数据量，这一步耗时40分钟。
 
 4. 结果
-out.ks结果有6列，对应的是每个基因的ka和ks。
+- out.ks结果有6列，对应的是每个基因的ka和ks。
 
 ```
 $ head -2 out.ks
@@ -233,11 +368,12 @@ vvi161s1g00311	vvi161s1g00312	0.2986	1.2027	0.3047	1.3864
 WGDI的bi模块可以整合共线性区块和ks信息成一个可读性更强的csv文件。
 
 1. 建立配置文件
-`wgdi -bi \? >>input.conf`
+`wgdi -bi ? >>input.conf`
 
 在已有配置文件input.conf的基础上添加[blockinfo]配置参数。
 
 2. 修改配置参数
+
 ```
 [blockinfo]
 blast = input.blastp.txt
@@ -277,7 +413,7 @@ savefile = block_info.csv
 ## 3.3. 根据ks分布拟合单次WGD事件
 1. 背景知识
 在Lynch和Conery在2000年发表在Science的论文中，他们证明了小规模基因复制的Ks分布是L型，而在L型分布背景上叠加的峰则是来自于演化历史中某个突然的大规模复制事件。
-L型分布（呈指数分布, exponential distribution), 最初的峰可能是近期的串联复制引起，随着时间推移基因丢失，形成一个向下的坡。正态分布(normal distribution)的峰则是由全基因组复制引起。
+L型分布（呈指数分布, exponential distribution)的峰可能是近期的串联复制引起，随着时间推移基因丢失，形成一个向下的坡。正态分布(normal distribution)的峰则是由全基因组复制引起。
 
 这就意味着我们可以根据ks频率分布图的正态分布峰来判断物种历史上发生过的全基因组复制事件，并通过ks值拟合峰值获得WGD事件发生的时间。
 
@@ -290,11 +426,11 @@ L型分布（呈指数分布, exponential distribution), 最初的峰可能是�
 因为用WGDI对ks频率分布图的峰进行拟合时，一次只能拟合一个峰。当发现两次或多次WGD事件后，需要两次或多次重复以上分析过程，分别获取WGD的ks拟合图。
 
 ## 3.4. ks拟合和可视化
-### 3.4.1. ks可视化——绘制ks点阵图
+### 3.4.1. ks可视化——过滤并绘制ks点阵图
 第一步绘制的点阵图里包含基因组上检测到的所有同源基因对（所以点特别多），bk模块绘制的ks点阵图的点只包含确认了共线性的基因对，用ks值作为点的颜色信息，可以根据ks点阵图的共线性区域的颜色来区分不同时期的多倍化事件。
 
 1. 建立配置文件
-`wgdi -bk \? >>input.conf`
+`wgdi -bk ? >>input.conf`
 
 在已有配置文件input.conf的基础上添加[blockks]配置参数。
 
@@ -326,11 +462,11 @@ savefig = ks.dotplot.pdf
 - 图中每个点都是共线性区块的基因对，点的颜色是ks值。
 - 可以用共线性区块的ks中位数来初步判断复制发生的时间，所以图中颜色相近的共线性区块看作同时发生的复制，当图中大致观察到两种颜色的点和线时，表示对应的两次全基因组复制事件。
 
-### 3.4.2. ks可视化——过滤后绘制ks频率分布图
+### 3.4.2. ks可视化——过滤并绘制ks频率分布图
 通过计算共线性区块的基因对ks值，可以获得基因对复制发生的时间，如果有全基因组复制（WGD）发生，那么现有物种的基因组会留下许多ks相近的基因对，通过ks频率分布图可以看到峰，由此判断WGD的发生次数和发生时间。
 
 1. 建立配置文件
-`wgdi -kp \? >>input.conf`
+`wgdi -kp ? >>input.conf`
 
 在已有配置文件input.conf的基础上添加[kspeaks]配置参数。
 
@@ -374,7 +510,7 @@ savefile = ks_median.distri.csv # 对block_info.csv的过滤后结果，与block
 ### 3.4.3. 拟合ks频率分布图的峰
 
 1. 建立配置文件
-`wgdi -pf \? >>peak.conf`
+`wgdi -pf ? >>peak.conf`
 
 在已有配置文件input.conf的基础上添加[kspeaks]配置参数。
 
@@ -399,7 +535,7 @@ savefig  =  ks.peaksfit.pdf
 ### 3.4.4. 拟合结果作图——kf模块
 1. 建立配置文件
 在已有配置文件input.conf的基础上添加[ksfigure]配置参数。
-`wgdi -kf \? >>input.conf`
+`wgdi -kf ? >>input.conf`
 
 2. 创建all_ks.csv文件
 - all_ks.csv文件内容
