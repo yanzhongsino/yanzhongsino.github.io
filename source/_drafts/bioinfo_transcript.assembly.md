@@ -102,6 +102,8 @@ data<-data[data$V1>0.05,,drop=F] #只保留>0.05的数据
 data<-data[data$V1<5,,drop=F] #只保留<5的数据
 mb=Mclust(data)
 summary(mb,parameters=TRUE)
+
+
 ```
 
 
@@ -111,7 +113,7 @@ summary(mb,parameters=TRUE)
 library(ggplot2)
 library(ggpmisc)
 data <- read.table("sample_REDUCED_KS.txt",header=F)
-p <- ggplot(data, aes(V1)) + geom_density(size=1,color="black")+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+theme_classic()+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+xlim(0,3)
+p <- ggplot(data, aes(V1)) + geom_density(size=1,color="black")+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+theme_classic()+scale_x_continuous(name="Ks", limits=c(0,2),breaks = seq(0,2,0.1))
 ggsave(file="Ks.pdf",plot=p,width=10,height=5)
 ```
 

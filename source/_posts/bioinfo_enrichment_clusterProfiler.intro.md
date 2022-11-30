@@ -122,10 +122,14 @@ GO:0001906 GO:0001906      cell killing     0     0/929
 
 #### 6.2.1.4. ORA分析
 1. 读取输入文件
+- 读取基因ID的list文件
+- 这些ID会在enrichGO的分析中被自动去重，所以文件是否有重复结果都一样。
+
 ```R
 data <- read.table("gene.list",header=F) #读取gene ID list，内容为一列ENSEMBL格式的基因ID名称
 genes <- as.character(data$V1) #转换成字符格式
 ```
+
 2. 支持物种的标准分析 enrichGO()
 
 ```R
