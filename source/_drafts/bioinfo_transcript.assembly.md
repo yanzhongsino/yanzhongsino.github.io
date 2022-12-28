@@ -100,10 +100,8 @@ library(mclust) # 加载
 data<-read.csv(sample_REDUCED_KS.txt,header=F)
 data<-data[data$V1>0.05,,drop=F] #只保留>0.05的数据
 data<-data[data$V1<5,,drop=F] #只保留<5的数据
-mb=Mclust(data)
+mb=Mclust(data) # 分组数G默认是1:9；待拟合的模型modelNames默认是所有14种模型；评估最佳模型和最佳分组的标准默认是BIC(Bayesian Information Criterion)。
 summary(mb,parameters=TRUE)
-
-
 ```
 
 

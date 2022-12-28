@@ -507,7 +507,7 @@ savefile = ks_median.distri.csv # 对block_info.csv的过滤后结果，与block
 - multiple：选择不同的homo，一般没有特殊需求，选择最优的，即1。
 - homo：设置不同的homo范围，观察做出的图中峰的变化来确定homo范围是否合理。
 
-### 3.4.3. 拟合ks频率分布图的峰
+### 3.4.3. 高斯拟合ks频率分布图的峰——pf模块
 
 1. 建立配置文件
 `wgdi -pf ? >>peak.conf`
@@ -530,7 +530,18 @@ savefig  =  ks.peaksfit.pdf
 3. 运行
 `wgdi -pf peak.conf`
 
-得到拟合图ks.peaksfit.pdf和一些参数(包括一个R-square和3个拟合参数the gaussian fitting curve parameters）;拟合参数用于后续ksfigure模块分析。
+4. 结果
+- 拟合图ks.peaksfit.pdf
+- 参数：包括一个R-square和3个拟合参数the gaussian fitting curve parameters
+- 拟合参数用于后续ksfigure模块作图。
+
+```
+R-square: 0.9804748699350867
+The gaussian fitting curve parameters are :
+5.02360835744403  |  0.8319599832352784  |  0.10382203381206191
+```
+
+其中0.83是峰值，5.02是幅值，0.10是标准差。
 
 ### 3.4.4. 拟合结果作图——kf模块
 1. 建立配置文件
@@ -558,8 +569,8 @@ sample1_sample2,yellow,1,-,3.00367275,1.288717936,0.177816426
 ksfit = all_ks.csv # 拟合参数文件
 labelfontsize = 15
 legendfontsize = 15
-xlabel = none
-ylabel = none
+xlabel = Synonymous nucleotide substitution (Ks)
+ylabel = Density
 title = none
 area = 0,4
 figsize = 10,6.18
