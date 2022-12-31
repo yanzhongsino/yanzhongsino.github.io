@@ -1,5 +1,5 @@
 ---
-title: 用k-mer分析进行基因组调查：（六）用KmerGenie一步实现
+title: 用k-mer分析进行基因组调查：（七）用KmerGenie一步实现
 date: 2022-06-19
 categories:
 - omics

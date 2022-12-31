@@ -1,5 +1,5 @@
 ---
-title: 用k-mer分析进行基因组调查：（五）用GCE分步实现
+title: 用k-mer分析进行基因组调查：（六）用GCE分步实现
 date: 2022-06-07
 categories:
 - omics

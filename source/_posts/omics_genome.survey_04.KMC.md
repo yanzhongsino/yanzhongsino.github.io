@@ -1,5 +1,5 @@
 ---
-title: 用k-mer分析进行基因组调查：（三）用KMC进行k-mer频数统计
+title: 用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计
 date: 2022-06-05
 categories:
 - omics
