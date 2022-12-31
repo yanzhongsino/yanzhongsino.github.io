@@ -22,8 +22,8 @@
 
   <meta name="description" content="介绍GenomeScope，用GenomeScope做基因组调查(genome survey)的基因组特征评估。用GenomeScope1.0评估二倍体物种的基因组大小、杂合度、重复率等基因组特征，用GenomeScope2.0评估多倍体物种的基因组大小、杂合度、重复率、基因型比例和基因组结构(同源&#x2F;异源多倍体)等基因组特征，用Smudgeplot估计物种的倍性。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用k-mer分析进行基因组调查：（四）用GenomeScope评估基因组特征+用Smudgeplot估计倍性">
-<meta property="og:url" content="http://example.com/2022/06/05/omics_genome.survey_GenomeScope/index.html">
+<meta property="og:title" content="用k-mer分析进行基因组调查：（五）用GenomeScope评估基因组特征">
+<meta property="og:url" content="http://example.com/2022/06/05/omics_genome.survey_05.GenomeScope/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="介绍GenomeScope，用GenomeScope做基因组调查(genome survey)的基因组特征评估。用GenomeScope1.0评估二倍体物种的基因组大小、杂合度、重复率等基因组特征，用GenomeScope2.0评估多倍体物种的基因组大小、杂合度、重复率、基因型比例和基因组结构(同源&#x2F;异源多倍体)等基因组特征，用Smudgeplot估计物种的倍性。">
 <meta property="og:locale" content="en_US">
@@ -31,21 +31,20 @@
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope2.0.png?raw=true">
 <meta property="og:image" content="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-020-14998-3/MediaObjects/41467_2020_14998_Fig2_HTML.png?as=webp">
 <meta property="og:image" content="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-020-14998-3/MediaObjects/41467_2020_14998_Fig6_HTML.png?as=webp">
-<meta property="og:image" content="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-06-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T11:34:25.677Z">
+<meta property="article:modified_time" content="2022-12-28T12:45:35.340Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome survey">
 <meta property="article:tag" content="genome">
 <meta property="article:tag" content="k-mer">
+<meta property="article:tag" content="KMC">
 <meta property="article:tag" content="GenomeScope">
 <meta property="article:tag" content="Smudgeplot">
-<meta property="article:tag" content="KMC">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/omics_genome.survey_GenomeScope1.0.png?raw=true">
 
-<link rel="canonical" href="http://example.com/2022/06/05/omics_genome.survey_GenomeScope/">
+<link rel="canonical" href="http://example.com/2022/06/05/omics_genome.survey_05.GenomeScope/">
 
 
 <script id="page-configurations">
@@ -58,7 +57,7 @@
   };
 </script>
 
-  <title>用k-mer分析进行基因组调查：（四）用GenomeScope评估基因组特征+用Smudgeplot估计倍性 | 生信技工</title>
+  <title>用k-mer分析进行基因组调查：（五）用GenomeScope评估基因组特征 | 生信技工</title>
   
 
 
@@ -224,7 +223,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/omics_genome.survey_GenomeScope/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/omics_genome.survey_05.GenomeScope/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -237,7 +236,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          用k-mer分析进行基因组调查：（四）用GenomeScope评估基因组特征+用Smudgeplot估计倍性
+          用k-mer分析进行基因组调查：（五）用GenomeScope评估基因组特征
         </h1>
 
         <div class="post-meta">
@@ -254,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:34:25" itemprop="dateModified" datetime="2022-07-15T19:34:25+08:00">2022-07-15</time>
+                <time title="Modified: 2022-12-28 20:45:35" itemprop="dateModified" datetime="2022-12-28T20:45:35+08:00">2022-12-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,8 +289,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2022/06/05/omics_genome.survey_GenomeScope/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/05/omics_genome.survey_GenomeScope/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2022/06/05/omics_genome.survey_05.GenomeScope/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/05/omics_genome.survey_05.GenomeScope/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -300,13 +299,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>6.5k</span>
+              <span>4.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>6 mins.</span>
+              <span>4 mins.</span>
             </span>
             <div class="post-description">介绍GenomeScope，用GenomeScope做基因组调查(genome survey)的基因组特征评估。用GenomeScope1.0评估二倍体物种的基因组大小、杂合度、重复率等基因组特征，用GenomeScope2.0评估多倍体物种的基因组大小、杂合度、重复率、基因型比例和基因组结构(同源/异源多倍体)等基因组特征，用Smudgeplot估计物种的倍性。</div>
 
@@ -420,74 +419,7 @@
 <li>在估算一个约300Mb的二倍体基因组时，GenomeScope1.0估算出来267Mb，GenomeScope2.0估算出来149Mb。</li>
 <li>在估算一个约6Gb的四倍体基因组时发现，GenomeScope1.0估算出来5.5Gb，GenomeScope2.0估算出来2.7Gb。</li>
 </ul>
-<h1 id="8-Smudgeplot"><a href="#8-Smudgeplot" class="headerlink" title="8. Smudgeplot"></a>8. Smudgeplot</h1><p>Smudgeplot是2020年与GenomeScope2.0一起发表的用于估计物种的倍性的软件。开发者计划接下来把Smudgeplot整合进GenomeScope。</p>
-<h2 id="8-1-Smudgeplot原理"><a href="#8-1-Smudgeplot原理" class="headerlink" title="8.1. Smudgeplot原理"></a>8.1. Smudgeplot原理</h2><p>Smudgeplot从k-mer数据库中提取杂合k-mer对，然后训练杂合k-mer对。</p>
-<p>通过比较k-mer对覆盖度的总数(CovA + CovB)和相对覆盖度(CovB &#x2F; (CovA + CovB))，统计杂合k-mers对的数量，Smudgeplot可以解析基因组结构。</p>
-<h2 id="8-2-Smudgeplot安装"><a href="#8-2-Smudgeplot安装" class="headerlink" title="8.2. Smudgeplot安装"></a>8.2. Smudgeplot安装</h2><ol>
-<li>依赖<br>依赖是<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/KMC">tbenavi1&#x2F;KMC</a>和<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/genomescope2.0">GenomeScope2.0</a>。</li>
-</ol>
-<ul>
-<li>用于统计k-mers频数的软件。建议<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/KMC">tbenavi1&#x2F;KMC</a>，里面包括一个smudge_pairs程序，用来找杂合k-mer对。也可以用jellyfish代替KMC，参考<a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot/wiki/manual-of-smudgeplot-with-jellyfish">manual of smudgeplot with jellyfish</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/tbenavi1/genomescope2.0">GenomeScope2.0</a></li>
-</ul>
-<ol start="2">
-<li>安装<br><code>conda install -c bioconda smudgeplot</code> #conda安装</li>
-</ol>
-<h2 id="8-3-Smudgeplot使用"><a href="#8-3-Smudgeplot使用" class="headerlink" title="8.3. Smudgeplot使用"></a>8.3. Smudgeplot使用</h2><ol>
-<li>用KMC计算k-mer频率，生成k-mer直方图<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir tmp</span><br><span class="line">ls *.fastq.gz &gt; FILES</span><br><span class="line">kmc -k21 -t16 -m64 -ci1 -cs10000 @FILES kmcdb tmp #计算k-mer频率</span><br><span class="line">kmc_tools transform kmcdb histogram sample.histo -cx10000 #生成k-mer频数直方表sample.histo和k-mer直方图</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>kmc命令参数：</p>
-<ul>
-<li>-k21：k-mer长度设置为21</li>
-<li>-t16：线程16</li>
-<li>-m64：内存64G，设置使用RAM的大致数量，范围1-1024。</li>
-<li>-ci1 -cs10000：统计k-mer coverages覆盖度范围在[1-10000]的。</li>
-<li>@FILES：保存了输入文件列表的文件名为FILES</li>
-<li>kmcdb：KMC数据库的输出文件名前缀</li>
-<li>tmp：临时目录</li>
-</ul>
-<p>kmc_tools命令参数：</p>
-<ul>
-<li>-cx10000：储存在直方图文件中counter的最大值。</li>
-</ul>
-<ol start="2">
-<li>选择覆盖阈值</li>
-</ol>
-<ul>
-<li>可以目视检查k-mer直方图，选择覆盖阈值上(U)下(L)限。</li>
-<li>也可以用命令估计覆盖阈值上(U)下(L)限。L的取值范围是[20-200]，U的取值范围是[500-3000]。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">L=$(smudgeplot.py cutoff kmcdb_k21.hist L)</span><br><span class="line">U=$(smudgeplot.py cutoff kmcdb_k21.hist U)</span><br><span class="line">echo $L $U # these need to be sane values</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>提取阈值范围的k-mers，计算k-mer pairs</li>
-</ol>
-<ul>
-<li><p>用<code>kmc_tools</code>提取k-mers，然后用KMC的<code>smudge_pairs</code>计算k-mer pairs。</p>
-</li>
-<li><p><code>smudge_pairs</code>比<code>smudgeplot.py hetkmers</code>使用更少内存，速度更快地寻找杂合k-mer pairs。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kmc_tools transform kmcdb -ci&quot;$L&quot; -cx&quot;$U&quot; reduce kmcdb_L&quot;$L&quot;_U&quot;$U&quot;</span><br><span class="line">smudge_pairs kmcdb_L&quot;$L&quot;_U&quot;$U&quot; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_pairs.tsv &gt; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_familysizes.tsv</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如果没有KMC，可以用<code>kmc_dump</code>提取k-mers，然后用<code>smudgeplot.py hetkmers</code>计算k-mer pairs。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kmc_tools transform kmcdb -ci&quot;$L&quot; -cx&quot;$U&quot; dump -s kmcdb_L&quot;$L&quot;_U&quot;$U&quot;.dump</span><br><span class="line">smudgeplot.py hetkmers -o kmcdb_L&quot;$L&quot;_U&quot;$U&quot; &lt; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;.dump</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="4">
-<li>生成污点图(smudgeplot)</li>
-</ol>
-<p><code>smudgeplot.py plot kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv</code></p>
-<p>生成两个基础的污点图，一个log尺度，一个线性尺度。</p>
-<h2 id="8-4-Smudgeplot结果"><a href="#8-4-Smudgeplot结果" class="headerlink" title="8.4. Smudgeplot结果"></a>8.4. Smudgeplot结果</h2><ul>
-<li>热度图，横坐标是相对覆盖度 (CovB &#x2F; (CovA + CovB)) ，纵坐标是总覆盖度 (CovA + CovB) ，颜色是k-mer对的频率。</li>
-<li>每个单倍型结构都在图上呈现一个”污点(smudge)”，污点的热度表示单倍型结构在基因组中出现的频率，频率最高的单倍型结构即为预测的物种倍性结果。(比如这个图提供了三倍体的证据，AAB的频率最高)</li>
-</ul>
-<img src="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png" width=80% title="Smudgeplot污点图" align=center/>
-
-<p><strong><p align="center">Figure 5. Smudgeplot污点图。<br>图片来源： <a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot">Smudgeplot github</a></p></strong></p>
-<h2 id="8-5-Smudgeplot的KMC结果用于GenomeScope进行基因组调查"><a href="#8-5-Smudgeplot的KMC结果用于GenomeScope进行基因组调查" class="headerlink" title="8.5. Smudgeplot的KMC结果用于GenomeScope进行基因组调查"></a>8.5. Smudgeplot的KMC结果用于GenomeScope进行基因组调查</h2><ul>
-<li>通过KMC获得的频数分布表结果可用于GenomeScope进行基因组调查</li>
-</ul>
-<p><code>Rscript genomescope.R kmcdb_k21.hist &lt;k-mer_length&gt; &lt;read_length&gt; &lt;output_dir&gt; [kmer_max] [verbose]</code></p>
-<h1 id="9-references"><a href="#9-references" class="headerlink" title="9. references"></a>9. references</h1><ol>
+<h1 id="8-references"><a href="#8-references" class="headerlink" title="8. references"></a>8. references</h1><ol>
 <li>GenomeScope 1.0 github：<a target="_blank" rel="noopener" href="https://github.com/schatzlab/genomescope">https://github.com/schatzlab/genomescope</a></li>
 <li>GenomeScope 2.0 github：<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/genomescope2.0">https://github.com/tbenavi1/genomescope2.0</a></li>
 <li>GenomeScope 1.0 paper：<a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article/33/14/2202/3089939">https://academic.oup.com/bioinformatics/article/33/14/2202/3089939</a></li>
@@ -511,9 +443,9 @@
               <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
               <a href="/tags/genome/" rel="tag"># genome</a>
               <a href="/tags/k-mer/" rel="tag"># k-mer</a>
+              <a href="/tags/KMC/" rel="tag"># KMC</a>
               <a href="/tags/GenomeScope/" rel="tag"># GenomeScope</a>
               <a href="/tags/Smudgeplot/" rel="tag"># Smudgeplot</a>
-              <a href="/tags/KMC/" rel="tag"># KMC</a>
           </div>
 
         
@@ -522,12 +454,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/06/05/omics_genome.survey_KMC/" rel="prev" title="用k-mer分析进行基因组调查：（三）用KMC进行k-mer频数统计">
-      <i class="fa fa-chevron-left"></i> 用k-mer分析进行基因组调查：（三）用KMC进行k-mer频数统计
+    <a href="/2022/05/27/omics_genome.survey_03.jellyfish/" rel="prev" title="用k-mer分析进行基因组调查：（三）用jellyfish进行k-mer频数统计">
+      <i class="fa fa-chevron-left"></i> 用k-mer分析进行基因组调查：（三）用jellyfish进行k-mer频数统计
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/06/07/omics_genome.survey_GCE/" rel="next" title="用k-mer分析进行基因组调查：（五）用GCE分步实现">
-      用k-mer分析进行基因组调查：（五）用GCE分步实现 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/06/05/omics_genome.survey_04.KMC/" rel="next" title="用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计">
+      用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -594,7 +526,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-k-mer%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%A6%82%E5%86%B5"><span class="nav-text">1. k-mer进行基因组调查的软件概况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GenomeScope%E6%A6%82%E5%86%B5"><span class="nav-text">2. GenomeScope概况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-GenomeScope1-0-%E7%BD%91%E9%A1%B5%E7%89%88%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E4%BA%8C%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">3. GenomeScope1.0 网页版【推荐】—— 适用于二倍体物种</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-GenomeScope2-0-%E7%BD%91%E9%A1%B5%E7%89%88-%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91-%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E5%A4%9A%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">4. GenomeScope2.0 网页版 【推荐】 —— 适用于多倍体物种</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-GenomeScope-2-0-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">4.1. GenomeScope 2.0 使用步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-GenomeScope-2-0-%E7%BB%93%E6%9E%9C"><span class="nav-text">4.2. GenomeScope 2.0 结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E4%BA%8C%E5%80%8D%E4%BD%93%E7%BB%93%E6%9E%9C"><span class="nav-text">4.2.1. 二倍体结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E5%8C%BA%E5%88%86%E5%BC%82%E6%BA%90%E5%9B%9B%E5%80%8D%E4%BD%93%E5%92%8C%E5%90%8C%E6%BA%90%E5%9B%9B%E5%80%8D%E4%BD%93"><span class="nav-text">4.2.2. 区分异源四倍体和同源四倍体</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-GenomeScope1-0%E6%9C%AC%E5%9C%B0%E7%89%88-%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E4%BA%8C%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">5. GenomeScope1.0本地版 —— 适用于二倍体物种</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-GenomeScope2-0%E6%9C%AC%E5%9C%B0%E7%89%88-%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E5%A4%9A%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">6. GenomeScope2.0本地版 —— 适用于多倍体物种</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%AE%89%E8%A3%85"><span class="nav-text">6.1. 下载和安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E4%BD%BF%E7%94%A8"><span class="nav-text">6.2. 使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-GenomeScope%E5%AE%9E%E8%B7%B5%E7%BB%8F%E9%AA%8C"><span class="nav-text">7. GenomeScope实践经验</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-Smudgeplot"><span class="nav-text">8. Smudgeplot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-Smudgeplot%E5%8E%9F%E7%90%86"><span class="nav-text">8.1. Smudgeplot原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-Smudgeplot%E5%AE%89%E8%A3%85"><span class="nav-text">8.2. Smudgeplot安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-Smudgeplot%E4%BD%BF%E7%94%A8"><span class="nav-text">8.3. Smudgeplot使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-Smudgeplot%E7%BB%93%E6%9E%9C"><span class="nav-text">8.4. Smudgeplot结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-5-Smudgeplot%E7%9A%84KMC%E7%BB%93%E6%9E%9C%E7%94%A8%E4%BA%8EGenomeScope%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-text">8.5. Smudgeplot的KMC结果用于GenomeScope进行基因组调查</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-references"><span class="nav-text">9. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-k-mer%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%A6%82%E5%86%B5"><span class="nav-text">1. k-mer进行基因组调查的软件概况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GenomeScope%E6%A6%82%E5%86%B5"><span class="nav-text">2. GenomeScope概况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-GenomeScope1-0-%E7%BD%91%E9%A1%B5%E7%89%88%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E4%BA%8C%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">3. GenomeScope1.0 网页版【推荐】—— 适用于二倍体物种</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-GenomeScope2-0-%E7%BD%91%E9%A1%B5%E7%89%88-%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91-%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E5%A4%9A%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">4. GenomeScope2.0 网页版 【推荐】 —— 适用于多倍体物种</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-GenomeScope-2-0-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">4.1. GenomeScope 2.0 使用步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-GenomeScope-2-0-%E7%BB%93%E6%9E%9C"><span class="nav-text">4.2. GenomeScope 2.0 结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E4%BA%8C%E5%80%8D%E4%BD%93%E7%BB%93%E6%9E%9C"><span class="nav-text">4.2.1. 二倍体结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E5%8C%BA%E5%88%86%E5%BC%82%E6%BA%90%E5%9B%9B%E5%80%8D%E4%BD%93%E5%92%8C%E5%90%8C%E6%BA%90%E5%9B%9B%E5%80%8D%E4%BD%93"><span class="nav-text">4.2.2. 区分异源四倍体和同源四倍体</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-GenomeScope1-0%E6%9C%AC%E5%9C%B0%E7%89%88-%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E4%BA%8C%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">5. GenomeScope1.0本地版 —— 适用于二倍体物种</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-GenomeScope2-0%E6%9C%AC%E5%9C%B0%E7%89%88-%E2%80%94%E2%80%94-%E9%80%82%E7%94%A8%E4%BA%8E%E5%A4%9A%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">6. GenomeScope2.0本地版 —— 适用于多倍体物种</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%AE%89%E8%A3%85"><span class="nav-text">6.1. 下载和安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E4%BD%BF%E7%94%A8"><span class="nav-text">6.2. 使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-GenomeScope%E5%AE%9E%E8%B7%B5%E7%BB%8F%E9%AA%8C"><span class="nav-text">7. GenomeScope实践经验</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-references"><span class="nav-text">8. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -608,7 +540,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -665,12 +597,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">469k</span>
+    <span title="Symbols count total">472k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7:06</span>
+    <span title="Reading time total">7:10</span>
 </div>
 
         
@@ -762,9 +694,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2022/06/05/omics_genome.survey_GenomeScope/";
-    this.page.identifier = "2022/06/05/omics_genome.survey_GenomeScope/";
-    this.page.title = "用k-mer分析进行基因组调查：（四）用GenomeScope评估基因组特征+用Smudgeplot估计倍性";
+    this.page.url = "http://example.com/2022/06/05/omics_genome.survey_05.GenomeScope/";
+    this.page.identifier = "2022/06/05/omics_genome.survey_05.GenomeScope/";
+    this.page.title = "用k-mer分析进行基因组调查：（五）用GenomeScope评估基因组特征";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

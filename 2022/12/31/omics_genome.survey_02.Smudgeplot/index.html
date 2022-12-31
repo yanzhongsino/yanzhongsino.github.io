@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Smudgeplot，用Smudgeplot估计物种的倍性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用k-mer分析进行基因组调查：（二）用Smudgeplot估计倍性">
+<meta property="og:url" content="http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍Smudgeplot，用Smudgeplot估计物种的倍性。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-12-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-12-31T08:56:26.472Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome survey">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="k-mer">
+<meta property="article:tag" content="KMC">
+<meta property="article:tag" content="GenomeScope">
+<meta property="article:tag" content="Smudgeplot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png">
+
+<link rel="canonical" href="http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用k-mer分析进行基因组调查：（二）用Smudgeplot估计倍性 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用k-mer分析进行基因组调查：（二）用Smudgeplot估计倍性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-31 00:00:00 / Modified: 16:56:26" itemprop="dateCreated datePublished" datetime="2022-12-31T00:00:00+08:00">2022-12-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/genome-survey/" itemprop="url" rel="index"><span itemprop="name">genome survey</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/12/31/omics_genome.survey_02.Smudgeplot/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/12/31/omics_genome.survey_02.Smudgeplot/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 mins.</span>
+            </span>
+            <div class="post-description">介绍Smudgeplot，用Smudgeplot估计物种的倍性。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=276895&auto=1&height=32"></iframe> </div>
+
+<p><strong>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</strong></p>
+<h1 id="1-Smudgeplot"><a href="#1-Smudgeplot" class="headerlink" title="1. Smudgeplot"></a>1. Smudgeplot</h1><p>Smudgeplot是2020年与GenomeScope2.0一起发表的用于估计物种的倍性的软件。开发者计划接下来把Smudgeplot整合进GenomeScope。</p>
+<h1 id="2-Smudgeplot原理"><a href="#2-Smudgeplot原理" class="headerlink" title="2. Smudgeplot原理"></a>2. Smudgeplot原理</h1><p>Smudgeplot从k-mer数据库中提取杂合k-mer对，然后训练杂合k-mer对。</p>
+<p>通过比较k-mer对覆盖度的总数(CovA + CovB)和相对覆盖度(CovB &#x2F; (CovA + CovB))，统计杂合k-mers对的数量，Smudgeplot可以解析基因组结构。</p>
+<h1 id="3-Smudgeplot安装"><a href="#3-Smudgeplot安装" class="headerlink" title="3. Smudgeplot安装"></a>3. Smudgeplot安装</h1><ol>
+<li>依赖<br>依赖是<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/KMC">tbenavi1&#x2F;KMC</a>和<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/genomescope2.0">GenomeScope2.0</a>。</li>
+</ol>
+<ul>
+<li>用于统计k-mers频数的软件。建议<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/KMC">tbenavi1&#x2F;KMC</a>，里面包括一个smudge_pairs程序，用来找杂合k-mer对。也可以用jellyfish代替KMC，参考<a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot/wiki/manual-of-smudgeplot-with-jellyfish">manual of smudgeplot with jellyfish</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tbenavi1/genomescope2.0">GenomeScope2.0</a></li>
+</ul>
+<ol start="2">
+<li>安装<br><code>conda install -c bioconda smudgeplot</code> #conda安装</li>
+</ol>
+<h1 id="4-Smudgeplot使用"><a href="#4-Smudgeplot使用" class="headerlink" title="4. Smudgeplot使用"></a>4. Smudgeplot使用</h1><h2 id="4-1-KMC-Smudgeplot"><a href="#4-1-KMC-Smudgeplot" class="headerlink" title="4.1. KMC+Smudgeplot"></a>4.1. KMC+Smudgeplot</h2><h3 id="4-1-1-用KMC计算k-mer频率，生成k-mer频率表"><a href="#4-1-1-用KMC计算k-mer频率，生成k-mer频率表" class="headerlink" title="4.1.1. 用KMC计算k-mer频率，生成k-mer频率表"></a>4.1.1. 用KMC计算k-mer频率，生成k-mer频率表</h3><ol>
+<li><p>运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir tmp</span><br><span class="line">ls *.fastq.gz &gt; FILES</span><br><span class="line">kmc -k21 -t16 -m64 -ci1 -cs10000 @FILES kmcdb tmp #计算k-mer频率，生成二进制文件kmcdb.kmc_pre和kmcdb.kmc_suf</span><br><span class="line">kmc_tools transform kmcdb histogram kmcdb_k21.hist -cx10000 #生成k-mer频数直方表kmcdb_k21.hist</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kmc命令参数：</p>
+</li>
+</ol>
+<ul>
+<li>-k21：k-mer长度设置为21</li>
+<li>-t16：线程16</li>
+<li>-m64：内存64G，设置使用RAM的大致数量，范围1-1024。</li>
+<li>-ci1 -cs10000：统计k-mer coverages覆盖度范围在[1-10000]的。</li>
+<li>@FILES：保存了输入文件列表的文件名为FILES</li>
+<li>kmcdb：KMC数据库的输出文件名前缀</li>
+<li>tmp：临时目录</li>
+</ul>
+<ol start="3">
+<li>kmc_tools命令参数：</li>
+</ol>
+<ul>
+<li>-cx10000：储存在直方图文件中counter的最大值。</li>
+</ul>
+<h3 id="4-1-2-选择覆盖阈值"><a href="#4-1-2-选择覆盖阈值" class="headerlink" title="4.1.2. 选择覆盖阈值"></a>4.1.2. 选择覆盖阈值</h3><ul>
+<li>可以目视检查k-mer直方图，选择覆盖阈值上(U)下(L)限。</li>
+<li>也可以用命令估计覆盖阈值上(U)下(L)限。L的取值范围是[20-200]，U的取值范围是[500-3000]。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">L=$(smudgeplot.py cutoff kmcdb_k21.hist L)</span><br><span class="line">U=$(smudgeplot.py cutoff kmcdb_k21.hist U)</span><br><span class="line">echo $L $U # these need to be sane values</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-3-提取阈值范围的k-mers，计算k-mer-pairs"><a href="#4-1-3-提取阈值范围的k-mers，计算k-mer-pairs" class="headerlink" title="4.1.3. 提取阈值范围的k-mers，计算k-mer pairs"></a>4.1.3. 提取阈值范围的k-mers，计算k-mer pairs</h3><ol>
+<li>smudge_pairs</li>
+</ol>
+<ul>
+<li>用<code>kmc_tools</code>提取k-mers，然后用KMC的<code>smudge_pairs</code>计算k-mer pairs。</li>
+<li><code>smudge_pairs</code>比<code>smudgeplot.py hetkmers</code>使用更少内存，速度更快地寻找杂合k-mer pairs。<ul>
+<li><code>kmc_tools transform kmcdb -ci&quot;$L&quot; -cx&quot;$U&quot; reduce kmcdb_L&quot;$L&quot;_U&quot;$U&quot;</code> 根据L和U过滤，生成二进制文件kmcdb_L10_U680.kmc_pre和kmcdb_L10_U680.kmc_suf</li>
+<li><code>smudge_pairs kmcdb_L&quot;$L&quot;_U&quot;$U&quot; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_pairs.tsv &gt; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_familysizes.tsv</code></li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>smudgeplot.py</li>
+</ol>
+<ul>
+<li>如果没有安装KMC，可以用<code>kmc_dump</code>提取k-mers。</li>
+<li>然后用<code>smudgeplot.py hetkmers</code>计算k-mer pairs。</li>
+<li><code>kmc_tools transform kmcdb -ci&quot;$L&quot; -cx&quot;$U&quot; dump -s kmcdb_L&quot;$L&quot;_U&quot;$U&quot;.dump #生成kmcdb_L10_U680.dump</code></li>
+<li><code>smudgeplot.py hetkmers -o kmcdb_L&quot;$L&quot;_U&quot;$U&quot; &lt; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;.dump # 生成kmcdb_L10_U680_coverages.tsv和kmcdb_L10_U680_sequences.tsv，耗时约1h</code></li>
+</ul>
+<h3 id="4-1-4-生成污点图-smudgeplot"><a href="#4-1-4-生成污点图-smudgeplot" class="headerlink" title="4.1.4. 生成污点图(smudgeplot)"></a>4.1.4. 生成污点图(smudgeplot)</h3><ol>
+<li>命令<br><code>smudgeplot.py plot kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv -o smudgeplot</code></li>
+</ol>
+<ul>
+<li>-o指定输出文件前缀，默认smudgeplot</li>
+<li>-t指定图中的title</li>
+</ul>
+<ol start="2">
+<li>结果</li>
+</ol>
+<ul>
+<li>生成两个基础的污点图，一个log尺度smudgeplot_smudgeplot_log10.png</li>
+<li>一个线性尺度smudgeplot_smudgeplot.png</li>
+<li>还生成文件smudgeplot_summary_table.tsv，smudgeplot_verbose_summary.txt，smudgeplot_warnings.txt。</li>
+</ul>
+<h2 id="4-2-jellyfish-Smudgeplot"><a href="#4-2-jellyfish-Smudgeplot" class="headerlink" title="4.2. jellyfish+Smudgeplot"></a>4.2. jellyfish+Smudgeplot</h2><p>用jellyfish代替KMC</p>
+<ol>
+<li><p>用jellyfish计算k-mer频率，生成k-mer频率表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jellyfish count -C -m 21 -s 1000000000 -t 8 *.fastq -o kmer_counts.jf</span><br><span class="line">jellyfish histo kmer_counts.jf &gt; kmer_k21.hist</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>提取阈值范围的k-mers，计算k-mer pairs</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">L=$(smudgeplot.py cutoff kmer_k21.hist L)</span><br><span class="line">U=$(smudgeplot.py cutoff kmer_k21.hist U)</span><br><span class="line">echo $L $U</span><br><span class="line">jellyfish dump -c -L $L -U $U kmer_counts.jf | smudgeplot.py hetkmers -o kmer_pairs</span><br><span class="line"># note that if you would like use --middle flag, you would have to sort the jellyfish dump first</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成smudgeplot污点图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smudgeplot.py plot kmer_pairs_coverages_2.tsv -o my_genome</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="4-3-Smudgeplot结果"><a href="#4-3-Smudgeplot结果" class="headerlink" title="4.3. Smudgeplot结果"></a>4.3. Smudgeplot结果</h2><ul>
+<li>热度图，横坐标是相对覆盖度 (CovB &#x2F; (CovA + CovB)) ，纵坐标是总覆盖度 (CovA + CovB) ，颜色是k-mer对的频率。</li>
+<li>每个单倍型结构都在图上呈现一个”污点(smudge)”，污点的热度表示单倍型结构在基因组中出现的频率，频率最高的单倍型结构即为预测的物种倍性结果。(比如这个图提供了三倍体的证据，AAB的频率最高)</li>
+</ul>
+<img src="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png" width=80% title="Smudgeplot污点图" align=center/>
+
+<p><strong><p align="center">Figure 5. Smudgeplot污点图。<br>图片来源： <a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot">Smudgeplot github</a></p></strong></p>
+<h1 id="5-KMC-x2F-jellyfish结果用于GenomeScope进行基因组调查"><a href="#5-KMC-x2F-jellyfish结果用于GenomeScope进行基因组调查" class="headerlink" title="5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查"></a>5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查</h1><ul>
+<li>通过KMC&#x2F;jellyfish获得的频数分布表结果kmcdb_k21.hist可用于GenomeScope进行基因组调查</li>
+</ul>
+<p><code>Rscript genomescope.R kmcdb_k21.hist &lt;k-mer_length&gt; &lt;read_length&gt; &lt;output_dir&gt; [kmer_max] [verbose]</code></p>
+<h1 id="6-批量运行脚本"><a href="#6-批量运行脚本" class="headerlink" title="6. 批量运行脚本"></a>6. 批量运行脚本</h1><p>如果样品数量非常多，可以用脚本自动遍历每个样品来运行。</p>
+<p>把样品名称整理成样品列表（sample.list），修改下面脚本中的&#x2F;path&#x2F;to&#x2F;data&#x2F;为数据所在路径，即可运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">for i in sample.list</span><br><span class="line">do</span><br><span class="line">	mkdir $i</span><br><span class="line">	cd $i</span><br><span class="line">    mkdir tmp</span><br><span class="line"></span><br><span class="line">    # 运行KMC，获得频数分布表sample_k21.hist</span><br><span class="line">	ls /path/to/data/$i* &gt; FILES</span><br><span class="line">	kmc -k21 -t16 -m64 -ci1 -cs10000 @FILES $i tmp</span><br><span class="line">	kmc_tools transform $i histogram &quot;$i&quot;_k21.hist -cx10000</span><br><span class="line">    rm -rf tmp</span><br><span class="line"></span><br><span class="line">    # 运行genomescope，估计基因组特征（默认是二倍体-p 2）</span><br><span class="line">	genomescope.R -i &quot;$i&quot;_k21.hist -o ./ -k 21 -n &quot;$i&quot;_genomescope -p 2 &gt;&quot;$i&quot;_genomescope.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">    # 运行smudgeplot，估计</span><br><span class="line">	L=$(smudgeplot.py cutoff &quot;$&#123;i&#125;&quot;_k21.hist L)</span><br><span class="line">	U=$(smudgeplot.py cutoff &quot;$&#123;i&#125;&quot;_k21.hist U)</span><br><span class="line">	echo $L $U</span><br><span class="line">	kmc_tools transform $i -ci&quot;$L&quot; -cx&quot;$U&quot; dump -s &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;.dump</span><br><span class="line">	smudgeplot.py hetkmers -o &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot; &lt; &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;.dump # 耗时步骤，约1h</span><br><span class="line">	smudgeplot.py plot &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv -o $i -t $i</span><br><span class="line">	cd ..</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
+<li>GenomeScope 2.0 + Smudgeplot paper：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41467-020-14998-3">https://www.nature.com/articles/s41467-020-14998-3</a></li>
+<li>Smudgeplot github：<a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot">https://github.com/KamilSJaron/smudgeplot</a></li>
+<li>genomescope2.0 github：<a target="_blank" rel="noopener" href="https://github.com/tbenavi1/genomescope2.0">https://github.com/tbenavi1/genomescope2.0</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/k-mer/" rel="tag"># k-mer</a>
+              <a href="/tags/KMC/" rel="tag"># KMC</a>
+              <a href="/tags/GenomeScope/" rel="tag"># GenomeScope</a>
+              <a href="/tags/Smudgeplot/" rel="tag"># Smudgeplot</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/08/bioinfo_phylogenomics_discordance_QuartetSampling/" rel="prev" title="用软件Quartet Sampling来计算分支支持率，评估系统发育树不一致程度，区分强冲突和弱支持">
+      <i class="fa fa-chevron-left"></i> 用软件Quartet Sampling来计算分支支持率，评估系统发育树不一致程度，区分强冲突和弱支持
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Smudgeplot"><span class="nav-text">1. Smudgeplot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Smudgeplot%E5%8E%9F%E7%90%86"><span class="nav-text">2. Smudgeplot原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Smudgeplot%E5%AE%89%E8%A3%85"><span class="nav-text">3. Smudgeplot安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Smudgeplot%E4%BD%BF%E7%94%A8"><span class="nav-text">4. Smudgeplot使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-KMC-Smudgeplot"><span class="nav-text">4.1. KMC+Smudgeplot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E7%94%A8KMC%E8%AE%A1%E7%AE%97k-mer%E9%A2%91%E7%8E%87%EF%BC%8C%E7%94%9F%E6%88%90k-mer%E9%A2%91%E7%8E%87%E8%A1%A8"><span class="nav-text">4.1.1. 用KMC计算k-mer频率，生成k-mer频率表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-%E9%80%89%E6%8B%A9%E8%A6%86%E7%9B%96%E9%98%88%E5%80%BC"><span class="nav-text">4.1.2. 选择覆盖阈值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3-%E6%8F%90%E5%8F%96%E9%98%88%E5%80%BC%E8%8C%83%E5%9B%B4%E7%9A%84k-mers%EF%BC%8C%E8%AE%A1%E7%AE%97k-mer-pairs"><span class="nav-text">4.1.3. 提取阈值范围的k-mers，计算k-mer pairs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-4-%E7%94%9F%E6%88%90%E6%B1%A1%E7%82%B9%E5%9B%BE-smudgeplot"><span class="nav-text">4.1.4. 生成污点图(smudgeplot)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-jellyfish-Smudgeplot"><span class="nav-text">4.2. jellyfish+Smudgeplot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Smudgeplot%E7%BB%93%E6%9E%9C"><span class="nav-text">4.3. Smudgeplot结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-KMC-x2F-jellyfish%E7%BB%93%E6%9E%9C%E7%94%A8%E4%BA%8EGenomeScope%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-text">5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%89%B9%E9%87%8F%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-text">6. 批量运行脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-references"><span class="nav-text">7. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">277</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">472k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">7:10</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/";
+    this.page.identifier = "2022/12/31/omics_genome.survey_02.Smudgeplot/";
+    this.page.title = "用k-mer分析进行基因组调查：（二）用Smudgeplot估计倍性";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

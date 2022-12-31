@@ -20,25 +20,26 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="介绍KmerGenie，用KmerGenie做基因组调查(genome survey)的k-mer频数统计和基因组特征评估。">
+  <meta name="description" content="介绍GCE，用GCE的kmerfreq做基因组调查(genome survey)的k-mer频数统计，GCE的gce做基因组特征评估。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用k-mer分析进行基因组调查：（六）用KmerGenie一步实现">
-<meta property="og:url" content="http://example.com/2022/06/19/omics_genome.survey_KmerGenie/index.html">
+<meta property="og:title" content="用k-mer分析进行基因组调查：（六）用GCE分步实现">
+<meta property="og:url" content="http://example.com/2022/06/07/omics_genome.survey_06.GCE/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="介绍KmerGenie，用KmerGenie做基因组调查(genome survey)的k-mer频数统计和基因组特征评估。">
+<meta property="og:description" content="介绍GCE，用GCE的kmerfreq做基因组调查(genome survey)的k-mer频数统计，GCE的gce做基因组特征评估。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
-<meta property="article:published_time" content="2022-06-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T11:35:32.111Z">
+<meta property="article:published_time" content="2022-06-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-12-28T12:41:25.791Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome survey">
 <meta property="article:tag" content="genome">
 <meta property="article:tag" content="k-mer">
-<meta property="article:tag" content="KmerGenie">
+<meta property="article:tag" content="GCE">
+<meta property="article:tag" content="kmerfreq">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
-<link rel="canonical" href="http://example.com/2022/06/19/omics_genome.survey_KmerGenie/">
+<link rel="canonical" href="http://example.com/2022/06/07/omics_genome.survey_06.GCE/">
 
 
 <script id="page-configurations">
@@ -51,7 +52,7 @@
   };
 </script>
 
-  <title>用k-mer分析进行基因组调查：（六）用KmerGenie一步实现 | 生信技工</title>
+  <title>用k-mer分析进行基因组调查：（六）用GCE分步实现 | 生信技工</title>
   
 
 
@@ -217,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/19/omics_genome.survey_KmerGenie/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/omics_genome.survey_06.GCE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -230,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          用k-mer分析进行基因组调查：（六）用KmerGenie一步实现
+          用k-mer分析进行基因组调查：（六）用GCE分步实现
         </h1>
 
         <div class="post-meta">
@@ -240,14 +241,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-19T00:00:00+08:00">2022-06-19</time>
+              <time title="Created: 2022-06-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-07T00:00:00+08:00">2022-06-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:35:32" itemprop="dateModified" datetime="2022-07-15T19:35:32+08:00">2022-07-15</time>
+                <time title="Modified: 2022-12-28 20:41:25" itemprop="dateModified" datetime="2022-12-28T20:41:25+08:00">2022-12-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,8 +284,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2022/06/19/omics_genome.survey_KmerGenie/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/19/omics_genome.survey_KmerGenie/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2022/06/07/omics_genome.survey_06.GCE/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/07/omics_genome.survey_06.GCE/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -293,7 +294,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.8k</span>
+              <span>3.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -301,7 +302,7 @@
               </span>
               <span>3 mins.</span>
             </span>
-            <div class="post-description">介绍KmerGenie，用KmerGenie做基因组调查(genome survey)的k-mer频数统计和基因组特征评估。</div>
+            <div class="post-description">介绍GCE，用GCE的kmerfreq做基因组调查(genome survey)的k-mer频数统计，GCE的gce做基因组特征评估。</div>
 
         </div>
       </header>
@@ -312,101 +313,130 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=27538254&auto=1&height=32"></iframe></div>
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
 
 <p><strong>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</strong></p>
 <h1 id="1-k-mer进行基因组调查的软件"><a href="#1-k-mer进行基因组调查的软件" class="headerlink" title="1. k-mer进行基因组调查的软件"></a>1. k-mer进行基因组调查的软件</h1><p>k-mer进行基因组调查分为<strong>k-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。</p>
 <ul>
-<li>KmerGenie可以同时实现两步。第一步k-mer频数统计和第二步基因组特征评估。</li>
-<li>KmerGenie第一步的结果可用于其他软件第二步基因组特征评估。</li>
-<li>KmerGenie可以同时分析多个预设的k-mers，并选出一个最佳基因组组装k-mer值。</li>
+<li>GCE可以分步实现两步。第一步k-mer频数统计和第二步基因组特征评估。</li>
+<li>GCE第一步的结果sample.histo可以用在GenomeScope和其他基因组特征评估的软件上，实现第二步。</li>
 </ul>
-<h1 id="2-KmerGenie-简介"><a href="#2-KmerGenie-简介" class="headerlink" title="2. KmerGenie 简介"></a>2. KmerGenie 简介</h1><ul>
-<li>KmerGenie在2014年第一次发表，2018年最近一次更新。开发用于基因组组装的参数k的最佳值的选择。</li>
-<li>KmerGenie官网：<a target="_blank" rel="noopener" href="http://kmergenie.bx.psu.edu/%E3%80%82">http://kmergenie.bx.psu.edu/。</a></li>
-<li>官网包含软件的下载地址，示例报告，和版本更新记录。</li>
+<h1 id="2-GCE-简介"><a href="#2-GCE-简介" class="headerlink" title="2. GCE 简介"></a>2. GCE 简介</h1><p>GCE (genomic charactor estimator)是华大基因在2013年开发的一款基于贝叶斯模型的用于基因组调查的软件，在2020年发布了版本v2。</p>
+<h1 id="3-GCE-安装"><a href="#3-GCE-安装" class="headerlink" title="3. GCE 安装"></a>3. GCE 安装</h1><h2 id="3-1-GCE-下载"><a href="#3-1-GCE-下载" class="headerlink" title="3.1. GCE 下载"></a>3.1. GCE 下载</h2><ul>
+<li>GCE主要托管在BGI的ftp站点：<a href="ftp://ftp.genomics.org.cn/pub/gce%E3%80%82">ftp://ftp.genomics.org.cn/pub/gce。</a></li>
+<li>也可以在GCE github：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/GCE%E4%B8%8A%E6%89%BE%E5%88%B0%E3%80%82">https://github.com/fanagislab/GCE上找到。</a></li>
 </ul>
-<h1 id="3-KmerGenie-安装"><a href="#3-KmerGenie-安装" class="headerlink" title="3. KmerGenie 安装"></a>3. KmerGenie 安装</h1><p>在KmerGenie官网：<a target="_blank" rel="noopener" href="http://kmergenie.bx.psu.edu/">http://kmergenie.bx.psu.edu/</a> 下载，目前最新版是18年更新的1.7051。</p>
-<p>安装前需要python（&gt;&#x3D;2.7）和R支持，我用的anaconda的python，安装运行完成后自动把kmergenie命令添加到了<code>/anaconda3/bin/</code>下面，所以不用再次把kmergenie命令添加到环境变量了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://kmergenie.bx.psu.edu/kmergenie-1.7051.tar.gz</span><br><span class="line">tar -xzvf kmergenie-1.7051.tar.gz</span><br><span class="line">python setup.py install</span><br><span class="line">kmergenie -h</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-KmerGenie-运行"><a href="#4-KmerGenie-运行" class="headerlink" title="4. KmerGenie 运行"></a>4. KmerGenie 运行</h1><ol>
+<h2 id="3-2-GCE-安装"><a href="#3-2-GCE-安装" class="headerlink" title="3.2. GCE 安装"></a>3.2. GCE 安装</h2><ol>
+<li><p>已编译【推荐】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:fanagislab/GCE.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>未编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp.genomics.org.cn/pub/gce/gce-1.0.2.tar.gz</span><br><span class="line">tar -xzvf gce-1.0.2.tar.gz #解压缩和解包</span><br><span class="line">make #编译</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>文件夹下有<code>kmerfreq</code>和<code>gce</code>两个命令。</p>
+<p>老版本是<code>kmer_freq_hash</code>代替<code>kmerfreq</code>命令。</p>
+<h1 id="4-GCE-运行"><a href="#4-GCE-运行" class="headerlink" title="4. GCE 运行"></a>4. GCE 运行</h1><p>GCE软件里包含两个主要的命令，<code>kmerfreq</code>用来完成第一步k-mer频数统计，<code>gce</code>用来完成第二步基因组特征评估。</p>
+<h2 id="4-1-k-mer频数统计"><a href="#4-1-k-mer频数统计" class="headerlink" title="4.1. k-mer频数统计"></a>4.1. k-mer频数统计</h2><h3 id="4-1-1-运行"><a href="#4-1-1-运行" class="headerlink" title="4.1.1. 运行"></a>4.1.1. 运行</h3><ol>
 <li>命令</li>
 </ol>
-<p><code>kmergenie fastq_list.txt -o ./sample -l 17 -k 121 -s 10 -t 4 &gt; sample.log1.txt 2&gt; sample.log2.txt</code></p>
-<ul>
-<li>fastq_list.txt文件保存着fastq文件的位置和文件名，每个文件一行。</li>
-<li>默认单倍体模式，以k-mer长度17为起始，121为终止，10为间隔逐一测试；程序运行线程数4。</li>
-<li>结果输出在当前路径下，以sample为结果文件前缀名。</li>
-<li>“sample.log1.txt”和“sample.log2.txt”分别为程序运行时的正确&#x2F;错误输出日志。</li>
-</ul>
+<p><code>/path/gce-1.0.2/kmerfreq -k 17 -t 24 -p sample input.path &amp;&gt; kmer_freq.log</code></p>
 <ol start="2">
 <li>参数</li>
 </ol>
 <ul>
-<li>–diploid：使用二倍体模式，默认是单倍体模式（haploid）。</li>
-<li>–one-pass：默认是两次评估（two passes），这个参数设置用来跳过在2bp分辨率上评估k的第二次评估。</li>
-<li>-k 121：最大的k-mer值，默认是121。</li>
-<li>-l 15：最小的k-mer值，默认是15。</li>
-<li>-s 10：在最小和最大的k-mer值间的间隔，默认是10。意味着会进行k&#x3D;15,25,35…115,121的分析。</li>
-<li>-e 200：程序运行内存，默认是每个线程200MB。</li>
-<li>-t 8：线程数。</li>
-<li>-o histograms：输出文件的前缀，默认是histograms。</li>
-<li>–debug：开发者使用，输出R脚本。</li>
-<li>–orig-hist：老程序的评估方法（更慢且准确性更低）。</li>
+<li>-k 17：k-mer size</li>
+<li>-t 24：线程</li>
+<li>-p prefix：输出文件的前缀</li>
+<li>input.path：输入数据的路径保存在input.path文本文件</li>
 </ul>
-<h1 id="5-KmerGenie-结果"><a href="#5-KmerGenie-结果" class="headerlink" title="5. KmerGenie 结果"></a>5. KmerGenie 结果</h1><ol>
-<li>结果报告文件sample_report.html</li>
+<h3 id="4-1-2-输出文件"><a href="#4-1-2-输出文件" class="headerlink" title="4.1.2. 输出文件"></a>4.1.2. 输出文件</h3><ol>
+<li><strong>sample.kmer.freq.stat</strong>：结果文件</li>
 </ol>
-<p>下载所有结果文件，打开sample_report.html，报告内容包括：</p>
 <ul>
-<li>开头以折线图的形式展示出在每种长度k-mer下，估算的基因组大小。</li>
-<li>同时给出了<strong>最佳k-mer</strong>选择数值。其实就是将评估基因组总大小<strong>最高</strong>的那个k-mer值判定为<strong>最佳k-mer</strong>，为基因组组装时k-mer的选择提供参考。</li>
-<li>折线图的详细说明，包括最佳k-mer的评估规则，以及当测序深度足够高时的k-mer选择等。</li>
-<li>每种k-mer的频数分布图，在基因组的k-mer中可根据该图判定基因组杂合度或重复序列比例。</li>
+<li>结果文件sample.kmer.freq.stat，记录了每个k-mer频数的统计信息，用于生成GCE的输入文件。</li>
+<li>之前的版本，该文件只统计到第255行，第255行之后的数据合并至第255行，表示k-mer出现频数&gt;&#x3D;255的片段总数。</li>
+<li>现在这个版本(gce-1.0.2)上限变成了65534。</li>
 </ul>
 <ol start="2">
-<li>频数分布表sample.histo</li>
+<li><strong>kmer_freq.log</strong>：运行日志文件</li>
 </ol>
 <ul>
-<li>包括各k-mer取值下的频数分布表sample.histo和对应的频数分布图sample.histo.pdf。</li>
-<li>如果想用某个k-mer的频数分布表做<strong>基因组特征评估</strong>，自己绘制频数分布图，可以使用sample.histo文件。</li>
+<li>老版本的日志文件还对测序数据进行了简要统计。</li>
+<li>在该文件的最下方，统计了k-mer片段总数、k-mer种类数、k-mer平均频数、碱基总数、reads平均长度、基因组大小的粗略估计等信息。</li>
 </ul>
+<h2 id="4-2-基因组特征评估"><a href="#4-2-基因组特征评估" class="headerlink" title="4.2. 基因组特征评估"></a>4.2. 基因组特征评估</h2><h3 id="4-2-1-获取参数"><a href="#4-2-1-获取参数" class="headerlink" title="4.2.1. 获取参数"></a>4.2.1. 获取参数</h3><ol>
+<li>获取k-mer总数</li>
+</ol>
+<p><code>less sample.kmer.freq.stat | grep &quot;#Kmer indivdual number&quot;</code> </p>
+<p>用于gce的-g参数</p>
+<ol start="2">
+<li>获取k-mer深度分布表</li>
+</ol>
+<p><code>less sample.kmer.freq.stat | perl -ne &#39;next if(/^#/ || /^\s/); print; &#39; | awk &#39;&#123;print $1&quot;\t&quot;$2&#125;&#39; &gt; sample.kmer.freq.stat.2colum</code></p>
+<ul>
+<li>sample.kmer.freq.stat.2colum文件包含两列数据，第一列是k-mer频数，第二列是频数对应的k-mer的种类数量。</li>
+<li>预期第二列数据是泊松分布，有明显峰值；频数最小的(比如小于5)的那几列对应的k-mer数量高是测序错误造成的，频数最大的那列对应的k-mer数量高是把所有大于该列的频数进行合计数量造成的，两端都可以忽略。</li>
+</ul>
+<h3 id="4-2-2-运行gce"><a href="#4-2-2-运行gce" class="headerlink" title="4.2.2. 运行gce"></a>4.2.2. 运行gce</h3><ol>
+<li>纯合模式</li>
+</ol>
+<p><code>gce -f sample.kmer.freq.stat.2colum -g 173854609857 &gt; gce.table 2&gt; gce.log</code></p>
+<ol start="2">
+<li>杂合模式</li>
+</ol>
+<p><code>gce -f sample.kmer.freq.stat.2colum -g 173854609857 -H 1 -c 75 &gt; gce2.table 2&gt; gce2.log</code></p>
 <ol start="3">
-<li>所有k-mer取值评估的基因组大小记录在sample.dat</li>
+<li>开发者建议</li>
 </ol>
+<p>对于不能判断纯合还是杂合的数据，可以先运行纯合模式，获得初始峰值(raw_peak)，即k-mer的期望深度，用作<code>-c</code>参数。</p>
+<p>然后再用<code>-c</code>参数和<code>-H 1</code>参数运行杂合模式。最后比较两种模式的结果，从而判断哪种更适用当前数据。</p>
+<h3 id="4-2-3-gce的参数"><a href="#4-2-3-gce的参数" class="headerlink" title="4.2.3. gce的参数"></a>4.2.3. gce的参数</h3><p>-f和-g是必需参数，其他都为可选参数。</p>
 <ul>
-<li>包括sample.dat和sample.dat.pdf。</li>
+<li>-f sample.freq.stat.2colum：k-mer频数分布表。</li>
+<li>-g 173854609857：k-mer片段总数，通过上面命令获取，或者查看kmer_freq.log获取。</li>
+<li>-H 1：默认是0。homozygous mode 纯合模式(0)，heterozgyous mode 杂合模式(1)。</li>
+<li>-c 75：独特的k-mer的期望深度，通过肉眼检查sample.gce.table的峰值获取。</li>
+<li>-b 1：有bias(1)，无(0)bias，默认是0。</li>
+<li>-m 1：评估模型，离散模型(0)，连续模型(1)，默认是0。</li>
+<li>-M 1500：设置最大深度，默认1500，大于1500的会被忽略。</li>
+<li>-D 1：期望值的精度，默认是1。</li>
 </ul>
-<h1 id="6-notes"><a href="#6-notes" class="headerlink" title="6. notes"></a>6. notes</h1><ol>
-<li>二倍体模式</li>
+<h3 id="4-2-4-结果"><a href="#4-2-4-结果" class="headerlink" title="4.2.4. 结果"></a>4.2.4. 结果</h3><p>生成两个文件：<strong>gce.table</strong>和<strong>gce.log</strong>。gce.table保存了用于作图的数据，gce.log日志文件最后记录了基因组特征评估结果的统计。</p>
+<ol>
+<li>gce.log文件最后记录了如下内容：</li>
 </ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">raw_peak        effective_kmer_species  effective_kmer_individuals      coverage_depth  genome_size     a[1]    b[1]</span><br><span class="line">75      742400596       168346645871    75.8021 2.22087e+09     0.663012        0.271515</span><br></pre></td></tr></table></figure>
+
+<p>含义：</p>
 <ul>
-<li>如果待测物种是低杂合低重复的简单基因组，则使用<strong>单倍体模式</strong>。</li>
-<li>如果是复杂基因组，使用<strong>二倍体模式</strong>。</li>
-<li>如果不确定基因组简单还是复杂，可以先用单倍体模式运行，根据结果中是否有<strong>明显杂合峰</strong>判断，再运行二倍体模式。</li>
+<li>raw_peak： 覆盖度为 75 的 kmer 的种类数最多，为主峰。</li>
+<li>effective_kmer_species：真实的k-mer种类的总数(去除测序错误造成的低频k-mers)</li>
+<li>effective_kmer_individuals：真实的k-mer个体的总数(去除测序错误造成的低频k-mers)</li>
+<li>coverage_depth：估算出的真实k-mers的覆盖深度</li>
+<li>genome_size：基因组大小。</li>
+</ul>
+<p><strong>genome_size &#x3D; effective_kmer_individuals &#x2F; coverage_depth</strong></p>
+<ul>
+<li>a[1]： uniqe kmers (在基因组上仅出现 1 次的 kmer ) 的种类数占总种类数的比例。</li>
+<li>b[1]： uniqe kmers (在基因组上仅出现 1 次的 kmer ) 的个体数占总个体数的比例。该值代表着基因组上拷贝数为 1 的序列比例。</li>
 </ul>
 <ol start="2">
-<li>KmerGenie软件默认将k-mer频数曲线的纵坐标进行了log10转化<br>可以通过修改脚本来更改展示效果：</li>
+<li>如果使用杂合模式<code>-H 1</code>，则会在gce.log文件最后额外得到下面信息：</li>
 </ol>
 <ul>
-<li>在脚本<code>kmergenie-1.7051/scripts/plot_histogram.r</code>中第110行，<code>suppressWarnings</code>函数的参数<code>log=&#39;y&#39;</code>设置的log10转化，可以通过去除<code>log=&#39;y&#39;</code>参数来展示未log10转化的原始坐标。</li>
-<li>在脚本<code>kmergenie-1.7051/scripts/plot_histogram.r</code>中第110行，<code>suppressWarnings</code>函数的参数<code>covNormalized</code>改为<code>covNormalized[-c(1:5)]</code>来过滤掉Abundance&lt;5的区域。</li>
+<li>a[1&#x2F;2]：a[1&#x2F;2]&#x3D;0.223671表示在所有的 uniqe kmers 种类中，有 0.223671 比例的 kmer 属于杂合 kmer 。</li>
+<li>b[1&#x2F;2]：a[1&#x2F;2]&#x3D;0.326934 表示在所有的 uniqe kmers 个体中，有 0.326934 比例的 kmer 属于杂合 kmer 。<br>通过计算，还可以获得的信息：</li>
+<li>k-mer种类的杂合率 kmer-species heterozygous ratio &#x3D; 0.125918，0.125918 是由 a[1&#x2F;2] 计算出来的。</li>
 </ul>
-<ol start="3">
-<li>k-mer取值</li>
-</ol>
+<p>$$0.125918 &#x3D; a[1&#x2F;2] &#x2F; （ 2- a[1&#x2F;2] )$$ </p>
 <ul>
-<li>KmerGenie软件是用于二代数据组装基因组推荐k-mer参数的。推荐的<strong>最佳k-mer</strong>是评估基因组最大的对应的k-mer。</li>
-<li>在基因组组装时，<strong>k-mer的取值</strong>受测序深度的影响，若测序深度越高，可选择更高的k-mer进行尝试组装，以得到更长更完整的contigs序列。</li>
-<li>但若在低深度测序模式下使用较高的k-mer进行组装时，就会引入较高的<strong>错误率</strong>。表现为k-mer频数分布曲线（纵坐标未进行log10转化的）的左侧由于测序错误导致的低频k-mer数量未随着k-mer频数升高下降至最低即产生了上升趋势。</li>
-<li>用KmerGenie软件做基因组调查时，可以根据每个k-mer值的频数分布图结果选择更为合适的k-mer值做<strong>基因组特征评估</strong>。</li>
+<li>重复序列的含量 &#x3D; $$1 - b[1&#x2F;2] - b[1]$$</li>
 </ul>
-<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
-<li>KmerGenie website：<a target="_blank" rel="noopener" href="http://kmergenie.bx.psu.edu/">http://kmergenie.bx.psu.edu/</a></li>
-<li>KmerGenie paper：<a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article/30/1/31/235479">https://academic.oup.com/bioinformatics/article/30/1/31/235479</a></li>
-<li><a target="_blank" rel="noopener" href="http://blog.sciencenet.cn/blog-3406804-1159967.html">http://blog.sciencenet.cn/blog-3406804-1159967.html</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0251b55977c0">https://www.jianshu.com/p/0251b55977c0</a></li>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li>GCE github：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/GCE">https://github.com/fanagislab/GCE</a></li>
+<li>kmerfreq：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/kmerfreq">https://github.com/fanagislab/kmerfreq</a></li>
+<li>GCE paper：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1308.2012">https://arxiv.org/abs/1308.2012</a></li>
+<li>GCE blog：<a target="_blank" rel="noopener" href="http://www.chenlianfu.com/?p=2335">http://www.chenlianfu.com/?p=2335</a></li>
 </ol>
 <hr>
 <ul>
@@ -414,7 +444,6 @@
 <li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
 </ul>
 <img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
-
     </div>
 
     
@@ -426,7 +455,8 @@
               <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
               <a href="/tags/genome/" rel="tag"># genome</a>
               <a href="/tags/k-mer/" rel="tag"># k-mer</a>
-              <a href="/tags/KmerGenie/" rel="tag"># KmerGenie</a>
+              <a href="/tags/GCE/" rel="tag"># GCE</a>
+              <a href="/tags/kmerfreq/" rel="tag"># kmerfreq</a>
           </div>
 
         
@@ -435,12 +465,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/06/16/biosoft_fileformat_gb2tbl/" rel="prev" title="转换GenBank文件为tbl格式，为提交注释做准备">
-      <i class="fa fa-chevron-left"></i> 转换GenBank文件为tbl格式，为提交注释做准备
+    <a href="/2022/06/05/omics_genome.survey_04.KMC/" rel="prev" title="用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计">
+      <i class="fa fa-chevron-left"></i> 用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/06/30/omics_organelle_submit/" rel="next" title="使用BankIt提交细胞器基因组组装和注释到NCBI">
-      使用BankIt提交细胞器基因组组装和注释到NCBI <i class="fa fa-chevron-right"></i>
+    <a href="/2022/06/16/biosoft_fileformat_gb2tbl/" rel="next" title="转换GenBank文件为tbl格式，为提交注释做准备">
+      转换GenBank文件为tbl格式，为提交注释做准备 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -507,7 +537,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-k-mer%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">1. k-mer进行基因组调查的软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-KmerGenie-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. KmerGenie 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-KmerGenie-%E5%AE%89%E8%A3%85"><span class="nav-text">3. KmerGenie 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-KmerGenie-%E8%BF%90%E8%A1%8C"><span class="nav-text">4. KmerGenie 运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-KmerGenie-%E7%BB%93%E6%9E%9C"><span class="nav-text">5. KmerGenie 结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-notes"><span class="nav-text">6. notes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-references"><span class="nav-text">7. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-k-mer%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">1. k-mer进行基因组调查的软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GCE-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. GCE 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-GCE-%E5%AE%89%E8%A3%85"><span class="nav-text">3. GCE 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-GCE-%E4%B8%8B%E8%BD%BD"><span class="nav-text">3.1. GCE 下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-GCE-%E5%AE%89%E8%A3%85"><span class="nav-text">3.2. GCE 安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-GCE-%E8%BF%90%E8%A1%8C"><span class="nav-text">4. GCE 运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-k-mer%E9%A2%91%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="nav-text">4.1. k-mer频数统计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">4.1.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6"><span class="nav-text">4.1.2. 输出文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%89%B9%E5%BE%81%E8%AF%84%E4%BC%B0"><span class="nav-text">4.2. 基因组特征评估</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-text">4.2.1. 获取参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E8%BF%90%E8%A1%8Cgce"><span class="nav-text">4.2.2. 运行gce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-gce%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-text">4.2.3. gce的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-4-%E7%BB%93%E6%9E%9C"><span class="nav-text">4.2.4. 结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -521,7 +551,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -578,12 +608,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">469k</span>
+    <span title="Symbols count total">472k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7:06</span>
+    <span title="Reading time total">7:10</span>
 </div>
 
         
@@ -675,9 +705,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2022/06/19/omics_genome.survey_KmerGenie/";
-    this.page.identifier = "2022/06/19/omics_genome.survey_KmerGenie/";
-    this.page.title = "用k-mer分析进行基因组调查：（六）用KmerGenie一步实现";
+    this.page.url = "http://example.com/2022/06/07/omics_genome.survey_06.GCE/";
+    this.page.identifier = "2022/06/07/omics_genome.survey_06.GCE/";
+    this.page.title = "用k-mer分析进行基因组调查：（六）用GCE分步实现";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

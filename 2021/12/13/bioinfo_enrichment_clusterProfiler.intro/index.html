@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://yulab-smu.top/biomedical-knowledge-mining-book/figures/clusterProfiler-diagram.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-12-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-16T13:00:09.377Z">
+<meta property="article:modified_time" content="2022-11-30T13:18:21.963Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene set enrichment analysis">
 <meta property="article:tag" content="GSEA">
@@ -250,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-16 21:00:09" itemprop="dateModified" datetime="2022-08-16T21:00:09+08:00">2022-08-16</time>
+                <time title="Modified: 2022-11-30 21:18:21" itemprop="dateModified" datetime="2022-11-30T21:18:21+08:00">2022-11-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -367,7 +367,15 @@
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;gene.list&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#读取gene ID list，内容为一列ENSEMBL格式的基因ID名称</span></span><br><span class="line">genes <span class="operator">&lt;-</span> <span class="built_in">as.character</span><span class="punctuation">(</span>data<span class="operator">$</span>V1<span class="punctuation">)</span> <span class="comment">#转换成字符格式</span></span><br><span class="line">ggo <span class="operator">&lt;-</span> groupGO<span class="punctuation">(</span>gene <span class="operator">=</span> genes<span class="punctuation">,</span> OrgDb <span class="operator">=</span> org.Hs.eg.db<span class="punctuation">,</span> ont <span class="operator">=</span> <span class="string">&quot;CC&quot;</span><span class="punctuation">,</span> level <span class="operator">=</span> <span class="number">3</span><span class="punctuation">,</span> readable <span class="operator">=</span> TURE<span class="punctuation">)</span></span><br><span class="line">head<span class="punctuation">(</span>ggo<span class="punctuation">,</span><span class="number">3</span><span class="punctuation">)</span></span><br><span class="line">                   ID       Description Count GeneRatio geneID</span><br><span class="line">GO<span class="operator">:</span><span class="number">0000003</span> GO<span class="operator">:</span><span class="number">0000003</span>      reproduction     <span class="number">0</span>     <span class="number">0</span><span class="operator">/</span><span class="number">929</span>       </span><br><span class="line">GO<span class="operator">:</span><span class="number">0008152</span> GO<span class="operator">:</span><span class="number">0008152</span> metabolic process     <span class="number">0</span>     <span class="number">0</span><span class="operator">/</span><span class="number">929</span>       </span><br><span class="line">GO<span class="operator">:</span><span class="number">0001906</span> GO<span class="operator">:</span><span class="number">0001906</span>      cell killing     <span class="number">0</span>     <span class="number">0</span><span class="operator">/</span><span class="number">929</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="6-2-1-4-ORA分析"><a href="#6-2-1-4-ORA分析" class="headerlink" title="6.2.1.4. ORA分析"></a>6.2.1.4. ORA分析</h4><ol>
-<li>读取输入文件<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;gene.list&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#读取gene ID list，内容为一列ENSEMBL格式的基因ID名称</span></span><br><span class="line">genes <span class="operator">&lt;-</span> <span class="built_in">as.character</span><span class="punctuation">(</span>data<span class="operator">$</span>V1<span class="punctuation">)</span> <span class="comment">#转换成字符格式</span></span><br></pre></td></tr></table></figure></li>
+<li>读取输入文件</li>
+</ol>
+<ul>
+<li>读取基因ID的list文件</li>
+<li>这些ID会在enrichGO的分析中被自动去重，所以文件是否有重复结果都一样。</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&quot;gene.list&quot;</span><span class="punctuation">,</span>header<span class="operator">=</span><span class="built_in">F</span><span class="punctuation">)</span> <span class="comment">#读取gene ID list，内容为一列ENSEMBL格式的基因ID名称</span></span><br><span class="line">genes <span class="operator">&lt;-</span> <span class="built_in">as.character</span><span class="punctuation">(</span>data<span class="operator">$</span>V1<span class="punctuation">)</span> <span class="comment">#转换成字符格式</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
 <li>支持物种的标准分析 enrichGO()</li>
 </ol>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ego <span class="operator">&lt;-</span> enrichGO<span class="punctuation">(</span>gene          <span class="operator">=</span> genes<span class="punctuation">,</span> <span class="comment"># list of entrez gene id</span></span><br><span class="line">                OrgDb         <span class="operator">=</span> org.At.tair.db<span class="punctuation">,</span> <span class="comment"># 背景使用分析物种的org包，这里示例使用拟南芥的数据库</span></span><br><span class="line">                keyType       <span class="operator">=</span> <span class="string">&#x27;ENSEMBL&#x27;</span><span class="punctuation">,</span> <span class="comment"># 输入基因的类型，命令keytypes(org.Hs.eg.db)会列出可用的所有类型；</span></span><br><span class="line">                ont           <span class="operator">=</span> <span class="string">&quot;BP&quot;</span><span class="punctuation">,</span> <span class="comment"># &quot;BP&quot;, &quot;MF&quot;, &quot;CC&quot;, &quot;ALL&quot;。GO三个子类。如果选ALL，会同时获得三个子类的结果(相当于单独做三个子类的结果合并在一起)，结果中增加一列ONTOLOGY为子类。</span></span><br><span class="line">                pAdjustMethod <span class="operator">=</span> <span class="string">&quot;BH&quot;</span><span class="punctuation">,</span> <span class="comment"># 指定多重假设检验矫正的方法，选项包含 &quot;holm&quot;, &quot;hochberg&quot;, &quot;hommel&quot;, &quot;bonferroni&quot;, &quot;BH&quot;, &quot;BY&quot;, &quot;fdr&quot;, &quot;none&quot;</span></span><br><span class="line">                pvalueCutoff  <span class="operator">=</span> <span class="number">0.05</span><span class="punctuation">,</span> <span class="comment"># 富集分析的pvalue，默认是pvalueCutoff = 0.05，更严格可选择0.01</span></span><br><span class="line">                qvalueCutoff  <span class="operator">=</span> <span class="number">0.2</span><span class="punctuation">,</span> <span class="comment"># 富集分析显著性的qvalue，默认是qvalueCutoff = 0.2，更严格可选择0.05</span></span><br><span class="line">                readable      <span class="operator">=</span> <span class="literal">TRUE</span> <span class="punctuation">)</span> <span class="comment"># 是否将gene ID转换到 gene symbol</span></span><br><span class="line">head<span class="punctuation">(</span>ego<span class="punctuation">,</span><span class="number">2</span><span class="punctuation">)</span></span><br><span class="line">     ONTOLOGY         ID                                                Description</span><br><span class="line">GO<span class="operator">:</span><span class="number">0002887</span>       BP GO<span class="operator">:</span><span class="number">0002887</span> negative regulation of myeloid leukocyte mediated immunity</span><br><span class="line">GO<span class="operator">:</span><span class="number">0033004</span>       BP GO<span class="operator">:</span><span class="number">0033004</span>                negative regulation of mast cell activation</span><br><span class="line">           GeneRatio  BgRatio      pvalue  p.adjust    qvalue                   geneID Count</span><br><span class="line">GO<span class="operator">:</span><span class="number">0002887</span>     <span class="number">2</span><span class="operator">/</span><span class="number">121</span> <span class="number">10</span><span class="operator">/</span><span class="number">11461</span> <span class="number">0.004706555</span> <span class="number">0.7796682</span> <span class="number">0.7796682</span>              CD300A<span class="operator">/</span>CD84     <span class="number">2</span></span><br><span class="line">GO<span class="operator">:</span><span class="number">0033004</span>     <span class="number">2</span><span class="operator">/</span><span class="number">121</span> <span class="number">10</span><span class="operator">/</span><span class="number">11461</span> <span class="number">0.004706555</span> <span class="number">0.7796682</span> <span class="number">0.7796682</span>              CD300A<span class="operator">/</span>CD84     <span class="number">2</span></span><br></pre></td></tr></table></figure>
@@ -661,7 +669,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -718,12 +726,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">469k</span>
+    <span title="Symbols count total">472k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7:06</span>
+    <span title="Reading time total">7:10</span>
 </div>
 
         

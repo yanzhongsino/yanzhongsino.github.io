@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-12-28T08:30:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T11:37:56.926Z">
+<meta property="article:modified_time" content="2022-11-30T13:18:21.962Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="R">
 <meta property="article:tag" content="RStudio">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:37:56" itemprop="dateModified" datetime="2022-07-15T19:37:56+08:00">2022-07-15</time>
+                <time title="Modified: 2022-11-30 21:18:21" itemprop="dateModified" datetime="2022-11-30T21:18:21+08:00">2022-11-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -291,13 +291,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>3.8k</span>
+              <span>4.8k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>3 mins.</span>
+              <span>4 mins.</span>
             </span>
             <div class="post-description">记录了R及相关软件RStudio，Rtools的安装，R包的安装方法。</div>
 
@@ -326,7 +326,25 @@
 </ul>
 <h1 id="2-R的安装和配置"><a href="#2-R的安装和配置" class="headerlink" title="2. R的安装和配置"></a>2. R的安装和配置</h1><h2 id="2-1-R-for-Windows"><a href="#2-1-R-for-Windows" class="headerlink" title="2.1. R for Windows"></a>2.1. R for Windows</h2><h3 id="2-1-1-安装R"><a href="#2-1-1-安装R" class="headerlink" title="2.1.1. 安装R"></a>2.1.1. 安装R</h3><p><a target="_blank" rel="noopener" href="https://www.r-project.org/">R官网</a>或者<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/">R清华镜像</a>下载安装最新版本的R(现在最新版是R4.1.2)。<br>双击之后按步骤安装。</p>
 <h3 id="2-1-2-安装RStudio-Desktop"><a href="#2-1-2-安装RStudio-Desktop" class="headerlink" title="2.1.2. 安装RStudio Desktop"></a>2.1.2. 安装RStudio Desktop</h3><p><a target="_blank" rel="noopener" href="https://www.rstudio.com/">RStudio官网</a>下载安装最新版本的Rstudio Desktop。<br>双击之后按步骤安装。</p>
-<h3 id="2-1-3-安装Rtools"><a href="#2-1-3-安装Rtools" class="headerlink" title="2.1.3. 安装Rtools"></a>2.1.3. 安装Rtools</h3><p><a target="_blank" rel="noopener" href="https://cran.r-project.org/bin/windows/Rtools/rtools40.html">Rtools4</a>下载安装最新版本的Rtools。<br>双击之后按步骤安装。</p>
+<h3 id="2-1-3-安装Rtools"><a href="#2-1-3-安装Rtools" class="headerlink" title="2.1.3. 安装Rtools"></a>2.1.3. 安装Rtools</h3><ol>
+<li>安装Rtools</li>
+</ol>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cran.r-project.org/bin/windows/Rtools/rtools40.html">Rtools4</a>下载安装最新版本的Rtools。</li>
+<li>双击之后按步骤安装。</li>
+</ul>
+<ol start="2">
+<li>把Rtools加进环境变量</li>
+</ol>
+<ul>
+<li>R下运行<code>writeLines(&#39;PATH=&quot;$&#123;RTOOLS40_HOME&#125;\\usr\\bin;$&#123;PATH&#125;&quot;&#39;, con = &quot;~/.Renviron&quot;)</code>，代表把rtools40&#x2F;usr&#x2F;bin作为环境变量写进R的配置文件~&#x2F;.Renviron。</li>
+<li>重启R之后输入<code>Sys.which(&quot;make&quot;)</code></li>
+<li>如果环境配置成功，会有下述类似信息<code>make &quot;C:\\rtools40\\usr\\bin\\make.exe&quot; </code>,代表make命令可运行。</li>
+<li>上面两步都ok，就测试下能不能通过以下方式安装包<code>install.packages(&quot;jsonlite&quot;, type = &quot;source&quot;)</code>，安装成功就说明配置好了。</li>
+</ul>
+<ol start="3">
+<li>如果上面加环境变量不成功，在【我的电脑】-【属性】-【高级系统设置】-【环境变量】，把PATH的值加上自己电脑安装Rtools的路径中保存了make.exe的文件夹，比如<code>C:\\rtools40\\usr\\bin</code>，再重启R即可。</li>
+</ol>
 <h2 id="2-2-R-for-Linux"><a href="#2-2-R-for-Linux" class="headerlink" title="2.2. R for Linux"></a>2.2. R for Linux</h2><h3 id="2-2-1-安装R"><a href="#2-2-1-安装R" class="headerlink" title="2.2.1. 安装R"></a>2.2.1. 安装R</h3><h4 id="2-2-1-1-安装R"><a href="#2-2-1-1-安装R" class="headerlink" title="2.2.1.1. 安装R"></a>2.2.1.1. 安装R</h4><p><a target="_blank" rel="noopener" href="https://cran.r-project.org/">R 官网</a>里参考对应系统的R安装教程。</p>
 <ol>
 <li>Ubuntu<br><code>apt update</code>,<code>apt upgrade</code>,<code>apt install r-base</code></li>
@@ -362,32 +380,51 @@
 </ol>
 <h4 id="2-2-2-4-使用RStudio-Server"><a href="#2-2-2-4-使用RStudio-Server" class="headerlink" title="2.2.2.4. 使用RStudio Server"></a>2.2.2.4. 使用RStudio Server</h4><p><code>ps -aux|grep rstudio-server</code>查看服务是否运行，<code>ipconfig</code>查看服务器IP地址。</p>
 <p>安装配置好RStudio Server后，直接在浏览器打开<a href="http://IP:8787，输入服务器的用户名和密码，即可访问RStudio">http://IP:8787，输入服务器的用户名和密码，即可访问RStudio</a> Server服务。</p>
-<h1 id="3-R包安装"><a href="#3-R包安装" class="headerlink" title="3. R包安装"></a>3. R包安装</h1><p>R 语言可以通过各种宏包来拓展功能，一般通过中央软件存储库下载R包，如最常用的R基金会资助的<a target="_blank" rel="noopener" href="https://cran.r-project.org/"><strong>The Comprehensive R Archive Network (CRAN)</strong></a>，存储R开发的生物数据分析包的生物专业软件存储库<a target="_blank" rel="noopener" href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>，以及<a target="_blank" rel="noopener" href="https://anaconda.org/"><strong>anaconda</strong></a>。</p>
-<h2 id="3-1-通过CRAN安装R包"><a href="#3-1-通过CRAN安装R包" class="headerlink" title="3.1. 通过CRAN安装R包"></a>3.1. 通过CRAN安装R包</h2><ol>
+<h1 id="3-R的配置"><a href="#3-R的配置" class="headerlink" title="3. R的配置"></a>3. R的配置</h1><p>类似conda的<code>~/.condarc</code>文件配置conda，R的配置文件是<code>~/.Renviron</code>。<br>每次启动R都会运行配置文件中的设置和命令。<br>打开配置文件进行编辑<code>file.edit(&#39;~/.Renviron&#39;)</code></p>
+<h1 id="4-R包安装"><a href="#4-R包安装" class="headerlink" title="4. R包安装"></a>4. R包安装</h1><p>R 语言可以通过各种宏包来拓展功能，一般通过中央软件存储库下载R包，如最常用的R基金会资助的<a target="_blank" rel="noopener" href="https://cran.r-project.org/"><strong>The Comprehensive R Archive Network (CRAN)</strong></a>，存储R开发的生物数据分析包的生物专业软件存储库<a target="_blank" rel="noopener" href="https://www.bioconductor.org/"><strong>Bioconductor</strong></a>，以及<a target="_blank" rel="noopener" href="https://anaconda.org/"><strong>anaconda</strong></a>。</p>
+<h2 id="4-1-R包安装位置"><a href="#4-1-R包安装位置" class="headerlink" title="4.1. R包安装位置"></a>4.1. R包安装位置</h2><p>R包安装前先选择默认的R包安装位置，如果R安装在C盘，原有的默认R包安装位置可能因为是不可写目录等原因在之后的R包安装过程中出现报错，所以最好的办法是自己指定一个全英文，无空格，可写的文件夹。</p>
+<ol>
+<li>查看R包默认安装路径</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.libpaths<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#查看R包默认安装路径，可能有多个</span></span><br><span class="line">C<span class="operator">:</span><span class="operator">/</span>Users<span class="operator">/</span>spider<span class="operator">/</span>Documents<span class="operator">/</span>R<span class="operator">/</span>win<span class="operator">-</span>library<span class="operator">/</span><span class="number">3.5</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">C:/Program Files/R/R-3.5.2/library</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改默认安装路径</li>
+</ol>
+<ul>
+<li><code>file.edit(&#39;~/.Renviron&#39;)</code>打开配置文件进行编辑</li>
+<li>在文件中加入一行<code>R_LIBS_USER=&quot;D:/rpackages/&quot;</code>，注意双引号是英文的，保存然后关闭文件。</li>
+</ul>
+<ol start="3">
+<li>重启R后再次查看默认安装路径，如果显示是新的路径即修改成功</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.libpaths<span class="punctuation">(</span><span class="punctuation">)</span> <span class="comment">#查看R包默认安装路径，可能有多个</span></span><br><span class="line">D<span class="operator">:</span><span class="operator">/</span>rpackages</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-2-通过CRAN安装R包"><a href="#4-2-通过CRAN安装R包" class="headerlink" title="4.2. 通过CRAN安装R包"></a>4.2. 通过CRAN安装R包</h2><ol>
 <li><code>install.packages(&quot;packagename&quot;)</code> R默认的安装方式，会从CRAN下载包并安装。</li>
 <li>同时安装多个包: <code>install.packages(c(&quot;packagename1&quot;,&quot;packagename2&quot;))</code></li>
 <li>使用R包下载地址安装: <code>install.packages(&quot;http://cran.r-project.org/src/contrib/Archive/ggplot2/ggplot2_0.9.1.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)</code></li>
 <li>下载包到本地后手动安装: <code>install.packages(&quot;ggplot2_0.9.1.tar.gz&quot;, repos = NULL)</code></li>
 </ol>
-<h2 id="3-2-通过Bioconductor后安装R包"><a href="#3-2-通过Bioconductor后安装R包" class="headerlink" title="3.2. 通过Bioconductor后安装R包"></a>3.2. 通过Bioconductor后安装R包</h2><ol>
+<h2 id="4-3-通过Bioconductor后安装R包"><a href="#4-3-通过Bioconductor后安装R包" class="headerlink" title="4.3. 通过Bioconductor后安装R包"></a>4.3. 通过Bioconductor后安装R包</h2><ol>
 <li>安装Bioconductor<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span>requireNamespace<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">,</span> quietly <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">    install.packages<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span>version <span class="operator">=</span> <span class="string">&quot;3.13&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 BiocManager的版本与R版本一一对应，安装时如果版本不对会有提示，根据提示安装对应版本即可。</li>
 <li>查看可用的Bioconductor包：<code>BiocManager::available()</code></li>
 <li>安装Bioconductor库里有的R包：<code>BiocManager::install(&quot;packagename&quot;,version=&quot;3.2&quot;)</code></li>
 <li>同时安装多个包：<code>BiocManager::install(c(&quot;packagename1&quot;,&quot;packagename2&quot;))</code></li>
 </ol>
-<h2 id="3-3-通过conda安装R包"><a href="#3-3-通过conda安装R包" class="headerlink" title="3.3. 通过conda安装R包"></a>3.3. 通过conda安装R包</h2><p>在<a target="_blank" rel="noopener" href="https://anaconda.org/">anaconda官网</a>查询想要安装的R包，如果库里有可以使用conda安装。</p>
+<h2 id="4-4-通过conda安装R包"><a href="#4-4-通过conda安装R包" class="headerlink" title="4.4. 通过conda安装R包"></a>4.4. 通过conda安装R包</h2><p>在<a target="_blank" rel="noopener" href="https://anaconda.org/">anaconda官网</a>查询想要安装的R包，如果库里有可以使用conda安装。</p>
 <p>一般需要在包名称前添加r-，比如安装rbokeh和rjava。<br><code>conda install r-rbokeh</code>,<code>conda install r-rjava</code></p>
-<h2 id="3-4-更新和卸载R包"><a href="#3-4-更新和卸载R包" class="headerlink" title="3.4. 更新和卸载R包"></a>3.4. 更新和卸载R包</h2><ol>
+<h2 id="4-5-更新和卸载R包"><a href="#4-5-更新和卸载R包" class="headerlink" title="4.5. 更新和卸载R包"></a>4.5. 更新和卸载R包</h2><ol>
 <li>更新：<code>update.packages()</code>；conda更新R包caret<code>conda update r-caret</code></li>
 <li>卸载：<code>remove.packages()</code>。</li>
 </ol>
-<h1 id="4-R包载入"><a href="#4-R包载入" class="headerlink" title="4. R包载入"></a>4. R包载入</h1><ol>
+<h1 id="5-R包载入"><a href="#5-R包载入" class="headerlink" title="5. R包载入"></a>5. R包载入</h1><ol>
 <li>library(packagename)<br>如果包不存在，library会停止执行，不返回任何值。</li>
 <li>require(packagename)<br>require会根据包存在与否返回true或false，并继续下面的语句执行。</li>
 </ol>
-<h1 id="5-R包使用查询"><a href="#5-R包使用查询" class="headerlink" title="5. R包使用查询"></a>5. R包使用查询</h1><p>R包使用方法: <code>help(package=&quot;packagename&quot;)</code></p>
-<h1 id="6-reference"><a href="#6-reference" class="headerlink" title="6. reference"></a>6. reference</h1><ol>
+<h1 id="6-R包使用查询"><a href="#6-R包使用查询" class="headerlink" title="6. R包使用查询"></a>6. R包使用查询</h1><p>R包使用方法: <code>help(package=&quot;packagename&quot;)</code></p>
+<h1 id="7-reference"><a href="#7-reference" class="headerlink" title="7. reference"></a>7. reference</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://www.bioinfo-scrounger.com/archives/435/">https://www.bioinfo-scrounger.com/archives/435/</a></li>
 </ol>
 <hr>
@@ -490,7 +527,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-R"><span class="nav-text">1. R</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-R%E5%8C%85%E5%AD%98%E5%82%A8%E5%BA%93"><span class="nav-text">1.1. R包存储库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-R%E7%9B%B8%E5%85%B3"><span class="nav-text">1.2. R相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-RStudio"><span class="nav-text">1.2.1. RStudio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-Rtools"><span class="nav-text">1.2.2. Rtools</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-R%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="nav-text">2. R的安装和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-R-for-Windows"><span class="nav-text">2.1. R for Windows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.1.1. 安装R</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E5%AE%89%E8%A3%85RStudio-Desktop"><span class="nav-text">2.1.2. 安装RStudio Desktop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-%E5%AE%89%E8%A3%85Rtools"><span class="nav-text">2.1.3. 安装Rtools</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-R-for-Linux"><span class="nav-text">2.2. R for Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1. 安装R</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1.1. 安装R</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-2-%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1.2. 手动安装R</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%AE%89%E8%A3%85RStudio-Server"><span class="nav-text">2.2.2. 安装RStudio Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-%E5%AE%89%E8%A3%85RStudio-Server"><span class="nav-text">2.2.2.1. 安装RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-%E5%8D%B8%E8%BD%BD-x2F-%E6%9B%B4%E6%96%B0RStudio-Server"><span class="nav-text">2.2.2.2. 卸载&#x2F;更新RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-%E5%AE%89%E8%A3%85%E5%90%8E%E9%85%8D%E7%BD%AERStudio-Server"><span class="nav-text">2.2.2.3. 安装后配置RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-4-%E4%BD%BF%E7%94%A8RStudio-Server"><span class="nav-text">2.2.2.4. 使用RStudio Server</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-R%E5%8C%85%E5%AE%89%E8%A3%85"><span class="nav-text">3. R包安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E9%80%9A%E8%BF%87CRAN%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">3.1. 通过CRAN安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E9%80%9A%E8%BF%87Bioconductor%E5%90%8E%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">3.2. 通过Bioconductor后安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E9%80%9A%E8%BF%87conda%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">3.3. 通过conda安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%9B%B4%E6%96%B0%E5%92%8C%E5%8D%B8%E8%BD%BDR%E5%8C%85"><span class="nav-text">3.4. 更新和卸载R包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-R%E5%8C%85%E8%BD%BD%E5%85%A5"><span class="nav-text">4. R包载入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-R%E5%8C%85%E4%BD%BF%E7%94%A8%E6%9F%A5%E8%AF%A2"><span class="nav-text">5. R包使用查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-reference"><span class="nav-text">6. reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-R"><span class="nav-text">1. R</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-R%E5%8C%85%E5%AD%98%E5%82%A8%E5%BA%93"><span class="nav-text">1.1. R包存储库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-R%E7%9B%B8%E5%85%B3"><span class="nav-text">1.2. R相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-RStudio"><span class="nav-text">1.2.1. RStudio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-Rtools"><span class="nav-text">1.2.2. Rtools</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-R%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="nav-text">2. R的安装和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-R-for-Windows"><span class="nav-text">2.1. R for Windows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.1.1. 安装R</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E5%AE%89%E8%A3%85RStudio-Desktop"><span class="nav-text">2.1.2. 安装RStudio Desktop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-%E5%AE%89%E8%A3%85Rtools"><span class="nav-text">2.1.3. 安装Rtools</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-R-for-Linux"><span class="nav-text">2.2. R for Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1. 安装R</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-1-%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1.1. 安装R</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-2-%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85R"><span class="nav-text">2.2.1.2. 手动安装R</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%AE%89%E8%A3%85RStudio-Server"><span class="nav-text">2.2.2. 安装RStudio Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-1-%E5%AE%89%E8%A3%85RStudio-Server"><span class="nav-text">2.2.2.1. 安装RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-2-%E5%8D%B8%E8%BD%BD-x2F-%E6%9B%B4%E6%96%B0RStudio-Server"><span class="nav-text">2.2.2.2. 卸载&#x2F;更新RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-3-%E5%AE%89%E8%A3%85%E5%90%8E%E9%85%8D%E7%BD%AERStudio-Server"><span class="nav-text">2.2.2.3. 安装后配置RStudio Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-4-%E4%BD%BF%E7%94%A8RStudio-Server"><span class="nav-text">2.2.2.4. 使用RStudio Server</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-R%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-text">3. R的配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-R%E5%8C%85%E5%AE%89%E8%A3%85"><span class="nav-text">4. R包安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-R%E5%8C%85%E5%AE%89%E8%A3%85%E4%BD%8D%E7%BD%AE"><span class="nav-text">4.1. R包安装位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E9%80%9A%E8%BF%87CRAN%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">4.2. 通过CRAN安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E9%80%9A%E8%BF%87Bioconductor%E5%90%8E%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">4.3. 通过Bioconductor后安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E9%80%9A%E8%BF%87conda%E5%AE%89%E8%A3%85R%E5%8C%85"><span class="nav-text">4.4. 通过conda安装R包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-%E6%9B%B4%E6%96%B0%E5%92%8C%E5%8D%B8%E8%BD%BDR%E5%8C%85"><span class="nav-text">4.5. 更新和卸载R包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-R%E5%8C%85%E8%BD%BD%E5%85%A5"><span class="nav-text">5. R包载入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-R%E5%8C%85%E4%BD%BF%E7%94%A8%E6%9F%A5%E8%AF%A2"><span class="nav-text">6. R包使用查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-reference"><span class="nav-text">7. reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -504,7 +541,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -561,12 +598,12 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">469k</span>
+    <span title="Symbols count total">472k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7:06</span>
+    <span title="Reading time total">7:10</span>
 </div>
 
         
