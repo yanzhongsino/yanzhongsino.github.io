@@ -138,7 +138,7 @@ smudgeplot.py plot kmer_pairs_coverages_2.tsv -o my_genome
 
 把样品名称整理成样品列表（sample.list），修改下面脚本中的/path/to/data/为数据所在路径，即可运行。
 
-```
+```shell
 for i in sample.list
 do
 	mkdir $i
