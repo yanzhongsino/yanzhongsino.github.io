@@ -18,8 +18,16 @@ description: 介绍Smudgeplot，用Smudgeplot估计物种的倍性。
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=276895&auto=1&height=32"></iframe> </div>
 
-**【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。**
+用k-mer分析进行基因组调查系列：
+（一）基本原理：https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/
+（二）用Smudgeplot估计倍性：https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/
+（三）用jellyfish进行k-mer频数统计：https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/
+（四）用KMC进行k-mer频数统计：https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/
+（五）用GenomeScope评估基因组特征：https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/
+（六）用GCE分步实现：https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/
+（七）用KmerGenie一步实现：https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/
 
+**【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。**
 
 # 1. Smudgeplot
 Smudgeplot是2020年与GenomeScope2.0一起发表的用于估计物种的倍性的软件。开发者计划接下来把Smudgeplot整合进GenomeScope。
@@ -45,13 +53,13 @@ Smudgeplot从k-mer数据库中提取杂合k-mer对，然后训练杂合k-mer对�
 ```
 mkdir tmp
 ls *.fastq.gz > FILES
-kmc -k21 -t16 -m64 -ci1 -cs10000 @FILES kmcdb tmp #计算k-mer频率，生成二进制文件kmcdb.kmc_pre和kmcdb.kmc_suf
+kmc -k21 -t8 -m64 -ci1 -cs10000 @FILES kmcdb tmp #计算k-mer频率，生成二进制文件kmcdb.kmc_pre和kmcdb.kmc_suf
 kmc_tools transform kmcdb histogram kmcdb_k21.hist -cx10000 #生成k-mer频数直方表kmcdb_k21.hist
 ```
 
 2. kmc命令参数：
 - -k21：k-mer长度设置为21
-- -t16：线程16
+- -t8：线程8
 - -m64：内存64G，设置使用RAM的大致数量，范围1-1024。
 - -ci1 -cs10000：统计k-mer coverages覆盖度范围在[1-10000]的。
 - @FILES：保存了输入文件列表的文件名为FILES
