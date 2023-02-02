@@ -93,7 +93,7 @@ echo $L $U # these need to be sane values
 - `kmc_tools transform kmcdb -ci"$L" -cx"$U" dump -s kmcdb_L"$L"_U"$U".dump #生成kmcdb_L10_U680.dump`
 - `smudgeplot.py hetkmers -o kmcdb_L"$L"_U"$U" < kmcdb_L"$L"_U"$U".dump # 生成kmcdb_L10_U680_coverages.tsv和kmcdb_L10_U680_sequences.tsv，耗时约1h`
 
-### 4.1.4. 生成污点图(smudgeplot)
+### 4.1.4. 生成热度图(smudgeplot)
 1. 命令
 `smudgeplot.py plot kmcdb_L"$L"_U"$U"_coverages.tsv -o smudgeplot`
 
@@ -101,9 +101,35 @@ echo $L $U # these need to be sane values
 - -t指定图中的title
 
 2. 结果
-- 生成两个基础的污点图，一个log尺度smudgeplot_smudgeplot_log10.png
-- 一个线性尺度smudgeplot_smudgeplot.png
-- 还生成文件smudgeplot_summary_table.tsv，smudgeplot_verbose_summary.txt，smudgeplot_warnings.txt。
+- 生成两个基础的热度图。一个log尺度smudgeplot_smudgeplot_log10.png；一个线性尺度smudgeplot_smudgeplot.png
+- smudgeplot_summary_table.tsv，下面是文件示例：
+
+```
+peak	kmers [#]	kmers [proportion]	summit B / (A + B)	summit A + B
+AB	10703792	1	0.49	44.2
+```
+
+- smudgeplot_verbose_summary.txt，下面是文件示例：
+
+```shell
+1n coverage estimates (Coverage of every haplotype; Don't confuse with genome coverage whichis (ploidy * 1n coverage).)
+* User defined 1n coverage:
+* Subset 1n coverage estimate:	16.4
+* Highest peak 1n coverage estimate:	23.1
+1n coverage used in smudgeplot (one of the three above):	23.1
+* Proposed ploidy:	2
+* Minimal number of heterozygous loci:	509705
+Note: This number is NOT an estimate of the total number heterozygous loci, it's merly setting the lower boundary if the inference of heterozygosity peaks is correct.
+* Proportion of heterozygosity carried by pairs in different genome copies (table)
+  genome_copies propotion_of_heterozygosity
+1             2                           1
+* Proportion of heterozygosity carried by paralogs:	0
+* Summary of all detected peaks (table)
+  peak kmers [#] kmers [proportion] summit B / (A + B) summit A + B
+2   AB  10703792                  1               0.49         44.2
+```
+
+- smudgeplot_warnings.txt
 
 ## 4.2. jellyfish+Smudgeplot
 用jellyfish代替KMC
@@ -123,19 +149,23 @@ jellyfish dump -c -L $L -U $U kmer_counts.jf | smudgeplot.py hetkmers -o kmer_pa
 # note that if you would like use --middle flag, you would have to sort the jellyfish dump first
 ```
 
-3. 生成smudgeplot污点图
+3. 生成smudgeplot污热度图
 ```
 smudgeplot.py plot kmer_pairs_coverages_2.tsv -o my_genome
 ```
 
 ## 4.3. Smudgeplot结果
+1. 热度图
 - 热度图，横坐标是相对覆盖度 (CovB / (CovA + CovB)) ，纵坐标是总覆盖度 (CovA + CovB) ，颜色是k-mer对的频率。
 - 每个单倍型结构都在图上呈现一个"污点(smudge)"，污点的热度表示单倍型结构在基因组中出现的频率，频率最高的单倍型结构即为预测的物种倍性结果。(比如这个图提供了三倍体的证据，AAB的频率最高)
 
-<img src="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png" width=80% title="Smudgeplot污点图" align=center/>
+<img src="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png" width=80% title="Smudgeplot热度图" align=center/>
 
-**<p align="center">Figure 5. Smudgeplot污点图。
+**<p align="center">Figure 5. Smudgeplot热度图。
 图片来源： [Smudgeplot github](https://github.com/KamilSJaron/smudgeplot)</p>**
+
+2. smudgeplot_verbose_summary.txt
+- 文件中可以提取预测的最终倍性结果：“* Proposed ploidy:	2”
 
 # 5. KMC/jellyfish结果用于GenomeScope进行基因组调查
 - 通过KMC/jellyfish获得的频数分布表结果kmcdb_k21.hist可用于GenomeScope进行基因组调查
@@ -160,7 +190,7 @@ do
 	kmc_tools transform $i histogram "$i"_k21.hist -cx10000
     rm -rf tmp
 
-    # 运行genomescope，估计基因组特征（默认是二倍体-p 2）
+    # 运行genomescope2.0，估计基因组特征（默认是二倍体-p 2）
 	genomescope.R -i "$i"_k21.hist -o ./ -k 21 -n "$i"_genomescope -p 2 >"$i"_genomescope.log 2>&1 &
 
     # 运行smudgeplot，估计
