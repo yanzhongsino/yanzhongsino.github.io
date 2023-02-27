@@ -30,14 +30,14 @@
 <meta property="og:image" content="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-12-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-01-03T12:41:37.326Z">
+<meta property="article:modified_time" content="2023-01-31T03:16:21.855Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome survey">
 <meta property="article:tag" content="genome">
 <meta property="article:tag" content="k-mer">
-<meta property="article:tag" content="KMC">
 <meta property="article:tag" content="GenomeScope">
 <meta property="article:tag" content="Smudgeplot">
+<meta property="article:tag" content="KMC">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png">
 
@@ -250,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-03 20:41:37" itemprop="dateModified" datetime="2023-01-03T20:41:37+08:00">2023-01-03</time>
+                <time title="Modified: 2023-01-31 11:16:21" itemprop="dateModified" datetime="2023-01-31T11:16:21+08:00">2023-01-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,13 +296,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>5.4k</span>
+              <span>6.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>5 mins.</span>
+              <span>6 mins.</span>
             </span>
             <div class="post-description">介绍Smudgeplot，用Smudgeplot估计物种的倍性。</div>
 
@@ -389,7 +389,7 @@
 <li><code>kmc_tools transform kmcdb -ci&quot;$L&quot; -cx&quot;$U&quot; dump -s kmcdb_L&quot;$L&quot;_U&quot;$U&quot;.dump #生成kmcdb_L10_U680.dump</code></li>
 <li><code>smudgeplot.py hetkmers -o kmcdb_L&quot;$L&quot;_U&quot;$U&quot; &lt; kmcdb_L&quot;$L&quot;_U&quot;$U&quot;.dump # 生成kmcdb_L10_U680_coverages.tsv和kmcdb_L10_U680_sequences.tsv，耗时约1h</code></li>
 </ul>
-<h3 id="4-1-4-生成污点图-smudgeplot"><a href="#4-1-4-生成污点图-smudgeplot" class="headerlink" title="4.1.4. 生成污点图(smudgeplot)"></a>4.1.4. 生成污点图(smudgeplot)</h3><ol>
+<h3 id="4-1-4-生成热度图-smudgeplot"><a href="#4-1-4-生成热度图-smudgeplot" class="headerlink" title="4.1.4. 生成热度图(smudgeplot)"></a>4.1.4. 生成热度图(smudgeplot)</h3><ol>
 <li>命令<br><code>smudgeplot.py plot kmcdb_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv -o smudgeplot</code></li>
 </ol>
 <ul>
@@ -400,9 +400,18 @@
 <li>结果</li>
 </ol>
 <ul>
-<li>生成两个基础的污点图，一个log尺度smudgeplot_smudgeplot_log10.png</li>
-<li>一个线性尺度smudgeplot_smudgeplot.png</li>
-<li>还生成文件smudgeplot_summary_table.tsv，smudgeplot_verbose_summary.txt，smudgeplot_warnings.txt。</li>
+<li>生成两个基础的热度图。一个log尺度smudgeplot_smudgeplot_log10.png；一个线性尺度smudgeplot_smudgeplot.png</li>
+<li>smudgeplot_summary_table.tsv，下面是文件示例：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">peak	kmers [#]	kmers [proportion]	summit B / (A + B)	summit A + B</span><br><span class="line">AB	10703792	1	0.49	44.2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>smudgeplot_verbose_summary.txt，下面是文件示例：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1n coverage estimates (Coverage of every haplotype; Don&#x27;t confuse with genome coverage whichis (ploidy * 1n coverage).)</span><br><span class="line">* User defined 1n coverage:</span><br><span class="line">* Subset 1n coverage estimate:	16.4</span><br><span class="line">* Highest peak 1n coverage estimate:	23.1</span><br><span class="line">1n coverage used in smudgeplot (one of the three above):	23.1</span><br><span class="line">* Proposed ploidy:	2</span><br><span class="line">* Minimal number of heterozygous loci:	509705</span><br><span class="line">Note: This number is NOT an estimate of the total number heterozygous loci, it&#x27;s merly setting the lower boundary if the inference of heterozygosity peaks is correct.</span><br><span class="line">* Proportion of heterozygosity carried by pairs in different genome copies (table)</span><br><span class="line">  genome_copies propotion_of_heterozygosity</span><br><span class="line">1             2                           1</span><br><span class="line">* Proportion of heterozygosity carried by paralogs:	0</span><br><span class="line">* Summary of all detected peaks (table)</span><br><span class="line">  peak kmers [#] kmers [proportion] summit B / (A + B) summit A + B</span><br><span class="line">2   AB  10703792                  1               0.49         44.2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>smudgeplot_warnings.txt</li>
 </ul>
 <h2 id="4-2-jellyfish-Smudgeplot"><a href="#4-2-jellyfish-Smudgeplot" class="headerlink" title="4.2. jellyfish+Smudgeplot"></a>4.2. jellyfish+Smudgeplot</h2><p>用jellyfish代替KMC</p>
 <ol>
@@ -412,23 +421,32 @@
 <li><p>提取阈值范围的k-mers，计算k-mer pairs</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">L=$(smudgeplot.py cutoff kmer_k21.hist L)</span><br><span class="line">U=$(smudgeplot.py cutoff kmer_k21.hist U)</span><br><span class="line">echo $L $U</span><br><span class="line">jellyfish dump -c -L $L -U $U kmer_counts.jf | smudgeplot.py hetkmers -o kmer_pairs</span><br><span class="line"># note that if you would like use --middle flag, you would have to sort the jellyfish dump first</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>生成smudgeplot污点图</p>
+<li><p>生成smudgeplot污热度图</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smudgeplot.py plot kmer_pairs_coverages_2.tsv -o my_genome</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="4-3-Smudgeplot结果"><a href="#4-3-Smudgeplot结果" class="headerlink" title="4.3. Smudgeplot结果"></a>4.3. Smudgeplot结果</h2><ul>
+<h2 id="4-3-Smudgeplot结果"><a href="#4-3-Smudgeplot结果" class="headerlink" title="4.3. Smudgeplot结果"></a>4.3. Smudgeplot结果</h2><ol>
+<li>热度图</li>
+</ol>
+<ul>
 <li>热度图，横坐标是相对覆盖度 (CovB &#x2F; (CovA + CovB)) ，纵坐标是总覆盖度 (CovA + CovB) ，颜色是k-mer对的频率。</li>
 <li>每个单倍型结构都在图上呈现一个”污点(smudge)”，污点的热度表示单倍型结构在基因组中出现的频率，频率最高的单倍型结构即为预测的物种倍性结果。(比如这个图提供了三倍体的证据，AAB的频率最高)</li>
 </ul>
-<img src="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png" width=80% title="Smudgeplot污点图" align=center/>
+<img src="https://user-images.githubusercontent.com/8181573/45959760-f1032d00-c01a-11e8-8576-ff0512c33da9.png" width=80% title="Smudgeplot热度图" align=center/>
 
-<p><strong><p align="center">Figure 5. Smudgeplot污点图。<br>图片来源： <a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot">Smudgeplot github</a></p></strong></p>
+<p><strong><p align="center">Figure 5. Smudgeplot热度图。<br>图片来源： <a target="_blank" rel="noopener" href="https://github.com/KamilSJaron/smudgeplot">Smudgeplot github</a></p></strong></p>
+<ol start="2">
+<li>smudgeplot_verbose_summary.txt</li>
+</ol>
+<ul>
+<li>文件中可以提取预测的最终倍性结果：“* Proposed ploidy:    2”</li>
+</ul>
 <h1 id="5-KMC-x2F-jellyfish结果用于GenomeScope进行基因组调查"><a href="#5-KMC-x2F-jellyfish结果用于GenomeScope进行基因组调查" class="headerlink" title="5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查"></a>5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查</h1><ul>
 <li>通过KMC&#x2F;jellyfish获得的频数分布表结果kmcdb_k21.hist可用于GenomeScope进行基因组调查</li>
 </ul>
 <p><code>Rscript genomescope.R kmcdb_k21.hist &lt;k-mer_length&gt; &lt;read_length&gt; &lt;output_dir&gt; [kmer_max] [verbose]</code></p>
 <h1 id="6-批量运行脚本"><a href="#6-批量运行脚本" class="headerlink" title="6. 批量运行脚本"></a>6. 批量运行脚本</h1><p>如果样品数量非常多，可以用脚本自动遍历每个样品来运行。</p>
 <p>把样品名称整理成样品列表（sample.list），修改下面脚本中的&#x2F;path&#x2F;to&#x2F;data&#x2F;为数据所在路径，即可运行。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">for i in sample.list</span><br><span class="line">do</span><br><span class="line">	mkdir $i</span><br><span class="line">	cd $i</span><br><span class="line">    mkdir tmp</span><br><span class="line"></span><br><span class="line">    # 运行KMC，获得频数分布表sample_k21.hist</span><br><span class="line">	ls /path/to/data/$i* &gt; FILES</span><br><span class="line">	kmc -k21 -t8 -m64 -ci1 -cs10000 @FILES $i tmp</span><br><span class="line">	kmc_tools transform $i histogram &quot;$i&quot;_k21.hist -cx10000</span><br><span class="line">    rm -rf tmp</span><br><span class="line"></span><br><span class="line">    # 运行genomescope，估计基因组特征（默认是二倍体-p 2）</span><br><span class="line">	genomescope.R -i &quot;$i&quot;_k21.hist -o ./ -k 21 -n &quot;$i&quot;_genomescope -p 2 &gt;&quot;$i&quot;_genomescope.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">    # 运行smudgeplot，估计</span><br><span class="line">	L=$(smudgeplot.py cutoff &quot;$&#123;i&#125;&quot;_k21.hist L)</span><br><span class="line">	U=$(smudgeplot.py cutoff &quot;$&#123;i&#125;&quot;_k21.hist U)</span><br><span class="line">	echo $L $U</span><br><span class="line">	kmc_tools transform $i -ci&quot;$L&quot; -cx&quot;$U&quot; dump -s &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;.dump</span><br><span class="line">	smudgeplot.py hetkmers -o &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot; &lt; &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;.dump # 耗时步骤，约1h</span><br><span class="line">	smudgeplot.py plot &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv -o $i -t $i</span><br><span class="line">	cd ..</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">for i in sample.list</span><br><span class="line">do</span><br><span class="line">	mkdir $i</span><br><span class="line">	cd $i</span><br><span class="line">    mkdir tmp</span><br><span class="line"></span><br><span class="line">    # 运行KMC，获得频数分布表sample_k21.hist</span><br><span class="line">	ls /path/to/data/$i* &gt; FILES</span><br><span class="line">	kmc -k21 -t8 -m64 -ci1 -cs10000 @FILES $i tmp</span><br><span class="line">	kmc_tools transform $i histogram &quot;$i&quot;_k21.hist -cx10000</span><br><span class="line">    rm -rf tmp</span><br><span class="line"></span><br><span class="line">    # 运行genomescope2.0，估计基因组特征（默认是二倍体-p 2）</span><br><span class="line">	genomescope.R -i &quot;$i&quot;_k21.hist -o ./ -k 21 -n &quot;$i&quot;_genomescope -p 2 &gt;&quot;$i&quot;_genomescope.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br><span class="line">    # 运行smudgeplot，估计</span><br><span class="line">	L=$(smudgeplot.py cutoff &quot;$&#123;i&#125;&quot;_k21.hist L)</span><br><span class="line">	U=$(smudgeplot.py cutoff &quot;$&#123;i&#125;&quot;_k21.hist U)</span><br><span class="line">	echo $L $U</span><br><span class="line">	kmc_tools transform $i -ci&quot;$L&quot; -cx&quot;$U&quot; dump -s &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;.dump</span><br><span class="line">	smudgeplot.py hetkmers -o &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot; &lt; &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;.dump # 耗时步骤，约1h</span><br><span class="line">	smudgeplot.py plot &quot;$i&quot;_L&quot;$L&quot;_U&quot;$U&quot;_coverages.tsv -o $i -t $i</span><br><span class="line">	cd ..</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 
 <h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
 <li>GenomeScope 2.0 + Smudgeplot paper：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41467-020-14998-3">https://www.nature.com/articles/s41467-020-14998-3</a></li>
@@ -452,9 +470,9 @@
               <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
               <a href="/tags/genome/" rel="tag"># genome</a>
               <a href="/tags/k-mer/" rel="tag"># k-mer</a>
-              <a href="/tags/KMC/" rel="tag"># KMC</a>
               <a href="/tags/GenomeScope/" rel="tag"># GenomeScope</a>
               <a href="/tags/Smudgeplot/" rel="tag"># Smudgeplot</a>
+              <a href="/tags/KMC/" rel="tag"># KMC</a>
           </div>
 
         
@@ -532,7 +550,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Smudgeplot"><span class="nav-text">1. Smudgeplot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Smudgeplot%E5%8E%9F%E7%90%86"><span class="nav-text">2. Smudgeplot原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Smudgeplot%E5%AE%89%E8%A3%85"><span class="nav-text">3. Smudgeplot安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Smudgeplot%E4%BD%BF%E7%94%A8"><span class="nav-text">4. Smudgeplot使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-KMC-Smudgeplot"><span class="nav-text">4.1. KMC+Smudgeplot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E7%94%A8KMC%E8%AE%A1%E7%AE%97k-mer%E9%A2%91%E7%8E%87%EF%BC%8C%E7%94%9F%E6%88%90k-mer%E9%A2%91%E7%8E%87%E8%A1%A8"><span class="nav-text">4.1.1. 用KMC计算k-mer频率，生成k-mer频率表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-%E9%80%89%E6%8B%A9%E8%A6%86%E7%9B%96%E9%98%88%E5%80%BC"><span class="nav-text">4.1.2. 选择覆盖阈值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3-%E6%8F%90%E5%8F%96%E9%98%88%E5%80%BC%E8%8C%83%E5%9B%B4%E7%9A%84k-mers%EF%BC%8C%E8%AE%A1%E7%AE%97k-mer-pairs"><span class="nav-text">4.1.3. 提取阈值范围的k-mers，计算k-mer pairs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-4-%E7%94%9F%E6%88%90%E6%B1%A1%E7%82%B9%E5%9B%BE-smudgeplot"><span class="nav-text">4.1.4. 生成污点图(smudgeplot)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-jellyfish-Smudgeplot"><span class="nav-text">4.2. jellyfish+Smudgeplot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Smudgeplot%E7%BB%93%E6%9E%9C"><span class="nav-text">4.3. Smudgeplot结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-KMC-x2F-jellyfish%E7%BB%93%E6%9E%9C%E7%94%A8%E4%BA%8EGenomeScope%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-text">5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%89%B9%E9%87%8F%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-text">6. 批量运行脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-references"><span class="nav-text">7. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Smudgeplot"><span class="nav-text">1. Smudgeplot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Smudgeplot%E5%8E%9F%E7%90%86"><span class="nav-text">2. Smudgeplot原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Smudgeplot%E5%AE%89%E8%A3%85"><span class="nav-text">3. Smudgeplot安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Smudgeplot%E4%BD%BF%E7%94%A8"><span class="nav-text">4. Smudgeplot使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-KMC-Smudgeplot"><span class="nav-text">4.1. KMC+Smudgeplot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E7%94%A8KMC%E8%AE%A1%E7%AE%97k-mer%E9%A2%91%E7%8E%87%EF%BC%8C%E7%94%9F%E6%88%90k-mer%E9%A2%91%E7%8E%87%E8%A1%A8"><span class="nav-text">4.1.1. 用KMC计算k-mer频率，生成k-mer频率表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-%E9%80%89%E6%8B%A9%E8%A6%86%E7%9B%96%E9%98%88%E5%80%BC"><span class="nav-text">4.1.2. 选择覆盖阈值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3-%E6%8F%90%E5%8F%96%E9%98%88%E5%80%BC%E8%8C%83%E5%9B%B4%E7%9A%84k-mers%EF%BC%8C%E8%AE%A1%E7%AE%97k-mer-pairs"><span class="nav-text">4.1.3. 提取阈值范围的k-mers，计算k-mer pairs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-4-%E7%94%9F%E6%88%90%E7%83%AD%E5%BA%A6%E5%9B%BE-smudgeplot"><span class="nav-text">4.1.4. 生成热度图(smudgeplot)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-jellyfish-Smudgeplot"><span class="nav-text">4.2. jellyfish+Smudgeplot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Smudgeplot%E7%BB%93%E6%9E%9C"><span class="nav-text">4.3. Smudgeplot结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-KMC-x2F-jellyfish%E7%BB%93%E6%9E%9C%E7%94%A8%E4%BA%8EGenomeScope%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5"><span class="nav-text">5. KMC&#x2F;jellyfish结果用于GenomeScope进行基因组调查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%89%B9%E9%87%8F%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-text">6. 批量运行脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-references"><span class="nav-text">7. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -603,12 +621,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">477k</span>
+    <span title="Symbols count total">479k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7:14</span>
+    <span title="Reading time total">7:15</span>
 </div>
 
         
