@@ -387,6 +387,66 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
+    <title>重装windows系统</title>
+    <url>/2020/12/29/Windows_system_reinstall.windows/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
+
+<h1 id="1-小白就一键重装"><a href="#1-小白就一键重装" class="headerlink" title="1. 小白就一键重装"></a>1. 小白就一键重装</h1><p>自己用过黑鲨装机软件，360装机软件等，都有绑定，需要重装之后卸载绑定的软件。<br>一键重装只能在电脑正常可进入桌面和使用软件的情况下进行，许多情况下不适用。</p>
+<h1 id="2-U盘重装"><a href="#2-U盘重装" class="headerlink" title="2. U盘重装"></a>2. U盘重装</h1><p>但强烈不建议一键重装，除非纯小白，建议在正常运行的电脑上制作启动U盘，然后使用U盘启动和安装需要更换系统的电脑：</p>
+<h2 id="2-1-【推荐】微软官方工具"><a href="#2-1-【推荐】微软官方工具" class="headerlink" title="2.1. 【推荐】微软官方工具"></a>2.1. 【推荐】微软官方工具</h2><p>可用微软官方的制作工具，<a href="https://www.microsoft.com/zh-cn/software-download/windows10">微软官方工具</a>，速度比msdn网站快。</p>
+<h3 id="2-1-1-创建启动U盘的步骤"><a href="#2-1-1-创建启动U盘的步骤" class="headerlink" title="2.1.1. 创建启动U盘的步骤"></a>2.1.1. 创建启动U盘的步骤</h3><p>进入网站，根据<strong>使用该工具创建安装介质(USB闪存驱动器、DVD或ISO文件），以在其他电脑上安装Windows10</strong>指引操作，用一个&gt;&#x3D;8G的空U盘制作U盘启动盘。</p>
+<ol>
+<li>插上&gt;&#x3D;8G的空白U盘（U盘会被格式化）</li>
+<li>选择<strong>立即下载工具</strong>，选择<strong>运行</strong>（需要管理员权限）</li>
+<li>同意许可条款</li>
+<li>选择<strong>为另一台电脑创建安装介质</strong>，选择<strong>下一步</strong></li>
+<li>选择Window10的语言、版本和体系结构（64&#x2F;32位）</li>
+<li>选择介质类型（USB闪存驱动器或ISO文件，其中ISO文件用于创建启动DVD），选择USB闪存驱动器。</li>
+<li>等待创建完成</li>
+</ol>
+<h3 id="2-1-2-U盘启动安装"><a href="#2-1-2-U盘启动安装" class="headerlink" title="2.1.2. U盘启动安装"></a>2.1.2. U盘启动安装</h3><p>根据网站上接下来的<strong>使用您所创建的安装介质</strong>，为电脑安装新的Window10系统，步骤如下</p>
+<ol>
+<li>需要安装系统的电脑的所有硬盘需要备份。</li>
+<li>把制作好的启动U盘连接到等待安装系统的电脑上</li>
+<li>重启电脑</li>
+<li>有时电脑会自动引导至USB介质启动安装；如果电脑没有自动引导至 USB 或 DVD 介质，可能需要打开引导菜单或在电脑 BIOS 或 UEFI 设置中更改引导顺序。</li>
+<li>若要打开引导菜单或更改引导顺序，需要在重启&#x2F;开机后，在出现Dell&#x2F;Lenovo等商家界面后立即按下按键（例如 F2、F12、Delete 或 ESC）进入BIOS界面（不同品牌电脑不一样，可查询各厂家进入BIOS界面的快捷键），选择U盘对应名称，一步步按照指导进行系统安装。如果没有看到 USB 或 DVD 介质设备在引导选项中列出，可能需要联系电脑制造商来获取在 BIOS 设置中暂时禁用“安全引导”的说明。</li>
+<li>在<strong>安装Windows</strong>页面上，选择语言、时间和键盘首选项，然后选择<strong>下一步</strong>；</li>
+<li>选择<strong>安装Windows</strong>。</li>
+</ol>
+<h2 id="2-2-msdn下载系统镜像-rufus制作启动U盘"><a href="#2-2-msdn下载系统镜像-rufus制作启动U盘" class="headerlink" title="2.2. msdn下载系统镜像+rufus制作启动U盘"></a>2.2. msdn下载系统镜像+rufus制作启动U盘</h2><p>这里可以替代上一步中的<strong>创建启动U盘的步骤</strong>；制作完成后<strong>U盘启动安装</strong>与上一步一致。</p>
+<p>在<a href="https://msdn.itellyou.cn/">msdn网站</a>下载需要的操作系统版本的ISO文件；然后用<a href="https://rufus.ie/">Rufus</a>软件制作U盘。</p>
+<p>下好系统镜像和rufus软件后，插上U盘在rufus软件上依次操作制作启动U盘。</p>
+<p>几个需要注意的选项：</p>
+<ul>
+<li>目标系统类型选择UEFI启动(Legacy BIOS启动时间更长)，分区类型选择GPT(比MBR好在可以识别和使用2T以上磁盘)，Legacy BIOS+MBR组合较旧，不推荐。</li>
+<li>用软件Rufus制作U盘启动盘（大约30-60分钟），制作完成后插入需装系统的电脑（台式机建议插后面的USB接口）</li>
+</ul>
+<h2 id="2-3-notes："><a href="#2-3-notes：" class="headerlink" title="2.3. notes："></a>2.3. notes：</h2><ul>
+<li>不同电脑主板进入BIOS界面的快捷键不一样，需要查询。</li>
+<li>进入BIOS界面后，有些主板不显示U盘，可以UEFI设置的“Secure Boot”选项disable掉。</li>
+<li>有些主板不支持U盘是NTFS文件格式使用UEFI启动，但FAT32最大支持4G文件，所以网上有建议U盘分区，把系统文件放在NTFS区，启动文件放在FAT32区，但我亲试用Rufus制作的NTFS格式U盘可以在Dell inspire 3881上使用（UltraISO制作的就不行）。</li>
+<li>如果选择U盘名称后键盘鼠标不工作，可以换个USB接口试试，可能系统内的USB驱动版本不匹配。</li>
+</ul>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>computer</category>
+        <category>Windows</category>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>tutorial</tag>
+        <tag>reinstall</tag>
+        <tag>Windows</tag>
+        <tag>system</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>集合可视化 —— 文氏图/韦恩图(Venn Diagram)</title>
     <url>/2021/09/29/R_plot_venn/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
@@ -464,66 +524,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>Venn</tag>
         <tag>gplots</tag>
         <tag>VennDiagram</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重装windows系统</title>
-    <url>/2020/12/29/Windows_system_reinstall.windows/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
-
-<h1 id="1-小白就一键重装"><a href="#1-小白就一键重装" class="headerlink" title="1. 小白就一键重装"></a>1. 小白就一键重装</h1><p>自己用过黑鲨装机软件，360装机软件等，都有绑定，需要重装之后卸载绑定的软件。<br>一键重装只能在电脑正常可进入桌面和使用软件的情况下进行，许多情况下不适用。</p>
-<h1 id="2-U盘重装"><a href="#2-U盘重装" class="headerlink" title="2. U盘重装"></a>2. U盘重装</h1><p>但强烈不建议一键重装，除非纯小白，建议在正常运行的电脑上制作启动U盘，然后使用U盘启动和安装需要更换系统的电脑：</p>
-<h2 id="2-1-【推荐】微软官方工具"><a href="#2-1-【推荐】微软官方工具" class="headerlink" title="2.1. 【推荐】微软官方工具"></a>2.1. 【推荐】微软官方工具</h2><p>可用微软官方的制作工具，<a href="https://www.microsoft.com/zh-cn/software-download/windows10">微软官方工具</a>，速度比msdn网站快。</p>
-<h3 id="2-1-1-创建启动U盘的步骤"><a href="#2-1-1-创建启动U盘的步骤" class="headerlink" title="2.1.1. 创建启动U盘的步骤"></a>2.1.1. 创建启动U盘的步骤</h3><p>进入网站，根据<strong>使用该工具创建安装介质(USB闪存驱动器、DVD或ISO文件），以在其他电脑上安装Windows10</strong>指引操作，用一个&gt;&#x3D;8G的空U盘制作U盘启动盘。</p>
-<ol>
-<li>插上&gt;&#x3D;8G的空白U盘（U盘会被格式化）</li>
-<li>选择<strong>立即下载工具</strong>，选择<strong>运行</strong>（需要管理员权限）</li>
-<li>同意许可条款</li>
-<li>选择<strong>为另一台电脑创建安装介质</strong>，选择<strong>下一步</strong></li>
-<li>选择Window10的语言、版本和体系结构（64&#x2F;32位）</li>
-<li>选择介质类型（USB闪存驱动器或ISO文件，其中ISO文件用于创建启动DVD），选择USB闪存驱动器。</li>
-<li>等待创建完成</li>
-</ol>
-<h3 id="2-1-2-U盘启动安装"><a href="#2-1-2-U盘启动安装" class="headerlink" title="2.1.2. U盘启动安装"></a>2.1.2. U盘启动安装</h3><p>根据网站上接下来的<strong>使用您所创建的安装介质</strong>，为电脑安装新的Window10系统，步骤如下</p>
-<ol>
-<li>需要安装系统的电脑的所有硬盘需要备份。</li>
-<li>把制作好的启动U盘连接到等待安装系统的电脑上</li>
-<li>重启电脑</li>
-<li>有时电脑会自动引导至USB介质启动安装；如果电脑没有自动引导至 USB 或 DVD 介质，可能需要打开引导菜单或在电脑 BIOS 或 UEFI 设置中更改引导顺序。</li>
-<li>若要打开引导菜单或更改引导顺序，需要在重启&#x2F;开机后，在出现Dell&#x2F;Lenovo等商家界面后立即按下按键（例如 F2、F12、Delete 或 ESC）进入BIOS界面（不同品牌电脑不一样，可查询各厂家进入BIOS界面的快捷键），选择U盘对应名称，一步步按照指导进行系统安装。如果没有看到 USB 或 DVD 介质设备在引导选项中列出，可能需要联系电脑制造商来获取在 BIOS 设置中暂时禁用“安全引导”的说明。</li>
-<li>在<strong>安装Windows</strong>页面上，选择语言、时间和键盘首选项，然后选择<strong>下一步</strong>；</li>
-<li>选择<strong>安装Windows</strong>。</li>
-</ol>
-<h2 id="2-2-msdn下载系统镜像-rufus制作启动U盘"><a href="#2-2-msdn下载系统镜像-rufus制作启动U盘" class="headerlink" title="2.2. msdn下载系统镜像+rufus制作启动U盘"></a>2.2. msdn下载系统镜像+rufus制作启动U盘</h2><p>这里可以替代上一步中的<strong>创建启动U盘的步骤</strong>；制作完成后<strong>U盘启动安装</strong>与上一步一致。</p>
-<p>在<a href="https://msdn.itellyou.cn/">msdn网站</a>下载需要的操作系统版本的ISO文件；然后用<a href="https://rufus.ie/">Rufus</a>软件制作U盘。</p>
-<p>下好系统镜像和rufus软件后，插上U盘在rufus软件上依次操作制作启动U盘。</p>
-<p>几个需要注意的选项：</p>
-<ul>
-<li>目标系统类型选择UEFI启动(Legacy BIOS启动时间更长)，分区类型选择GPT(比MBR好在可以识别和使用2T以上磁盘)，Legacy BIOS+MBR组合较旧，不推荐。</li>
-<li>用软件Rufus制作U盘启动盘（大约30-60分钟），制作完成后插入需装系统的电脑（台式机建议插后面的USB接口）</li>
-</ul>
-<h2 id="2-3-notes："><a href="#2-3-notes：" class="headerlink" title="2.3. notes："></a>2.3. notes：</h2><ul>
-<li>不同电脑主板进入BIOS界面的快捷键不一样，需要查询。</li>
-<li>进入BIOS界面后，有些主板不显示U盘，可以UEFI设置的“Secure Boot”选项disable掉。</li>
-<li>有些主板不支持U盘是NTFS文件格式使用UEFI启动，但FAT32最大支持4G文件，所以网上有建议U盘分区，把系统文件放在NTFS区，启动文件放在FAT32区，但我亲试用Rufus制作的NTFS格式U盘可以在Dell inspire 3881上使用（UltraISO制作的就不行）。</li>
-<li>如果选择U盘名称后键盘鼠标不工作，可以换个USB接口试试，可能系统内的USB驱动版本不匹配。</li>
-</ul>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>computer</category>
-        <category>Windows</category>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>tutorial</tag>
-        <tag>reinstall</tag>
-        <tag>Windows</tag>
-        <tag>system</tag>
       </tags>
   </entry>
   <entry>
@@ -688,8 +688,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>phylogeny</tag>
-        <tag>phylogenetic tree</tag>
         <tag>evolutionary tree</tag>
+        <tag>phylogenetic tree</tag>
         <tag>bifurcated tree</tag>
         <tag>cladogram</tag>
         <tag>phylogram</tag>
@@ -745,117 +745,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>experiment</tag>
         <tag>molecular experiment</tag>
         <tag>PCR</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>批量计算Ka和Ks</title>
-    <url>/2022/09/07/bioinfo_Ks_batch.calculation.Ks/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1901371647&auto=1&height=32"></iframe></div>
-
-<h1 id="1-ParaAT"><a href="#1-ParaAT" class="headerlink" title="1. ParaAT"></a>1. ParaAT</h1><p>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
-<h1 id="2-KaKs-Calculator-2-0"><a href="#2-KaKs-Calculator-2-0" class="headerlink" title="2. KaKs_Calculator 2.0"></a>2. KaKs_Calculator 2.0</h1><p>KaKs_Calculator 2.0工具包包含了17种计算Ka和Ks的方法，包含Gamma系列，并可识别基于蛋白编码序列的滑动窗口，基于C++和Java，在Windows和Linux平台都可使用。</p>
-<h1 id="3-Ka和Ks计算"><a href="#3-Ka和Ks计算" class="headerlink" title="3. Ka和Ks计算"></a>3. Ka和Ks计算</h1><ul>
-<li>ParaAT比对指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出格式，如axt格式。</li>
-<li>KaKs_Calculator用于计算比对好的基因对的kaks。</li>
-</ul>
-<p>用还会用到两个脚本:</p>
-<ul>
-<li>axt2one-line.py:<a href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py%E8%BD%AC%E6%8D%A2axt%E6%A0%BC%E5%BC%8F%E4%B8%BA%E5%8D%95%E8%A1%8C">https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py转换axt格式为单行</a></li>
-<li>calculate_4DTV_correction.pl:<a href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl%E8%AE%A1%E7%AE%974dtv%E3%80%82">https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl计算4dtv。</a></li>
-</ul>
-<h1 id="4-软件准备"><a href="#4-软件准备" class="headerlink" title="4. 软件准备"></a>4. 软件准备</h1><ol>
-<li>安装ParaAT.pl</li>
-</ol>
-<ul>
-<li>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>安装KaKs_Calculator2.0<br>KaKs_Calculator2.0下载地址：<a href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect</a></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>然后把<code>./KaKs_Calculator2.0/bin/Linux/</code>和<code>./KaKs_Calculator2.0/src/</code>添加到环境变量即可使用<code>KaKs_Calculator</code>和<code>AXTConvertor</code>命令。</li>
-</ul>
-<h1 id="5-文件准备"><a href="#5-文件准备" class="headerlink" title="5. 文件准备"></a>5. 文件准备</h1><p>ParaAT.pl需要三个输入文件，参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
-<ol>
-<li>sample.id</li>
-</ol>
-<ul>
-<li>两列，每行对应两条要做成对比对的序列ID；</li>
-<li>任意行，ParaAT可以批量处理多个成对比对。</li>
-<li>一个例子：<code>cat sample.collinearity |grep &quot;species_prefix&quot;|cut -f2,3 &gt;sample.id</code> 用MCScanX的结果文件提取blocks的同源gene对，获得sample.id文件。</li>
-</ul>
-<ol start="2">
-<li>cds.fa</li>
-</ol>
-<ul>
-<li>包括所有需要比对的cds序列的文件</li>
-</ul>
-<ol start="3">
-<li>pep.fa</li>
-</ol>
-<ul>
-<li>包括所有需要比对的蛋白序列的文件</li>
-</ul>
-<h1 id="6-操作步骤"><a href="#6-操作步骤" class="headerlink" title="6. 操作步骤"></a>6. 操作步骤</h1><h2 id="6-1-用ParaAT获取基因对比对序列"><a href="#6-1-用ParaAT获取基因对比对序列" class="headerlink" title="6.1. 用ParaAT获取基因对比对序列"></a>6.1. 用ParaAT获取基因对比对序列</h2><p>ParaAT比对sample.id指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出为axt格式。</p>
-<ol>
-<li>命令</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对基因的蛋白比对，并把蛋白比对转化成cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；-o指定生成目录；</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>notes</li>
-</ol>
-<ul>
-<li>axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。</li>
-<li>建议加上-g和-t，免得后面计算Ks时报错<code>Error. The size of two sequences in &#39;ctg00816-ctg08844&#39; is not equal。</code></li>
-<li>ParaAT.pl命令中加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐不加-k参数，而是手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。</li>
-</ul>
-<h2 id="6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值"><a href="#6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值" class="headerlink" title="6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值"></a>6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值</h2><p>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</p>
-<p>KaKs_Calculator可计算比对好的CDS序列的Ka和Ks。</p>
-<ol>
-<li>计算Ka和Ks</li>
-</ol>
-<ul>
-<li>获得all.kaks文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do KaKs_Calculator -i $i -o $&#123;i&#125;_yn.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;_yn.kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="2">
-<li>计算4dtv</li>
-</ol>
-<ul>
-<li>获得all.4dtv文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="3">
-<li>合并和整理结果</li>
-</ol>
-<ul>
-<li>获得all.results文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd .. #返回上一级目录</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
-<li>ParaAT paper：<a href="https://www.sciencedirect.com/science/article/pii/S0006291X12003518">https://www.sciencedirect.com/science/article/pii/S0006291X12003518</a></li>
-<li>KaKs_Calculator2.0 github：<a href="https://github.com/kullrich/kakscalculator2">https://github.com/kullrich/kakscalculator2</a></li>
-<li>KaKs_Calculator2.0 paper：<a href="https://www.sciencedirect.com/science/article/pii/S1672022910600083?via=ihub">https://www.sciencedirect.com/science/article/pii/S1672022910600083?via%3Dihub</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>bio</category>
-        <category>bioinfo</category>
-        <category>Ks</category>
-      </categories>
-      <tags>
-        <tag>Ks</tag>
-        <tag>Ka</tag>
-        <tag>4dtv</tag>
-        <tag>ParaAT</tag>
-        <tag>KaKs_Calculator</tag>
       </tags>
   </entry>
   <entry>
@@ -1112,6 +1001,117 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>WGD</tag>
         <tag>gene duplication event</tag>
         <tag>OrthoFinder2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>批量计算Ka和Ks</title>
+    <url>/2022/09/07/bioinfo_Ks_batch.calculation.Ks/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1901371647&auto=1&height=32"></iframe></div>
+
+<h1 id="1-ParaAT"><a href="#1-ParaAT" class="headerlink" title="1. ParaAT"></a>1. ParaAT</h1><p>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
+<h1 id="2-KaKs-Calculator-2-0"><a href="#2-KaKs-Calculator-2-0" class="headerlink" title="2. KaKs_Calculator 2.0"></a>2. KaKs_Calculator 2.0</h1><p>KaKs_Calculator 2.0工具包包含了17种计算Ka和Ks的方法，包含Gamma系列，并可识别基于蛋白编码序列的滑动窗口，基于C++和Java，在Windows和Linux平台都可使用。</p>
+<h1 id="3-Ka和Ks计算"><a href="#3-Ka和Ks计算" class="headerlink" title="3. Ka和Ks计算"></a>3. Ka和Ks计算</h1><ul>
+<li>ParaAT比对指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出格式，如axt格式。</li>
+<li>KaKs_Calculator用于计算比对好的基因对的kaks。</li>
+</ul>
+<p>用还会用到两个脚本:</p>
+<ul>
+<li>axt2one-line.py:<a href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py%E8%BD%AC%E6%8D%A2axt%E6%A0%BC%E5%BC%8F%E4%B8%BA%E5%8D%95%E8%A1%8C">https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py转换axt格式为单行</a></li>
+<li>calculate_4DTV_correction.pl:<a href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl%E8%AE%A1%E7%AE%974dtv%E3%80%82">https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl计算4dtv。</a></li>
+</ul>
+<h1 id="4-软件准备"><a href="#4-软件准备" class="headerlink" title="4. 软件准备"></a>4. 软件准备</h1><ol>
+<li>安装ParaAT.pl</li>
+</ol>
+<ul>
+<li>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装KaKs_Calculator2.0<br>KaKs_Calculator2.0下载地址：<a href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后把<code>./KaKs_Calculator2.0/bin/Linux/</code>和<code>./KaKs_Calculator2.0/src/</code>添加到环境变量即可使用<code>KaKs_Calculator</code>和<code>AXTConvertor</code>命令。</li>
+</ul>
+<h1 id="5-文件准备"><a href="#5-文件准备" class="headerlink" title="5. 文件准备"></a>5. 文件准备</h1><p>ParaAT.pl需要三个输入文件，参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
+<ol>
+<li>sample.id</li>
+</ol>
+<ul>
+<li>两列，每行对应两条要做成对比对的序列ID；</li>
+<li>任意行，ParaAT可以批量处理多个成对比对。</li>
+<li>一个例子：<code>cat sample.collinearity |grep &quot;species_prefix&quot;|cut -f2,3 &gt;sample.id</code> 用MCScanX的结果文件提取blocks的同源gene对，获得sample.id文件。</li>
+</ul>
+<ol start="2">
+<li>cds.fa</li>
+</ol>
+<ul>
+<li>包括所有需要比对的cds序列的文件</li>
+</ul>
+<ol start="3">
+<li>pep.fa</li>
+</ol>
+<ul>
+<li>包括所有需要比对的蛋白序列的文件</li>
+</ul>
+<h1 id="6-操作步骤"><a href="#6-操作步骤" class="headerlink" title="6. 操作步骤"></a>6. 操作步骤</h1><h2 id="6-1-用ParaAT获取基因对比对序列"><a href="#6-1-用ParaAT获取基因对比对序列" class="headerlink" title="6.1. 用ParaAT获取基因对比对序列"></a>6.1. 用ParaAT获取基因对比对序列</h2><p>ParaAT比对sample.id指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出为axt格式。</p>
+<ol>
+<li>命令</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对基因的蛋白比对，并把蛋白比对转化成cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；-o指定生成目录；</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>notes</li>
+</ol>
+<ul>
+<li>axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。</li>
+<li>建议加上-g和-t，免得后面计算Ks时报错<code>Error. The size of two sequences in &#39;ctg00816-ctg08844&#39; is not equal。</code></li>
+<li>ParaAT.pl命令中加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐不加-k参数，而是手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。</li>
+</ul>
+<h2 id="6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值"><a href="#6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值" class="headerlink" title="6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值"></a>6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值</h2><p>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</p>
+<p>KaKs_Calculator可计算比对好的CDS序列的Ka和Ks。</p>
+<ol>
+<li>计算Ka和Ks</li>
+</ol>
+<ul>
+<li>获得all.kaks文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do KaKs_Calculator -i $i -o $&#123;i&#125;_yn.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;_yn.kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li>计算4dtv</li>
+</ol>
+<ul>
+<li>获得all.4dtv文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>合并和整理结果</li>
+</ol>
+<ul>
+<li>获得all.results文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd .. #返回上一级目录</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
+<li>ParaAT paper：<a href="https://www.sciencedirect.com/science/article/pii/S0006291X12003518">https://www.sciencedirect.com/science/article/pii/S0006291X12003518</a></li>
+<li>KaKs_Calculator2.0 github：<a href="https://github.com/kullrich/kakscalculator2">https://github.com/kullrich/kakscalculator2</a></li>
+<li>KaKs_Calculator2.0 paper：<a href="https://www.sciencedirect.com/science/article/pii/S1672022910600083?via=ihub">https://www.sciencedirect.com/science/article/pii/S1672022910600083?via%3Dihub</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>bio</category>
+        <category>bioinfo</category>
+        <category>Ks</category>
+      </categories>
+      <tags>
+        <tag>Ks</tag>
+        <tag>Ka</tag>
+        <tag>4dtv</tag>
+        <tag>ParaAT</tag>
+        <tag>KaKs_Calculator</tag>
       </tags>
   </entry>
   <entry>
@@ -1449,11 +1449,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>tutorial</tag>
+        <tag>biosoft</tag>
         <tag>ParaAT</tag>
         <tag>sequence alignment</tag>
         <tag>protein</tag>
         <tag>CDS</tag>
-        <tag>biosoft</tag>
         <tag>PAL2NAL</tag>
       </tags>
   </entry>
@@ -1698,8 +1698,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
-        <tag>phylogeny</tag>
         <tag>biosoft</tag>
+        <tag>phylogeny</tag>
         <tag>divergence time</tag>
         <tag>paml</tag>
         <tag>mcmctree</tag>
@@ -1961,11 +1961,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
       </tags>
   </entry>
@@ -2222,11 +2222,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
         <tag>GO</tag>
         <tag>KEGG</tag>
@@ -2422,11 +2422,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
         <tag>visualization</tag>
       </tags>
@@ -2746,164 +2746,15 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
+        <tag>topGO</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
         <tag>KOBAS-i</tag>
         <tag>GOEAST</tag>
-        <tag>topGO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>富集分析：（二）topGO</title>
-    <url>/2021/11/13/bioinfo_enrichment_topGO/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=116744&auto=1&height=32"></iframe></div>
-
-<h1 id="1-富集分析-enrichment-analysis"><a href="#1-富集分析-enrichment-analysis" class="headerlink" title="1. 富集分析(enrichment analysis)"></a>1. 富集分析(enrichment analysis)</h1><p>富集分析(enrichment analysis)的概述参考<a href="https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment_intro/">博客：富集分析概述</a>。</p>
-<h1 id="2-topGO"><a href="#2-topGO" class="headerlink" title="2. topGO"></a>2. topGO</h1><h2 id="2-1-topGO简介"><a href="#2-1-topGO简介" class="headerlink" title="2.1. topGO简介"></a>2.1. topGO简介</h2><p>topGO是一个R包，用于半自动的GO terms的富集分析。</p>
-<p>因为topGO只用于GO的富集分析，且是半自动化的，推荐使用更方便的在线工具<a href="http://kobas.cbi.pku.edu.cn/">KOBAS-i</a>；<a href="http://bioinfo.org/kobas">KOBAS-i 备用</a>；<a href="http://omicslab.genetics.ac.cn/GOEAST/index.php">GOEAST</a>; 或者功能更完善的clusterProfiler包，参考<a href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">博客：clusterProfiler包</a>。</p>
-<h2 id="2-2-GO-term"><a href="#2-2-GO-term" class="headerlink" title="2.2. GO term"></a>2.2. GO term</h2><p>GO term分为三大类：</p>
-<ul>
-<li>cellular component(CC)-细胞成分（其中基因产物位于细胞内部）</li>
-<li>molecular function(MF)-分子功能（基因产物的功能是什么）</li>
-<li>biology process(BP)-生物过程（即基因产物参与的一系列事件）<br>三类都可以用topGO做富集分析。</li>
-</ul>
-<h2 id="2-3-topGO支持的统计检验方法"><a href="#2-3-topGO支持的统计检验方法" class="headerlink" title="2.3. topGO支持的统计检验方法"></a>2.3. topGO支持的统计检验方法</h2><p>topGO包默认算法用的是weight01，是elim和权重算法的混合。</p>
-<table>
-<thead>
-<tr>
-<th>topGO支持的统计方法</th>
-<th>fisher</th>
-<th>ks</th>
-<th>t</th>
-<th>globaltest</th>
-<th>sum</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>classic</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-</tr>
-<tr>
-<td>elim</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-</tr>
-<tr>
-<td>weight</td>
-<td>Y</td>
-<td>N</td>
-<td>N</td>
-<td>N</td>
-<td>N</td>
-</tr>
-<tr>
-<td>weight01</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-</tr>
-<tr>
-<td>lea</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-<td>Y</td>
-</tr>
-<tr>
-<td>parentchild</td>
-<td>Y</td>
-<td>N</td>
-<td>N</td>
-<td>N</td>
-<td>N</td>
-</tr>
-</tbody></table>
-<h2 id="2-4-安装topGO"><a href="#2-4-安装topGO" class="headerlink" title="2.4. 安装topGO"></a>2.4. 安装topGO</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装topGO软件包</span></span><br><span class="line"><span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span>requireNamespace<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">,</span> quietly <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">  install.packages<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;topGO&quot;</span><span class="punctuation">,</span> version <span class="operator">=</span> <span class="string">&quot;3.14&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;Rgraphviz&quot;</span><span class="punctuation">,</span> version <span class="operator">=</span> <span class="string">&quot;3.8&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;GO.db&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;biomaRt&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">source<span class="punctuation">(</span><span class="string">&quot;https://bioconductor.org/biocLite.R&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;topGO&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;GO.db&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;biomaRt&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;Rgraphviz&quot;</span><span class="punctuation">)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Load the required R packages</span></span><br><span class="line">library<span class="punctuation">(</span>topGO<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>GO.db<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>biomaRt<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>Rgraphviz<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-5-topGO做富集分析-ORA"><a href="#2-5-topGO做富集分析-ORA" class="headerlink" title="2.5. topGO做富集分析(ORA)"></a>2.5. topGO做富集分析(ORA)</h2><h3 id="2-5-1-输入文件"><a href="#2-5-1-输入文件" class="headerlink" title="2.5.1. 输入文件"></a>2.5.1. 输入文件</h3><p>两个输入文件</p>
-<ul>
-<li>genes.list：需要做富集分析的geneID的list，一个基因ID一行</li>
-<li>sample.anno：基因及GO注释信息，第一列是geneID，第二列是GO注释，空格分隔，GO注释可以有多个，格式为GO:0000428,GO:0003677,GO:0005506,</li>
-</ul>
-<h3 id="2-5-2-富集分析"><a href="#2-5-2-富集分析" class="headerlink" title="2.5.2. 富集分析"></a>2.5.2. 富集分析</h3><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 设置工作目录，后面读取文件什么的就可以直接读取不需要那么长的路径</span></span><br><span class="line">setwd<span class="punctuation">(</span><span class="string">&#x27;D:/test_data&#x27;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载包</span></span><br><span class="line">rm<span class="punctuation">(</span><span class="built_in">list</span><span class="operator">=</span>ls<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>topGO<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>Rgraphviz<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置输入文件</span></span><br><span class="line">input<span class="operator">=</span><span class="string">&quot;genes.list&quot;</span>  <span class="comment">#待分析基因名称的列表</span></span><br><span class="line">mapfile<span class="operator">=</span><span class="string">&quot;sample.anno&quot;</span>    <span class="comment">#所有基因GO注释结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始分析</span></span><br><span class="line">gene_id <span class="operator">=</span> readMappings<span class="punctuation">(</span>file <span class="operator">=</span> mapfile<span class="punctuation">)</span> <span class="comment">#如果是读取其他文件格式，后面参数还需要修改</span></span><br><span class="line">gene_names <span class="operator">=</span> <span class="built_in">names</span><span class="punctuation">(</span>gene_id<span class="punctuation">)</span></span><br><span class="line">my_genes <span class="operator">=</span> read.table<span class="punctuation">(</span>input<span class="punctuation">)</span><span class="punctuation">[</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">]</span></span><br><span class="line"></span><br><span class="line">gene_list <span class="operator">=</span> <span class="built_in">rep</span><span class="punctuation">(</span><span class="number">1</span><span class="punctuation">,</span><span class="built_in">length</span><span class="punctuation">(</span>gene_id<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"><span class="built_in">names</span><span class="punctuation">(</span>gene_list<span class="punctuation">)</span> <span class="operator">=</span> <span class="built_in">names</span><span class="punctuation">(</span>gene_id<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">gene_list<span class="punctuation">[</span>match<span class="punctuation">(</span>my_genes<span class="punctuation">,</span><span class="built_in">names</span><span class="punctuation">(</span>gene_list<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">top_diff_genes <span class="operator">=</span> <span class="keyword">function</span><span class="punctuation">(</span>allScore<span class="punctuation">)</span><span class="punctuation">&#123;</span><span class="built_in">return</span><span class="punctuation">(</span>allScore<span class="operator">&lt;</span><span class="number">0.01</span><span class="punctuation">)</span><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. BP 富集分析</span></span><br><span class="line"><span class="comment">## new() 创建一个 topGO 的对象，然后对这个对象做检验</span></span><br><span class="line">bp_go <span class="operator">=</span> new<span class="punctuation">(</span><span class="string">&quot;topGOdata&quot;</span><span class="punctuation">,</span></span><br><span class="line">                   nodeSize <span class="operator">=</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">                   ontology<span class="operator">=</span><span class="string">&quot;BP&quot;</span><span class="punctuation">,</span></span><br><span class="line">                   allGenes <span class="operator">=</span> gene_list<span class="punctuation">,</span></span><br><span class="line">                   annot <span class="operator">=</span> annFUN.gene2GO<span class="punctuation">,</span></span><br><span class="line">                   gene2GO <span class="operator">=</span> gene_id<span class="punctuation">,</span></span><br><span class="line">                   geneSel<span class="operator">=</span>top_diff_genes<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 做显著性检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值</span></span><br><span class="line">result_KS.elim <span class="operator">=</span> runTest<span class="punctuation">(</span>bp_go<span class="punctuation">,</span></span><br><span class="line">                         algorithm <span class="operator">=</span> <span class="string">&quot;elim&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         statistic <span class="operator">=</span> <span class="string">&quot;ks&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 提取基因 table</span></span><br><span class="line">allres <span class="operator">=</span> GenTable<span class="punctuation">(</span>bp_go<span class="punctuation">,</span></span><br><span class="line">                  KS <span class="operator">=</span> result_KS.elim<span class="punctuation">,</span></span><br><span class="line">                  ranksOf <span class="operator">=</span> <span class="string">&quot;classic&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  topNodes <span class="operator">=</span> <span class="built_in">attributes</span><span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="operator">$</span>geneData<span class="punctuation">[</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成文件，后面画图都可以用这个表</span></span><br><span class="line">write.table<span class="punctuation">(</span>allres<span class="punctuation">,</span></span><br><span class="line">            file <span class="operator">=</span> paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.BP.xls&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">            sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span><span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span> col.names<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> row.names<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出矢量图</span></span><br><span class="line">pdf<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.BP.pdf&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>bp_go<span class="punctuation">,</span></span><br><span class="line">               score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">               firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">               useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span> <span class="comment">#设置节点数量，10个或者20个更多都可以</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出像素图</span></span><br><span class="line">png<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.BP.png&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>bp_go<span class="punctuation">,</span> score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span> firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. MF 富集分析（同理）</span></span><br><span class="line"><span class="comment">## 创建一个 topGO 的对象</span></span><br><span class="line">mf_go <span class="operator">=</span> new<span class="punctuation">(</span><span class="string">&quot;topGOdata&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    nodeSize <span class="operator">=</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">                    ontology<span class="operator">=</span><span class="string">&quot;MF&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    allGenes <span class="operator">=</span> gene_list<span class="punctuation">,</span></span><br><span class="line">                    annot <span class="operator">=</span> annFUN.gene2GO<span class="punctuation">,</span></span><br><span class="line">                    gene2GO <span class="operator">=</span> gene_id<span class="punctuation">,</span></span><br><span class="line">                    geneSel<span class="operator">=</span>top_diff_genes<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 做检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值</span></span><br><span class="line">result_KS.elim <span class="operator">=</span> runTest<span class="punctuation">(</span>mf_go<span class="punctuation">,</span></span><br><span class="line">                         algorithm <span class="operator">=</span> <span class="string">&quot;elim&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         statistic <span class="operator">=</span> <span class="string">&quot;ks&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 提取基因 table</span></span><br><span class="line">allres <span class="operator">=</span> GenTable<span class="punctuation">(</span>mf_go <span class="punctuation">,</span></span><br><span class="line">                  KS <span class="operator">=</span> result_KS.elim<span class="punctuation">,</span></span><br><span class="line">                  ranksOf <span class="operator">=</span> <span class="string">&quot;classic&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  topNodes <span class="operator">=</span> <span class="built_in">attributes</span><span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="operator">$</span>geneData<span class="punctuation">[</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成文件，后面画图都可以用这个表</span></span><br><span class="line">write.table<span class="punctuation">(</span>allres<span class="punctuation">,</span></span><br><span class="line">            file <span class="operator">=</span> paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.MF.xls&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">            sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span><span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span> col.names<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> row.names<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出矢量图</span></span><br><span class="line">pdf<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.MF.pdf&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>mf_go<span class="punctuation">,</span></span><br><span class="line">               score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">               firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">               useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span> <span class="comment">#设置节点数量，10个或者20个更多都可以</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出像素图</span></span><br><span class="line">png<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.MF.png&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>mf_go<span class="punctuation">,</span> score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span> firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. CC节点的富集分析(同理)</span></span><br><span class="line"><span class="comment">## 创建一个 topGO 的对象</span></span><br><span class="line">cc_go <span class="operator">=</span> new<span class="punctuation">(</span><span class="string">&quot;topGOdata&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    nodeSize <span class="operator">=</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">                    ontology<span class="operator">=</span><span class="string">&quot;CC&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    allGenes <span class="operator">=</span> gene_list<span class="punctuation">,</span></span><br><span class="line">                    annot <span class="operator">=</span> annFUN.gene2GO<span class="punctuation">,</span></span><br><span class="line">                    gene2GO <span class="operator">=</span> gene_id<span class="punctuation">,</span></span><br><span class="line">                    geneSel<span class="operator">=</span>top_diff_genes<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 做检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值</span></span><br><span class="line">result_KS.elim <span class="operator">=</span> runTest<span class="punctuation">(</span>cc_go<span class="punctuation">,</span></span><br><span class="line">                         algorithm <span class="operator">=</span> <span class="string">&quot;elim&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         statistic <span class="operator">=</span> <span class="string">&quot;ks&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 提取基因 table</span></span><br><span class="line">allres <span class="operator">=</span> GenTable<span class="punctuation">(</span>cc_go<span class="punctuation">,</span></span><br><span class="line">                  KS <span class="operator">=</span> result_KS.elim<span class="punctuation">,</span></span><br><span class="line">                  ranksOf <span class="operator">=</span> <span class="string">&quot;classic&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  topNodes <span class="operator">=</span> <span class="built_in">attributes</span><span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="operator">$</span>geneData<span class="punctuation">[</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成文件，后面画图都可以用这个表</span></span><br><span class="line">write.table<span class="punctuation">(</span>allres<span class="punctuation">,</span></span><br><span class="line">            file <span class="operator">=</span> paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.CC.xls&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">            sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span><span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span> col.names<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> row.names<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出矢量图</span></span><br><span class="line">pdf<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.CC.pdf&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>cc_go<span class="punctuation">,</span></span><br><span class="line">               score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">               firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">               useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span> <span class="comment">#设置节点数量，10个或者20个更多都可以</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出像素图</span></span><br><span class="line">png<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.CC.png&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>cc_go<span class="punctuation">,</span> score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span> firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-5-3-结果解释"><a href="#2-5-3-结果解释" class="headerlink" title="2.5.3. 结果解释"></a>2.5.3. 结果解释</h3><ol>
-<li>.xls结果文件中每一列的含义</li>
-</ol>
-<ul>
-<li><p>GO.ID：富集的GO ID</p>
-</li>
-<li><p>Term：GO ID的描述</p>
-</li>
-<li><p>Annotated : number of genes in go.db which are annotated with the GO-term.在go.db中被注释到GO-term的基因数量。</p>
-</li>
-<li><p>Significant : number of genes belonging to your input which are annotated with the GO-term. GO-term被注释到的基因中包含输入的基因的数量</p>
-</li>
-<li><p>Expected : show an estimate of the number of genes a node of size Annotated would have if the significant genes were to be randomly selected from the gene universe. 对节点基因数量的预期</p>
-</li>
-<li><p>KS：用KS（Kolmogorov-Smirnov）算法计算得到的p-value值。</p>
-<p>KS全称是：Kolmogorov-Smirnov，KS值是通过KS检验所得，KS检验是一种算法。统计方法如下：</p>
-<ul>
-<li>首先计算每个go节点对应的gene个数，</li>
-<li>如果某个节点的子节点也有gene比对上，那么父节点对应的gene个数也要加上子节点的基因数</li>
-<li>使用KS统计检验进行p值的计算，文件中的KS值，就是常说的p value，叫KS值的原因，是体现使用的KS检验方法。</li>
-</ul>
-</li>
-</ul>
-<ol start="2">
-<li>DAG图（矢量图&#x2F;像素图）<br>有向无环图(Directed acyclic graph, DAG)中，从上至下依次有包含关系，只有从上往下的箭头，这个箭头代表包含关系，即<strong>有向</strong>。只有从上往下的箭头，方向是确定的，所以不会形成闭环，即<strong>无环</strong>。</li>
-</ol>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图示例" alt="DAG图" align=center/>
-
-<p><strong><p align="center">Figure 1. DAG图示例</strong><br>from <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">wikipedia:directed acyclic graph</a></p></p>
-<ul>
-<li>有向无环图能直观展示基因富集的GO节点（Term）及其层级关系。</li>
-<li>在有向无环图中，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。</li>
-<li>分支代表包含关系，从上至下所定义的功能描述范围越来越具体。</li>
-<li>箭头代表包含关系，即该节点的所有基因同样注释到其上级节点中。</li>
-</ul>
-<img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png" title=" topGO结果DAG图" width="90%"/>
-
-<p><strong><p align="center">Figure 2. topGO结果DAG图</strong><br>from <a href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/">clusterProfiler blog</a></p></p>
-<p>注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。</p>
-<h1 id="3-references"><a href="#3-references" class="headerlink" title="3. references"></a>3. references</h1><ol>
-<li>topGO tutorial：<a href="https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf">https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf</a></li>
-<li>topGO blog：<a href="https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/">https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/</a></li>
-<li>R topGO：<a href="https://www.codenong.com/cs105162324/">https://www.codenong.com/cs105162324/</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>bio</category>
-        <category>bioinfo</category>
-        <category>enrichment</category>
-      </categories>
-      <tags>
-        <tag>enrichment analysis</tag>
-        <tag>over representation analysis</tag>
-        <tag>ORA</tag>
-        <tag>topGO</tag>
       </tags>
   </entry>
   <entry>
@@ -3138,11 +2989,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
-        <tag>R</tag>
         <tag>tutorial</tag>
+        <tag>biosoft</tag>
         <tag>phylogeny</tag>
         <tag>evolutionary tree</tag>
-        <tag>biosoft</tag>
+        <tag>R</tag>
         <tag>itol</tag>
         <tag>treeio</tag>
         <tag>ggtree</tag>
@@ -3152,6 +3003,155 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>geom_taxalink</tag>
         <tag>multiPhylo</tag>
         <tag>ggdensitree</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>富集分析：（二）topGO</title>
+    <url>/2021/11/13/bioinfo_enrichment_topGO/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=116744&auto=1&height=32"></iframe></div>
+
+<h1 id="1-富集分析-enrichment-analysis"><a href="#1-富集分析-enrichment-analysis" class="headerlink" title="1. 富集分析(enrichment analysis)"></a>1. 富集分析(enrichment analysis)</h1><p>富集分析(enrichment analysis)的概述参考<a href="https://yanzhongsino.github.io/2021/11/12/bioinfo_enrichment_intro/">博客：富集分析概述</a>。</p>
+<h1 id="2-topGO"><a href="#2-topGO" class="headerlink" title="2. topGO"></a>2. topGO</h1><h2 id="2-1-topGO简介"><a href="#2-1-topGO简介" class="headerlink" title="2.1. topGO简介"></a>2.1. topGO简介</h2><p>topGO是一个R包，用于半自动的GO terms的富集分析。</p>
+<p>因为topGO只用于GO的富集分析，且是半自动化的，推荐使用更方便的在线工具<a href="http://kobas.cbi.pku.edu.cn/">KOBAS-i</a>；<a href="http://bioinfo.org/kobas">KOBAS-i 备用</a>；<a href="http://omicslab.genetics.ac.cn/GOEAST/index.php">GOEAST</a>; 或者功能更完善的clusterProfiler包，参考<a href="https://yanzhongsino.github.io/2021/12/13/bioinfo_enrichment_clusterProfiler/">博客：clusterProfiler包</a>。</p>
+<h2 id="2-2-GO-term"><a href="#2-2-GO-term" class="headerlink" title="2.2. GO term"></a>2.2. GO term</h2><p>GO term分为三大类：</p>
+<ul>
+<li>cellular component(CC)-细胞成分（其中基因产物位于细胞内部）</li>
+<li>molecular function(MF)-分子功能（基因产物的功能是什么）</li>
+<li>biology process(BP)-生物过程（即基因产物参与的一系列事件）<br>三类都可以用topGO做富集分析。</li>
+</ul>
+<h2 id="2-3-topGO支持的统计检验方法"><a href="#2-3-topGO支持的统计检验方法" class="headerlink" title="2.3. topGO支持的统计检验方法"></a>2.3. topGO支持的统计检验方法</h2><p>topGO包默认算法用的是weight01，是elim和权重算法的混合。</p>
+<table>
+<thead>
+<tr>
+<th>topGO支持的统计方法</th>
+<th>fisher</th>
+<th>ks</th>
+<th>t</th>
+<th>globaltest</th>
+<th>sum</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>classic</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>elim</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr>
+<td>weight01</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>lea</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>parentchild</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody></table>
+<h2 id="2-4-安装topGO"><a href="#2-4-安装topGO" class="headerlink" title="2.4. 安装topGO"></a>2.4. 安装topGO</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装topGO软件包</span></span><br><span class="line"><span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span>requireNamespace<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">,</span> quietly <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">  install.packages<span class="punctuation">(</span><span class="string">&quot;BiocManager&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;topGO&quot;</span><span class="punctuation">,</span> version <span class="operator">=</span> <span class="string">&quot;3.14&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;Rgraphviz&quot;</span><span class="punctuation">,</span> version <span class="operator">=</span> <span class="string">&quot;3.8&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;GO.db&quot;</span><span class="punctuation">)</span></span><br><span class="line">BiocManager<span class="operator">::</span>install<span class="punctuation">(</span><span class="string">&quot;biomaRt&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">source<span class="punctuation">(</span><span class="string">&quot;https://bioconductor.org/biocLite.R&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;topGO&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;GO.db&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;biomaRt&quot;</span><span class="punctuation">)</span></span><br><span class="line">biocLite<span class="punctuation">(</span><span class="string">&quot;Rgraphviz&quot;</span><span class="punctuation">)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Load the required R packages</span></span><br><span class="line">library<span class="punctuation">(</span>topGO<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>GO.db<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>biomaRt<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>Rgraphviz<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-topGO做富集分析-ORA"><a href="#2-5-topGO做富集分析-ORA" class="headerlink" title="2.5. topGO做富集分析(ORA)"></a>2.5. topGO做富集分析(ORA)</h2><h3 id="2-5-1-输入文件"><a href="#2-5-1-输入文件" class="headerlink" title="2.5.1. 输入文件"></a>2.5.1. 输入文件</h3><p>两个输入文件</p>
+<ul>
+<li>genes.list：需要做富集分析的geneID的list，一个基因ID一行</li>
+<li>sample.anno：基因及GO注释信息，第一列是geneID，第二列是GO注释，空格分隔，GO注释可以有多个，格式为GO:0000428,GO:0003677,GO:0005506,</li>
+</ul>
+<h3 id="2-5-2-富集分析"><a href="#2-5-2-富集分析" class="headerlink" title="2.5.2. 富集分析"></a>2.5.2. 富集分析</h3><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 设置工作目录，后面读取文件什么的就可以直接读取不需要那么长的路径</span></span><br><span class="line">setwd<span class="punctuation">(</span><span class="string">&#x27;D:/test_data&#x27;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载包</span></span><br><span class="line">rm<span class="punctuation">(</span><span class="built_in">list</span><span class="operator">=</span>ls<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>topGO<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>Rgraphviz<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置输入文件</span></span><br><span class="line">input<span class="operator">=</span><span class="string">&quot;genes.list&quot;</span>  <span class="comment">#待分析基因名称的列表</span></span><br><span class="line">mapfile<span class="operator">=</span><span class="string">&quot;sample.anno&quot;</span>    <span class="comment">#所有基因GO注释结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始分析</span></span><br><span class="line">gene_id <span class="operator">=</span> readMappings<span class="punctuation">(</span>file <span class="operator">=</span> mapfile<span class="punctuation">)</span> <span class="comment">#如果是读取其他文件格式，后面参数还需要修改</span></span><br><span class="line">gene_names <span class="operator">=</span> <span class="built_in">names</span><span class="punctuation">(</span>gene_id<span class="punctuation">)</span></span><br><span class="line">my_genes <span class="operator">=</span> read.table<span class="punctuation">(</span>input<span class="punctuation">)</span><span class="punctuation">[</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">]</span></span><br><span class="line"></span><br><span class="line">gene_list <span class="operator">=</span> <span class="built_in">rep</span><span class="punctuation">(</span><span class="number">1</span><span class="punctuation">,</span><span class="built_in">length</span><span class="punctuation">(</span>gene_id<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"><span class="built_in">names</span><span class="punctuation">(</span>gene_list<span class="punctuation">)</span> <span class="operator">=</span> <span class="built_in">names</span><span class="punctuation">(</span>gene_id<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">gene_list<span class="punctuation">[</span>match<span class="punctuation">(</span>my_genes<span class="punctuation">,</span><span class="built_in">names</span><span class="punctuation">(</span>gene_list<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">top_diff_genes <span class="operator">=</span> <span class="keyword">function</span><span class="punctuation">(</span>allScore<span class="punctuation">)</span><span class="punctuation">&#123;</span><span class="built_in">return</span><span class="punctuation">(</span>allScore<span class="operator">&lt;</span><span class="number">0.01</span><span class="punctuation">)</span><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. BP 富集分析</span></span><br><span class="line"><span class="comment">## new() 创建一个 topGO 的对象，然后对这个对象做检验</span></span><br><span class="line">bp_go <span class="operator">=</span> new<span class="punctuation">(</span><span class="string">&quot;topGOdata&quot;</span><span class="punctuation">,</span></span><br><span class="line">                   nodeSize <span class="operator">=</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">                   ontology<span class="operator">=</span><span class="string">&quot;BP&quot;</span><span class="punctuation">,</span></span><br><span class="line">                   allGenes <span class="operator">=</span> gene_list<span class="punctuation">,</span></span><br><span class="line">                   annot <span class="operator">=</span> annFUN.gene2GO<span class="punctuation">,</span></span><br><span class="line">                   gene2GO <span class="operator">=</span> gene_id<span class="punctuation">,</span></span><br><span class="line">                   geneSel<span class="operator">=</span>top_diff_genes<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 做显著性检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值</span></span><br><span class="line">result_KS.elim <span class="operator">=</span> runTest<span class="punctuation">(</span>bp_go<span class="punctuation">,</span></span><br><span class="line">                         algorithm <span class="operator">=</span> <span class="string">&quot;elim&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         statistic <span class="operator">=</span> <span class="string">&quot;ks&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 提取基因 table</span></span><br><span class="line">allres <span class="operator">=</span> GenTable<span class="punctuation">(</span>bp_go<span class="punctuation">,</span></span><br><span class="line">                  KS <span class="operator">=</span> result_KS.elim<span class="punctuation">,</span></span><br><span class="line">                  ranksOf <span class="operator">=</span> <span class="string">&quot;classic&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  topNodes <span class="operator">=</span> <span class="built_in">attributes</span><span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="operator">$</span>geneData<span class="punctuation">[</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成文件，后面画图都可以用这个表</span></span><br><span class="line">write.table<span class="punctuation">(</span>allres<span class="punctuation">,</span></span><br><span class="line">            file <span class="operator">=</span> paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.BP.xls&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">            sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span><span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span> col.names<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> row.names<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出矢量图</span></span><br><span class="line">pdf<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.BP.pdf&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>bp_go<span class="punctuation">,</span></span><br><span class="line">               score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">               firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">               useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span> <span class="comment">#设置节点数量，10个或者20个更多都可以</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出像素图</span></span><br><span class="line">png<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.BP.png&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>bp_go<span class="punctuation">,</span> score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span> firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. MF 富集分析（同理）</span></span><br><span class="line"><span class="comment">## 创建一个 topGO 的对象</span></span><br><span class="line">mf_go <span class="operator">=</span> new<span class="punctuation">(</span><span class="string">&quot;topGOdata&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    nodeSize <span class="operator">=</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">                    ontology<span class="operator">=</span><span class="string">&quot;MF&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    allGenes <span class="operator">=</span> gene_list<span class="punctuation">,</span></span><br><span class="line">                    annot <span class="operator">=</span> annFUN.gene2GO<span class="punctuation">,</span></span><br><span class="line">                    gene2GO <span class="operator">=</span> gene_id<span class="punctuation">,</span></span><br><span class="line">                    geneSel<span class="operator">=</span>top_diff_genes<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 做检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值</span></span><br><span class="line">result_KS.elim <span class="operator">=</span> runTest<span class="punctuation">(</span>mf_go<span class="punctuation">,</span></span><br><span class="line">                         algorithm <span class="operator">=</span> <span class="string">&quot;elim&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         statistic <span class="operator">=</span> <span class="string">&quot;ks&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 提取基因 table</span></span><br><span class="line">allres <span class="operator">=</span> GenTable<span class="punctuation">(</span>mf_go <span class="punctuation">,</span></span><br><span class="line">                  KS <span class="operator">=</span> result_KS.elim<span class="punctuation">,</span></span><br><span class="line">                  ranksOf <span class="operator">=</span> <span class="string">&quot;classic&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  topNodes <span class="operator">=</span> <span class="built_in">attributes</span><span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="operator">$</span>geneData<span class="punctuation">[</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成文件，后面画图都可以用这个表</span></span><br><span class="line">write.table<span class="punctuation">(</span>allres<span class="punctuation">,</span></span><br><span class="line">            file <span class="operator">=</span> paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.MF.xls&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">            sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span><span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span> col.names<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> row.names<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出矢量图</span></span><br><span class="line">pdf<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.MF.pdf&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>mf_go<span class="punctuation">,</span></span><br><span class="line">               score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">               firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">               useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span> <span class="comment">#设置节点数量，10个或者20个更多都可以</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出像素图</span></span><br><span class="line">png<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.MF.png&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>mf_go<span class="punctuation">,</span> score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span> firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. CC节点的富集分析(同理)</span></span><br><span class="line"><span class="comment">## 创建一个 topGO 的对象</span></span><br><span class="line">cc_go <span class="operator">=</span> new<span class="punctuation">(</span><span class="string">&quot;topGOdata&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    nodeSize <span class="operator">=</span> <span class="number">6</span><span class="punctuation">,</span></span><br><span class="line">                    ontology<span class="operator">=</span><span class="string">&quot;CC&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    allGenes <span class="operator">=</span> gene_list<span class="punctuation">,</span></span><br><span class="line">                    annot <span class="operator">=</span> annFUN.gene2GO<span class="punctuation">,</span></span><br><span class="line">                    gene2GO <span class="operator">=</span> gene_id<span class="punctuation">,</span></span><br><span class="line">                    geneSel<span class="operator">=</span>top_diff_genes<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 做检验，使用的是elim 的算法，使用 ks 的统计量。可以理解为 p 值</span></span><br><span class="line">result_KS.elim <span class="operator">=</span> runTest<span class="punctuation">(</span>cc_go<span class="punctuation">,</span></span><br><span class="line">                         algorithm <span class="operator">=</span> <span class="string">&quot;elim&quot;</span><span class="punctuation">,</span></span><br><span class="line">                         statistic <span class="operator">=</span> <span class="string">&quot;ks&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 提取基因 table</span></span><br><span class="line">allres <span class="operator">=</span> GenTable<span class="punctuation">(</span>cc_go<span class="punctuation">,</span></span><br><span class="line">                  KS <span class="operator">=</span> result_KS.elim<span class="punctuation">,</span></span><br><span class="line">                  ranksOf <span class="operator">=</span> <span class="string">&quot;classic&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  topNodes <span class="operator">=</span> <span class="built_in">attributes</span><span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="operator">$</span>geneData<span class="punctuation">[</span><span class="number">4</span><span class="punctuation">]</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 生成文件，后面画图都可以用这个表</span></span><br><span class="line">write.table<span class="punctuation">(</span>allres<span class="punctuation">,</span></span><br><span class="line">            file <span class="operator">=</span> paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.CC.xls&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">            sep<span class="operator">=</span><span class="string">&quot;\t&quot;</span><span class="punctuation">,</span> <span class="built_in">quote</span><span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span> col.names<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> row.names<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出矢量图</span></span><br><span class="line">pdf<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.CC.pdf&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>cc_go<span class="punctuation">,</span></span><br><span class="line">               score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span></span><br><span class="line">               firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">               useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span> <span class="comment">#设置节点数量，10个或者20个更多都可以</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 输出像素图</span></span><br><span class="line">png<span class="punctuation">(</span>paste<span class="punctuation">(</span>input<span class="punctuation">,</span><span class="string">&quot;.CC.png&quot;</span><span class="punctuation">,</span>sep<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">showSigOfNodes<span class="punctuation">(</span>cc_go<span class="punctuation">,</span> score<span class="punctuation">(</span>result_KS.elim<span class="punctuation">)</span><span class="punctuation">,</span> firstSigNodes <span class="operator">=</span> <span class="number">10</span><span class="punctuation">,</span> useInfo <span class="operator">=</span> <span class="string">&quot;all&quot;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-3-结果解释"><a href="#2-5-3-结果解释" class="headerlink" title="2.5.3. 结果解释"></a>2.5.3. 结果解释</h3><ol>
+<li>.xls结果文件中每一列的含义</li>
+</ol>
+<ul>
+<li><p>GO.ID：富集的GO ID</p>
+</li>
+<li><p>Term：GO ID的描述</p>
+</li>
+<li><p>Annotated : number of genes in go.db which are annotated with the GO-term.在go.db中被注释到GO-term的基因数量。</p>
+</li>
+<li><p>Significant : number of genes belonging to your input which are annotated with the GO-term. GO-term被注释到的基因中包含输入的基因的数量</p>
+</li>
+<li><p>Expected : show an estimate of the number of genes a node of size Annotated would have if the significant genes were to be randomly selected from the gene universe. 对节点基因数量的预期</p>
+</li>
+<li><p>KS：用KS（Kolmogorov-Smirnov）算法计算得到的p-value值。</p>
+<p>KS全称是：Kolmogorov-Smirnov，KS值是通过KS检验所得，KS检验是一种算法。统计方法如下：</p>
+<ul>
+<li>首先计算每个go节点对应的gene个数，</li>
+<li>如果某个节点的子节点也有gene比对上，那么父节点对应的gene个数也要加上子节点的基因数</li>
+<li>使用KS统计检验进行p值的计算，文件中的KS值，就是常说的p value，叫KS值的原因，是体现使用的KS检验方法。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>DAG图（矢量图&#x2F;像素图）<br>有向无环图(Directed acyclic graph, DAG)中，从上至下依次有包含关系，只有从上往下的箭头，这个箭头代表包含关系，即<strong>有向</strong>。只有从上往下的箭头，方向是确定的，所以不会形成闭环，即<strong>无环</strong>。</li>
+</ol>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/800px-Tred-G.svg.png" width=40% title="DAG图示例" alt="DAG图" align=center/>
+
+<p><strong><p align="center">Figure 1. DAG图示例</strong><br>from <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">wikipedia:directed acyclic graph</a></p></p>
+<ul>
+<li>有向无环图能直观展示基因富集的GO节点（Term）及其层级关系。</li>
+<li>在有向无环图中，矩形代表富集到的top10个GO Terms，颜色从黄到红，对应p值从大到小。</li>
+<li>分支代表包含关系，从上至下所定义的功能描述范围越来越具体。</li>
+<li>箭头代表包含关系，即该节点的所有基因同样注释到其上级节点中。</li>
+</ul>
+<img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png" title=" topGO结果DAG图" width="90%"/>
+
+<p><strong><p align="center">Figure 2. topGO结果DAG图</strong><br>from <a href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/">clusterProfiler blog</a></p></p>
+<p>注：对每个GO节点进行富集，在图中用方框表示显著度最高的10个节点，图中还包含其各层对应关系。每个方框（或椭圆）内给出了该GO节点的内容描述和富集显著性值。不同颜色代表不同的富集显著性，颜色越深，显著性越高。</p>
+<h1 id="3-references"><a href="#3-references" class="headerlink" title="3. references"></a>3. references</h1><ol>
+<li>topGO tutorial：<a href="https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf">https://bioconductor.org/packages/release/bioc/vignettes/topGO/inst/doc/topGO.pdf</a></li>
+<li>topGO blog：<a href="https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/">https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/</a></li>
+<li>R topGO：<a href="https://www.codenong.com/cs105162324/">https://www.codenong.com/cs105162324/</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>bio</category>
+        <category>bioinfo</category>
+        <category>enrichment</category>
+      </categories>
+      <tags>
+        <tag>topGO</tag>
+        <tag>enrichment analysis</tag>
+        <tag>over representation analysis</tag>
+        <tag>ORA</tag>
       </tags>
   </entry>
   <entry>
@@ -3314,8 +3314,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
-        <tag>phylogeny</tag>
         <tag>biosoft</tag>
+        <tag>phylogeny</tag>
         <tag>gene family</tag>
         <tag>CAFE</tag>
       </tags>
@@ -4842,8 +4842,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
-        <tag>plot</tag>
         <tag>biosoft</tag>
+        <tag>plot</tag>
         <tag>Circos</tag>
       </tags>
   </entry>
@@ -5164,121 +5164,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
-    <title>用PSMC推断有效群体大小历史</title>
-    <url>/2022/10/17/bioinfo_psmc/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2534006&auto=1&height=32"></iframe></div>
-
-<h1 id="1-PSMC"><a href="#1-PSMC" class="headerlink" title="1. PSMC"></a>1. PSMC</h1><p>Pairwise Sequentially Markovian Coalescent (PSMC) 是李恒开发的一款软件，可以通过一个二倍体个体的基因组的分析获得这个个体代表的群体的有效群体大小的历史动态。</p>
-<h1 id="2-PSMC分析原理"><a href="#2-PSMC分析原理" class="headerlink" title="2. PSMC分析原理"></a>2. PSMC分析原理</h1><p>通过一个二倍体个体的基因组的等位基因上存在的变异位点计算序列间差异，从而推断序列的分化时间；计算所有等位基因（也可以换成等位片段）的分化时间。认为某个分化时间的等位基因数量越多，代表当时的有效群体大小越大，所以可以通过整个基因组上等位基因的分化时间的分布推断有效群体大小的历史动态。</p>
-<ul>
-<li>这个算法让人惊叹的点在于，我们可以只从一个个体的基因组上看到群体的进化历史。</li>
-<li>有意思的是，前些时候看《自私的基因》那本书的时候，书里的序也详细讲解了PSMC的算法，从等位基因回溯到基因的共同祖先，讲得很清晰，非专业人士也可以读懂，有兴趣的读者可以去看看。</li>
-<li>分析人类的有效群体大小历史时，在三百万年有一次共有的高峰，有可能是人类从猩猩中分化出来时期的群体规模高峰期。不过，这么久远的分化区域意味着高度差异的等位基因片段（高度杂合）。这些高度杂合的片段也有可能来自平衡选择，或重测序比对过程中重复序列不正确比对产生的错误SNP。因此，三百万年的高峰可能并不可信。</li>
-</ul>
-<h1 id="3-PSMC运行"><a href="#3-PSMC运行" class="headerlink" title="3. PSMC运行"></a>3. PSMC运行</h1><h2 id="3-1-文件准备"><a href="#3-1-文件准备" class="headerlink" title="3.1. 文件准备"></a>3.1. 文件准备</h2><ol>
-<li>基因组文件：genome.fa</li>
-<li>二代测序数据：sample_R1.clean.u.fq和sample_R2.clean.u.fq</li>
-</ol>
-<h2 id="3-2-运行步骤"><a href="#3-2-运行步骤" class="headerlink" title="3.2. 运行步骤"></a>3.2. 运行步骤</h2><h3 id="3-2-1-准备全基因组二倍体一致序列"><a href="#3-2-1-准备全基因组二倍体一致序列" class="headerlink" title="3.2.1. 准备全基因组二倍体一致序列"></a>3.2.1. 准备全基因组二倍体一致序列</h3><ol>
-<li>二代序列mapping</li>
-</ol>
-<ul>
-<li><code>time bwa mem -t 12 genome.fa sample_R1.clean.u.fq sample_R2.clean.u.fq | samtools sort -@ 12 -m 12G &gt; sample_sort.bam</code> 把二代数据mapping到基因组上</li>
-</ul>
-<ol start="2">
-<li>获取二倍体一致序列</li>
-</ol>
-<ul>
-<li><code>samtools mpileup -C50 -uf genome.fa sample_sort.bam | bcftools view --threads 16 -c - | vcfutils.pl vcf2fq -d 10 -D 100 |pgzip -p 12 &gt;diploid.fq.gz</code> 生成全基因组二倍体一致序列diploid.fq.gz</li>
-<li><code>bcftools view</code>可以换成<code>bcftools call</code></li>
-<li>其中，<code>vcfutils.pl vcf2fq -d 10 -D 100</code>的<code>-d 10</code>参数是最小read depth，作者建议设置成平均depth的三分之一(1&#x2F;3)；<code>-D 100</code>参数是最大read depth，建议设置成平均depth的两倍。</li>
-</ul>
-<ol start="3">
-<li>上一步可分解为以下几步：</li>
-</ol>
-<ul>
-<li><code>samtools mpileup -C50 -uf genome.fa sample_sort.bam | bcftools view --threads 16 -O z -o sample.vcf.gz</code> call snp，得到的是genotype likelihoods的vcf文件</li>
-<li><code>bcftools call sample.vcf.gz -c -v --threads 16 -O z -o sample.variants.vcf.gz</code> 生成只有snp和indel的vcf文件，其中-c代表SNP calling选择consensus-caller算法，另可选-m即multiallelic-caller算法（更适合多种allel和罕见变异的情况）。</li>
-<li><code>bcftools view -H sample.variants.vcf.gz | wc -l</code> 统计snp数量。snp数量除以基因组大小即可得到估计的杂合度。</li>
-<li><code>vcfutils.pl vcf2fq -d 8 -D 50 sample.variants.vcf.gz| pigz -p 12 &gt; diploid.fq.gz</code> 生成二倍体fq文件</li>
-</ul>
-<h3 id="3-2-2-运行单次PSMC"><a href="#3-2-2-运行单次PSMC" class="headerlink" title="3.2.2. 运行单次PSMC"></a>3.2.2. 运行单次PSMC</h3><ol>
-<li>格式转换</li>
-</ol>
-<ul>
-<li><code>fq2psmcfa -q20 diploid.fq.gz &gt; diploid.psmcfa</code> 格式转换</li>
-</ul>
-<ol start="2">
-<li>PSMC运行</li>
-</ol>
-<ul>
-<li><code>nohup psmc -p &quot;4+25*2+4+6&quot; -t15 -N30 -r4 -o diploid.psmc diploid.psmcfa &amp;</code></li>
-<li>psmc计算二倍体间序列差异</li>
-</ul>
-<ol start="3">
-<li>PSMC参数</li>
-</ol>
-<ul>
-<li>参数-p可根据经验或者近缘类群的文献设定，或者多尝试几个参数看看结果，-t,-N,-r可用默认参数。</li>
-<li>-p：代表psmc有效群体大小变化的图随时间变化划分的时间阶段单位数量，例如默认的-p “4+25*2+4+6”表示从古自今依次经历了一个4单位+25个2单位+一个4单位+一个6单位的时期。数字越大需要的计算资源越多。可根据经验调整。</li>
-<li>-t：maximum 2N0 coalescent time [15]; 2N0的最大世代时间，代表the upper limit of the TMRCA。</li>
-<li>-r: initial theta&#x2F;rho ratio [4]; 起始θ&#x2F;ρ率，默认4。</li>
-<li>-N：maximum number of iterations [30]；迭代的最大次数，默认30。</li>
-<li>-o：指定输出的diploid.psmcfa文件。</li>
-</ul>
-<h3 id="3-2-3-运行bootstrap的PSMC【推荐】"><a href="#3-2-3-运行bootstrap的PSMC【推荐】" class="headerlink" title="3.2.3. 运行bootstrap的PSMC【推荐】"></a>3.2.3. 运行bootstrap的PSMC【推荐】</h3><p>如果要运行多次抽样的PSMC，则在上面的格式转换后，先分割长序列，再用for循环语句运行。</p>
-<ol>
-<li>分割长序列</li>
-</ol>
-<ul>
-<li><code>splitfa diploid.psmcfa &gt; split.psmcfa</code> 若需要做bootstrap需先把太长序列分割</li>
-</ul>
-<ol start="2">
-<li>bootstrap抽样运行PSMC</li>
-</ol>
-<ul>
-<li><code>for i in &#123;1..100&#125;;do nohup psmc -b -p &quot;6+25*2+6+8&quot; -t15 -N30 -r4 -o round$&#123;i&#125;.psmc split.psmcfa &amp;</code> #-b参数表示bootstrap抽样做psmc，重复100次。估计服务器运算能力，可以10个重复作为一批。</li>
-</ul>
-<ol start="3">
-<li>合并结果</li>
-</ol>
-<ul>
-<li><code>cat diploid.psmc round*.psmc &gt;combine.psmc</code> #psmc结果合并</li>
-</ul>
-<h2 id="3-3-画图"><a href="#3-3-画图" class="headerlink" title="3.3. 画图"></a>3.3. 画图</h2><ol>
-<li>运行</li>
-</ol>
-<ul>
-<li><code>psmc_plot.pl -p -g 1 -u 4.79e-9 combine combine.psmc</code></li>
-<li>画图，生产combine.eps和combine.pdf。</li>
-</ul>
-<ol start="2">
-<li>参数</li>
-</ol>
-<ul>
-<li>-p：指用epstopdf把esp转化成pdf文件，相当于运行完多加一个<code>epstopdf combined.eps</code>一步。</li>
-<li>-g：number of years per generation [25]，指定该物种的平均世代时间（即繁殖一代的时间），比如人的默认为25年，该处值为-g 25；许多草本植物为1年。</li>
-<li>-u：absolute mutation rate per nucleotide [2.5e-08]，指定该物种碱基替换率，单位是subst.&#x2F;syn. site&#x2F;year，比如默认水稻的2.5e-08，文献里提到的蕨类4.79e-9(Barker 2009)。参考已有文献对研究类群的替换率的推断，也可由进化树的枝长除以r8s评估该物种的分歧时间得到。</li>
-</ul>
-<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
-<li><a href="https://github.com/lh3/psmc">https://github.com/lh3/psmc</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>bio</category>
-        <category>bioinfo</category>
-      </categories>
-      <tags>
-        <tag>biosoft</tag>
-        <tag>PSMC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator</title>
     <url>/2021/11/27/bioinfo_synteny_MCScanX/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=29808885&auto=1&height=32"></iframe></div>
@@ -5532,17 +5417,132 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
+        <tag>biosoft</tag>
         <tag>synteny</tag>
         <tag>ggplot2</tag>
+        <tag>WGD</tag>
         <tag>Ks</tag>
         <tag>ParaAT</tag>
         <tag>KaKs_Calculator</tag>
-        <tag>WGD</tag>
-        <tag>biosoft</tag>
         <tag>divergence time</tag>
         <tag>paml</tag>
         <tag>colinearity</tag>
         <tag>MCScanX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用PSMC推断有效群体大小历史</title>
+    <url>/2022/10/17/bioinfo_psmc/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2534006&auto=1&height=32"></iframe></div>
+
+<h1 id="1-PSMC"><a href="#1-PSMC" class="headerlink" title="1. PSMC"></a>1. PSMC</h1><p>Pairwise Sequentially Markovian Coalescent (PSMC) 是李恒开发的一款软件，可以通过一个二倍体个体的基因组的分析获得这个个体代表的群体的有效群体大小的历史动态。</p>
+<h1 id="2-PSMC分析原理"><a href="#2-PSMC分析原理" class="headerlink" title="2. PSMC分析原理"></a>2. PSMC分析原理</h1><p>通过一个二倍体个体的基因组的等位基因上存在的变异位点计算序列间差异，从而推断序列的分化时间；计算所有等位基因（也可以换成等位片段）的分化时间。认为某个分化时间的等位基因数量越多，代表当时的有效群体大小越大，所以可以通过整个基因组上等位基因的分化时间的分布推断有效群体大小的历史动态。</p>
+<ul>
+<li>这个算法让人惊叹的点在于，我们可以只从一个个体的基因组上看到群体的进化历史。</li>
+<li>有意思的是，前些时候看《自私的基因》那本书的时候，书里的序也详细讲解了PSMC的算法，从等位基因回溯到基因的共同祖先，讲得很清晰，非专业人士也可以读懂，有兴趣的读者可以去看看。</li>
+<li>分析人类的有效群体大小历史时，在三百万年有一次共有的高峰，有可能是人类从猩猩中分化出来时期的群体规模高峰期。不过，这么久远的分化区域意味着高度差异的等位基因片段（高度杂合）。这些高度杂合的片段也有可能来自平衡选择，或重测序比对过程中重复序列不正确比对产生的错误SNP。因此，三百万年的高峰可能并不可信。</li>
+</ul>
+<h1 id="3-PSMC运行"><a href="#3-PSMC运行" class="headerlink" title="3. PSMC运行"></a>3. PSMC运行</h1><h2 id="3-1-文件准备"><a href="#3-1-文件准备" class="headerlink" title="3.1. 文件准备"></a>3.1. 文件准备</h2><ol>
+<li>基因组文件：genome.fa</li>
+<li>二代测序数据：sample_R1.clean.u.fq和sample_R2.clean.u.fq</li>
+</ol>
+<h2 id="3-2-运行步骤"><a href="#3-2-运行步骤" class="headerlink" title="3.2. 运行步骤"></a>3.2. 运行步骤</h2><h3 id="3-2-1-准备全基因组二倍体一致序列"><a href="#3-2-1-准备全基因组二倍体一致序列" class="headerlink" title="3.2.1. 准备全基因组二倍体一致序列"></a>3.2.1. 准备全基因组二倍体一致序列</h3><ol>
+<li>二代序列mapping</li>
+</ol>
+<ul>
+<li><code>time bwa mem -t 12 genome.fa sample_R1.clean.u.fq sample_R2.clean.u.fq | samtools sort -@ 12 -m 12G &gt; sample_sort.bam</code> 把二代数据mapping到基因组上</li>
+</ul>
+<ol start="2">
+<li>获取二倍体一致序列</li>
+</ol>
+<ul>
+<li><code>samtools mpileup -C50 -uf genome.fa sample_sort.bam | bcftools view --threads 16 -c - | vcfutils.pl vcf2fq -d 10 -D 100 |pgzip -p 12 &gt;diploid.fq.gz</code> 生成全基因组二倍体一致序列diploid.fq.gz</li>
+<li><code>bcftools view</code>可以换成<code>bcftools call</code></li>
+<li>其中，<code>vcfutils.pl vcf2fq -d 10 -D 100</code>的<code>-d 10</code>参数是最小read depth，作者建议设置成平均depth的三分之一(1&#x2F;3)；<code>-D 100</code>参数是最大read depth，建议设置成平均depth的两倍。</li>
+</ul>
+<ol start="3">
+<li>上一步可分解为以下几步：</li>
+</ol>
+<ul>
+<li><code>samtools mpileup -C50 -uf genome.fa sample_sort.bam | bcftools view --threads 16 -O z -o sample.vcf.gz</code> call snp，得到的是genotype likelihoods的vcf文件</li>
+<li><code>bcftools call sample.vcf.gz -c -v --threads 16 -O z -o sample.variants.vcf.gz</code> 生成只有snp和indel的vcf文件，其中-c代表SNP calling选择consensus-caller算法，另可选-m即multiallelic-caller算法（更适合多种allel和罕见变异的情况）。</li>
+<li><code>bcftools view -H sample.variants.vcf.gz | wc -l</code> 统计snp数量。snp数量除以基因组大小即可得到估计的杂合度。</li>
+<li><code>vcfutils.pl vcf2fq -d 8 -D 50 sample.variants.vcf.gz| pigz -p 12 &gt; diploid.fq.gz</code> 生成二倍体fq文件</li>
+</ul>
+<h3 id="3-2-2-运行单次PSMC"><a href="#3-2-2-运行单次PSMC" class="headerlink" title="3.2.2. 运行单次PSMC"></a>3.2.2. 运行单次PSMC</h3><ol>
+<li>格式转换</li>
+</ol>
+<ul>
+<li><code>fq2psmcfa -q20 diploid.fq.gz &gt; diploid.psmcfa</code> 格式转换</li>
+</ul>
+<ol start="2">
+<li>PSMC运行</li>
+</ol>
+<ul>
+<li><code>nohup psmc -p &quot;4+25*2+4+6&quot; -t15 -N30 -r4 -o diploid.psmc diploid.psmcfa &amp;</code></li>
+<li>psmc计算二倍体间序列差异</li>
+</ul>
+<ol start="3">
+<li>PSMC参数</li>
+</ol>
+<ul>
+<li>参数-p可根据经验或者近缘类群的文献设定，或者多尝试几个参数看看结果，-t,-N,-r可用默认参数。</li>
+<li>-p：代表psmc有效群体大小变化的图随时间变化划分的时间阶段单位数量，例如默认的-p “4+25*2+4+6”表示从古自今依次经历了一个4单位+25个2单位+一个4单位+一个6单位的时期。数字越大需要的计算资源越多。可根据经验调整。</li>
+<li>-t：maximum 2N0 coalescent time [15]; 2N0的最大世代时间，代表the upper limit of the TMRCA。</li>
+<li>-r: initial theta&#x2F;rho ratio [4]; 起始θ&#x2F;ρ率，默认4。</li>
+<li>-N：maximum number of iterations [30]；迭代的最大次数，默认30。</li>
+<li>-o：指定输出的diploid.psmcfa文件。</li>
+</ul>
+<h3 id="3-2-3-运行bootstrap的PSMC【推荐】"><a href="#3-2-3-运行bootstrap的PSMC【推荐】" class="headerlink" title="3.2.3. 运行bootstrap的PSMC【推荐】"></a>3.2.3. 运行bootstrap的PSMC【推荐】</h3><p>如果要运行多次抽样的PSMC，则在上面的格式转换后，先分割长序列，再用for循环语句运行。</p>
+<ol>
+<li>分割长序列</li>
+</ol>
+<ul>
+<li><code>splitfa diploid.psmcfa &gt; split.psmcfa</code> 若需要做bootstrap需先把太长序列分割</li>
+</ul>
+<ol start="2">
+<li>bootstrap抽样运行PSMC</li>
+</ol>
+<ul>
+<li><code>for i in &#123;1..100&#125;;do nohup psmc -b -p &quot;6+25*2+6+8&quot; -t15 -N30 -r4 -o round$&#123;i&#125;.psmc split.psmcfa &amp;</code> #-b参数表示bootstrap抽样做psmc，重复100次。估计服务器运算能力，可以10个重复作为一批。</li>
+</ul>
+<ol start="3">
+<li>合并结果</li>
+</ol>
+<ul>
+<li><code>cat diploid.psmc round*.psmc &gt;combine.psmc</code> #psmc结果合并</li>
+</ul>
+<h2 id="3-3-画图"><a href="#3-3-画图" class="headerlink" title="3.3. 画图"></a>3.3. 画图</h2><ol>
+<li>运行</li>
+</ol>
+<ul>
+<li><code>psmc_plot.pl -p -g 1 -u 4.79e-9 combine combine.psmc</code></li>
+<li>画图，生产combine.eps和combine.pdf。</li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-p：指用epstopdf把esp转化成pdf文件，相当于运行完多加一个<code>epstopdf combined.eps</code>一步。</li>
+<li>-g：number of years per generation [25]，指定该物种的平均世代时间（即繁殖一代的时间），比如人的默认为25年，该处值为-g 25；许多草本植物为1年。</li>
+<li>-u：absolute mutation rate per nucleotide [2.5e-08]，指定该物种碱基替换率，单位是subst.&#x2F;syn. site&#x2F;year，比如默认水稻的2.5e-08，文献里提到的蕨类4.79e-9(Barker 2009)。参考已有文献对研究类群的替换率的推断，也可由进化树的枝长除以r8s评估该物种的分歧时间得到。</li>
+</ul>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li><a href="https://github.com/lh3/psmc">https://github.com/lh3/psmc</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>bio</category>
+        <category>bioinfo</category>
+      </categories>
+      <tags>
+        <tag>biosoft</tag>
+        <tag>PSMC</tag>
       </tags>
   </entry>
   <entry>
@@ -5672,8 +5672,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
-        <tag>synteny</tag>
         <tag>biosoft</tag>
+        <tag>synteny</tag>
         <tag>colinearity</tag>
         <tag>MCscan</tag>
         <tag>jcvi</tag>
@@ -6014,10 +6014,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>bioinfo</category>
       </categories>
       <tags>
-        <tag>synteny</tag>
-        <tag>Ks</tag>
-        <tag>WGD</tag>
         <tag>biosoft</tag>
+        <tag>synteny</tag>
+        <tag>WGD</tag>
+        <tag>Ks</tag>
         <tag>colinearity</tag>
         <tag>WGDI</tag>
       </tags>
@@ -6808,13 +6808,13 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>biosoft</category>
       </categories>
       <tags>
+        <tag>mitogenome</tag>
+        <tag>organelle</tag>
         <tag>tbl</tag>
         <tag>mitogenomics</tag>
         <tag>aln2tbl.py</tag>
         <tag>aln2tbl-legacy.py</tag>
         <tag>mitos2fasta.py</tag>
-        <tag>organelle</tag>
-        <tag>mitogenome</tag>
       </tags>
   </entry>
   <entry>
@@ -7159,6 +7159,14 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repository: git@github.com:yanzhongsino/yanzhongsino.github.io.git</span><br><span class="line">    branch: master</span><br></pre></td></tr></table></figure>
 
 <p>也可能是网络之类的问题，就隔一段时间试试<code>hexo deploy</code>。</p>
+<h3 id="报错kex-exchange-identification-Connection-closed-by-remote-host"><a href="#报错kex-exchange-identification-Connection-closed-by-remote-host" class="headerlink" title="报错kex_exchange_identification: Connection closed by remote host"></a>报错kex_exchange_identification: Connection closed by remote host</h3><ol>
+<li>问题<br>运行git的博客同步命令，报错kex_exchange_identification: Connection closed by remote host。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">kex_exchange_identification: Connection closed by remote host</span><br><span class="line">Connection closed by 20.205.243.166 port 22</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>方案<br>运行VPN的全局模式会导致这个报错，取消全局模式即可。</li>
+</ol>
 <p><strong>小记</strong></p>
 <p>学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。</p>
 <p>前几天拾起来，建站知识已忘得精光，原来应该是配置好了hexo的多端同步，但由于两年的荒废，遗忘导致我把hexo和master分支合并了，博客的原始文件有没备份，所以一切从头开始。</p>
@@ -7434,10 +7442,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>concept</category>
       </categories>
       <tags>
-        <tag>concept</tag>
         <tag>crown groups</tag>
         <tag>stem groups</tag>
         <tag>fossil time</tag>
+        <tag>concept</tag>
       </tags>
   </entry>
   <entry>
@@ -7630,45 +7638,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
-    <title>在Linux系统中设置环境变量PATH</title>
-    <url>/2021/04/20/linux_basics_PATH/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5264843&auto=1&height=32"></iframe><music URL></div>
-
-
-
-<h1 id="1-环境变量PATH设置"><a href="#1-环境变量PATH设置" class="headerlink" title="1. 环境变量PATH设置"></a>1. 环境变量PATH设置</h1><h2 id="1-1-PATH的解释"><a href="#1-1-PATH的解释" class="headerlink" title="1.1. PATH的解释"></a>1.1. PATH的解释</h2><p>PATH是环境变量，一个存放有（可执行）命令和程序的目录集合，目录间以冒号:分隔。</p>
-<p>操作系统接到用户输入命令时，会<strong>从前到后依次</strong>查看PATH存储的目录，查找与输入命令同名的可执行文件，<strong>一旦查找到就停止查找</strong>，全部目录都查不到就报错。</p>
-<p><code>echo $PATH</code>可以查看当前存放了哪些目录。</p>
-<h2 id="1-2-设置环境变量"><a href="#1-2-设置环境变量" class="headerlink" title="1.2. 设置环境变量"></a>1.2. 设置环境变量</h2><h3 id="1-2-1-临时设置，当前终端有效"><a href="#1-2-1-临时设置，当前终端有效" class="headerlink" title="1.2.1. 临时设置，当前终端有效"></a>1.2.1. 临时设置，当前终端有效</h3><ol>
-<li>添加目录到环境变量<br><code>PATH=$PATH:/home/usrname/opt/software/</code>命令把目录<code>/home/software/</code>添加到PATH后，并用冒号:分隔，即重新给PATH赋值。</li>
-</ol>
-<p><code>PATH=$PATH:/home/software/</code>和<code>PATH=/home/software/:$PATH</code>区别在于把目录<code>/home/software/</code>置于PATH的最前面还是最后面，最前面代表最优先使用这个目录下的命令。</p>
-<ol start="2">
-<li>声明环境变量<br><code>export PATH</code>命令声明变量，使其对系统shell可识别</li>
-</ol>
-<p>以上两条命令可以合并成<code>export PATH=$PATH:/home/software/</code>或者<code>export PATH=/home/software/:$PATH</code>，此时目录<code>/home/software/</code>下的命令可以被当前shell直接调用。</p>
-<p>但这种设置方式只在当前shell有效，关掉shell就失效。</p>
-<h3 id="1-2-2-当前用户永久设置"><a href="#1-2-2-当前用户永久设置" class="headerlink" title="1.2.2. 当前用户永久设置"></a>1.2.2. 当前用户永久设置</h3><p>登录服务器时，会自动运行当前用户下<code>~/.bashrc</code>和<code>~/.bash_profile</code>文件内的命令。</p>
-<p>所以把<code>export PATH=$PATH:/home/software/</code>写入<code>~/.bashrc</code>或者<code>~/.bash_profile</code>文件就可以使目录<code>/home/software/</code>对于当前用户永久生效。</p>
-<p>第一次写入后需要用命令<code>source ~/.bashrc</code>运行~&#x2F;.bashrc文件来刷新环境变量，之后就不再需要。</p>
-<h3 id="1-2-3-所有用户永久设置"><a href="#1-2-3-所有用户永久设置" class="headerlink" title="1.2.3. 所有用户永久设置"></a>1.2.3. 所有用户永久设置</h3><p>与前一步同理，不过写入的文件是&#x2F;etc&#x2F;profile或者&#x2F;etc&#x2F;bashrc，需要root用户修改。</p>
-<p>第一次修改需要<code>source /etc/profile</code>刷新，之后不再需要。</p>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>basics</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>PATH</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux中CPU相关概念</title>
     <url>/2022/05/02/linux_basics_cpu/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283094&auto=1&height=32"></iframe></div>
@@ -7738,6 +7707,45 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>物理CPU</tag>
         <tag>逻辑CPU</tag>
         <tag>核心</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在Linux系统中设置环境变量PATH</title>
+    <url>/2021/04/20/linux_basics_PATH/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5264843&auto=1&height=32"></iframe><music URL></div>
+
+
+
+<h1 id="1-环境变量PATH设置"><a href="#1-环境变量PATH设置" class="headerlink" title="1. 环境变量PATH设置"></a>1. 环境变量PATH设置</h1><h2 id="1-1-PATH的解释"><a href="#1-1-PATH的解释" class="headerlink" title="1.1. PATH的解释"></a>1.1. PATH的解释</h2><p>PATH是环境变量，一个存放有（可执行）命令和程序的目录集合，目录间以冒号:分隔。</p>
+<p>操作系统接到用户输入命令时，会<strong>从前到后依次</strong>查看PATH存储的目录，查找与输入命令同名的可执行文件，<strong>一旦查找到就停止查找</strong>，全部目录都查不到就报错。</p>
+<p><code>echo $PATH</code>可以查看当前存放了哪些目录。</p>
+<h2 id="1-2-设置环境变量"><a href="#1-2-设置环境变量" class="headerlink" title="1.2. 设置环境变量"></a>1.2. 设置环境变量</h2><h3 id="1-2-1-临时设置，当前终端有效"><a href="#1-2-1-临时设置，当前终端有效" class="headerlink" title="1.2.1. 临时设置，当前终端有效"></a>1.2.1. 临时设置，当前终端有效</h3><ol>
+<li>添加目录到环境变量<br><code>PATH=$PATH:/home/usrname/opt/software/</code>命令把目录<code>/home/software/</code>添加到PATH后，并用冒号:分隔，即重新给PATH赋值。</li>
+</ol>
+<p><code>PATH=$PATH:/home/software/</code>和<code>PATH=/home/software/:$PATH</code>区别在于把目录<code>/home/software/</code>置于PATH的最前面还是最后面，最前面代表最优先使用这个目录下的命令。</p>
+<ol start="2">
+<li>声明环境变量<br><code>export PATH</code>命令声明变量，使其对系统shell可识别</li>
+</ol>
+<p>以上两条命令可以合并成<code>export PATH=$PATH:/home/software/</code>或者<code>export PATH=/home/software/:$PATH</code>，此时目录<code>/home/software/</code>下的命令可以被当前shell直接调用。</p>
+<p>但这种设置方式只在当前shell有效，关掉shell就失效。</p>
+<h3 id="1-2-2-当前用户永久设置"><a href="#1-2-2-当前用户永久设置" class="headerlink" title="1.2.2. 当前用户永久设置"></a>1.2.2. 当前用户永久设置</h3><p>登录服务器时，会自动运行当前用户下<code>~/.bashrc</code>和<code>~/.bash_profile</code>文件内的命令。</p>
+<p>所以把<code>export PATH=$PATH:/home/software/</code>写入<code>~/.bashrc</code>或者<code>~/.bash_profile</code>文件就可以使目录<code>/home/software/</code>对于当前用户永久生效。</p>
+<p>第一次写入后需要用命令<code>source ~/.bashrc</code>运行~&#x2F;.bashrc文件来刷新环境变量，之后就不再需要。</p>
+<h3 id="1-2-3-所有用户永久设置"><a href="#1-2-3-所有用户永久设置" class="headerlink" title="1.2.3. 所有用户永久设置"></a>1.2.3. 所有用户永久设置</h3><p>与前一步同理，不过写入的文件是&#x2F;etc&#x2F;profile或者&#x2F;etc&#x2F;bashrc，需要root用户修改。</p>
+<p>第一次修改需要<code>source /etc/profile</code>刷新，之后不再需要。</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>basics</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>PATH</tag>
       </tags>
   </entry>
   <entry>
@@ -8675,8 +8683,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>annotation</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>functional annotation</tag>
         <tag>eggnog-mapper</tag>
         <tag>interproscan</tag>
@@ -8805,8 +8813,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>annotation</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>ncRNA</tag>
         <tag>Infernal</tag>
         <tag>Rfam</tag>
@@ -9170,8 +9178,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>annotation</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>repeat sequences</tag>
         <tag>transposable elements(TE)</tag>
         <tag>RepeatMasker</tag>
@@ -9268,8 +9276,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>sort</tag>
         <tag>rename</tag>
         <tag>combine</tag>
@@ -9548,8 +9556,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>jellyfish</tag>
         <tag>KMC</tag>
@@ -9713,8 +9721,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KMC</tag>
         <tag>GenomeScope</tag>
@@ -9834,124 +9842,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>jellyfish</tag>
-        <tag>GenomeScope</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计</title>
-    <url>/2022/06/05/omics_genome.survey_04.KMC/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283101&auto=1&height=32"></iframe></div>
-
-<p><strong>用k-mer分析进行基因组调查系列：</strong></p>
-<ul>
-<li>（一）基本原理：<a href="https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/">https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/</a></li>
-<li>（二）用Smudgeplot估计倍性：<a href="https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/">https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/</a></li>
-<li>（三）用jellyfish进行k-mer频数统计：<a href="https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/">https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/</a></li>
-<li>（四）用KMC进行k-mer频数统计：<a href="https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/">https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/</a></li>
-<li>（五）用GenomeScope评估基因组特征：<a href="https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/">https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/</a></li>
-<li>（六）用GCE分步实现：<a href="https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/">https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/</a></li>
-<li>（七）用KmerGenie一步实现：<a href="https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/">https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/</a></li>
-</ul>
-<p><strong>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</strong></p>
-<h1 id="1-k-mer进行基因组调查的软件概况"><a href="#1-k-mer进行基因组调查的软件概况" class="headerlink" title="1. k-mer进行基因组调查的软件概况"></a>1. k-mer进行基因组调查的软件概况</h1><p>k-mer进行基因组调查分为<strong>k-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。</p>
-<ul>
-<li>KMC可以实现第一步k-mer频数统计。</li>
-<li>KMC的结果sample.histo可以用在GenomeScope上，实现第二步基因组特征评估。</li>
-</ul>
-<h1 id="2-KMC-简介"><a href="#2-KMC-简介" class="headerlink" title="2. KMC 简介"></a>2. KMC 简介</h1><ul>
-<li>KMC是一个用来从FASTQ&#x2F;FASTA文件中计算k-mers的基于KMC二进制数据库的程序。</li>
-<li>KMC是波兰的Silesian University of Technology的算法和软件学院的<a href="https://refresh-bio.github.io/">REFRESH Bioinformatics Group</a>开发的工具。</li>
-<li>2017年发布了第三个版本，KMC3。</li>
-<li>KMC是主要基于C语言的程序。</li>
-</ul>
-<h1 id="3-KMC-安装"><a href="#3-KMC-安装" class="headerlink" title="3. KMC 安装"></a>3. KMC 安装</h1><ol>
-<li>版本<br>有两个版本的KMC，一般使用第一个版本，Smudgeplot评估物种倍性时用到了第二个版本。</li>
-</ol>
-<ul>
-<li>一个是<a href="https://refresh-bio.github.io/">REFRESH Bioinformatics Group</a>的<a href="https://github.com/refresh-bio/KMC">refresh-bio&#x2F;KMC</a>。</li>
-<li>一个是GenomeScope2.0的开发团队tbenavi1修改的<a href="https://github.com/tbenavi1/KMC">tbenavi1&#x2F;KMC</a></li>
-</ul>
-<ol start="2">
-<li>下载<br>在<a href="https://github.com/refresh-bio/KMC/releases">KMC download</a>找对应系统的最新版本KMC软件，下载解压缩即可使用。</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir KMC &amp;&amp; cd KMC</span><br><span class="line">wget https://github.com/refresh-bio/KMC/releases/download/v3.2.1/KMC3.2.1.linux.tar.gz #下载最新版本的KMC</span><br><span class="line">tar -xzf KMC3.2.1.linux.tar.gz #解压缩和解包，生成bin文件夹和include文件夹</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>使用<br>解压缩后bin目录下会包含可执行文件，可直接使用，建议加入环境变量，包括：</li>
-</ol>
-<ul>
-<li>bin&#x2F;kmc：计算k-mer频数的主程序</li>
-<li>bin&#x2F;kmc_dump：在kmc生成数据库中列出k-mers的程序</li>
-<li>bin&#x2F;kmc_tools：允许操作kmc数据库的程序</li>
-</ul>
-<h1 id="4-KMC-运行"><a href="#4-KMC-运行" class="headerlink" title="4. KMC 运行"></a>4. KMC 运行</h1><p>用KMC计算k-mer频率，生成k-mer频数直方表和k-mer直方图。</p>
-<ol>
-<li><p>运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir tmp #创建临时文件夹</span><br><span class="line">ls *.fastq.gz &gt; FILES #用于分析的clean reads路径保存到文件FILES中</span><br><span class="line">kmc -k21 -t16 -m64 -ci1 -cs10000 @FILES kmcdb tmp #计算k-mer频率</span><br><span class="line">kmc_tools transform kmcdb histogram sample.histo -cx10000 #生成k-mer频数直方表sample.histo和k-mer直方图</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>kmc命令参数</p>
-</li>
-</ol>
-<ul>
-<li>-k21：k-mer长度设置为21</li>
-<li>-t16：线程16</li>
-<li>-m64：内存64G，设置使用RAM的大致数量，范围1-1024。</li>
-<li>-ci1 -cs10000：统计k-mer coverages覆盖度范围在[1-10000]的。</li>
-<li>@FILES：保存了输入文件列表的文件名为FILES</li>
-<li>kmcdb：KMC数据库的输出文件名前缀</li>
-<li>tmp：临时目录</li>
-</ul>
-<ol start="3">
-<li>kmc_tools命令参数</li>
-</ol>
-<ul>
-<li>-cx10000：储存在直方图文件中counter的最大值。</li>
-</ul>
-<ol start="4">
-<li>结果<br>生成的sample.histo可用于第二步GenomeScope的分析。</li>
-</ol>
-<h1 id="5-基因组特征评估"><a href="#5-基因组特征评估" class="headerlink" title="5. 基因组特征评估"></a>5. 基因组特征评估</h1><p>获得k-mer频数分布表sample.histo后</p>
-<ul>
-<li>推荐用<a href="http://qb.cshl.edu/genomescope">GenomeScope1.0</a>或者<a href="http://qb.cshl.edu/genomescope/genomescope2.0/">GenomeScope2.0</a>或者GenomeScope的R脚本来做基因组特征评估和画图。</li>
-<li>也可直接用R绘制sample.histo的频率分布直方图&#x2F;频率分布曲线。</li>
-</ul>
-<h2 id="5-1-GenomeScope-网页版"><a href="#5-1-GenomeScope-网页版" class="headerlink" title="5.1. GenomeScope 网页版"></a>5.1. GenomeScope 网页版</h2><h3 id="5-1-1-GenomeScope1-0-网页版-——-适用于二倍体物种"><a href="#5-1-1-GenomeScope1-0-网页版-——-适用于二倍体物种" class="headerlink" title="5.1.1. GenomeScope1.0 网页版 —— 适用于二倍体物种"></a>5.1.1. GenomeScope1.0 网页版 —— 适用于二倍体物种</h3><ol>
-<li>在<a href="http://qb.cshl.edu/genomescope/">GenomeScope1.0 网页版</a>上传前一步获得的k-mer频数分布表sample.histo文件。</li>
-<li>设置参数k-mer length为第一步选择的k-mer长度值，这里是17；参数Read length为序列读长，一般为150；最后一个参数Max kmer coverage建议修改成更大的10000，以统计更多的k-mers。</li>
-<li>结果显示预估的基因组大小，杂合度，重复率等信息。</li>
-</ol>
-<h3 id="5-1-2-GenomeScope2-0-网页版-——-适用于多倍体物种"><a href="#5-1-2-GenomeScope2-0-网页版-——-适用于多倍体物种" class="headerlink" title="5.1.2. GenomeScope2.0 网页版 —— 适用于多倍体物种"></a>5.1.2. GenomeScope2.0 网页版 —— 适用于多倍体物种</h3><p><a href="http://qb.cshl.edu/genomescope/genomescope2.0">GenomeScope2.0 网页版</a>也是类似的步骤。</p>
-<h2 id="5-2-R绘制"><a href="#5-2-R绘制" class="headerlink" title="5.2. R绘制"></a>5.2. R绘制</h2><ul>
-<li>R绘制k-mer频数分布曲线初步查看基因组特征。</li>
-<li>获得kmer_plot.png为频数分布曲线，可根据曲线峰值对基因组大小进行计算和预估。</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#R 脚本示例</span></span><br><span class="line">kmer <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&#x27;sample.histo&#x27;</span><span class="punctuation">)</span></span><br><span class="line">kmer <span class="operator">&lt;-</span> subset<span class="punctuation">(</span>kmer<span class="punctuation">,</span> V1 <span class="operator">&gt;=</span><span class="number">5</span> <span class="operator">&amp;</span> V1 <span class="operator">&lt;=</span><span class="number">500</span><span class="punctuation">)</span> <span class="comment">#对频数范围5-500的数据进行绘制 </span></span><br><span class="line">Frequency <span class="operator">&lt;-</span> kmer<span class="operator">$</span>V1</span><br><span class="line">Number <span class="operator">&lt;-</span> kmer<span class="operator">$</span>V2</span><br><span class="line">png<span class="punctuation">(</span><span class="string">&#x27;kmer_plot.png&#x27;</span><span class="punctuation">)</span></span><br><span class="line">plot<span class="punctuation">(</span>Frequency<span class="punctuation">,</span> Number<span class="punctuation">,</span> type <span class="operator">=</span> <span class="string">&#x27;l&#x27;</span><span class="punctuation">,</span> col <span class="operator">=</span> <span class="string">&#x27;blue&#x27;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="6-references"><a href="#6-references" class="headerlink" title="6. references"></a>6. references</h1><ol>
-<li>KMC3 paper：<a href="https://academic.oup.com/bioinformatics/article/33/17/2759/3796399">https://academic.oup.com/bioinformatics/article/33/17/2759/3796399</a></li>
-<li>refresh-bio&#x2F;KMC：<a href="https://github.com/refresh-bio/KMC">https://github.com/refresh-bio/KMC</a></li>
-<li>tbenavi1&#x2F;KMC github：<a href="https://github.com/tbenavi1/KMC">https://github.com/tbenavi1/KMC</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>omics</category>
-        <category>genome</category>
-        <category>genome survey</category>
-      </categories>
-      <tags>
-        <tag>genome</tag>
-        <tag>genome survey</tag>
-        <tag>k-mer</tag>
-        <tag>KMC</tag>
         <tag>GenomeScope</tag>
       </tags>
   </entry>
@@ -10088,12 +9982,126 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KMC</tag>
         <tag>GenomeScope</tag>
         <tag>Smudgeplot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用k-mer分析进行基因组调查：（四）用KMC进行k-mer频数统计</title>
+    <url>/2022/06/05/omics_genome.survey_04.KMC/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283101&auto=1&height=32"></iframe></div>
+
+<p><strong>用k-mer分析进行基因组调查系列：</strong></p>
+<ul>
+<li>（一）基本原理：<a href="https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/">https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/</a></li>
+<li>（二）用Smudgeplot估计倍性：<a href="https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/">https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/</a></li>
+<li>（三）用jellyfish进行k-mer频数统计：<a href="https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/">https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/</a></li>
+<li>（四）用KMC进行k-mer频数统计：<a href="https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/">https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/</a></li>
+<li>（五）用GenomeScope评估基因组特征：<a href="https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/">https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/</a></li>
+<li>（六）用GCE分步实现：<a href="https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/">https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/</a></li>
+<li>（七）用KmerGenie一步实现：<a href="https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/">https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/</a></li>
+</ul>
+<p><strong>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</strong></p>
+<h1 id="1-k-mer进行基因组调查的软件概况"><a href="#1-k-mer进行基因组调查的软件概况" class="headerlink" title="1. k-mer进行基因组调查的软件概况"></a>1. k-mer进行基因组调查的软件概况</h1><p>k-mer进行基因组调查分为<strong>k-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。</p>
+<ul>
+<li>KMC可以实现第一步k-mer频数统计。</li>
+<li>KMC的结果sample.histo可以用在GenomeScope上，实现第二步基因组特征评估。</li>
+</ul>
+<h1 id="2-KMC-简介"><a href="#2-KMC-简介" class="headerlink" title="2. KMC 简介"></a>2. KMC 简介</h1><ul>
+<li>KMC是一个用来从FASTQ&#x2F;FASTA文件中计算k-mers的基于KMC二进制数据库的程序。</li>
+<li>KMC是波兰的Silesian University of Technology的算法和软件学院的<a href="https://refresh-bio.github.io/">REFRESH Bioinformatics Group</a>开发的工具。</li>
+<li>2017年发布了第三个版本，KMC3。</li>
+<li>KMC是主要基于C语言的程序。</li>
+</ul>
+<h1 id="3-KMC-安装"><a href="#3-KMC-安装" class="headerlink" title="3. KMC 安装"></a>3. KMC 安装</h1><ol>
+<li>版本<br>有两个版本的KMC，一般使用第一个版本，Smudgeplot评估物种倍性时用到了第二个版本。</li>
+</ol>
+<ul>
+<li>一个是<a href="https://refresh-bio.github.io/">REFRESH Bioinformatics Group</a>的<a href="https://github.com/refresh-bio/KMC">refresh-bio&#x2F;KMC</a>。</li>
+<li>一个是GenomeScope2.0的开发团队tbenavi1修改的<a href="https://github.com/tbenavi1/KMC">tbenavi1&#x2F;KMC</a></li>
+</ul>
+<ol start="2">
+<li>下载<br>在<a href="https://github.com/refresh-bio/KMC/releases">KMC download</a>找对应系统的最新版本KMC软件，下载解压缩即可使用。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir KMC &amp;&amp; cd KMC</span><br><span class="line">wget https://github.com/refresh-bio/KMC/releases/download/v3.2.1/KMC3.2.1.linux.tar.gz #下载最新版本的KMC</span><br><span class="line">tar -xzf KMC3.2.1.linux.tar.gz #解压缩和解包，生成bin文件夹和include文件夹</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用<br>解压缩后bin目录下会包含可执行文件，可直接使用，建议加入环境变量，包括：</li>
+</ol>
+<ul>
+<li>bin&#x2F;kmc：计算k-mer频数的主程序</li>
+<li>bin&#x2F;kmc_dump：在kmc生成数据库中列出k-mers的程序</li>
+<li>bin&#x2F;kmc_tools：允许操作kmc数据库的程序</li>
+</ul>
+<h1 id="4-KMC-运行"><a href="#4-KMC-运行" class="headerlink" title="4. KMC 运行"></a>4. KMC 运行</h1><p>用KMC计算k-mer频率，生成k-mer频数直方表和k-mer直方图。</p>
+<ol>
+<li><p>运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir tmp #创建临时文件夹</span><br><span class="line">ls *.fastq.gz &gt; FILES #用于分析的clean reads路径保存到文件FILES中</span><br><span class="line">kmc -k21 -t16 -m64 -ci1 -cs10000 @FILES kmcdb tmp #计算k-mer频率</span><br><span class="line">kmc_tools transform kmcdb histogram sample.histo -cx10000 #生成k-mer频数直方表sample.histo和k-mer直方图</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kmc命令参数</p>
+</li>
+</ol>
+<ul>
+<li>-k21：k-mer长度设置为21</li>
+<li>-t16：线程16</li>
+<li>-m64：内存64G，设置使用RAM的大致数量，范围1-1024。</li>
+<li>-ci1 -cs10000：统计k-mer coverages覆盖度范围在[1-10000]的。</li>
+<li>@FILES：保存了输入文件列表的文件名为FILES</li>
+<li>kmcdb：KMC数据库的输出文件名前缀</li>
+<li>tmp：临时目录</li>
+</ul>
+<ol start="3">
+<li>kmc_tools命令参数</li>
+</ol>
+<ul>
+<li>-cx10000：储存在直方图文件中counter的最大值。</li>
+</ul>
+<ol start="4">
+<li>结果<br>生成的sample.histo可用于第二步GenomeScope的分析。</li>
+</ol>
+<h1 id="5-基因组特征评估"><a href="#5-基因组特征评估" class="headerlink" title="5. 基因组特征评估"></a>5. 基因组特征评估</h1><p>获得k-mer频数分布表sample.histo后</p>
+<ul>
+<li>推荐用<a href="http://qb.cshl.edu/genomescope">GenomeScope1.0</a>或者<a href="http://qb.cshl.edu/genomescope/genomescope2.0/">GenomeScope2.0</a>或者GenomeScope的R脚本来做基因组特征评估和画图。</li>
+<li>也可直接用R绘制sample.histo的频率分布直方图&#x2F;频率分布曲线。</li>
+</ul>
+<h2 id="5-1-GenomeScope-网页版"><a href="#5-1-GenomeScope-网页版" class="headerlink" title="5.1. GenomeScope 网页版"></a>5.1. GenomeScope 网页版</h2><h3 id="5-1-1-GenomeScope1-0-网页版-——-适用于二倍体物种"><a href="#5-1-1-GenomeScope1-0-网页版-——-适用于二倍体物种" class="headerlink" title="5.1.1. GenomeScope1.0 网页版 —— 适用于二倍体物种"></a>5.1.1. GenomeScope1.0 网页版 —— 适用于二倍体物种</h3><ol>
+<li>在<a href="http://qb.cshl.edu/genomescope/">GenomeScope1.0 网页版</a>上传前一步获得的k-mer频数分布表sample.histo文件。</li>
+<li>设置参数k-mer length为第一步选择的k-mer长度值，这里是17；参数Read length为序列读长，一般为150；最后一个参数Max kmer coverage建议修改成更大的10000，以统计更多的k-mers。</li>
+<li>结果显示预估的基因组大小，杂合度，重复率等信息。</li>
+</ol>
+<h3 id="5-1-2-GenomeScope2-0-网页版-——-适用于多倍体物种"><a href="#5-1-2-GenomeScope2-0-网页版-——-适用于多倍体物种" class="headerlink" title="5.1.2. GenomeScope2.0 网页版 —— 适用于多倍体物种"></a>5.1.2. GenomeScope2.0 网页版 —— 适用于多倍体物种</h3><p><a href="http://qb.cshl.edu/genomescope/genomescope2.0">GenomeScope2.0 网页版</a>也是类似的步骤。</p>
+<h2 id="5-2-R绘制"><a href="#5-2-R绘制" class="headerlink" title="5.2. R绘制"></a>5.2. R绘制</h2><ul>
+<li>R绘制k-mer频数分布曲线初步查看基因组特征。</li>
+<li>获得kmer_plot.png为频数分布曲线，可根据曲线峰值对基因组大小进行计算和预估。</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#R 脚本示例</span></span><br><span class="line">kmer <span class="operator">&lt;-</span> read.table<span class="punctuation">(</span><span class="string">&#x27;sample.histo&#x27;</span><span class="punctuation">)</span></span><br><span class="line">kmer <span class="operator">&lt;-</span> subset<span class="punctuation">(</span>kmer<span class="punctuation">,</span> V1 <span class="operator">&gt;=</span><span class="number">5</span> <span class="operator">&amp;</span> V1 <span class="operator">&lt;=</span><span class="number">500</span><span class="punctuation">)</span> <span class="comment">#对频数范围5-500的数据进行绘制 </span></span><br><span class="line">Frequency <span class="operator">&lt;-</span> kmer<span class="operator">$</span>V1</span><br><span class="line">Number <span class="operator">&lt;-</span> kmer<span class="operator">$</span>V2</span><br><span class="line">png<span class="punctuation">(</span><span class="string">&#x27;kmer_plot.png&#x27;</span><span class="punctuation">)</span></span><br><span class="line">plot<span class="punctuation">(</span>Frequency<span class="punctuation">,</span> Number<span class="punctuation">,</span> type <span class="operator">=</span> <span class="string">&#x27;l&#x27;</span><span class="punctuation">,</span> col <span class="operator">=</span> <span class="string">&#x27;blue&#x27;</span><span class="punctuation">)</span></span><br><span class="line">dev.off<span class="punctuation">(</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="6-references"><a href="#6-references" class="headerlink" title="6. references"></a>6. references</h1><ol>
+<li>KMC3 paper：<a href="https://academic.oup.com/bioinformatics/article/33/17/2759/3796399">https://academic.oup.com/bioinformatics/article/33/17/2759/3796399</a></li>
+<li>refresh-bio&#x2F;KMC：<a href="https://github.com/refresh-bio/KMC">https://github.com/refresh-bio/KMC</a></li>
+<li>tbenavi1&#x2F;KMC github：<a href="https://github.com/tbenavi1/KMC">https://github.com/tbenavi1/KMC</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>omics</category>
+        <category>genome</category>
+        <category>genome survey</category>
+      </categories>
+      <tags>
+        <tag>genome survey</tag>
+        <tag>genome</tag>
+        <tag>k-mer</tag>
+        <tag>KMC</tag>
+        <tag>GenomeScope</tag>
       </tags>
   </entry>
   <entry>
@@ -10246,8 +10254,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>GCE</tag>
         <tag>kmerfreq</tag>
@@ -10375,8 +10383,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KmerGenie</tag>
       </tags>
@@ -10640,9 +10648,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>genome</tag>
+        <tag>LTR</tag>
         <tag>quality assessment</tag>
         <tag>LAI</tag>
-        <tag>LTR</tag>
       </tags>
   </entry>
   <entry>
@@ -10848,8 +10856,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>transcriptome</tag>
       </tags>
@@ -11159,9 +11167,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>mitogenome</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>mapping</tag>
         <tag>sam</tag>
@@ -11262,9 +11270,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>mitogenome</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>mapping</tag>
         <tag>sam</tag>
@@ -11441,9 +11449,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>mitogenome</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>transcriptome</tag>
         <tag>mapping</tag>
@@ -11651,6 +11659,72 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>HiSat2</tag>
         <tag>mapping rate</tag>
         <tag>samtools flagstat</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用BankIt提交细胞器基因组组装和注释到NCBI</title>
+    <url>/2022/06/30/omics_organelle_submit/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
+
+<h1 id="准备上传的文件"><a href="#准备上传的文件" class="headerlink" title="准备上传的文件"></a>准备上传的文件</h1><ol>
+<li>基因组fasta文件</li>
+<li>注释tbl格式文件</li>
+</ol>
+<p>tbl格式文件推荐用GB2sequin来准备。</p>
+<p>参考博客-转换GenBank文件为tbl格式：<a href="https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。</a></p>
+<h1 id="上传步骤"><a href="#上传步骤" class="headerlink" title="上传步骤"></a>上传步骤</h1><h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>BankIt：<a href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
+<p>使用BankIt在线上传，允许一次提交多个细胞器基因组序列。</p>
+<h2 id="上传步骤-1"><a href="#上传步骤-1" class="headerlink" title="上传步骤"></a>上传步骤</h2><ol>
+<li>选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：</li>
+</ol>
+<ul>
+<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组</li>
+<li>Transcriptome Shotgun Assembly (TSA)：组装好的转录组</li>
+<li>Unassembled sequence reads (SRA)：未组装的测序reads</li>
+<li>Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids…：其他测序数据，细胞器基因组选这个。</li>
+</ul>
+<ol start="2">
+<li>Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区&#x2F;省份，邮编，国家，和接收上传信息的邮箱【重要】。</li>
+<li>Reference：填写提供序列的作者和出版信息。</li>
+<li>Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。</li>
+<li>Nucleotide：填写序列的信息。</li>
+</ol>
+<ul>
+<li>序列发布的时间，可以指定日期，也可以一通过上传审核就发布。</li>
+<li>分子类型（Molecule Type）：细胞器基因组选的genomic DNA</li>
+<li>拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。</li>
+<li>是否是完整的细胞器基因组：yes&#x2F;no。</li>
+<li>核苷酸序列格式：fasta或者alignment，选的fasta</li>
+<li>上传细胞器基因组的fasta文件</li>
+</ul>
+<ol start="6">
+<li>Organism：填写Organism name信息，可填物种的学名。</li>
+<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
+<li>Source Modifiers：资源信息。</li>
+</ol>
+<ul>
+<li>Organelle&#x2F;Location: 叶绿体&#x2F;线粒体&#x2F;其他器官。</li>
+<li>Source Modifier可以填写Country；对应的value填写China。</li>
+</ul>
+<ol start="9">
+<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
+<li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
+</ol>
+<p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>omics</category>
+        <category>organelle</category>
+      </categories>
+      <tags>
+        <tag>mitogenome</tag>
+        <tag>plastome</tag>
+        <tag>submit</tag>
       </tags>
   </entry>
   <entry>
@@ -11881,7 +11955,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 </li>
 <li><strong>SEQ_FEAT.TransLen</strong><ul>
 <li>表示蛋白质长度与预测的蛋白质长度不匹配，运行错误</li>
-<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#103;&#101;&#110;&#x6f;&#x6d;&#x65;&#x73;&#x40;&#x6e;&#x63;&#98;&#105;&#46;&#110;&#x6c;&#x6d;&#x2e;&#110;&#105;&#x68;&#x2e;&#103;&#111;&#x76;">&#103;&#101;&#110;&#x6f;&#x6d;&#x65;&#x73;&#x40;&#x6e;&#x63;&#98;&#105;&#46;&#110;&#x6c;&#x6d;&#x2e;&#110;&#105;&#x68;&#x2e;&#103;&#111;&#x76;</a>)让帮忙修改这个错误。</li>
+<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#103;&#101;&#110;&#x6f;&#x6d;&#101;&#x73;&#64;&#110;&#99;&#98;&#x69;&#x2e;&#110;&#108;&#x6d;&#46;&#x6e;&#x69;&#104;&#x2e;&#103;&#111;&#x76;">&#103;&#101;&#110;&#x6f;&#x6d;&#101;&#x73;&#64;&#110;&#99;&#98;&#x69;&#x2e;&#110;&#108;&#x6d;&#46;&#x6e;&#x69;&#104;&#x2e;&#103;&#111;&#x76;</a>)让帮忙修改这个错误。</li>
 </ul>
 </li>
 <li><strong>SEQ_FEAT.BadInternalCharacter</strong><ul>
@@ -12033,77 +12107,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome</category>
       </categories>
       <tags>
+        <tag>genome</tag>
         <tag>GenBank</tag>
         <tag>genome submit</tag>
         <tag>tbl2asn</tag>
-        <tag>genome</tag>
         <tag>table2asn</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用BankIt提交细胞器基因组组装和注释到NCBI</title>
-    <url>/2022/06/30/omics_organelle_submit/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
-
-<h1 id="准备上传的文件"><a href="#准备上传的文件" class="headerlink" title="准备上传的文件"></a>准备上传的文件</h1><ol>
-<li>基因组fasta文件</li>
-<li>注释tbl格式文件</li>
-</ol>
-<p>tbl格式文件推荐用GB2sequin来准备。</p>
-<p>参考博客-转换GenBank文件为tbl格式：<a href="https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。</a></p>
-<h1 id="上传步骤"><a href="#上传步骤" class="headerlink" title="上传步骤"></a>上传步骤</h1><h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>BankIt：<a href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
-<p>使用BankIt在线上传，允许一次提交多个细胞器基因组序列。</p>
-<h2 id="上传步骤-1"><a href="#上传步骤-1" class="headerlink" title="上传步骤"></a>上传步骤</h2><ol>
-<li>选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：</li>
-</ol>
-<ul>
-<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组</li>
-<li>Transcriptome Shotgun Assembly (TSA)：组装好的转录组</li>
-<li>Unassembled sequence reads (SRA)：未组装的测序reads</li>
-<li>Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids…：其他测序数据，细胞器基因组选这个。</li>
-</ul>
-<ol start="2">
-<li>Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区&#x2F;省份，邮编，国家，和接收上传信息的邮箱【重要】。</li>
-<li>Reference：填写提供序列的作者和出版信息。</li>
-<li>Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。</li>
-<li>Nucleotide：填写序列的信息。</li>
-</ol>
-<ul>
-<li>序列发布的时间，可以指定日期，也可以一通过上传审核就发布。</li>
-<li>分子类型（Molecule Type）：细胞器基因组选的genomic DNA</li>
-<li>拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。</li>
-<li>是否是完整的细胞器基因组：yes&#x2F;no。</li>
-<li>核苷酸序列格式：fasta或者alignment，选的fasta</li>
-<li>上传细胞器基因组的fasta文件</li>
-</ul>
-<ol start="6">
-<li>Organism：填写Organism name信息，可填物种的学名。</li>
-<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
-<li>Source Modifiers：资源信息。</li>
-</ol>
-<ul>
-<li>Organelle&#x2F;Location: 叶绿体&#x2F;线粒体&#x2F;其他器官。</li>
-<li>Source Modifier可以填写Country；对应的value填写China。</li>
-</ul>
-<ol start="9">
-<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
-<li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
-</ol>
-<p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>omics</category>
-        <category>organelle</category>
-      </categories>
-      <tags>
-        <tag>mitogenome</tag>
-        <tag>plastome</tag>
-        <tag>submit</tag>
       </tags>
   </entry>
   <entry>
