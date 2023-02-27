@@ -135,6 +135,11 @@ seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contrac
 
 没有试过这个脚本，发表的图还是用R包ggtree自己画。
 
+# correction note
+3.3.3结果整理部分的“1. 对特定物种显著扩张或显著收缩基因的提取”部分的代码已更新，修改了一处错误。新代码对**特定物种**的显著变化的基因家族Orthogroup IDs进行提取。
+
+——感谢University of Colorado Boulder的李瑞祺的提醒。
+
 # 4. references
 1. https://academic.oup.com/bioinformatics/article-abstract/36/22-23/5516/6039105?redirectedFrom=fulltext
 2. https://github.com/hahnlab/CAFE5
