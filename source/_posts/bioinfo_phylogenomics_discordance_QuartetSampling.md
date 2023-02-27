@@ -117,6 +117,7 @@ quartet_sampling.py脚本用于进行Quartet Sampling（QS）计算。
 - --result-prefix：指定结果文件前缀
 - --verbose：指定后提供更详尽的输出，生成RESULT.verbose文件。
 - --verbout：指定后提供每个topology和QC的频率的输出，生成RESULT.verbout文件。
+- --min-overlap 20000：在四分体中所有类群被采样需要的最少位点数，默认不设置，推荐20000。
 
 3. 速度
 - 速度很快，6Mb多的snp序列数据40分钟跑完。

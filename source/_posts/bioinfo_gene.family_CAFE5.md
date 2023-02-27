@@ -74,9 +74,8 @@ tree.txt是二叉的（binary），有根的（rooted），超度量(时间树�
 
 可以用R包Ape的函数`is.binary`, `is.rooted`, `is.ultrametric`对树是否是二叉有根超度量做检验。
 
-```tree.txt文件的示例
+tree.txt文件内容的示例：
 ((((cat:68.710507,horse:68.710507):4.566782,cow:73.277289):20.722711,(((((chimp:4.444172,human:4.444172):6.682678,orang:11.126850):2.285855,gibbon:13.412706):7.211527,(macaque:4.567240,baboon:4.567240):16.056992):16.060702,marmoset:36.684935):57.315065):38.738021,(rat:36.302445,mouse:36.302445):96.435575);
-```
 
 2. 用paml的Figtree转换成tree.txt文件（newick格式）
 `grep -E -v "NEXUS|BEGIN|END" FigTree.tre|sed -E -e "s/\[[^]]*\]//g" -e "s/[ \t]//g" -e "/^$/d" -e "s/UTREE/tree tree/" >tree.txt`
@@ -92,10 +91,16 @@ tree.txt是二叉的（binary），有根的（rooted），超度量(时间树�
 
 ## 3.3. CAFE5的结果
 ### 3.3.1. 结果文件
-- model_asr.tre：每个基因家族的树的合集
-- model_clade_results.txt：进化树上每个节点扩张或者收缩了多少基因家族
-- model_family_results.txt：基因家族变化的p值和是否显著的结果
-- model_results.txt：模型，最终似然值，最终Lambda值等参数信息。
+1. model_asr.tre
+- 每个基因家族的树的合集，nexus格式
+- 树上的物种ID后的下划线隔开的数字是预期的基因家族大小
+- 树上的星号代表这个物种的基因家族有显著变化
+2. model_clade_results.txt
+- 进化树上每个节点扩张或者收缩了多少基因家族
+3. model_family_results.txt
+- 基因家族变化的p值和是否显著的结果
+4. model_results.txt
+- 模型，最终似然值，最终Lambda值等参数信息。
 
 还生成了一些其他文件。
 
@@ -103,25 +108,26 @@ tree.txt是二叉的（binary），有根的（rooted），超度量(时间树�
 k值的结果比较：
 查看k2p，k3p，k5p，k6p等不同的结果文件Gamma_results.txt文件中的第一行信息，Model Gamma Final Likelihood (-lnL)值，挑选最大的为最优结果。
 
-### 结果整理
+### 3.3.3. 结果整理
 
-对特定物种扩张和收缩基因的提取
-```
+1. 对特定物种显著扩张或显著收缩基因的提取
+
+```shell
 cat Gamma_change.tab |cut -f1,15|grep "+[1-9]" >sample.expanded #提取Gamma_change.tab第15列代表物种sample的扩张的orthogroupsID
 cat Gamma_change.tab |cut -f1,15|grep "-" >sample.contracted  #提取Gamma_change.tab第15列代表物种sample的收缩的orthogroupsID
-cat Gamma_family_results.txt |grep "y"|cut -f1 >p0.05.significant #提取显著扩张或收缩的orthogroupsID
-grep -f p0.05.significant sample.expanded |cut -f1>sample.expanded.significant #提取显著扩张的sample物种的orthogroupsID
-grep -f p0.05.significant sample.contracted |cut -f1 >sample.contracted.significant #提取显著收缩的sample物种的orthogroupsID
-
+grep "sample<13>\*" Gamma_asr.tre > sample_significant_trees.tre # 根据sample ID和编号提取sample分支的基因家族显著扩张或收缩的基因家族树（Gamma_asr.tre文件中默认以p<0.05为标准判断变化是否显著）
+grep -E -o "OG[0-9]+" sample_significant_trees.tre > sample_significant.ogs # 提取sample分支显著变化的OG IDs （默认以p<0.05为标准）
+awk '$2 <0.01 {print $1}' Gamma_family_results.txt >p0.01_significant.ogs # 以p<0.01为标准提取所有显著扩张或收缩的orthogroupsID（根据情况调整，常用p<0.05或p<0.01）
+grep -f sample_significant.ogs p0.01_significant.ogs > sample_p0.01_significant.ogs # 提取以p<0.01为标准判断显著性的sample分支基因家族显著变化的OG IDs。
+grep -f sample_p0.01_significant.ogs sample.expanded |cut -f1 >s ample.expanded.significant #提取显著扩张的sample物种的orthogroupsID
+grep -f sample_p0.01_significant.ogs sample.contracted |cut -f1 > sample.contracted.significant #提取显著收缩的sample物种的orthogroupsID
 grep -f sample.expanded.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt |sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.expanded.significant.genes #提取显著扩张的基因列表，假设基因ID是bv的前缀。
 grep -f sample.contracted.significant ./OrthoFinder/Results_Oct14/Orthogroups/Orthogroups.txt sed "s/ /\n/g"|grep "bv" |sort -k 1.3n |uniq >sample.contracted.significant.genes #提取显著收缩的基因列表，假设基因ID是bv的前缀。
-
 seqkit grep -f sample.expanded.significant.genes sample.pep.fa >sample.expanded.significant.pep.fa #提取显著扩张的基因序列
 seqkit grep -f sample.contracted.significant.genes sample.pep.fa >sample.contracted.significant.pep.fa #提取显著收缩的基因序列
 ```
 
-提取出指定物种的显著扩张和收缩的蛋白序列之后，就可以拿去做GO注释和基因富集分析。
-
+2. 提取出指定物种的显著扩张和收缩的蛋白序列之后，就可以拿去做GO注释和基因富集分析。
 
 ## 3.4. 把每个节点收缩扩张的基因数量画在树上
 有看到一个画图脚本，不适用于CAFE5，暂且记录在此。
