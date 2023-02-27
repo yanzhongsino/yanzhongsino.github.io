@@ -383,6 +383,19 @@ deploy:
 
 也可能是网络之类的问题，就隔一段时间试试`hexo deploy`。
 
+### 报错kex_exchange_identification: Connection closed by remote host
+1. 问题
+运行git的博客同步命令，报错kex_exchange_identification: Connection closed by remote host。
+
+```
+$ ssh -T git@github.com
+kex_exchange_identification: Connection closed by remote host
+Connection closed by 20.205.243.166 port 22
+```
+
+2. 方案
+运行VPN的全局模式会导致这个报错，取消全局模式即可。
+
 **小记**
 
 学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。
