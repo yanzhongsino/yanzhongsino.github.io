@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="造成系统发育冲突的原因包括不完全谱系分选（Incomplete lineage sorting, ILS），基因渐渗、杂交、遗传重组、水平基因转移等导致基因流的进化历史。本文章介绍了用R包MSCquartets评估不完全谱系分选的程度，以及除了ILS以外的其他原因是否参与了系统冲突。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用R包MSCquartets评估不完全谱系分选的程度">
+<meta property="og:url" content="http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="造成系统发育冲突的原因包括不完全谱系分选（Incomplete lineage sorting, ILS），基因渐渗、杂交、遗传重组、水平基因转移等导致基因流的进化历史。本文章介绍了用R包MSCquartets评估不完全谱系分选的程度，以及除了ILS以外的其他原因是否参与了系统冲突。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/sysbio/71/3/10.1093_sysbio_syab068/1/syab068f3.jpeg?Expires=1681716268&Signature=Et1jsJ2Y~5cswNKSeKVojLZPRna5RGqVhTVmQIBpqmTasmtVY14fXqkH4vPt2QnTsxCr5jH0ifrSPx4Qw9esHFGy1qvwDuNXRP0dRuQLwJkb6G76QReJkP-AfIz8dwcLC5pjtDf4tQ-W7ufYuIzEbZkbM0SVcajZYSGde6vDA8I9knoEsGT53fzflJ~xATaVASqnj4QSkftNjGeYIMSQY~p7aYwNDcS1DMpwQbCoxMxyqXQhdqDkjtT1yLkYtro7NRi~5pqa5KwnpIqMoIuoQvc88Kc7IDhQB~wTDbHtPmV3DvfikaGRRh4nDNA6EzJ7HyQBNOcAinizJiwaJNzmDA__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-13T08:48:51.017Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="gene flow">
+<meta property="article:tag" content="phylogeny">
+<meta property="article:tag" content="R packages">
+<meta property="article:tag" content="MSCquartets">
+<meta property="article:tag" content="ILS">
+<meta property="article:tag" content="MSC">
+<meta property="article:tag" content="simplex">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/sysbio/71/3/10.1093_sysbio_syab068/1/syab068f3.jpeg?Expires=1681716268&Signature=Et1jsJ2Y~5cswNKSeKVojLZPRna5RGqVhTVmQIBpqmTasmtVY14fXqkH4vPt2QnTsxCr5jH0ifrSPx4Qw9esHFGy1qvwDuNXRP0dRuQLwJkb6G76QReJkP-AfIz8dwcLC5pjtDf4tQ-W7ufYuIzEbZkbM0SVcajZYSGde6vDA8I9knoEsGT53fzflJ~xATaVASqnj4QSkftNjGeYIMSQY~p7aYwNDcS1DMpwQbCoxMxyqXQhdqDkjtT1yLkYtro7NRi~5pqa5KwnpIqMoIuoQvc88Kc7IDhQB~wTDbHtPmV3DvfikaGRRh4nDNA6EzJ7HyQBNOcAinizJiwaJNzmDA__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA">
+
+<link rel="canonical" href="http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用R包MSCquartets评估不完全谱系分选的程度 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用R包MSCquartets评估不完全谱系分选的程度
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-03-13 00:00:00 / Modified: 16:48:51" itemprop="dateCreated datePublished" datetime="2023-03-13T00:00:00+08:00">2023-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/phylogeny/" itemprop="url" rel="index"><span itemprop="name">phylogeny</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/phylogeny/ILS/" itemprop="url" rel="index"><span itemprop="name">ILS</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/03/13/bioinfo_phylogeny_MSCquartets/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/03/13/bioinfo_phylogeny_MSCquartets/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 mins.</span>
+            </span>
+            <div class="post-description">造成系统发育冲突的原因包括不完全谱系分选（Incomplete lineage sorting, ILS），基因渐渗、杂交、遗传重组、水平基因转移等导致基因流的进化历史。本文章介绍了用R包MSCquartets评估不完全谱系分选的程度，以及除了ILS以外的其他原因是否参与了系统冲突。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105203&auto=1&height=32"></iframe></div>
+
+<h1 id="1-R包MSCquartets"><a href="#1-R包MSCquartets" class="headerlink" title="1. R包MSCquartets"></a>1. R包MSCquartets</h1><h2 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1. 简介"></a>1.1. 简介</h2><p>MSCquartets(Rhodes, et al. 2020)被用来进行基于枝长的假设检验，评估在不完全谱系分选（Incomplete lineage sorting, ILS）下的多物种溯祖（multispecies coalescent, MSC）模型的物种树或物种网。它首先确定所有基因树中每组四分类群的三个可能拓扑结构的数量，这些被称为四分体计数一致性系数（quartet count concordance factor, qcCF），可以通过比较生成P值来判断基因树与物种树的拟合度。所有四分类群的四分体一致性系数可以用simplex图来表示，以全面了解整个基因树数据集的不协调情况。</p>
+<h2 id="1-2-分析步骤"><a href="#1-2-分析步骤" class="headerlink" title="1.2. 分析步骤"></a>1.2. 分析步骤</h2><ol>
+<li>用MSCquartets(Rhodes, et al. 2020)的quartetTable函数计算基因树的所有四分体的计数一致性系数（qcCFs），并生成四分体计数表。</li>
+<li>用MSCquartets的quartetTableResolved函数生成只保留解决四分体的计数表。</li>
+<li>用MSCquartets的quartetTreeTestInd函数，ASTRAL构建的物种树作为指定物种树，在”T1 model”模型下进行MSC下的树型拟合假设检验。</li>
+<li>用MSCquartets的quartetTestPlot函数为每个拒绝水平的所有的四分类群子集生成一个simplex图(Allman, et al. 2021)。不同的拒绝水平包括α&#x3D; 0.01、0.001、1e-04和1e-06。</li>
+</ol>
+<h2 id="1-3-结果解释"><a href="#1-3-结果解释" class="headerlink" title="1.3. 结果解释"></a>1.3. 结果解释</h2><p>要么qcCFs与MSC下的ILS在指定的统计学意义水平上是一致的，要么ILS以外的一些机制（例如：杂交，或基因复制和丢失，以及大量的基因树推断错误等）更可能解释基因树的不一致。</p>
+<p>在simplex图中，带颜色的符号用来显示假设检验结果。当带颜色的符号处在接近图形中心点的位置，表明有大量的ILS主导；当符号更接近顶点，表明ILS的作用很小；那些被拒绝的符号应该由ILS以外的其他过程来解释。</p>
+<h1 id="2-用MSCquartets检验ILS"><a href="#2-用MSCquartets检验ILS" class="headerlink" title="2. 用MSCquartets检验ILS"></a>2. 用MSCquartets检验ILS</h1><ol>
+<li>输入文件</li>
+</ol>
+<ul>
+<li>genes.tre：基因树文件，保存多棵基因树</li>
+<li>物种树：可以用文本输入R<code>stree=&quot;(((t5,t6),t4),((t1,t2),t3));&quot;</code></li>
+</ul>
+<ol start="2">
+<li>运行</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">install.packages<span class="punctuation">(</span><span class="string">&quot;MSCquartets&quot;</span><span class="punctuation">)</span> <span class="comment"># 安装R包MSCquartets</span></span><br><span class="line">library<span class="punctuation">(</span><span class="string">&quot;MSCquartets&quot;</span><span class="punctuation">)</span> <span class="comment"># 载入R包MSCquartets</span></span><br><span class="line"></span><br><span class="line">gtrees<span class="operator">=</span>read.tree<span class="punctuation">(</span>file<span class="operator">=</span><span class="string">&quot;genes.tre&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取树文件</span></span><br><span class="line">tnames<span class="operator">=</span>taxonNames<span class="punctuation">(</span>gtrees<span class="punctuation">)</span> <span class="comment"># 从gtrees中获取所有类群的名称</span></span><br><span class="line">tnames <span class="comment"># 查看tnames，看看类群名称，后面的quartetTable函数通过tnames选择部分感兴趣的类群进行分析。</span></span><br><span class="line">QT<span class="operator">=</span>quartetTable<span class="punctuation">(</span>gtrees<span class="punctuation">,</span>tnames<span class="punctuation">[</span><span class="number">6</span><span class="operator">:</span><span class="number">11</span><span class="punctuation">]</span><span class="punctuation">)</span> <span class="comment"># 这一步耗时较长。用tnames选择感兴趣的类群（这里选的第6到第11个共6个类群），也可以不设置，默认从gtrees里选择所有类群。这里用的例子是名称为t1-t6的6个类群。</span></span><br><span class="line">RQT<span class="operator">=</span>quartetTableResolved<span class="punctuation">(</span>QT<span class="punctuation">)</span> <span class="comment"># 生成已解决的四分体计数表</span></span><br><span class="line">stree<span class="operator">=</span><span class="string">&quot;(((t5,t6),t4),((t1,t2),t3));&quot;</span> <span class="comment"># 通过文本导入物种树</span></span><br><span class="line">pTable<span class="operator">=</span>quartetTreeTestInd<span class="punctuation">(</span>RQT<span class="punctuation">,</span><span class="string">&quot;T1&quot;</span><span class="punctuation">,</span>speciestree<span class="operator">=</span>stree<span class="punctuation">)</span> <span class="comment"># 执行多个独立的假设检验，在MSC下的四分体计数拟合到物种树的检验</span></span><br><span class="line">pTable<span class="operator">=</span>quartetStarTestInd<span class="punctuation">(</span>pTable<span class="punctuation">)</span> <span class="comment"># </span></span><br><span class="line">quartetTestPlot<span class="punctuation">(</span>pTable<span class="punctuation">,</span> <span class="string">&quot;T1&quot;</span><span class="punctuation">,</span> alpha<span class="operator">=</span><span class="number">.01</span><span class="punctuation">,</span> beta<span class="operator">=</span><span class="number">1</span><span class="punctuation">)</span> <span class="comment"># 绘制simplex图，一般在多个alpha水平下绘制，都保存。</span></span><br><span class="line">quartetTestPlot<span class="punctuation">(</span>pTable<span class="punctuation">,</span> <span class="string">&quot;T1&quot;</span><span class="punctuation">,</span> alpha<span class="operator">=</span><span class="number">.001</span><span class="punctuation">,</span> beta<span class="operator">=</span><span class="number">1</span><span class="punctuation">)</span></span><br><span class="line">quartetTestPlot<span class="punctuation">(</span>pTable<span class="punctuation">,</span> <span class="string">&quot;T1&quot;</span><span class="punctuation">,</span> alpha<span class="operator">=</span><span class="number">.0001</span><span class="punctuation">,</span> beta<span class="operator">=</span><span class="number">1</span><span class="punctuation">)</span></span><br><span class="line">quartetTestPlot<span class="punctuation">(</span>pTable<span class="punctuation">,</span> <span class="string">&quot;T1&quot;</span><span class="punctuation">,</span> alpha<span class="operator">=</span><span class="number">.000001</span><span class="punctuation">,</span> beta<span class="operator">=</span><span class="number">1</span><span class="punctuation">)</span> </span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>结果</li>
+</ol>
+<p>在simplex图中，带颜色的符号用来显示假设检验结果。当蓝色圆形符号（fail to reject tree）处在接近图形中心点的位置，表明有大量的ILS主导；当蓝色符号更接近顶点，表明ILS的作用很小。而那些代表拒绝的红色三角形符号（reject tree）应该由ILS以外的其他过程来解释。</p>
+<img src="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/sysbio/71/3/10.1093_sysbio_syab068/1/syab068f3.jpeg?Expires=1681716268&Signature=Et1jsJ2Y~5cswNKSeKVojLZPRna5RGqVhTVmQIBpqmTasmtVY14fXqkH4vPt2QnTsxCr5jH0ifrSPx4Qw9esHFGy1qvwDuNXRP0dRuQLwJkb6G76QReJkP-AfIz8dwcLC5pjtDf4tQ-W7ufYuIzEbZkbM0SVcajZYSGde6vDA8I9knoEsGT53fzflJ~xATaVASqnj4QSkftNjGeYIMSQY~p7aYwNDcS1DMpwQbCoxMxyqXQhdqDkjtT1yLkYtro7NRi~5pqa5KwnpIqMoIuoQvc88Kc7IDhQB~wTDbHtPmV3DvfikaGRRh4nDNA6EzJ7HyQBNOcAinizJiwaJNzmDA__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA" title="simplex图" width="100%"/>
+
+<p><strong><p align="center">图 1. simplex图示例 图源：<a target="_blank" rel="noopener" href="https://doi.org/10.1093/sysbio/syab068">https://doi.org/10.1093/sysbio/syab068</a></p></strong></p>
+<h1 id="3-R包MSCquartets常用函数"><a href="#3-R包MSCquartets常用函数" class="headerlink" title="3. R包MSCquartets常用函数"></a>3. R包MSCquartets常用函数</h1><h2 id="3-1-quartetTable"><a href="#3-1-quartetTable" class="headerlink" title="3.1. quartetTable"></a>3.1. quartetTable</h2><ol>
+<li>quartetTable函数用来计算基因树的四分体计数一致性系数（quartet count concordance factor, qcCF），并生成四分体计数表。</li>
+<li>用法：<code>quartetTable(trees, taxonnames = NULL, epsilon = 0, random = 0)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>trees：包含un&#x2F;rooted metric&#x2F;topological trees的multiphylo对象，把保存了所有基因树的文件读进来就可以用在这</li>
+<li>taxonnames：选取trees里的部分类群进行分析，n个名字组成的向量，默认是NULL代表trees[[1]]的类群</li>
+<li>epsilon：被处理成非零的最小枝长，一般默认设置成0就ok。</li>
+<li>random：4 taxa的随机子集的数量。如果设置为0，用所有子集。这个参数也是一般默认设置成0就ok。</li>
+<li>最终会生成n+4列的计数表（n是选中的类群数量）</li>
+<li>耗时步骤，29个类群3000棵树用时1h。</li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>一个(n choose 4)×(n+4)的矩阵，或者(random)×(n+4)的矩阵。编码taxonnames的四个类群子集，以及所有树的四分体种类（种类：12|34，13|24，14|23，1234）的计数。</li>
+</ul>
+<h2 id="3-2-quartetTableResolved"><a href="#3-2-quartetTableResolved" class="headerlink" title="3.2. quartetTableResolved"></a>3.2. quartetTableResolved</h2><ol>
+<li>quartetTableResolved函数用于把四分体计数表（常由quartetTable函数生成）的未解决四分体部分转化。转化方式是要么丢弃未解决部分，要么将未解决部分均匀分配在三个已解决的计数中。</li>
+<li>用法：<code>quartetTableResolved(qt,omit=FALSE)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>qt：quartetTable函数的从n个选中的类群中生成n+4列的计数表</li>
+<li>omit：设置为TRUE代表删除未解决的四分体列；设置为FALSE代表删除未解决的四分体列的同时重新三等分这些未解决的计数分配到解决计数里。默认是FALSE。</li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>与qt类似的四分体计数表，但只包含展示被解决四分体计数的列。</li>
+</ul>
+<h2 id="3-3-quartetTableDominant"><a href="#3-3-quartetTableDominant" class="headerlink" title="3.3. quartetTableDominant"></a>3.3. quartetTableDominant</h2><ol>
+<li>quartetTableDominant函数用于将n个分类群上已解决的四分体计数表（常由quartetTableResolved函数生成）转换为只显示占支配地位的一个四分体的计数表，并附有MSC下的内部边缘权重的最大似然估计。</li>
+<li>用法：<code>quartetTableDominant(rqt,bigweights=&quot;infinite&quot;)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>rqt：quartetTableResolved函数生成的已解决四分体的计数表。列数为(n choose 4)x(n+3)。</li>
+<li>bigweights：默认为infinite，可设置成finite。表示只有一种拓扑结构的四分体的weight（internal edge length）是无限的（infinite）的值，还是有限的（finite）但很大的数值给出。如果设置成finite，，当一组4个类群的四分体计数为(m,0,0)时，那么边缘权重（edge weight）的计算方法是：主导拓扑结构的相对频率为m&#x2F;(m+1)。</li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>一个(n choose 4)×(n+1)的矩阵，包含用1,1,-1,-1为类群列编码的支配地位四分体拓扑。第(n+1)列”weight”包含MSC下的四个类群的树的四分体的中心边缘长度的最大似然估计，溯祖单位。</li>
+</ul>
+<h2 id="3-4-quartetTreeTest"><a href="#3-4-quartetTreeTest" class="headerlink" title="3.4. quartetTreeTest"></a>3.4. quartetTreeTest</h2><ol>
+<li>quartetTreeTest函数用于测试在MSC下四分体计数拟合一棵物种树的假设检验</li>
+<li>用法：<code>quartetTreeTest(obs,model=&quot;T3&quot;,lambda=0,method=&quot;MLest&quot;,smallcounts=&quot;approximate&quot;,bootstraps=10^4)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>obs：已解决四分体频率的3个计数向量（三个数字组成的向量）</li>
+<li>model：假设检验的模型，T1用于指定的一棵物种树的四分体拓扑，T3代表任何物种树四分体拓扑。</li>
+<li>lambda：power-divergence统计参数，0代表似然率统计，1代表卡方检验（Chi-squared）统计</li>
+<li>method：可选MLtest，conservative或者bootstrap</li>
+<li>smallcounts：当有些计数很小时，获取p值的方法，可选bootstrap或者approximate</li>
+<li>bootstraps：bootstrapping采样的数量</li>
+</ul>
+<ol start="4">
+<li>其他参数细节描述：</li>
+</ol>
+<ul>
+<li>这个函数实现了Mitchell等人（2019）给出的两个版本的测试，以及 参数boostrapping，当一些预期计数较小时，还有其他程序。当 拓扑结构和&#x2F;或内部四分体分支长度不是由无效假设指定的，这些是 比单自由度的Chi-square测试更准确，后者在理论上是不成立的。在模型的奇异点和边界附近是不合理的。</li>
+<li>如果method&#x3D;”MLtest”，则使用Mitchell等人（2019）第7节中描述的该名称的测试。对于T1和T3模型来说，该测试在四元组物种内部的一个小范围内是略微反保守的。边缘的四分体物种树的小范围内，测试略显反常。虽然该检验在实践中一般表现良好，但它缺乏对 在T1或T3的全部参数空间中缺乏统一的渐进保证。</li>
+<li>如果method&#x3D;”conservative”，则使用Mitchell等人（2019）所描述的保守检验。对于模型T3，它使用1个自由度的Chi-square分布（”最不利 “的方法），而对于模型T1，它使用最小调整的Bonferroni，基于n&#x3D;1e+6的模拟中预先计算的值。拒绝无效假设，但代价是第二类错误的增加。</li>
+<li>如果method&#x3D;”bootstrap”，那么将根据四元组拓扑结构和内部边缘长度的参数估计进行参数化引导。引导样本的大小是由 bootstrap参数。</li>
+<li>当一些预期的拓扑结构计数较小时，”MLest “和 “conservative”方法并不合适。参数smallcounts决定了是使用bootstrapping还是更快的其他近似方法。这两种方法都涉及对四元组拓扑结构和内部边缘长度的估计。近似法返回一个预先计算好的p值，通过用1e+6替换最大的观察计数，并进行1e+8的计算，找到了p值。用1e+6代替最大的观察数，并对模型T3进行1e+8的引导。当n足够大（至少是30），一些预期计数较小，四叉树的错误概率较小，bootstrap p值大约与T3或T1的选择以及最大的观察计数无关。</li>
+<li>对于T1模型，obs的第一个条目被视为与物种树一致的基因四分体的计数。种树一致的基因四分体。</li>
+<li>当样本量较小时，如少于30个基因树，应谨慎对待返回的p值。返回的bl值是一个一致的估计值，但不是凝聚单位的内部边缘长度的MLE。虽然一致，但t的MLE是有偏的。我们的一致估计值仍有偏差，但比MLE的偏差小。关于在参数空间存在边界和&#x2F;或奇异性的情况下处理参数估计的偏差的更多讨论，见Mitchell等人（2019）。</li>
+</ul>
+<ol start="5">
+<li>结果</li>
+</ol>
+<ul>
+<li>结果是两个值：(p-value,bl)</li>
+<li>p-value是假设检验结果的p值</li>
+<li>bl是以溯祖为单位的内部边缘长度（internal edge length）的一致性估计，可能是Inf。</li>
+</ul>
+<h2 id="3-5-quartetTreeTestInd"><a href="#3-5-quartetTreeTestInd" class="headerlink" title="3.5. quartetTreeTestInd"></a>3.5. quartetTreeTestInd</h2><ol>
+<li>quartetTreeTestInd函数用于执行多个独立的MSC下的四分体计数拟合到物种树的假设检验。它是quartetTreeTest函数的多线程版本，quartetTreeTest只做一个假设检验，quartetTreeTestInd则是对所有已解决的四分体都进行假设检验。</li>
+<li>用法：<code>quartetTreeTestInd(rqt,model=&quot;T3&quot;,lambda=0,method=&quot;MLest&quot;,smallcounts=&quot;approximate&quot;,bootstraps=10^4,speciestree=NULL)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>rqt：已解决四分体频率的计数表（由quartetTableResolved函数或quartetStarTestInd函数生成）</li>
+<li>model：假设检验的模型，T1用于指定的一棵物种树的四分体拓扑，T3代表任何物种树四分体拓扑。</li>
+<li>lambda：power-divergence统计参数，0代表似然率统计，1代表卡方检验（Chi-squared）统计</li>
+<li>method：可选MLtest，conservative或者bootstrap。与quartetTreeTest函数一致。</li>
+<li>smallcounts：当有些计数很小时，获取p值的方法，可选bootstrap或者approximate</li>
+<li>bootstraps：bootstrapping采样的数量</li>
+<li>speciestree：物种树，Newick文本格式，用于T1 test的物种四分体。model&#x3D;”T1”的必选项，model&#x3D;”T3”则会忽略这个参数。</li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>如果model&#x3D;”T3”，输出rqt相同的表，并附加一列”p_T3”。附加列代表每个四分体的p-values。</li>
+<li>如果model&#x3D;”T1”，输出rqt相同的表，并附加两列”p_T1”和”qindex”。”p_T1”代表每个四分体的p-values。”qindex”代表与指定物种树一致的四分体的索引值，1代表物种树上的12|34，2代表13|24，3代表14|23。</li>
+</ul>
+<h2 id="3-6-quartetStarTestInd"><a href="#3-6-quartetStarTestInd" class="headerlink" title="3.6. quartetStarTestInd"></a>3.6. quartetStarTestInd</h2><ol>
+<li>quartetStarTestInd函数用于多个独立的MSC下的基因四分体计数拟合一个物种四分体星形树（star tree）的假设检验。它是quartetStarTest的多线程版本。这个函数假设所有四分体都是已解决的。</li>
+<li>用法：<code>quartetStarTestInd(rqt)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>rqt：已解决的四分体计数表（由quartetTableResolved函数或quartetTreeTestInd函数生成）</li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>与输入的rqt相同的表，附加列”p_star”。附加列代表用于判断是否在一个星形树上拟合进MSC的p-values。</li>
+</ul>
+<h2 id="3-7-quartetTestPlot"><a href="#3-7-quartetTestPlot" class="headerlink" title="3.7. quartetTestPlot"></a>3.7. quartetTestPlot</h2><ol>
+<li>quartetTestPlot函数用于用四分体假设检验的结果（常由quartetTreeTest函数生成）绘制simplex图，simplex图上的点代表所有四分体计数向量，颜色代表拒绝或失败或特定显著水平的拒绝。</li>
+<li>用法：<code>quartetTestPlot(pTable,test,alpha=0.05,beta=1,cex=1)</code></li>
+<li>参数</li>
+</ol>
+<ul>
+<li>pTable：四分体和p值表（常由quartetTreeTestInd函数，quartetStarTestInd函数或NANUQ函数生成）</li>
+<li>test：树的零假设使用的模型，选T1或T3</li>
+<li>alpha：test给出的零假设的树测试的显著性水平</li>
+<li>beta：零假设检测星形树（star tree）的显著性水平。beta&#x3D;1代表只有beta&lt;1和pTable的p_star列存在的测试结果才会绘制点。</li>
+<li>cex：绘制符号尺寸的缩放比例</li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>不输出值，会绘制simplex图。</li>
+</ul>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li>R包MSCquartets的manual：<a target="_blank" rel="noopener" href="https://cran.r-project.org/web/packages/MSCquartets/MSCquartets.pdf">https://cran.r-project.org/web/packages/MSCquartets/MSCquartets.pdf</a></li>
+<li>R包MSCquartets的paper：<a target="_blank" rel="noopener" href="https://doi.org/10.1093/bioinformatics/btaa868">https://doi.org/10.1093/bioinformatics/btaa868</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gene-flow/" rel="tag"># gene flow</a>
+              <a href="/tags/phylogeny/" rel="tag"># phylogeny</a>
+              <a href="/tags/R-packages/" rel="tag"># R packages</a>
+              <a href="/tags/MSCquartets/" rel="tag"># MSCquartets</a>
+              <a href="/tags/ILS/" rel="tag"># ILS</a>
+              <a href="/tags/MSC/" rel="tag"># MSC</a>
+              <a href="/tags/simplex/" rel="tag"># simplex</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/13/bioinfo_phylogeny_MDS/" rel="prev" title="树空间的多维缩放（multidimensional scaling，MDS）可视化物种树和基因树的RF距离">
+      <i class="fa fa-chevron-left"></i> 树空间的多维缩放（multidimensional scaling，MDS）可视化物种树和基因树的RF距离
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-R%E5%8C%85MSCquartets"><span class="nav-text">1. R包MSCquartets</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%88%86%E6%9E%90%E6%AD%A5%E9%AA%A4"><span class="nav-text">1.2. 分析步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E7%BB%93%E6%9E%9C%E8%A7%A3%E9%87%8A"><span class="nav-text">1.3. 结果解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%94%A8MSCquartets%E6%A3%80%E9%AA%8CILS"><span class="nav-text">2. 用MSCquartets检验ILS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-R%E5%8C%85MSCquartets%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-text">3. R包MSCquartets常用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-quartetTable"><span class="nav-text">3.1. quartetTable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-quartetTableResolved"><span class="nav-text">3.2. quartetTableResolved</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-quartetTableDominant"><span class="nav-text">3.3. quartetTableDominant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-quartetTreeTest"><span class="nav-text">3.4. quartetTreeTest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-quartetTreeTestInd"><span class="nav-text">3.5. quartetTreeTestInd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-quartetStarTestInd"><span class="nav-text">3.6. quartetStarTestInd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-quartetTestPlot"><span class="nav-text">3.7. quartetTestPlot</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">294</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">496k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">7:31</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/";
+    this.page.identifier = "2023/03/13/bioinfo_phylogeny_MSCquartets/";
+    this.page.title = "用R包MSCquartets评估不完全谱系分选的程度";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
