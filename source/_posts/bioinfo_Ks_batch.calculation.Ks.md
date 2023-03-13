@@ -2,7 +2,6 @@
 title: 批量计算Ka和Ks
 date: 2022-09-07
 categories:
-- bio
 - bioinfo
 - Ks
 tags:

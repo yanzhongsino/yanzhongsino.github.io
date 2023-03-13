@@ -2,7 +2,6 @@
 title: 3s软件
 date: 2022-09-22
 categories: 
-- bio
 - bioinfo
 - gene flow
 tags: 

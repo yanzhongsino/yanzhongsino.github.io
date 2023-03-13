@@ -1,13 +1,13 @@
 ---
 title: 绘制进化树 —— R包treeio+ggtree
-date: 2022-01-24 21:00:00
+date: 2022-01-24
 categories: 
-- bio
 - bioinfo
+- phylogeny
 tags:
-- tutorial
-- R
+- R package
 - biosoft
+- plot
 - phylogeny
 - evolutionary tree
 - itol

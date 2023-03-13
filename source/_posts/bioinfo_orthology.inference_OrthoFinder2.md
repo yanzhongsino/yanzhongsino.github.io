@@ -2,8 +2,8 @@
 title: 用OrthoFinder做直系同源推断
 date: 2021-12-06 17:20:00
 categories: 
-- bio
 - bioinfo
+- orthology inference
 tags: 
 - OrthoFinder2
 - orthology

@@ -2,7 +2,6 @@
 title: 富集分析：（二）topGO
 date: 2021-11-13
 categories: 
-- bio
 - bioinfo
 - enrichment
 tags: 

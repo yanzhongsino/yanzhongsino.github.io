@@ -2,8 +2,8 @@
 title: 基因组WGD事件的鉴定和时间估算 —— MCScanX,KaKa_Calculator
 date: 2021-11-27 17:50:00
 categories: 
-- bio
 - bioinfo
+- synteny
 tags:
 - synteny
 - colinearity

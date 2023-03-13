@@ -2,7 +2,6 @@
 title: 用PSMC推断有效群体大小历史
 date: 2022-10-17
 categories:
-- bio
 - bioinfo
 tags:
 - biosoft

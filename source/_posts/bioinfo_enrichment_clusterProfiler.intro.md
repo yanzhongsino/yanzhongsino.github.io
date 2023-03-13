@@ -2,7 +2,6 @@
 title: 富集分析：（三）clusterProfiler概述
 date: 2021-12-13
 categories: 
-- bio
 - bioinfo
 - enrichment
 tags: 

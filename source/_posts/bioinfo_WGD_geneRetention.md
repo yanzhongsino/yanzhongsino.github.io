@@ -2,7 +2,6 @@
 title: 鉴定全基因复制事件(WGD)后保留的复制基因
 date: 2022-10-18
 categories:
-- bio
 - bioinfo
 - WGD
 tags:

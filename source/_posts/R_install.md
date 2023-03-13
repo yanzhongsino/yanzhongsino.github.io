@@ -2,8 +2,8 @@
 title: R及相关软件的安装
 date: 2021-12-28 16:30:00
 categories: 
-- computer language
 - R
+- basic
 tags:
 - R
 - RStudio

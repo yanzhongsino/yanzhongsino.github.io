@@ -2,8 +2,8 @@
 title: 估算系统树分歧时间 —— paml.mcmctree,r8s
 date: 2021-03-25 16:50:00
 categories:
-- bio
 - bioinfo
+- phylogeny
 tags:
 - biosoft
 - divergence time

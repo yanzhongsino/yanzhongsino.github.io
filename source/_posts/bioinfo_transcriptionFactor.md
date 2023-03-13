@@ -2,7 +2,6 @@
 title: 转录因子（transcription factor，TF）基础及WGD后保留的TF分析
 date: 2022-10-18
 categories:
-- bio
 - bioinfo
 - transcription factor
 tags:

@@ -2,7 +2,6 @@
 title: 用PseudogenePipeline鉴定假基因及后续分析
 date: 2022-09-07
 categories:
-- bio
 - bioinfo
 - pseudogene
 tags:

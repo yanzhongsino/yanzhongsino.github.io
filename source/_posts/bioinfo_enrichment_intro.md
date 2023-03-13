@@ -2,7 +2,6 @@
 title: 富集分析：（一）概述
 date: 2021-11-12
 categories: 
-- bio
 - bioinfo
 - enrichment
 tags: 

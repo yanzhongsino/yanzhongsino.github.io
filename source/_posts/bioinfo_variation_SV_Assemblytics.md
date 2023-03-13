@@ -2,7 +2,6 @@
 title: 结构变异分析软件：Assemblytics
 date: 2022-08-02
 categories: 
-- bio
 - bioinfo
 - variation
 - structural variation

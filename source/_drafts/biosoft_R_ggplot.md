@@ -2,11 +2,13 @@
 title: ggplot
 date: 2022-10-17
 categories: 
-- bio
-- bioinfo
-tags:
-- tutorial
 - biosoft
+- R
+- plot
+tags:
+- R package
+- biosoft
+- ggplot
 - phylogeny
 - evolutionary tree
 description: 

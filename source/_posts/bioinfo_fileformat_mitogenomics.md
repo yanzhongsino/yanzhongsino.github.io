@@ -2,8 +2,9 @@
 title: 软件mitogenomics用于线粒体基因组相关格式转换
 date: 2022-06-30
 categories: 
-- bio
-- biosoft
+- bioinfo
+- fileformat
+- mitogenome
 tags: 
 - mitogenomics
 - aln2tbl.py

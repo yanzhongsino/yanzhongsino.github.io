@@ -2,7 +2,6 @@
 title: 基因流推断 —— Dsuite
 date: 2022-04-10
 categories: 
-- bio
 - bioinfo
 - gene flow
 tags: 

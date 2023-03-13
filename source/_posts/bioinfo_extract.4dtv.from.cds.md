@@ -2,10 +2,9 @@
 title: 从codon比对的cds序列中提取四倍简并位点
 date: 2021-10-10 10:39:54
 categories:
-- bio
 - bioinfo
+- 4dtv
 tags:
-- tutorial
 - codon
 - 4dtv
 

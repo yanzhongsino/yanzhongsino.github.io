@@ -2,7 +2,6 @@
 title: 系统发育网络推断 —— TreeMix
 date: 2022-03-20
 categories: 
-- bio
 - bioinfo
 - gene flow
 tags: 

@@ -2,8 +2,8 @@
 title: 使用Rldeogram的ideogram函数画两物种的同线性图
 date: 2022-08-03
 categories: 
-- computer language
-- R
+- bioinfo
+- synteny
 - plot
 tags: 
 - R

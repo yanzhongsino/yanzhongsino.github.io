@@ -2,10 +2,10 @@
 title: 热图的简介和绘制
 date: 2022-11-06
 categories:
-- R
+- bio
 - plot
-- heatmap
 tags:
+- R package
 - heatmap
 - pheatmap
 - ggplot2

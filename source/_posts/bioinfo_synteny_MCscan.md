@@ -2,8 +2,8 @@
 title: 基因组间的同线性分析 —— MCscan
 date: 2021-11-05 15:10:00
 categories: 
-- bio
 - bioinfo
+- synteny
 tags:
 - biosoft
 - MCscan

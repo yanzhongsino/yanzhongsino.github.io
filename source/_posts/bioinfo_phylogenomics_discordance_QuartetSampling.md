@@ -2,7 +2,6 @@
 title: 用软件Quartet Sampling来计算分支支持率，评估系统发育树不一致程度，区分强冲突和弱支持
 date: 2022-11-08
 categories: 
-- bio
 - bioinfo
 - phylogenomics
 tags: 

@@ -2,7 +2,6 @@
 title: 系统发育网络推断 —— PhyloNetworks
 date: 2022-04-14
 categories: 
-- bio
 - bioinfo
 - gene flow
 tags: 
@@ -344,6 +343,16 @@ from [PhyloNetworks Tutorial](https://crsl4.github.io/PhyloNetworks.jl/latest/ma
 
 从图中可以看到loglik值在h=1时降到了最低且在h继续增大时保持平稳。所以建议最佳杂交次数是h=1。
 
+3. 用R包ggplot2绘制
+
+```R
+library(ggplot2)
+hmax<-c(0:10)
+score<-c(246.5604838333106,10.072487746425647,10.072487747047507,10.07248774671892,10.072487747122702,66.88016392780662,10.072487746482409,10.072487765482101,66.88016941187634,10.072487747318323,10.072487746650621)
+df <- data.frame(h = hmax, loglike = score)
+ggplot(data = df, aes(x = ind, y = loglike)) + geom_line()+ geom_point(shape=1,size=3,color= "blue")+ theme_classic()+xlab("the number of hybrid nodes")+ylab("pseudolikelihood scores")+scale_x_continuous(breaks=seq(0, 10, 1))+ theme_classic()+theme(axis.title.x = element_text(size = 15, face = "bold"),axis.title.y = element_text(size = 15, face = "bold"),axis.text.x = element_text(size = 13, face = "bold"),axis.text.y = element_text(size = 13, face = "bold"))
+```
+
 ## 3.4. 系统发育网络可视化
 找到最佳的杂交次数后，可以把对应的系统发育网络绘制出来，比如这里的h=1。
 
@@ -352,33 +361,36 @@ from [PhyloNetworks Tutorial](https://crsl4.github.io/PhyloNetworks.jl/latest/ma
 
 ```julia
 using PhyloNetworks
+net = readTopology("net1_12runs.out") # 读取最佳杂交次数的结果
+writeTopology(net,"bestnet_h1.tre") # 保存最佳杂交次数的最佳杂交树
 net1 = readTopology("bestnet_h1.tre") #读取bestnet_h1.tre到net1
 rootatnode!(net1,"C") #重新定根到样本C，可直接用于之后的PhyloPlots画图
-net1root = rootatnode!(net1,"C") # 重新定根到样本C，并保存到net1root
-writeTopology(net1root) # 输入net1root的内容到屏幕，引号内的内容就是要保存的重新定根后的网络
-writeTopology(net1root, "net1root.tre") # 把重新定根的网络写到文件net1root.tre中
+net1_reroot = rootatnode!(net1,"C") # 重新定根到样本C，并保存到net1root
+writeTopology(net1_reroot) # 输入net1root的内容到屏幕，引号内的内容就是要保存的重新定根后的网络
+writeTopology(net1_reroot, "net1_reroot.tre") # 把重新定根的网络写到文件net1root.tre中
 ```
+
 ### 3.4.2. 使用配套包PhyloPlots绘制系统发育网络
 可以使用配套julia包PhyloPlots绘制系统发育网络
 1. 保存图为pdf
 ```julia
 using PhyloNetworks
-net1root = readTopology("net1root.tre") # 读取重新定根后的net1root.tre到net1root
+net1_reroot = readTopology("net1_reroot.tre") # 读取重新定根后的net1root.tre到net1root
 using PhyloPlots # 导入PhyloPlots包，用于绘图
 using RCall      # 导入RCall，用于使用R的命令
-imagefilename = "net1root.pdf" # 创建pdf格式文件
+imagefilename = "net1_reroot.pdf" # 创建pdf格式文件
 R"pdf"(imagefilename) # 开始绘图
-plot(net1root, :R, showGamma=true); # 绘制网络并把网络图发到文件
+plot(net1_reroot, :R, showGamma=true); # 绘制网络并把网络图发到文件
 R"dev.off()"; # 保存和退出
 ```
 
 2. 保存成svg格式
 ```julia
 using PhyloNetworks
-net1root = readTopology("net1root.tre") # 读取重新定根后的net1root.tre到net1root
+net1root = readTopology("net1_reroot.tre") # 读取重新定根后的net1root.tre到net1root
 using PhyloPlots
 using RCall
-imagefilename = "net1root.svg"
+imagefilename = "net1_reroot.svg"
 R"svg"(imagefilename, width=4, height=3) # 开始绘图，设定宽和高
 R"par"(mar=[0,0,0,0]) # 去除图的边界
 plot(net1root, :R, showGamma=true, showEdgeNumber=true); # 绘制网络并把网络图发到文件

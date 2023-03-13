@@ -2,7 +2,6 @@
 title: 结构变异分析软件：MUM&Co
 date: 2022-07-17
 categories: 
-- bio
 - bioinfo
 - variation
 - structural variation

@@ -2,8 +2,7 @@
 title: 转换GenBank文件为tbl格式，为提交注释做准备
 date: 2022-06-16
 categories: 
-- bio
-- biosoft
+- bioinfo
 - fileformat
 tags: 
 - GenBank

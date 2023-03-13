@@ -1,9 +1,8 @@
 ---
 title: 集合可视化 —— 文氏图/韦恩图(Venn Diagram)
-date: 2021-09-29 15:56:36
+date: 2021-09-29
 categories:
-- computer language
-- R
+- bio
 - plot
 tags:
 - plot

@@ -2,8 +2,8 @@
 title: 分析基因组共线性、计算Ks和鉴定WGD —— WGDI
 date: 2021-09-11 14:30:00
 categories: 
-- bio
 - bioinfo
+- synteny
 tags:
 - synteny
 - colinearity

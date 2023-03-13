@@ -1,9 +1,9 @@
 ---
 title: Circos圈图绘制
-date: 2021-11-16 10:10:00
+date: 2021-11-16 
 categories: 
 - bio
-- bioinfo
+- plot
 tags: 
 - biosoft
 - Circos

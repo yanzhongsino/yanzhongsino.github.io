@@ -2,7 +2,6 @@
 title: 富集分析：（四）clusterProfiler：不同物种的GO+KEGG富集分析
 date: 2022-04-26
 categories: 
-- bio
 - bioinfo
 - enrichment
 tags: 

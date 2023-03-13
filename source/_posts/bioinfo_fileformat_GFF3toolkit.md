@@ -2,8 +2,7 @@
 title: GFF3文件处理软件 —— GFF3toolkit工具包的介绍和使用
 date: 2022-05-24
 categories: 
-- bio
-- biosoft
+- bioinfo
 - fileformat
 tags: 
 - GFF3

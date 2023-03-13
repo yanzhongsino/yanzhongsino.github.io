@@ -2,8 +2,7 @@
 title: 集合可视化 —— upset图
 date: 2021-09-29 15:56:36
 categories:
-- computer language
-- R
+- bio
 - plot
 tags:
 - plot

@@ -2,8 +2,8 @@
 title: 分析基因家族扩张和收缩 —— CAFE5
 date: 2021-10-29 16:50:00
 categories:
-- bio
 - bioinfo
+- gene family
 tags:
 - gene family
 - biosoft
