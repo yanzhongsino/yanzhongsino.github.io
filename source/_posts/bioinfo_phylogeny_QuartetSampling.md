@@ -3,9 +3,10 @@ title: 用软件Quartet Sampling来计算分支支持率，评估系统发育树
 date: 2022-11-08
 categories: 
 - bioinfo
-- phylogenomics
+- phylogeny
 tags: 
 - phylogenomics
+- phylogeny
 - phylogenetic discordance
 - Quartet Sampling
 description: 记录了软件Quartet Sampling的原理和使用。
