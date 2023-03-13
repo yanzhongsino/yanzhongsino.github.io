@@ -27,7 +27,7 @@ R包castor是一个可以对包含超百万类群（tips）的系统发育树进
 R包castor的get_subtree_with_tips函数用于根据子集类群列表从一棵大树中提取子树。
 
 ## 2.1. 介绍get_subtree_with_tips函数
-1. get_subtree_with_tips(tree,only_tips=NULL,omit_tips=NULL,collapse_monofurcations = TRUE,force_keep_root = FALSE))
+1. `get_subtree_with_tips(tree,only_tips=NULL,omit_tips=NULL,collapse_monofurcations = TRUE,force_keep_root = FALSE))`
 
 2. 参数说明
 - tree : “phylo”类的有根树。假定根是唯一的节点，没有传入的边。
@@ -42,6 +42,7 @@ R包castor的get_subtree_with_tips函数用于根据子集类群列表从一棵�
 - subtree.list：待提取的类群名称列表，每个名称一行
 
 2. 提取子树
+
 ```R
 library(treeio)
 library(castor)
@@ -56,6 +57,7 @@ write.tree(sub$subtree,file="species_subtree.tre") # 把提取的子树写入spe
 由于get_subtree_with_tips函数只接受单棵树的phylo数据类群作为输入，如果需要从multiphylo的多棵树中统一提取子集则需要借助get_subtrees.R脚本。
 
 1. 批量提取
+
 ```R
 library(treeio)
 library(castor)
@@ -65,6 +67,7 @@ source("get_subtrees.R") # 运行get_subtrees.R脚本，子树保存在genes_sub
 ```
 
 2. get_subtrees.R脚本，这里设定共有2700棵树
+
 ```R
 for ( i in 1:2700) {
    tree<-trees[[i]]
