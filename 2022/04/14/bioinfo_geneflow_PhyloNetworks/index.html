@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://crsl4.github.io/PhyloNetworks.jl/latest/assets/figures/snaqplot_net1_2.svg">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-04-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-10-12T07:31:09.646Z">
+<meta property="article:modified_time" content="2023-03-13T02:40:09.384Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="gene flow">
 <meta property="article:tag" content="hybridization">
@@ -252,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-12 15:31:09" itemprop="dateModified" datetime="2022-10-12T15:31:09+08:00">2022-10-12</time>
+                <time title="Modified: 2023-03-13 10:40:09" itemprop="dateModified" datetime="2023-03-13T10:40:09+08:00">2023-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,15 +260,11 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bio/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bio/bioinfo/gene-flow/" itemprop="url" rel="index"><span itemprop="name">gene flow</span></a>
+                  <a href="/categories/bioinfo/gene-flow/" itemprop="url" rel="index"><span itemprop="name">gene flow</span></a>
                 </span>
             </span>
 
@@ -298,13 +294,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>10 mins.</span>
+              <span>11 mins.</span>
             </span>
             <div class="post-description">这篇博客描述了用Julia包PhyloNetworks来推断系统发育网络，并选择最佳杂交次数和网络可视化的操作。</div>
 
@@ -528,16 +524,22 @@
 
 <p><strong><p align="center">Figure 2. loglik随h变化的示例图</strong><br>from <a target="_blank" rel="noopener" href="https://crsl4.github.io/PhyloNetworks.jl/latest/man/snaq_plot/">PhyloNetworks Tutorial</a></p></p>
 <p>从图中可以看到loglik值在h&#x3D;1时降到了最低且在h继续增大时保持平稳。所以建议最佳杂交次数是h&#x3D;1。</p>
+<ol start="3">
+<li>用R包ggplot2绘制</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>ggplot2<span class="punctuation">)</span></span><br><span class="line">hmax<span class="operator">&lt;-</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">0</span><span class="operator">:</span><span class="number">10</span><span class="punctuation">)</span></span><br><span class="line">score<span class="operator">&lt;-</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">246.5604838333106</span><span class="punctuation">,</span><span class="number">10.072487746425647</span><span class="punctuation">,</span><span class="number">10.072487747047507</span><span class="punctuation">,</span><span class="number">10.07248774671892</span><span class="punctuation">,</span><span class="number">10.072487747122702</span><span class="punctuation">,</span><span class="number">66.88016392780662</span><span class="punctuation">,</span><span class="number">10.072487746482409</span><span class="punctuation">,</span><span class="number">10.072487765482101</span><span class="punctuation">,</span><span class="number">66.88016941187634</span><span class="punctuation">,</span><span class="number">10.072487747318323</span><span class="punctuation">,</span><span class="number">10.072487746650621</span><span class="punctuation">)</span></span><br><span class="line">df <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span>h <span class="operator">=</span> hmax<span class="punctuation">,</span> loglike <span class="operator">=</span> score<span class="punctuation">)</span></span><br><span class="line">ggplot<span class="punctuation">(</span>data <span class="operator">=</span> df<span class="punctuation">,</span> aes<span class="punctuation">(</span>x <span class="operator">=</span> ind<span class="punctuation">,</span> y <span class="operator">=</span> loglike<span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">+</span> geom_line<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">+</span> geom_point<span class="punctuation">(</span>shape<span class="operator">=</span><span class="number">1</span><span class="punctuation">,</span>size<span class="operator">=</span><span class="number">3</span><span class="punctuation">,</span>color<span class="operator">=</span> <span class="string">&quot;blue&quot;</span><span class="punctuation">)</span><span class="operator">+</span> theme_classic<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">+</span>xlab<span class="punctuation">(</span><span class="string">&quot;the number of hybrid nodes&quot;</span><span class="punctuation">)</span><span class="operator">+</span>ylab<span class="punctuation">(</span><span class="string">&quot;pseudolikelihood scores&quot;</span><span class="punctuation">)</span><span class="operator">+</span>scale_x_continuous<span class="punctuation">(</span>breaks<span class="operator">=</span>seq<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="operator">+</span> theme_classic<span class="punctuation">(</span><span class="punctuation">)</span><span class="operator">+</span>theme<span class="punctuation">(</span>axis.title.x <span class="operator">=</span> element_text<span class="punctuation">(</span>size <span class="operator">=</span> <span class="number">15</span><span class="punctuation">,</span> face <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span>axis.title.y <span class="operator">=</span> element_text<span class="punctuation">(</span>size <span class="operator">=</span> <span class="number">15</span><span class="punctuation">,</span> face <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span>axis.text.x <span class="operator">=</span> element_text<span class="punctuation">(</span>size <span class="operator">=</span> <span class="number">13</span><span class="punctuation">,</span> face <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span>axis.text.y <span class="operator">=</span> element_text<span class="punctuation">(</span>size <span class="operator">=</span> <span class="number">13</span><span class="punctuation">,</span> face <span class="operator">=</span> <span class="string">&quot;bold&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
 <h2 id="3-4-系统发育网络可视化"><a href="#3-4-系统发育网络可视化" class="headerlink" title="3.4. 系统发育网络可视化"></a>3.4. 系统发育网络可视化</h2><p>找到最佳的杂交次数后，可以把对应的系统发育网络绘制出来，比如这里的h&#x3D;1。</p>
 <h3 id="3-4-1-对网络重新定根"><a href="#3-4-1-对网络重新定根" class="headerlink" title="3.4.1. 对网络重新定根"></a>3.4.1. 对网络重新定根</h3><p>由于SNaQ算法不考虑root，大部分情况下bestnet_h1.tre结果都需要重新定外类群为树的根。</p>
-<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PhyloNetworks</span><br><span class="line">net1 = readTopology(<span class="string">&quot;bestnet_h1.tre&quot;</span>) <span class="comment">#读取bestnet_h1.tre到net1</span></span><br><span class="line">rootatnode!(net1,<span class="string">&quot;C&quot;</span>) <span class="comment">#重新定根到样本C，可直接用于之后的PhyloPlots画图</span></span><br><span class="line">net1root = rootatnode!(net1,<span class="string">&quot;C&quot;</span>) <span class="comment"># 重新定根到样本C，并保存到net1root</span></span><br><span class="line">writeTopology(net1root) <span class="comment"># 输入net1root的内容到屏幕，引号内的内容就是要保存的重新定根后的网络</span></span><br><span class="line">writeTopology(net1root, <span class="string">&quot;net1root.tre&quot;</span>) <span class="comment"># 把重新定根的网络写到文件net1root.tre中</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PhyloNetworks</span><br><span class="line">net = readTopology(<span class="string">&quot;net1_12runs.out&quot;</span>) <span class="comment"># 读取最佳杂交次数的结果</span></span><br><span class="line">writeTopology(net,<span class="string">&quot;bestnet_h1.tre&quot;</span>) <span class="comment"># 保存最佳杂交次数的最佳杂交树</span></span><br><span class="line">net1 = readTopology(<span class="string">&quot;bestnet_h1.tre&quot;</span>) <span class="comment">#读取bestnet_h1.tre到net1</span></span><br><span class="line">rootatnode!(net1,<span class="string">&quot;C&quot;</span>) <span class="comment">#重新定根到样本C，可直接用于之后的PhyloPlots画图</span></span><br><span class="line">net1_reroot = rootatnode!(net1,<span class="string">&quot;C&quot;</span>) <span class="comment"># 重新定根到样本C，并保存到net1root</span></span><br><span class="line">writeTopology(net1_reroot) <span class="comment"># 输入net1root的内容到屏幕，引号内的内容就是要保存的重新定根后的网络</span></span><br><span class="line">writeTopology(net1_reroot, <span class="string">&quot;net1_reroot.tre&quot;</span>) <span class="comment"># 把重新定根的网络写到文件net1root.tre中</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="3-4-2-使用配套包PhyloPlots绘制系统发育网络"><a href="#3-4-2-使用配套包PhyloPlots绘制系统发育网络" class="headerlink" title="3.4.2. 使用配套包PhyloPlots绘制系统发育网络"></a>3.4.2. 使用配套包PhyloPlots绘制系统发育网络</h3><p>可以使用配套julia包PhyloPlots绘制系统发育网络</p>
 <ol>
 <li><p>保存图为pdf</p>
-<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PhyloNetworks</span><br><span class="line">net1root = readTopology(<span class="string">&quot;net1root.tre&quot;</span>) <span class="comment"># 读取重新定根后的net1root.tre到net1root</span></span><br><span class="line"><span class="keyword">using</span> PhyloPlots <span class="comment"># 导入PhyloPlots包，用于绘图</span></span><br><span class="line"><span class="keyword">using</span> RCall      <span class="comment"># 导入RCall，用于使用R的命令</span></span><br><span class="line">imagefilename = <span class="string">&quot;net1root.pdf&quot;</span> <span class="comment"># 创建pdf格式文件</span></span><br><span class="line"><span class="string">R&quot;pdf&quot;</span>(imagefilename) <span class="comment"># 开始绘图</span></span><br><span class="line">plot(net1root, :R, showGamma=<span class="literal">true</span>); <span class="comment"># 绘制网络并把网络图发到文件</span></span><br><span class="line"><span class="string">R&quot;dev.off()&quot;</span>; <span class="comment"># 保存和退出</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PhyloNetworks</span><br><span class="line">net1_reroot = readTopology(<span class="string">&quot;net1_reroot.tre&quot;</span>) <span class="comment"># 读取重新定根后的net1root.tre到net1root</span></span><br><span class="line"><span class="keyword">using</span> PhyloPlots <span class="comment"># 导入PhyloPlots包，用于绘图</span></span><br><span class="line"><span class="keyword">using</span> RCall      <span class="comment"># 导入RCall，用于使用R的命令</span></span><br><span class="line">imagefilename = <span class="string">&quot;net1_reroot.pdf&quot;</span> <span class="comment"># 创建pdf格式文件</span></span><br><span class="line"><span class="string">R&quot;pdf&quot;</span>(imagefilename) <span class="comment"># 开始绘图</span></span><br><span class="line">plot(net1_reroot, :R, showGamma=<span class="literal">true</span>); <span class="comment"># 绘制网络并把网络图发到文件</span></span><br><span class="line"><span class="string">R&quot;dev.off()&quot;</span>; <span class="comment"># 保存和退出</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>保存成svg格式</p>
-<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PhyloNetworks</span><br><span class="line">net1root = readTopology(<span class="string">&quot;net1root.tre&quot;</span>) <span class="comment"># 读取重新定根后的net1root.tre到net1root</span></span><br><span class="line"><span class="keyword">using</span> PhyloPlots</span><br><span class="line"><span class="keyword">using</span> RCall</span><br><span class="line">imagefilename = <span class="string">&quot;net1root.svg&quot;</span></span><br><span class="line"><span class="string">R&quot;svg&quot;</span>(imagefilename, width=<span class="number">4</span>, height=<span class="number">3</span>) <span class="comment"># 开始绘图，设定宽和高</span></span><br><span class="line"><span class="string">R&quot;par&quot;</span>(mar=[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]) <span class="comment"># 去除图的边界</span></span><br><span class="line">plot(net1root, :R, showGamma=<span class="literal">true</span>, showEdgeNumber=<span class="literal">true</span>); <span class="comment"># 绘制网络并把网络图发到文件</span></span><br><span class="line"><span class="string">R&quot;dev.off()&quot;</span>;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PhyloNetworks</span><br><span class="line">net1root = readTopology(<span class="string">&quot;net1_reroot.tre&quot;</span>) <span class="comment"># 读取重新定根后的net1root.tre到net1root</span></span><br><span class="line"><span class="keyword">using</span> PhyloPlots</span><br><span class="line"><span class="keyword">using</span> RCall</span><br><span class="line">imagefilename = <span class="string">&quot;net1_reroot.svg&quot;</span></span><br><span class="line"><span class="string">R&quot;svg&quot;</span>(imagefilename, width=<span class="number">4</span>, height=<span class="number">3</span>) <span class="comment"># 开始绘图，设定宽和高</span></span><br><span class="line"><span class="string">R&quot;par&quot;</span>(mar=[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]) <span class="comment"># 去除图的边界</span></span><br><span class="line">plot(net1root, :R, showGamma=<span class="literal">true</span>, showEdgeNumber=<span class="literal">true</span>); <span class="comment"># 绘制网络并把网络图发到文件</span></span><br><span class="line"><span class="string">R&quot;dev.off()&quot;</span>;</span><br></pre></td></tr></table></figure></li>
 </ol>
 <img src="https://crsl4.github.io/PhyloNetworks.jl/latest/assets/figures/snaqplot_net1_2.svg" title="系统发育网络示例图" width="60%"/>
 
@@ -664,7 +666,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -677,7 +679,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">277</span>
+        <span class="site-state-item-count">279</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -721,12 +723,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">479k</span>
+    <span title="Symbols count total">482k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7:15</span>
+    <span title="Reading time total">7:19</span>
 </div>
 
         
