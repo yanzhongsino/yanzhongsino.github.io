@@ -13,7 +13,7 @@ tags:
 description: 基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105210&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105146&auto=1&height=32"></iframe></div>
 
 # 1. 用pixy计算群体的pi，dxy，fst
 pixy可以基于多组学的vcf格式文件来计算群体的pi，dxy，fst值。

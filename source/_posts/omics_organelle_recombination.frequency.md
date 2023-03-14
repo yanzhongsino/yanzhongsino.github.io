@@ -1,28 +1,31 @@
 ---
 title: 线粒体的重复介导重组的鉴定和计算重组频率
-date: 2022-11-11
+date: 2023-03-14
 categories: 
-- bio
-- bioinfo
+- omics
+- organelle
+- recombination
 tags: 
 - mitogenome
 - repeat
 - recombination
 - rearrangement
+- insert size
+- recombination frequency
 description: 线粒体的重复介导重组的鉴定和计算重组频率。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105213&auto=1&height=32"></iframe></div>
 
-# 线粒体的重复介导重组（repeat-mediated recombination）
-通常在植物线粒体上存在重复序列（这里的重复序列不是核基因组的TE等转座元件的概念，就是一段序列在另一个位置同时存在完全一致的序列），则有可能介导重组，从而生成线粒体的多种构象。重复序列常常成对存在（也有一些超过两个），被称作重复对（repeat pairs）。
+# 1. 线粒体的重复介导重组（repeat-mediated recombination）
+1. 线粒体的重复序列
+- 通常在植物线粒体上存在重复序列（这里的重复序列不是核基因组的TE等转座元件的概念，就是一段序列在另一个位置同时存在完全一致的序列），则有可能介导重组，从而生成线粒体的多种构象。重复序列常常成对存在（也有一些超过两个），被称作重复对（repeat pairs）。
+2. 鉴定的背景
+- Illumina PE测序是双端测序，测序获得的reads常见的长度是150bp。一对reads的联合体的长度被称为插入尺寸（insert size）。插入尺寸（insert size）常在350bp左右，但具体的每对测序reads都不一样，要通过把reads进行mapping到参考序列上，才能测量insert size。
+- 如果是repeat pairs的长度小于测序reads的insert size长度，可以构建两种构象（参考构象和重组构象），把reads mapping到两种构象来判断repeat pairs是否介导重组（如果两种构象都有mapped reads则是repeat pair介导重组的证据），并且通过mapped reads的计数来计算重组频率（recombination frequency）。
 
-Illumina PE测序是双端测序，测序获得的reads常见的长度是150bp。一对reads的联合体的长度被称为插入尺寸（insert size）。插入尺寸（insert size）常在350bp左右，但具体的每对测序reads都不一样，要通过把reads进行mapping到参考序列上，才能测量insert size。
-
-如果是repeat pairs的长度小于测序reads的insert size长度，可以构建两种构象（参考构象和重组构象），把reads mapping到两种构象来判断repeat pairs是否介导重组（如果两种构象都有mapped reads则是repeat pair介导重组的证据），并且通过mapped reads的计数来计算重组频率（recombination frequency）。
-
-# 鉴定重复
-## 鉴定重复的脚本
+# 2. 鉴定重复
+## 2.1. 鉴定重复的脚本
 这篇文章Repeats of Unusual Size in Plant Mitochondrial Genomes: Identification, Incidence and Evolution： https://academic.oup.com/g3journal/article/9/2/549/6026745 总结了植物线粒体基因组的重复序列的特征。研究表明，植物线粒体基因组比动物的要大，包含大量的非编码DNA，突变率低，重排率高。
 
 - 文章提供了python脚本ROUSFinder.py，用在鉴定线粒体的重复序列上。
@@ -705,7 +708,7 @@ z = random.randint(0,10)
 print binascii.unhexlify(quote_dict[z])+'\n'  
 ```
 
-## 鉴定重复的步骤
+## 2.2. 鉴定重复的步骤
 选择ROUSFinder2.py脚本来鉴定线粒体的重复序列。
 1. 脚本参数
 - 必需参数：fasta格式的输入序列
@@ -725,54 +728,55 @@ print binascii.unhexlify(quote_dict[z])+'\n'
 - out_rep_table.txt：包含每个repeat单元的长度，起始位置和终止位置，正负链（plus或minus）。
 - out_repeats.gb.txt：使用-gb参数则生成此文件，是genbank格式的repeat的注释文件。
 
-## 重复的应用
+## 2.3. 重复的应用
 1. 辅助线粒体组装
 - 通过鉴定出来的重复，可以帮助线粒体组装得更完整。
-- 也可以调整线粒体的已有组装。比如通过计算重组率，把主导的优势构象作为最后的线粒体组装构象。
+- 调整线粒体的已有组装。比如通过计算重组率，把主导的优势构象作为最后的线粒体组装构象。
 2. 鉴定重组
 - 重复序列可能介导重组，所以鉴定重复是鉴定重组的基础。
 
-
-
-# 鉴定重组和计算重组率
+# 3. 鉴定重组和计算重组率
 鉴定出线粒体的重复序列后，还可以进一步鉴定这些重复序列是否介导了重组。
 
-重组会导致构象的变化，构象变化的形式
+重组会导致构象的变化，构象变化的形式包括：
 1. 位于不同染色体环上的一对重复序列可能介导重组，使得两个小环变成一个大环。
 2. 位于同一个染色体环上的同方向的一对重复序列可能介导重组，使得一个大环变成两个小环。
 3. 位于同一个染色体环上的反方向的一对重复序列，可能在其他重复对的重组变换下变成同方向或者两个小环的状态。
 
-## 鉴定步骤
-### 构建参考构象和重组构象
-1. 针对一对可能造成重组的重复序列，构建参考构象和重组构象组成的参考序列
-2. 
+## 3.1. 鉴定重组的步骤
+### 3.1.1. 构建参考构象和重组构象的序列
+1. 针对一对可能造成重组的重复序列，构建参考构象和重组构象
+2. 在参考构象和重组构象中，以重复序列加上两翼各300bp作为参考构象序列(ref_1和ref_2)和重组构象序列(rec_1和rec_2)
+3. 构建参考序列和mapping注意事项
+- 可以把参考构象序列和重组构象序列（一共四条）一同作为参考序列（reference）用于mapping，避免同一条reads mapping到多个构象序列从而重复计数的情况。
+- 如果担心叶绿体派生的reads影响重组率的计算，还可以加上叶绿体基因组作为参考序列（reference），这样叶绿体的reads会被mapping到叶绿体上，从而起到过滤的作用。
+- 如果担心核基因派生的reads影响，可以用一个cutoff值(比如100bp)，小于100bp的mapping被筛除。
 
+### 3.1.2. 把reads往参考序列进行mapping
+1. 把reads往参考序列进行mapping，之后再根据mapping的reads的位置进行筛选，筛选出横跨repeat区域的有效mapping。
+2. 比如repeat长度为220bp，两边各截取300bp，共820bp长度的参考序列。这里把跨越220bp的repeat，并且两边各至少映射上10bp的reads作为有效mapping。这意味着，mapping的起始位置需要小于290，终止位置需要大于530bp。
+3. bwa进行mapping后得到的bam文件的第4列代表read比对到的参考序列最左侧的位置坐标（未必对上第4列为0）；第9列代表pair read完全匹配到同一条参考序列时，两个read之间的长度。可以理解为insert size。
 
-### 把reads往参考序列进行mapping
+```shell
+a = 530 # 设置终止位置需要大于的值，这里是530bp
+bwa index reference.fa # 为参考序列建立索引
+bwa mem -t 4 reference.fa  sample_1.clean.fq sample_2.clean.fq | samtools sort -@ 4 -m 4G > reference.bam # 映射reads到参考序列
+samtools view reference.bam |awk -F"\t" -v awka="$a" '$4<290 && ($4+$9)>awka {print $0}' > reference.bam.filter # 筛选起始位置小于290，终止位置大于530bp的mapped reads。这里的`awk -F"\t"`参数设定列分隔符非常重要，已经坑过我两把了。
+```
 
-### 计算重组率
+### 3.1.3. 计算重组率(recombination rate)
+1. 把reads往参考序列进行mapping得到有效映射的比对文件reference.bam.filter后，计算不同参考序列的有效映射的reads数量（即数据行数）。
+2. 重组构象的两条序列(rec_1和rec_2)的比对reads数量之和作为分子，重组构象的两条序列(rec_1和rec_2)的比对reads数量与参考构象的两条序列(ref_1和ref_2)的比对reads数量之和作为分母，两者的比值可作为重组率。
 
-mapping注意事项
+```shell
+n_ref_1 = $(cat reference.bam.filter | awk '$3 == "ref_1" {print $0}' |wc -l) # 统计参考构象序列ref_1上有效映射reads的数量
+n_ref_2 = $(cat reference.bam.filter | awk '$3 == "ref_2" {print $0}' |wc -l) # 统计参考构象序列ref_2上有效映射reads的数量
+n_rec_1 = $(cat reference.bam.filter | awk '$3 == "rec_1" {print $0}' |wc -l) # 统计参考构象序列rec_1上有效映射reads的数量
+n_rec_2 = $(cat reference.bam.filter | awk '$3 == "rec_2" {print $0}' |wc -l) # 统计参考构象序列rec_2上有效映射reads的数量
+mapping_rate = $(($n_rec_1+$n_rec_2)/($n_ref_1+$n_ref_2+$n_rec_1+$n_rec_2)) # 计算重组率
+```
 
-1. mapping可以把参考序列和重组序列（一共四条）一起当作reference，避免同一reads mapping到多个构象从而重复计数的情况。
-2. 如果担心叶绿体派生的reads影响重组率的计算，还可以加上叶绿体基因组，这样叶绿体的reads会被mapping到叶绿体上，从而起到过滤的作用。
-3. 如果担心核基因派生的reads影响，可以用一个cutoff值(比如100bp)，小于100bp的mapping被筛除。
-
-
-for i in $(ls *fa);
-do
-	{
-		bwa index ${i}
-		bwa mem -t 4 ${i} sample_1.clean.fq sample_2.clean.fq | samtools sort -@ 4 -m 4G > ${i}.bam
-		samtools view ${i}.bam |awk -F"\t" '($4+$9)>411 {print $0}' > ${i}.bam.filter #筛选需要的mapped reads，否则bam文件太大，这里的`awk -F"\t"`参数设定列分隔符非常重要，已经坑过我两把了。
-	} &
-done
-
-wait
-echo "repeat10 done"
-
-
-# references
+# 4. references
 1. ROUSFinder.py脚本：https://academic.oup.com/g3journal/article/9/2/549/6026745
 
 
@@ -781,6 +785,4 @@ echo "repeat10 done"
 - 欢迎关注微信公众号：**生信技工**
 - 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
-
-
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode.png" align=center/>
