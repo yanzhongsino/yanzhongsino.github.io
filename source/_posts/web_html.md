@@ -2,7 +2,6 @@
 title: html
 date: 2018-06-04 15:53:00
 categories: 
-- computer
 - web
 tags: html
 description: html基础知识

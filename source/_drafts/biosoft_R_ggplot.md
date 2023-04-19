@@ -24,12 +24,12 @@ description:
 ## 密度图
 
 ks分布密度图
+
 ```
 library(ggplot2)
 library(ggpmisc)
 data <- read.table("all.results",header=T)
-p <- ggplot(data, aes(Ks)) + geom_density(size=1,color="black")+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of gene pairs
-")+theme(panel.grid=element_blank())+theme(panel.border = element_blank())+theme(axis.line = element_line(size=0.8, colour = "black"))+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+xlim(0,3)
+p <- ggplot(data, aes(Ks)) + geom_density(size=1,color="black")+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of gene pairs")+theme(panel.grid=element_blank())+theme(panel.border = element_blank())+theme(axis.line = element_line(size=0.8, colour = "black"))+scale_y_continuous(breaks=seq(0, 2.5, 0.2))+xlim(0,3)
 pb <- ggplot_build(p)
 pic <- p + stat_peaks(data = pb[['data']][[1]], aes(x=x, y=density), geom= 'text', color="darkblue", ,vjust=-0.5)
 ggsave(file="Ks.pdf",plot=pic,width=10,height=5)
@@ -69,6 +69,9 @@ ggplot(da)+geom_density(aes(x=V3,colour=V5),adjust=2)+xlim(0,0.5)+theme_classic(
 ## 分组直方图和密度图
 ggplot(data,aes(x=Ks)) + geom_histogram(data = subset(data, group == "mcmd"), aes(y = ..density..),fill = "red", alpha = 0.2,binwidth = 0.002,size=0.5)+geom_density(data = subset(data, group == "mcmd"), aes(y = ..density..), col = "red", size=1.2)+ geom_histogram(data = subset(data, group == "mdmd"), aes(y = ..density..),fill = "blue", alpha = 0.2,binwidth = 0.002,size=0.5)+geom_density(data = subset(data, group == "mdmd"), aes(y = ..density..), col = "blue", size=1.2)+ geom_histogram(data = subset(data, group == "mcmc"), aes(y = ..density..),fill = "green", alpha = 0.2,binwidth = 0.002,size=0.5)+geom_density(data = subset(data, group == "mcmc"), aes(y = ..density..), col = "green", size=1.2) +xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+theme_classic()+scale_y_continuous(breaks=seq(0, 21, 3))+xlim(0,0.8)+theme(legend.position = c(0.4,0.5), axis.title.x = element_text(size = 16, face = "bold"),axis.title.y = element_text(size = 16, face = "bold"),axis.text.x = element_text(size = 15, face = "bold"),axis.text.y = element_text(size = 15, face = "bold")) + annotate(geom="text",x=0.06,y=20,label="0.03",color="#F8766D",size=6) + annotate(geom="text",x=0.17,y=6,label="0.20",color="#00BA38",size=6) + annotate(geom="text",x=0.72,y=3,label="0.70",color="#00BA38",size=6) + annotate(geom="text",x=0.23,y=6,label="0.21",color="#4169E1",size=6) + annotate(geom="text",x=0.66,y=3,label="0.68",color="#4169E1",size=6)
 
+ggplot()+geom_histogram(data=data[data$dxy >= 0.1, ], aes(x=dxy),bins=200,color=NA,fill="yellowgreen",alpha=0.8)+geom_histogram(data=data[data$dxy < 0.1, ], aes(x=dxy),bins=200,color=NA,fill="lightblue",alpha=0.8)+geom_histogram(data=data, aes(x=pi),bins=200)+xlab("Average sequence divergence")+ylab("Counts")+ theme_classic()+scale_x_continuous(breaks=seq(0,0.18,0.02))+theme(axis.title.x = element_text(size = 14, face = "bold"),axis.title.y = element_text(size = 14, face = "bold"),axis.text.x = element_text(size = 12, face = "bold"),axis.text.y = element_text(size = 12, face = "bold"))+annotate(geom = "label", x = 0.13, y = 42,label = "dxy(divergence between Melastoma species)",fill = "lightblue", color = "white", hjust = 1,size=4)+annotate(geom = "label", x = 0.13, y = 39,label = "dxy(divergence between Melastoma and Outgroup)",fill = "yellowgreen", color = "white", hjust = 1,size=4)+annotate(geom = "label", x = 0.13, y = 36,label = "pi(polymorphism within species)",fill = "black",alpha=0.8, color = "white", hjust = 1,size=4)
+
+polymorphism：物种内的叫多态性；物种间或者物种内群体间的叫divergence
 
 ## theme
 ggplot2提供一些主题，包括默认的theme_grey()，白色背景的theme_bw()，和经典主题theme_classic()。可以直接在图后面加上` + theme_classic()`使用。

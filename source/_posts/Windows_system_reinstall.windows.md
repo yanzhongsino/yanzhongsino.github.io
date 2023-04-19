@@ -2,7 +2,6 @@
 title: 重装windows系统
 date: 2020-12-29 21:05:00
 categories: 
-- computer
 - Windows
 - system
 tags: 

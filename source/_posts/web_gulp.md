@@ -2,7 +2,6 @@
 title: glup
 date: 2018-06-12 14:53:00
 categories:
-- computer
 - web
 tags: gulp
 description: gulp基础知识

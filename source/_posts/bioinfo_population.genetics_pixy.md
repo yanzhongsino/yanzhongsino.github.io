@@ -127,6 +127,41 @@ BFS	AFS	HiC_scaffold_1	30001	40000	NA	67
 CFS	DES	HiC_scaffold_1	30001	40000	0.0	67
 ```
 
+## 结果的后续处理
+1. 计算平均值的注意事项
+
+值得注意的是，如果想用pixy的结果继续计算更大的window或者整个基因组的平均值不能直接用window的pi/dxy值来计算。
+
+正确的计算方法是使用原始计数重新计算differences/comparisons ratios，公式如下：
+
+$$(window 1 count_diffs + window 2 count_diffs + ... + window n count_diffs) / (window 1 comparisons + window 2 comparisons + ... + window n comparisons)$$
+
+2. 计算整个基因组的pi值
+
+```shell
+cat pixy_pi.txt |cut -f1,2 |sort|uniq >pops.list
+cat pops.list | while read line
+do
+    a=$(echo $line | awk '{print $1}');
+    b=$(echo $line | awk '{print $2}');
+    cat pixy_dxy.txt |awk '$1 == "'$a'" && $2 == "'$b'" {suma+=$8;sumb+=$9} END {print "'$a'", "'$b'", suma, sumb, suma/sumb}' >> dxy_average.txt
+done
+```
+
+3. 计算整个基因组的dxy平均值
+
+```shell
+cat pixy_dxy.txt |cut -f1 |sort|uniq >pop.list
+cat pop.list | while read line
+do
+    a=$(echo $line | awk '{print $1}');
+    cat pixy_pi.txt |awk '$1 == "'$a'" {suma+=$7;sumb+=$8} END {print "'$a'", suma, sumb, suma/sumb}' >> pi_average.txt
+done
+```
+
+## 结果可视化
+
+
 # 2. references
 1. pixy manual：https://pixy.readthedocs.io/en/latest/index.html
 2. pixy github：https://github.com/ksamuk/pixy

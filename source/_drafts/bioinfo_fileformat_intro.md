@@ -1,6 +1,6 @@
 ---
 title: 生物信息学常用文件格式
-date: 2021-11-12 16:00:00
+date: 2021-11-12
 categories: 
 - bio
 - bioinfo
@@ -11,7 +11,7 @@ tags:
 description: 介绍生物信息学常用文件格式。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1697043&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=399341112&auto=1&height=32"></iframe></div>
 
 
 各种生物学使用文件格式的解释
@@ -21,17 +21,7 @@ description: 介绍生物信息学常用文件格式。
 3. vcftools/bcftools
 4. gff3read
 5. gff3toolkit: https://github.com/NAL-i5K/GFF3toolkit
-install：`pip install gff3tool`
-包含许多命令
-gff3_QC：检测gff3格式错误
-gff3_fix：修正gff3格式错误
-gff3_merge：合并两个gff3文件
-gff3_sort：根据scaffold，coordinates坐标来排序gff3文件
-gff3_to_fasta：根据基因组fasta和注释gff生成gene/cds/protein/exon
 
-
-gff3_to_fasta:
-用来操作gff3格式文件，包括提取gene,cds,exon,pep等序列。
 
 # fasta&fastq
 seqkit

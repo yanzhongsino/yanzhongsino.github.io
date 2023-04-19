@@ -1,8 +1,7 @@
 ---
 title: CSS
 date: 2018-06-04 15:53:00
-categories: 
-- computer
+categories:
 - web
 tags: 
 - CSS
