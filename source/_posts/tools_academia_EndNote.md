@@ -21,7 +21,7 @@ description: 介绍参考文献管理软件EndNote的中英文混排技巧。
 - 【Default Reference Type】选择【unused】1/2/3中的任意一个之前未被修改过的，然后选择【Modify Reference Types】；
 - 在弹出的【Modify Reference Types】对话框中按照下面的图片输入每项内容。包括【Generic】命名为【中文文献】，【Author】填入【Author】，【Year】填入【Year】，【Title】填入【Title】，【Secondary Author】填入【Secondary Author】，【Secondary Title】要填入【Journal】，【Volume】填入【Volume】，【Number of Volumes】填入【Issue】，【Pages】填入【Pages】，其他都一致，点击【OK】后就添加了【中文文献】的参考文献类型。
 
-<img src="https://pic3.zhimg.com/v2-b2557ffb99bf0743123d02ca539185ca_r.jpg" title="Modify Reference Types" width="50%"/>
+<img src="https://pic3.zhimg.com/v2-b2557ffb99bf0743123d02ca539185ca_r.jpg" title="Modify Reference Types" width="60%"/>
 
 **<p align="center">图 1. Modify Reference Types 对话框 图源：https://zhuanlan.zhihu.com/p/312093759</p>**
 
@@ -37,20 +37,20 @@ description: 介绍参考文献管理软件EndNote的中英文混排技巧。
 - 在EndNote中选择【Edit】-【Output Styles】-【Edit **】，选择需要编辑的参考文献Styles；
 - 在【Bibliography】-【Templates】的【Reference Type】中添加【中文文献】的类型；
 
-<img src="https://pic1.zhimg.com/v2-0ac5695cfe8180233993929c00c15bec_r.jpg" title="在Templates中添加中文文献类型" width="50%"/>
+<img src="https://pic1.zhimg.com/v2-0ac5695cfe8180233993929c00c15bec_r.jpg" title="在Templates中添加中文文献类型" width="90%"/>
 
 **<p align="center">图 2. 在Templates中添加中文文献类型 图源：https://zhuanlan.zhihu.com/p/312093759</p>**
 
 - 将【Journal Article】里的参考格式复制到【中文文献】里，再在Author前面加上Secondary，注意Secondary和Author之间打一个空格，显示为一个点.。
 
-<img src="https://pic4.zhimg.com/v2-2415ffab7677257fc3e16474c89a6c27_r.jpg" title="在Templates中添加中文文献类型2" width="50%"/>
+<img src="https://pic4.zhimg.com/v2-2415ffab7677257fc3e16474c89a6c27_r.jpg" title="在Templates中添加中文文献类型2" width="90%"/>
 
 **<p align="center">图 3. 在Templates中添加中文文献类型2 图源：https://zhuanlan.zhihu.com/p/312093759</p>** 
 
 - 在【Bibliography】-【Author List】中，对于显示作者人数进行设置，多作者的缩写默认为【，et al.】，这里代表英文文献多作者在文献目录(Bibliography)中的显示规则；
 - 在【Bibliography】-【Editor List】中，对于显示作者人数进行设置，多作者的缩写改为【，等.】，这里代表中文文献多作者在文献目录(Bibliography)中的显示规则；
 
-<img src="https://pic2.zhimg.com/v2-cb026088966e21676868136d33f7e051_r.jpg" title="修改中文文献的多作者显示" width="50%"/>
+<img src="https://pic2.zhimg.com/v2-cb026088966e21676868136d33f7e051_r.jpg" title="修改中文文献的多作者显示" width="90%"/>
 
 **<p align="center">图 4. 修改中文文献的多作者显示 图源：https://zhuanlan.zhihu.com/p/312093759</p>** 
 
