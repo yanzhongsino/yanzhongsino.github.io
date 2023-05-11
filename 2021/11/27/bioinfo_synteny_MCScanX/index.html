@@ -29,14 +29,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-11-27T09:50:00.000Z">
-<meta property="article:modified_time" content="2023-03-13T02:37:14.801Z">
+<meta property="article:modified_time" content="2023-05-11T04:48:45.252Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
-<meta property="article:tag" content="ggplot2">
 <meta property="article:tag" content="Ks">
 <meta property="article:tag" content="ParaAT">
 <meta property="article:tag" content="KaKs_Calculator">
 <meta property="article:tag" content="WGD">
+<meta property="article:tag" content="ggplot2">
 <meta property="article:tag" content="divergence time">
 <meta property="article:tag" content="paml">
 <meta property="article:tag" content="synteny">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-13 10:37:14" itemprop="dateModified" datetime="2023-03-13T10:37:14+08:00">2023-03-13</time>
+                <time title="Modified: 2023-05-11 12:48:45" itemprop="dateModified" datetime="2023-05-11T12:48:45+08:00">2023-05-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -527,7 +527,7 @@
 <ol start="4">
 <li>准备配置文件mcmctree3.ctl<br>ndata &#x3D; 261表示有261个数据，与sample.phy包含的子phy数量对应；seqtype &#x3D; 2表示这里用的氨基酸序列；model &#x3D; 0暂时选用0，后面要改；</li>
 </ol>
-<figure class="highlight plaintext"><figcaption><span>mcmctree3.ctl</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">          seed = -1</span><br><span class="line">       seqfile = sample.phy</span><br><span class="line">      treefile = sample.tre</span><br><span class="line">       outfile = mcmc.out</span><br><span class="line">      mcmcfile = mcmc.txt</span><br><span class="line"></span><br><span class="line">       seqtype = 2    *0: DNA data; 1: codon data; 2: AAs data</span><br><span class="line">        ndata = 261</span><br><span class="line">       usedata = 3    * 0: no data; 1:seq like; 2:normal approximation</span><br><span class="line">         clock = 3    * 1: global clock; 2: independent rates; 3: correlated rates</span><br><span class="line">*      TipDate = 1 100</span><br><span class="line">        RootAge = &#x27;&lt;10&#x27;  * constraint on root age, used if no fossil for root.</span><br><span class="line"></span><br><span class="line">         model = 0    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85</span><br><span class="line">         alpha = 0.5   * alpha for gamma rates at sites</span><br><span class="line">         ncatG = 4    * No. categories in discrete gamma</span><br><span class="line"></span><br><span class="line">     cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?</span><br><span class="line"></span><br><span class="line">       BDparas = 1 1 0.1   * birth, death, sampling</span><br><span class="line">   kappa_gamma = 6 2      * gamma prior for kappa</span><br><span class="line">   alpha_gamma = 1 1      * gamma prior for alpha</span><br><span class="line"></span><br><span class="line">   rgene_gamma = 2 20 1   * gamma prior for rate for genes</span><br><span class="line">  sigma2_gamma = 1 10 1    * gamma prior for sigma^2     (for clock=2 or 3)</span><br><span class="line"></span><br><span class="line">      finetune = 1: .1 .1 .1 .1 .1 .1  * times, rates, mixing, paras, RateParas</span><br><span class="line"></span><br><span class="line">         print = 1</span><br><span class="line">        burnin = 1000000</span><br><span class="line">      sampfreq = 10</span><br><span class="line">       nsample = 500000</span><br><span class="line"></span><br><span class="line">*** Note: Make your window wider (100 columns) when running this program.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">          seed = -1</span><br><span class="line">       seqfile = sample.phy</span><br><span class="line">      treefile = sample.tre</span><br><span class="line">       outfile = mcmc.out</span><br><span class="line">      mcmcfile = mcmc.txt</span><br><span class="line"></span><br><span class="line">       seqtype = 2    *0: DNA data; 1: codon data; 2: AAs data</span><br><span class="line">        ndata = 261</span><br><span class="line">       usedata = 3    * 0: no data; 1:seq like; 2:normal approximation</span><br><span class="line">         clock = 3    * 1: global clock; 2: independent rates; 3: correlated rates</span><br><span class="line">*      TipDate = 1 100</span><br><span class="line">        RootAge = &#x27;&lt;10&#x27;  * constraint on root age, used if no fossil for root.</span><br><span class="line"></span><br><span class="line">         model = 0    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85</span><br><span class="line">         alpha = 0.5   * alpha for gamma rates at sites</span><br><span class="line">         ncatG = 4    * No. categories in discrete gamma</span><br><span class="line"></span><br><span class="line">     cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?</span><br><span class="line"></span><br><span class="line">       BDparas = 1 1 0.1   * birth, death, sampling</span><br><span class="line">   kappa_gamma = 6 2      * gamma prior for kappa</span><br><span class="line">   alpha_gamma = 1 1      * gamma prior for alpha</span><br><span class="line"></span><br><span class="line">   rgene_gamma = 2 20 1   * gamma prior for rate for genes</span><br><span class="line">  sigma2_gamma = 1 10 1    * gamma prior for sigma^2     (for clock=2 or 3)</span><br><span class="line"></span><br><span class="line">      finetune = 1: .1 .1 .1 .1 .1 .1  * times, rates, mixing, paras, RateParas</span><br><span class="line"></span><br><span class="line">         print = 1</span><br><span class="line">        burnin = 1000000</span><br><span class="line">      sampfreq = 10</span><br><span class="line">       nsample = 500000</span><br><span class="line"></span><br><span class="line">*** Note: Make your window wider (100 columns) when running this program.</span><br></pre></td></tr></table></figure>
 
 <ol start="5">
 <li>运行<code>mcmctree mcmctree3.ctl</code></li>
@@ -570,11 +570,11 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/biosoft/" rel="tag"># biosoft</a>
-              <a href="/tags/ggplot2/" rel="tag"># ggplot2</a>
               <a href="/tags/Ks/" rel="tag"># Ks</a>
               <a href="/tags/ParaAT/" rel="tag"># ParaAT</a>
               <a href="/tags/KaKs-Calculator/" rel="tag"># KaKs_Calculator</a>
               <a href="/tags/WGD/" rel="tag"># WGD</a>
+              <a href="/tags/ggplot2/" rel="tag"># ggplot2</a>
               <a href="/tags/divergence-time/" rel="tag"># divergence time</a>
               <a href="/tags/paml/" rel="tag"># paml</a>
               <a href="/tags/synteny/" rel="tag"># synteny</a>
@@ -674,20 +674,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">50</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">309</span>
+        <span class="site-state-item-count">312</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -731,12 +731,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">540k</span>
+    <span title="Symbols count total">542k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">8:11</span>
+    <span title="Reading time total">8:13</span>
 </div>
 
         
