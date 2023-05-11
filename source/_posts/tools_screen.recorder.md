@@ -2,7 +2,6 @@
 title: 录屏软件
 date: 2022-09-22
 categories:
-- Windows
 - tools
 tags:
 - screen recorder

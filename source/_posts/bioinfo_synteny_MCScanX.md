@@ -371,7 +371,7 @@ cat ./phy/*phy >sample.phy #合并所有phy文件为一个sample.phy文件，假
 4. 准备配置文件mcmctree3.ctl
 ndata = 261表示有261个数据，与sample.phy包含的子phy数量对应；seqtype = 2表示这里用的氨基酸序列；model = 0暂时选用0，后面要改；
 
-``` #cat mcmctree3.ctl
+```mcmctree3.ctl
           seed = -1
        seqfile = sample.phy
       treefile = sample.tre
