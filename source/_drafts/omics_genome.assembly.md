@@ -1,21 +1,19 @@
 ---
 title: genome assembly
-date: 2021-07-16 14:30:00
+date: 2023-08-15
 categories: 
-- bio
-	- concept
+- omics
+- genome
+- genome assembly
 tags:
+- genome assembly
 
-- crown groups
-- stem groups
-- fossil time
-
-description: 记录了冠群和干群及在古生物学和进化生物学上应用的相关概念。
+description: 基于三代和二代测序数据对非模式生物进行基因组的从头组装
 ---
 
 <div align="middle"><music URL></div>
 
-
+# 基因组组装
 
 
 # pacbio
