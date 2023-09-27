@@ -158,6 +158,14 @@ iqtree 构建系统发育树时，informative sites 用于推断树的拓扑结�
 - 欢迎关注微信公众号：**生信技工**
 - 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
 
-<center class="half">
-  <img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode"><img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_code.jpg?raw=true" width=30% title="Wechat_code" ><img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Alipay_code.jpg?raw=true" width=30% title="Alipay_code">
-</center>
+<div style="text-align:center">
+<span style="width:30%;display:inline-block">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode">
+</span>
+<span style="width:30%;display:inline-block">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_code.jpg?raw=true" width=20% title="Wechat_code">
+</span>
+<span style="width:30%;display:inline-block">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Alipay_code.jpg?raw=true" width=20% title="Alipay_code">
+</span>
+</div>
