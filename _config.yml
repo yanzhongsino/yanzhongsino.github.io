@@ -403,14 +403,14 @@ theme_config:
   follow_me:
     #Twitter: https://twitter.com/username || fab fa-twitter
     #Telegram: https://t.me/channel_name || fab fa-telegram
-    #WeChat: /images/wechat_channel.jpg || fab fa-weixin
+    WeChat: /wechat/wechat_channel.jpg || fab fa-weixin
     #RSS: /atom.xml || fa fa-rss
 
   # Wechat Subscriber
-  wechat_subscriber:
-    enabled: true
-    qcode: /wechat/wechat_channel.jpg
-    description: 欢迎关注微信公众号：生信技工
+  #wechat_subscriber:
+    #enabled: true
+    #qcode: /wechat/wechat_channel.jpg
+    #description: 欢迎关注微信公众号：生信技工
 
   # Related popular posts
   # Dependencies: https://github.com/tea3/hexo-related-popular-posts
