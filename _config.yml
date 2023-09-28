@@ -409,7 +409,7 @@ theme_config:
   # Wechat Subscriber
   wechat_subscriber:
     enabled: true
-    qcode: /images/wechat_channel.jpg
+    qcode: /wechat/wechat_channel.jpg
     description: 欢迎关注微信公众号：生信技工
 
   # Related popular posts
