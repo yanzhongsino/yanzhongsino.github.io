@@ -44,6 +44,13 @@
         </div>
       {%- endif %}
 
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.png">
+        <!-- <span>欢迎关注微信公众号</span> -->
+      </div>
+
     </div>
   </aside>
   <div id="sidebar-dimmer"></div>

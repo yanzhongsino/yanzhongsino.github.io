@@ -393,8 +393,8 @@ theme_config:
     comment: 真诚赞赏，手留余香
 
   reward:
-    wechatpay: /images/wechatpay.jpg
-    alipay: /images/alipay.jpg
+    wechatpay: /images/wechatpay_clip.jpg
+    alipay: /images/alipay_clip.jpg
     #paypal: /images/paypal.png
     #bitcoin: /images/bitcoin.png
 
