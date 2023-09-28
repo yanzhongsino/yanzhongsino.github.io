@@ -132,10 +132,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>basic</category>
       </categories>
       <tags>
+        <tag>R package</tag>
         <tag>R</tag>
         <tag>RStudio</tag>
         <tag>Rtools</tag>
-        <tag>R package</tag>
         <tag>CRAN</tag>
         <tag>Bioconductor</tag>
       </tags>
@@ -249,8 +249,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>phylogeny</tag>
-        <tag>phylogenetic tree</tag>
         <tag>evolutionary tree</tag>
+        <tag>phylogenetic tree</tag>
         <tag>bifurcated tree</tag>
         <tag>cladogram</tag>
         <tag>phylogram</tag>
@@ -614,8 +614,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>plot</category>
       </categories>
       <tags>
-        <tag>R</tag>
         <tag>R package</tag>
+        <tag>R</tag>
         <tag>plot</tag>
         <tag>UpSetR</tag>
       </tags>
@@ -691,12 +691,122 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>plot</category>
       </categories>
       <tags>
-        <tag>R</tag>
         <tag>R package</tag>
+        <tag>R</tag>
         <tag>plot</tag>
         <tag>Venn</tag>
         <tag>gplots</tag>
         <tag>VennDiagram</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>批量计算Ka和Ks</title>
+    <url>/2022/09/07/bioinfo_Ks_batch.calculation.Ks/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1901371647&auto=1&height=32"></iframe></div>
+
+<h1 id="1-ParaAT"><a href="#1-ParaAT" class="headerlink" title="1. ParaAT"></a>1. ParaAT</h1><p>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
+<h1 id="2-KaKs-Calculator-2-0"><a href="#2-KaKs-Calculator-2-0" class="headerlink" title="2. KaKs_Calculator 2.0"></a>2. KaKs_Calculator 2.0</h1><p>KaKs_Calculator 2.0工具包包含了17种计算Ka和Ks的方法，包含Gamma系列，并可识别基于蛋白编码序列的滑动窗口，基于C++和Java，在Windows和Linux平台都可使用。</p>
+<h1 id="3-Ka和Ks计算"><a href="#3-Ka和Ks计算" class="headerlink" title="3. Ka和Ks计算"></a>3. Ka和Ks计算</h1><ul>
+<li>ParaAT比对指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出格式，如axt格式。</li>
+<li>KaKs_Calculator用于计算比对好的基因对的kaks。</li>
+</ul>
+<p>用还会用到两个脚本:</p>
+<ul>
+<li>axt2one-line.py:<a href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py%E8%BD%AC%E6%8D%A2axt%E6%A0%BC%E5%BC%8F%E4%B8%BA%E5%8D%95%E8%A1%8C">https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py转换axt格式为单行</a></li>
+<li>calculate_4DTV_correction.pl:<a href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl%E8%AE%A1%E7%AE%974dtv%E3%80%82">https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl计算4dtv。</a></li>
+</ul>
+<h1 id="4-软件准备"><a href="#4-软件准备" class="headerlink" title="4. 软件准备"></a>4. 软件准备</h1><ol>
+<li>安装ParaAT.pl</li>
+</ol>
+<ul>
+<li>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装KaKs_Calculator2.0<br>KaKs_Calculator2.0下载地址：<a href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect</a></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后把<code>./KaKs_Calculator2.0/bin/Linux/</code>和<code>./KaKs_Calculator2.0/src/</code>添加到环境变量即可使用<code>KaKs_Calculator</code>和<code>AXTConvertor</code>命令。</li>
+</ul>
+<h1 id="5-文件准备"><a href="#5-文件准备" class="headerlink" title="5. 文件准备"></a>5. 文件准备</h1><p>ParaAT.pl需要三个输入文件，参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
+<ol>
+<li>sample.id</li>
+</ol>
+<ul>
+<li>两列，每行对应两条要做成对比对的序列ID；</li>
+<li>任意行，ParaAT可以批量处理多个成对比对。</li>
+<li>一个例子：<code>cat sample.collinearity |grep &quot;species_prefix&quot;|cut -f2,3 &gt;sample.id</code> 用MCScanX的结果文件提取blocks的同源gene对，获得sample.id文件。</li>
+</ul>
+<ol start="2">
+<li>cds.fa</li>
+</ol>
+<ul>
+<li>包括所有需要比对的cds序列的文件</li>
+</ul>
+<ol start="3">
+<li>pep.fa</li>
+</ol>
+<ul>
+<li>包括所有需要比对的蛋白序列的文件</li>
+</ul>
+<h1 id="6-操作步骤"><a href="#6-操作步骤" class="headerlink" title="6. 操作步骤"></a>6. 操作步骤</h1><h2 id="6-1-用ParaAT获取基因对比对序列"><a href="#6-1-用ParaAT获取基因对比对序列" class="headerlink" title="6.1. 用ParaAT获取基因对比对序列"></a>6.1. 用ParaAT获取基因对比对序列</h2><p>ParaAT比对sample.id指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出为axt格式。</p>
+<ol>
+<li>命令</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对基因的蛋白比对，并把蛋白比对转化成cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；-o指定生成目录；</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>notes</li>
+</ol>
+<ul>
+<li>axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。</li>
+<li>建议加上-g和-t，免得后面计算Ks时报错<code>Error. The size of two sequences in &#39;ctg00816-ctg08844&#39; is not equal。</code></li>
+<li>ParaAT.pl命令中加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐不加-k参数，而是手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。</li>
+</ul>
+<h2 id="6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值"><a href="#6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值" class="headerlink" title="6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值"></a>6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值</h2><p>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</p>
+<p>KaKs_Calculator可计算比对好的CDS序列的Ka和Ks。</p>
+<ol>
+<li>计算Ka和Ks</li>
+</ol>
+<ul>
+<li>获得all.kaks文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do KaKs_Calculator -i $i -o $&#123;i&#125;_yn.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;_yn.kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li>计算4dtv</li>
+</ol>
+<ul>
+<li>获得all.4dtv文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>合并和整理结果</li>
+</ol>
+<ul>
+<li>获得all.results文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd .. #返回上一级目录</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
+<li>ParaAT paper：<a href="https://www.sciencedirect.com/science/article/pii/S0006291X12003518">https://www.sciencedirect.com/science/article/pii/S0006291X12003518</a></li>
+<li>KaKs_Calculator2.0 github：<a href="https://github.com/kullrich/kakscalculator2">https://github.com/kullrich/kakscalculator2</a></li>
+<li>KaKs_Calculator2.0 paper：<a href="https://www.sciencedirect.com/science/article/pii/S1672022910600083?via=ihub">https://www.sciencedirect.com/science/article/pii/S1672022910600083?via%3Dihub</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>bioinfo</category>
+        <category>Ks</category>
+      </categories>
+      <tags>
+        <tag>Ks</tag>
+        <tag>Ka</tag>
+        <tag>4dtv</tag>
+        <tag>ParaAT</tag>
+        <tag>KaKs_Calculator</tag>
       </tags>
   </entry>
   <entry>
@@ -952,116 +1062,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>WGD</tag>
         <tag>gene duplication event</tag>
         <tag>OrthoFinder2</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>批量计算Ka和Ks</title>
-    <url>/2022/09/07/bioinfo_Ks_batch.calculation.Ks/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1901371647&auto=1&height=32"></iframe></div>
-
-<h1 id="1-ParaAT"><a href="#1-ParaAT" class="headerlink" title="1. ParaAT"></a>1. ParaAT</h1><p>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
-<h1 id="2-KaKs-Calculator-2-0"><a href="#2-KaKs-Calculator-2-0" class="headerlink" title="2. KaKs_Calculator 2.0"></a>2. KaKs_Calculator 2.0</h1><p>KaKs_Calculator 2.0工具包包含了17种计算Ka和Ks的方法，包含Gamma系列，并可识别基于蛋白编码序列的滑动窗口，基于C++和Java，在Windows和Linux平台都可使用。</p>
-<h1 id="3-Ka和Ks计算"><a href="#3-Ka和Ks计算" class="headerlink" title="3. Ka和Ks计算"></a>3. Ka和Ks计算</h1><ul>
-<li>ParaAT比对指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出格式，如axt格式。</li>
-<li>KaKs_Calculator用于计算比对好的基因对的kaks。</li>
-</ul>
-<p>用还会用到两个脚本:</p>
-<ul>
-<li>axt2one-line.py:<a href="https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py%E8%BD%AC%E6%8D%A2axt%E6%A0%BC%E5%BC%8F%E4%B8%BA%E5%8D%95%E8%A1%8C">https://github.com/scbgfengchao/4DTv/blob/master/axt2one-line.py转换axt格式为单行</a></li>
-<li>calculate_4DTV_correction.pl:<a href="https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl%E8%AE%A1%E7%AE%974dtv%E3%80%82">https://github.com/JinfengChen/Scripts/blob/master/FFgenome/03.evolution/distance_kaks_4dtv/bin/calculate_4DTV_correction.pl计算4dtv。</a></li>
-</ul>
-<h1 id="4-软件准备"><a href="#4-软件准备" class="headerlink" title="4. 软件准备"></a>4. 软件准备</h1><ol>
-<li>安装ParaAT.pl</li>
-</ol>
-<ul>
-<li>参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget ftp://download.big.ac.cn/bigd/tools/ParaAT2.0.tar.gz</span><br><span class="line">tar -zxf ParaAT2.0.tar.gz</span><br><span class="line">cd ParaAT2.0</span><br><span class="line">ParaAT.pl -h</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>安装KaKs_Calculator2.0<br>KaKs_Calculator2.0下载地址：<a href="https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect">https://sourceforge.net/projects/kakscalculator2/?source=typ_redirect</a></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://altushost-swe.dl.sourceforge.net/project/kakscalculator2/KaKs_Calculator2.0.tar.gz</span><br><span class="line">tar -zxf KaKs_Calculator2.0.tar.gz</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/bin/Linux/KaKs_Calculator</span><br><span class="line">chmod 777 ./KaKs_Calculator2.0/src/AXTConvertor</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>然后把<code>./KaKs_Calculator2.0/bin/Linux/</code>和<code>./KaKs_Calculator2.0/src/</code>添加到环境变量即可使用<code>KaKs_Calculator</code>和<code>AXTConvertor</code>命令。</li>
-</ul>
-<h1 id="5-文件准备"><a href="#5-文件准备" class="headerlink" title="5. 文件准备"></a>5. 文件准备</h1><p>ParaAT.pl需要三个输入文件，参考blog.ParaAT：<a href="https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/">https://yanzhongsino.github.io/2021/10/29/bioinfo_align_pep2cds/</a></p>
-<ol>
-<li>sample.id</li>
-</ol>
-<ul>
-<li>两列，每行对应两条要做成对比对的序列ID；</li>
-<li>任意行，ParaAT可以批量处理多个成对比对。</li>
-<li>一个例子：<code>cat sample.collinearity |grep &quot;species_prefix&quot;|cut -f2,3 &gt;sample.id</code> 用MCScanX的结果文件提取blocks的同源gene对，获得sample.id文件。</li>
-</ul>
-<ol start="2">
-<li>cds.fa</li>
-</ol>
-<ul>
-<li>包括所有需要比对的cds序列的文件</li>
-</ul>
-<ol start="3">
-<li>pep.fa</li>
-</ol>
-<ul>
-<li>包括所有需要比对的蛋白序列的文件</li>
-</ul>
-<h1 id="6-操作步骤"><a href="#6-操作步骤" class="headerlink" title="6. 操作步骤"></a>6. 操作步骤</h1><h2 id="6-1-用ParaAT获取基因对比对序列"><a href="#6-1-用ParaAT获取基因对比对序列" class="headerlink" title="6.1. 用ParaAT获取基因对比对序列"></a>6.1. 用ParaAT获取基因对比对序列</h2><p>ParaAT比对sample.id指定的基因对的氨基酸序列，并转化成比对的CDS序列，并可指定输出为axt格式。</p>
-<ol>
-<li>命令</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;24&quot; &gt;proc #指定ParaAT.pl使用线程</span><br><span class="line">ParaAT.pl -g -t -h sample.id -n cds.fa -a pep.fa -m mafft -p proc -f axt -o sample.paraat 2&gt; paraat.log &amp; #用ParaAT.pl调用mafft做每对基因的蛋白比对，并把蛋白比对转化成cds比对，输出axt格式。-g移除比对有gap的密码子，-t移除mismatched codons；-o指定生成目录；</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>notes</li>
-</ol>
-<ul>
-<li>axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。</li>
-<li>建议加上-g和-t，免得后面计算Ks时报错<code>Error. The size of two sequences in &#39;ctg00816-ctg08844&#39; is not equal。</code></li>
-<li>ParaAT.pl命令中加上-k参数可以在获得axt文件后自动调用KaKs_Calculator计算kaks值，使用MA模型，比YN模型慢很多，推荐不加-k参数，而是手动用KaKs_Calculator的YN模型，生成sample.axt_yn.kaks文件。</li>
-</ul>
-<h2 id="6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值"><a href="#6-2-用KaKs-Calculator计算基因对的Ka、Ks和4dtv值" class="headerlink" title="6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值"></a>6.2. 用KaKs_Calculator计算基因对的Ka、Ks和4dtv值</h2><p>ParaAT.pl的-k参数只能指定KaKs_Calculator的MA模型计算kaks值，如果需要指定其他的模型，则可以手动运行计算。</p>
-<p>KaKs_Calculator可计算比对好的CDS序列的Ka和Ks。</p>
-<ol>
-<li>计算Ka和Ks</li>
-</ol>
-<ul>
-<li>获得all.kaks文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do KaKs_Calculator -i $i -o $&#123;i&#125;_yn.kaks -m YN;done #用YN模型计算每个gene对的KaKs，生成四列数据，gene对，Ka，Ks，Ka/Ks</span><br><span class="line">for i in `ls |grep &quot;_yn.kaks&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&quot;\t&quot;$4&quot;\t&quot;$5&#125;&#x27; $i &gt;&gt;../all.kaks;done #合并kaks到all.kaks文件</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="2">
-<li>计算4dtv</li>
-</ol>
-<ul>
-<li>获得all.4dtv文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd sample.paraat # 进入ParaAT.pl生成的文件夹</span><br><span class="line">for i in `ls *axt`;do axt2one-line.py $i $&#123;i&#125;.one-line;done #多行axt文件转换成单行</span><br><span class="line">ls |grep &quot;axt.one-line&quot;|while read id;do calculate_4DTV_correction.pl $id &gt; $&#123;id%%one-line&#125;4dtv;done #计算4dtv值，生成两列数据，gene对，4dtv</span><br><span class="line">for i in `ls |grep &quot;4dtv&quot;`;do awk &#x27;NR&gt;1&#123;print $1&quot;\t&quot;$3&#125;&#x27; $i &gt;&gt;../all.4dtv;done #合并4dtv值到all.4dtv</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="3">
-<li>合并和整理结果</li>
-</ol>
-<ul>
-<li>获得all.results文件<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd .. #返回上一级目录</span><br><span class="line">join all.kaks all.4dtv |sed &quot;s/ /\t/g&quot; |awk &#x27;$3 != &quot;NA&quot; &#123;print $0&#125;&#x27; |sed &#x27;1i\genepair\tKa\tKs\tKa/Ks\t4dtv_corrected&#x27; &gt;all.results #以gene对为基准，join合并kaks和4dtv值到一个文件，然后过滤Ks值为NA的无效数据，添加标题行。</span><br><span class="line">rm all.kaks* all.4dtv* #删除中间文件</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
-<li>ParaAT paper：<a href="https://www.sciencedirect.com/science/article/pii/S0006291X12003518">https://www.sciencedirect.com/science/article/pii/S0006291X12003518</a></li>
-<li>KaKs_Calculator2.0 github：<a href="https://github.com/kullrich/kakscalculator2">https://github.com/kullrich/kakscalculator2</a></li>
-<li>KaKs_Calculator2.0 paper：<a href="https://www.sciencedirect.com/science/article/pii/S1672022910600083?via=ihub">https://www.sciencedirect.com/science/article/pii/S1672022910600083?via%3Dihub</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>bioinfo</category>
-        <category>Ks</category>
-      </categories>
-      <tags>
-        <tag>Ks</tag>
-        <tag>Ka</tag>
-        <tag>4dtv</tag>
-        <tag>ParaAT</tag>
-        <tag>KaKs_Calculator</tag>
       </tags>
   </entry>
   <entry>
@@ -1396,8 +1396,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>align</category>
       </categories>
       <tags>
-        <tag>tutorial</tag>
         <tag>biosoft</tag>
+        <tag>tutorial</tag>
         <tag>ParaAT</tag>
         <tag>sequence alignment</tag>
         <tag>protein</tag>
@@ -1659,11 +1659,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
       </tags>
   </entry>
@@ -1919,11 +1919,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
         <tag>GO</tag>
         <tag>KEGG</tag>
@@ -2118,11 +2118,11 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
         <tag>visualization</tag>
       </tags>
@@ -2441,15 +2441,15 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>gene set enrichment analysis</tag>
+        <tag>GSEA</tag>
+        <tag>topGO</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>gene set enrichment analysis</tag>
-        <tag>GSEA</tag>
         <tag>clusterProfiler</tag>
         <tag>KOBAS-i</tag>
         <tag>GOEAST</tag>
-        <tag>topGO</tag>
       </tags>
   </entry>
   <entry>
@@ -2594,10 +2594,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>enrichment</category>
       </categories>
       <tags>
+        <tag>topGO</tag>
         <tag>enrichment analysis</tag>
         <tag>over representation analysis</tag>
         <tag>ORA</tag>
-        <tag>topGO</tag>
       </tags>
   </entry>
   <entry>
@@ -3040,13 +3040,13 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>mitogenome</category>
       </categories>
       <tags>
+        <tag>mitogenome</tag>
+        <tag>organelle</tag>
         <tag>tbl</tag>
         <tag>mitogenomics</tag>
         <tag>aln2tbl.py</tag>
         <tag>aln2tbl-legacy.py</tag>
         <tag>mitos2fasta.py</tag>
-        <tag>organelle</tag>
-        <tag>mitogenome</tag>
       </tags>
   </entry>
   <entry>
@@ -3149,8 +3149,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>gene family</category>
       </categories>
       <tags>
-        <tag>phylogeny</tag>
         <tag>biosoft</tag>
+        <tag>phylogeny</tag>
         <tag>gene family</tag>
         <tag>CAFE</tag>
       </tags>
@@ -4626,8 +4626,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>ILS</category>
       </categories>
       <tags>
-        <tag>phylogeny</tag>
         <tag>gene flow</tag>
+        <tag>phylogeny</tag>
         <tag>R packages</tag>
         <tag>MSCquartets</tag>
         <tag>ILS</tag>
@@ -4871,6 +4871,75 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
+    <title>用R包castor的get_subtree_with_tips函数提取子树</title>
+    <url>/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=27646786&auto=1&height=32"></iframe></div>
+
+<h1 id="1-R包castor"><a href="#1-R包castor" class="headerlink" title="1. R包castor"></a>1. R包castor</h1><p>R包castor是一个可以对包含超百万类群（tips）的系统发育树进行操作的程序，功能包括修剪、重新定根、计算最近共同祖先、计算tips与树根的距离、计算成对距离等等。</p>
+<p>系统发育信号和平均性状深度（性状保守性）的计算，离散性状的祖先状态重建和隐藏性状预测，性状进化的模拟和拟合模型，拟合和模拟多样化模型，以Newick格式树的标定时间，比较树，读取和写入树。</p>
+<p>安装R包castor：<code>install.packages(&quot;castor&quot;)</code></p>
+<h1 id="2-R包castor的get-subtree-with-tips函数"><a href="#2-R包castor的get-subtree-with-tips函数" class="headerlink" title="2. R包castor的get_subtree_with_tips函数"></a>2. R包castor的get_subtree_with_tips函数</h1><p>R包castor的get_subtree_with_tips函数用于根据子集类群列表从一棵大树中提取子树。</p>
+<h2 id="2-1-介绍get-subtree-with-tips函数"><a href="#2-1-介绍get-subtree-with-tips函数" class="headerlink" title="2.1. 介绍get_subtree_with_tips函数"></a>2.1. 介绍get_subtree_with_tips函数</h2><ol>
+<li><p><code>get_subtree_with_tips(tree,only_tips=NULL,omit_tips=NULL,collapse_monofurcations = TRUE,force_keep_root = FALSE))</code></p>
+</li>
+<li><p>参数说明</p>
+</li>
+</ol>
+<ul>
+<li>tree : “phylo”类的有根树。假定根是唯一的节点，没有传入的边。</li>
+<li>only_tips : 列出要保留的提示名称的字符向量，或列出要保留的提示索引的整数向量（介于1和Ntips之间）。也可以为空。在树中找不到的filename_edges_strength中列出的提示将被悄悄忽略。</li>
+<li>omit_tips : 列出要忽略的提示名称的字符向量，或列出要忽略的提示索引的整数向量（介于1和Ntips之间）。也可以为空。在树中找不到的filename_edges_strength中列出的提示将被悄悄忽略。</li>
+<li>collapse_monofurcations : 指定是否应折叠（删除）剩余单个传出边缘的节点的逻辑。此类节点的传入和传出边缘将连接到单个边缘，连接节点的父级（或更早）和子级（或更高）。在这种情况下，返回的树将具有反映连接边的边长度。</li>
+<li>force_keep_root : 逻辑值，指定是否保留根，即使filename_points_covered_by_landmarks和子树的根只剩下一个子树。如果为FALSE和filename_points_covered_by_landmarks，则可以删除根，并且它的一个后代可以成为根。</li>
+</ul>
+<h2 id="2-2-get-subtree-with-tips函数的使用"><a href="#2-2-get-subtree-with-tips函数的使用" class="headerlink" title="2.2. get_subtree_with_tips函数的使用"></a>2.2. get_subtree_with_tips函数的使用</h2><ol>
+<li>输入</li>
+</ol>
+<ul>
+<li>species.tre：物种树</li>
+<li>subtree.list：待提取的类群名称列表，每个名称一行</li>
+</ul>
+<ol start="2">
+<li>提取子树</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">library<span class="punctuation">(</span>treeio<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>castor<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">tree<span class="operator">&lt;-</span>read.newick<span class="punctuation">(</span><span class="string">&quot;species.tre&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取物种树</span></span><br><span class="line">sub_list<span class="operator">&lt;-</span>scan<span class="punctuation">(</span><span class="string">&quot;subtree.list&quot;</span><span class="punctuation">,</span>what<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取类群列表，保存为字符向量</span></span><br><span class="line">sub<span class="operator">&lt;-</span>get_subtree_with_tips<span class="punctuation">(</span>tree<span class="punctuation">,</span>only_tips <span class="operator">=</span> sub_list<span class="punctuation">)</span> <span class="comment"># 提取子树</span></span><br><span class="line">write.tree<span class="punctuation">(</span>sub<span class="operator">$</span>subtree<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;species_subtree.tre&quot;</span><span class="punctuation">)</span> <span class="comment"># 把提取的子树写入species_subtree.tre文件，newick格式</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-批量提取子树"><a href="#2-3-批量提取子树" class="headerlink" title="2.3. 批量提取子树"></a>2.3. 批量提取子树</h2><p>由于get_subtree_with_tips函数只接受单棵树的phylo数据类群作为输入，如果需要从multiphylo的多棵树中统一提取子集则需要借助get_subtrees.R脚本。</p>
+<ol>
+<li>批量提取</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">library<span class="punctuation">(</span>treeio<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>castor<span class="punctuation">)</span></span><br><span class="line">trees<span class="operator">&lt;-</span>read.newick<span class="punctuation">(</span><span class="string">&quot;genes.trees&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取多棵树的genes.trees文件，trees为multiphylo。</span></span><br><span class="line">sub_list<span class="operator">&lt;-</span>scan<span class="punctuation">(</span><span class="string">&quot;subtree.list&quot;</span><span class="punctuation">,</span>what<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取类群列表，保存为字符向量</span></span><br><span class="line">source<span class="punctuation">(</span><span class="string">&quot;get_subtrees.R&quot;</span><span class="punctuation">)</span> <span class="comment"># 运行get_subtrees.R脚本，子树保存在genes_subtree.tre文件中</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>get_subtrees.R脚本，这里设定共有2700棵树</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="punctuation">(</span> i <span class="keyword">in</span> <span class="number">1</span><span class="operator">:</span><span class="number">2700</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">   tree<span class="operator">&lt;-</span>trees<span class="punctuation">[[</span>i<span class="punctuation">]</span><span class="punctuation">]</span></span><br><span class="line">   sub<span class="operator">&lt;-</span>get_subtree_with_tips<span class="punctuation">(</span>tree<span class="punctuation">,</span>only_tips <span class="operator">=</span> sub_list<span class="punctuation">)</span></span><br><span class="line">   write.tree<span class="punctuation">(</span>sub<span class="operator">$</span>subtree<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;genes_subtree.tre&quot;</span><span class="punctuation">,</span>append <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-提取后"><a href="#3-提取后" class="headerlink" title="3. 提取后"></a>3. 提取后</h1><p>提取子树生成的species_subtree.tre文件中的枝长有时会有<code>:NaN</code>符号，用子树跑PhyloNetworks的时候会报错<code>LoadError: Expected right parenthesis after left parenthesis 6 but readN</code>是因为识别不了NaN，需要把子树中的这个符号<code>:NaN</code>删除。</p>
+<p>建议用<code>sed -i -E &quot;s/:[0-9.Na]+//g&quot; species_subtree.tre</code>命令把枝长信息都删除。</p>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li>castor包的manual：<a href="https://cran.r-project.org/web/packages/castor/castor.pdf">https://cran.r-project.org/web/packages/castor/castor.pdf</a></li>
+<li>castor包的paper：<a href="https://academic.oup.com/bioinformatics/article/34/6/1053/4582279?login=true">https://academic.oup.com/bioinformatics/article/34/6/1053/4582279?login=true</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>bioinfo</category>
+        <category>phylogeny</category>
+      </categories>
+      <tags>
+        <tag>R package</tag>
+        <tag>phylogeny</tag>
+        <tag>evolutionary tree</tag>
+        <tag>castor</tag>
+        <tag>get_subtree_with_tips</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>估算系统树分歧时间 —— paml.mcmctree,r8s</title>
     <url>/2021/03/25/bioinfo_phylogeny_caculate.divergence.time/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=27853347&auto=1&height=66"></iframe></div>
@@ -5111,81 +5180,12 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>phylogeny</category>
       </categories>
       <tags>
-        <tag>phylogeny</tag>
         <tag>biosoft</tag>
+        <tag>phylogeny</tag>
         <tag>divergence time</tag>
         <tag>paml</tag>
         <tag>mcmctree</tag>
         <tag>r8s</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用R包castor的get_subtree_with_tips函数提取子树</title>
-    <url>/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=27646786&auto=1&height=32"></iframe></div>
-
-<h1 id="1-R包castor"><a href="#1-R包castor" class="headerlink" title="1. R包castor"></a>1. R包castor</h1><p>R包castor是一个可以对包含超百万类群（tips）的系统发育树进行操作的程序，功能包括修剪、重新定根、计算最近共同祖先、计算tips与树根的距离、计算成对距离等等。</p>
-<p>系统发育信号和平均性状深度（性状保守性）的计算，离散性状的祖先状态重建和隐藏性状预测，性状进化的模拟和拟合模型，拟合和模拟多样化模型，以Newick格式树的标定时间，比较树，读取和写入树。</p>
-<p>安装R包castor：<code>install.packages(&quot;castor&quot;)</code></p>
-<h1 id="2-R包castor的get-subtree-with-tips函数"><a href="#2-R包castor的get-subtree-with-tips函数" class="headerlink" title="2. R包castor的get_subtree_with_tips函数"></a>2. R包castor的get_subtree_with_tips函数</h1><p>R包castor的get_subtree_with_tips函数用于根据子集类群列表从一棵大树中提取子树。</p>
-<h2 id="2-1-介绍get-subtree-with-tips函数"><a href="#2-1-介绍get-subtree-with-tips函数" class="headerlink" title="2.1. 介绍get_subtree_with_tips函数"></a>2.1. 介绍get_subtree_with_tips函数</h2><ol>
-<li><p><code>get_subtree_with_tips(tree,only_tips=NULL,omit_tips=NULL,collapse_monofurcations = TRUE,force_keep_root = FALSE))</code></p>
-</li>
-<li><p>参数说明</p>
-</li>
-</ol>
-<ul>
-<li>tree : “phylo”类的有根树。假定根是唯一的节点，没有传入的边。</li>
-<li>only_tips : 列出要保留的提示名称的字符向量，或列出要保留的提示索引的整数向量（介于1和Ntips之间）。也可以为空。在树中找不到的filename_edges_strength中列出的提示将被悄悄忽略。</li>
-<li>omit_tips : 列出要忽略的提示名称的字符向量，或列出要忽略的提示索引的整数向量（介于1和Ntips之间）。也可以为空。在树中找不到的filename_edges_strength中列出的提示将被悄悄忽略。</li>
-<li>collapse_monofurcations : 指定是否应折叠（删除）剩余单个传出边缘的节点的逻辑。此类节点的传入和传出边缘将连接到单个边缘，连接节点的父级（或更早）和子级（或更高）。在这种情况下，返回的树将具有反映连接边的边长度。</li>
-<li>force_keep_root : 逻辑值，指定是否保留根，即使filename_points_covered_by_landmarks和子树的根只剩下一个子树。如果为FALSE和filename_points_covered_by_landmarks，则可以删除根，并且它的一个后代可以成为根。</li>
-</ul>
-<h2 id="2-2-get-subtree-with-tips函数的使用"><a href="#2-2-get-subtree-with-tips函数的使用" class="headerlink" title="2.2. get_subtree_with_tips函数的使用"></a>2.2. get_subtree_with_tips函数的使用</h2><ol>
-<li>输入</li>
-</ol>
-<ul>
-<li>species.tre：物种树</li>
-<li>subtree.list：待提取的类群名称列表，每个名称一行</li>
-</ul>
-<ol start="2">
-<li>提取子树</li>
-</ol>
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">library<span class="punctuation">(</span>treeio<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>castor<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">tree<span class="operator">&lt;-</span>read.newick<span class="punctuation">(</span><span class="string">&quot;species.tre&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取物种树</span></span><br><span class="line">sub_list<span class="operator">&lt;-</span>scan<span class="punctuation">(</span><span class="string">&quot;subtree.list&quot;</span><span class="punctuation">,</span>what<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取类群列表，保存为字符向量</span></span><br><span class="line">sub<span class="operator">&lt;-</span>get_subtree_with_tips<span class="punctuation">(</span>tree<span class="punctuation">,</span>only_tips <span class="operator">=</span> sub_list<span class="punctuation">)</span> <span class="comment"># 提取子树</span></span><br><span class="line">write.tree<span class="punctuation">(</span>sub<span class="operator">$</span>subtree<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;species_subtree.tre&quot;</span><span class="punctuation">)</span> <span class="comment"># 把提取的子树写入species_subtree.tre文件，newick格式</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-批量提取子树"><a href="#2-3-批量提取子树" class="headerlink" title="2.3. 批量提取子树"></a>2.3. 批量提取子树</h2><p>由于get_subtree_with_tips函数只接受单棵树的phylo数据类群作为输入，如果需要从multiphylo的多棵树中统一提取子集则需要借助get_subtrees.R脚本。</p>
-<ol>
-<li>批量提取</li>
-</ol>
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">library<span class="punctuation">(</span>treeio<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>castor<span class="punctuation">)</span></span><br><span class="line">trees<span class="operator">&lt;-</span>read.newick<span class="punctuation">(</span><span class="string">&quot;genes.trees&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取多棵树的genes.trees文件，trees为multiphylo。</span></span><br><span class="line">sub_list<span class="operator">&lt;-</span>scan<span class="punctuation">(</span><span class="string">&quot;subtree.list&quot;</span><span class="punctuation">,</span>what<span class="operator">=</span><span class="string">&quot;&quot;</span><span class="punctuation">)</span> <span class="comment"># 读取类群列表，保存为字符向量</span></span><br><span class="line">source<span class="punctuation">(</span><span class="string">&quot;get_subtrees.R&quot;</span><span class="punctuation">)</span> <span class="comment"># 运行get_subtrees.R脚本，子树保存在genes_subtree.tre文件中</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>get_subtrees.R脚本，这里设定共有2700棵树</li>
-</ol>
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="punctuation">(</span> i <span class="keyword">in</span> <span class="number">1</span><span class="operator">:</span><span class="number">2700</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">   tree<span class="operator">&lt;-</span>trees<span class="punctuation">[[</span>i<span class="punctuation">]</span><span class="punctuation">]</span></span><br><span class="line">   sub<span class="operator">&lt;-</span>get_subtree_with_tips<span class="punctuation">(</span>tree<span class="punctuation">,</span>only_tips <span class="operator">=</span> sub_list<span class="punctuation">)</span></span><br><span class="line">   write.tree<span class="punctuation">(</span>sub<span class="operator">$</span>subtree<span class="punctuation">,</span>file<span class="operator">=</span><span class="string">&quot;genes_subtree.tre&quot;</span><span class="punctuation">,</span>append <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="3-提取后"><a href="#3-提取后" class="headerlink" title="3. 提取后"></a>3. 提取后</h1><p>提取子树生成的species_subtree.tre文件中的枝长有时会有<code>:NaN</code>符号，用子树跑PhyloNetworks的时候会报错<code>LoadError: Expected right parenthesis after left parenthesis 6 but readN</code>是因为识别不了NaN，需要把子树中的这个符号<code>:NaN</code>删除。</p>
-<p>建议用<code>sed -i -E &quot;s/:[0-9.Na]+//g&quot; species_subtree.tre</code>命令把枝长信息都删除。</p>
-<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
-<li>castor包的manual：<a href="https://cran.r-project.org/web/packages/castor/castor.pdf">https://cran.r-project.org/web/packages/castor/castor.pdf</a></li>
-<li>castor包的paper：<a href="https://academic.oup.com/bioinformatics/article/34/6/1053/4582279?login=true">https://academic.oup.com/bioinformatics/article/34/6/1053/4582279?login=true</a></li>
-</ol>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>bioinfo</category>
-        <category>phylogeny</category>
-      </categories>
-      <tags>
-        <tag>R package</tag>
-        <tag>phylogeny</tag>
-        <tag>evolutionary tree</tag>
-        <tag>castor</tag>
-        <tag>get_subtree_with_tips</tag>
       </tags>
   </entry>
   <entry>
@@ -5421,9 +5421,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>R package</tag>
+        <tag>biosoft</tag>
         <tag>phylogeny</tag>
         <tag>evolutionary tree</tag>
-        <tag>biosoft</tag>
         <tag>plot</tag>
         <tag>itol</tag>
         <tag>treeio</tag>
@@ -5594,13 +5594,13 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 </ul>
 <div style="text-align:center">
 <span style="width:30%;display:inline-block">
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" title="wechat_public_QRcode">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" title="wechat_public_QRcode" width=90%>
 </span>
 <span style="width:30%;display:inline-block">
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_code.jpg?raw=true" title="Wechat_code">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/wechat.jpg?raw=true" title="Wechat_code" width=90%>
 </span>
 <span style="width:30%;display:inline-block">
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Alipay_code.jpg?raw=true" title="Alipay_code">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/alipay.jpg?raw=true" title="Alipay_code" width=90%>
 </span>
 </div>]]></content>
       <categories>
@@ -5609,9 +5609,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>phylogeny inference</category>
       </categories>
       <tags>
+        <tag>biosoft</tag>
         <tag>phylogeny</tag>
         <tag>evolutionary tree</tag>
-        <tag>biosoft</tag>
         <tag>phylogeny inference</tag>
         <tag>iqtree2</tag>
         <tag>maximum likelihood tree</tag>
@@ -6424,10 +6424,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       <tags>
         <tag>biosoft</tag>
         <tag>ggplot2</tag>
-        <tag>WGD</tag>
         <tag>Ks</tag>
         <tag>ParaAT</tag>
         <tag>KaKs_Calculator</tag>
+        <tag>WGD</tag>
         <tag>divergence time</tag>
         <tag>paml</tag>
         <tag>synteny</tag>
@@ -6905,8 +6905,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>biosoft</tag>
-        <tag>WGD</tag>
         <tag>Ks</tag>
+        <tag>WGD</tag>
         <tag>synteny</tag>
         <tag>colinearity</tag>
         <tag>WGDI</tag>
@@ -6965,8 +6965,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>plot</category>
       </categories>
       <tags>
-        <tag>R</tag>
         <tag>R package</tag>
+        <tag>R</tag>
         <tag>plot</tag>
         <tag>synteny</tag>
         <tag>Rldeogram</tag>
@@ -7745,10 +7745,10 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>blog</category>
       </categories>
       <tags>
-        <tag>tutorial</tag>
         <tag>blog</tag>
         <tag>hexo</tag>
         <tag>github</tag>
+        <tag>tutorial</tag>
         <tag>sync</tag>
         <tag>build website</tag>
         <tag>deploy website</tag>
@@ -8481,6 +8481,34 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
+    <title>Linux的常用命令连接符（command connector）</title>
+    <url>/2022/01/16/linux_shell_command.connector/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2117115&auto=1&height=32"></iframe></div>
+
+<h1 id="1-常用命令连接符"><a href="#1-常用命令连接符" class="headerlink" title="1. 常用命令连接符"></a>1. 常用命令连接符</h1><p>多条命令放在一行时，需要在命令之间使用命令连接符，包括<code>;</code>,<code>&amp;&amp;</code>,<code>||</code>等。</p>
+<h2 id="1-1"><a href="#1-1" class="headerlink" title="1.1. ;"></a>1.1. <code>;</code></h2><p><code>;</code>是最简单的命令连接符。</p>
+<p><code>command1; command2; command3</code>表示多个命令顺序执行，命令间没有逻辑联系。</p>
+<h2 id="1-2-amp-amp"><a href="#1-2-amp-amp" class="headerlink" title="1.2. &amp;&amp;"></a>1.2. <code>&amp;&amp;</code></h2><p><code>&amp;&amp;</code>逻辑与命令连接符。</p>
+<p><code>command1 &amp;&amp; command2 &amp;&amp; command3</code>表示从左往右按顺序执行命令，如果中间有命令执行失败，则中断在失败的命令处不继续往下执行。即左边的命令执行成功才执行右边的命令；当左边命令执行失败就不会执行右边命令。</p>
+<h2 id="1-3"><a href="#1-3" class="headerlink" title="1.3. ||"></a>1.3. <code>||</code></h2><p><code>||</code>逻辑或命令连接符。</p>
+<p><code>command1 ||command2 || command3</code>表示从左往右按顺序执行命令，如果中间有命令执行成功，则中断在成功的命令处不继续往下执行。即左边的命令执行成功时，停止执行右边的命令；只有当左边的命令执行失败时，才执行右边的命令。</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>shell</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>shell</tag>
+        <tag>command connector</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux系统的服务器开机自动挂载硬盘的设置</title>
     <url>/2023/04/24/linux_operation.and.maintenance_auto.mount/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=399341112&auto=1&height=32"></iframe></div>
@@ -8532,34 +8560,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>server</tag>
         <tag>mount</tag>
         <tag>auto</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux的常用命令连接符（command connector）</title>
-    <url>/2022/01/16/linux_shell_command.connector/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2117115&auto=1&height=32"></iframe></div>
-
-<h1 id="1-常用命令连接符"><a href="#1-常用命令连接符" class="headerlink" title="1. 常用命令连接符"></a>1. 常用命令连接符</h1><p>多条命令放在一行时，需要在命令之间使用命令连接符，包括<code>;</code>,<code>&amp;&amp;</code>,<code>||</code>等。</p>
-<h2 id="1-1"><a href="#1-1" class="headerlink" title="1.1. ;"></a>1.1. <code>;</code></h2><p><code>;</code>是最简单的命令连接符。</p>
-<p><code>command1; command2; command3</code>表示多个命令顺序执行，命令间没有逻辑联系。</p>
-<h2 id="1-2-amp-amp"><a href="#1-2-amp-amp" class="headerlink" title="1.2. &amp;&amp;"></a>1.2. <code>&amp;&amp;</code></h2><p><code>&amp;&amp;</code>逻辑与命令连接符。</p>
-<p><code>command1 &amp;&amp; command2 &amp;&amp; command3</code>表示从左往右按顺序执行命令，如果中间有命令执行失败，则中断在失败的命令处不继续往下执行。即左边的命令执行成功才执行右边的命令；当左边命令执行失败就不会执行右边命令。</p>
-<h2 id="1-3"><a href="#1-3" class="headerlink" title="1.3. ||"></a>1.3. <code>||</code></h2><p><code>||</code>逻辑或命令连接符。</p>
-<p><code>command1 ||command2 || command3</code>表示从左往右按顺序执行命令，如果中间有命令执行成功，则中断在成功的命令处不继续往下执行。即左边的命令执行成功时，停止执行右边的命令；只有当左边的命令执行失败时，才执行右边的命令。</p>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>shell</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>shell</tag>
-        <tag>command connector</tag>
       </tags>
   </entry>
   <entry>
@@ -9470,8 +9470,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>annotation</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>functional annotation</tag>
         <tag>eggnog-mapper</tag>
         <tag>interproscan</tag>
@@ -9600,8 +9600,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>annotation</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>ncRNA</tag>
         <tag>Infernal</tag>
         <tag>Rfam</tag>
@@ -9965,14 +9965,110 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>annotation</category>
       </categories>
       <tags>
-        <tag>genome annotation</tag>
         <tag>genome</tag>
+        <tag>genome annotation</tag>
         <tag>repeat sequences</tag>
         <tag>transposable elements(TE)</tag>
         <tag>RepeatMasker</tag>
         <tag>RepeatModeler</tag>
         <tag>EDTA</tag>
         <tag>tandem repeat</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基因组组装和注释结果的整理</title>
+    <url>/2021/08/10/omics_genome.management/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1833352&auto=1&height=32"></iframe></div>
+
+
+<h1 id="1-基因组整理【组装之后，注释之前】"><a href="#1-基因组整理【组装之后，注释之前】" class="headerlink" title="1. 基因组整理【组装之后，注释之前】"></a>1. 基因组整理【组装之后，注释之前】</h1><h2 id="1-1-基因组碱基整理"><a href="#1-1-基因组碱基整理" class="headerlink" title="1.1. 基因组碱基整理"></a>1.1. 基因组碱基整理</h2><p>基因组碱基-u修改成大写字母形式，同时建议使用-w 0把序列输出限定为一行序列。</p>
+<p><code>seqkit seq -u -w 0 genome.old.fa&gt;genome.new.fa</code></p>
+<h2 id="1-2-基因组碱基小写带来的问题："><a href="#1-2-基因组碱基小写带来的问题：" class="headerlink" title="1.2. 基因组碱基小写带来的问题："></a>1.2. 基因组碱基小写带来的问题：</h2><ol>
+<li>edta运行TIR预测时，报错并中断运行。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EDTA/bin/TIR-Learner2.5/Module2/RunGRF.py&quot;, line 79, in &lt;module&gt;</span><br><span class="line">    if (len(str(records[0].seq))&gt;int(length)+500):</span><br><span class="line">IndexError: list index out of range</span><br><span class="line">cp: cannot stat &#x27;TIR-Learner/*-p&#x27;: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>geta生成基因注释结果减少。<br>前期运行不受影响，会在geta生成的&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;中合并前面步骤预测结果时把许多基因预测结果识别为partial而筛除掉本为完整的基因，可看到&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.gff3的gene数量是正常的，而out.tmp&#x2F;6.combineGeneModels&#x2F;genome.completed.gff3明显降低，&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.partial.gff3明显升高。out.tmp&#x2F;6.combineGeneModels&#x2F;genome.filter.gff3是最后的基因注释结果，即out.gff3也相应减少。</li>
+<li>maker的某些运行步骤也会出错。</li>
+</ol>
+<h2 id="1-3-基因组序列ID修改"><a href="#1-3-基因组序列ID修改" class="headerlink" title="1.3. 基因组序列ID修改"></a>1.3. 基因组序列ID修改</h2><h3 id="1-3-1-排序【optional】–根据需要选择"><a href="#1-3-1-排序【optional】–根据需要选择" class="headerlink" title="1.3.1. 排序【optional】–根据需要选择"></a>1.3.1. 排序【optional】–根据需要选择</h3><p>按长度对基因组contigs进行从长到短的排序</p>
+<p><code>seqkit sort -l -r -w 0 genome.old.fa &gt;genome.sort.fa</code> </p>
+<h3 id="1-3-2-重命名【推荐】"><a href="#1-3-2-重命名【推荐】" class="headerlink" title="1.3.2. 重命名【推荐】"></a>1.3.2. 重命名【推荐】</h3><p>最好重命名成长度一致的数字，避免后期分析遇到contig1和contig11同时被匹配的问题。</p>
+<ol>
+<li>solution A【速度最快，推荐】<br>序列IDs按顺序命名为1-n的数字，–nr-width可以设置数字的长度，长度为5时第一条序列名称为00001。</li>
+</ol>
+<p><code>seqkit replace -p &#39;.*&#39; -r &#123;nr&#125; --nr-width 5 genome.sort.fa</code> </p>
+<ol start="2">
+<li>solution B<br>把序列id重命名成1-n的数字</li>
+</ol>
+<p><code>awk &#39;BEGIN&#123;i=0 ; FS=&quot;,&quot; ; OFS=&quot;,&quot;&#125;&#123; if(/&gt;/)&#123;gsub($1,&quot;&gt;&quot;++i,$1);print $0&#125;else&#123;print $0&#125;&#125;&#39; genome.sort.fa&gt;genome.fa</code> </p>
+<p>基因组的序列id改为scaf001的形式</p>
+<p><code>sed -i &quot;s/&gt;/&gt;scaf/g&quot; genome.fa</code> </p>
+<ol start="3">
+<li>solution C<br>把基因组序列id的数字1-100改成0001-0100这种数字位数相同的格式。这个没有solution A快，只推荐在不想做大规模更改的情况下使用。</li>
+</ol>
+<p>用下面脚本实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">j=1</span><br><span class="line">for i in `seq -w 1 0100` #把相同数字位数的0001-0100依次赋值给变量i</span><br><span class="line">do</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.fa #两次替换，第一次替换scaffold$j为行尾的字符串（比如在基因组序列文件中），第二次替换scaffold$j不为行尾的字符串，[^0-9]代表不为数字的任意一个字符，\1代表替换前括号([^0-9])中的内容。</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.gff #同上，替换其他文件，比如gff文件。</span><br><span class="line">	j=$(($j+1)) #把1-100依次赋值给变量j</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-基因组注释整理【注释结果整理】"><a href="#2-基因组注释整理【注释结果整理】" class="headerlink" title="2. 基因组注释整理【注释结果整理】"></a>2. 基因组注释整理【注释结果整理】</h1><h2 id="GFF3toolkit【推荐】"><a href="#GFF3toolkit【推荐】" class="headerlink" title="GFF3toolkit【推荐】"></a>GFF3toolkit【推荐】</h2><p>推荐使用GFF3toolkit来进行gff3注释文件的整理，具体介绍参考博客<a href="https://yanzhongsino.github.io/2022/05/24/biosoft_fileformat_GFF3toolkit/">GFF3toolkit blog</a>。</p>
+<p>GFF3toolkit包含许多模块：</p>
+<ul>
+<li>gff3_QC：检测gff3格式错误</li>
+<li>gff3_fix：修正gff3格式错误</li>
+<li>gff3_merge：合并两个gff3文件</li>
+<li>gff3_sort：根据scaffold，coordinates坐标来排序gff3文件</li>
+<li>gff3_to_fasta：根据基因组fasta和注释gff生成gene&#x2F;cds&#x2F;protein&#x2F;exon等序列</li>
+</ul>
+<h2 id="2-1-合并多个注释结果"><a href="#2-1-合并多个注释结果" class="headerlink" title="2.1. 合并多个注释结果"></a>2.1. 合并多个注释结果</h2><p>基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。</p>
+<p>合并两个基因注释文件（若是多个就依次合并）</p>
+<ol>
+<li><p>输出A.gff中符合要求的行，即A.gff中与B.gff中位置有overlap的行。<br><code>bedtools intersect -a A.gff -b B.gff -wa &gt;A.dup.gff</code> </p>
+</li>
+<li><p>输出只在A.gff存在的行，即把A.dup.gff从A.gff中删除，需要两个文件都已排序，若未排序先sort排序再处理。<br><code>comm -1 A.gff A.dup.gff &gt;A.filter.gff</code> </p>
+</li>
+<li><p>合并B.gff和A.gff中与B.gff不重复的部分。<br><code>cat B.gff A.filter.gff &gt;sample.gff</code></p>
+</li>
+</ol>
+<h2 id="2-2-重命名注释结果【可选】"><a href="#2-2-重命名注释结果【可选】" class="headerlink" title="2.2. 重命名注释结果【可选】"></a>2.2. 重命名注释结果【可选】</h2><p>根据需要选择【非必要的】，根据染色体位置顺序对注释的基因结果进行排序和重命名整理。<br>除了基因注释外，不同分析源都可能发现新的基因，增加注释的基因数量，从而打乱顺序。</p>
+<h3 id="2-2-1-排序"><a href="#2-2-1-排序" class="headerlink" title="2.2.1. 排序"></a>2.2.1. 排序</h3><ol>
+<li>把sample.gff3中gene替换成1gene，mRNA替换成2mRNA，exon替换成3exon，CDS替换成4CDS；目的是确保排序后单个基因内部的顺序是1-2-3-4。<br><code>sed -i -e &quot;s/gene/1gene/g&quot; -e &quot;s/mRNA/2mRNA/g&quot; -e &quot;s/exon/3exon/g&quot; -e &quot;s/CDS/4CDS/g&quot; sample.gff3</code></li>
+<li>根据染色体位置排序。按照第一列第四个字符，第四列数值，第五列数值逆序依次排序。<br><code>cat sample.gff3 |sort -k 1.4n -k 4n -k 5nr &gt;sample.sort.gff3</code></li>
+<li>获得的sample.sort.gff3文件再1gene替换成gene，234类似替换。<br><code>sed -i -e &quot;s/1gene/gene/g&quot; -e &quot;s/2mRNA/mRNA/g&quot; -e &quot;s/3exon/exon/g&quot; -e &quot;s/4CDS/CDS/g&quot; sample.sort.gff3</code></li>
+</ol>
+<h3 id="2-2-2-重命名"><a href="#2-2-2-重命名" class="headerlink" title="2.2.2. 重命名"></a>2.2.2. 重命名</h3><ol>
+<li>复制一份注释文件用于修改和替换<br><code>cp sample.sort.gff3 sample.new.gff3</code></li>
+<li>获取旧ID的list。获取sample.sort.gff3第九列中的ID值。<br><code>cat sample.new.gff3 | awk &#39;$3==&quot;gene&quot; &#123;print $9&#125;&#39;|sed -e &quot;s/;.*//g&quot; -e &quot;s/ID=//g&quot; &gt;old.name</code></li>
+<li>获取新ID的list。<br><code>for i in $(seq -w 1 </code>cat old.name|wc -l<code>); do echo scaf$i; done &gt;new.name</code></li>
+<li>合并旧的和新的ID。<br><code>paste -d &quot;/&quot; old.name new.name &gt; old2new.name</code></li>
+<li>生成替换脚本old2new.sh。<br><code>sed -e &quot;s/^/sed -i \&quot;s\//g&quot; -e &quot;s/$/\/g sample.new.gff3/g\&quot;&quot; old2new.name &gt;old2new.sh</code></li>
+<li>运行替换脚本，会直接替换sample.new.gff3文件的旧ID为新ID，可能会运行较长时间。<br><code>sh old2new.sh</code></li>
+</ol>
+<p>ps：这部分代码可实现，但是是非常冗余的代码量（水平有限），且未必适用所有注释文件，谨慎参考。</p>
+<h2 id="2-3-从注释文件提取序列"><a href="#2-3-从注释文件提取序列" class="headerlink" title="2.3. 从注释文件提取序列"></a>2.3. 从注释文件提取序列</h2><p>用gffread根据注释文件从基因组提取基因序列:</p>
+<ul>
+<li>从基因组genome.fa和注释文件sample.gff3获取cds序列<br><code>gffread -x sample.cds.fa -g genome.fa sample.gff3</code></li>
+<li>从基因组genome.fa和注释文件sample.gff3获取exon序列<br><code>gffread -w sample.exon.fa -g genome.fa sample.gff3</code></li>
+<li>从基因组genome.fa和注释文件sample.gff3获取protein序列<br><code>gffread -y sample.protein.fa -g genome.fa sample.gff3</code></li>
+</ul>
+<h2 id="2-4-从注释文件提取intron信息"><a href="#2-4-从注释文件提取intron信息" class="headerlink" title="2.4. 从注释文件提取intron信息"></a>2.4. 从注释文件提取intron信息</h2><p>脚本<a href="https://github.com/yanzhongsino/bioscripts/blob/main/modifiedscripts/extract_intron_info.pl">extract_intron_info.pl</a></p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>omics</category>
+        <category>genome</category>
+      </categories>
+      <tags>
+        <tag>genome</tag>
+        <tag>genome annotation</tag>
+        <tag>sort</tag>
+        <tag>rename</tag>
+        <tag>combine</tag>
+        <tag>extract</tag>
       </tags>
   </entry>
   <entry>
@@ -10247,8 +10343,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>jellyfish</tag>
         <tag>KMC</tag>
@@ -10412,108 +10508,12 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KMC</tag>
         <tag>GenomeScope</tag>
         <tag>Smudgeplot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>基因组组装和注释结果的整理</title>
-    <url>/2021/08/10/omics_genome.management/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1833352&auto=1&height=32"></iframe></div>
-
-
-<h1 id="1-基因组整理【组装之后，注释之前】"><a href="#1-基因组整理【组装之后，注释之前】" class="headerlink" title="1. 基因组整理【组装之后，注释之前】"></a>1. 基因组整理【组装之后，注释之前】</h1><h2 id="1-1-基因组碱基整理"><a href="#1-1-基因组碱基整理" class="headerlink" title="1.1. 基因组碱基整理"></a>1.1. 基因组碱基整理</h2><p>基因组碱基-u修改成大写字母形式，同时建议使用-w 0把序列输出限定为一行序列。</p>
-<p><code>seqkit seq -u -w 0 genome.old.fa&gt;genome.new.fa</code></p>
-<h2 id="1-2-基因组碱基小写带来的问题："><a href="#1-2-基因组碱基小写带来的问题：" class="headerlink" title="1.2. 基因组碱基小写带来的问题："></a>1.2. 基因组碱基小写带来的问题：</h2><ol>
-<li>edta运行TIR预测时，报错并中断运行。</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EDTA/bin/TIR-Learner2.5/Module2/RunGRF.py&quot;, line 79, in &lt;module&gt;</span><br><span class="line">    if (len(str(records[0].seq))&gt;int(length)+500):</span><br><span class="line">IndexError: list index out of range</span><br><span class="line">cp: cannot stat &#x27;TIR-Learner/*-p&#x27;: No such file or directory</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>geta生成基因注释结果减少。<br>前期运行不受影响，会在geta生成的&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;中合并前面步骤预测结果时把许多基因预测结果识别为partial而筛除掉本为完整的基因，可看到&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.gff3的gene数量是正常的，而out.tmp&#x2F;6.combineGeneModels&#x2F;genome.completed.gff3明显降低，&#x2F;out.tmp&#x2F;6.combineGeneModels&#x2F;genome.partial.gff3明显升高。out.tmp&#x2F;6.combineGeneModels&#x2F;genome.filter.gff3是最后的基因注释结果，即out.gff3也相应减少。</li>
-<li>maker的某些运行步骤也会出错。</li>
-</ol>
-<h2 id="1-3-基因组序列ID修改"><a href="#1-3-基因组序列ID修改" class="headerlink" title="1.3. 基因组序列ID修改"></a>1.3. 基因组序列ID修改</h2><h3 id="1-3-1-排序【optional】–根据需要选择"><a href="#1-3-1-排序【optional】–根据需要选择" class="headerlink" title="1.3.1. 排序【optional】–根据需要选择"></a>1.3.1. 排序【optional】–根据需要选择</h3><p>按长度对基因组contigs进行从长到短的排序</p>
-<p><code>seqkit sort -l -r -w 0 genome.old.fa &gt;genome.sort.fa</code> </p>
-<h3 id="1-3-2-重命名【推荐】"><a href="#1-3-2-重命名【推荐】" class="headerlink" title="1.3.2. 重命名【推荐】"></a>1.3.2. 重命名【推荐】</h3><p>最好重命名成长度一致的数字，避免后期分析遇到contig1和contig11同时被匹配的问题。</p>
-<ol>
-<li>solution A【速度最快，推荐】<br>序列IDs按顺序命名为1-n的数字，–nr-width可以设置数字的长度，长度为5时第一条序列名称为00001。</li>
-</ol>
-<p><code>seqkit replace -p &#39;.*&#39; -r &#123;nr&#125; --nr-width 5 genome.sort.fa</code> </p>
-<ol start="2">
-<li>solution B<br>把序列id重命名成1-n的数字</li>
-</ol>
-<p><code>awk &#39;BEGIN&#123;i=0 ; FS=&quot;,&quot; ; OFS=&quot;,&quot;&#125;&#123; if(/&gt;/)&#123;gsub($1,&quot;&gt;&quot;++i,$1);print $0&#125;else&#123;print $0&#125;&#125;&#39; genome.sort.fa&gt;genome.fa</code> </p>
-<p>基因组的序列id改为scaf001的形式</p>
-<p><code>sed -i &quot;s/&gt;/&gt;scaf/g&quot; genome.fa</code> </p>
-<ol start="3">
-<li>solution C<br>把基因组序列id的数字1-100改成0001-0100这种数字位数相同的格式。这个没有solution A快，只推荐在不想做大规模更改的情况下使用。</li>
-</ol>
-<p>用下面脚本实现：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">j=1</span><br><span class="line">for i in `seq -w 1 0100` #把相同数字位数的0001-0100依次赋值给变量i</span><br><span class="line">do</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.fa #两次替换，第一次替换scaffold$j为行尾的字符串（比如在基因组序列文件中），第二次替换scaffold$j不为行尾的字符串，[^0-9]代表不为数字的任意一个字符，\1代表替换前括号([^0-9])中的内容。</span><br><span class="line">	sed -i -E -e &quot;s/scaffold$j$/scaffold_$i/g&quot; -e &quot;s/scaffold$j([^0-9])/scaffold_$i\1/g&quot; species.gff #同上，替换其他文件，比如gff文件。</span><br><span class="line">	j=$(($j+1)) #把1-100依次赋值给变量j</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-基因组注释整理【注释结果整理】"><a href="#2-基因组注释整理【注释结果整理】" class="headerlink" title="2. 基因组注释整理【注释结果整理】"></a>2. 基因组注释整理【注释结果整理】</h1><h2 id="GFF3toolkit【推荐】"><a href="#GFF3toolkit【推荐】" class="headerlink" title="GFF3toolkit【推荐】"></a>GFF3toolkit【推荐】</h2><p>推荐使用GFF3toolkit来进行gff3注释文件的整理，具体介绍参考博客<a href="https://yanzhongsino.github.io/2022/05/24/biosoft_fileformat_GFF3toolkit/">GFF3toolkit blog</a>。</p>
-<p>GFF3toolkit包含许多模块：</p>
-<ul>
-<li>gff3_QC：检测gff3格式错误</li>
-<li>gff3_fix：修正gff3格式错误</li>
-<li>gff3_merge：合并两个gff3文件</li>
-<li>gff3_sort：根据scaffold，coordinates坐标来排序gff3文件</li>
-<li>gff3_to_fasta：根据基因组fasta和注释gff生成gene&#x2F;cds&#x2F;protein&#x2F;exon等序列</li>
-</ul>
-<h2 id="2-1-合并多个注释结果"><a href="#2-1-合并多个注释结果" class="headerlink" title="2.1. 合并多个注释结果"></a>2.1. 合并多个注释结果</h2><p>基因组的基因结构注释，如果使用了多款软件进行，想要合并多套注释结果，并让注释的基因根据染色体和位置信息排序，可参考这个办法。</p>
-<p>合并两个基因注释文件（若是多个就依次合并）</p>
-<ol>
-<li><p>输出A.gff中符合要求的行，即A.gff中与B.gff中位置有overlap的行。<br><code>bedtools intersect -a A.gff -b B.gff -wa &gt;A.dup.gff</code> </p>
-</li>
-<li><p>输出只在A.gff存在的行，即把A.dup.gff从A.gff中删除，需要两个文件都已排序，若未排序先sort排序再处理。<br><code>comm -1 A.gff A.dup.gff &gt;A.filter.gff</code> </p>
-</li>
-<li><p>合并B.gff和A.gff中与B.gff不重复的部分。<br><code>cat B.gff A.filter.gff &gt;sample.gff</code></p>
-</li>
-</ol>
-<h2 id="2-2-重命名注释结果【可选】"><a href="#2-2-重命名注释结果【可选】" class="headerlink" title="2.2. 重命名注释结果【可选】"></a>2.2. 重命名注释结果【可选】</h2><p>根据需要选择【非必要的】，根据染色体位置顺序对注释的基因结果进行排序和重命名整理。<br>除了基因注释外，不同分析源都可能发现新的基因，增加注释的基因数量，从而打乱顺序。</p>
-<h3 id="2-2-1-排序"><a href="#2-2-1-排序" class="headerlink" title="2.2.1. 排序"></a>2.2.1. 排序</h3><ol>
-<li>把sample.gff3中gene替换成1gene，mRNA替换成2mRNA，exon替换成3exon，CDS替换成4CDS；目的是确保排序后单个基因内部的顺序是1-2-3-4。<br><code>sed -i -e &quot;s/gene/1gene/g&quot; -e &quot;s/mRNA/2mRNA/g&quot; -e &quot;s/exon/3exon/g&quot; -e &quot;s/CDS/4CDS/g&quot; sample.gff3</code></li>
-<li>根据染色体位置排序。按照第一列第四个字符，第四列数值，第五列数值逆序依次排序。<br><code>cat sample.gff3 |sort -k 1.4n -k 4n -k 5nr &gt;sample.sort.gff3</code></li>
-<li>获得的sample.sort.gff3文件再1gene替换成gene，234类似替换。<br><code>sed -i -e &quot;s/1gene/gene/g&quot; -e &quot;s/2mRNA/mRNA/g&quot; -e &quot;s/3exon/exon/g&quot; -e &quot;s/4CDS/CDS/g&quot; sample.sort.gff3</code></li>
-</ol>
-<h3 id="2-2-2-重命名"><a href="#2-2-2-重命名" class="headerlink" title="2.2.2. 重命名"></a>2.2.2. 重命名</h3><ol>
-<li>复制一份注释文件用于修改和替换<br><code>cp sample.sort.gff3 sample.new.gff3</code></li>
-<li>获取旧ID的list。获取sample.sort.gff3第九列中的ID值。<br><code>cat sample.new.gff3 | awk &#39;$3==&quot;gene&quot; &#123;print $9&#125;&#39;|sed -e &quot;s/;.*//g&quot; -e &quot;s/ID=//g&quot; &gt;old.name</code></li>
-<li>获取新ID的list。<br><code>for i in $(seq -w 1 </code>cat old.name|wc -l<code>); do echo scaf$i; done &gt;new.name</code></li>
-<li>合并旧的和新的ID。<br><code>paste -d &quot;/&quot; old.name new.name &gt; old2new.name</code></li>
-<li>生成替换脚本old2new.sh。<br><code>sed -e &quot;s/^/sed -i \&quot;s\//g&quot; -e &quot;s/$/\/g sample.new.gff3/g\&quot;&quot; old2new.name &gt;old2new.sh</code></li>
-<li>运行替换脚本，会直接替换sample.new.gff3文件的旧ID为新ID，可能会运行较长时间。<br><code>sh old2new.sh</code></li>
-</ol>
-<p>ps：这部分代码可实现，但是是非常冗余的代码量（水平有限），且未必适用所有注释文件，谨慎参考。</p>
-<h2 id="2-3-从注释文件提取序列"><a href="#2-3-从注释文件提取序列" class="headerlink" title="2.3. 从注释文件提取序列"></a>2.3. 从注释文件提取序列</h2><p>用gffread根据注释文件从基因组提取基因序列:</p>
-<ul>
-<li>从基因组genome.fa和注释文件sample.gff3获取cds序列<br><code>gffread -x sample.cds.fa -g genome.fa sample.gff3</code></li>
-<li>从基因组genome.fa和注释文件sample.gff3获取exon序列<br><code>gffread -w sample.exon.fa -g genome.fa sample.gff3</code></li>
-<li>从基因组genome.fa和注释文件sample.gff3获取protein序列<br><code>gffread -y sample.protein.fa -g genome.fa sample.gff3</code></li>
-</ul>
-<h2 id="2-4-从注释文件提取intron信息"><a href="#2-4-从注释文件提取intron信息" class="headerlink" title="2.4. 从注释文件提取intron信息"></a>2.4. 从注释文件提取intron信息</h2><p>脚本<a href="https://github.com/yanzhongsino/bioscripts/blob/main/modifiedscripts/extract_intron_info.pl">extract_intron_info.pl</a></p>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>omics</category>
-        <category>genome</category>
-      </categories>
-      <tags>
-        <tag>genome annotation</tag>
-        <tag>genome</tag>
-        <tag>sort</tag>
-        <tag>rename</tag>
-        <tag>combine</tag>
-        <tag>extract</tag>
       </tags>
   </entry>
   <entry>
@@ -10629,8 +10629,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>jellyfish</tag>
         <tag>GenomeScope</tag>
@@ -10743,8 +10743,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KMC</tag>
         <tag>GenomeScope</tag>
@@ -10883,8 +10883,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KMC</tag>
         <tag>GenomeScope</tag>
@@ -11041,8 +11041,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>GCE</tag>
         <tag>kmerfreq</tag>
@@ -11170,8 +11170,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome survey</category>
       </categories>
       <tags>
-        <tag>genome</tag>
         <tag>genome survey</tag>
+        <tag>genome</tag>
         <tag>k-mer</tag>
         <tag>KmerGenie</tag>
       </tags>
@@ -11435,9 +11435,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>genome</tag>
+        <tag>LTR</tag>
         <tag>quality assessment</tag>
         <tag>LAI</tag>
-        <tag>LTR</tag>
       </tags>
   </entry>
   <entry>
@@ -11643,8 +11643,8 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>transcriptome</tag>
       </tags>
@@ -11954,9 +11954,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>mitogenome</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>mapping</tag>
         <tag>sam</tag>
@@ -12057,9 +12057,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>mitogenome</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>mapping</tag>
         <tag>sam</tag>
@@ -12236,9 +12236,9 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>quality assessment</category>
       </categories>
       <tags>
-        <tag>organelle</tag>
         <tag>mitogenome</tag>
         <tag>genome</tag>
+        <tag>organelle</tag>
         <tag>quality assessment</tag>
         <tag>transcriptome</tag>
         <tag>mapping</tag>
@@ -12676,7 +12676,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 </li>
 <li><strong>SEQ_FEAT.TransLen</strong><ul>
 <li>表示蛋白质长度与预测的蛋白质长度不匹配，运行错误</li>
-<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#x67;&#x65;&#110;&#111;&#x6d;&#101;&#115;&#64;&#x6e;&#x63;&#x62;&#105;&#x2e;&#x6e;&#x6c;&#109;&#x2e;&#x6e;&#x69;&#104;&#x2e;&#x67;&#x6f;&#118;">&#x67;&#x65;&#110;&#111;&#x6d;&#101;&#115;&#64;&#x6e;&#x63;&#x62;&#105;&#x2e;&#x6e;&#x6c;&#109;&#x2e;&#x6e;&#x69;&#104;&#x2e;&#x67;&#x6f;&#118;</a>)让帮忙修改这个错误。</li>
+<li>建议重跑table2asn，报错持续存在就写邮件把sample.sqn和运行的命令行发给NCBI(<a href="mailto:&#x67;&#101;&#110;&#x6f;&#x6d;&#101;&#115;&#64;&#x6e;&#99;&#98;&#x69;&#46;&#x6e;&#108;&#x6d;&#x2e;&#110;&#x69;&#104;&#46;&#103;&#x6f;&#x76;">&#x67;&#101;&#110;&#x6f;&#x6d;&#101;&#115;&#64;&#x6e;&#99;&#98;&#x69;&#46;&#x6e;&#108;&#x6d;&#x2e;&#110;&#x69;&#104;&#46;&#103;&#x6f;&#x76;</a>)让帮忙修改这个错误。</li>
 </ul>
 </li>
 <li><strong>SEQ_FEAT.BadInternalCharacter</strong><ul>
@@ -12828,11 +12828,77 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <category>genome</category>
       </categories>
       <tags>
+        <tag>genome</tag>
         <tag>GenBank</tag>
         <tag>genome submit</tag>
         <tag>tbl2asn</tag>
-        <tag>genome</tag>
         <tag>table2asn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用BankIt提交细胞器基因组组装和注释到NCBI</title>
+    <url>/2022/06/30/omics_organelle_submit/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
+
+<h1 id="准备上传的文件"><a href="#准备上传的文件" class="headerlink" title="准备上传的文件"></a>准备上传的文件</h1><ol>
+<li>基因组fasta文件</li>
+<li>注释tbl格式文件</li>
+</ol>
+<p>tbl格式文件推荐用GB2sequin来准备。</p>
+<p>参考博客-转换GenBank文件为tbl格式：<a href="https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。</a></p>
+<h1 id="上传步骤"><a href="#上传步骤" class="headerlink" title="上传步骤"></a>上传步骤</h1><h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>BankIt：<a href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
+<p>使用BankIt在线上传，允许一次提交多个细胞器基因组序列。</p>
+<h2 id="上传步骤-1"><a href="#上传步骤-1" class="headerlink" title="上传步骤"></a>上传步骤</h2><ol>
+<li>选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：</li>
+</ol>
+<ul>
+<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组</li>
+<li>Transcriptome Shotgun Assembly (TSA)：组装好的转录组</li>
+<li>Unassembled sequence reads (SRA)：未组装的测序reads</li>
+<li>Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids…：其他测序数据，细胞器基因组选这个。</li>
+</ul>
+<ol start="2">
+<li>Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区&#x2F;省份，邮编，国家，和接收上传信息的邮箱【重要】。</li>
+<li>Reference：填写提供序列的作者和出版信息。</li>
+<li>Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。</li>
+<li>Nucleotide：填写序列的信息。</li>
+</ol>
+<ul>
+<li>序列发布的时间，可以指定日期，也可以一通过上传审核就发布。</li>
+<li>分子类型（Molecule Type）：细胞器基因组选的genomic DNA</li>
+<li>拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。</li>
+<li>是否是完整的细胞器基因组：yes&#x2F;no。</li>
+<li>核苷酸序列格式：fasta或者alignment，选的fasta</li>
+<li>上传细胞器基因组的fasta文件</li>
+</ul>
+<ol start="6">
+<li>Organism：填写Organism name信息，可填物种的学名。</li>
+<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
+<li>Source Modifiers：资源信息。</li>
+</ol>
+<ul>
+<li>Organelle&#x2F;Location: 叶绿体&#x2F;线粒体&#x2F;其他器官。</li>
+<li>Source Modifier可以填写Country；对应的value填写China。</li>
+</ul>
+<ol start="9">
+<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
+<li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
+</ol>
+<p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>omics</category>
+        <category>organelle</category>
+      </categories>
+      <tags>
+        <tag>mitogenome</tag>
+        <tag>plastome</tag>
+        <tag>submit</tag>
       </tags>
   </entry>
   <entry>
@@ -12981,72 +13047,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
         <tag>rearrangement</tag>
         <tag>insert size</tag>
         <tag>recombination frequency</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用BankIt提交细胞器基因组组装和注释到NCBI</title>
-    <url>/2022/06/30/omics_organelle_submit/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
-
-<h1 id="准备上传的文件"><a href="#准备上传的文件" class="headerlink" title="准备上传的文件"></a>准备上传的文件</h1><ol>
-<li>基因组fasta文件</li>
-<li>注释tbl格式文件</li>
-</ol>
-<p>tbl格式文件推荐用GB2sequin来准备。</p>
-<p>参考博客-转换GenBank文件为tbl格式：<a href="https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。</a></p>
-<h1 id="上传步骤"><a href="#上传步骤" class="headerlink" title="上传步骤"></a>上传步骤</h1><h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>BankIt：<a href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
-<p>使用BankIt在线上传，允许一次提交多个细胞器基因组序列。</p>
-<h2 id="上传步骤-1"><a href="#上传步骤-1" class="headerlink" title="上传步骤"></a>上传步骤</h2><ol>
-<li>选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：</li>
-</ol>
-<ul>
-<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组</li>
-<li>Transcriptome Shotgun Assembly (TSA)：组装好的转录组</li>
-<li>Unassembled sequence reads (SRA)：未组装的测序reads</li>
-<li>Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids…：其他测序数据，细胞器基因组选这个。</li>
-</ul>
-<ol start="2">
-<li>Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区&#x2F;省份，邮编，国家，和接收上传信息的邮箱【重要】。</li>
-<li>Reference：填写提供序列的作者和出版信息。</li>
-<li>Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。</li>
-<li>Nucleotide：填写序列的信息。</li>
-</ol>
-<ul>
-<li>序列发布的时间，可以指定日期，也可以一通过上传审核就发布。</li>
-<li>分子类型（Molecule Type）：细胞器基因组选的genomic DNA</li>
-<li>拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。</li>
-<li>是否是完整的细胞器基因组：yes&#x2F;no。</li>
-<li>核苷酸序列格式：fasta或者alignment，选的fasta</li>
-<li>上传细胞器基因组的fasta文件</li>
-</ul>
-<ol start="6">
-<li>Organism：填写Organism name信息，可填物种的学名。</li>
-<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
-<li>Source Modifiers：资源信息。</li>
-</ol>
-<ul>
-<li>Organelle&#x2F;Location: 叶绿体&#x2F;线粒体&#x2F;其他器官。</li>
-<li>Source Modifier可以填写Country；对应的value填写China。</li>
-</ul>
-<ol start="9">
-<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
-<li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
-</ol>
-<p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>omics</category>
-        <category>organelle</category>
-      </categories>
-      <tags>
-        <tag>mitogenome</tag>
-        <tag>plastome</tag>
-        <tag>submit</tag>
       </tags>
   </entry>
   <entry>
@@ -13900,6 +13900,22 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
+    <title>html</title>
+    <url>/2018/06/04/web_html/</url>
+    <content><![CDATA[<h1 id="HTML基础知识"><a href="#HTML基础知识" class="headerlink" title="HTML基础知识"></a>HTML基础知识</h1><h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>html lang&#x3D;”en”<br>!–设置语言–!<br>!–head部分开始–!<br>head eta charset&#x3D;”UTF-8”<br>!–设置编码方式–!<br>meta name&#x3D;”viewport” content&#x3D;”width&#x3D;device-width, initial-scale&#x3D;1.0”<br>!–设置网页内容宽度为显示设备的宽度，初始比例为1.0–!<br>meta http-equiv&#x3D;”X-UA-Compatible” content&#x3D;”ie&#x3D;edge”<br>!–兼容IE浏览器–<br>link rel&#x3D;”stylesheet” type&#x3D;”text&#x2F;css” href&#x3D;”reset.css”<br>!–链接重置样式的reset.css–!<br>link rel&#x3D;”stylesheet” type&#x3D;”text&#x2F;css” href&#x3D;”index.css”<br>!–链接应用于网页的样式–!<br>script src&#x3D;”index.js” &#x2F;script<br>!–链接应用于网页的js文件–!<br>titleDocument&#x2F;title<br>!–title会显示在浏览器的顶部标签页–!<br>&#x2F;head<br>!–head部分结束–!<br>body<br>!–网页的主体内容–!<br>&#x2F;body<br>&#x2F;html</p>
+<h2 id="表单form"><a href="#表单form" class="headerlink" title="表单form"></a>表单form</h2><p>使用label来联系，</p>
+<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><ul>
+<li>设置多个<code>&lt;input type=radio&gt;</code>时，需要把多个input的name设置成一样，才会实现在多个radio中单选的效果。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>web</category>
+      </categories>
+      <tags>
+        <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>glup</title>
     <url>/2018/06/12/web_gulp/</url>
     <content><![CDATA[<h1 id="glup"><a href="#glup" class="headerlink" title="glup"></a>glup</h1><p>用来压缩打包html、css、img等。</p>
@@ -13919,19 +13935,61 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
-    <title>html</title>
-    <url>/2018/06/04/web_html/</url>
-    <content><![CDATA[<h1 id="HTML基础知识"><a href="#HTML基础知识" class="headerlink" title="HTML基础知识"></a>HTML基础知识</h1><h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>html lang&#x3D;”en”<br>!–设置语言–!<br>!–head部分开始–!<br>head eta charset&#x3D;”UTF-8”<br>!–设置编码方式–!<br>meta name&#x3D;”viewport” content&#x3D;”width&#x3D;device-width, initial-scale&#x3D;1.0”<br>!–设置网页内容宽度为显示设备的宽度，初始比例为1.0–!<br>meta http-equiv&#x3D;”X-UA-Compatible” content&#x3D;”ie&#x3D;edge”<br>!–兼容IE浏览器–<br>link rel&#x3D;”stylesheet” type&#x3D;”text&#x2F;css” href&#x3D;”reset.css”<br>!–链接重置样式的reset.css–!<br>link rel&#x3D;”stylesheet” type&#x3D;”text&#x2F;css” href&#x3D;”index.css”<br>!–链接应用于网页的样式–!<br>script src&#x3D;”index.js” &#x2F;script<br>!–链接应用于网页的js文件–!<br>titleDocument&#x2F;title<br>!–title会显示在浏览器的顶部标签页–!<br>&#x2F;head<br>!–head部分结束–!<br>body<br>!–网页的主体内容–!<br>&#x2F;body<br>&#x2F;html</p>
-<h2 id="表单form"><a href="#表单form" class="headerlink" title="表单form"></a>表单form</h2><p>使用label来联系，</p>
-<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><ul>
-<li>设置多个<code>&lt;input type=radio&gt;</code>时，需要把多个input的name设置成一样，才会实现在多个radio中单选的效果。</li>
+    <title>react</title>
+    <url>/2018/06/14/web_react/</url>
+    <content><![CDATA[<h1 id="1-react"><a href="#1-react" class="headerlink" title="1. react"></a>1. react</h1><h2 id="1-1-JSX"><a href="#1-1-JSX" class="headerlink" title="1.1. JSX"></a>1.1. JSX</h2><p>react使用JSX代替javascript，JSX是有点像XML的javascript语法扩展。</p>
+<h3 id="1-1-1-基本语法"><a href="#1-1-1-基本语法" class="headerlink" title="1.1.1. 基本语法"></a>1.1.1. 基本语法</h3><p>ReactDOM.render(<br>  div<br>    h1 react教程 &#x2F;h1<br>    h2 欢迎学习 React &#x2F;h2<br>    p 这是一个很不错的 JavaScript 库! &#x2F;p<br>  &#x2F;div<br>document.getElementById(‘example’))</p>
+<p>多个html标签需要全包含在一个div中，以上代码表示在id&#x3D;example的html标签位置渲染一个div，里面有两个标题和一个段落。</p>
+<h3 id="1-1-2-嵌入javascript表达式"><a href="#1-1-2-嵌入javascript表达式" class="headerlink" title="1.1.2. 嵌入javascript表达式"></a>1.1.2. 嵌入javascript表达式</h3><ul>
+<li>JSX中可以嵌入javascript表达式，但需要写在花括号{}内。</li>
+<li>注释也需要写在花括号中。</li>
+<li>花括号中的数组会自动展开所有成员。</li>
+<li>表达式不能使用<code>if else</code>语句，但可以用<code>conditional</code>三元运算表达式。<br><code>&lt;h1&gt;&#123;i == 1 ? &#39;True!&#39; : &#39;False&#39;&#125;&lt;/h1&gt;</code></li>
+</ul>
+<h3 id="1-1-3-内联样式"><a href="#1-1-3-内联样式" class="headerlink" title="1.1.3. 内联样式"></a>1.1.3. 内联样式</h3><p>使用驼峰法设置内联样式</p>
+<p>ReactDOM.render(<br>  h1 style &#x3D; {myStyle} 菜鸟教程 &#x2F;h1<br>  document.getElementById(‘example’))</p>
+<h3 id="1-1-4-渲染HTML标签（strings）和React组件（classes）"><a href="#1-1-4-渲染HTML标签（strings）和React组件（classes）" class="headerlink" title="1.1.4. 渲染HTML标签（strings）和React组件（classes）"></a>1.1.4. 渲染HTML标签（strings）和React组件（classes）</h3><p>React 可以渲染 HTML 标签 (strings) 或 React 组件 (classes)。</p>
+<p>要渲染 HTML 标签，只需在 JSX 里使用小写字母的标签名。</p>
+<p>要渲染 React 组件，只需创建一个大写字母开头的本地变量。</p>
+<h3 id="1-1-5-tips"><a href="#1-1-5-tips" class="headerlink" title="1.1.5. tips"></a>1.1.5. tips</h3><p>由于 JSX 就是 JavaScript，一些标识符像 class 和 for 不建议作为 XML 属性名。作为替代，React DOM 使用 className 和 htmlFor 来做对应的属性。</p>
+<h2 id="1-2-组件"><a href="#1-2-组件" class="headerlink" title="1.2. 组件"></a>1.2. 组件</h2><p>组件API的7个方法：</p>
+<ul>
+<li>设置状态：setState</li>
+<li>替换状态：replaceState</li>
+<li>设置属性：setProps</li>
+<li>替换属性：replaceProps</li>
+<li>强制更新：forceUpdate</li>
+<li>获取DOM节点：findDOMNode</li>
+<li>判断组件挂载状态：isMounted</li>
+</ul>
+<p>react元素是DOM标签或者用户自定义组件，当是自定义组件时，会将JSX属性作为单个对象传递给该组件，这个对象是“props”。<br>组件名称必须以大写字母开头。<br>组件的返回值只能有一个根元素。<br>所有的React组件必须像纯函数（即不能改变输入值的函数）那样使用它们的props。<br>React应用中，按钮、表单、对话框、整个屏幕的内容等，这些通常都被表示为组件。</p>
+<h2 id="1-3-生命周期"><a href="#1-3-生命周期" class="headerlink" title="1.3. 生命周期"></a>1.3. 生命周期</h2><ol>
+<li>组件的生命周期可分成三个状态：</li>
+</ol>
+<ul>
+<li>Mounting：已插入真实 DOM</li>
+<li>Updating：正在被重新渲染</li>
+<li>Unmounting：已移出真实 DOM</li>
+</ul>
+<ol start="2">
+<li>生命周期的方法有：</li>
+</ol>
+<ul>
+<li>componentWillMount 在渲染前调用,在客户端也在服务端。</li>
+<li>componentDidMount : 在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，可以通过this.getDOMNode()来进行访问。 如果你想和其他JavaScript框架一起使用，可以在这个方法中调用setTimeout, setInterval或者发送AJAX请求等操作(防止异部操作阻塞UI)。</li>
+<li>componentWillReceiveProps 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。</li>
+<li>shouldComponentUpdate 返回一个布尔值。在组件接收到新的props或者state时被调用。在初始化时或者使用forceUpdate时不被调用。</li>
+<li>可以在你确认不需要更新组件时使用。</li>
+<li>componentWillUpdate在组件接收到新的props或者state但还没有render时被调用。在初始化时不会被调用。</li>
+<li>componentDidUpdate 在组件完成更新后立即调用。在初始化时不会被调用。</li>
+<li>componentWillUnmount在组件从 DOM 中移除的时候立刻被调用。</li>
 </ul>
 ]]></content>
       <categories>
         <category>web</category>
       </categories>
       <tags>
-        <tag>html</tag>
+        <tag>react</tag>
       </tags>
   </entry>
   <entry>
@@ -14059,64 +14117,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>jquery</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>react</title>
-    <url>/2018/06/14/web_react/</url>
-    <content><![CDATA[<h1 id="1-react"><a href="#1-react" class="headerlink" title="1. react"></a>1. react</h1><h2 id="1-1-JSX"><a href="#1-1-JSX" class="headerlink" title="1.1. JSX"></a>1.1. JSX</h2><p>react使用JSX代替javascript，JSX是有点像XML的javascript语法扩展。</p>
-<h3 id="1-1-1-基本语法"><a href="#1-1-1-基本语法" class="headerlink" title="1.1.1. 基本语法"></a>1.1.1. 基本语法</h3><p>ReactDOM.render(<br>  div<br>    h1 react教程 &#x2F;h1<br>    h2 欢迎学习 React &#x2F;h2<br>    p 这是一个很不错的 JavaScript 库! &#x2F;p<br>  &#x2F;div<br>document.getElementById(‘example’))</p>
-<p>多个html标签需要全包含在一个div中，以上代码表示在id&#x3D;example的html标签位置渲染一个div，里面有两个标题和一个段落。</p>
-<h3 id="1-1-2-嵌入javascript表达式"><a href="#1-1-2-嵌入javascript表达式" class="headerlink" title="1.1.2. 嵌入javascript表达式"></a>1.1.2. 嵌入javascript表达式</h3><ul>
-<li>JSX中可以嵌入javascript表达式，但需要写在花括号{}内。</li>
-<li>注释也需要写在花括号中。</li>
-<li>花括号中的数组会自动展开所有成员。</li>
-<li>表达式不能使用<code>if else</code>语句，但可以用<code>conditional</code>三元运算表达式。<br><code>&lt;h1&gt;&#123;i == 1 ? &#39;True!&#39; : &#39;False&#39;&#125;&lt;/h1&gt;</code></li>
-</ul>
-<h3 id="1-1-3-内联样式"><a href="#1-1-3-内联样式" class="headerlink" title="1.1.3. 内联样式"></a>1.1.3. 内联样式</h3><p>使用驼峰法设置内联样式</p>
-<p>ReactDOM.render(<br>  h1 style &#x3D; {myStyle} 菜鸟教程 &#x2F;h1<br>  document.getElementById(‘example’))</p>
-<h3 id="1-1-4-渲染HTML标签（strings）和React组件（classes）"><a href="#1-1-4-渲染HTML标签（strings）和React组件（classes）" class="headerlink" title="1.1.4. 渲染HTML标签（strings）和React组件（classes）"></a>1.1.4. 渲染HTML标签（strings）和React组件（classes）</h3><p>React 可以渲染 HTML 标签 (strings) 或 React 组件 (classes)。</p>
-<p>要渲染 HTML 标签，只需在 JSX 里使用小写字母的标签名。</p>
-<p>要渲染 React 组件，只需创建一个大写字母开头的本地变量。</p>
-<h3 id="1-1-5-tips"><a href="#1-1-5-tips" class="headerlink" title="1.1.5. tips"></a>1.1.5. tips</h3><p>由于 JSX 就是 JavaScript，一些标识符像 class 和 for 不建议作为 XML 属性名。作为替代，React DOM 使用 className 和 htmlFor 来做对应的属性。</p>
-<h2 id="1-2-组件"><a href="#1-2-组件" class="headerlink" title="1.2. 组件"></a>1.2. 组件</h2><p>组件API的7个方法：</p>
-<ul>
-<li>设置状态：setState</li>
-<li>替换状态：replaceState</li>
-<li>设置属性：setProps</li>
-<li>替换属性：replaceProps</li>
-<li>强制更新：forceUpdate</li>
-<li>获取DOM节点：findDOMNode</li>
-<li>判断组件挂载状态：isMounted</li>
-</ul>
-<p>react元素是DOM标签或者用户自定义组件，当是自定义组件时，会将JSX属性作为单个对象传递给该组件，这个对象是“props”。<br>组件名称必须以大写字母开头。<br>组件的返回值只能有一个根元素。<br>所有的React组件必须像纯函数（即不能改变输入值的函数）那样使用它们的props。<br>React应用中，按钮、表单、对话框、整个屏幕的内容等，这些通常都被表示为组件。</p>
-<h2 id="1-3-生命周期"><a href="#1-3-生命周期" class="headerlink" title="1.3. 生命周期"></a>1.3. 生命周期</h2><ol>
-<li>组件的生命周期可分成三个状态：</li>
-</ol>
-<ul>
-<li>Mounting：已插入真实 DOM</li>
-<li>Updating：正在被重新渲染</li>
-<li>Unmounting：已移出真实 DOM</li>
-</ul>
-<ol start="2">
-<li>生命周期的方法有：</li>
-</ol>
-<ul>
-<li>componentWillMount 在渲染前调用,在客户端也在服务端。</li>
-<li>componentDidMount : 在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，可以通过this.getDOMNode()来进行访问。 如果你想和其他JavaScript框架一起使用，可以在这个方法中调用setTimeout, setInterval或者发送AJAX请求等操作(防止异部操作阻塞UI)。</li>
-<li>componentWillReceiveProps 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用。</li>
-<li>shouldComponentUpdate 返回一个布尔值。在组件接收到新的props或者state时被调用。在初始化时或者使用forceUpdate时不被调用。</li>
-<li>可以在你确认不需要更新组件时使用。</li>
-<li>componentWillUpdate在组件接收到新的props或者state但还没有render时被调用。在初始化时不会被调用。</li>
-<li>componentDidUpdate 在组件完成更新后立即调用。在初始化时不会被调用。</li>
-<li>componentWillUnmount在组件从 DOM 中移除的时候立刻被调用。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>web</category>
-      </categories>
-      <tags>
-        <tag>react</tag>
       </tags>
   </entry>
 </search>
