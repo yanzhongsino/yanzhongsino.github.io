@@ -160,12 +160,12 @@ iqtree 构建系统发育树时，informative sites 用于推断树的拓扑结�
 
 <div style="text-align:center">
 <span style="width:30%;display:inline-block">
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/themes/next/source/images/wechat_channel.jpg?raw=true" title="wechat_channel" width=90%>
 </span>
 <span style="width:30%;display:inline-block">
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_code.jpg?raw=true" width=20% title="Wechat_code">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/themes/next/source/images/wechatpay.jpg?raw=true" title="Wechat_code" width=90%>
 </span>
 <span style="width:30%;display:inline-block">
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Alipay_code.jpg?raw=true" width=20% title="Alipay_code">
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/themes/next/source/images/alipay.jpg?raw=true" title="Alipay_code" width=90%>
 </span>
 </div>

@@ -388,13 +388,13 @@ theme_config:
   # Front-matter variable (unsupport animation).
   reward_settings:
     # If true, reward will be displayed in every article by default.
-    enable: false
+    enable: true
     animation: false
-    #comment: Donate comment here.
+    comment: 真诚赞赏，手留余香
 
   reward:
-    #wechatpay: /images/wechatpay.png
-    #alipay: /images/alipay.png
+    wechatpay: /images/wechatpay.jpg
+    alipay: /images/alipay.jpg
     #paypal: /images/paypal.png
     #bitcoin: /images/bitcoin.png
 
@@ -405,6 +405,12 @@ theme_config:
     #Telegram: https://t.me/channel_name || fab fa-telegram
     #WeChat: /images/wechat_channel.jpg || fab fa-weixin
     #RSS: /atom.xml || fa fa-rss
+
+  # Wechat Subscriber
+  wechat_subscriber:
+    enabled: true
+    qcode: /images/wechat_channel.jpg
+    description: 欢迎关注微信公众号：生信技工
 
   # Related popular posts
   # Dependencies: https://github.com/tea3/hexo-related-popular-posts
