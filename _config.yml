@@ -400,10 +400,10 @@ theme_config:
 
   # Subscribe through Telegram Channel, Twitter, etc.
   # Usage: `Key: permalink || icon` (Font Awesome)
-  follow_me:
+  # follow_me:
     #Twitter: https://twitter.com/username || fab fa-twitter
     #Telegram: https://t.me/channel_name || fab fa-telegram
-    WeChat: https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/wechat_channel.jpg?raw=true || fab fa-weixin
+    # WeChat: https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/wechat_channel.jpg?raw=true || fab fa-weixin
     #RSS: /atom.xml || fa fa-rss
 
   # Wechat Subscriber
