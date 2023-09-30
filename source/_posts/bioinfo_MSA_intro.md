@@ -3,7 +3,7 @@ title: 多序列比对(Multiple Sequence Alignment,MSA)
 date: 2021-09-06 18:00:00
 categories: 
 - bioinfo
-- align
+- MSA
 tags:
 - Multiple Sequence Alignment
 - MSA
@@ -231,6 +231,8 @@ p.s.：PRANK比对过后序列顺序会被打乱，与比对前不一致，做�
 ### 6.2.2. Gblocks(2000)
 - 删除大片段非保守性或非同源性片段（6-10bp的非同源片段识别得不好），还对block(即一段连续不含Gap的列)的长度进行了限制。
 - 不足：武断地规定了某个具体阈值来判断比对片段的保留或删除，对所有基因和所有片段一刀切式的处理，没有考虑不同片段的不同进化速率。
+
+在线版本：http://www.phylogeny.fr/one_task.cgi?task_type=gblocks
 
 ### 6.2.3. trimAl(2009)
 - 优点：速度快，准确度高。

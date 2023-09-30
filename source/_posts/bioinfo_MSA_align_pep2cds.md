@@ -3,6 +3,7 @@ title: 蛋白质比对转换成CDS比对 —— ParaAT,PAL2NAL
 date: 2021-10-29 17:50:00
 categories:
 - bioinfo
+- MSA
 - align
 tags:
 - tutorial
