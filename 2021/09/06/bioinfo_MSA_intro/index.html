@@ -23,17 +23,17 @@
   <meta name="description" content="记录了多序列比对(Multiple Sequence Alignment,MSA)及比对后过滤(trimming)的软件。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多序列比对(Multiple Sequence Alignment,MSA)">
-<meta property="og:url" content="http://example.com/2021/09/06/bioinfo_align_MSA/index.html">
+<meta property="og:url" content="http://example.com/2021/09/06/bioinfo_MSA_intro/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="记录了多序列比对(Multiple Sequence Alignment,MSA)及比对后过滤(trimming)的软件。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-09-06T10:00:00.000Z">
-<meta property="article:modified_time" content="2023-03-13T02:44:06.274Z">
+<meta property="article:modified_time" content="2023-09-30T05:07:01.306Z">
 <meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="sequence alignment">
 <meta property="article:tag" content="Multiple Sequence Alignment">
 <meta property="article:tag" content="MSA">
-<meta property="article:tag" content="sequence alignment">
 <meta property="article:tag" content="trimming">
 <meta property="article:tag" content="Clustal">
 <meta property="article:tag" content="MUSCLE">
@@ -44,7 +44,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
-<link rel="canonical" href="http://example.com/2021/09/06/bioinfo_align_MSA/">
+<link rel="canonical" href="http://example.com/2021/09/06/bioinfo_MSA_intro/">
 
 
 <script id="page-configurations">
@@ -223,7 +223,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/06/bioinfo_align_MSA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/06/bioinfo_MSA_intro/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -253,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-13 10:44:06" itemprop="dateModified" datetime="2023-03-13T10:44:06+08:00">2023-03-13</time>
+                <time title="Modified: 2023-09-30 13:07:01" itemprop="dateModified" datetime="2023-09-30T13:07:01+08:00">2023-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,7 +265,7 @@
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bioinfo/align/" itemprop="url" rel="index"><span itemprop="name">align</span></a>
+                  <a href="/categories/bioinfo/MSA/" itemprop="url" rel="index"><span itemprop="name">MSA</span></a>
                 </span>
             </span>
 
@@ -285,8 +285,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2021/09/06/bioinfo_align_MSA/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/09/06/bioinfo_align_MSA/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2021/09/06/bioinfo_MSA_intro/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/09/06/bioinfo_MSA_intro/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -511,6 +511,7 @@
 <li>删除大片段非保守性或非同源性片段（6-10bp的非同源片段识别得不好），还对block(即一段连续不含Gap的列)的长度进行了限制。</li>
 <li>不足：武断地规定了某个具体阈值来判断比对片段的保留或删除，对所有基因和所有片段一刀切式的处理，没有考虑不同片段的不同进化速率。</li>
 </ul>
+<p>在线版本：<a target="_blank" rel="noopener" href="http://www.phylogeny.fr/one_task.cgi?task_type=gblocks">http://www.phylogeny.fr/one_task.cgi?task_type=gblocks</a></p>
 <h3 id="6-2-3-trimAl-2009"><a href="#6-2-3-trimAl-2009" class="headerlink" title="6.2.3. trimAl(2009)"></a>6.2.3. trimAl(2009)</h3><ul>
 <li>优点：速度快，准确度高。</li>
 <li>比起Gblocks，可自动选择每个特定比对中的参数，包括Gap比例和氨基酸相似性水平，从而优化signal-to-noise ratio。</li>
@@ -569,9 +570,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/sequence-alignment/" rel="tag"># sequence alignment</a>
               <a href="/tags/Multiple-Sequence-Alignment/" rel="tag"># Multiple Sequence Alignment</a>
               <a href="/tags/MSA/" rel="tag"># MSA</a>
-              <a href="/tags/sequence-alignment/" rel="tag"># sequence alignment</a>
               <a href="/tags/trimming/" rel="tag"># trimming</a>
               <a href="/tags/Clustal/" rel="tag"># Clustal</a>
               <a href="/tags/MUSCLE/" rel="tag"># MUSCLE</a>
@@ -673,14 +674,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -737,12 +738,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">549k</span>
+    <span title="Symbols count total">552k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">8:19</span>
+    <span title="Reading time total">8:22</span>
 </div>
 
         
@@ -834,8 +835,8 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2021/09/06/bioinfo_align_MSA/";
-    this.page.identifier = "2021/09/06/bioinfo_align_MSA/";
+    this.page.url = "http://example.com/2021/09/06/bioinfo_MSA_intro/";
+    this.page.identifier = "2021/09/06/bioinfo_MSA_intro/";
     this.page.title = "多序列比对(Multiple Sequence Alignment,MSA)";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {

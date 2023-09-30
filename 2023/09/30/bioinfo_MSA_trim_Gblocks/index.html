@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录了用Gblocks从多序列比对(Multiple Sequence Alignment,MSA)文件中过滤(trimming)保守序列的方法，以便用于后续系统发育树构建。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Gblocks对多序列比对文件进行过滤">
+<meta property="og:url" content="http://example.com/2023/09/30/bioinfo_MSA_trim_Gblocks/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了用Gblocks从多序列比对(Multiple Sequence Alignment,MSA)文件中过滤(trimming)保守序列的方法，以便用于后续系统发育树构建。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-09-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-30T07:59:19.970Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="sequence alignment">
+<meta property="article:tag" content="Multiple Sequence Alignment">
+<meta property="article:tag" content="MSA">
+<meta property="article:tag" content="trimming">
+<meta property="article:tag" content="Gblocks">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/09/30/bioinfo_MSA_trim_Gblocks/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用Gblocks对多序列比对文件进行过滤 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/30/bioinfo_MSA_trim_Gblocks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用Gblocks对多序列比对文件进行过滤
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-30 00:00:00 / Modified: 15:59:19" itemprop="dateCreated datePublished" datetime="2023-09-30T00:00:00+08:00">2023-09-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/MSA/" itemprop="url" rel="index"><span itemprop="name">MSA</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/MSA/trim/" itemprop="url" rel="index"><span itemprop="name">trim</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/09/30/bioinfo_MSA_trim_Gblocks/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/09/30/bioinfo_MSA_trim_Gblocks/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">记录了用Gblocks从多序列比对(Multiple Sequence Alignment,MSA)文件中过滤(trimming)保守序列的方法，以便用于后续系统发育树构建。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=543965304&auto=1&height=32"></iframe></div>
+
+<h1 id="1-Gblocks简介"><a href="#1-Gblocks简介" class="headerlink" title="1. Gblocks简介"></a>1. Gblocks简介</h1><ol>
+<li>Gblocks是什么</li>
+</ol>
+<ul>
+<li>Gblocks 是一个用 C 语言编写的计算机程序，它通过一定的规则过滤掉 DNA 或蛋白质比对序列中比对不佳的位置和分歧较大的非保守区域。</li>
+</ul>
+<ol start="2">
+<li>Gblocks原理</li>
+</ol>
+<ul>
+<li>Gblocks 通过挑选序列块（blocks）来筛选比对序列，序列块（blocks）必须满足一定的要求，如缺乏大段连续的非保守位置、缺乏或低密度的GAP位置以及侧翼位置的高度保守性，从而使最终选出的blocks组成的比对序列更适合用于系统发育学分析。</li>
+</ul>
+<ol start="3">
+<li>Gblocks特点</li>
+</ol>
+<ul>
+<li>删除大片段非保守性或非同源性片段（6-10bp的非同源片段识别得不好），还对block的长度进行了限制。</li>
+<li>Gblocks 可输出网页文件来显示哪些比对区块被保留，哪些被丢弃。</li>
+<li>不足：武断地规定了某个具体阈值来判断比对片段的保留或删除，对所有基因和所有片段一刀切式的处理，没有考虑不同片段的不同进化速率。</li>
+</ul>
+<h1 id="2-Gblocks有多个版本"><a href="#2-Gblocks有多个版本" class="headerlink" title="2. Gblocks有多个版本"></a>2. Gblocks有多个版本</h1><p>2000年发布第一版Gblocks 0.73b，后更新一版0.91b，之后就没更新过了。</p>
+<ol>
+<li>在线版本：<a target="_blank" rel="noopener" href="http://www.phylogeny.fr/one_task.cgi?task_type=gblocks">http://www.phylogeny.fr/one_task.cgi?task_type=gblocks</a></li>
+</ol>
+<ul>
+<li>如果没有特殊参数，序列较短，可使用在线版本，方便快捷。</li>
+</ul>
+<ol start="2">
+<li>本地版本包括Mac OS X，Window，Linux三个系统的版本</li>
+</ol>
+<ul>
+<li>下载地址：<a target="_blank" rel="noopener" href="https://www.biologiaevolutiva.org/jcastresana/Gblocks.html">https://www.biologiaevolutiva.org/jcastresana/Gblocks.html</a></li>
+<li>Linux系统中解压缩解包即可得到执行文件Gblocks_0.91b</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.biologiaevolutiva.org/jcastresana/Gblocks/Gblocks_Linux64_0.91b.tar.Z</span><br><span class="line">uncompress Gblocks_OS_0.91b.tar.Z</span><br><span class="line">tar xvf Gblocks_OS_0.91b.tar</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Gblocks的使用"><a href="#3-Gblocks的使用" class="headerlink" title="3. Gblocks的使用"></a>3. Gblocks的使用</h1><ul>
+<li>Gblocks有两种用法，一种是交互式，一种是命令行式。这里推荐命令行式。</li>
+<li>Gblocks命令行式，fasta文件在前面，后面跟着参数；如果没跟参数，则自动进入交互式界面。</li>
+</ul>
+<h2 id="3-1-Gblocks命令行式用法"><a href="#3-1-Gblocks命令行式用法" class="headerlink" title="3.1. Gblocks命令行式用法"></a>3.1. Gblocks命令行式用法</h2><ol>
+<li>常用命令：<code>Gblocks samples_align.fas -t=d</code>，序列比对文件跟在Gblocks后，后面再接参数。</li>
+<li>Gblocks命令行用法的常用参数</li>
+</ol>
+<ul>
+<li><code>-t=</code>：序列类型，包括p(protein, default)、d(DNA)、c(codons)</li>
+<li><code>-b1=</code>：单个保守位置（conserved position）的序列的最小数量，默认是<strong>50%的序列总数+1</strong>。</li>
+<li><code>-b5=</code>：允许的Gap位置占比，默认是n(none)，可选h(half)或a(all)。如果是多个基因串联的序列，不是所有样本都有所有基因的序列（缺失的用–表示），这个参数推荐h或a，以保留有缺失样本的这部分基因的信息，获得更长的序列。</li>
+<li><code>-e=</code>：生成文件的后缀扩展名，默认是<code>-gb</code></li>
+</ul>
+<ol start="3">
+<li>下表里包含了所有参数</li>
+</ol>
+<table>
+    <thead>
+        <lr>
+        <th>PARAMETER NAME</th>
+        <th>MEANING<br>(Default)</th>
+        <th>ALLOWED VALUES</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><i>(None)</i></td>
+            <td>Filename<br>(No default)</td>
+            <td>Alignment or pathnames file</td>
+        </tr>
+        <tr>
+            <td>-t=</td>
+            <td>Type Of Sequence<br>(<b>Protein</b>, DNA, Codons)</td>
+            <td><b>p</b>, <b>d</b>, <b>c</b></td>
+        </tr>
+        <tr>
+            <td>-b1=</td>
+            <td>Minimum Number Of Sequences For A Conserved Position<br>(<b>50% of the number of     sequences + 1</b>)</td>
+            <td>Any integer bigger than half the number of sequences and smaller or equal than the     total number of sequences</td>
+        </tr>
+        <tr>
+            <td>-b2=</td>
+            <td>Minimum Number Of Sequences For A Flank Position<br>(<b>85% of the number of     sequences</b>)</td>
+            <td>Any integer equal or bigger than Minimum Number Of Sequences For A Conserved     Position</td>
+        </tr>
+        <tr>
+            <td>-b3=</td>
+            <td>Maximum Number Of Contiguous Nonconserved Positions<br>(<b>8</b>)</td>
+            <td>Any integer</td>
+        </tr>
+        <tr>
+            <td>-b4=</td>
+            <td>Minimum Length Of A Block<br>(<b>10</b>)</td>
+            <td>Any integer equal or bigger than 2</td>
+        </tr>
+        <tr>
+            <td>-b5=</td>
+            <td>Allowed Gap Positions<br>(<b>None</b>, With Half, All)</td>
+            <td><b>n</b>, <b>h</b>, <b>a</b></td>
+        </tr>
+        <tr>
+            <td>-b6=<br><i>(Only available for protein alignments; only visible in the extended     block parameters menu) </i></td>
+            <td>Use Similarity Matrices<br>(<b>Yes</b>, No)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-b0=<br><i>(This option does not appear in the menu) </i></td>
+            <td>Minimum Length Of An Initial Block<br>(<b>Same as Minimum Length Of A Block</b>)</td>
+            <td>Any integer equal or bigger than 2</td>
+        </tr>
+        <tr>
+            <td>-s=</td>
+            <td>Selected Blocks<br>(<b>Yes</b>, No)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-p=</td>
+            <td>Results And Parameters File<br>(<b>Yes</b>, Text, Short Text, No)</td>
+            <td><b>y</b>, <b>t</b>, <b>s, n</b></td>
+        </tr>
+        <tr>
+            <td>-v=<br><i>(Only visible in the extended saving options) </i></td>
+            <td>Characters Per Line In Results And Parameters File<br>(<b>60</b>)</td>
+            <td>Any integer bigger than 50</td>
+        </tr>
+        <tr>
+            <td>-n=<br><i>(Only visible in the extended saving options) </i></td>
+            <td>Nonconserved Blocks<br>(Yes, <b>No</b>)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-u=<br><i>(Only visible in the extended saving options) </i></td>
+            <td>Ungapped Alignment<br>(Yes, <b>No</b>)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-k=<br><i>(Only visible in the extended saving options) </i></td>
+            <td>Mask File With The Selected Blocks<br>(Yes, <b>No</b>)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-d=<br><i>(Only visible in the extended saving options) </i></td>
+            <td>Postscript File With The Selected Blocks<br>(Yes, <b>No</b>)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-a=<br><i>(Only available with paths files) </i></td>
+            <td>Concatenated Blocks From Alignments In Batch<br>(Yes, <b>No</b>)<br></td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-c=<br><i>(Only available with paths files) </i></td>
+            <td>Concatenated Input Alignments In Batch<br>(Yes, <b>No</b>)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-w=<br><i>(Only available with paths files)</i></td>
+            <td>Concatenated Ungapped Alignments In Batch<br>(Yes, <b>No</b>)</td>
+            <td><b>y</b>, <b>n</b></td>
+        </tr>
+        <tr>
+            <td>-e=</td>
+            <td>Generic File Extension<br>(<b>-gb</b>)</td>
+            <td>Any string with 5 or less characters</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="3-2-Gblocks结果"><a href="#3-2-Gblocks结果" class="headerlink" title="3.2. Gblocks结果"></a>3.2. Gblocks结果</h2><ol>
+<li>samples_align.fas-gb：按照参数trim掉不符合要求的比对，保留下保守blocks的序列</li>
+<li>samples_align.fas-gb.htm：网页格式文件，里面详细展示了原始比对序列中哪些被trim，哪些保留下来</li>
+</ol>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li>Gblocks manual：<a target="_blank" rel="noopener" href="https://home.cc.umanitoba.ca/~psgendb/doc/Castresana/Gblocks_documentation.html#Installation">https://home.cc.umanitoba.ca/~psgendb/doc/Castresana/Gblocks_documentation.html#Installation</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sequence-alignment/" rel="tag"># sequence alignment</a>
+              <a href="/tags/Multiple-Sequence-Alignment/" rel="tag"># Multiple Sequence Alignment</a>
+              <a href="/tags/MSA/" rel="tag"># MSA</a>
+              <a href="/tags/trimming/" rel="tag"># trimming</a>
+              <a href="/tags/Gblocks/" rel="tag"># Gblocks</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/26/bioinfo_phylogeny_iqtree/" rel="prev" title="构建系统发育进化树：iqtree2构建最大似然树">
+      <i class="fa fa-chevron-left"></i> 构建系统发育进化树：iqtree2构建最大似然树
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Gblocks%E7%AE%80%E4%BB%8B"><span class="nav-text">1. Gblocks简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Gblocks%E6%9C%89%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC"><span class="nav-text">2. Gblocks有多个版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Gblocks%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">3. Gblocks的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Gblocks%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%BC%8F%E7%94%A8%E6%B3%95"><span class="nav-text">3.1. Gblocks命令行式用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Gblocks%E7%BB%93%E6%9E%9C"><span class="nav-text">3.2. Gblocks结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">320</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">552k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">8:22</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2023/09/30/bioinfo_MSA_trim_Gblocks/";
+    this.page.identifier = "2023/09/30/bioinfo_MSA_trim_Gblocks/";
+    this.page.title = "用Gblocks对多序列比对文件进行过滤";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
