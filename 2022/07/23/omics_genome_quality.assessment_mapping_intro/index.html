@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-07-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-27T08:21:00.337Z">
+<meta property="article:modified_time" content="2023-11-10T03:30:30.447Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="mitogenome">
 <meta property="article:tag" content="genome">
@@ -255,7 +255,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-27 16:21:00" itemprop="dateModified" datetime="2022-07-27T16:21:00+08:00">2022-07-27</time>
+                <time title="Modified: 2023-11-10 11:30:30" itemprop="dateModified" datetime="2023-11-10T11:30:30+08:00">2023-11-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,7 +301,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.9k</span>
+              <span>3.4k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -332,15 +332,15 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>Illumina reads</td>
+<td>Illumina DNA-seq reads</td>
 <td>BWA</td>
 </tr>
 <tr>
-<td>Pacbio reads</td>
+<td>Pacbio reads&#x2F;ONT reads</td>
 <td>minimap2</td>
 </tr>
 <tr>
-<td>RNA-seq</td>
+<td>Illumina RNA-seq</td>
 <td>HiSat2</td>
 </tr>
 </tbody></table>
@@ -385,19 +385,29 @@
 </ul>
 <h2 id="2-2-PacBio-x2F-Nanopore-reads：minimap2"><a href="#2-2-PacBio-x2F-Nanopore-reads：minimap2" class="headerlink" title="2.2. PacBio&#x2F;Nanopore reads：minimap2"></a>2.2. PacBio&#x2F;Nanopore reads：minimap2</h2><p>用minimap2对三代reads进行mapping</p>
 <ol>
-<li>直接mapping</li>
+<li>建索引</li>
 </ol>
 <ul>
-<li><code>minimap2 -t 8 -ax map-pb ref.fa pacbio_reads.fq &gt;pacbio.sam &amp;</code></li>
-<li><code>minimap2 -t 8 -ax map-ont ref.fa ont_reads.fq &gt;nanopore.sam &amp;</code></li>
+<li><code>minimap2 -x map-ont -d ref.mmi ref.fa</code></li>
+<li>为参考序列ref.fa建索引，生成索引文件ref.mmi</li>
+<li>建索引时也要根据reads的不同设置-x参数。map-pb是PacBio的CLR数据，map-ont是nanopore数据，map-hifi&#x2F;asm20用于PacBio的HiFi数据。</li>
 </ul>
 <ol start="2">
+<li>mapping</li>
+</ol>
+<ul>
+<li><code>minimap2 -ax map-pb ref.fa pacbio.fq.gz -t 8 &gt; aln.sam</code>      # PacBio CLR genomic reads</li>
+<li><code>minimap2 -ax map-ont ref.fa ont.fq.gz -t 8 &gt; aln.sam</code>         # Oxford Nanopore genomic reads</li>
+<li><code>minimap2 -ax map-hifi ref.fa pacbio-ccs.fq.gz -t 8 &gt; aln.sam</code> # PacBio HiFi&#x2F;CCS genomic reads (v2.19 or later)</li>
+<li><code>minimap2 -ax asm20 ref.fa pacbio-ccs.fq.gz -t 8 &gt; aln.sam</code>    # PacBio HiFi&#x2F;CCS genomic reads (v2.18 or earlier)</li>
+</ul>
+<ol start="3">
 <li>参数</li>
 </ol>
 <ul>
-<li>-t 8：线程</li>
 <li>-a：输出sam格式，默认是PAF格式</li>
-<li>-x: 选择数据类型，map-pb是pacbio数据，map-ont是nanopore数据。</li>
+<li>-x: 选择数据类型，map-pb是PacBio的CLR数据，map-ont是nanopore数据，map-hifi&#x2F;asm20用于PacBio的HiFi数据。</li>
+<li>-t 8：线程</li>
 </ul>
 <h2 id="2-3-RNA-seq-reads：HiSat2"><a href="#2-3-RNA-seq-reads：HiSat2" class="headerlink" title="2.3. RNA-seq reads：HiSat2"></a>2.3. RNA-seq reads：HiSat2</h2><h3 id="2-3-1-mapping"><a href="#2-3-1-mapping" class="headerlink" title="2.3.1. mapping"></a>2.3.1. mapping</h3><p>对于RNA-seq数据，用HiSat2进行reads的mapping。</p>
 <ol>
@@ -410,8 +420,8 @@
 <li>mapping</li>
 </ol>
 <ul>
-<li><code>hisat2 --dta -p 8 -x ref.index -1 rna1_1.fa -2 rna1_2.fa 2&gt;rna1_hisat.log |samtools sort -@ 12 &gt; rna1_hisat.bam &amp;</code> #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。</li>
-<li><code>hisat2 --dta -p 8 -x ref.index -1 rna2_1.fa -2 rna2_2.fa 2&gt;rna2_hisat.log |samtools sort -@ 12 &gt; rna2_hisat.bam &amp;</code> #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。</li>
+<li><code>hisat2 --dta -p 8 -x ref.hisat -1 rna1_1.fa -2 rna1_2.fa 2&gt;rna1_hisat.log |samtools sort -O BAM -@ 12 &gt; rna1_hisat.bam &amp;</code> #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。</li>
+<li><code>hisat2 --dta -p 8 -x ref.hisat -1 rna2_1.fa -2 rna2_2.fa 2&gt;rna2_hisat.log |samtools sort -O BAM -@ 12 &gt; rna2_hisat.bam &amp;</code> #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。</li>
 </ul>
 <ol start="3">
 <li>merge</li>
@@ -530,8 +540,8 @@
       <i class="fa fa-chevron-left"></i> 基因组质量评估：（五）mapping法：2. samtools计算mapping rate
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/07/27/omics_genome_quality.assessment_mapping_depth_observe/" rel="next" title="基因组质量评估：（五）mapping法：4. 观察mapped reads的深度分布">
-      基因组质量评估：（五）mapping法：4. 观察mapped reads的深度分布 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/07/27/omics_genome_quality.assessment_mapping_depth_samtools/" rel="next" title="基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布">
+      基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -612,20 +622,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">351</span>
+        <span class="site-state-item-count">360</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -676,12 +686,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">566k</span>
+    <span title="Symbols count total">592k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">8:35</span>
+    <span title="Reading time total">8:58</span>
 </div>
 
         

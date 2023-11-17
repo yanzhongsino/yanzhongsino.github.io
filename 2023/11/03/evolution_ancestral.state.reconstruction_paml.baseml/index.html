@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用PAML的baseML程序根据系统发育关系从现存物种的序列重建祖先序列。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="祖先状态重建：用PAML的baseML重建祖先序列">
+<meta property="og:url" content="http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="使用PAML的baseML程序根据系统发育关系从现存物种的序列重建祖先序列。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-17T12:05:56.993Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="bioinfo">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="PAML">
+<meta property="article:tag" content="baseML">
+<meta property="article:tag" content="祖先状态重建">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>祖先状态重建：用PAML的baseML重建祖先序列 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          祖先状态重建：用PAML的baseML重建祖先序列
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2023-11-03T00:00:00+08:00">2023-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-17 20:05:56" itemprop="dateModified" datetime="2023-11-17T20:05:56+08:00">2023-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/" itemprop="url" rel="index"><span itemprop="name">evolution</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/ancestral-state-reconstruction/" itemprop="url" rel="index"><span itemprop="name">ancestral state reconstruction</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 mins.</span>
+            </span>
+            <div class="post-description">使用PAML的baseML程序根据系统发育关系从现存物种的序列重建祖先序列。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=195874&auto=1&height=32"></iframe></div>
+
+
+<h1 id="1-重建祖先序列"><a href="#1-重建祖先序列" class="headerlink" title="1. 重建祖先序列"></a>1. 重建祖先序列</h1><ul>
+<li>根据现存物种的状态（性状&#x2F;序列），以及系统发育关系，可以推断祖先节点物种的状态（性状&#x2F;序列），即祖先状态重建。</li>
+<li>这篇博客介绍使用PAML的baseML程序根据系统发育关系从现存物种的序列重建祖先序列的用法。</li>
+</ul>
+<h1 id="2-用PAML的baseML程序重建祖先序列"><a href="#2-用PAML的baseML程序重建祖先序列" class="headerlink" title="2. 用PAML的baseML程序重建祖先序列"></a>2. 用PAML的baseML程序重建祖先序列</h1><h2 id="2-1-准备输入文件"><a href="#2-1-准备输入文件" class="headerlink" title="2.1. 准备输入文件"></a>2.1. 准备输入文件</h2><p>输入的序列比对文件和树文件的格式可以参考<a target="_blank" rel="noopener" href="https://github.com/abacus-gene/paml-tutorial/tree/main/positive-selection/00_data">https://github.com/abacus-gene/paml-tutorial/tree/main/positive-selection/00_data</a> 中的 Mx_aln.phy Mx_root.tree，Mx_unroot.tre 文件。</p>
+<ol>
+<li>序列比对文件 (cds_aln.phy)</li>
+</ol>
+<ul>
+<li>phylip格式</li>
+<li>比对好的编码序列 (cds) 文件，碱基数量是3的倍数（codon模式比对）</li>
+<li>建议删除gaps和难以align的区域，但要按密码子删除（删除和保留都是3的倍数个碱基）</li>
+</ul>
+<ol start="2">
+<li>树文件 (tree.newick)</li>
+</ol>
+<ul>
+<li>newick格式，并在首行前加上一行，包括两个数字，一个是物种&#x2F;样本数量，一个是树的数量（一般是1），空格隔开。</li>
+<li>只需要拓扑结构，删除枝长、支持率等信息。</li>
+</ul>
+<ol start="3">
+<li>配置文件 (baseml.ctl)</li>
+</ol>
+<ul>
+<li>baseml.ctl 的例子在安装的程序包paml&#x2F;examples&#x2F;下有，可以复制到分析目录下，修改后使用</li>
+<li>基础的配置参数如下，后续分析可基于这套参数修改：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">seqfile = aln.phy  * sequence data file name</span><br><span class="line">treefile = tree.newick * tree structure file name</span><br><span class="line">outfile = out.txt * main result file</span><br><span class="line">noisy = 3     * 0,1,2,3: how much rubbish on the screen 控制屏幕输出的信息量</span><br><span class="line">verbose = 0     * 1: detailed output, 0: concise output * 控制输出文件中的信息量</span><br><span class="line">runmode = 0     * 0: user tree; 1: semi-automatic; 2: automatic * 3: StepwiseAddition; (4,5):PerturbationNNI</span><br><span class="line">model = 6     * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85, 5:T92, 6:TN93, 7:REV, 8:UNREST, 9:REVu; 10:UNRESTu 指定核酸替代模型。模型0,1,…,8分别表示模型JC69， K80， F81， F84， HKY85， T92， TN93， REV (也称为 GTR)， 和 UNREST。注释参看Yang（1994 JME 39:105-111）。两个模型可以分别运行。model = 9是REV模型的特例，而model = 10是无限制模型的特例。当model = 9或10时，同一行里包含的主要是指定模型的额外信息。中括号中的数字是自由参数比值的数字。例如，REV应该是5而UNREST应该是11。接在这些数字后面的是圆括号中的数字。输出文件中的比值参数将按照这里的顺序摆列。括号中没有提到的比值为1。当model = 9时，你只能指定TC或CT，但不能同时指定。当model = 10时，TC和CT是不同的。</span><br><span class="line">Mgene = 0      * 0:rates, 1:separate; 2:diff pi, 3:diff kapa, 4:all diff</span><br><span class="line">ndata = 1      * number of data sets * 基因或比对的数量</span><br><span class="line">clock = 0      * 0:no clock, 1:clock; 2:local clock; 3:CombinedAnalysis</span><br><span class="line">fix_kappa = 0      * 0: estimate kappa; 1: fix kappa at value below</span><br><span class="line">kappa = 2.5      * initial or fixed kappa</span><br><span class="line">fix_alpha = 1      * 0: estimate alpha; 1: fix alpha at value below</span><br><span class="line">alpha = 0.      * initial or fixed alpha, 0:infinity (constant rate)</span><br><span class="line">Malpha = 0      * 1: different alpha¡¯s for genes, 0: one alpha</span><br><span class="line">ncatG = 5      * # of categories in the dG, AdG, or nparK models of rates</span><br><span class="line">fix_rho = 1      * 0: estimate rho; 1: fix rho at value below</span><br><span class="line">rho = 0.      * initial or fixed rho, 0:no correlation</span><br><span class="line">nparK = 0      * rate-class models. 1:rK, 2:rK&amp;fK, 3:rK&amp;MK(1/K), 4:rK&amp;MK</span><br><span class="line">nhomo = 0      * 0 &amp; 1: homogeneous, 2: kappa for branches, 3: N1, 4: N2。 nhomo仅针对baseml，并涉及同一替代模型中的频率参数。nhomo = 1适合一个均匀模型，但是通过最大似然迭代估算频率参数（πT，πC和πA；πG在频率总和为1中不是一个自由参数。）。这适用于F81，F84，HKY85，T92（这种情况下πGC是一个参数），TN93，或REV模型。通常（nhomo = 0）这些通过观察到的频率的平均值来估算。在两种情况下（nhomo = 0 和 1），你需要为碱基频率计算三个（或对T92计算一个）自由参数。 nhomo = 2 适用K80，F84和HKY85模型对树中的每个分枝估算一个转换/颠换比率（k）。 选项 nhomo = 3，4，和5仅用于F84，HKY85 或 T92。</span><br><span class="line">getSE = 0      * 0: don¡¯t want them, 1: want S.E.s of estimates</span><br><span class="line">RateAncestor = 1      * (0,1,2): rates (alpha&gt;0) or ancestral states，默认是0，不重构祖先状态，1是重构祖先序列。</span><br><span class="line">Small_Diff = 1e-6</span><br><span class="line">cleandata = 0      * remove sites with ambiguity data (1:yes, 0:no)?  歧义数据和比对间隙的位点要保留(0)或删除(1)，建议自行删除歧义和gaps数据，并在这里选保留(0)。</span><br><span class="line">* icode = 0      * (RateAncestor=1 for coding genes, ¡°GC¡± in data)</span><br><span class="line">* fix_blength = 0      * 0: ignore, -1: random, 1: initial, 2: fixed。设置程序处理输入树文件中枝长数据的方法：0，忽略输入树文件中的枝长信息；-1，使用一个随机起始进行进行计算；1，以输入的枝长信息作为初始值进行ML迭代分析，此时需要注意输入的枝长信息是碱基替换率，而不是碱基替换数；2，不需要使用ML迭代计算枝长，直接使用输入的枝长信息，需要注意，若枝长信息和序列信息不吻合可能导致程序崩溃；3，让ML计算出的枝长和输入的枝长呈正比。</span><br><span class="line">method = 0      * 0: simultaneous; 1: one branch at a time</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-执行"><a href="#2-2-执行" class="headerlink" title="2.2. 执行"></a>2.2. 执行</h2><ul>
+<li>执行命令<code>baseml baseml.ctl</code></li>
+</ul>
+<h2 id="2-3-结果文件"><a href="#2-3-结果文件" class="headerlink" title="2.3. 结果文件"></a>2.3. 结果文件</h2><p>推断的祖先序列在结果文件rst中，与提供的比对好的现存物种序列长度一致，可免比对，直接提取使用。</p>
+<h3 id="2-3-1-out-txt"><a href="#2-3-1-out-txt" class="headerlink" title="2.3.1. out.txt"></a>2.3.1. out.txt</h3><ul>
+<li>主要结果文件，默认名称是mlc。</li>
+<li>内容包括每条序列的A&#x2F;T&#x2F;C&#x2F;G的频率，一致性位点数量，成对遗传距离矩阵，Pairwise deletion matrix，带枝长的树，树节点和枝的编号，以及kappa值。<h3 id="2-3-2-rst：包含三块内容"><a href="#2-3-2-rst：包含三块内容" class="headerlink" title="2.3.2. rst：包含三块内容"></a>2.3.2. rst：包含三块内容</h3>Marginal reconstruction和Joint reconstruction是两种祖先序列重构的算法。如果对所有分类单元的合集都感兴趣，用joint；如果对特定分类单元的祖先感兴趣，用marginal。</li>
+</ul>
+<ol>
+<li>运行的参数以及树的信息</li>
+</ol>
+<ul>
+<li>给系统发育树的每个node进行编号的信息，以及每个branch是哪两个node连接而成；</li>
+</ul>
+<ol start="2">
+<li>Marginal reconstruction of ancestral sequences的结果</li>
+</ol>
+<ul>
+<li>Prob of best state at each node, listed by site. 分位点记录的每个node的序列和频率，以及重建的祖先序列的概率；</li>
+<li>Summary of changes along branches. 分branch记录突变的位点；</li>
+<li>List of extant and reconstructed sequences（现存node和祖先node的序列）；</li>
+<li>Overall accuracy of the 91 ancestral sequences</li>
+<li>Counts of changes at sites. 分位点记录突变的计数；</li>
+</ul>
+<ol start="3">
+<li>Joint reconstruction of ancestral sequences的结果</li>
+</ol>
+<ul>
+<li>Reconstruction (prob.), listed by pattern</li>
+<li>List of extant and reconstructed sequences（现存node和祖先node的序列）；<h3 id="2-3-3-其他文件"><a href="#2-3-3-其他文件" class="headerlink" title="2.3.3. 其他文件"></a>2.3.3. 其他文件</h3>另外还有一些其他结果文件，暂时还未用到。</li>
+</ul>
+<ol>
+<li>rst1</li>
+<li>lnf</li>
+<li>rub</li>
+</ol>
+<h1 id="3-reference"><a href="#3-reference" class="headerlink" title="3. reference"></a>3. reference</h1><ol>
+<li>PAML User Guide：<a target="_blank" rel="noopener" href="https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf">https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf</a></li>
+<li>PAML 中文用户手册：<a target="_blank" rel="noopener" href="https://blog.sciencenet.cn/blog-3433349-1241310.html">https://blog.sciencenet.cn/blog-3433349-1241310.html</a></li>
+<li>PAML开发者网站：<a target="_blank" rel="noopener" href="http://abacus.gene.ucl.ac.uk/software/#phylogenetic-analysis-by-maximum-likelihood-paml">http://abacus.gene.ucl.ac.uk/software/#phylogenetic-analysis-by-maximum-likelihood-paml</a></li>
+<li>paml软件进行祖先酶序列重建极简教程视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1AX4y1K7H4/">https://www.bilibili.com/video/BV1AX4y1K7H4/</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bioinfo/" rel="tag"># bioinfo</a>
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/PAML/" rel="tag"># PAML</a>
+              <a href="/tags/baseML/" rel="tag"># baseML</a>
+              <a href="/tags/%E7%A5%96%E5%85%88%E7%8A%B6%E6%80%81%E9%87%8D%E5%BB%BA/" rel="tag"># 祖先状态重建</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/20/evolution_selection_HyPhy_intro/" rel="prev" title="用HyPhy分析自然选择：（一）介绍HyPhy">
+      <i class="fa fa-chevron-left"></i> 用HyPhy分析自然选择：（一）介绍HyPhy
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%87%8D%E5%BB%BA%E7%A5%96%E5%85%88%E5%BA%8F%E5%88%97"><span class="nav-text">1. 重建祖先序列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%94%A8PAML%E7%9A%84baseML%E7%A8%8B%E5%BA%8F%E9%87%8D%E5%BB%BA%E7%A5%96%E5%85%88%E5%BA%8F%E5%88%97"><span class="nav-text">2. 用PAML的baseML程序重建祖先序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">2.1. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%89%A7%E8%A1%8C"><span class="nav-text">2.2. 执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">2.3. 结果文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-out-txt"><span class="nav-text">2.3.1. out.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-rst%EF%BC%9A%E5%8C%85%E5%90%AB%E4%B8%89%E5%9D%97%E5%86%85%E5%AE%B9"><span class="nav-text">2.3.2. rst：包含三块内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-%E5%85%B6%E4%BB%96%E6%96%87%E4%BB%B6"><span class="nav-text">2.3.3. 其他文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-reference"><span class="nav-text">3. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">360</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">8:58</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/";
+    this.page.identifier = "2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/";
+    this.page.title = "祖先状态重建：用PAML的baseML重建祖先序列";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
