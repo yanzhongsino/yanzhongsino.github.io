@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的dNdS，检测发生了正选择或负选择放松的分支。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用PAML的codeML进行选择分析：（二）分支模型">
+<meta property="og:url" content="http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的dNdS，检测发生了正选择或负选择放松的分支。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-10-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-17T13:09:43.833Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="bioinfo">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="PAML">
+<meta property="article:tag" content="codeML">
+<meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;&#x2F;d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;A&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;A&lt;&#x2F;sub&gt;K&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;A&lt;&#x2F;sub&gt;&#x2F;K&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="omega(ω)">
+<meta property="article:tag" content="omega">
+<meta property="article:tag" content="ω">
+<meta property="article:tag" content="branch model">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用PAML的codeML进行选择分析：（二）分支模型 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用PAML的codeML进行选择分析：（二）分支模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-10-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-10T00:00:00+08:00">2023-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-17 21:09:43" itemprop="dateModified" datetime="2023-11-17T21:09:43+08:00">2023-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/" itemprop="url" rel="index"><span itemprop="name">evolution</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/selection/" itemprop="url" rel="index"><span itemprop="name">selection</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/10/10/evolution_selection_paml.codeml_branch.model/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/10/10/evolution_selection_paml.codeml_branch.model/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 mins.</span>
+            </span>
+            <div class="post-description">使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的d<sub>N</sub>d<sub>S</sub>，检测发生了正选择或负选择放松的分支。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=570132275&auto=1&height=32"></iframe></div>
+
+<h1 id="1-背景知识"><a href="#1-背景知识" class="headerlink" title="1. 背景知识"></a>1. 背景知识</h1><ol>
+<li>d<sub>N</sub>d<sub>S</sub>(K<sub>A</sub>K<sub>S</sub>)，以及 omega(ω) 的定义，以及 ω 用于检测选择压可以参考博客<strong>一文说清K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及ω</strong>：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2023/10/09/evolution_selection_dNdS_intro">https://yanzhongsino.github.io/2023/10/09/evolution_selection_dNdS_intro</a></li>
+<li>选择分析的概况、PAML的安装和选择分析的常用模型可以参考博客<strong>用PAML的codeML进行选择分析：（一）概况简介</strong>：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2023/10/10/evolution_selection_paml_intro">https://yanzhongsino.github.io/2023/10/10/evolution_selection_paml_intro</a></li>
+</ol>
+<h1 id="2-分支模型-branch-model-选择分析的目的"><a href="#2-分支模型-branch-model-选择分析的目的" class="headerlink" title="2. 分支模型 (branch model) 选择分析的目的"></a>2. 分支模型 (branch model) 选择分析的目的</h1><ol>
+<li>绝大多数情况下 ω &lt; 1，因此选择分析通常是为了检测到较少见的正选择 (ω &gt; 1)</li>
+<li>结合系统发育树，分析 ω 在进化树上的变化。两种结果都是有意义的：</li>
+</ol>
+<ul>
+<li>如果某一支（前景支）上的 ω &gt; 1，而其他所有支（背景支）上的 ω &lt; 1，并且似然率检验(LRT)的显著性分析支持备择假设（正选择），那么可认为前景支受到了<strong>正选择</strong>。</li>
+<li>虽然进化树上的 ω 都小于1，但某一支比其他所有支的 ω 都要小，这也说明这一支受到<strong>负选择的放松</strong>。</li>
+</ul>
+<h1 id="3-使用PAML的codeML中的分支模型-branch-model-来检测分支的选择方向和强度"><a href="#3-使用PAML的codeML中的分支模型-branch-model-来检测分支的选择方向和强度" class="headerlink" title="3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度"></a>3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度</h1><h2 id="3-1-假设"><a href="#3-1-假设" class="headerlink" title="3.1. 假设"></a>3.1. 假设</h2><ol>
+<li>零假设 (null hypothesis)：所有分支都有相同的 ω 值</li>
+<li>备择假设 (alternative hypothesis)：一些分支具有与背景分支不同的 ω 值</li>
+</ol>
+<h2 id="3-2-准备输入文件"><a href="#3-2-准备输入文件" class="headerlink" title="3.2. 准备输入文件"></a>3.2. 准备输入文件</h2><p>输入的序列比对文件和树文件的格式可以参考<a target="_blank" rel="noopener" href="https://github.com/abacus-gene/paml-tutorial/tree/main/positive-selection/00_data">https://github.com/abacus-gene/paml-tutorial/tree/main/positive-selection/00_data</a> 中的 Mx_aln.phy Mx_root.tree，Mx_unroot.tre。</p>
+<ol>
+<li>序列比对文件 (cds_aln.phy)</li>
+</ol>
+<ul>
+<li>phylip格式，加上样品数量和序列长度两个数字组成的首行。</li>
+<li>比对好的编码序列 (cds) 文件，碱基数量是3的倍数（codon模式比对）</li>
+<li>建议删除gaps和难以align的区域，但要按密码子删除（删除和保留都是3的倍数个碱基）</li>
+</ul>
+<ol start="2">
+<li>树文件 (tree.newick)</li>
+</ol>
+<ul>
+<li>newick格式，并在首行前加上一行，包括两个数字，第一个是物种&#x2F;样本数量，第二个是树的数量（一般是1），空格隔开。</li>
+<li>只需要拓扑结构，删除枝长、支持率等信息。</li>
+</ul>
+<ol start="3">
+<li>配置文件 (codeml.ctl)</li>
+</ol>
+<ul>
+<li>codeml.ctl 的例子在安装的程序包paml&#x2F;examples&#x2F;下有，可以复制到分析目录下，修改后使用</li>
+<li>基础的配置参数如下，后续分析可基于这套参数修改：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">     seqfile = cds_aln.phy</span><br><span class="line">    treefile = tree.newick</span><br><span class="line">     outfile = out.txt</span><br><span class="line"></span><br><span class="line">       noisy = 9</span><br><span class="line">     verbose = 1</span><br><span class="line">     runmode = 0</span><br><span class="line"></span><br><span class="line">     seqtype = 1</span><br><span class="line">   CodonFreq = 2</span><br><span class="line">       ndata = 1</span><br><span class="line">       clock = 0</span><br><span class="line">      aaDist = 0</span><br><span class="line">  aaRatefile = ../dat/jones.dat</span><br><span class="line"></span><br><span class="line">       model = 2</span><br><span class="line">     NSsites = 0</span><br><span class="line"></span><br><span class="line">       icode = 0</span><br><span class="line">       Mgene = 0</span><br><span class="line"></span><br><span class="line">   fix_kappa = 0</span><br><span class="line">       kappa = 2</span><br><span class="line">   fix_omega = 0</span><br><span class="line">       omega = .4 </span><br><span class="line"></span><br><span class="line">   fix_alpha = 1  </span><br><span class="line">       alpha = 0. </span><br><span class="line">      Malpha = 0</span><br><span class="line">       ncatG = 8</span><br><span class="line"></span><br><span class="line">       getSE = 0</span><br><span class="line">RateAncestor = 1</span><br><span class="line"></span><br><span class="line">  Small_Diff = .5e-6</span><br><span class="line">   cleandata = 0</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>配置参数的含义和选择</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">      seqfile = cds_aln.phy * sequence data filename</span><br><span class="line">     treefile = tree.newick      * tree structure file name</span><br><span class="line">      outfile = out.txt           * main result file name</span><br><span class="line"></span><br><span class="line">        noisy = 9  * 0,1,2,3,9: how much rubbish on the screen；控制屏幕输出的信息量</span><br><span class="line">      verbose = 1  * 0: concise; 1: detailed, 2: too much；控制输出文件中的信息量</span><br><span class="line">      runmode = 0  * 0: user tree;  1: semi-automatic;  2: automatic</span><br><span class="line">                   * 3: StepwiseAddition; (4,5):PerturbationNNI; -2: pairwise ; 代表使用用户提供的树拓扑(0)，或者codeML根据序列自行计算(2)</span><br><span class="line"></span><br><span class="line">      seqtype = 2  * 1:codons; 2:AAs; 3:codons--&gt;AAs ；输入序列数据类型</span><br><span class="line">    CodonFreq = 2  * 0:1/61 each, 1:F1X4, 2:F3X4, 3:codon table；密码子频率（CodonFreq）可以相等（0：每个1/61）或者不同，以解释密码子使用偏差。默认是2：F3X4，会根据序列决定密码子频率。FmutSel模型(CodonFreq = 7)为通用遗传密码的每个密码子分配了60(= 61-1)个密码子适应度参数(Yang and Nielsen 2008)。FmutSel0模型(CodonFreq = 6)是FmutSel的特例，它对同义密码子赋予相同的适应度值，因此只使用19(= 20-1)个氨基酸适应度参数。该模型假设氨基酸频率由蛋白质的功能需求决定，但同义密码子的相对频率仅由突变偏倚参数决定。</span><br><span class="line">        ndata = 1 * 基因或比对的数量</span><br><span class="line">        clock = 0  * 0:no clock, 1:clock; 2:local clock; 3:CombinedAnalysis；指定分子钟，不假设分子钟(0)，严格分子钟(1)，本地分子钟(2)，和联合分析(3)。这里选0不假设分子钟，则需要使用无根树（大部分情况是这样）。</span><br><span class="line">       aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a</span><br><span class="line">   aaRatefile = ../dat/jones.dat  * only used for aa seqs with model=empirical(_F)</span><br><span class="line">                   * dayhoff.dat, jones.dat, wag.dat, mtmam.dat, or your own</span><br><span class="line"></span><br><span class="line">        model = 2 * 根据进行的分析和假设来选择</span><br><span class="line">                   * models for codons:</span><br><span class="line">                       * 0:one, 1:b, 2:2 or more dN/dS ratios for branches</span><br><span class="line">                   * models for AAs or codon-translated AAs:</span><br><span class="line">                       * 0:poisson, 1:proportional, 2:Empirical, 3:Empirical+F</span><br><span class="line">                       * 6:FromCodon, 7:AAClasses, 8:REVaa_0, 9:REVaa(nr=189)</span><br><span class="line"></span><br><span class="line">      NSsites = 0  * 0:one w;1:neutral;2:selection; 3:discrete;4:freqs;</span><br><span class="line">                   * 5:gamma;6:2gamma;7:beta;8:beta&amp;w;9:beta&amp;gamma;</span><br><span class="line">                   * 10:beta&amp;gamma+1; 11:beta&amp;normal&gt;1; 12:0&amp;2normal&gt;1;</span><br><span class="line">                   * 13:3normal&gt;0</span><br><span class="line"></span><br><span class="line">        icode = 0  * 0:universal code; 1:mammalian mt; 2-10:see below ； 编码方式</span><br><span class="line">        Mgene = 0</span><br><span class="line">                   * codon: 0:rates, 1:separate; 2:diff pi, 3:diff kapa, 4:all diff</span><br><span class="line">                   * AA: 0:rates, 1:separate</span><br><span class="line"></span><br><span class="line">    fix_kappa = 0  * 1: kappa fixed, 0: kappa to be estimated ；0代表从给的序列推断kappa，kappa是转换/颠换的比率。</span><br><span class="line">        kappa = 2  * initial or fixed kappa</span><br><span class="line">    fix_omega = 0  * 1: omega or omega_1 fixed, 0: estimate ；0代表计算omega</span><br><span class="line">        omega = .4 * initial or fixed omega, for codons or codon-based AAs ；当fix_omega = 0 ,我们需要计算omega时，这个初始omega值便随意设置都ok。</span><br><span class="line"></span><br><span class="line">    fix_alpha = 1  * 0: estimate gamma shape parameter; 1: fix it at alpha</span><br><span class="line">        alpha = 0. * initial or fixed alpha, 0:infinity (constant rate)</span><br><span class="line">       Malpha = 0  * different alphas for genes</span><br><span class="line">        ncatG = 8  * # of categories in dG of NSsites models</span><br><span class="line"></span><br><span class="line">        getSE = 0  * 0: don&#x27;t want them, 1: want S.E.s of estimates</span><br><span class="line"> RateAncestor = 1  * (0,1,2): rates (alpha&gt;0) or ancestral states (1 or 2)</span><br><span class="line"></span><br><span class="line">   Small_Diff = .5e-6</span><br><span class="line">    cleandata = 1  * remove sites with ambiguity data (1:yes, 0:no)? 歧义数据和比对间隙的位点要保留(0)或删除(1)，建议自行删除歧义和gaps数据，并在这里选保留(0)。</span><br><span class="line">*  fix_blength = 1  * 0: ignore, -1: random, 1: initial, 2: fixed, 3: proportional</span><br><span class="line">       method = 0  * Optimization method 0: simultaneous; 1: one branch a time</span><br><span class="line"></span><br><span class="line">* Genetic codes: 0:universal, 1:mammalian mt., 2:yeast mt., 3:mold mt.,</span><br><span class="line">* 4: invertebrate mt., 5: ciliate nuclear, 6: echinoderm mt., </span><br><span class="line">* 7: euplotid mt., 8: alternative yeast nu. 9: ascidian mt., </span><br><span class="line">* 10: blepharisma nu.</span><br><span class="line">* These codes correspond to transl_table 1 to 11 of GENEBANK.</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-执行codeML"><a href="#3-3-执行codeML" class="headerlink" title="3.3. 执行codeML"></a>3.3. 执行codeML</h2><ol>
+<li>零假设模型(null model)的运算——<strong>one ratio model</strong></li>
+</ol>
+<ul>
+<li>在基础的配置参数上修改以下参数，保存为codeml_null.ctl</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   model = 0 * model = 0 代表零假设（即所有分支的 ω 值都一样）</span><br><span class="line"> NSsites = 0</span><br><span class="line">treefile = tree.newick</span><br><span class="line"> outfile = out_null.txt      </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行命令<code>codeml codeml_null.ctl</code></li>
+<li>结果文件out_null.txt，这个模型得到的 ω 值代表整个系统发育树上的平均 ω 值。</li>
+</ul>
+<ol start="2">
+<li>备择假设模型(branch model)的运算———<strong>two ratio model</strong></li>
+</ol>
+<ul>
+<li>标记前景分支：在树文件tree.newick的基础上标记前景分支，保存为tree_branch.newick文件。</li>
+<li>标记方法：标记某一支为前景支 (#1)，标记某一支及所有子分支都为前景支（$1）。如只标记A和B的祖先枝为前景支，则可用<code>((((A,B)$1,C),D),E);</code>；标记A和B祖先支以及A、B分支都为前景支：<code>((((A,B)$1,C),D),E);</code>。</li>
+<li>如果需要标记多个前景分支，则分别使用#1,#2,…（或者$1,$2,…）来标记。做过测试，同时标记多个前景支来运算和只标记一个前景支单独运算多次的结果是很接近的。</li>
+<li>在基础的配置参数上修改以下参数，保存为codeml_branch.ctl</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   model = 2 * model = 2 代表备择假设（不同分支的 ω 值有2种或以上的类别）</span><br><span class="line"> NSsites = 0</span><br><span class="line">treefile = tree_branch.newick</span><br><span class="line"> outfile = out_branch.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行命令<code>codeml codeml_branch.ctl</code>，得到结果文件out_branch.txt</li>
+</ul>
+<h2 id="3-4-比较结果"><a href="#3-4-比较结果" class="headerlink" title="3.4. 比较结果"></a>3.4. 比较结果</h2><h3 id="3-4-1-似然率检验-Likelihood-Ratio-Test-LRT"><a href="#3-4-1-似然率检验-Likelihood-Ratio-Test-LRT" class="headerlink" title="3.4.1. 似然率检验 (Likelihood Ratio Test,LRT)"></a>3.4.1. 似然率检验 (Likelihood Ratio Test,LRT)</h3><p>如果零假设被数据支持，那么两种假设的似然值差异不会超过抽样误差。LRT检验的是，两种假设的似然值的比值与1是否有显著差异，或者似然值的自然对数的差值与0是否有显著差异。</p>
+<p>在两次运算的结果文件<code>out_null.txt</code>和<code>out_branch.txt</code>中分别寻找LRT的结果lnL值：</p>
+<ol>
+<li>零假设模型的似然值的对数：<code>lnL(ntime:14  np:16): -1296.438022  +0.000000</code></li>
+<li>备择假设模型的似然值的对数：<code>lnL(ntime:14  np:17): -1292.210434  +0.000000</code></li>
+</ol>
+<ul>
+<li>np代表参数的数量number of parameters</li>
+</ul>
+<h3 id="3-4-2-用卡方检验-chi-2-计算p值，分析似然值差异的显著性"><a href="#3-4-2-用卡方检验-chi-2-计算p值，分析似然值差异的显著性" class="headerlink" title="3.4.2. 用卡方检验(chi^2)计算p值，分析似然值差异的显著性"></a>3.4.2. 用卡方检验(chi^2)计算p值，分析似然值差异的显著性</h3><p>lnL1-lnL0 满足卡方分布(chi^2)：；计算p值</p>
+<ol>
+<li>▲LRT&#x3D; abs (2 × (lnL1 - lnL0)) &#x3D; abs (2 × (-1292.210434+1296.438022)) &#x3D; 8.455176</li>
+<li>自由度df &#x3D; np1 - np0 &#x3D; 17 - 16 &#x3D; 1</li>
+<li>卡方分布的显著性p值计算：在linux系统中之间使用命令<code>chi2 1 8.455176</code>来计算p值</li>
+</ol>
+<ul>
+<li>在屏幕得到结果<code>df =  1  prob = 0.003640060 = 3.640e-03</code></li>
+<li>p&#x3D;0.00364, 远小于0.01。可以拒绝零假设，接收备择假设。即前景分支的 ω 值对系统发育树的平均 ω 值来说有显著差异。</li>
+<li>如果p值没有小于0.01，则无法拒绝零假设。</li>
+</ul>
+<h3 id="3-4-3-omega-ω-值"><a href="#3-4-3-omega-ω-值" class="headerlink" title="3.4.3. omega(ω) 值"></a>3.4.3. omega(ω) 值</h3><p>在两次运算的结果文件<code>out_null.txt</code>和<code>out_branch.txt</code>中分别寻找omega(ω) 值的结果：</p>
+<ol>
+<li>零假设模型的 ω 值：<code>omega (dN/dS) = 0.12795</code></li>
+</ol>
+<ul>
+<li>代表零假设下，整个树上的平均 ω 值为0.12795</li>
+</ul>
+<ol start="2">
+<li>备择假设模型的 ω 值：<code>ω (dN/dS) for branches: 0.08179 0.21097</code></li>
+</ol>
+<ul>
+<li>代表备择假设下，背景支的平均 ω 值为 0.08179 ，前景支的平均 ω 值为 0.21097。</li>
+</ul>
+<ol start="3">
+<li>由于p值&lt;0.01，接受备择假设，代表前景支的 ω 值明显比背景支大，由于前景支和背景支的 ω 值都&lt;1。所以前景支应该经历了负选择的放松。</li>
+</ol>
+<h1 id="4-reference"><a href="#4-reference" class="headerlink" title="4. reference"></a>4. reference</h1><ol>
+<li>PAML User Guide：<a target="_blank" rel="noopener" href="https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf">https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf</a></li>
+<li>PAML 中文用户手册：<a target="_blank" rel="noopener" href="https://blog.sciencenet.cn/blog-3433349-1241310.html">https://blog.sciencenet.cn/blog-3433349-1241310.html</a></li>
+<li>PAML开发者网站：<a target="_blank" rel="noopener" href="http://abacus.gene.ucl.ac.uk/software/#phylogenetic-analysis-by-maximum-likelihood-paml">http://abacus.gene.ucl.ac.uk/software/#phylogenetic-analysis-by-maximum-likelihood-paml</a></li>
+<li>陈连福博客-基因正选择分析原理：<a target="_blank" rel="noopener" href="http://www.chenlianfu.com/?p=3084%E5%92%8Chttp://blog.sciencenet.cn/blog-460481-1163040.html">http://www.chenlianfu.com/?p=3084%E5%92%8Chttp://blog.sciencenet.cn/blog-460481-1163040.html</a></li>
+<li>视频-使用codeml的分支模型（branch test）检测进化树上某一支的选择压力：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av10469605/?from=search&amp;seid=8859495264060497812&amp;vd_source=86d4997d664e6bb659b1d0f0dcd15267">https://www.bilibili.com/video/av10469605/?from=search&amp;seid=8859495264060497812&amp;vd_source=86d4997d664e6bb659b1d0f0dcd15267</a></li>
+<li>wiki-Ka&#x2F;Ks ratio：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ka/Ks_ratio">https://en.wikipedia.org/wiki/Ka/Ks_ratio</a></li>
+<li>paml检测正选择的初学者指南：<a target="_blank" rel="noopener" href="https://wap.sciencenet.cn/blog-3434047-1389140.html?mobile=1">https://wap.sciencenet.cn/blog-3434047-1389140.html?mobile=1</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bioinfo/" rel="tag"># bioinfo</a>
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/PAML/" rel="tag"># PAML</a>
+              <a href="/tags/codeML/" rel="tag"># codeML</a>
+              <a href="/tags/d-sub-N-sub/" rel="tag"># d<sub>N</sub></a>
+              <a href="/tags/d-sub-S-sub/" rel="tag"># d<sub>S</sub></a>
+              <a href="/tags/d-sub-N-sub-d-sub-S-sub/" rel="tag"># d<sub>N</sub>d<sub>S</sub></a>
+              <a href="/tags/d-sub-N-sub-d-sub-S-sub/" rel="tag"># d<sub>N</sub>/d<sub>S</sub></a>
+              <a href="/tags/K-sub-A-sub/" rel="tag"># K<sub>A</sub></a>
+              <a href="/tags/K-sub-S-sub/" rel="tag"># K<sub>S</sub></a>
+              <a href="/tags/K-sub-A-sub-K-sub-S-sub/" rel="tag"># K<sub>A</sub>K<sub>S</sub></a>
+              <a href="/tags/K-sub-A-sub-K-sub-S-sub/" rel="tag"># K<sub>A</sub>/K<sub>S</sub></a>
+              <a href="/tags/omega-%CF%89/" rel="tag"># omega(ω)</a>
+              <a href="/tags/omega/" rel="tag"># omega</a>
+              <a href="/tags/%CF%89/" rel="tag"># ω</a>
+              <a href="/tags/branch-model/" rel="tag"># branch model</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/09/evolution_selection_dNdS_intro/" rel="prev" title="一文说清K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及omega(ω)">
+      <i class="fa fa-chevron-left"></i> 一文说清K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及omega(ω)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/10/evolution_selection_paml.codeml_intro/" rel="next" title="用PAML的codeML进行选择分析：（一）概况">
+      用PAML的codeML进行选择分析：（一）概况 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="nav-text">1. 背景知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model-%E9%80%89%E6%8B%A9%E5%88%86%E6%9E%90%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="nav-text">2. 分支模型 (branch model) 选择分析的目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8PAML%E7%9A%84codeML%E4%B8%AD%E7%9A%84%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model-%E6%9D%A5%E6%A3%80%E6%B5%8B%E5%88%86%E6%94%AF%E7%9A%84%E9%80%89%E6%8B%A9%E6%96%B9%E5%90%91%E5%92%8C%E5%BC%BA%E5%BA%A6"><span class="nav-text">3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%81%87%E8%AE%BE"><span class="nav-text">3.1. 假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.2. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%89%A7%E8%A1%8CcodeML"><span class="nav-text">3.3. 执行codeML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%9C"><span class="nav-text">3.4. 比较结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E4%BC%BC%E7%84%B6%E7%8E%87%E6%A3%80%E9%AA%8C-Likelihood-Ratio-Test-LRT"><span class="nav-text">3.4.1. 似然率检验 (Likelihood Ratio Test,LRT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E7%94%A8%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C-chi-2-%E8%AE%A1%E7%AE%97p%E5%80%BC%EF%BC%8C%E5%88%86%E6%9E%90%E4%BC%BC%E7%84%B6%E5%80%BC%E5%B7%AE%E5%BC%82%E7%9A%84%E6%98%BE%E8%91%97%E6%80%A7"><span class="nav-text">3.4.2. 用卡方检验(chi^2)计算p值，分析似然值差异的显著性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-omega-%CF%89-%E5%80%BC"><span class="nav-text">3.4.3. omega(ω) 值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-reference"><span class="nav-text">4. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">361</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">599k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">9:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/";
+    this.page.identifier = "2023/10/10/evolution_selection_paml.codeml_branch.model/";
+    this.page.title = "用PAML的codeML进行选择分析：（二）分支模型";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
