@@ -1,5 +1,5 @@
 ---
-title: 用PAML的codeML进行选择分析：（三）分支模型
+title: 用PAML的codeML进行选择分析：（二）分支模型
 date: 2023-10-10
 categories: 
 - bio
@@ -25,7 +25,7 @@ tags:
 description: 使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的d<sub>N</sub>d<sub>S</sub>，检测发生了正选择或负选择放松的分支。
 ---
 
-<div align="middle"></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=570132275&auto=1&height=32"></iframe></div>
 
 # 1. 背景知识
 1. d<sub>N</sub>d<sub>S</sub>(K<sub>A</sub>K<sub>S</sub>)，以及 omega(ω) 的定义，以及 ω 用于检测选择压可以参考博客**一文说清K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及ω**：https://yanzhongsino.github.io/2023/10/09/evolution_selection_dNdS_intro
@@ -45,7 +45,7 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 ## 3.2. 准备输入文件
 输入的序列比对文件和树文件的格式可以参考https://github.com/abacus-gene/paml-tutorial/tree/main/positive-selection/00_data 中的 Mx_aln.phy Mx_root.tree，Mx_unroot.tre。
 1. 序列比对文件 (cds_aln.phy)
-- phylip格式
+- phylip格式，加上样品数量和序列长度两个数字组成的首行。
 - 比对好的编码序列 (cds) 文件，碱基数量是3的倍数（codon模式比对）
 - 建议删除gaps和难以align的区域，但要按密码子删除（删除和保留都是3的倍数个碱基）
 2. 树文件 (tree.newick)
@@ -66,7 +66,7 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 
       seqtype = 1
     CodonFreq = 2
-*        ndata = 10
+        ndata = 1
         clock = 0
        aaDist = 0
    aaRatefile = ../dat/jones.dat
@@ -108,7 +108,7 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 
       seqtype = 2  * 1:codons; 2:AAs; 3:codons-->AAs ；输入序列数据类型
     CodonFreq = 2  * 0:1/61 each, 1:F1X4, 2:F3X4, 3:codon table；密码子频率（CodonFreq）可以相等（0：每个1/61）或者不同，以解释密码子使用偏差。默认是2：F3X4，会根据序列决定密码子频率。FmutSel模型(CodonFreq = 7)为通用遗传密码的每个密码子分配了60(= 61-1)个密码子适应度参数(Yang and Nielsen 2008)。FmutSel0模型(CodonFreq = 6)是FmutSel的特例，它对同义密码子赋予相同的适应度值，因此只使用19(= 20-1)个氨基酸适应度参数。该模型假设氨基酸频率由蛋白质的功能需求决定，但同义密码子的相对频率仅由突变偏倚参数决定。
-*        ndata = 10 * 基因或比对的数量
+        ndata = 1 * 基因或比对的数量
         clock = 0  * 0:no clock, 1:clock; 2:local clock; 3:CombinedAnalysis；指定分子钟，不假设分子钟(0)，严格分子钟(1)，本地分子钟(2)，和联合分析(3)。这里选0不假设分子钟，则需要使用无根树（大部分情况是这样）。
        aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a
    aaRatefile = ../dat/jones.dat  * only used for aa seqs with model=empirical(_F)
@@ -156,22 +156,21 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 * These codes correspond to transl_table 1 to 11 of GENEBANK.
 ```
 
-(((((((((Rhopalocnemis_MLP :0.45037 , (Rhopalocnemis_VIET :0.0001 , (Rhopalocnemis_DWS :0.331417 , Rhopalocnemis_WS :0.721089 ) :1.18829 ) :0.323993 ) :0.272279 , Ombrophytum :0.123106 ) :1.26418 , Thonningia :0.127095 ) :0.0453917 , (Tolypanthus :0.321973 , Santalum :0.558391 ) :0.274784 ) :64.274 , Malania :0.271714 ) :113.725 , Erythropalum :0.214684 ) :0.0001 , Nicotiana :0.17857 ) :0.0001 , Carica :0.362541 ) :0.13136 , Nelumbo :0.0001 , Liriodendron :0.149347 );
-
 ## 3.3. 执行codeML
-1. 零假设模型(null model)的运算——one ratio model
+1. 零假设模型(null model)的运算——**one ratio model**
 - 在基础的配置参数上修改以下参数，保存为codeml_null.ctl
 
 ```
-        model = 0 * model = 0 代表零假设（所有分支的 ω 值都一样）
+        model = 0 * model = 0 代表零假设（即所有分支的 ω 值都一样）
       NSsites = 0
      treefile = tree.newick
       outfile = out_null.txt      
 ```
 
-- 执行命令`codeml codeml_null.ctl`，得到结果文件out_null.txt
+- 执行命令`codeml codeml_null.ctl`
+- 结果文件out_null.txt，这个模型得到的 ω 值代表整个系统发育树上的平均 ω 值。
 
-2. 备择假设模型(branch model)的运算———two ratio model
+2. 备择假设模型(branch model)的运算———**two ratio model**
 - 标记前景分支：在树文件tree.newick的基础上标记前景分支，保存为tree_branch.newick文件。
 - 标记方法：标记某一支为前景支 (#1)，标记某一支及所有子分支都为前景支（$1）。如只标记A和B的祖先枝为前景支，则可用`((((A,B)$1,C),D),E);`；标记A和B祖先支以及A、B分支都为前景支：`((((A,B)$1,C),D),E);`。
 - 如果需要标记多个前景分支，则分别使用#1,#2,...（或者$1,$2,...）来标记。做过测试，同时标记多个前景支来运算和只标记一个前景支单独运算多次的结果是很接近的。
@@ -186,12 +185,6 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 
 - 执行命令`codeml codeml_branch.ctl`，得到结果文件out_branch.txt
 
-## 多个基因的分析/基因组数据集分析
-如果同一组物种有多个基因需要进行选择分析，比如需要分析线粒体基因组/质体基因组/核基因组的所有蛋白质编码基因，可以这样实现。
-
-
-
-
 ## 3.4. 比较结果
 ### 3.4.1. 似然率检验 (Likelihood Ratio Test,LRT)
 如果零假设被数据支持，那么两种假设的似然值差异不会超过抽样误差。LRT检验的是，两种假设的似然值的比值与1是否有显著差异，或者似然值的自然对数的差值与0是否有显著差异。
@@ -201,7 +194,6 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 2. 备择假设模型的似然值的对数：`lnL(ntime:14  np:17): -1292.210434  +0.000000`
 - np代表参数的数量number of parameters
 
-
 ### 3.4.2. 用卡方检验(chi^2)计算p值，分析似然值差异的显著性
 lnL1-lnL0 满足卡方分布(chi^2)：；计算p值
 1. ▲LRT= abs (2 × (lnL1 - lnL0)) = abs (2 × (-1292.210434+1296.438022)) = 8.455176
@@ -209,6 +201,7 @@ lnL1-lnL0 满足卡方分布(chi^2)：；计算p值
 3. 卡方分布的显著性p值计算：在linux系统中之间使用命令`chi2 1 8.455176`来计算p值
 - 在屏幕得到结果`df =  1  prob = 0.003640060 = 3.640e-03`
 - p=0.00364, 远小于0.01。可以拒绝零假设，接收备择假设。即前景分支的 ω 值对系统发育树的平均 ω 值来说有显著差异。
+- 如果p值没有小于0.01，则无法拒绝零假设。
 
 ### 3.4.3. omega(ω) 值
 在两次运算的结果文件`out_null.txt`和`out_branch.txt`中分别寻找omega(ω) 值的结果：
@@ -217,7 +210,6 @@ lnL1-lnL0 满足卡方分布(chi^2)：；计算p值
 2. 备择假设模型的 ω 值：`ω (dN/dS) for branches: 0.08179 0.21097`
 - 代表备择假设下，背景支的平均 ω 值为 0.08179 ，前景支的平均 ω 值为 0.21097。
 3. 由于p值<0.01，接受备择假设，代表前景支的 ω 值明显比背景支大，由于前景支和背景支的 ω 值都<1。所以前景支应该经历了负选择的放松。
-
 
 # 4. reference
 1. PAML User Guide：https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf
