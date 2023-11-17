@@ -32,9 +32,9 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 
 |reads|mapping tools|
 |---|---|
-|Illumina reads|BWA|
-|Pacbio reads|minimap2|
-|RNA-seq|HiSat2|
+|Illumina DNA-seq reads|BWA|
+|Pacbio reads/ONT reads|minimap2|
+|Illumina RNA-seq|HiSat2|
 
 ## 1.2. 评估指标
 主要是通过以下三个量化指标来评估组装质量：
@@ -64,14 +64,21 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 
 ## 2.2. PacBio/Nanopore reads：minimap2
 用minimap2对三代reads进行mapping
-1. 直接mapping
-- `minimap2 -t 8 -ax map-pb ref.fa pacbio_reads.fq >pacbio.sam &`
-- `minimap2 -t 8 -ax map-ont ref.fa ont_reads.fq >nanopore.sam &`
+1. 建索引
+- `minimap2 -x map-ont -d ref.mmi ref.fa`
+- 为参考序列ref.fa建索引，生成索引文件ref.mmi
+- 建索引时也要根据reads的不同设置-x参数。map-pb是PacBio的CLR数据，map-ont是nanopore数据，map-hifi/asm20用于PacBio的HiFi数据。
 
-2. 参数
-- -t 8：线程
+2. mapping
+- `minimap2 -ax map-pb ref.fa pacbio.fq.gz -t 8 > aln.sam`      # PacBio CLR genomic reads
+- `minimap2 -ax map-ont ref.fa ont.fq.gz -t 8 > aln.sam`         # Oxford Nanopore genomic reads
+- `minimap2 -ax map-hifi ref.fa pacbio-ccs.fq.gz -t 8 > aln.sam` # PacBio HiFi/CCS genomic reads (v2.19 or later)
+- `minimap2 -ax asm20 ref.fa pacbio-ccs.fq.gz -t 8 > aln.sam`    # PacBio HiFi/CCS genomic reads (v2.18 or earlier)
+
+3. 参数
 - -a：输出sam格式，默认是PAF格式
-- -x: 选择数据类型，map-pb是pacbio数据，map-ont是nanopore数据。
+- -x: 选择数据类型，map-pb是PacBio的CLR数据，map-ont是nanopore数据，map-hifi/asm20用于PacBio的HiFi数据。
+- -t 8：线程
 
 ## 2.3. RNA-seq reads：HiSat2
 ### 2.3.1. mapping
@@ -81,8 +88,8 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 - `hisat2-build ref.fa ref.hisat`
 
 2. mapping
-- `hisat2 --dta -p 8 -x ref.index -1 rna1_1.fa -2 rna1_2.fa 2>rna1_hisat.log |samtools sort -@ 12 > rna1_hisat.bam &` #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。
-- `hisat2 --dta -p 8 -x ref.index -1 rna2_1.fa -2 rna2_2.fa 2>rna2_hisat.log |samtools sort -@ 12 > rna2_hisat.bam &` #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。
+- `hisat2 --dta -p 8 -x ref.hisat -1 rna1_1.fa -2 rna1_2.fa 2>rna1_hisat.log |samtools sort -O BAM -@ 12 > rna1_hisat.bam &` #样品1，保存rna1_hisat.log文件，里面有包括mapping rate的统计信息。
+- `hisat2 --dta -p 8 -x ref.hisat -1 rna2_1.fa -2 rna2_2.fa 2>rna2_hisat.log |samtools sort -O BAM -@ 12 > rna2_hisat.bam &` #样品2，保存rna2_hisat.log文件，，里面有包括mapping rate的统计信息。
 
 3. merge
 - `samtools merge -@ 8 merged_hisat.bam rna1_hisat.bam rna2_hisat.bam`  #合并多个bam文件到一个bam文件

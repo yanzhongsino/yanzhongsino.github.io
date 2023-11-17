@@ -1,9 +1,10 @@
 ---
-title: 多序列比对(Multiple Sequence Alignment,MSA)
-date: 2021-09-06 18:00:00
+title: 介绍序列比对(Sequence Alignment)
+date: 2021-09-06
 categories: 
 - bioinfo
-- MSA
+- alignment
+- align
 tags:
 - Multiple Sequence Alignment
 - MSA
@@ -16,7 +17,7 @@ tags:
 - Gblocks
 - trimAl
 
-description: 记录了多序列比对(Multiple Sequence Alignment,MSA)及比对后过滤(trimming)的软件。
+description: 记录了序列比对的概念，方法，分类，以及用于序列比对的常用软件，包括多序列比对(Multiple Sequence Alignment,MSA)及比对后过滤(trimming)的软件。
 
 ---
 
@@ -263,4 +264,4 @@ p.s.：PRANK比对过后序列顺序会被打乱，与比对前不一致，做�
 - 欢迎关注微信公众号：**生信技工**
 - 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode.png" align=center/>

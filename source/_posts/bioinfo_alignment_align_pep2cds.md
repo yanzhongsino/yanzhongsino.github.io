@@ -3,7 +3,7 @@ title: 蛋白质比对转换成CDS比对 —— ParaAT,PAL2NAL
 date: 2021-10-29 17:50:00
 categories:
 - bioinfo
-- MSA
+- alignment
 - align
 tags:
 - tutorial
@@ -13,14 +13,14 @@ tags:
 - biosoft
 - ParaAT
 - PAL2NAL
-description: 记录了两种先进行蛋白质比对，再根据蛋白质比对转换成CDS比对的软件和使用方法。
+description: 记录了两种先进行蛋白质比对，再根据蛋白质比对转换成CDS比对的软件和使用方法，转换的目的是为了增加比对精确度。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=17059176&auto=1&height=32"></iframe></div>
 
 # 1. 序列比对(sequence alignment)
 序列比对的知识可以参考另一篇博文的内容。
-[Multiple Sequence Alignment](https://yanzhongsino.github.io/2021/09/06/bioinfo_MSA/)
+Sequence Alignment：https://yanzhongsino.github.io/2021/09/06/bioinfo_alignment_align_intro/
 
 如果序列间差异较大，为了获得更精准的比对，有时我们会先做蛋白质的比对，然后根据蛋白质比对，转化成CDS比对。这篇博客就是记录把蛋白质比对转换成CDS比对的软件和使用。
 
@@ -125,4 +125,4 @@ pal2nal.pl -h
 - 欢迎关注微信公众号：**生信技工**
 - 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=30% title="wechat_public_QRcode.png" align=center/>

@@ -12,6 +12,7 @@ tags:
 - extract_intron_info.pl
 - multi-transcriptome_assembly_with_ref.sh
 - extract_single_copy_genes.sh
+- concat_msa_with_differenct_species.sh
 
 description: store some scripts using in biology and bioinformatics
 ---
@@ -24,6 +25,9 @@ description: store some scripts using in biology and bioinformatics
 
 ## 1.2. 提取，合并，和比对单拷贝基因和蛋白
 [extract_single_copy_genes.sh](https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/extract_single_copy_genes.sh)
+
+## 1.3. 合并不同物种数量的多序列比对文件，保持序列的比对
+[concat_msa_with_differenct_species.sh](https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/concat_msa_with_differenct_species.sh)
 
 # 2. 我修改的脚本（其他人写的）
 ## 2.1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息

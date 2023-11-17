@@ -1,9 +1,9 @@
 ---
-title: 用Gblocks对多序列比对文件进行过滤
+title: 用Gblocks对序列比对进行过滤
 date: 2023-09-30
 categories: 
 - bioinfo
-- MSA
+- alignment
 - trim
 tags:
 - Multiple Sequence Alignment
@@ -17,6 +17,9 @@ description: 记录了用Gblocks从多序列比对(Multiple Sequence Alignment,M
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=543965304&auto=1&height=32"></iframe></div>
+
+序列比对的知识可以参考另一篇博文的内容。
+Sequence Alignment：https://yanzhongsino.github.io/2021/09/06/bioinfo_alignment_align_intro/
 
 # 1. Gblocks简介
 1. Gblocks是什么
