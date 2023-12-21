@@ -7818,279 +7818,6 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </tags>
   </entry>
   <entry>
-    <title>hexo建站，github.io发布，多终端同步</title>
-    <url>/2018/06/05/blog_hexo.github/</url>
-    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
-
-<ul>
-<li><strong>markdown</strong>是一种适用撰写文本的语法和文件格式，后缀是.md</li>
-<li><strong>hexo</strong>是把写的markdown文件生成blog网站的工具，hexo是不仅是博客引擎驱动，还是一个快速、简洁高效的博客框架，可生成静态网页。</li>
-<li><strong>git</strong>是目前世界上最先进的分布式版本控制系统，用于对开发程序或者其他需要长期追踪版本变更的项目&#x2F;文件的版本控制。</li>
-<li><strong>github</strong>提供网络站点进行blog的展示和备份</li>
-</ul>
-<p>github pages是github网站的一个功能，专门用于管理用户自行编写的静态网页，提供静态网页存储空间，许多人把它用于搭建独立博客。</p>
-<p>github pages需要相应的博客引擎驱动，主流的是<a href="https://jekyllrb.com/">jekyllrb</a>和<a href="https://hexo.io/">hexo</a>。</p>
-<p><strong>部署和发布blog有很多方法。这里介绍的是markdown撰写博客，hexo建立博客网站，通过git管理博客网站，发布博客网站到github平台和多终端同步的操作。</strong></p>
-<p>部署本地blog的写作环境（git+hexo），并用github.io网站发布blog</p>
-<ol>
-<li>git和github的配置<br>新终端搭建博客撰写环境都需要配置</li>
-<li>hexo的安装和配置<br>多终端同步和单终端有一点差别，建议一开始就配置多终端同步并备份到githbu网站，一步到位，避免博客在单终端丢失。</li>
-<li>撰写与发布blog</li>
-<li>github两个分支实现多终端同步</li>
-<li>日常blog撰写和备份操作</li>
-</ol>
-<h1 id="1-git和github的配置"><a href="#1-git和github的配置" class="headerlink" title="1. git和github的配置"></a>1. git和github的配置</h1><p><em>notes：username和useremail替换成自己的github用户名和邮箱。</em></p>
-<ol>
-<li><p>下载安装<a href="https://git-scm.com/">git</a></p>
-</li>
-<li><p>注册github网站</p>
-<p>  注册github网站，并创建一个名为username.github.io的仓库</p>
-<p>  这个特殊的名称直接关联了gitpages，gitpages服务器会自动把上传到这个仓库的文档进行部署发布，并可以通过分配的域名<a href="https://username.github.io/%E5%AE%9E%E7%8E%B0%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%AE%BF%E9%97%AE%E3%80%82">https://username.github.io/实现博客的访问。</a></p>
-</li>
-<li><p>git配置和生成SSH key密钥对</p>
-<p>  git配置：打开git bash（任意位置右键选择git bash here)</p>
-<p>  运行<code>git config --global user.name username</code>和<code>git config --global user.email useremail</code></p>
-<p>  cd ~进入用户主目录，运行<code>ssh-keygen -t rsa -C useremail@example.com</code>，一路回车，完成后会在用户主目录（C&#x2F;Users&#x2F;you&#x2F;)下生成.ssh目录，里面有id_rsa和id_rsa.pub两个文件，即SSH key密钥对，id_rsa是私钥，需要保密，id_rsa.pub是公钥，可分享。</p>
-</li>
-<li><p>github添加终端的公钥</p>
-<p>  打开网页，登录github，打开settings-&gt;SSH and GPG keys，点击new SSH key，填上任意title，在key文本框粘贴公钥，即id_rsa.pub文件的内容，添加。</p>
-</li>
-<li><p>验证与github的添加</p>
-<p>  在git bash下运行<code>ssh -T git@github.com</code>。<br>  输出You’ve successfully suthenicated.则代表github账户成功授权你当前使用的终端，本机可连接上github了。</p>
-</li>
-</ol>
-<h1 id="2-hexo的安装和配置"><a href="#2-hexo的安装和配置" class="headerlink" title="2. hexo的安装和配置"></a>2. hexo的安装和配置</h1><ol>
-<li><p>下载安装<a href="https://nodejs.org/zh-cn/">node.js</a></p>
-<p> 使用git bash或者cmd终端检查node的安装，<code>node -v</code>和<code>npm -v</code>出现版本号即node和npm 安装成功</p>
-</li>
-<li><p>安装hexo</p>
-<p><code>npm install hexo-cli -g</code>命令安装hexo-cli（hexo的cli命令行模块）</p>
-</li>
-<li><p>初始化目录<code>hexo init</code><br> 选定位置通过git bash进入，创建hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。<br> 即生成一系列建站需要的文件：</p>
-<ul>
-<li>_config.yml：站点配置文件</li>
-<li>package.json：说明使用哪些包，npm install参考这个文件安装</li>
-<li>node_modules目录:安装的模块，用npm install会重新生成</li>
-<li>package-lock.json：用npm install会重新生成</li>
-<li>scaffolds目录：文章模板</li>
-<li>source目录：blogmarkdown源文件</li>
-<li>theme目录：网站主题</li>
-<li>.gitignore：记录提交时忽略的文件，即以下文件</li>
-<li>.deploy_git目录：hexo d命令时会重新生成</li>
-<li>db.json</li>
-</ul>
-</li>
-<li><p>安装组件<code>npm install</code>，<code>npm install hexo-server --save</code>,<code>npm install hexo-deployer-git</code></p>
-<p> <code>npm install</code>安装依赖的组件，会更新node_modules目录</p>
-<p> <code>npm install hexo-server --save</code>安装hexo-server以使用服务器</p>
-<p> <code>npm install hexo-deployer-git</code>安装hexo-deployer-git，实现通过<code>hexo -g</code>部署hexo网站到github端</p>
-</li>
-<li><p>配置博客布署deploy参数</p>
-<p>修改hexo下的站点配置文件_config.yml中deploy参数。<br>repository修改成github.io库的网址，branch填master分支。</p>
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repository: git@github.com:username/username.github.io.git</span><br><span class="line">    branch: master</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>hexo其他配置</p>
-<p> 在创建的博客网站文件夹下的<code>_config.yml</code>文件中进行网站的大部分配置。参考<a href="https://hexo.io/zh-cn/docs/configuration.html">hexo配置</a></p>
-<ul>
-<li><p>更换主题【optional】</p>
-<p>   hexo网站<a href="https://hexo.io/themes/%E6%9C%89%E8%AE%B8%E5%A4%9A%E4%B8%BB%E9%A2%98%E5%8F%AF%E9%80%89%EF%BC%8C%E6%AF%94%E5%A6%82%E5%B8%B8%E8%A2%AB%E4%BD%BF%E7%94%A8%E7%9A%84NexT%E4%B8%BB%E9%A2%98">https://hexo.io/themes/有许多主题可选，比如常被使用的NexT主题</a><br>   在Hexo主题页面ctrl+F并输入next查找到NexT主题，然后点击进入到NexT主题的github页面，该页面存储了NexT主题的源码,复制next主题的github仓库位置，并在hexo&#x2F;themes位置下运行命令<code>git clone https://github.com/theme-next/hexo-theme-next.git next</code>克隆next主题</p>
-<p>   然后修改hexo下的站点配置文件_config.yml中的主题行为theme: next</p>
-</li>
-<li><p>网站其他配置【optional】</p>
-<p>   更改站点配置文件_config.yml中其他参数，例如</p>
-   <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: username&#x27;s blog #网站标题</span><br><span class="line">subtitle: &#x27;&#x27; #网站副标题</span><br><span class="line">description: &#x27;&#x27; #网站描述（主要用于SEO）</span><br><span class="line">keywords: </span><br><span class="line">author: username #作者</span><br><span class="line">language: en #网站使用语言</span><br><span class="line">timezone: Asia/Shanghai #网站时区，要在时区列表中选取，Hexo默认使用您电脑的时区</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h1 id="3-撰写与发布blog"><a href="#3-撰写与发布blog" class="headerlink" title="3. 撰写与发布blog"></a>3. 撰写与发布blog</h1><ol>
-<li><p>撰写blog</p>
-<p>blog文件存放在hexo&#x2F;source&#x2F;_posts下，markdown（.md)格式文件，在这个位置新建和编辑markdown文档，这就是写文章的地方。</p>
-<p>使用命令<code>hexo new &quot;newpostname&quot;</code>可以在hexo&#x2F;source&#x2F;_posts下新建一个newpostname.md的文件，打开这个文件即可写作。</p>
-</li>
-<li><p>发布blog</p>
-<p> 使用git bash进入博客建站所在位置hexo目录下，使用<code>hexo clean &amp; hexo g -d</code> 合并三条命令实现发布blog，或者一步一步实现</p>
-<ul>
-<li><p><code>hexo clean</code> 【optional】<br>  INFO  Validating config<br>  INFO  Deleted database.<br>  INFO  Deleted public folder.<br>  清除缓存文件（db.json)和已生成的静态文件（public目录）</p>
-</li>
-<li><p><code>hexo generate</code>&#x3D;<code>hexo g</code><br>  生成静态页面，静态网页会根据source&gt;_posts目录下所有markdown文件编译成静态网页（html），并生成public目录存储生成的静态文件。</p>
-</li>
-<li><p><code>hexo serve</code>&#x3D;<code>hexo s</code><br>  生成静态文件后，可以使用<code>hexo serve</code>命令启动本地服务器来预览博客网站。</p>
-</li>
-<li><p><code>hexo deploy</code>&#x3D;<code>hexo d</code><br>  部署public到github的master分支（部署位置：站点配置文件_config.yml的deploy参数设置的github账号和分支名），即部署到gitpages。</p>
-<p>  部署之后，可以在githube的page项目中查看到变化。我的是<a href="https://github.com/yanzhongsino/yanzhongsino.github.io">https://github.com/yanzhongsino/yanzhongsino.github.io</a>。很快也可以在<a href="https://yanzhongsino.github.io/">https://yanzhongsino.github.io/</a>线上看到生成的博客。</p>
-</li>
-</ul>
-</li>
-</ol>
-<p>每次修改blog或新增blog内容后，可用hexo clean &amp; g -d快速部署到github端master分支，从而实现github.io网站博客的更新。</p>
-<h1 id="4-github两个分支实现多终端同步【推荐配置】"><a href="#4-github两个分支实现多终端同步【推荐配置】" class="headerlink" title="4. github两个分支实现多终端同步【推荐配置】"></a>4. github两个分支实现多终端同步【推荐配置】</h1><p>在进行hexo的安装和配置后，可以通过命令<code>hexo clean &amp; hexo g -d</code>发布博客网站到github.io网站，但需要备份博客源文件和多终端协作时，便有一些问题。</p>
-<ul>
-<li><p>单终端配置hexo的问题：</p>
-<p>  hexo建站部署文件框架为：blog原始md文件存放在hexo建站位置的&#x2F;source&#x2F;_posts下，发布blog的命令<code>hexo clean &amp; hexo g -d</code>会生成&#x2F;public并把它部署到github端的master分支，但在source&#x2F;_posts下的原始md文件和hexo建站部署文件只在当前电脑存放。</p>
-</li>
-<li><p>多终端同步的意义：</p>
-<p>  把博客md源文件和hexo部署文件备份到github，实现多端共享，共享md源文件可以避免单终端md博客文件丢失，共享hexo部署文件可以在不同电脑上写blog，并部署到github终端，保持一致。</p>
-</li>
-<li><p>多终端同步实现原理：</p>
-<p>  在github上新建hexo分支，hexo分支用于同步博客md源文件和hexo配置文件（即同步整个hexo目录），master分支用于发布博客到github.io网站（即同步public目录）。两个分支相互独立，永远不要合并。</p>
-</li>
-<li><p>多终端同步实现具体操作:</p>
-<p>  github网站新建hexo分支，并把hexo分支设为默认分支，<code>git clone</code>克隆hexo分支到本地终端，把克隆的目录下的.git文件夹移动到hexo配置好的建站目录hexo下。<br>  用三条命令<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>同步.git文件夹所在目录到github端hexo分支，这样操作之后克隆github端hexo分支便包含了hexo部署文件和md源文件，从而实现多端共享，github端的master分支只用于发布blog（同步生成的public目录）。</p>
-</li>
-</ul>
-<h2 id="4-1-多终端同步配置"><a href="#4-1-多终端同步配置" class="headerlink" title="4.1. 多终端同步配置"></a>4.1. 多终端同步配置</h2><p>多终端同步配置具体步骤如下：</p>
-<ol>
-<li><p>安装node.js</p>
-</li>
-<li><p>在github网页新建hexo分支并设为default默认分支</p>
-</li>
-<li><p>克隆hexo分支到本地</p>
-<p> 在git bash下进入想创建存储blog文件的位置，运行<code>git clone git@github.com:username/username.github.io.git</code>，在当前目录克隆github的github.io仓库的默认分支（应为hexo）。</p>
-<p> 克隆的目录中的.git文件夹是github端hexo分支的版本库Repositor，.git文件夹所在目录（目前是username.github.io）对应github的hexo分支（把.git移动到哪hexo分支就定位到哪）。</p>
-</li>
-<li><p>移动.git目录</p>
-<p> .git目录是通过git命令与github端hexo分支同步的关键文件。</p>
-<ul>
-<li>git bash下进入github.io后缀文件夹</li>
-<li>进入git clone生成的github.io后缀目录，除.git目录外的文件可以不用保留，.git目录移动到hexo安装和建站的目录下。</li>
-</ul>
-</li>
-<li><p>同步本地hexo部署文件和blog源文件到github端的hexo分支</p>
-<p>在hexo部署目录下通过git三步命令同步hexo部署目录到github端的hexo分支。</p>
-<p>以后有修改新增blog或更改配置都用这三步同步hexo分支。三条命令执行前建议通过<code>hexo clean</code>清除缓存和public目录，以免备份不需要的文件。</p>
-<ul>
-<li><p>git add .        </p>
-<p>  添加所有工作区（即本地github.io文件夹）的修改到暂存区(即.git里的stage&#x2F;index文件)</p>
-</li>
-<li><p>git commit -m “commit notes”</p>
-<p>  提交暂存区的所有更改到本地的默认分支（此时为hexo）。</p>
-</li>
-<li><p>git push&#x2F;git push origin hexo</p>
-<p>  提交本地分支到github端的hexo分支，origin指本地默认分支（即.git文件夹所在目录），github端hexo是默认分支，所以可以省略origin hexo，直接用git push便会同步本地github.io仓库到github端的默认分支（即hexo）。</p>
-<p>  从而实现github端hexo分支备份了本地hexo部署目录，包括目录下的source文件夹的blog源文件。</p>
-</li>
-</ul>
-</li>
-<li><p>blog撰写与发布</p>
-<p>blog撰写与发布单终端和多终端是一样的操作。<br>撰写在source&#x2F;_posts下进行，推荐使用markdown语法撰写博客；发布使用<code>hexo clean &amp; hexo g -d</code>命令。</p>
-</li>
-</ol>
-<h2 id="4-2-配置后新终端使用同步功能"><a href="#4-2-配置后新终端使用同步功能" class="headerlink" title="4.2. 配置后新终端使用同步功能"></a>4.2. 配置后新终端使用同步功能</h2><p>按照以上进行多终端同步配置后，在新的终端或者本地文件丢失后，可以通过以下步骤快速搭建博客撰写环境并同步博客数据。</p>
-<ol>
-<li><p>git和github的安装配置同上</p>
-</li>
-<li><p>安装node.js</p>
-</li>
-<li><p>克隆hexo分支到本地</p>
-<p> 在git bash下进入想创建存储blog文件的位置，运行<code>git clone git@github.com:username/username.github.io.git</code>，在当前目录克隆github的github.io仓库的默认分支（应为hexo）。</p>
-</li>
-<li><p>安装组件</p>
-<p>通过git bash进入本地github.io文件夹下依次执行 <code>npm install hexo-cli -g</code>命令安装hexo-cli（hexo的cli命令行模块）,<code>npm install</code>命令安装依赖的模块,<code>npm install hexo-server --save</code>安装hexo-server以使用服务器，<code>npm install hexo-deployer-git</code>命令安装部署模块hexo-deployer-git（注意不要 hexo init）。</p>
-</li>
-<li><p>进行日常blog撰写和备份</p>
-</li>
-</ol>
-<h1 id="5-日常blog撰写和备份操作"><a href="#5-日常blog撰写和备份操作" class="headerlink" title="5. 日常blog撰写和备份操作"></a>5. 日常blog撰写和备份操作</h1><ol>
-<li><p>blog同步<br>养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行<code>git pull</code>命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。</p>
-<p>但如果本地有未提交的更新，则千万不要用<code>git pull</code>，否则会覆盖本地更新；直接进入下一步；直到使用<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>提交备份本地更新到github端的hexo分支后才可以使用<code>git pull</code>(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。</p>
-</li>
-<li><p>blog撰写<br> 使用命令<code>hexo new &quot;newpostname&quot;</code>可以在hexo&#x2F;source&#x2F;_posts下新建一个newpostname.md的文件，打开这个文件即可写作。</p>
-<p> 在本地source&#x2F;_posts下添加和修改md文档实现blog的日常撰写和修改。</p>
-</li>
-<li><p>blog备份<br>只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。</p>
-<p>用三条命令<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过<code>hexo clean</code>清除缓存和public目录，以免备份不需要的文件。</p>
-</li>
-<li><p>blog生成和预览<br> 通过<code>hexo g</code>生成博客网站静态文件后，可以用<code>hexo serve</code>&#x3D;<code>hexo s</code>命令启动本地服务器来在网址<code>http://localhost:4000</code>预览博客网站。没问题再进行博客发布。</p>
-</li>
-<li><p>blog发布<br> 可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用<code>hexo clean &amp; hexo g -d</code>命令，根据source&#x2F;_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。</p>
-</li>
-</ol>
-<p>总结一下，在配置好写作环境后的任意一台终端的日常工作流应该是：</p>
-<ol>
-<li><code>git pull</code>同步远程github库的更新</li>
-<li><code>hexo new &quot;newblog&quot;</code>在source&#x2F;_posts&#x2F;下添加md格式的blog，或者修改已有的blog</li>
-<li><code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>把修改备份到github端</li>
-<li>下次写作重复以上三个步骤</li>
-<li>用<code>hexo g</code>-<code>hexo s</code>来预览博客</li>
-<li>直至blog完善成熟后，用命令<code>hexo clean &amp; hexo g -d</code>生成网站并部署到github.io</li>
-</ol>
-<h1 id="6-next主题同步和更新"><a href="#6-next主题同步和更新" class="headerlink" title="6. next主题同步和更新"></a>6. next主题同步和更新</h1><h1 id="7-Issue-amp-Solution"><a href="#7-Issue-amp-Solution" class="headerlink" title="7. Issue&amp;Solution"></a>7. Issue&amp;Solution</h1><h3 id="7-0-1-Issue-1：建站日记写好后，在另一个终端通过git-clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git-clone获取的，git不能直接管理两个git项目（有-git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git-add-git-commit-m-quot-commit-notes-quot-git-push命令对hexo项目下的next项目无效，themes-x2F-next主题没有被同步到github端hexo分支。"><a href="#7-0-1-Issue-1：建站日记写好后，在另一个终端通过git-clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git-clone获取的，git不能直接管理两个git项目（有-git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git-add-git-commit-m-quot-commit-notes-quot-git-push命令对hexo项目下的next项目无效，themes-x2F-next主题没有被同步到github端hexo分支。" class="headerlink" title="7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git add .,git commit -m &quot;commit notes&quot;,git push命令对hexo项目下的next项目无效，themes&#x2F;next主题没有被同步到github端hexo分支。"></a>7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令对hexo项目下的next项目无效，themes&#x2F;next主题没有被同步到github端hexo分支。</h3><ul>
-<li><p>Solution A 把next主题的git项目改为普通文件进行同步<br>  删除themes&#x2F;next目录（删除前备份next目录到其他位置），然后<code>git add .</code>,<code>git commit -m &quot;delete theme next&quot;</code>,<code>git push</code>命令同步到github端的hexo分支。<br>  把备份的next目录移回themes下，并把next目录下的.git目录删除，然后后<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令同步到github端的hexo分支。此时next目录不作为git项目被同步到github的hexo端，而是普通文件。<br>  优点是操作简单，缺点是next主题的更新较为麻烦。</p>
-</li>
-<li><p>Solution B fork+subtree同步next主题<br>  删除themes&#x2F;next目录（删除前备份next目录下修改过的文件，比如主题配置文件_config.yml），然后<code>git add .</code>,<code>git commit -m &quot;delete theme next&quot;</code>,<code>git push</code>命令同步到github端的hexo分支。</p>
-<p>  fork主题项目，访问<a href="https://github.com/theme-next/hexo-theme-next">next</a>主题，点击右上角fork，表示把next这个git项目完整的复制一份到自己的github下，你的github账号下会有一个hexo-theme-next的新仓库。</p>
-<p>  <em>notes：注意fork的next版本与hexo版本相匹配，next V8与hexo v5，否则githubpages为空白（过来人踩过的坑~~）</em></p>
-<p>  <code>git remote add -f next git@github.com:yanzhongsino/hexo-theme-next.git</code> #添加远程仓库hexo-theme-next到本地，仓库名设置为next，远程仓库网址粘贴你的github账号下fork的hexo-theme-next的网址。<code>git remote</code>显示所有添加的远程仓库，此时便能看见next。</p>
-<p>  <code>git subtree add --prefix=themes/next next master --squash</code> #添加subtree，把本地next仓库作为子仓库添加到本地themes&#x2F;next目录下，分支为master，–squash的意思是把subtree的改动合并成一次commit提交。</p>
-<p>  在本地替换themes&#x2F;next目录下的主题配置文件_config.yml，把删除前修改好的放进themes&#x2F;next目录，用<code>git add .</code>,<code>git commit -m &quot;add theme next&quot;</code>,<code>git push</code>命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。</p>
-</li>
-</ul>
-<h3 id="7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。"><a href="#7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。" class="headerlink" title="7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。"></a>7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。</h3><ul>
-<li><p>Solution A 把next主题的配置文件_config.yml合并到站点配置文件_config.yml<br>  把next主题的配置文件_config.yml的内容复制到站点配置文件_config.yml，每行都缩进两个空格(在VScode里选中内容，ctrl+]即可缩进)，然后在内容前一行添加<code>theme_config:</code>标题行。有任何主题配置都在博客配置文件中进行。</p>
-</li>
-<li><p>Solution B 使用_config.next.yml进行主题配置和同步【需要&gt;hexo5.0】<br>  <a href="https://theme-next.js.org/docs/getting-started/configuration.html">next官方指导doc</a></p>
-<p>  在本地的github.io的工作目录下，创建一个_config.next.yml的文件，把需要更改的主题设置从next&#x2F;_config.yml复制到_config.next.yml并进行更改，用_config.next.yml进行主题配置和同步。</p>
-<p>  当next主题在配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml增加新的特性时，可随时复制新特性的内容到这个文件_config.next.yml中，实现主题的配置和同步。</p>
-<p>  将本地的修改推送给子项目（github端fork的hexo-theme-next项目）<code>git subtree push --prefix=themes/next next master</code>，对github端fork的hexo-theme-next项目进行pull、push操作需要使用<code>git subtree</code>命令。</p>
-<p>  平常使用同步同前面介绍的一致。<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令同步hexo项目和blog源文件到github端的hexo分支，<code>hexo clean &amp; hexo g -d</code>命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。<br>  当next主题项目下文件更改时，增加了<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。</p>
-</li>
-<li><p>Solution C 使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步<br>  使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】</p>
-<p>  为了避免这种不便，next开发者提供了两种<a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md">解决方案</a>。</p>
-<p>  把主题配置修改的任务转移到新建的位置：复制一份主题配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml到新建的位置&#x2F;source&#x2F;_data&#x2F;next.yml，并且维持&#x2F;themes&#x2F;next&#x2F;_config.yml的默认值，在&#x2F;source&#x2F;_data&#x2F;next.yml中修改主题配置。当next主题在配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件&#x2F;source&#x2F;_data&#x2F;next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。</p>
-</li>
-<li><p>next主题更新【还未验证】<br>  当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。<br>  通过git bash进入本地next主题子项目，更新子项目：<code>git fetch next master</code>,<code>git pull https://github.com/example/hexo-theme-next.git</code>命令拉取next项目源更新的仓库到本地。<br>  然后<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令推送本地更改到主项目，<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目。</p>
-</li>
-</ul>
-<h3 id="7-0-3-Issue-3-hexo-deploy时报错Authentication-failed"><a href="#7-0-3-Issue-3-hexo-deploy时报错Authentication-failed" class="headerlink" title="7.0.3. Issue 3:hexo deploy时报错Authentication failed"></a>7.0.3. Issue 3:hexo deploy时报错Authentication failed</h3><p>报错信息如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fatal: 发送请求时出错。</span><br><span class="line">fatal: 基础连接已经关闭: 连接被意外关闭。</span><br><span class="line">yLogon failed, use ctrl+c to cancel basic credential prompt.</span><br><span class="line">remote: Invalid username or password.</span><br><span class="line">fatal: Authentication failed for &#x27;https://github.com/yanzhongsino/yanzhongsino.github.io.git/&#x27;</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (events.js:315:20)</span><br><span class="line">      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span><br></pre></td></tr></table></figure>
-
-<p>是因为github的认证信息过期了，用以下两条命令可以解决这个问题。<br>git config –global –unset credential.helper<br>git config credential.helper store</p>
-<h3 id="7-0-4-Issue-4-hexo-deploy报错unable-to-access-20210518"><a href="#7-0-4-Issue-4-hexo-deploy报错unable-to-access-20210518" class="headerlink" title="7.0.4. Issue 4:hexo deploy报错unable to access 20210518"></a>7.0.4. Issue 4:hexo deploy报错unable to access 20210518</h3><p>报错信息如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">fatal: unable to access &#x27;https://github.com/yanzhongsino/yanzhongsino.github.io.git/&#x27;: OpenSSL SSL_read: Connection was reset, errno 10054</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (events.js:315:20)</span><br><span class="line">      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Solution<br>可能是git的协议问题，修改hexo下的站点配置文件_config.yml中deploy参数，地址如果是http协议的修改成ssh协议的。<br>把deploy的type修改成git，repository若是<code>https://github.com/yanzhongsino/yanzhongsino.github.io.git</code>格式修改成<code>git@github.com:yanzhongsino/yanzhongsino.github.io.git</code>格式，如下。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repository: git@github.com:yanzhongsino/yanzhongsino.github.io.git</span><br><span class="line">    branch: master</span><br></pre></td></tr></table></figure>
-
-<p>也可能是网络之类的问题，就隔一段时间试试<code>hexo deploy</code>。</p>
-<h3 id="报错kex-exchange-identification-Connection-closed-by-remote-host"><a href="#报错kex-exchange-identification-Connection-closed-by-remote-host" class="headerlink" title="报错kex_exchange_identification: Connection closed by remote host"></a>报错kex_exchange_identification: Connection closed by remote host</h3><ol>
-<li>问题<br>运行git的博客同步命令，报错kex_exchange_identification: Connection closed by remote host。</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">kex_exchange_identification: Connection closed by remote host</span><br><span class="line">Connection closed by 20.205.243.166 port 22</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>方案<br>运行VPN的全局模式会导致这个报错，取消全局模式即可。</li>
-</ol>
-<p><strong>小记</strong></p>
-<p>学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。</p>
-<p>前几天拾起来，建站知识已忘得精光，原来应该是配置好了hexo的多端同步，但由于两年的荒废，遗忘导致我把hexo和master分支合并了，博客的原始文件有没备份，所以一切从头开始。</p>
-<p>学了几天，博客搭建初步捡回来了。可不能再忘，这次笔记记得很精细，下次如果需要看看笔记应该可以捡回来。</p>
-<p>——2020.11.18 Yan Zhong in Guangzhou</p>
-<p>next主题的同步稍微有点麻烦，在理解git的各种命令的含义的基础上理解各种操作实现了什么目的会更有帮助。<br>目前版本号 hexo 5.2.0, next 8.0.2。</p>
-<p>——2020.11.22 Yan Zhong in Guangzhou</p>
-<p>添加了攥写blog时插入图片或背景音乐教程的小节，并添加了BGM</p>
-<p>——2021.03.25 Yan Zhong in Guangzhou</p>
-<hr>
-<ul>
-<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
-<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
-</ul>
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
-      <categories>
-        <category>blog</category>
-      </categories>
-      <tags>
-        <tag>blog</tag>
-        <tag>hexo</tag>
-        <tag>github</tag>
-        <tag>tutorial</tag>
-        <tag>sync</tag>
-        <tag>build website</tag>
-        <tag>deploy website</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>博客日常撰写和备份</title>
     <url>/2021/04/20/blog_maintenance/</url>
     <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=20707476&auto=1&height=32"></iframe><music URL></div>
@@ -15730,6 +15457,325 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
       </categories>
       <tags>
         <tag>react</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客下打开和设置RSS订阅</title>
+    <url>/2023/12/21/blog_hexo_setting_RSS/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1985419342&auto=1&height=32"></iframe></div>
+
+<h1 id="hexo博客下打开和设置RSS订阅的步骤"><a href="#hexo博客下打开和设置RSS订阅的步骤" class="headerlink" title="hexo博客下打开和设置RSS订阅的步骤"></a>hexo博客下打开和设置RSS订阅的步骤</h1><ol>
+<li>在项目根目录下，使用git bash窗口安装hexo-generator-feed插件</li>
+</ol>
+<ul>
+<li><code>npm install hexo-generator-feed --save</code></li>
+</ul>
+<ol start="2">
+<li>修改项目根目录下的设置文件_config.yml，添加以下内容：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Plugins: hexo-generator-feed # 添加插件</span><br><span class="line"># Feed Atom</span><br><span class="line">feed:</span><br><span class="line">    type: atom</span><br><span class="line">    path: atom.xml</span><br><span class="line">    limit: 20</span><br><span class="line">    hub:</span><br><span class="line">    content:</span><br><span class="line">    content_limit: 140</span><br><span class="line">    content_limit_delim: &quot; &quot;</span><br><span class="line">    order_by: -date</span><br><span class="line">    icon: /images/favicon_200x200.png</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>修改主题根目录下的设置文件_config.yml，在social和follow_me节点下修改或添加以下内容：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">social:</span><br><span class="line">    RSS: /atom.xml || fa fa-rss # 启用RSS图标</span><br><span class="line">follow_me:</span><br><span class="line">    RSS: /atom.xml || fa fa-rss # 开启RSS订阅入口</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>重新部署博客网站，即可看到侧边栏出现RSS订阅入口，示例可看我的博客网站：<a href="https://yanzhongsino.github.io/">https://yanzhongsino.github.io/</a></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<h1 id="references"><a href="#references" class="headerlink" title="references"></a>references</h1><ol>
+<li>hexo博客NexT主题设置RSS订阅：<a href="https://tanwucheng.github.io/2021/03/03/4.Hexo%E5%8D%9A%E5%AE%A2NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AERSS%E8%AE%A2%E9%98%85/">https://tanwucheng.github.io/2021/03/03/4.Hexo%E5%8D%9A%E5%AE%A2NexT%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AERSS%E8%AE%A2%E9%98%85/</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>blog</category>
+        <category>hexo</category>
+        <category>setting</category>
+        <category>RSS</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo建站，github.io发布，多终端同步</title>
+    <url>/2018/06/05/blog_hexo+github/</url>
+    <content><![CDATA[<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=418550511&auto=1&height=66"></iframe></div>
+
+<ul>
+<li><strong>markdown</strong>是一种适用撰写文本的语法和文件格式，后缀是.md</li>
+<li><strong>hexo</strong>是把写的markdown文件生成blog网站的工具，hexo是不仅是博客引擎驱动，还是一个快速、简洁高效的博客框架，可生成静态网页。</li>
+<li><strong>git</strong>是目前世界上最先进的分布式版本控制系统，用于对开发程序或者其他需要长期追踪版本变更的项目&#x2F;文件的版本控制。</li>
+<li><strong>github</strong>提供网络站点进行blog的展示和备份</li>
+</ul>
+<p>github pages是github网站的一个功能，专门用于管理用户自行编写的静态网页，提供静态网页存储空间，许多人把它用于搭建独立博客。</p>
+<p>github pages需要相应的博客引擎驱动，主流的是<a href="https://jekyllrb.com/">jekyllrb</a>和<a href="https://hexo.io/">hexo</a>。</p>
+<p><strong>部署和发布blog有很多方法。这里介绍的是markdown撰写博客，hexo建立博客网站，通过git管理博客网站，发布博客网站到github平台和多终端同步的操作。</strong></p>
+<p>部署本地blog的写作环境（git+hexo），并用github.io网站发布blog</p>
+<ol>
+<li>git和github的配置<br>新终端搭建博客撰写环境都需要配置</li>
+<li>hexo的安装和配置<br>多终端同步和单终端有一点差别，建议一开始就配置多终端同步并备份到githbu网站，一步到位，避免博客在单终端丢失。</li>
+<li>撰写与发布blog</li>
+<li>github两个分支实现多终端同步</li>
+<li>日常blog撰写和备份操作</li>
+</ol>
+<h1 id="1-git和github的配置"><a href="#1-git和github的配置" class="headerlink" title="1. git和github的配置"></a>1. git和github的配置</h1><p><em>notes：username和useremail替换成自己的github用户名和邮箱。</em></p>
+<ol>
+<li><p>下载安装<a href="https://git-scm.com/">git</a></p>
+</li>
+<li><p>注册github网站</p>
+<p>  注册github网站，并创建一个名为username.github.io的仓库</p>
+<p>  这个特殊的名称直接关联了gitpages，gitpages服务器会自动把上传到这个仓库的文档进行部署发布，并可以通过分配的域名<a href="https://username.github.io/%E5%AE%9E%E7%8E%B0%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%AE%BF%E9%97%AE%E3%80%82">https://username.github.io/实现博客的访问。</a></p>
+</li>
+<li><p>git配置和生成SSH key密钥对</p>
+<p>  git配置：打开git bash（任意位置右键选择git bash here)</p>
+<p>  运行<code>git config --global user.name username</code>和<code>git config --global user.email useremail</code></p>
+<p>  cd ~进入用户主目录，运行<code>ssh-keygen -t rsa -C useremail@example.com</code>，一路回车，完成后会在用户主目录（C&#x2F;Users&#x2F;you&#x2F;)下生成.ssh目录，里面有id_rsa和id_rsa.pub两个文件，即SSH key密钥对，id_rsa是私钥，需要保密，id_rsa.pub是公钥，可分享。</p>
+</li>
+<li><p>github添加终端的公钥</p>
+<p>  打开网页，登录github，打开settings-&gt;SSH and GPG keys，点击new SSH key，填上任意title，在key文本框粘贴公钥，即id_rsa.pub文件的内容，添加。</p>
+</li>
+<li><p>验证与github的添加</p>
+<p>  在git bash下运行<code>ssh -T git@github.com</code>。<br>  输出You’ve successfully suthenicated.则代表github账户成功授权你当前使用的终端，本机可连接上github了。</p>
+</li>
+</ol>
+<h1 id="2-hexo的安装和配置"><a href="#2-hexo的安装和配置" class="headerlink" title="2. hexo的安装和配置"></a>2. hexo的安装和配置</h1><ol>
+<li><p>下载安装<a href="https://nodejs.org/zh-cn/">node.js</a></p>
+<p> 使用git bash或者cmd终端检查node的安装，<code>node -v</code>和<code>npm -v</code>出现版本号即node和npm 安装成功</p>
+</li>
+<li><p>安装hexo</p>
+<p><code>npm install hexo-cli -g</code>命令安装hexo-cli（hexo的cli命令行模块）</p>
+</li>
+<li><p>初始化目录<code>hexo init</code><br> 选定位置通过git bash进入，创建hexo文件夹并进入hexo，hexo init命令初始化hexo文件夹。<br> 即生成一系列建站需要的文件：</p>
+<ul>
+<li>_config.yml：站点配置文件</li>
+<li>package.json：说明使用哪些包，npm install参考这个文件安装</li>
+<li>node_modules目录:安装的模块，用npm install会重新生成</li>
+<li>package-lock.json：用npm install会重新生成</li>
+<li>scaffolds目录：文章模板</li>
+<li>source目录：blogmarkdown源文件</li>
+<li>theme目录：网站主题</li>
+<li>.gitignore：记录提交时忽略的文件，即以下文件</li>
+<li>.deploy_git目录：hexo d命令时会重新生成</li>
+<li>db.json</li>
+</ul>
+</li>
+<li><p>安装组件<code>npm install</code>，<code>npm install hexo-server --save</code>,<code>npm install hexo-deployer-git</code></p>
+<p> <code>npm install</code>安装依赖的组件，会更新node_modules目录</p>
+<p> <code>npm install hexo-server --save</code>安装hexo-server以使用服务器</p>
+<p> <code>npm install hexo-deployer-git</code>安装hexo-deployer-git，实现通过<code>hexo -g</code>部署hexo网站到github端</p>
+</li>
+<li><p>配置博客布署deploy参数</p>
+<p>修改hexo下的站点配置文件_config.yml中deploy参数。<br>repository修改成github.io库的网址，branch填master分支。</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repository: git@github.com:username/username.github.io.git</span><br><span class="line">    branch: master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hexo其他配置</p>
+<p> 在创建的博客网站文件夹下的<code>_config.yml</code>文件中进行网站的大部分配置。参考<a href="https://hexo.io/zh-cn/docs/configuration.html">hexo配置</a></p>
+<ul>
+<li><p>更换主题【optional】</p>
+<p>   hexo网站<a href="https://hexo.io/themes/%E6%9C%89%E8%AE%B8%E5%A4%9A%E4%B8%BB%E9%A2%98%E5%8F%AF%E9%80%89%EF%BC%8C%E6%AF%94%E5%A6%82%E5%B8%B8%E8%A2%AB%E4%BD%BF%E7%94%A8%E7%9A%84NexT%E4%B8%BB%E9%A2%98">https://hexo.io/themes/有许多主题可选，比如常被使用的NexT主题</a><br>   在Hexo主题页面ctrl+F并输入next查找到NexT主题，然后点击进入到NexT主题的github页面，该页面存储了NexT主题的源码,复制next主题的github仓库位置，并在hexo&#x2F;themes位置下运行命令<code>git clone https://github.com/theme-next/hexo-theme-next.git next</code>克隆next主题</p>
+<p>   然后修改hexo下的站点配置文件_config.yml中的主题行为theme: next</p>
+</li>
+<li><p>网站其他配置【optional】</p>
+<p>   更改站点配置文件_config.yml中其他参数，例如</p>
+   <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: username&#x27;s blog #网站标题</span><br><span class="line">subtitle: &#x27;&#x27; #网站副标题</span><br><span class="line">description: &#x27;&#x27; #网站描述（主要用于SEO）</span><br><span class="line">keywords: </span><br><span class="line">author: username #作者</span><br><span class="line">language: en #网站使用语言</span><br><span class="line">timezone: Asia/Shanghai #网站时区，要在时区列表中选取，Hexo默认使用您电脑的时区</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h1 id="3-撰写与发布blog"><a href="#3-撰写与发布blog" class="headerlink" title="3. 撰写与发布blog"></a>3. 撰写与发布blog</h1><ol>
+<li><p>撰写blog</p>
+<p>blog文件存放在hexo&#x2F;source&#x2F;_posts下，markdown（.md)格式文件，在这个位置新建和编辑markdown文档，这就是写文章的地方。</p>
+<p>使用命令<code>hexo new &quot;newpostname&quot;</code>可以在hexo&#x2F;source&#x2F;_posts下新建一个newpostname.md的文件，打开这个文件即可写作。</p>
+</li>
+<li><p>发布blog</p>
+<p> 使用git bash进入博客建站所在位置hexo目录下，使用<code>hexo clean &amp; hexo g -d</code> 合并三条命令实现发布blog，或者一步一步实现</p>
+<ul>
+<li><p><code>hexo clean</code> 【optional】<br>  INFO  Validating config<br>  INFO  Deleted database.<br>  INFO  Deleted public folder.<br>  清除缓存文件（db.json)和已生成的静态文件（public目录）</p>
+</li>
+<li><p><code>hexo generate</code>&#x3D;<code>hexo g</code><br>  生成静态页面，静态网页会根据source&gt;_posts目录下所有markdown文件编译成静态网页（html），并生成public目录存储生成的静态文件。</p>
+</li>
+<li><p><code>hexo serve</code>&#x3D;<code>hexo s</code><br>  生成静态文件后，可以使用<code>hexo serve</code>命令启动本地服务器来预览博客网站。</p>
+</li>
+<li><p><code>hexo deploy</code>&#x3D;<code>hexo d</code><br>  部署public到github的master分支（部署位置：站点配置文件_config.yml的deploy参数设置的github账号和分支名），即部署到gitpages。</p>
+<p>  部署之后，可以在githube的page项目中查看到变化。我的是<a href="https://github.com/yanzhongsino/yanzhongsino.github.io">https://github.com/yanzhongsino/yanzhongsino.github.io</a>。很快也可以在<a href="https://yanzhongsino.github.io/">https://yanzhongsino.github.io/</a>线上看到生成的博客。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>每次修改blog或新增blog内容后，可用hexo clean &amp; g -d快速部署到github端master分支，从而实现github.io网站博客的更新。</p>
+<h1 id="4-github两个分支实现多终端同步【推荐配置】"><a href="#4-github两个分支实现多终端同步【推荐配置】" class="headerlink" title="4. github两个分支实现多终端同步【推荐配置】"></a>4. github两个分支实现多终端同步【推荐配置】</h1><p>在进行hexo的安装和配置后，可以通过命令<code>hexo clean &amp; hexo g -d</code>发布博客网站到github.io网站，但需要备份博客源文件和多终端协作时，便有一些问题。</p>
+<ul>
+<li><p>单终端配置hexo的问题：</p>
+<p>  hexo建站部署文件框架为：blog原始md文件存放在hexo建站位置的&#x2F;source&#x2F;_posts下，发布blog的命令<code>hexo clean &amp; hexo g -d</code>会生成&#x2F;public并把它部署到github端的master分支，但在source&#x2F;_posts下的原始md文件和hexo建站部署文件只在当前电脑存放。</p>
+</li>
+<li><p>多终端同步的意义：</p>
+<p>  把博客md源文件和hexo部署文件备份到github，实现多端共享，共享md源文件可以避免单终端md博客文件丢失，共享hexo部署文件可以在不同电脑上写blog，并部署到github终端，保持一致。</p>
+</li>
+<li><p>多终端同步实现原理：</p>
+<p>  在github上新建hexo分支，hexo分支用于同步博客md源文件和hexo配置文件（即同步整个hexo目录），master分支用于发布博客到github.io网站（即同步public目录）。两个分支相互独立，永远不要合并。</p>
+</li>
+<li><p>多终端同步实现具体操作:</p>
+<p>  github网站新建hexo分支，并把hexo分支设为默认分支，<code>git clone</code>克隆hexo分支到本地终端，把克隆的目录下的.git文件夹移动到hexo配置好的建站目录hexo下。<br>  用三条命令<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>同步.git文件夹所在目录到github端hexo分支，这样操作之后克隆github端hexo分支便包含了hexo部署文件和md源文件，从而实现多端共享，github端的master分支只用于发布blog（同步生成的public目录）。</p>
+</li>
+</ul>
+<h2 id="4-1-多终端同步配置"><a href="#4-1-多终端同步配置" class="headerlink" title="4.1. 多终端同步配置"></a>4.1. 多终端同步配置</h2><p>多终端同步配置具体步骤如下：</p>
+<ol>
+<li><p>安装node.js</p>
+</li>
+<li><p>在github网页新建hexo分支并设为default默认分支</p>
+</li>
+<li><p>克隆hexo分支到本地</p>
+<p> 在git bash下进入想创建存储blog文件的位置，运行<code>git clone git@github.com:username/username.github.io.git</code>，在当前目录克隆github的github.io仓库的默认分支（应为hexo）。</p>
+<p> 克隆的目录中的.git文件夹是github端hexo分支的版本库Repositor，.git文件夹所在目录（目前是username.github.io）对应github的hexo分支（把.git移动到哪hexo分支就定位到哪）。</p>
+</li>
+<li><p>移动.git目录</p>
+<p> .git目录是通过git命令与github端hexo分支同步的关键文件。</p>
+<ul>
+<li>git bash下进入github.io后缀文件夹</li>
+<li>进入git clone生成的github.io后缀目录，除.git目录外的文件可以不用保留，.git目录移动到hexo安装和建站的目录下。</li>
+</ul>
+</li>
+<li><p>同步本地hexo部署文件和blog源文件到github端的hexo分支</p>
+<p>在hexo部署目录下通过git三步命令同步hexo部署目录到github端的hexo分支。</p>
+<p>以后有修改新增blog或更改配置都用这三步同步hexo分支。三条命令执行前建议通过<code>hexo clean</code>清除缓存和public目录，以免备份不需要的文件。</p>
+<ul>
+<li><p>git add .        </p>
+<p>  添加所有工作区（即本地github.io文件夹）的修改到暂存区(即.git里的stage&#x2F;index文件)</p>
+</li>
+<li><p>git commit -m “commit notes”</p>
+<p>  提交暂存区的所有更改到本地的默认分支（此时为hexo）。</p>
+</li>
+<li><p>git push&#x2F;git push origin hexo</p>
+<p>  提交本地分支到github端的hexo分支，origin指本地默认分支（即.git文件夹所在目录），github端hexo是默认分支，所以可以省略origin hexo，直接用git push便会同步本地github.io仓库到github端的默认分支（即hexo）。</p>
+<p>  从而实现github端hexo分支备份了本地hexo部署目录，包括目录下的source文件夹的blog源文件。</p>
+</li>
+</ul>
+</li>
+<li><p>blog撰写与发布</p>
+<p>blog撰写与发布单终端和多终端是一样的操作。<br>撰写在source&#x2F;_posts下进行，推荐使用markdown语法撰写博客；发布使用<code>hexo clean &amp; hexo g -d</code>命令。</p>
+</li>
+</ol>
+<h2 id="4-2-配置后新终端使用同步功能"><a href="#4-2-配置后新终端使用同步功能" class="headerlink" title="4.2. 配置后新终端使用同步功能"></a>4.2. 配置后新终端使用同步功能</h2><p>按照以上进行多终端同步配置后，在新的终端或者本地文件丢失后，可以通过以下步骤快速搭建博客撰写环境并同步博客数据。</p>
+<ol>
+<li><p>git和github的安装配置同上</p>
+</li>
+<li><p>安装node.js</p>
+</li>
+<li><p>克隆hexo分支到本地</p>
+<p> 在git bash下进入想创建存储blog文件的位置，运行<code>git clone git@github.com:username/username.github.io.git</code>，在当前目录克隆github的github.io仓库的默认分支（应为hexo）。</p>
+</li>
+<li><p>安装组件</p>
+<p>通过git bash进入本地github.io文件夹下依次执行 <code>npm install hexo-cli -g</code>命令安装hexo-cli（hexo的cli命令行模块）,<code>npm install</code>命令安装依赖的模块,<code>npm install hexo-server --save</code>安装hexo-server以使用服务器，<code>npm install hexo-deployer-git</code>命令安装部署模块hexo-deployer-git（注意不要 hexo init）。</p>
+</li>
+<li><p>进行日常blog撰写和备份</p>
+</li>
+</ol>
+<h1 id="5-日常blog撰写和备份操作"><a href="#5-日常blog撰写和备份操作" class="headerlink" title="5. 日常blog撰写和备份操作"></a>5. 日常blog撰写和备份操作</h1><ol>
+<li><p>blog同步<br>养成习惯，每次开始撰写blog前都通过git bash进入工作区，进行<code>git pull</code>命令把github端的hexo分支的更新（更新可能是其他终端上提交的）同步到本地，实现多终端的内容完全同步。</p>
+<p>但如果本地有未提交的更新，则千万不要用<code>git pull</code>，否则会覆盖本地更新；直接进入下一步；直到使用<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>提交备份本地更新到github端的hexo分支后才可以使用<code>git pull</code>(一般是在其他终端，把github的hexo分支更新拉到其他终端设备使用)。</p>
+</li>
+<li><p>blog撰写<br> 使用命令<code>hexo new &quot;newpostname&quot;</code>可以在hexo&#x2F;source&#x2F;_posts下新建一个newpostname.md的文件，打开这个文件即可写作。</p>
+<p> 在本地source&#x2F;_posts下添加和修改md文档实现blog的日常撰写和修改。</p>
+</li>
+<li><p>blog备份<br>只要blog有更改或者新增，或者配置文件有修改，即工作区（即本地的hexo目录或github.io目录）有文件修改，则建议对文件进行备份到GitHub端的hexo分支。</p>
+<p>用三条命令<code>git add .</code>，<code>git commit -m &quot;submit&quot;</code>，<code>git push origin hexo</code>备份工作区，包括md博客源文件和hexo部署到github端的hexo分支。三条命令执行前建议通过<code>hexo clean</code>清除缓存和public目录，以免备份不需要的文件。</p>
+</li>
+<li><p>blog生成和预览<br> 通过<code>hexo g</code>生成博客网站静态文件后，可以用<code>hexo serve</code>&#x3D;<code>hexo s</code>命令启动本地服务器来在网址<code>http://localhost:4000</code>预览博客网站。没问题再进行博客发布。</p>
+</li>
+<li><p>blog发布<br> 可根据自身需求决定是否发布blog到github.io网站，一般写的blog完整程度比较高时可以发布。使用<code>hexo clean &amp; hexo g -d</code>命令，根据source&#x2F;_posts下的博客源文件生成public目录（网站html并同步到github端的master分支，即发布blog到github.io网站。</p>
+</li>
+</ol>
+<p>总结一下，在配置好写作环境后的任意一台终端的日常工作流应该是：</p>
+<ol>
+<li><code>git pull</code>同步远程github库的更新</li>
+<li><code>hexo new &quot;newblog&quot;</code>在source&#x2F;_posts&#x2F;下添加md格式的blog，或者修改已有的blog</li>
+<li><code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>把修改备份到github端</li>
+<li>下次写作重复以上三个步骤</li>
+<li>用<code>hexo g</code>-<code>hexo s</code>来预览博客</li>
+<li>直至blog完善成熟后，用命令<code>hexo clean &amp; hexo g -d</code>生成网站并部署到github.io</li>
+</ol>
+<h1 id="6-next主题同步和更新"><a href="#6-next主题同步和更新" class="headerlink" title="6. next主题同步和更新"></a>6. next主题同步和更新</h1><h1 id="7-Issue-amp-Solution"><a href="#7-Issue-amp-Solution" class="headerlink" title="7. Issue&amp;Solution"></a>7. Issue&amp;Solution</h1><h3 id="7-0-1-Issue-1：建站日记写好后，在另一个终端通过git-clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git-clone获取的，git不能直接管理两个git项目（有-git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git-add-git-commit-m-quot-commit-notes-quot-git-push命令对hexo项目下的next项目无效，themes-x2F-next主题没有被同步到github端hexo分支。"><a href="#7-0-1-Issue-1：建站日记写好后，在另一个终端通过git-clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git-clone获取的，git不能直接管理两个git项目（有-git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git-add-git-commit-m-quot-commit-notes-quot-git-push命令对hexo项目下的next项目无效，themes-x2F-next主题没有被同步到github端hexo分支。" class="headerlink" title="7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即git add .,git commit -m &quot;commit notes&quot;,git push命令对hexo项目下的next项目无效，themes&#x2F;next主题没有被同步到github端hexo分支。"></a>7.0.1. Issue 1：建站日记写好后，在另一个终端通过git clone，修改后部署发现githubio没有显示，检查后发现由于next主题也是通过git clone获取的，git不能直接管理两个git项目（有.git文件夹的被识别为一个git项目）中嵌套的其他git项目，即<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令对hexo项目下的next项目无效，themes&#x2F;next主题没有被同步到github端hexo分支。</h3><ul>
+<li><p>Solution A 把next主题的git项目改为普通文件进行同步<br>  删除themes&#x2F;next目录（删除前备份next目录到其他位置），然后<code>git add .</code>,<code>git commit -m &quot;delete theme next&quot;</code>,<code>git push</code>命令同步到github端的hexo分支。<br>  把备份的next目录移回themes下，并把next目录下的.git目录删除，然后后<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令同步到github端的hexo分支。此时next目录不作为git项目被同步到github的hexo端，而是普通文件。<br>  优点是操作简单，缺点是next主题的更新较为麻烦。</p>
+</li>
+<li><p>Solution B fork+subtree同步next主题<br>  删除themes&#x2F;next目录（删除前备份next目录下修改过的文件，比如主题配置文件_config.yml），然后<code>git add .</code>,<code>git commit -m &quot;delete theme next&quot;</code>,<code>git push</code>命令同步到github端的hexo分支。</p>
+<p>  fork主题项目，访问<a href="https://github.com/theme-next/hexo-theme-next">next</a>主题，点击右上角fork，表示把next这个git项目完整的复制一份到自己的github下，你的github账号下会有一个hexo-theme-next的新仓库。</p>
+<p>  <em>notes：注意fork的next版本与hexo版本相匹配，next V8与hexo v5，否则githubpages为空白（过来人踩过的坑~~）</em></p>
+<p>  <code>git remote add -f next git@github.com:yanzhongsino/hexo-theme-next.git</code> #添加远程仓库hexo-theme-next到本地，仓库名设置为next，远程仓库网址粘贴你的github账号下fork的hexo-theme-next的网址。<code>git remote</code>显示所有添加的远程仓库，此时便能看见next。</p>
+<p>  <code>git subtree add --prefix=themes/next next master --squash</code> #添加subtree，把本地next仓库作为子仓库添加到本地themes&#x2F;next目录下，分支为master，–squash的意思是把subtree的改动合并成一次commit提交。</p>
+<p>  在本地替换themes&#x2F;next目录下的主题配置文件_config.yml，把删除前修改好的放进themes&#x2F;next目录，用<code>git add .</code>,<code>git commit -m &quot;add theme next&quot;</code>,<code>git push</code>命令同步本地的next目录到github端的hexo分支，实现next主题目录与githubio项目一起同步。此时，github端fork的hexo-theme-next项目也成为github端github.io项目的子项目。</p>
+</li>
+</ul>
+<h3 id="7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。"><a href="#7-0-2-Isssue-2：当next主题发生更新时，由于next主题的配置文件-config-yml不一致，使用git-pull拉取需要解决冲突问题，或者手动替换配置文件。" class="headerlink" title="7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。"></a>7.0.2. Isssue 2：当next主题发生更新时，由于next主题的配置文件_config.yml不一致，使用git pull拉取需要解决冲突问题，或者手动替换配置文件。</h3><ul>
+<li><p>Solution A 把next主题的配置文件_config.yml合并到站点配置文件_config.yml<br>  把next主题的配置文件_config.yml的内容复制到站点配置文件_config.yml，每行都缩进两个空格(在VScode里选中内容，ctrl+]即可缩进)，然后在内容前一行添加<code>theme_config:</code>标题行。有任何主题配置都在博客配置文件中进行。</p>
+</li>
+<li><p>Solution B 使用_config.next.yml进行主题配置和同步【需要&gt;hexo5.0】<br>  <a href="https://theme-next.js.org/docs/getting-started/configuration.html">next官方指导doc</a></p>
+<p>  在本地的github.io的工作目录下，创建一个_config.next.yml的文件，把需要更改的主题设置从next&#x2F;_config.yml复制到_config.next.yml并进行更改，用_config.next.yml进行主题配置和同步。</p>
+<p>  当next主题在配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml增加新的特性时，可随时复制新特性的内容到这个文件_config.next.yml中，实现主题的配置和同步。</p>
+<p>  将本地的修改推送给子项目（github端fork的hexo-theme-next项目）<code>git subtree push --prefix=themes/next next master</code>，对github端fork的hexo-theme-next项目进行pull、push操作需要使用<code>git subtree</code>命令。</p>
+<p>  平常使用同步同前面介绍的一致。<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令同步hexo项目和blog源文件到github端的hexo分支，<code>hexo clean &amp; hexo g -d</code>命令部署网站（生成public）并发布到githubio网站（同步到github端的master分支）。<br>  当next主题项目下文件更改时，增加了<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目（github端fork的hexo-theme-next项目）的操作。</p>
+</li>
+<li><p>Solution C 使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步<br>  使用source&#x2F;_data&#x2F;next.yml进行主题配置和同步的方案在next v8版本被告知不支持【20201122】</p>
+<p>  为了避免这种不便，next开发者提供了两种<a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md">解决方案</a>。</p>
+<p>  把主题配置修改的任务转移到新建的位置：复制一份主题配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml到新建的位置&#x2F;source&#x2F;_data&#x2F;next.yml，并且维持&#x2F;themes&#x2F;next&#x2F;_config.yml的默认值，在&#x2F;source&#x2F;_data&#x2F;next.yml中修改主题配置。当next主题在配置文件&#x2F;themes&#x2F;next&#x2F;_config.yml增加新的特性时，可随时复制新特性的内容到这个新的文件&#x2F;source&#x2F;_data&#x2F;next.yml，这样更新主题时便不需额外处理冲突或者手动替换配置文件了。</p>
+</li>
+<li><p>next主题更新【还未验证】<br>  当next的源项目更新后，希望自己的网站和hexo部署同步更新的操作。<br>  通过git bash进入本地next主题子项目，更新子项目：<code>git fetch next master</code>,<code>git pull https://github.com/example/hexo-theme-next.git</code>命令拉取next项目源更新的仓库到本地。<br>  然后<code>git add .</code>,<code>git commit -m &quot;commit notes&quot;</code>,<code>git push</code>命令推送本地更改到主项目，<code>git subtree push --prefix=themes/next next master</code>推送本地更改到子项目。</p>
+</li>
+</ul>
+<h3 id="7-0-3-Issue-3-hexo-deploy时报错Authentication-failed"><a href="#7-0-3-Issue-3-hexo-deploy时报错Authentication-failed" class="headerlink" title="7.0.3. Issue 3:hexo deploy时报错Authentication failed"></a>7.0.3. Issue 3:hexo deploy时报错Authentication failed</h3><p>报错信息如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fatal: 发送请求时出错。</span><br><span class="line">fatal: 基础连接已经关闭: 连接被意外关闭。</span><br><span class="line">yLogon failed, use ctrl+c to cancel basic credential prompt.</span><br><span class="line">remote: Invalid username or password.</span><br><span class="line">fatal: Authentication failed for &#x27;https://github.com/yanzhongsino/yanzhongsino.github.io.git/&#x27;</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (events.js:315:20)</span><br><span class="line">      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span><br></pre></td></tr></table></figure>
+
+<p>是因为github的认证信息过期了，用以下两条命令可以解决这个问题。<br>git config –global –unset credential.helper<br>git config credential.helper store</p>
+<h3 id="7-0-4-Issue-4-hexo-deploy报错unable-to-access-20210518"><a href="#7-0-4-Issue-4-hexo-deploy报错unable-to-access-20210518" class="headerlink" title="7.0.4. Issue 4:hexo deploy报错unable to access 20210518"></a>7.0.4. Issue 4:hexo deploy报错unable to access 20210518</h3><p>报错信息如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">fatal: unable to access &#x27;https://github.com/yanzhongsino/yanzhongsino.github.io.git/&#x27;: OpenSSL SSL_read: Connection was reset, errno 10054</span><br><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (D:\yanzhongsino.github.io\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (events.js:315:20)</span><br><span class="line">      at ChildProcess.cp.emit (D:\yanzhongsino.github.io\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Solution<br>可能是git的协议问题，修改hexo下的站点配置文件_config.yml中deploy参数，地址如果是http协议的修改成ssh协议的。<br>把deploy的type修改成git，repository若是<code>https://github.com/yanzhongsino/yanzhongsino.github.io.git</code>格式修改成<code>git@github.com:yanzhongsino/yanzhongsino.github.io.git</code>格式，如下。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">    type: git</span><br><span class="line">    repository: git@github.com:yanzhongsino/yanzhongsino.github.io.git</span><br><span class="line">    branch: master</span><br></pre></td></tr></table></figure>
+
+<p>也可能是网络之类的问题，就隔一段时间试试<code>hexo deploy</code>。</p>
+<h3 id="报错kex-exchange-identification-Connection-closed-by-remote-host"><a href="#报错kex-exchange-identification-Connection-closed-by-remote-host" class="headerlink" title="报错kex_exchange_identification: Connection closed by remote host"></a>报错kex_exchange_identification: Connection closed by remote host</h3><ol>
+<li>问题<br>运行git的博客同步命令，报错kex_exchange_identification: Connection closed by remote host。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">kex_exchange_identification: Connection closed by remote host</span><br><span class="line">Connection closed by 20.205.243.166 port 22</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>方案<br>运行VPN的全局模式会导致这个报错，取消全局模式即可。</li>
+</ol>
+<p><strong>小记</strong></p>
+<p>学习hexo+githubpages建站已是两年前（2018.06）的事，那时初学前端，好多新知识需要记录，就先建好站用来发布。结果转行前端从入门到放弃只不过两三月，便把博客搁置了。</p>
+<p>前几天拾起来，建站知识已忘得精光，原来应该是配置好了hexo的多端同步，但由于两年的荒废，遗忘导致我把hexo和master分支合并了，博客的原始文件有没备份，所以一切从头开始。</p>
+<p>学了几天，博客搭建初步捡回来了。可不能再忘，这次笔记记得很精细，下次如果需要看看笔记应该可以捡回来。</p>
+<p>——2020.11.18 Yan Zhong in Guangzhou</p>
+<p>next主题的同步稍微有点麻烦，在理解git的各种命令的含义的基础上理解各种操作实现了什么目的会更有帮助。<br>目前版本号 hexo 5.2.0, next 8.0.2。</p>
+<p>——2020.11.22 Yan Zhong in Guangzhou</p>
+<p>添加了攥写blog时插入图片或背景音乐教程的小节，并添加了BGM</p>
+<p>——2021.03.25 Yan Zhong in Guangzhou</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>]]></content>
+      <categories>
+        <category>blog</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>tutorial</tag>
+        <tag>sync</tag>
+        <tag>build website</tag>
+        <tag>deploy website</tag>
       </tags>
   </entry>
 </search>

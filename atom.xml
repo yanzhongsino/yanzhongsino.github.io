@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-24T03:51:30.310Z</updated>
+  <updated>2023-12-21T09:44:02.253Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hexo博客下打开和设置RSS订阅</title>
+    <link href="http://example.com/2023/12/21/blog_hexo_setting_RSS/"/>
+    <id>http://example.com/2023/12/21/blog_hexo_setting_RSS/</id>
+    <published>2023-12-20T16:00:00.000Z</published>
+    <updated>2023-12-21T09:44:02.253Z</updated>
+    
+    
+    <summary type="html">hexo博客下打开和设置RSS订阅，是在NexT主题下设置的。</summary>
+    
+    
+    
+    <category term="blog" scheme="http://example.com/categories/blog/"/>
+    
+    <category term="hexo" scheme="http://example.com/categories/blog/hexo/"/>
+    
+    <category term="setting" scheme="http://example.com/categories/blog/hexo/setting/"/>
+    
+    <category term="RSS" scheme="http://example.com/categories/blog/hexo/setting/RSS/"/>
+    
+    
+    <category term="hexo" scheme="http://example.com/tags/hexo/"/>
+    
+    <category term="RSS" scheme="http://example.com/tags/RSS/"/>
+    
+  </entry>
   
   <entry>
     <title>samtools faidx创建fasta/fastq格式文件的.fai格式索引文件</title>
@@ -726,33 +753,6 @@
     <category term="GenomeScope" scheme="http://example.com/tags/GenomeScope/"/>
     
     <category term="Smudgeplot" scheme="http://example.com/tags/Smudgeplot/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用软件Quartet Sampling来计算分支支持率，评估系统发育树不一致程度，区分强冲突和弱支持</title>
-    <link href="http://example.com/2022/11/08/bioinfo_phylogeny_QuartetSampling/"/>
-    <id>http://example.com/2022/11/08/bioinfo_phylogeny_QuartetSampling/</id>
-    <published>2022-11-07T16:00:00.000Z</published>
-    <updated>2023-03-14T10:55:42.746Z</updated>
-    
-    
-    <summary type="html">记录了软件Quartet Sampling的原理和使用。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
-    
-    
-    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
-    
-    <category term="phylogenomics" scheme="http://example.com/tags/phylogenomics/"/>
-    
-    <category term="phylogenetic discordance" scheme="http://example.com/tags/phylogenetic-discordance/"/>
-    
-    <category term="Quartet Sampling" scheme="http://example.com/tags/Quartet-Sampling/"/>
     
   </entry>
   
