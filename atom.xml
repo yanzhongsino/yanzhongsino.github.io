@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>生信技工</title>
+  <icon>http://example.com/icon.png</icon>
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2023-11-24T03:51:30.310Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>南方枝叶</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>samtools faidx创建fasta/fastq格式文件的.fai格式索引文件</title>
+    <link href="http://example.com/2023/11/24/bioinfo_fileformat_fa_fai/"/>
+    <id>http://example.com/2023/11/24/bioinfo_fileformat_fa_fai/</id>
+    <published>2023-11-23T16:00:00.000Z</published>
+    <updated>2023-11-24T03:51:30.310Z</updated>
+    
+    
+    <summary type="html">介绍用samtools faidx为fasta/fastq格式文件创建.fai格式索引文件，并详细介绍.fai格式索引文件内容。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="fileformat" scheme="http://example.com/categories/bioinfo/fileformat/"/>
+    
+    <category term="fasta" scheme="http://example.com/categories/bioinfo/fileformat/fasta/"/>
+    
+    
+    <category term="samtools" scheme="http://example.com/tags/samtools/"/>
+    
+    <category term="faidx" scheme="http://example.com/tags/faidx/"/>
+    
+    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
+    
+    <category term="fas" scheme="http://example.com/tags/fas/"/>
+    
+    <category term="fa" scheme="http://example.com/tags/fa/"/>
+    
+    <category term="fastq" scheme="http://example.com/tags/fastq/"/>
+    
+    <category term="fq" scheme="http://example.com/tags/fq/"/>
+    
+    <category term="fai" scheme="http://example.com/tags/fai/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用MAFFT在现有多序列比对中添加新序列</title>
+    <link href="http://example.com/2023/11/16/bioinfo_alignment_align_mafft_add/"/>
+    <id>http://example.com/2023/11/16/bioinfo_alignment_align_mafft_add/</id>
+    <published>2023-11-15T16:00:00.000Z</published>
+    <updated>2023-11-22T12:18:03.375Z</updated>
+    
+    
+    <summary type="html">用MAFFT将新序列添加到已经比对好的alignment上(Add new sequences to an existing alignment using MAFFT)，保持已比对序列的比对，对新序列进行比对。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="alignment" scheme="http://example.com/categories/bioinfo/alignment/"/>
+    
+    <category term="align" scheme="http://example.com/categories/bioinfo/alignment/align/"/>
+    
+    
+    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
+    
+    <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
+    
+    <category term="MSA" scheme="http://example.com/tags/MSA/"/>
+    
+    <category term="sequence alignment" scheme="http://example.com/tags/sequence-alignment/"/>
+    
+    <category term="MAFFT" scheme="http://example.com/tags/MAFFT/"/>
+    
+    <category term="add" scheme="http://example.com/tags/add/"/>
+    
+    <category term="merge" scheme="http://example.com/tags/merge/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>祖先状态重建：用PAML的baseML重建祖先序列</title>
+    <link href="http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/"/>
+    <id>http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/</id>
+    <published>2023-11-02T16:00:00.000Z</published>
+    <updated>2023-11-17T12:05:56.993Z</updated>
+    
+    
+    <summary type="html">使用PAML的baseML程序根据系统发育关系从现存物种的序列重建祖先序列。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="ancestral state reconstruction" scheme="http://example.com/categories/bio/evolution/ancestral-state-reconstruction/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
+    
+    <category term="baseML" scheme="http://example.com/tags/baseML/"/>
+    
+    <category term="祖先状态重建" scheme="http://example.com/tags/%E7%A5%96%E5%85%88%E7%8A%B6%E6%80%81%E9%87%8D%E5%BB%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
+    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
+    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
+    <published>2023-10-19T16:00:00.000Z</published>
+    <updated>2023-10-21T03:40:22.721Z</updated>
+    
+    
+    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用HyPhy分析自然选择：（一）介绍HyPhy</title>
+    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_intro/"/>
+    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_intro/</id>
+    <published>2023-10-19T16:00:00.000Z</published>
+    <updated>2023-10-21T03:38:59.223Z</updated>
+    
+    
+    <summary type="html">介绍自然选择分析软件HyPhy，它的版本，模型和使用。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
+    
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+    <category term="FEL" scheme="http://example.com/tags/FEL/"/>
+    
+    <category term="SLAC" scheme="http://example.com/tags/SLAC/"/>
+    
+    <category term="FUBAR" scheme="http://example.com/tags/FUBAR/"/>
+    
+    <category term="MEME" scheme="http://example.com/tags/MEME/"/>
+    
+    <category term="FADE" scheme="http://example.com/tags/FADE/"/>
+    
+    <category term="aBSREL" scheme="http://example.com/tags/aBSREL/"/>
+    
+    <category term="BUSTED" scheme="http://example.com/tags/BUSTED/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用PAML的codeML进行选择分析：（二）分支模型</title>
+    <link href="http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/"/>
+    <id>http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/</id>
+    <published>2023-10-09T16:00:00.000Z</published>
+    <updated>2023-11-17T13:09:43.833Z</updated>
+    
+    
+    <summary type="html">使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;，检测发生了正选择或负选择放松的分支。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
+    
+    <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
+    
+    <category term="K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
+    
+    <category term="omega" scheme="http://example.com/tags/omega/"/>
+    
+    <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用PAML的codeML进行选择分析：（一）概况</title>
+    <link href="http://example.com/2023/10/10/evolution_selection_paml.codeml_intro/"/>
+    <id>http://example.com/2023/10/10/evolution_selection_paml.codeml_intro/</id>
+    <published>2023-10-09T16:00:00.000Z</published>
+    <updated>2023-11-17T13:01:30.011Z</updated>
+    
+    
+    <summary type="html">介绍了使用PAML的codeML计算 ω 值 (d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;) 进行选择分析的概况，包括选择分析的目的、检测方法和实际应用，PAML的介绍、codeML检测选择的四种模型。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
+    
+    <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
+    
+    <category term="K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
+    
+    <category term="omega" scheme="http://example.com/tags/omega/"/>
+    
+    <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="位点模型 (site model)" scheme="http://example.com/tags/%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B-site-model/"/>
+    
+    <category term="分支位点模型 (branch-site model)" scheme="http://example.com/tags/%E5%88%86%E6%94%AF%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B-branch-site-model/"/>
+    
+    <category term="分支模型 (branch model)" scheme="http://example.com/tags/%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model/"/>
+    
+    <category term="进化枝模型 (clade model)" scheme="http://example.com/tags/%E8%BF%9B%E5%8C%96%E6%9E%9D%E6%A8%A1%E5%9E%8B-clade-model/"/>
+    
+    <category term="似然比检验(LRT)" scheme="http://example.com/tags/%E4%BC%BC%E7%84%B6%E6%AF%94%E6%A3%80%E9%AA%8C-LRT/"/>
+    
+    <category term="卡方检验(chi2 test)" scheme="http://example.com/tags/%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C-chi2-test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一文说清K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;、d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;、D&lt;sub&gt;n&lt;/sub&gt;D&lt;sub&gt;s&lt;/sub&gt;，以及omega(ω)</title>
+    <link href="http://example.com/2023/10/09/evolution_selection_dNdS_intro/"/>
+    <id>http://example.com/2023/10/09/evolution_selection_dNdS_intro/</id>
+    <published>2023-10-08T16:00:00.000Z</published>
+    <updated>2023-10-09T14:05:41.700Z</updated>
+    
+    
+    <summary type="html">记录了K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;、d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;、D&lt;sub&gt;n&lt;/sub&gt;D&lt;sub&gt;s&lt;/sub&gt;，以及omega(ω)的定义和含义，区别和算法，以及ω检测选择压的含义。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+    <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
+    
+    <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
+    
+    <category term="K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="D&lt;sub&gt;n&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-n-sub/"/>
+    
+    <category term="D&lt;sub&gt;s&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-s-sub/"/>
+    
+    <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
+    
+    <category term="omega" scheme="http://example.com/tags/omega/"/>
+    
+    <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="positive selection" scheme="http://example.com/tags/positive-selection/"/>
+    
+    <category term="negative selection" scheme="http://example.com/tags/negative-selection/"/>
+    
+    <category term="purifying selection" scheme="http://example.com/tags/purifying-selection/"/>
+    
+    <category term="neutral selection" scheme="http://example.com/tags/neutral-selection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Gblocks对序列比对进行过滤</title>
+    <link href="http://example.com/2023/09/30/bioinfo_alignment_trim_Gblocks/"/>
+    <id>http://example.com/2023/09/30/bioinfo_alignment_trim_Gblocks/</id>
+    <published>2023-09-29T16:00:00.000Z</published>
+    <updated>2023-11-11T07:34:09.541Z</updated>
+    
+    
+    <summary type="html">记录了用Gblocks从多序列比对(Multiple Sequence Alignment,MSA)文件中过滤(trimming)保守序列的方法，以便用于后续系统发育树构建。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="alignment" scheme="http://example.com/categories/bioinfo/alignment/"/>
+    
+    <category term="trim" scheme="http://example.com/categories/bioinfo/alignment/trim/"/>
+    
+    
+    <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
+    
+    <category term="MSA" scheme="http://example.com/tags/MSA/"/>
+    
+    <category term="sequence alignment" scheme="http://example.com/tags/sequence-alignment/"/>
+    
+    <category term="trimming" scheme="http://example.com/tags/trimming/"/>
+    
+    <category term="Gblocks" scheme="http://example.com/tags/Gblocks/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>构建系统发育进化树：iqtree2构建最大似然树</title>
+    <link href="http://example.com/2023/09/26/bioinfo_phylogeny_iqtree/"/>
+    <id>http://example.com/2023/09/26/bioinfo_phylogeny_iqtree/</id>
+    <published>2023-09-25T16:00:00.000Z</published>
+    <updated>2023-09-28T04:51:08.331Z</updated>
+    
+    
+    <summary type="html">记录使用iqtree2来构建最大似然树。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
+    
+    <category term="phylogeny inference" scheme="http://example.com/categories/bioinfo/phylogeny/phylogeny-inference/"/>
+    
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
+    
+    <category term="evolutionary tree" scheme="http://example.com/tags/evolutionary-tree/"/>
+    
+    <category term="phylogeny inference" scheme="http://example.com/tags/phylogeny-inference/"/>
+    
+    <category term="iqtree2" scheme="http://example.com/tags/iqtree2/"/>
+    
+    <category term="maximum likelihood tree" scheme="http://example.com/tags/maximum-likelihood-tree/"/>
+    
+    <category term="ML tree" scheme="http://example.com/tags/ML-tree/"/>
+    
+    <category term="Bayesian information criterion" scheme="http://example.com/tags/Bayesian-information-criterion/"/>
+    
+    <category term="BIC" scheme="http://example.com/tags/BIC/"/>
+    
+    <category term="ultrafast bootstrap approximation" scheme="http://example.com/tags/ultrafast-bootstrap-approximation/"/>
+    
+    <category term="UFBoot" scheme="http://example.com/tags/UFBoot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>参考文献管理软件EndNote的中英文混排技巧</title>
+    <link href="http://example.com/2023/05/11/tools_academia_EndNote/"/>
+    <id>http://example.com/2023/05/11/tools_academia_EndNote/</id>
+    <published>2023-05-10T16:00:00.000Z</published>
+    <updated>2023-05-11T07:12:24.547Z</updated>
+    
+    
+    <summary type="html">介绍参考文献管理软件EndNote的中英文混排技巧。</summary>
+    
+    
+    
+    <category term="tools" scheme="http://example.com/categories/tools/"/>
+    
+    <category term="academia" scheme="http://example.com/categories/tools/academia/"/>
+    
+    <category term="EndNote" scheme="http://example.com/categories/tools/academia/EndNote/"/>
+    
+    
+    <category term="tools" scheme="http://example.com/tags/tools/"/>
+    
+    <category term="EndNote" scheme="http://example.com/tags/EndNote/"/>
+    
+    <category term="中英文混排" scheme="http://example.com/tags/%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E6%8E%92/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux系统的服务器开机自动挂载硬盘的设置</title>
+    <link href="http://example.com/2023/04/24/linux_operation.and.maintenance_auto.mount/"/>
+    <id>http://example.com/2023/04/24/linux_operation.and.maintenance_auto.mount/</id>
+    <published>2023-04-23T16:00:00.000Z</published>
+    <updated>2023-04-24T09:45:36.727Z</updated>
+    
+    
+    <summary type="html">Linux系统服务器开机自动挂载硬盘的两种设置方法</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
+    
+    
+    <category term="server" scheme="http://example.com/tags/server/"/>
+    
+    <category term="mount" scheme="http://example.com/tags/mount/"/>
+    
+    <category term="auto" scheme="http://example.com/tags/auto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>服务器的硬件和开机流程的简介，以及BIOS和磁盘阵列控制器的设置</title>
+    <link href="http://example.com/2023/04/19/linux_operation.and.maintenance_RAID.Controller.Card/"/>
+    <id>http://example.com/2023/04/19/linux_operation.and.maintenance_RAID.Controller.Card/</id>
+    <published>2023-04-18T16:00:00.000Z</published>
+    <updated>2023-04-19T03:04:44.648Z</updated>
+    
+    
+    <summary type="html">以课题组16服务器为例，介绍服务器的硬件，开机页面，BIOS设置（包括修改启动模式Boot Mode），以及磁盘阵列控制器（RAID Controller）的设置。</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
+    
+    
+    <category term="server" scheme="http://example.com/tags/server/"/>
+    
+    <category term="hardware" scheme="http://example.com/tags/hardware/"/>
+    
+    <category term="RAID" scheme="http://example.com/tags/RAID/"/>
+    
+    <category term="RAID Controller" scheme="http://example.com/tags/RAID-Controller/"/>
+    
+    <category term="BIOS" scheme="http://example.com/tags/BIOS/"/>
+    
+    <category term="Boot Mode" scheme="http://example.com/tags/Boot-Mode/"/>
+    
+    <category term="USB3.0 Extender" scheme="http://example.com/tags/USB3-0-Extender/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>线粒体的重复介导重组的鉴定和计算重组频率</title>
+    <link href="http://example.com/2023/03/14/omics_organelle_recombination.frequency/"/>
+    <id>http://example.com/2023/03/14/omics_organelle_recombination.frequency/</id>
+    <published>2023-03-13T16:00:00.000Z</published>
+    <updated>2023-11-27T08:29:22.863Z</updated>
+    
+    
+    <summary type="html">线粒体的重复介导重组的鉴定和计算重组频率。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="organelle" scheme="http://example.com/categories/omics/organelle/"/>
+    
+    <category term="recombination" scheme="http://example.com/categories/omics/organelle/recombination/"/>
+    
+    
+    <category term="mitogenome" scheme="http://example.com/tags/mitogenome/"/>
+    
+    <category term="repeat" scheme="http://example.com/tags/repeat/"/>
+    
+    <category term="recombination" scheme="http://example.com/tags/recombination/"/>
+    
+    <category term="rearrangement" scheme="http://example.com/tags/rearrangement/"/>
+    
+    <category term="insert size" scheme="http://example.com/tags/insert-size/"/>
+    
+    <category term="recombination frequency" scheme="http://example.com/tags/recombination-frequency/"/>
+    
+    <category term="ROUSFinder" scheme="http://example.com/tags/ROUSFinder/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>树空间的多维缩放（multidimensional scaling，MDS）可视化物种树和基因树的RF距离</title>
+    <link href="http://example.com/2023/03/13/bioinfo_phylogeny_MDS/"/>
+    <id>http://example.com/2023/03/13/bioinfo_phylogeny_MDS/</id>
+    <published>2023-03-12T16:00:00.000Z</published>
+    <updated>2023-03-13T09:01:03.097Z</updated>
+    
+    
+    <summary type="html">先使用R包ape 5.0计算树之间的成对Robinson-Foulds（RF）距离，然后对RF距离进行多维缩放（multidimensional scaling，MDS），并绘制不同维度的RF距离示意图。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
+    
+    
+    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
+    
+    <category term="ggplot2" scheme="http://example.com/tags/ggplot2/"/>
+    
+    <category term="R packages" scheme="http://example.com/tags/R-packages/"/>
+    
+    <category term="multidimensional scaling" scheme="http://example.com/tags/multidimensional-scaling/"/>
+    
+    <category term="MDS" scheme="http://example.com/tags/MDS/"/>
+    
+    <category term="成对Robinson-Foulds距离" scheme="http://example.com/tags/%E6%88%90%E5%AF%B9Robinson-Foulds%E8%B7%9D%E7%A6%BB/"/>
+    
+    <category term="ape" scheme="http://example.com/tags/ape/"/>
+    
+    <category term="gene tree" scheme="http://example.com/tags/gene-tree/"/>
+    
+    <category term="species tree" scheme="http://example.com/tags/species-tree/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用R包MSCquartets评估不完全谱系分选的程度</title>
+    <link href="http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/"/>
+    <id>http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/</id>
+    <published>2023-03-12T16:00:00.000Z</published>
+    <updated>2023-03-13T08:48:51.017Z</updated>
+    
+    
+    <summary type="html">造成系统发育冲突的原因包括不完全谱系分选（Incomplete lineage sorting, ILS），基因渐渗、杂交、遗传重组、水平基因转移等导致基因流的进化历史。本文章介绍了用R包MSCquartets评估不完全谱系分选的程度，以及除了ILS以外的其他原因是否参与了系统冲突。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
+    
+    <category term="ILS" scheme="http://example.com/categories/bioinfo/phylogeny/ILS/"/>
+    
+    
+    <category term="gene flow" scheme="http://example.com/tags/gene-flow/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
+    
+    <category term="R packages" scheme="http://example.com/tags/R-packages/"/>
+    
+    <category term="MSCquartets" scheme="http://example.com/tags/MSCquartets/"/>
+    
+    <category term="ILS" scheme="http://example.com/tags/ILS/"/>
+    
+    <category term="MSC" scheme="http://example.com/tags/MSC/"/>
+    
+    <category term="simplex" scheme="http://example.com/tags/simplex/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用R包castor的get_subtree_with_tips函数提取子树</title>
+    <link href="http://example.com/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/"/>
+    <id>http://example.com/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/</id>
+    <published>2023-03-12T16:00:00.000Z</published>
+    <updated>2023-03-13T03:42:02.259Z</updated>
+    
+    
+    <summary type="html">用R包castor的get_subtree_with_tips函数从大的系统发育树中提取指定类群的子树，拓扑不变。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
+    
+    
+    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
+    
+    <category term="R package" scheme="http://example.com/tags/R-package/"/>
+    
+    <category term="evolutionary tree" scheme="http://example.com/tags/evolutionary-tree/"/>
+    
+    <category term="castor" scheme="http://example.com/tags/castor/"/>
+    
+    <category term="get_subtree_with_tips" scheme="http://example.com/tags/get-subtree-with-tips/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用pixy计算群体的pi，dxy，fst</title>
+    <link href="http://example.com/2023/03/13/bioinfo_population.genetics_pixy/"/>
+    <id>http://example.com/2023/03/13/bioinfo_population.genetics_pixy/</id>
+    <published>2023-03-12T16:00:00.000Z</published>
+    <updated>2023-03-26T07:10:20.618Z</updated>
+    
+    
+    <summary type="html">基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="population genetics" scheme="http://example.com/categories/bioinfo/population-genetics/"/>
+    
+    
+    <category term="pixy" scheme="http://example.com/tags/pixy/"/>
+    
+    <category term="pi" scheme="http://example.com/tags/pi/"/>
+    
+    <category term="dxy" scheme="http://example.com/tags/dxy/"/>
+    
+    <category term="fst" scheme="http://example.com/tags/fst/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用k-mer分析进行基因组调查：（二）用Smudgeplot估计倍性</title>
+    <link href="http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/"/>
+    <id>http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/</id>
+    <published>2022-12-30T16:00:00.000Z</published>
+    <updated>2023-01-31T03:16:21.855Z</updated>
+    
+    
+    <summary type="html">介绍Smudgeplot，用Smudgeplot估计物种的倍性。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome survey" scheme="http://example.com/categories/omics/genome/genome-survey/"/>
+    
+    
+    <category term="genome survey" scheme="http://example.com/tags/genome-survey/"/>
+    
+    <category term="genome" scheme="http://example.com/tags/genome/"/>
+    
+    <category term="k-mer" scheme="http://example.com/tags/k-mer/"/>
+    
+    <category term="KMC" scheme="http://example.com/tags/KMC/"/>
+    
+    <category term="GenomeScope" scheme="http://example.com/tags/GenomeScope/"/>
+    
+    <category term="Smudgeplot" scheme="http://example.com/tags/Smudgeplot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用软件Quartet Sampling来计算分支支持率，评估系统发育树不一致程度，区分强冲突和弱支持</title>
+    <link href="http://example.com/2022/11/08/bioinfo_phylogeny_QuartetSampling/"/>
+    <id>http://example.com/2022/11/08/bioinfo_phylogeny_QuartetSampling/</id>
+    <published>2022-11-07T16:00:00.000Z</published>
+    <updated>2023-03-14T10:55:42.746Z</updated>
+    
+    
+    <summary type="html">记录了软件Quartet Sampling的原理和使用。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
+    
+    
+    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
+    
+    <category term="phylogenomics" scheme="http://example.com/tags/phylogenomics/"/>
+    
+    <category term="phylogenetic discordance" scheme="http://example.com/tags/phylogenetic-discordance/"/>
+    
+    <category term="Quartet Sampling" scheme="http://example.com/tags/Quartet-Sampling/"/>
+    
+  </entry>
+  
+</feed>
