@@ -668,33 +668,6 @@
   </entry>
   
   <entry>
-    <title>使用pixy计算群体的pi，dxy，fst</title>
-    <link href="http://example.com/2023/03/13/bioinfo_population.genetics_pixy/"/>
-    <id>http://example.com/2023/03/13/bioinfo_population.genetics_pixy/</id>
-    <published>2023-03-12T16:00:00.000Z</published>
-    <updated>2023-03-26T07:10:20.618Z</updated>
-    
-    
-    <summary type="html">基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="population genetics" scheme="http://example.com/categories/bioinfo/population-genetics/"/>
-    
-    
-    <category term="pixy" scheme="http://example.com/tags/pixy/"/>
-    
-    <category term="pi" scheme="http://example.com/tags/pi/"/>
-    
-    <category term="dxy" scheme="http://example.com/tags/dxy/"/>
-    
-    <category term="fst" scheme="http://example.com/tags/fst/"/>
-    
-  </entry>
-  
-  <entry>
     <title>用R包castor的get_subtree_with_tips函数提取子树</title>
     <link href="http://example.com/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/"/>
     <id>http://example.com/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/</id>
@@ -720,6 +693,33 @@
     <category term="castor" scheme="http://example.com/tags/castor/"/>
     
     <category term="get_subtree_with_tips" scheme="http://example.com/tags/get-subtree-with-tips/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用pixy计算群体的pi，dxy，fst</title>
+    <link href="http://example.com/2023/03/13/bioinfo_population.genetics_pixy/"/>
+    <id>http://example.com/2023/03/13/bioinfo_population.genetics_pixy/</id>
+    <published>2023-03-12T16:00:00.000Z</published>
+    <updated>2023-03-26T07:10:20.618Z</updated>
+    
+    
+    <summary type="html">基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="population genetics" scheme="http://example.com/categories/bioinfo/population-genetics/"/>
+    
+    
+    <category term="pixy" scheme="http://example.com/tags/pixy/"/>
+    
+    <category term="pi" scheme="http://example.com/tags/pi/"/>
+    
+    <category term="dxy" scheme="http://example.com/tags/dxy/"/>
+    
+    <category term="fst" scheme="http://example.com/tags/fst/"/>
     
   </entry>
   
