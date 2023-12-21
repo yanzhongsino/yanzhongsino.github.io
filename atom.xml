@@ -147,6 +147,37 @@
   </entry>
   
   <entry>
+    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
+    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
+    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
+    <published>2023-10-19T16:00:00.000Z</published>
+    <updated>2023-10-21T03:40:22.721Z</updated>
+    
+    
+    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+  </entry>
+  
+  <entry>
     <title>用HyPhy分析自然选择：（一）介绍HyPhy</title>
     <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_intro/"/>
     <id>http://example.com/2023/10/20/evolution_selection_HyPhy_intro/</id>
@@ -171,9 +202,11 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
-    
     <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
     
     <category term="FEL" scheme="http://example.com/tags/FEL/"/>
     
@@ -189,21 +222,19 @@
     
     <category term="BUSTED" scheme="http://example.com/tags/BUSTED/"/>
     
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
-    
     <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
   </entry>
   
   <entry>
-    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
-    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
-    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
-    <published>2023-10-19T16:00:00.000Z</published>
-    <updated>2023-10-21T03:40:22.721Z</updated>
+    <title>用PAML的codeML进行选择分析：（二）分支模型</title>
+    <link href="http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/"/>
+    <id>http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/</id>
+    <published>2023-10-09T16:00:00.000Z</published>
+    <updated>2023-11-17T13:09:43.833Z</updated>
     
     
-    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
+    <summary type="html">使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;，检测发生了正选择或负选择放松的分支。</summary>
     
     
     
@@ -218,11 +249,33 @@
     
     <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
     
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
+    
+    <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
+    
+    <category term="K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
+    
+    <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
+    
+    <category term="omega" scheme="http://example.com/tags/omega/"/>
+    
+    <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
   </entry>
   
@@ -286,59 +339,6 @@
     <category term="似然比检验(LRT)" scheme="http://example.com/tags/%E4%BC%BC%E7%84%B6%E6%AF%94%E6%A3%80%E9%AA%8C-LRT/"/>
     
     <category term="卡方检验(chi2 test)" scheme="http://example.com/tags/%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C-chi2-test/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用PAML的codeML进行选择分析：（二）分支模型</title>
-    <link href="http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/"/>
-    <id>http://example.com/2023/10/10/evolution_selection_paml.codeml_branch.model/</id>
-    <published>2023-10-09T16:00:00.000Z</published>
-    <updated>2023-11-17T13:09:43.833Z</updated>
-    
-    
-    <summary type="html">使用PAML的codeML程序包中的分支模型branch model来计算系统发育树上的d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;，检测发生了正选择或负选择放松的分支。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
-    
-    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
-    
-    
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
-    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
-    
-    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
-    
-    <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
-    
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
-    <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
-    
-    <category term="K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-S-sub/"/>
-    
-    <category term="K&lt;sub&gt;A&lt;/sub&gt;K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
-    
-    <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
-    
-    <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
-    
-    <category term="omega" scheme="http://example.com/tags/omega/"/>
-    
-    <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
   </entry>
   
@@ -668,6 +668,33 @@
   </entry>
   
   <entry>
+    <title>使用pixy计算群体的pi，dxy，fst</title>
+    <link href="http://example.com/2023/03/13/bioinfo_population.genetics_pixy/"/>
+    <id>http://example.com/2023/03/13/bioinfo_population.genetics_pixy/</id>
+    <published>2023-03-12T16:00:00.000Z</published>
+    <updated>2023-03-26T07:10:20.618Z</updated>
+    
+    
+    <summary type="html">基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="population genetics" scheme="http://example.com/categories/bioinfo/population-genetics/"/>
+    
+    
+    <category term="pixy" scheme="http://example.com/tags/pixy/"/>
+    
+    <category term="pi" scheme="http://example.com/tags/pi/"/>
+    
+    <category term="dxy" scheme="http://example.com/tags/dxy/"/>
+    
+    <category term="fst" scheme="http://example.com/tags/fst/"/>
+    
+  </entry>
+  
+  <entry>
     <title>用R包castor的get_subtree_with_tips函数提取子树</title>
     <link href="http://example.com/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/"/>
     <id>http://example.com/2023/03/13/bioinfo_phylogeny_castor_extract.subtrees/</id>
@@ -693,33 +720,6 @@
     <category term="castor" scheme="http://example.com/tags/castor/"/>
     
     <category term="get_subtree_with_tips" scheme="http://example.com/tags/get-subtree-with-tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用pixy计算群体的pi，dxy，fst</title>
-    <link href="http://example.com/2023/03/13/bioinfo_population.genetics_pixy/"/>
-    <id>http://example.com/2023/03/13/bioinfo_population.genetics_pixy/</id>
-    <published>2023-03-12T16:00:00.000Z</published>
-    <updated>2023-03-26T07:10:20.618Z</updated>
-    
-    
-    <summary type="html">基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="population genetics" scheme="http://example.com/categories/bioinfo/population-genetics/"/>
-    
-    
-    <category term="pixy" scheme="http://example.com/tags/pixy/"/>
-    
-    <category term="pi" scheme="http://example.com/tags/pi/"/>
-    
-    <category term="dxy" scheme="http://example.com/tags/dxy/"/>
-    
-    <category term="fst" scheme="http://example.com/tags/fst/"/>
     
   </entry>
   
