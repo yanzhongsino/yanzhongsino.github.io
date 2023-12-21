@@ -748,11 +748,11 @@
     
     <category term="k-mer" scheme="http://example.com/tags/k-mer/"/>
     
-    <category term="KMC" scheme="http://example.com/tags/KMC/"/>
-    
     <category term="GenomeScope" scheme="http://example.com/tags/GenomeScope/"/>
     
     <category term="Smudgeplot" scheme="http://example.com/tags/Smudgeplot/"/>
+    
+    <category term="KMC" scheme="http://example.com/tags/KMC/"/>
     
   </entry>
   
