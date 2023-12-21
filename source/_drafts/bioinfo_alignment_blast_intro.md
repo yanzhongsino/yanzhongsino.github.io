@@ -30,7 +30,7 @@ blastp -query sample.fa -db index/ref.pep -out out.blast -evalue 1e-5 -num_threa
 
 - sample.fa不能是压缩文件
 
-
+blast的结果是以HSP（高度相似性片段）作为一行进行输出的。
 
 
 
@@ -51,8 +51,10 @@ blastp -query sample.fa -db index/ref.pep -out out.blast -evalue 1e-5 -num_threa
 
 
 # references
-1. blast参数-max_hsps：https://segmentfault.com/a/1190000015827656
-2. blast参数-max_target_seqs和-num_alignments：https://segmentfault.com/a/1190000015831475
+1. blast manual：https://www.ncbi.nlm.nih.gov/books/NBK279690/
+2. blast参数-max_hsps：https://segmentfault.com/a/1190000015827656
+3. blast参数-max_target_seqs和-num_alignments：https://segmentfault.com/a/1190000015831475
+4. blast自定义输出项：https://blog.ligene.cn/2017/07/05/BLAST-Tutorial/
 
 
 -------

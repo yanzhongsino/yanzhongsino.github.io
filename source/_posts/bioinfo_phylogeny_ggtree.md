@@ -318,14 +318,18 @@ ggtree(tree) + geom_tiplab()
 
 #### 2.2.2.7. 多棵图共同展示
 1. multiPhylo图
-多棵树并列展示。
+- 多棵树并列展示。
 ```R
-trees <- lapply(c(10, 20, 40), rtree) #随机生成3棵树，节点分别为10，20，40  
+trees <- read.newick("samples.trees") #读取newick格式的多棵树文件，一行一棵树
 class(trees) <- "multiPhylo"  
-ggtree(trees) + facet_wrap(~.id, scale="free") + geom_tiplab() #分面展示3棵树  
+ggtree(trees) + facet_wrap(~.id, scale="free") + geom_tiplab() #分面展示，树的行列数量随机。  
+ggtree(trees) + facet_wrap(~.id, ncol=10) #分面展示，每行10棵。  
+```
 
-btrees = read.tree(system.file("extdata/RAxML", "RAxML_bootstrap.H3", package="ggtree")) #读取系统的100棵树  
-ggtree(btrees) + facet_wrap(~.id, ncol=10) #分面展示100棵树，每行10棵。  
+- 修改每棵树的标签
+```R
+lbs<-c("Tree #1"="atp1","Tree #2"="atp4","Tree #3"="atp6","Tree #4"="atp8","Tree #5"="atp9","Tree #6"="ccmB","Tree #7"="ccmC","Tree #8"="ccmFC","Tree #9"="ccmFN","Tree #10"="cob","Tree #11"="cox1","Tree #12"="cox2","Tree #13"="cox3","Tree #14"="matR","Tree #15"="mttB","Tree #16"="nad1","Tree #17"="nad2","Tree #18"="nad3","Tree #19"="nad4","Tree #20"="nad4L","Tree #21"="nad5","Tree #22"="nad6","Tree #23"="nad7","Tree #24"="nad9","Tree #25"="rpl10","Tree #26"="rpl16","Tree #27"="rpl2","Tree #28"="rpl5","Tree #29"="rps1","Tree #30"="rps10","Tree #31"="rps12","Tree #32"="rps19","Tree #33"="rps3","Tree #34"="rps4","Tree #35"="sdh3","Tree #36"="sdh4") # 线粒体基因组的36个基因名为标签
+ggtree(trees)  + geom_tiplab() + geom_treescale()+geom_nodelab() + facet_wrap(~.id,ncol=4,scale="free",labeller=as_labeller(lbs))
 ```
 
 2. DensityTree图
