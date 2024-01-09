@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-12-21T09:44:02.253Z</updated>
+  <updated>2024-01-09T07:57:25.761Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,72 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux系统服务器清理缓存</title>
+    <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_cache.release/"/>
+    <id>http://example.com/2024/01/09/linux_operation.and.maintenance_cache.release/</id>
+    <published>2024-01-08T16:00:00.000Z</published>
+    <updated>2024-01-09T07:57:25.761Z</updated>
+    
+    
+    <summary type="html">Linux系统服务器释放缓存的操作。</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
+    
+    <category term="cache" scheme="http://example.com/categories/linux/operation-and-maintenance/cache/"/>
+    
+    
+    <category term="server" scheme="http://example.com/tags/server/"/>
+    
+    <category term="cache" scheme="http://example.com/tags/cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux系统服务器用户账号的管理</title>
+    <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/"/>
+    <id>http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/</id>
+    <published>2024-01-08T16:00:00.000Z</published>
+    <updated>2024-01-09T09:26:30.541Z</updated>
+    
+    
+    <summary type="html">Linux系统服务器用户账号的管理相关操作，包括添加新的用户账号、删除账号、修改账号，用户口令（密码）的管理，以及用户组的新增、删除和修改属性。</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
+    
+    <category term="user" scheme="http://example.com/categories/linux/operation-and-maintenance/user/"/>
+    
+    
+    <category term="server" scheme="http://example.com/tags/server/"/>
+    
+    <category term="user" scheme="http://example.com/tags/user/"/>
+    
+    <category term="useradd" scheme="http://example.com/tags/useradd/"/>
+    
+    <category term="usermod" scheme="http://example.com/tags/usermod/"/>
+    
+    <category term="userdel" scheme="http://example.com/tags/userdel/"/>
+    
+    <category term="passwd" scheme="http://example.com/tags/passwd/"/>
+    
+    <category term="groupadd" scheme="http://example.com/tags/groupadd/"/>
+    
+    <category term="groupmod" scheme="http://example.com/tags/groupmod/"/>
+    
+    <category term="groupdel" scheme="http://example.com/tags/groupdel/"/>
+    
+    <category term="newgrp" scheme="http://example.com/tags/newgrp/"/>
+    
+  </entry>
   
   <entry>
     <title>hexo博客下打开和设置RSS订阅</title>
@@ -251,8 +317,6 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -274,6 +338,8 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
@@ -304,8 +370,6 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -327,6 +391,8 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="位点模型 (site model)" scheme="http://example.com/tags/%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B-site-model/"/>
     
@@ -693,66 +759,6 @@
     <category term="castor" scheme="http://example.com/tags/castor/"/>
     
     <category term="get_subtree_with_tips" scheme="http://example.com/tags/get-subtree-with-tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用pixy计算群体的pi，dxy，fst</title>
-    <link href="http://example.com/2023/03/13/bioinfo_population.genetics_pixy/"/>
-    <id>http://example.com/2023/03/13/bioinfo_population.genetics_pixy/</id>
-    <published>2023-03-12T16:00:00.000Z</published>
-    <updated>2023-03-26T07:10:20.618Z</updated>
-    
-    
-    <summary type="html">基于多组学的vcf格式文件，计算群体的pi，dxy，fst值。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="population genetics" scheme="http://example.com/categories/bioinfo/population-genetics/"/>
-    
-    
-    <category term="pixy" scheme="http://example.com/tags/pixy/"/>
-    
-    <category term="pi" scheme="http://example.com/tags/pi/"/>
-    
-    <category term="dxy" scheme="http://example.com/tags/dxy/"/>
-    
-    <category term="fst" scheme="http://example.com/tags/fst/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用k-mer分析进行基因组调查：（二）用Smudgeplot估计倍性</title>
-    <link href="http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/"/>
-    <id>http://example.com/2022/12/31/omics_genome.survey_02.Smudgeplot/</id>
-    <published>2022-12-30T16:00:00.000Z</published>
-    <updated>2023-01-31T03:16:21.855Z</updated>
-    
-    
-    <summary type="html">介绍Smudgeplot，用Smudgeplot估计物种的倍性。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome survey" scheme="http://example.com/categories/omics/genome/genome-survey/"/>
-    
-    
-    <category term="genome survey" scheme="http://example.com/tags/genome-survey/"/>
-    
-    <category term="genome" scheme="http://example.com/tags/genome/"/>
-    
-    <category term="k-mer" scheme="http://example.com/tags/k-mer/"/>
-    
-    <category term="KMC" scheme="http://example.com/tags/KMC/"/>
-    
-    <category term="GenomeScope" scheme="http://example.com/tags/GenomeScope/"/>
-    
-    <category term="Smudgeplot" scheme="http://example.com/tags/Smudgeplot/"/>
     
   </entry>
   
