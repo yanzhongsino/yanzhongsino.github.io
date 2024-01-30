@@ -58,7 +58,7 @@ description: Linux系统服务器用户账号的管理相关操作，包括添�
 - 新建用户名为karen的用户。
 - 新建用户主目录/home/user，/home为默认用户主目录所在父目录。
 - 用户登录shell是/bin/bash，属于group用户组（主组），又属于adm和root用户组（附加组）。
-- useradd命令涉及的组若不存在，则会新建组。
+- useradd命令涉及的组若不存在，则需要用groupadd先新建组，再新建用户。
 4. 内涵
 - useradd新建用户就是在系统文件`/etc/passwd`中增加一条记录，记录新用户信息，同时更新其他系统文件如/etc/shadow，/etc/group等。
 5. adduser
