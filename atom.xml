@@ -46,7 +46,7 @@
     <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/"/>
     <id>http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/</id>
     <published>2024-01-08T16:00:00.000Z</published>
-    <updated>2024-01-09T09:26:30.541Z</updated>
+    <updated>2024-01-10T02:35:22.563Z</updated>
     
     
     <summary type="html">Linux系统服务器用户账号的管理相关操作，包括添加新的用户账号、删除账号、修改账号，用户口令（密码）的管理，以及用户组的新增、删除和修改属性。</summary>
@@ -165,13 +165,13 @@
     <category term="align" scheme="http://example.com/categories/bioinfo/alignment/align/"/>
     
     
-    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
-    
     <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
     
     <category term="MSA" scheme="http://example.com/tags/MSA/"/>
     
     <category term="sequence alignment" scheme="http://example.com/tags/sequence-alignment/"/>
+    
+    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
     
     <category term="MAFFT" scheme="http://example.com/tags/MAFFT/"/>
     
@@ -317,6 +317,8 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -338,8 +340,6 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
@@ -370,6 +370,8 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -391,8 +393,6 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="位点模型 (site model)" scheme="http://example.com/tags/%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B-site-model/"/>
     
