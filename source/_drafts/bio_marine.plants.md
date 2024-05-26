@@ -44,7 +44,7 @@ description: 记录中国常见海洋高等植物类型
 
 
 
-# 8. reference
+reference
 1. 《中国海洋高等植物图鉴》
 
 -------
