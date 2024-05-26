@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-05-26T08:36:51.059Z</updated>
+  <updated>2024-05-26T08:51:14.699Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2024/05/26/linux_operation.and.maintenance_log.release/"/>
     <id>http://example.com/2024/05/26/linux_operation.and.maintenance_log.release/</id>
     <published>2024-05-25T16:00:00.000Z</published>
-    <updated>2024-05-26T08:36:51.059Z</updated>
+    <updated>2024-05-26T08:51:14.699Z</updated>
     
     
     <summary type="html">Linux系统服务器清理系统日志的操作。</summary>
@@ -238,55 +238,6 @@
   </entry>
   
   <entry>
-    <title>用HyPhy分析自然选择：（一）介绍HyPhy</title>
-    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_intro/"/>
-    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_intro/</id>
-    <published>2023-10-19T16:00:00.000Z</published>
-    <updated>2023-10-21T03:38:59.223Z</updated>
-    
-    
-    <summary type="html">介绍自然选择分析软件HyPhy，它的版本，模型和使用。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
-    
-    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
-    
-    
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
-    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
-    
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
-    
-    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
-    
-    <category term="FEL" scheme="http://example.com/tags/FEL/"/>
-    
-    <category term="SLAC" scheme="http://example.com/tags/SLAC/"/>
-    
-    <category term="FUBAR" scheme="http://example.com/tags/FUBAR/"/>
-    
-    <category term="MEME" scheme="http://example.com/tags/MEME/"/>
-    
-    <category term="FADE" scheme="http://example.com/tags/FADE/"/>
-    
-    <category term="aBSREL" scheme="http://example.com/tags/aBSREL/"/>
-    
-    <category term="BUSTED" scheme="http://example.com/tags/BUSTED/"/>
-    
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
-    
-    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
-  </entry>
-  
-  <entry>
     <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
     <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
     <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
@@ -309,11 +260,60 @@
     
     <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
     
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
     <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用HyPhy分析自然选择：（一）介绍HyPhy</title>
+    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_intro/"/>
+    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_intro/</id>
+    <published>2023-10-19T16:00:00.000Z</published>
+    <updated>2023-10-21T03:38:59.223Z</updated>
+    
+    
+    <summary type="html">介绍自然选择分析软件HyPhy，它的版本，模型和使用。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
     <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
     
     <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+    <category term="FEL" scheme="http://example.com/tags/FEL/"/>
+    
+    <category term="SLAC" scheme="http://example.com/tags/SLAC/"/>
+    
+    <category term="FUBAR" scheme="http://example.com/tags/FUBAR/"/>
+    
+    <category term="MEME" scheme="http://example.com/tags/MEME/"/>
+    
+    <category term="FADE" scheme="http://example.com/tags/FADE/"/>
+    
+    <category term="aBSREL" scheme="http://example.com/tags/aBSREL/"/>
+    
+    <category term="BUSTED" scheme="http://example.com/tags/BUSTED/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
   </entry>
   
