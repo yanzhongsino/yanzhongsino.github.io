@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-05-26T08:51:14.699Z</updated>
+  <updated>2024-06-04T04:33:59.378Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,161 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
+    <link href="http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/"/>
+    <id>http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/</id>
+    <published>2024-06-03T16:00:00.000Z</published>
+    <updated>2024-06-04T04:33:59.378Z</updated>
+    
+    
+    <summary type="html">介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/third-generation-sequencing/"/>
+    
+    
+    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
+    
+    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
+    
+    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
+    
+    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
+    
+    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
+    
+    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
+    
+    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基因组测序简介</title>
+    <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
+    <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
+    <published>2024-06-03T16:00:00.000Z</published>
+    <updated>2024-06-04T09:30:49.337Z</updated>
+    
+    
+    <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
+    
+    
+    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
+    
+    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
+    
+    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
+    
+    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
+    
+    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
+    
+    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
+    
+    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
+    
+    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>质体的分类、角色和转换</title>
+    <link href="http://example.com/2024/05/31/bio_plastid_typesandroles/"/>
+    <id>http://example.com/2024/05/31/bio_plastid_typesandroles/</id>
+    <published>2024-05-30T16:00:00.000Z</published>
+    <updated>2024-05-31T04:28:06.682Z</updated>
+    
+    
+    <summary type="html">介绍植物细胞内质体的分类、角色和转换。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="plastid" scheme="http://example.com/categories/bio/plastid/"/>
+    
+    
+    <category term="plastid" scheme="http://example.com/tags/plastid/"/>
+    
+    <category term="质体" scheme="http://example.com/tags/%E8%B4%A8%E4%BD%93/"/>
+    
+    <category term="proplastid" scheme="http://example.com/tags/proplastid/"/>
+    
+    <category term="原质体" scheme="http://example.com/tags/%E5%8E%9F%E8%B4%A8%E4%BD%93/"/>
+    
+    <category term="leucoplast" scheme="http://example.com/tags/leucoplast/"/>
+    
+    <category term="白质体" scheme="http://example.com/tags/%E7%99%BD%E8%B4%A8%E4%BD%93/"/>
+    
+    <category term="amyloplast" scheme="http://example.com/tags/amyloplast/"/>
+    
+    <category term="elaioplast" scheme="http://example.com/tags/elaioplast/"/>
+    
+    <category term="proteinoplast" scheme="http://example.com/tags/proteinoplast/"/>
+    
+    <category term="chromoplast" scheme="http://example.com/tags/chromoplast/"/>
+    
+    <category term="色质体" scheme="http://example.com/tags/%E8%89%B2%E8%B4%A8%E4%BD%93/"/>
+    
+    <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
+    
+    <category term="叶绿体" scheme="http://example.com/tags/%E5%8F%B6%E7%BB%BF%E4%BD%93/"/>
+    
+    <category term="etioplast" scheme="http://example.com/tags/etioplast/"/>
+    
+    <category term="黄化体" scheme="http://example.com/tags/%E9%BB%84%E5%8C%96%E4%BD%93/"/>
+    
+    <category term="gerontoplast" scheme="http://example.com/tags/gerontoplast/"/>
+    
+    <category term="老年体" scheme="http://example.com/tags/%E8%80%81%E5%B9%B4%E4%BD%93/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux系统服务器清理系统日志</title>
@@ -190,13 +345,13 @@
     <category term="align" scheme="http://example.com/categories/bioinfo/alignment/align/"/>
     
     
+    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
+    
     <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
     
     <category term="MSA" scheme="http://example.com/tags/MSA/"/>
     
     <category term="sequence alignment" scheme="http://example.com/tags/sequence-alignment/"/>
-    
-    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
     
     <category term="MAFFT" scheme="http://example.com/tags/MAFFT/"/>
     
@@ -238,37 +393,6 @@
   </entry>
   
   <entry>
-    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
-    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
-    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
-    <published>2023-10-19T16:00:00.000Z</published>
-    <updated>2023-10-21T03:40:22.721Z</updated>
-    
-    
-    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
-    
-    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
-    
-    
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
-    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
-    
-    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
-    
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
-    
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
-    
-  </entry>
-  
-  <entry>
     <title>用HyPhy分析自然选择：（一）介绍HyPhy</title>
     <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_intro/"/>
     <id>http://example.com/2023/10/20/evolution_selection_HyPhy_intro/</id>
@@ -293,11 +417,9 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
-    
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
-    
     <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
     
     <category term="FEL" scheme="http://example.com/tags/FEL/"/>
     
@@ -313,7 +435,40 @@
     
     <category term="BUSTED" scheme="http://example.com/tags/BUSTED/"/>
     
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
     <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
+    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
+    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
+    <published>2023-10-19T16:00:00.000Z</published>
+    <updated>2023-10-21T03:40:22.721Z</updated>
+    
+    
+    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
     
   </entry>
   
@@ -348,9 +503,9 @@
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
     
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
     
@@ -401,9 +556,9 @@
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
     
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
     
@@ -454,15 +609,13 @@
     
     <category term="selection" scheme="http://example.com/tags/selection/"/>
     
-    <category term="bio" scheme="http://example.com/tags/bio/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
     
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
     
@@ -472,15 +625,17 @@
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
     
-    <category term="D&lt;sub&gt;n&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-n-sub/"/>
-    
-    <category term="D&lt;sub&gt;s&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-s-sub/"/>
-    
     <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
     
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
+    <category term="D&lt;sub&gt;n&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-n-sub/"/>
+    
+    <category term="D&lt;sub&gt;s&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-s-sub/"/>
     
     <category term="positive selection" scheme="http://example.com/tags/positive-selection/"/>
     
@@ -648,113 +803,6 @@
     <category term="Boot Mode" scheme="http://example.com/tags/Boot-Mode/"/>
     
     <category term="USB3.0 Extender" scheme="http://example.com/tags/USB3-0-Extender/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>线粒体的重复介导重组的鉴定和计算重组频率</title>
-    <link href="http://example.com/2023/03/14/omics_organelle_recombination.frequency/"/>
-    <id>http://example.com/2023/03/14/omics_organelle_recombination.frequency/</id>
-    <published>2023-03-13T16:00:00.000Z</published>
-    <updated>2023-11-27T08:29:22.863Z</updated>
-    
-    
-    <summary type="html">线粒体的重复介导重组的鉴定和计算重组频率。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="organelle" scheme="http://example.com/categories/omics/organelle/"/>
-    
-    <category term="recombination" scheme="http://example.com/categories/omics/organelle/recombination/"/>
-    
-    
-    <category term="mitogenome" scheme="http://example.com/tags/mitogenome/"/>
-    
-    <category term="repeat" scheme="http://example.com/tags/repeat/"/>
-    
-    <category term="recombination" scheme="http://example.com/tags/recombination/"/>
-    
-    <category term="rearrangement" scheme="http://example.com/tags/rearrangement/"/>
-    
-    <category term="insert size" scheme="http://example.com/tags/insert-size/"/>
-    
-    <category term="recombination frequency" scheme="http://example.com/tags/recombination-frequency/"/>
-    
-    <category term="ROUSFinder" scheme="http://example.com/tags/ROUSFinder/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>树空间的多维缩放（multidimensional scaling，MDS）可视化物种树和基因树的RF距离</title>
-    <link href="http://example.com/2023/03/13/bioinfo_phylogeny_MDS/"/>
-    <id>http://example.com/2023/03/13/bioinfo_phylogeny_MDS/</id>
-    <published>2023-03-12T16:00:00.000Z</published>
-    <updated>2023-03-13T09:01:03.097Z</updated>
-    
-    
-    <summary type="html">先使用R包ape 5.0计算树之间的成对Robinson-Foulds（RF）距离，然后对RF距离进行多维缩放（multidimensional scaling，MDS），并绘制不同维度的RF距离示意图。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
-    
-    
-    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
-    
-    <category term="ggplot2" scheme="http://example.com/tags/ggplot2/"/>
-    
-    <category term="R packages" scheme="http://example.com/tags/R-packages/"/>
-    
-    <category term="multidimensional scaling" scheme="http://example.com/tags/multidimensional-scaling/"/>
-    
-    <category term="MDS" scheme="http://example.com/tags/MDS/"/>
-    
-    <category term="成对Robinson-Foulds距离" scheme="http://example.com/tags/%E6%88%90%E5%AF%B9Robinson-Foulds%E8%B7%9D%E7%A6%BB/"/>
-    
-    <category term="ape" scheme="http://example.com/tags/ape/"/>
-    
-    <category term="gene tree" scheme="http://example.com/tags/gene-tree/"/>
-    
-    <category term="species tree" scheme="http://example.com/tags/species-tree/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用R包MSCquartets评估不完全谱系分选的程度</title>
-    <link href="http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/"/>
-    <id>http://example.com/2023/03/13/bioinfo_phylogeny_MSCquartets/</id>
-    <published>2023-03-12T16:00:00.000Z</published>
-    <updated>2023-03-13T08:48:51.017Z</updated>
-    
-    
-    <summary type="html">造成系统发育冲突的原因包括不完全谱系分选（Incomplete lineage sorting, ILS），基因渐渗、杂交、遗传重组、水平基因转移等导致基因流的进化历史。本文章介绍了用R包MSCquartets评估不完全谱系分选的程度，以及除了ILS以外的其他原因是否参与了系统冲突。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="phylogeny" scheme="http://example.com/categories/bioinfo/phylogeny/"/>
-    
-    <category term="ILS" scheme="http://example.com/categories/bioinfo/phylogeny/ILS/"/>
-    
-    
-    <category term="gene flow" scheme="http://example.com/tags/gene-flow/"/>
-    
-    <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
-    
-    <category term="R packages" scheme="http://example.com/tags/R-packages/"/>
-    
-    <category term="MSCquartets" scheme="http://example.com/tags/MSCquartets/"/>
-    
-    <category term="ILS" scheme="http://example.com/tags/ILS/"/>
-    
-    <category term="MSC" scheme="http://example.com/tags/MSC/"/>
-    
-    <category term="simplex" scheme="http://example.com/tags/simplex/"/>
     
   </entry>
   
