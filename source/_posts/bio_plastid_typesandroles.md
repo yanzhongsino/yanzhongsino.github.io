@@ -29,12 +29,12 @@ description: 介绍植物细胞内质体的分类、角色和转换。
 
 植物细胞内的质体会随着植物生长和环境的变化而变化，不同植物组织和器官内的质体是不同的。
 
-<img src="https://www.frontiersin.org/files/Articles/692024/fpls-12-692024-HTML-r1/image_m/fpls-12-692024-g001.jpg" width=50% title="plastid Types and Roles" align=center/>
+<img src="https://www.frontiersin.org/files/Articles/692024/fpls-12-692024-HTML-r1/image_m/fpls-12-692024-g001.jpg" width=80% title="plastid Types and Roles" align=center/>
 
 **<p align="center">Figure 1. 植物质体的分类、角色和转换</p>**
 
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/edited/plastidTypesandRoles.jpg?raw=true" width=50% title="plastid Types and Roles" align=center/>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/edited/plastidTypesandRoles.jpg?raw=true" width=80% title="plastid Types and Roles" align=center/>
 
 **<p align="center">Figure 2. 植物质体的分类、角色和转换</p>**
 

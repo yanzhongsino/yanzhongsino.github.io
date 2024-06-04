@@ -46,7 +46,7 @@ description: 介绍基因组测序技术的分类（包括第一代、第二代�
 1. 最常用的是链终止法（Chain-termination methods）进行Sanger测序。
 2. Sanger测序（链终止法）的原理是使用荧光或放射性标记的二脱氧核苷酸三磷酸酯(ddNTPs)和普通脱氧核苷酸三磷酸酯(dNTPs)共同作为原材料根据单链DNA模板在DNA引物和DNA聚合酶作用下在体外进行DNA链的延伸。由于ddNTPs缺乏在两个核苷酸之间形成磷酸二酯键所需的3-OH基团，所以ddNTPs会在结合后终止DNA链的延伸。
 
-<img src="https://en.wikipedia.org/wiki/File:Sanger-sequencing.svg" width=80% title="Sanger测序流程" align=center/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Sanger-sequencing.svg/673px-Sanger-sequencing.svg.png" width=80% title="Sanger测序流程" align=center/>
 
 **<p align="center">Figure 2. Sanger测序流程</p>**
 
