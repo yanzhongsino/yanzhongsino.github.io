@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-04T04:33:59.378Z</updated>
+  <updated>2024-06-04T09:45:49.694Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,64 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>基因组测序简介</title>
+    <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
+    <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
+    <published>2024-06-03T16:00:00.000Z</published>
+    <updated>2024-06-04T09:45:49.694Z</updated>
+    
+    
+    <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
+    
+    
+    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
+    
+    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
+    
+    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
+    
+    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
+    
+    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
+    
+    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
+    
+    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
+    
+    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
+    
+  </entry>
+  
+  <entry>
     <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
     <link href="http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/"/>
     <id>http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/</id>
     <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-06-04T04:33:59.378Z</updated>
+    <updated>2024-06-04T09:44:19.940Z</updated>
     
     
     <summary type="html">介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。</summary>
@@ -66,64 +119,11 @@
   </entry>
   
   <entry>
-    <title>基因组测序简介</title>
-    <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
-    <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
-    <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-06-04T09:30:49.337Z</updated>
-    
-    
-    <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
-    
-    
-    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
-    
-    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
-    
-    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
-    
-    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
-    
-    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
-    
-    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
-    
-    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
-    
-    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
-    
-  </entry>
-  
-  <entry>
     <title>质体的分类、角色和转换</title>
     <link href="http://example.com/2024/05/31/bio_plastid_typesandroles/"/>
     <id>http://example.com/2024/05/31/bio_plastid_typesandroles/</id>
     <published>2024-05-30T16:00:00.000Z</published>
-    <updated>2024-05-31T04:28:06.682Z</updated>
+    <updated>2024-06-04T09:43:49.519Z</updated>
     
     
     <summary type="html">介绍植物细胞内质体的分类、角色和转换。</summary>
@@ -345,13 +345,13 @@
     <category term="align" scheme="http://example.com/categories/bioinfo/alignment/align/"/>
     
     
-    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
-    
     <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
     
     <category term="MSA" scheme="http://example.com/tags/MSA/"/>
     
     <category term="sequence alignment" scheme="http://example.com/tags/sequence-alignment/"/>
+    
+    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
     
     <category term="MAFFT" scheme="http://example.com/tags/MAFFT/"/>
     
@@ -503,9 +503,9 @@
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
     
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
     
@@ -556,9 +556,9 @@
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
     
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
     
@@ -609,13 +609,15 @@
     
     <category term="selection" scheme="http://example.com/tags/selection/"/>
     
+    <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
     
-    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
+    
+    <category term="d&lt;sub&gt;N&lt;/sub&gt;/d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub-d-sub-S-sub/"/>
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub/"/>
     
@@ -625,17 +627,15 @@
     
     <category term="K&lt;sub&gt;A&lt;/sub&gt;/K&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/K-sub-A-sub-K-sub-S-sub/"/>
     
+    <category term="D&lt;sub&gt;n&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-n-sub/"/>
+    
+    <category term="D&lt;sub&gt;s&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-s-sub/"/>
+    
     <category term="omega(ω)" scheme="http://example.com/tags/omega-%CF%89/"/>
     
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="bio" scheme="http://example.com/tags/bio/"/>
-    
-    <category term="D&lt;sub&gt;n&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-n-sub/"/>
-    
-    <category term="D&lt;sub&gt;s&lt;/sub&gt;" scheme="http://example.com/tags/D-sub-s-sub/"/>
     
     <category term="positive selection" scheme="http://example.com/tags/positive-selection/"/>
     
