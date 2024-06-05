@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-05T06:26:45.037Z</updated>
+  <updated>2024-06-05T09:24:04.866Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python脚本中字符串内的引号需要转义</title>
+    <link href="http://example.com/2024/06/05/python_syntax_string_quetos/"/>
+    <id>http://example.com/2024/06/05/python_syntax_string_quetos/</id>
+    <published>2024-06-04T16:00:00.000Z</published>
+    <updated>2024-06-05T09:24:04.866Z</updated>
+    
+    
+    <summary type="html">记录使用python脚本时发现的一个语法错误。</summary>
+    
+    
+    
+    <category term="programming" scheme="http://example.com/categories/programming/"/>
+    
+    <category term="python" scheme="http://example.com/categories/programming/python/"/>
+    
+    <category term="syntax" scheme="http://example.com/categories/programming/python/syntax/"/>
+    
+    <category term="string" scheme="http://example.com/categories/programming/python/syntax/string/"/>
+    
+    
+    <category term="python" scheme="http://example.com/tags/python/"/>
+    
+    <category term="syntax" scheme="http://example.com/tags/syntax/"/>
+    
+    <category term="error" scheme="http://example.com/tags/error/"/>
+    
+    <category term="quotes" scheme="http://example.com/tags/quotes/"/>
+    
+    <category term="string" scheme="http://example.com/tags/string/"/>
+    
+  </entry>
   
   <entry>
     <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
@@ -497,8 +530,6 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -520,6 +551,8 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
@@ -550,8 +583,6 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -573,6 +604,8 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
+    
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="位点模型 (site model)" scheme="http://example.com/tags/%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B-site-model/"/>
     
@@ -770,39 +803,6 @@
     <category term="mount" scheme="http://example.com/tags/mount/"/>
     
     <category term="auto" scheme="http://example.com/tags/auto/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>服务器的硬件和开机流程的简介，以及BIOS和磁盘阵列控制器的设置</title>
-    <link href="http://example.com/2023/04/19/linux_operation.and.maintenance_RAID.Controller.Card/"/>
-    <id>http://example.com/2023/04/19/linux_operation.and.maintenance_RAID.Controller.Card/</id>
-    <published>2023-04-18T16:00:00.000Z</published>
-    <updated>2023-04-19T03:04:44.648Z</updated>
-    
-    
-    <summary type="html">以课题组16服务器为例，介绍服务器的硬件，开机页面，BIOS设置（包括修改启动模式Boot Mode），以及磁盘阵列控制器（RAID Controller）的设置。</summary>
-    
-    
-    
-    <category term="linux" scheme="http://example.com/categories/linux/"/>
-    
-    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
-    
-    
-    <category term="server" scheme="http://example.com/tags/server/"/>
-    
-    <category term="hardware" scheme="http://example.com/tags/hardware/"/>
-    
-    <category term="RAID" scheme="http://example.com/tags/RAID/"/>
-    
-    <category term="RAID Controller" scheme="http://example.com/tags/RAID-Controller/"/>
-    
-    <category term="BIOS" scheme="http://example.com/tags/BIOS/"/>
-    
-    <category term="Boot Mode" scheme="http://example.com/tags/Boot-Mode/"/>
-    
-    <category term="USB3.0 Extender" scheme="http://example.com/tags/USB3-0-Extender/"/>
     
   </entry>
   
