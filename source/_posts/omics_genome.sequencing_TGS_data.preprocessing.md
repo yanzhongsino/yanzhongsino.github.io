@@ -23,7 +23,7 @@ tags:
 description: 介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105136&auto=1&height=32"></iframe>/<div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105136&auto=1&height=32"></iframe></div>
 
 # 1. SMRT测序模式
 PacBio sequel II平台支持CLR（Continuous Long Reads）和CCS（Circular Consensus Sequencing）两种测序模式。 （sequel平台好像只支持CLR模式）
