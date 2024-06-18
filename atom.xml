@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-05T09:24:04.866Z</updated>
+  <updated>2024-06-18T04:33:07.449Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,70 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>正交和反交在遗传学中的应用</title>
+    <link href="http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/"/>
+    <id>http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/</id>
+    <published>2024-06-17T16:00:00.000Z</published>
+    <updated>2024-06-18T04:33:07.449Z</updated>
+    
+    
+    <summary type="html">介绍了正交和反交的定义，以及利用正交和反交解决遗传中的哪些问题。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="genetics" scheme="http://example.com/categories/bio/genetics/"/>
+    
+    <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
+    
+    
+    <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
+    <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
+    
+    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux系统的压缩/解压缩和打包/解包工具</title>
+    <link href="http://example.com/2024/06/18/linux_command_compress/"/>
+    <id>http://example.com/2024/06/18/linux_command_compress/</id>
+    <published>2024-06-17T16:00:00.000Z</published>
+    <updated>2024-06-18T04:15:58.823Z</updated>
+    
+    
+    <summary type="html">linux系统下的压缩工具，以及压缩和解压缩的操作，打包工具，打包和解包操作。</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="command" scheme="http://example.com/categories/linux/command/"/>
+    
+    <category term="compress" scheme="http://example.com/categories/linux/command/compress/"/>
+    
+    
+    <category term="linux" scheme="http://example.com/tags/linux/"/>
+    
+    <category term="compress" scheme="http://example.com/tags/compress/"/>
+    
+    <category term="gzip" scheme="http://example.com/tags/gzip/"/>
+    
+    <category term="pigz" scheme="http://example.com/tags/pigz/"/>
+    
+    <category term="bigz2" scheme="http://example.com/tags/bigz2/"/>
+    
+    <category term="tar" scheme="http://example.com/tags/tar/"/>
+    
+    <category term="zip" scheme="http://example.com/tags/zip/"/>
+    
+    <category term="rar" scheme="http://example.com/tags/rar/"/>
+    
+  </entry>
   
   <entry>
     <title>python脚本中字符串内的引号需要转义</title>
@@ -46,6 +110,59 @@
     <category term="quotes" scheme="http://example.com/tags/quotes/"/>
     
     <category term="string" scheme="http://example.com/tags/string/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基因组测序简介</title>
+    <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
+    <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
+    <published>2024-06-03T16:00:00.000Z</published>
+    <updated>2024-06-04T09:45:49.694Z</updated>
+    
+    
+    <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
+    
+    
+    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
+    
+    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
+    
+    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
+    
+    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
+    
+    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
+    
+    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
+    
+    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
+    
+    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
     
   </entry>
   
@@ -95,59 +212,6 @@
     <category term="subreads" scheme="http://example.com/tags/subreads/"/>
     
     <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>基因组测序简介</title>
-    <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
-    <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
-    <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-06-04T09:45:49.694Z</updated>
-    
-    
-    <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
-    
-    
-    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
-    
-    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
-    
-    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
-    
-    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
-    
-    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
-    
-    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
-    
-    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
-    
-    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
     
   </entry>
   
@@ -479,13 +543,13 @@
     
     <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
     
-    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
-    
     <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
     
     <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
     
     <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
     <category term="FEL" scheme="http://example.com/tags/FEL/"/>
     
@@ -530,6 +594,8 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -551,8 +617,6 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
@@ -583,6 +647,8 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -604,8 +670,6 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="位点模型 (site model)" scheme="http://example.com/tags/%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B-site-model/"/>
     
@@ -640,9 +704,9 @@
     <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
     
     
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
-    
     <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
     
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
@@ -751,58 +815,6 @@
     <category term="ultrafast bootstrap approximation" scheme="http://example.com/tags/ultrafast-bootstrap-approximation/"/>
     
     <category term="UFBoot" scheme="http://example.com/tags/UFBoot/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>参考文献管理软件EndNote的中英文混排技巧</title>
-    <link href="http://example.com/2023/05/11/tools_academia_EndNote/"/>
-    <id>http://example.com/2023/05/11/tools_academia_EndNote/</id>
-    <published>2023-05-10T16:00:00.000Z</published>
-    <updated>2023-05-11T07:12:24.547Z</updated>
-    
-    
-    <summary type="html">介绍参考文献管理软件EndNote的中英文混排技巧。</summary>
-    
-    
-    
-    <category term="tools" scheme="http://example.com/categories/tools/"/>
-    
-    <category term="academia" scheme="http://example.com/categories/tools/academia/"/>
-    
-    <category term="EndNote" scheme="http://example.com/categories/tools/academia/EndNote/"/>
-    
-    
-    <category term="tools" scheme="http://example.com/tags/tools/"/>
-    
-    <category term="EndNote" scheme="http://example.com/tags/EndNote/"/>
-    
-    <category term="中英文混排" scheme="http://example.com/tags/%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E6%8E%92/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux系统的服务器开机自动挂载硬盘的设置</title>
-    <link href="http://example.com/2023/04/24/linux_operation.and.maintenance_auto.mount/"/>
-    <id>http://example.com/2023/04/24/linux_operation.and.maintenance_auto.mount/</id>
-    <published>2023-04-23T16:00:00.000Z</published>
-    <updated>2023-04-24T09:45:36.727Z</updated>
-    
-    
-    <summary type="html">Linux系统服务器开机自动挂载硬盘的两种设置方法</summary>
-    
-    
-    
-    <category term="linux" scheme="http://example.com/categories/linux/"/>
-    
-    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
-    
-    
-    <category term="server" scheme="http://example.com/tags/server/"/>
-    
-    <category term="mount" scheme="http://example.com/tags/mount/"/>
-    
-    <category term="auto" scheme="http://example.com/tags/auto/"/>
     
   </entry>
   
