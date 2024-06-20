@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="简介HiFi数据，组装基因组的软件选择，Hifiasm软件。">
+  <meta name="description" content="为啥Hifiasm是用HiFi数据组装基因组的不二选择? 本文简介了HiFi数据，组装基因组的软件选择，以及介绍Hifiasm软件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用Hifiasm基于HiFi数据组装基因组：（一）简介Hifiasm软件和HiFi数据">
+<meta property="og:title" content="用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据">
 <meta property="og:url" content="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="简介HiFi数据，组装基因组的软件选择，Hifiasm软件。">
+<meta property="og:description" content="为啥Hifiasm是用HiFi数据组装基因组的不二选择? 本文简介了HiFi数据，组装基因组的软件选择，以及介绍Hifiasm软件。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-06-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-06-20T09:08:48.131Z">
+<meta property="article:modified_time" content="2024-06-20T13:06:39.738Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="Hi-C">
 <meta property="article:tag" content="genome assembly">
@@ -54,7 +54,7 @@
   };
 </script>
 
-  <title>用Hifiasm基于HiFi数据组装基因组：（一）简介Hifiasm软件和HiFi数据 | 生信技工</title>
+  <title>用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据 | 生信技工</title>
   
 
 
@@ -234,7 +234,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          用Hifiasm基于HiFi数据组装基因组：（一）简介Hifiasm软件和HiFi数据
+          用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据
         </h1>
 
         <div class="post-meta">
@@ -251,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-20 17:08:48" itemprop="dateModified" datetime="2024-06-20T17:08:48+08:00">2024-06-20</time>
+                <time title="Modified: 2024-06-20 21:06:39" itemprop="dateModified" datetime="2024-06-20T21:06:39+08:00">2024-06-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,7 +305,7 @@
               </span>
               <span>1 mins.</span>
             </span>
-            <div class="post-description">简介HiFi数据，组装基因组的软件选择，Hifiasm软件。</div>
+            <div class="post-description">为啥Hifiasm是用HiFi数据组装基因组的不二选择? 本文简介了HiFi数据，组装基因组的软件选择，以及介绍Hifiasm软件。</div>
 
         </div>
       </header>
@@ -318,7 +318,7 @@
       
         <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2154795903&auto=1&height=32"></iframe></div>
 
-<h1 id="1-HiFi数据"><a href="#1-HiFi数据" class="headerlink" title="1. HiFi数据"></a>1. HiFi数据</h1><p>HiFi reads（High Fidelity reads）是2019年由PacBio公司推出的基于环化共有序列（Circular Consensus Sequencing，CCS）模式产生的既兼顾长读长（10-20kb的长度）又具有高精度（&gt;99%准确率）的测序结果。非常适合用于基因组组装。</p>
+<h1 id="1-HiFi数据"><a href="#1-HiFi数据" class="headerlink" title="1. HiFi数据"></a>1. HiFi数据</h1><p>HiFi reads（High Fidelity reads）是2019年由PacBio公司推出的基于环化一致性序列（Circular Consensus Sequencing，CCS）模式产生的既兼顾长读长（10-20kb的长度）又具有高精度（&gt;99%准确率）的测序结果。非常适合用于基因组组装。</p>
 <ol>
 <li>HiFi数据预处理</li>
 </ol>
@@ -330,8 +330,9 @@
 <li>用HiFi数据组装基因组的软件选择</li>
 </ol>
 <ul>
-<li>2024年发表在Genome Research上的一篇文章（<a target="_blank" rel="noopener" href="https://genome.cshlp.org/content/34/2/326%EF%BC%89%E5%AF%B911%E7%A7%8D%E9%92%88%E5%AF%B9HiFi%E6%B5%8B%E5%BA%8F%E6%8A%80%E6%9C%AF%E7%9A%84%E7%BB%84%E8%A3%85%E5%B7%A5%E5%85%B7%E7%9A%84%E8%AF%84%E4%BC%B0%E7%BB%93%E6%9E%9C%E6%98%BE%E7%A4%BA%EF%BC%8C**hifiasm**%E5%92%8C**hifiasm-meta**%E5%88%86%E5%88%AB%E6%88%90%E4%B8%BA%E7%BB%84%E8%A3%85%E7%9C%9F%E6%A0%B8%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%92%8C%E5%AE%8F%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%9A%84%E4%BC%98%E9%80%89%E5%B7%A5%E5%85%B7%E3%80%82">https://genome.cshlp.org/content/34/2/326）对11种针对HiFi测序技术的组装工具的评估结果显示，**hifiasm**和**hifiasm-meta**分别成为组装真核基因组和宏基因组的优选工具。</a></li>
-<li>文章显示，在真核生物基因组组装中，hifiasm在不同方法比较的组装基因组均具有更高的连续性、完整性和准确性；HiCanu、Verkko与LJA次之，但Verkko与LJA具有组装的contig较短等缺陷；NextDenovo仅对单倍体基因组具有更好的性能。宏基因组组装评估中，hifiasm-meta以及metaflye的组装错误最少，但是在面对复杂宏基因组时hifiasm-meta的完整性及连续性明显优于metaflye，但同时也会保留部分冗余的序列。</li>
+<li>2024年发表在Genome Research上的一篇<a target="_blank" rel="noopener" href="https://genome.cshlp.org/content/34/2/326">文章</a> 对11种针对HiFi测序技术的组装工具的评估结果显示，<strong>hifiasm</strong>和<strong>hifiasm-meta</strong>分别是组装真核基因组和宏基因组的最佳工具。</li>
+<li>文章显示，在真核生物基因组组装中，hifiasm在不同方法比较的组装基因组均具有更高的连续性、完整性和准确性；HiCanu、Verkko与LJA次之，但Verkko与LJA具有组装的contig较短等缺陷；NextDenovo仅对单倍体基因组具有更好的性能。</li>
+<li>宏基因组组装评估中，hifiasm-meta以及metaflye的组装错误最少，但是在面对复杂宏基因组时hifiasm-meta的完整性及连续性明显优于metaflye，但同时也会保留部分冗余的序列。</li>
 </ul>
 <p>目前来说，<strong>Hifiasm软件</strong>是用HiFi数据组装基因组的不二选择。</p>
 <h1 id="2-Hifiasm软件"><a href="#2-Hifiasm软件" class="headerlink" title="2. Hifiasm软件"></a>2. Hifiasm软件</h1><ol>
@@ -414,12 +415,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/06/19/omics_genome.assembly_TGS_Hifiasm_04.operate/" rel="prev" title="用Hifiasm基于HiFi数据组装基因组：（四）用Hifiasm软件组装基因组的操作">
-      <i class="fa fa-chevron-left"></i> 用Hifiasm基于HiFi数据组装基因组：（四）用Hifiasm软件组装基因组的操作
+    <a href="/2024/06/18/bio_genetics_hybridization_reciprocal.cross/" rel="prev" title="正交和反交在遗传学中的应用">
+      <i class="fa fa-chevron-left"></i> 正交和反交在遗传学中的应用
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/" rel="next" title="用Hifiasm基于HiFi数据组装基因组：（三）Hifiasm软件组装基因组的多种模式">
-      用Hifiasm基于HiFi数据组装基因组：（三）Hifiasm软件组装基因组的多种模式 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/" rel="next" title="用Hifiasm组装基因组：（二）Hifiasm软件的算法">
+      用Hifiasm组装基因组：（二）Hifiasm软件的算法 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -567,7 +568,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">658k</span>
+    <span title="Symbols count total">657k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
@@ -666,7 +667,7 @@
   var disqus_config = function() {
     this.page.url = "http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/";
     this.page.identifier = "2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/";
-    this.page.title = "用Hifiasm基于HiFi数据组装基因组：（一）简介Hifiasm软件和HiFi数据";
+    this.page.title = "用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

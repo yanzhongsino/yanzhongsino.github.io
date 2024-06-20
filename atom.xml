@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-20T08:01:48.322Z</updated>
+  <updated>2024-06-20T13:17:18.319Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,14 +17,14 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>用Hifiasm基于HiFi数据组装基因组：（二）Hifiasm软件的算法</title>
-    <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/"/>
-    <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/</id>
-    <published>2024-06-19T16:00:00.000Z</published>
-    <updated>2024-06-20T08:01:48.322Z</updated>
+    <title>用Hifiasm组装基因组：（四）用Hifiasm软件组装基因组的操作</title>
+    <link href="http://example.com/2024/06/22/omics_genome.assembly_TGS_Hifiasm_04.operate/"/>
+    <id>http://example.com/2024/06/22/omics_genome.assembly_TGS_Hifiasm_04.operate/</id>
+    <published>2024-06-21T16:00:00.000Z</published>
+    <updated>2024-06-20T13:17:18.319Z</updated>
     
     
-    <summary type="html">介绍基于HiFi数据组装基因组的软件Hifiasm的算法。</summary>
+    <summary type="html">基于三代HiFi reads用软件Hifiasm对非模式生物进行基因组的从头组装的详细讲解。</summary>
     
     
     
@@ -52,11 +52,11 @@
   </entry>
   
   <entry>
-    <title>用Hifiasm基于HiFi数据组装基因组：（三）Hifiasm软件组装基因组的多种模式</title>
-    <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/"/>
-    <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/</id>
-    <published>2024-06-19T16:00:00.000Z</published>
-    <updated>2024-06-20T09:08:04.027Z</updated>
+    <title>用Hifiasm组装基因组：（三）Hifiasm软件组装基因组的多种模式</title>
+    <link href="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_03.modes/"/>
+    <id>http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_03.modes/</id>
+    <published>2024-06-20T16:00:00.000Z</published>
+    <updated>2024-06-20T13:17:24.045Z</updated>
     
     
     <summary type="html">基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的多种模式，介绍每种模式的命令。</summary>
@@ -89,14 +89,14 @@
   </entry>
   
   <entry>
-    <title>用Hifiasm基于HiFi数据组装基因组：（一）简介Hifiasm软件和HiFi数据</title>
-    <link href="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/"/>
-    <id>http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/</id>
-    <published>2024-06-18T16:00:00.000Z</published>
-    <updated>2024-06-20T09:08:48.131Z</updated>
+    <title>用Hifiasm组装基因组：（二）Hifiasm软件的算法</title>
+    <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/"/>
+    <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/</id>
+    <published>2024-06-19T16:00:00.000Z</published>
+    <updated>2024-06-20T12:59:22.729Z</updated>
     
     
-    <summary type="html">简介HiFi数据，组装基因组的软件选择，Hifiasm软件。</summary>
+    <summary type="html">介绍基于HiFi数据组装基因组的软件Hifiasm的算法。</summary>
     
     
     
@@ -124,14 +124,14 @@
   </entry>
   
   <entry>
-    <title>用Hifiasm基于HiFi数据组装基因组：（四）用Hifiasm软件组装基因组的操作</title>
-    <link href="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_04.operate/"/>
-    <id>http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_04.operate/</id>
+    <title>用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据</title>
+    <link href="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/"/>
+    <id>http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/</id>
     <published>2024-06-18T16:00:00.000Z</published>
-    <updated>2024-06-20T10:39:32.092Z</updated>
+    <updated>2024-06-20T13:06:39.738Z</updated>
     
     
-    <summary type="html">基于三代HiFi reads用软件Hifiasm对非模式生物进行基因组的从头组装的详细讲解。</summary>
+    <summary type="html">为啥Hifiasm是用HiFi数据组装基因组的不二选择? 本文简介了HiFi数据，组装基因组的软件选择，以及介绍Hifiasm软件。</summary>
     
     
     
@@ -632,6 +632,37 @@
   </entry>
   
   <entry>
+    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
+    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
+    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
+    <published>2023-10-19T16:00:00.000Z</published>
+    <updated>2023-10-21T03:40:22.721Z</updated>
+    
+    
+    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
+    
+    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
+    
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
+    
+    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
+    
+  </entry>
+  
+  <entry>
     <title>用HyPhy分析自然选择：（一）介绍HyPhy</title>
     <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_intro/"/>
     <id>http://example.com/2023/10/20/evolution_selection_HyPhy_intro/</id>
@@ -656,9 +687,11 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
-    
     <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
+    
+    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
+    
+    <category term="selection" scheme="http://example.com/tags/selection/"/>
     
     <category term="FEL" scheme="http://example.com/tags/FEL/"/>
     
@@ -674,40 +707,7 @@
     
     <category term="BUSTED" scheme="http://example.com/tags/BUSTED/"/>
     
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
-    
     <category term="codeML" scheme="http://example.com/tags/codeML/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松</title>
-    <link href="http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/"/>
-    <id>http://example.com/2023/10/20/evolution_selection_HyPhy_RELAX/</id>
-    <published>2023-10-19T16:00:00.000Z</published>
-    <updated>2023-10-21T03:40:22.721Z</updated>
-    
-    
-    <summary type="html">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
-    
-    <category term="selection" scheme="http://example.com/categories/bio/evolution/selection/"/>
-    
-    
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
-    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
-    
-    <category term="selection" scheme="http://example.com/tags/selection/"/>
-    
-    <category term="HyPhy" scheme="http://example.com/tags/HyPhy/"/>
-    
-    <category term="RELAX" scheme="http://example.com/tags/RELAX/"/>
     
   </entry>
   
@@ -736,6 +736,8 @@
     
     <category term="PAML" scheme="http://example.com/tags/PAML/"/>
     
+    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
+    
     <category term="d&lt;sub&gt;N&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-N-sub/"/>
     
     <category term="d&lt;sub&gt;S&lt;/sub&gt;" scheme="http://example.com/tags/d-sub-S-sub/"/>
@@ -757,8 +759,6 @@
     <category term="omega" scheme="http://example.com/tags/omega/"/>
     
     <category term="ω" scheme="http://example.com/tags/%CF%89/"/>
-    
-    <category term="codeML" scheme="http://example.com/tags/codeML/"/>
     
     <category term="branch model" scheme="http://example.com/tags/branch-model/"/>
     
