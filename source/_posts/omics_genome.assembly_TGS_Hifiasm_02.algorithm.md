@@ -1,5 +1,5 @@
 ---
-title: 用Hifiasm基于HiFi数据组装基因组：（二）Hifiasm软件的算法
+title: 用Hifiasm组装基因组：（二）Hifiasm软件的算法
 date: 2024-06-20
 categories: 
 - omics

@@ -1,5 +1,5 @@
 ---
-title: 用Hifiasm基于HiFi数据组装基因组：（一）简介Hifiasm软件和HiFi数据
+title: 用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据
 date: 2024-06-19
 categories: 
 - omics
@@ -14,21 +14,22 @@ tags:
 - PacBio
 - Hi-C
 
-description: 简介HiFi数据，组装基因组的软件选择，Hifiasm软件。
+description: 为啥Hifiasm是用HiFi数据组装基因组的不二选择? 本文简介了HiFi数据，组装基因组的软件选择，以及介绍Hifiasm软件。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2154795903&auto=1&height=32"></iframe></div>
 
 # 1. HiFi数据
-HiFi reads（High Fidelity reads）是2019年由PacBio公司推出的基于环化共有序列（Circular Consensus Sequencing，CCS）模式产生的既兼顾长读长（10-20kb的长度）又具有高精度（>99%准确率）的测序结果。非常适合用于基因组组装。
+HiFi reads（High Fidelity reads）是2019年由PacBio公司推出的基于环化一致性序列（Circular Consensus Sequencing，CCS）模式产生的既兼顾长读长（10-20kb的长度）又具有高精度（>99%准确率）的测序结果。非常适合用于基因组组装。
 
 1. HiFi数据预处理
 - 可以用`bam2fasta`直接把下机数据ccs.bam或者hifi.bam转换成fasta格式文件用于后续分析。
 - `bam2fasta sample.ccs.bam -c 9 -o sample.ccs`命令会生成sample.ccs.fasta.gz文件，`-c 9`代表压缩程度为9。
 
 2. 用HiFi数据组装基因组的软件选择
-- 2024年发表在Genome Research上的一篇文章（https://genome.cshlp.org/content/34/2/326）对11种针对HiFi测序技术的组装工具的评估结果显示，**hifiasm**和**hifiasm-meta**分别成为组装真核基因组和宏基因组的优选工具。
-- 文章显示，在真核生物基因组组装中，hifiasm在不同方法比较的组装基因组均具有更高的连续性、完整性和准确性；HiCanu、Verkko与LJA次之，但Verkko与LJA具有组装的contig较短等缺陷；NextDenovo仅对单倍体基因组具有更好的性能。宏基因组组装评估中，hifiasm-meta以及metaflye的组装错误最少，但是在面对复杂宏基因组时hifiasm-meta的完整性及连续性明显优于metaflye，但同时也会保留部分冗余的序列。
+- 2024年发表在Genome Research上的一篇[文章](https://genome.cshlp.org/content/34/2/326) 对11种针对HiFi测序技术的组装工具的评估结果显示，**hifiasm**和**hifiasm-meta**分别是组装真核基因组和宏基因组的最佳工具。
+- 文章显示，在真核生物基因组组装中，hifiasm在不同方法比较的组装基因组均具有更高的连续性、完整性和准确性；HiCanu、Verkko与LJA次之，但Verkko与LJA具有组装的contig较短等缺陷；NextDenovo仅对单倍体基因组具有更好的性能。
+- 宏基因组组装评估中，hifiasm-meta以及metaflye的组装错误最少，但是在面对复杂宏基因组时hifiasm-meta的完整性及连续性明显优于metaflye，但同时也会保留部分冗余的序列。
 
 目前来说，**Hifiasm软件**是用HiFi数据组装基因组的不二选择。
 

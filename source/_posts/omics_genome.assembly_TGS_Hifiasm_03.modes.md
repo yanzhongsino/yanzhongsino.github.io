@@ -1,6 +1,6 @@
 ---
-title: 用Hifiasm基于HiFi数据组装基因组：（三）Hifiasm软件组装基因组的多种模式
-date: 2024-06-20
+title: 用Hifiasm组装基因组：（三）Hifiasm软件组装基因组的多种模式
+date: 2024-06-21
 categories: 
 - omics
 - genome
