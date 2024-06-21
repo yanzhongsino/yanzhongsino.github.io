@@ -14,7 +14,7 @@ tags:
 - PacBio
 - Hi-C
 
-description: 基于三代HiFi reads用软件Hifiasm对非模式生物进行基因组的从头组装的详细讲解。
+description: 基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的详细讲解。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2153862323&auto=1&height=32"></iframe></div>
@@ -85,59 +85,59 @@ S表示Segment，L表示Link。Hifiasm输出的gfa格式还有一种特有的A�
 - A行示例： `A	ptg000001l	0	-	m84075_240209_054407_s3/1115221/ccs	0	13485	id:i:711340	HG:A:a`
 - A行的每一列的含义如下：
 
-<table class="docutils align-default">
+<table>
     <thead>
-        <tr class="row-odd">
+        <tr>
             <th class="head"><p>Col</p></th>
             <th class="head"><p>Type</p></th>
             <th class="head"><p>Description</p></th>
         </tr>
     </thead>
     <tbody>
-        <tr class="row-even">
+        <tr>
             <td><p>1</p></td>
             <td><p>string</p></td>
-            <td><p>Should be always <code class="docutils literal notranslate"><span class="pre">A</span></code></p></td>
+            <td><p>Should be always <code><span>A</span></code></p></td>
         </tr>
-        <tr class="row-odd">
+        <tr>
             <td><p>2</p></td>
             <td><p>string</p></td>
             <td><p>Contig/unitig name</p></td>
         </tr>
-        <tr class="row-even">
+        <tr>
             <td><p>3</p></td>
             <td><p>int</p></td>
             <td><p>Contig/unitig start coordinate of subregion constructed by read</p></td>
         </tr>
-        <tr class="row-odd">
+        <tr>
             <td><p>4</p></td>
             <td><p>char</p></td>
             <td><p>Read strand: “+” or “-”</p></td>
         </tr>
-        <tr class="row-even">
+        <tr>
             <td><p>5</p></td>
             <td><p>string</p></td>
             <td><p>Read name</p></td>
         </tr>
-        <tr class="row-odd">
+        <tr>
             <td><p>6</p></td>
             <td><p>int</p></td>
             <td><p>Read start coordinate of subregion which is used to construct contig/unitig</p></td>
         </tr>
-        <tr class="row-even">
+        <tr>
             <td><p>7</p></td>
             <td><p>int</p></td>
             <td><p>Read end coordinate of subregion which is used to construct contig/unitig</p></td>
         </tr>
-        <tr class="row-odd">
+        <tr>
             <td><p>8</p></td>
             <td><p>id:i:int</p></td>
             <td><p>Read ID</p></td>
         </tr>
-        <tr class="row-even">
+        <tr>
             <td><p>9</p></td>
             <td><p>HG:A:char</p></td>
-            <td><p>Haplotype status of read. <code class="docutils literal notranslate"><span class="pre">HG:A:a</span></code>, <code class="docutils literal notranslate"><span class="pre">HG:A:p</span></code>, <code class="docutils literal notranslate"><span class="pre">HG:A:m</span></code> indicate read is non-binnable, father/hap1-specific and mother/hap2-specific, respectively.</p></td>
+            <td><p>Haplotype status of read. <code><span>HG:A:a</span></code>, <code><span>HG:A:p</span></code>, <code><span>HG:A:m</span></code> indicate read is non-binnable, father/hap1-specific and mother/hap2-specific, respectively.</p></td>
         </tr>
     </tbody>
 </table>
@@ -152,19 +152,16 @@ S表示Segment，L表示Link。Hifiasm输出的gfa格式还有一种特有的A�
 熟读官方manual后，总结了下面一套跑法，来确定参数和检验组装结果。
 
 1. 先用默认参数跑一遍
-
-`nohup hifiasm -o sample_prefix -t 48 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2>&1 > hifiasm.log &`
+- `nohup hifiasm -o sample_prefix -t 48 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2>&1 > hifiasm.log &`
 
 2. 查看hifiasm.log文件，如果k-mer plot只有一个峰代表是纯合子样本，则加-l0参数关闭purge duplication步骤，再跑一遍。
-
-`nohup hifiasm -o sample_prefix -t 48 -l0 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2>&1 > hifiasm.log &`
+- `nohup hifiasm -o sample_prefix -t 48 -l0 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2>&1 > hifiasm.log &`
 
 3. 查看hifiasm.log文件，如果k-mer plot有两个峰代表是杂合子样本。
 - 首先，确定纯合子覆盖值（Ho_coverage值，即homozygous read coverage threshold）是否判断正确，接近k-mer图中的较大的峰值Ho_peak值即为判断正确。
 - 然后，检查碱基数量是否异常。Hi-C模式下，纯合碱基比杂合碱基要多即为异常，则会错误判断纯合子覆盖度值。
 - 如果有问题，需要使用参数--hom-cov指定纯合子覆盖度为纯合峰值（Ho_peak值，比如90）重跑一遍。
-
-`nohup hifiasm -o sample_prefix -t 48 --hom-cov 90 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2>&1 > hifiasm.log &`
+- `nohup hifiasm -o sample_prefix -t 48 --hom-cov 90 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2>&1 > hifiasm.log &`
 
 4. 检查组装结果是否异常，调整参数
 - 组装的基因组大小是否符合预期（genome survey估计的或者流式细胞仪测定的基因组大小）：组装的基因组过大或过小通常是由于hifiasm判断错了纯合子覆盖值。检查日志文件，如果判断错了，用参数--hom-cov指定，重跑一遍。
@@ -199,8 +196,6 @@ Hifiasm在log文件（前面生成的hifiasm.log）中打印的几个信息可�
 - log文件会在打印一行：`[M::stat] # heterozygous bases: 437440353; # homozygous bases: 93698357`
 - 分别代表在Hi-C定向组装（Hi-C phased assembly）时，unitig graph中多少碱基是纯合的（homozygous bases），多少碱基是杂合的（heterozygous bases）。
 - 对于杂合子样本，通常杂合碱基比纯合碱基数量多。如果log文件中显示纯合碱基数量比杂合碱基数量还多，代表hifiasm错误地确定了纯合子覆盖度值（Ho_coverage），需要用--homo-cov参数设置纯合子覆盖度值为Ho_peak值。
-
-
 
 # 5. references
 1. hifiasm manual：https://hifiasm.readthedocs.io/_/downloads/en/latest/pdf/

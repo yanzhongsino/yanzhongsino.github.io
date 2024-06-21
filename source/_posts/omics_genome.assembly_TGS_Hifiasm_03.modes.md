@@ -15,7 +15,7 @@ tags:
 - Hi-C
 - ONT
 
-description: 基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的多种模式，介绍每种模式的命令。
+description: 介绍基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的多种模式，以及每种模式的命令。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2153506013&auto=1&height=32"></iframe></div>
@@ -54,24 +54,33 @@ description: 基于三代HiFi reads用软件Hifiasm进行基因组的从头组�
 2. 命令
 
 ```shell
+# trio-binning模式需要额外安装yak，两种安装方式任选一种
+# source code
+git clone https://github.com/lh3/yak
+cd yak && make
+# bioncda
+conda install -c bioconda yak
+
+# 运行组装
 yak count -b37 -t16 -o pat.yak <(cat paternal_1.fq.gz paternal_2.fq.gz) <(cat paternal_1.fq.gz paternal_2.fq.gz)
 yak count -b37 -t16 -o mat.yak <(cat maternal_1.fq.gz maternal_2.fq.gz) <(cat maternal_1.fq.gz maternal_2.fq.gz)
 hifiasm -o sample_prefix -t 32 -1 pat.yak -2 mat.yak Hifi.fq.gz 2>&1 > hifiasm.log &
 ```
 
-3. 参数
-- 多个父本paternal数据和多个母本maternal数据同时使用
+3. 参数解释
+- 命令中Illumina双端测序的父本paternal数据和母本maternal数据同时使用
 
 # 4. Hi-C Integrated assembly 模式（HiFi数据+Hi-C数据）
 1. 介绍
 - 当Hi-C数据可用时，可以生成一对解析的单倍型的组装。
-- 李恒团队2022年在Nature biotechnology上发表论文Haplotype-resolved assembly of diploid genomes without parental data（https://www.nature.com/articles/s41587-022-01261-x），在Hifiasm中引入了Hi-C Integrated assembly 模式。Hi-C Integrated assembly模式针对PacBio HiFi (High-Fidelity) 长读长测序技术和Hi-C (High-Throughput Chromatin Confirmation Capture) 测序技术进行了全新的设计。
+- 李恒团队2022年在Nature biotechnology上发表论文Haplotype-resolved assembly of diploid genomes without parental data（https://www.nature.com/articles/s41587-022-01261-x），在Hifiasm中引入了Hi-C Integrated assembly 模式。
+- Hi-C Integrated assembly模式针对PacBio HiFi (High-Fidelity) 长读长测序技术和Hi-C (High-Throughput Chromatin Confirmation Capture) 测序技术进行了全新的设计。
 - 该算法结合了HiFi数据中精确的局部单倍型信息和Hi-C数据中的长距离互作用信息以达到全局定相 (phasing)，从而获得不依赖亲本信息的染色体级别的单倍型组装结果。为了进一步提高组装质量，作者充分利用了组装图中的结构信息，以及其前期研究中的Graph-binning等策略。
 - 这个模式组装后的基因组还未挂载在染色体上，仍然需要Juicer+3ddna+juicebox等软件进行染色体挂载。
 - 这个模式的数据最易获得，所以也很常用。
 
 2. 命令
-- `nohup hifiasm -o sample_prefix -t 32  --h1 HiC_1.fq.gz --h2 ample_HiC_2.fq.gz Hifi.fq.gz 2>&1 > hifiasm.log &`
+- `nohup hifiasm -o sample_prefix -t 32  --h1 HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fq.gz 2>&1 > hifiasm.log &`
 3. 参数
 - 用--h1和--h2指定Hi-C数据。
 

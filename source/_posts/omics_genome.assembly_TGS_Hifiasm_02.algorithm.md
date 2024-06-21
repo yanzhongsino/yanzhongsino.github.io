@@ -14,7 +14,7 @@ tags:
 - PacBio
 - Hi-C
 
-description: 介绍基于HiFi数据组装基因组的软件Hifiasm的算法。
+description: 介绍基于HiFi数据组装基因组的软件Hifiasm的算法，包括HiFi only模式、有亲本数据的trio-binning模式、Hi-C Integrated assembly模式的算法。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2154110020&auto=1&height=32"></iframe></div>
@@ -29,12 +29,12 @@ Hifiasm组装主要分为三步：
 
 <img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41592-020-01056-5/MediaObjects/41592_2020_1056_Fig1_HTML.png?as=webp" width=90% title="Outline of the hifiasm algorithm" alt="Outline of the hifiasm algorithm" align=center/>
 
-**<p align="center">Figure 1. Hifiasm算法概况 图片来源：https://www.nature.com/articles/s41592-020-01056-5</p>**
+**<p align="center">Figure 1. Hifiasm算法概况** 图片来源：https://www.nature.com/articles/s41592-020-01056-5</p>
 
 ## 1.1. 校正测序错误
 1. 尽管Hifi reads使用CCS测序模式已经进行了一轮校正，准确性已经比CLR测序模式高很多，但仍然会有部分测序(<1%)错误。
 2. Hifiasm进行所有序列的相互比对(all-versus-all)来校正可能的测序错误。
-3. 在比对中基于reads间的overlap关系来校正错误。如果在比对的同一个位置出现两种碱基类型（不考虑gaps），且每个碱基类型至少有3条reads支持，那么这个位置会被当作杂合位点（SNP）被保留。在这一步，Hifiasm可以对杂合SNP进行定相（phasing）。
+3. 在比对中基于reads间的overlap关系来校正错误。如果在比对的同一个位置出现两种碱基类型（不考虑gaps），且每个碱基类型至少有3条reads支持，那么这个位置会被当作杂合位点（SNP）被保留。在这一步，Hifiasm可以对杂合SNP进行定相/分型（phasing）。
 4. 如果达不到上述条件的两碱基比对，两种碱基中较少的一种被视作测序错误，将被校正（默认三轮校正）。值得注意的是，Hifiasm只使用相同单倍型的数据进行纠错，从而避免过度校正，保留来自不同单倍型的杂合变异信息。
 
 ## 1.2. 构建分型字符串图（phased string graph）
@@ -59,7 +59,7 @@ Hifiasm的trio-binning模式基于2018年发表的TrioCanu软件的trio-binning�
 
 <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnbt.4277/MediaObjects/41587_2018_Article_BFnbt4277_Fig1_HTML.jpg?as=webp" width=90% title="Outline of trio binning and haplotype assembly" alt="Outline of trio binning and haplotype assembly" align=center/>
 
-**<p align="center">Figure 2. TrioCanu软件的trio-binning策略 图片来源：https://www.nature.com/articles/nbt.4277</p>**
+**<p align="center">Figure 2. TrioCanu软件的trio-binning策略** 图片来源：https://www.nature.com/articles/nbt.4277</p>
 
 ## 2.2. Hifiasm的trio-binning模式
 1. 与TrioCanu软件的trio-binning策略不同，Hifiasm使用了graph-binning的策略对此进行了改进。
@@ -76,14 +76,14 @@ Hifiasm的trio-binning模式基于2018年发表的TrioCanu软件的trio-binning�
 
 <img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41592-020-01056-5/MediaObjects/41592_2020_1056_Fig2_HTML.png?as=webp" width=90% title="Effect of false read binning" alt="Effect of false read binning" align=center/>
 
-**<p align="center">Figure 3. 错误的reads分型在Hifiasm的trio-binning模式中会被修正 图片来源：https://www.nature.com/articles/s41592-020-01056-5</p>**
+**<p align="center">Figure 3. 错误的reads分型在Hifiasm的trio-binning模式中会被修正** 图片来源：https://www.nature.com/articles/s41592-020-01056-5</p>
 
 # 3. 新算法Hifiasm(Hi-C)：Hi-C Integrated assembly 模式
 李恒团队2022年在Nature biotechnology上发表论文Haplotype-resolved assembly of diploid genomes without parental data（https://www.nature.com/articles/s41587-022-01261-x），在Hifiasm中引入了新算法Hifiasm(Hi-C)，可以使用Hi-C Integrated assembly 模式进行单倍体分型组装。
 
 ## 3.1. Hi-C Integrated assembly模式
 1. Hi-C Integrated assembly模式针对PacBio HiFi (High-Fidelity) 长读长测序技术和Hi-C (High-Throughput Chromatin Confirmation Capture) 测序技术进行了全新的设计。
-2. 在无亲本数据的情况下，利用30倍覆盖度的HiFi数据和30倍覆盖度的Hi-C数据也可以获得二倍体生物的单倍型解决的组装结果。
+2. 在无亲本数据的情况下，利用至少30倍覆盖度的HiFi数据和至少30倍覆盖度的Hi-C数据也可以获得二倍体生物的单倍型解决的组装结果。
 3. 它建立在分型 hifiasm 组装图 （assembly graphs）的基础上，但在序列分类（sequence partition）方面与已发表的 hifiasm (trio) 算法不同。
 4. 在 hifiasm graph中，每个节点（node）都是由相位正确的 HiFi reads组装而成的unitig，每条边（edge）代表两个unitigs之间的重叠。
 5. Hifiasm（trio）算法在亲本 k-mers 的unitigs中标记reads，但 Hifiasm（Hi-C）用 Hi-C reads对相对较短的unitigs进行分类。
@@ -97,7 +97,7 @@ Hifiasm的trio-binning模式基于2018年发表的TrioCanu软件的trio-binning�
 
 <img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41587-022-01261-x/MediaObjects/41587_2022_1261_Fig1_HTML.png?as=webp" width=90% title="Haplotype-resolved assembly using Hi-C data" alt="Haplotype-resolved assembly using Hi-C data" align=center/>
 
-**<p align="center">Figure 4. Hifiasm（Hi-C）算法 图片来源：https://www.nature.com/articles/s41587-022-01261-x</p>**
+**<p align="center">Figure 4. Hifiasm（Hi-C）算法** 图片来源：https://www.nature.com/articles/s41587-022-01261-x</p>
 
 ## 3.3. Hifiasm（Hi-C）算法与其他工具相比的优势
 与现有基于Hi-C组装单倍体基因组的方法不同，Hifiasm（Hi-C）算法直接在 HiFi 组装图上运行，并将 Hi-C read mapping、分型（phasing）和组装紧密集成到一个单一的可执行程序中，而不依赖外部工具。它更易于使用，运行速度更快。
