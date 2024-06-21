@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-20T13:17:18.319Z</updated>
+  <updated>2024-06-21T03:01:31.919Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="http://example.com/2024/06/22/omics_genome.assembly_TGS_Hifiasm_04.operate/"/>
     <id>http://example.com/2024/06/22/omics_genome.assembly_TGS_Hifiasm_04.operate/</id>
     <published>2024-06-21T16:00:00.000Z</published>
-    <updated>2024-06-20T13:17:18.319Z</updated>
+    <updated>2024-06-21T03:01:31.919Z</updated>
     
     
-    <summary type="html">基于三代HiFi reads用软件Hifiasm对非模式生物进行基因组的从头组装的详细讲解。</summary>
+    <summary type="html">基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的详细讲解。</summary>
     
     
     
@@ -56,10 +56,10 @@
     <link href="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_03.modes/"/>
     <id>http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_03.modes/</id>
     <published>2024-06-20T16:00:00.000Z</published>
-    <updated>2024-06-20T13:17:24.045Z</updated>
+    <updated>2024-06-21T02:35:19.187Z</updated>
     
     
-    <summary type="html">基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的多种模式，介绍每种模式的命令。</summary>
+    <summary type="html">介绍基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的多种模式，以及每种模式的命令。</summary>
     
     
     
@@ -93,10 +93,10 @@
     <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/"/>
     <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/</id>
     <published>2024-06-19T16:00:00.000Z</published>
-    <updated>2024-06-20T12:59:22.729Z</updated>
+    <updated>2024-06-21T02:19:01.791Z</updated>
     
     
-    <summary type="html">介绍基于HiFi数据组装基因组的软件Hifiasm的算法。</summary>
+    <summary type="html">介绍基于HiFi数据组装基因组的软件Hifiasm的算法，包括HiFi only模式、有亲本数据的trio-binning模式、Hi-C Integrated assembly模式的算法。</summary>
     
     
     
