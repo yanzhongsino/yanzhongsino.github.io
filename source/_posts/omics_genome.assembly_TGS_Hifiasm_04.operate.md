@@ -191,7 +191,7 @@ Hifiasm在log文件（前面生成的hifiasm.log）中打印的几个信息可�
 - 如果出现非典型的单峰或双峰的k-mer频数分布图，那么可能是样本污染导致。
 2. 纯合子覆盖度（homozygous coverage）
 - log文件会在打印完k-mer plot后，打印一行：`[M::purge_dups] homozygous read coverage threshold: 90.` 
-- 这个90是hifiasm确定的纯合子覆盖度值（用Ho_coverage代表）。要检查Ho_coverage值是否接近k-mer plot中确定的纯和峰值Ho_peak值，如果不接近（比如更接近He_peak值）那表明hifiasm错误地确定了纯合子覆盖度值，此时组装的基因组要么太大，要么太小。要用--homo-cov参数设置纯合子覆盖度值为Ho_peak值。
+- 这个90是hifiasm确定的纯合子覆盖度值（用Ho_coverage代表）。要检查Ho_coverage值是否接近k-mer plot中确定的纯合峰值Ho_peak值，如果不接近（比如更接近He_peak值）那表明hifiasm错误地确定了纯合子覆盖度值，此时组装的基因组要么太大，要么太小。要用--homo-cov参数设置纯合子覆盖度值为Ho_peak值。
 3. 纯合/杂合碱基数量（number of het/hom bases）
 - log文件会在打印一行：`[M::stat] # heterozygous bases: 437440353; # homozygous bases: 93698357`
 - 分别代表在Hi-C定向组装（Hi-C phased assembly）时，unitig graph中多少碱基是纯合的（homozygous bases），多少碱基是杂合的（heterozygous bases）。
