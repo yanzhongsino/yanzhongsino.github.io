@@ -29,12 +29,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2023-10-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-11-17T13:09:43.833Z">
+<meta property="article:modified_time" content="2024-08-28T09:33:06.581Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="bioinfo">
 <meta property="article:tag" content="biosoft">
-<meta property="article:tag" content="PAML">
-<meta property="article:tag" content="codeML">
+<meta property="article:tag" content="bioinfo">
 <meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;">
 <meta property="article:tag" content="d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
 <meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
@@ -46,6 +44,8 @@
 <meta property="article:tag" content="omega(ω)">
 <meta property="article:tag" content="omega">
 <meta property="article:tag" content="ω">
+<meta property="article:tag" content="PAML">
+<meta property="article:tag" content="codeML">
 <meta property="article:tag" content="branch model">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-17 21:09:43" itemprop="dateModified" datetime="2023-11-17T21:09:43+08:00">2023-11-17</time>
+                <time title="Modified: 2024-08-28 17:33:06" itemprop="dateModified" datetime="2024-08-28T17:33:06+08:00">2024-08-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -306,7 +306,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>6.6k</span>
+              <span>6.7k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -337,7 +337,7 @@
 </ol>
 <ul>
 <li>如果某一支（前景支）上的 ω &gt; 1，而其他所有支（背景支）上的 ω &lt; 1，并且似然率检验(LRT)的显著性分析支持备择假设（正选择），那么可认为前景支受到了<strong>正选择</strong>。</li>
-<li>虽然进化树上的 ω 都小于1，但某一支比其他所有支的 ω 都要小，这也说明这一支受到<strong>负选择的放松</strong>。</li>
+<li>虽然进化树上的 ω 都小于1，但某一支比其他所有支的 ω 都要显著地大，这也说明这一支受到<strong>负选择的放松</strong>。</li>
 </ul>
 <h1 id="3-使用PAML的codeML中的分支模型-branch-model-来检测分支的选择方向和强度"><a href="#3-使用PAML的codeML中的分支模型-branch-model-来检测分支的选择方向和强度" class="headerlink" title="3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度"></a>3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度</h1><h2 id="3-1-假设"><a href="#3-1-假设" class="headerlink" title="3.1. 假设"></a>3.1. 假设</h2><ol>
 <li>零假设 (null hypothesis)：所有分支都有相同的 ω 值</li>
@@ -430,10 +430,11 @@
 <li>备择假设模型的 ω 值：<code>ω (dN/dS) for branches: 0.08179 0.21097</code></li>
 </ol>
 <ul>
-<li>代表备择假设下，背景支的平均 ω 值为 0.08179 ，前景支的平均 ω 值为 0.21097。</li>
+<li>代表备择假设下，背景支的平均 ω 值为 0.08179 ，前景支的平均 ω 值为 0.21097。前景支的 ω 值比背景支大。</li>
 </ul>
 <ol start="3">
-<li>由于p值&lt;0.01，接受备择假设，代表前景支的 ω 值明显比背景支大，由于前景支和背景支的 ω 值都&lt;1。所以前景支应该经历了负选择的放松。</li>
+<li>由于p值&lt;0.01，接受备择假设，代表前景支的 ω 值比背景支显著地大，且前景支和背景支的 ω 值都&lt;1。所以前景支应该经历了负选择的放松。</li>
+<li>如果这里是前景支的 ω 值比背景支显著地小，且前景支和背景支的 ω 值都&lt;1，那么支持前景支经历了负选择的加强。</li>
 </ol>
 <h1 id="4-reference"><a href="#4-reference" class="headerlink" title="4. reference"></a>4. reference</h1><ol>
 <li>PAML User Guide：<a target="_blank" rel="noopener" href="https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf">https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf</a></li>
@@ -478,10 +479,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/bioinfo/" rel="tag"># bioinfo</a>
               <a href="/tags/biosoft/" rel="tag"># biosoft</a>
-              <a href="/tags/PAML/" rel="tag"># PAML</a>
-              <a href="/tags/codeML/" rel="tag"># codeML</a>
+              <a href="/tags/bioinfo/" rel="tag"># bioinfo</a>
               <a href="/tags/d-sub-N-sub/" rel="tag"># d<sub>N</sub></a>
               <a href="/tags/d-sub-S-sub/" rel="tag"># d<sub>S</sub></a>
               <a href="/tags/d-sub-N-sub-d-sub-S-sub/" rel="tag"># d<sub>N</sub>d<sub>S</sub></a>
@@ -493,6 +492,8 @@
               <a href="/tags/omega-%CF%89/" rel="tag"># omega(ω)</a>
               <a href="/tags/omega/" rel="tag"># omega</a>
               <a href="/tags/%CF%89/" rel="tag"># ω</a>
+              <a href="/tags/PAML/" rel="tag"># PAML</a>
+              <a href="/tags/codeML/" rel="tag"># codeML</a>
               <a href="/tags/branch-model/" rel="tag"># branch model</a>
           </div>
 
@@ -588,20 +589,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">435</span>
+        <span class="site-state-item-count">442</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -655,12 +656,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">658k</span>
+    <span title="Symbols count total">661k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">9:58</span>
+    <span title="Reading time total">10:01</span>
 </div>
 
         
