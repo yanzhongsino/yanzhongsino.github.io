@@ -2,14 +2,16 @@
 title: 用R包castor的get_subtree_with_tips函数提取子树
 date: 2023-03-13
 categories:
-- bioinfo
-- phylogeny
+- bio
+- evolution
+- tree
 tags:
 - R package
 - castor
 - get_subtree_with_tips
 - phylogeny
 - evolutionary tree
+- tree
 
 description: 用R包castor的get_subtree_with_tips函数从大的系统发育树中提取指定类群的子树，拓扑不变。
 ---

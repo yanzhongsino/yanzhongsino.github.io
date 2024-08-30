@@ -1,11 +1,13 @@
 ---
 title: 进化树相关知识
-date: 2021-11-20 11:50:00
+date: 2021-11-20
 categories: 
 - bio
 - evolution
+- tree
 tags:
 - phylogeny
+- tree
 - phylogenetic tree
 - evolutionary tree
 - bifurcated tree

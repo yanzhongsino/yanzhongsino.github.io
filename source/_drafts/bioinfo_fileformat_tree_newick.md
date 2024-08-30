@@ -3,7 +3,8 @@ title: 生物信息学常用文件格式
 date: 2021-11-12 16:00:00
 categories: 
 - bio
-- bioinfo
+- evolution
+- tree
 tags: 
 - gene set enrichment analysis
 - GSEA
