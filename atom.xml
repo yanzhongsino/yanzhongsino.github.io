@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-08-30T10:10:07.238Z</updated>
+  <updated>2024-10-09T02:43:39.100Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用miniprot做蛋白序列和基因组序列间的比对</title>
+    <link href="http://example.com/2024/09/30/bioinfo_alignment_prot_miniprot/"/>
+    <id>http://example.com/2024/09/30/bioinfo_alignment_prot_miniprot/</id>
+    <published>2024-09-29T16:00:00.000Z</published>
+    <updated>2024-10-09T02:43:39.100Z</updated>
+    
+    
+    <summary type="html">记录了用软件miniprot进行蛋白序列和基因组序列间的比对。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="alignment" scheme="http://example.com/categories/bioinfo/alignment/"/>
+    
+    <category term="prot" scheme="http://example.com/categories/bioinfo/alignment/prot/"/>
+    
+    
+    <category term="miniprot" scheme="http://example.com/tags/miniprot/"/>
+    
+    <category term="align" scheme="http://example.com/tags/align/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用PlantTribes做直系同源推断</title>
+    <link href="http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/"/>
+    <id>http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/</id>
+    <published>2024-09-18T16:00:00.000Z</published>
+    <updated>2024-10-09T02:45:49.043Z</updated>
+    
+    
+    <summary type="html">简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka/Ks等的用法。</summary>
+    
+    
+    
+    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
+    
+    <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
+    
+    
+    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
+    
+    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
+    
+    <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
+    
+    <category term="orthofinder" scheme="http://example.com/tags/orthofinder/"/>
+    
+  </entry>
   
   <entry>
     <title>进化树处理和可视化工具Newick Utilities</title>
@@ -101,11 +153,11 @@
     <category term="MSA" scheme="http://example.com/categories/bioinfo/alignment/align/MSA/"/>
     
     
-    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
-    
     <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
     
     <category term="MSA" scheme="http://example.com/tags/MSA/"/>
+    
+    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
     
     <category term="visualization" scheme="http://example.com/tags/visualization/"/>
     
@@ -276,11 +328,11 @@
     <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
     
     
+    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
+    
     <category term="bio" scheme="http://example.com/tags/bio/"/>
     
     <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
-    
-    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
     
   </entry>
   
@@ -661,72 +713,6 @@
     <category term="fq" scheme="http://example.com/tags/fq/"/>
     
     <category term="fai" scheme="http://example.com/tags/fai/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用MAFFT在现有多序列比对中添加新序列</title>
-    <link href="http://example.com/2023/11/16/bioinfo_alignment_align_mafft_add/"/>
-    <id>http://example.com/2023/11/16/bioinfo_alignment_align_mafft_add/</id>
-    <published>2023-11-15T16:00:00.000Z</published>
-    <updated>2023-11-22T12:18:03.375Z</updated>
-    
-    
-    <summary type="html">用MAFFT将新序列添加到已经比对好的alignment上(Add new sequences to an existing alignment using MAFFT)，保持已比对序列的比对，对新序列进行比对。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="alignment" scheme="http://example.com/categories/bioinfo/alignment/"/>
-    
-    <category term="align" scheme="http://example.com/categories/bioinfo/alignment/align/"/>
-    
-    
-    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
-    
-    <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
-    
-    <category term="MSA" scheme="http://example.com/tags/MSA/"/>
-    
-    <category term="sequence alignment" scheme="http://example.com/tags/sequence-alignment/"/>
-    
-    <category term="MAFFT" scheme="http://example.com/tags/MAFFT/"/>
-    
-    <category term="add" scheme="http://example.com/tags/add/"/>
-    
-    <category term="merge" scheme="http://example.com/tags/merge/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>祖先状态重建：用PAML的baseML重建祖先序列</title>
-    <link href="http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/"/>
-    <id>http://example.com/2023/11/03/evolution_ancestral.state.reconstruction_paml.baseml/</id>
-    <published>2023-11-02T16:00:00.000Z</published>
-    <updated>2023-11-17T12:05:56.993Z</updated>
-    
-    
-    <summary type="html">使用PAML的baseML程序根据系统发育关系从现存物种的序列重建祖先序列。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="evolution" scheme="http://example.com/categories/bio/evolution/"/>
-    
-    <category term="ancestral state reconstruction" scheme="http://example.com/categories/bio/evolution/ancestral-state-reconstruction/"/>
-    
-    
-    <category term="biosoft" scheme="http://example.com/tags/biosoft/"/>
-    
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
-    <category term="PAML" scheme="http://example.com/tags/PAML/"/>
-    
-    <category term="baseML" scheme="http://example.com/tags/baseML/"/>
-    
-    <category term="祖先状态重建" scheme="http://example.com/tags/%E7%A5%96%E5%85%88%E7%8A%B6%E6%80%81%E9%87%8D%E5%BB%BA/"/>
     
   </entry>
   
