@@ -5183,7 +5183,7 @@ BiocManager的版本与R版本一一对应，安装时如果版本不对会有�
 <li>被子植物数据库的四个版本：22Gv1.1, 26Gv1.0, 26Gv2.0, and 37Gv1.0</li>
 </ol>
 <h1 id="4-PlantTribes2的模块"><a href="#4-PlantTribes2的模块" class="headerlink" title="4. PlantTribes2的模块"></a>4. PlantTribes2的模块</h1><p>PlantTribes2一共有7个模块，每个模块是独立的功能，也可以联合使用。</p>
-<img src="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png" width=80% title="PlantTribes2 analysis workflow" alt="PlantTribes2 analysis workflow" align=center/>
+<img src="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg" width=80% title="PlantTribes2 analysis workflow" alt="PlantTribes2 analysis workflow" align=center/>
 
 <p><strong><p align="center">Figure 1. PlantTribes2 analysis workflow</strong><br>from <a href="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">PlantTribes2 analysis workflow</a></p></p>
 <h2 id="4-1-AssemblyPostProcessor模块"><a href="#4-1-AssemblyPostProcessor模块" class="headerlink" title="4.1. AssemblyPostProcessor模块"></a>4.1. AssemblyPostProcessor模块</h2><ol>
