@@ -37,7 +37,7 @@ PlantTribes2 (v1.0.4) 基于过去发表的系统基因组学研究提供了几�
 # 4. PlantTribes2的模块
 PlantTribes2一共有7个模块，每个模块是独立的功能，也可以联合使用。
 
-<img src="https://github.com/davidemms/OrthoFinder/raw/master/assets/Workflow.png" width=80% title="PlantTribes2 analysis workflow" alt="PlantTribes2 analysis workflow" align=center/>
+<img src="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg" width=80% title="PlantTribes2 analysis workflow" alt="PlantTribes2 analysis workflow" align=center/>
 
 **<p align="center">Figure 1. PlantTribes2 analysis workflow**
 from [PlantTribes2 analysis workflow](https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg)</p>
