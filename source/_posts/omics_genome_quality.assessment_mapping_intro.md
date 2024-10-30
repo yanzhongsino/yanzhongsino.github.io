@@ -58,9 +58,10 @@ description: mapping法评估基因组组装质量。mapping法是指把测序�
 
 1. 建索引
 - `bwa index ref.fa`
-
 2. bwa mapping
 - `bwa mem -t 4 ref.fa R1.clean.fq r2.clean.fq | samtools sort -@ 4 -m 4G > illumina.bam &`
+3. 建bam的索引文件
+- `samtools index sample.bam` # 为sample.bam建立索引，生成索引文件sample.bam.bai。在IGV等软件查看必须要有索引文件。
 
 ## 2.2. PacBio/Nanopore reads：minimap2
 用minimap2对三代reads进行mapping

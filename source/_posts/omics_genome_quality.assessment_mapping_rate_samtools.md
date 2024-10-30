@@ -121,6 +121,8 @@ $$mapping record rate=50020312/51231959*100\%=97.63\%$$
 
 $$mapping rate = mapped reads number/total reads number = (mapped recorder number - secondary mapped reads number)/(total recorder number - secondary mapped reads number) = (50020312-12372427)/(51231959-12372427) = 37647885/38859532*100\% = 96.88\%$$
 
+这样计算得到的mapping rate就和hisat2的log文件一致了。
+
 # 4. references
 1. hisat2和samtools flagstat计算的mapping rate不同的解释：https://zhuanlan.zhihu.com/p/73208822
 

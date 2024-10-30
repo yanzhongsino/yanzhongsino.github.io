@@ -15,6 +15,8 @@ tags:
 - Salmon-SMEM
 - DESeq2
 - GATK
+- Trinity
+- 
 description: RNA-sequencing数据分析工具的比较，学习文章内容的笔记。
 ---
 
@@ -37,7 +39,7 @@ from [paper: Gaining comprehensive biological insight into the transcriptome by 
 # 2. 比较结果总结
 1. 比对工具：**HISAT2**在准确性和运算速度上表现最好值得推荐，STAR和TopHat在剪切位点总数上表现更好。
 2. 有参组装工具：**StringTie**在组装的转录本数量，转录本水平的准确性和运行速度上都表现最好，Cufflinks表现一般，isoform detection and prediction(IDP)在基因水平准确性上表现最好。
-3. 从头组装工具：Trinity转录本长，灵敏度高；SOAPdenovo-Trans转录本多，准确性高；**Oases**鉴定长转录本有优势，能够较好地涵盖到低表达的基因。
+3. 从头组装工具：**Trinity**转录本长，灵敏度高；SOAPdenovo-Trans转录本多，准确性高；**Oases**鉴定长转录本有优势，能够较好地涵盖到低表达的基因。
 4. 三代测序错误纠正工具：**LoRDEC**在纠错质量和速度上更有优势，LSC在纠正后reads比对率的改善上表现更好。
 5. 全长转录本亚型检测工具：注重质量选GMAP，注重速度选**STARlong**。
 6. 转录本的定量：**Salmon-SMEM**(不经过比对)运行速度和表现都更好；StringTie(基于基因组)的定量结果更接近于不基于基因组比对的工具结果。

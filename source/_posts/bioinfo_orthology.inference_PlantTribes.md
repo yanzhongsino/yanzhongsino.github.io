@@ -95,6 +95,7 @@ nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/ortho
 ```
 
 ## 6.2. focus on目标基因的运行
+
 ```shell
 # 预测转录本的CDS区域，并组装RRRgenes_orthogroups.ids文件中指定的orthogroups家族的基因。
 nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --gene_family_search RRRgenes_orthogroups.ids --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --dereplicate --min_length 100 --num_threads 12 & 
@@ -102,7 +103,9 @@ nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method tran
 # 从组装好的转录组中提取目标转录本
 mkdir RRRgenes && cd RRRgenes && mkdir genefamily
 for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/${i}.faa |seqkit seq -w 0|grep -v ">" >${i}.pep && seqkit grep -s -f ${i}.pep ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep > ./genefamily/${i}.faa && rm *.pep;done # 更换蛋白序列的ID
-for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/${i}.fna |seqkit seq -w 0|grep -v ">" >${i}.nucl && seqkit grep -s -f ${i}.nucl ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds > ./genefamily/${i}.fna && rm *.nucl;done # 更换DNA的CDS序列
+for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/${i}.fna |seqkit seq -w 0|grep -v ">" >${i}.nucl && seqkit grep -s -f ${i}.nucl ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds > ./genefamily/${i}.fna && rm *.nucl;done # 更换DNA的CDS序列的ID
+for i in $(cat ../../../RRRgenes_orthogroups.ids);do seqkit seq -n $i.fna >$i.id && seqkit seq -n $i.faa >>$i.id && seqkit grep -r -f $i.id ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds >$i.fna && seqkit grep -r -f $i.id ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep >$i.faa && rm $i.id;done #统一CDS序列和蛋白序列
+## notes：有时做完上面几步后仍然有序列没有被提取（可能是因为组装的指定id的基因与预测的转录本序列并非所有碱基都完全对应），生成了空文件，这时需要检查和手动提取。
 
 # 整合目标基因的orthogroups成员
 nohup GeneFamilyIntegrator --orthogroup_fasta ./genefamily/ --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder & # 匹配scaffolds中的orthologs
@@ -111,6 +114,11 @@ nohup GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_
 # 建目标基因的ML树
 nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --tree_inference raxml --bootstrap_replicates 1000 --num_threads 24 &
 ```
+
+**个人经验**：这种运行方式focus on目标基因，去掉了GeneFamilyClassifier模块的使用，计算量小很多，能很快的得到目标基因的结果。虽然能够尽可能地拼接出目标基因的转录本，但是可能包含更多假阳性结果。
+
+**推荐**：在使用AssemblyPostProcessor模块并且--gene_family_search参数指定目标基因id的list，获得转录本CDS区域后，就按照标准运行流程依次使用GeneFamilyClassifier模块、GeneFamilyIntegrator模块、GeneFamilyAligner模块、GeneFamilyPhylogenyBuilder模块来进行直系同源转录本的推断，结果更可靠。
+同时建议对GeneFamilyAligner模块获得的align比对好的序列进行手动和肉眼检查，看是否有假阳性的结果（明显比对不上的转录本序列被放进了结果）。
 
 # 7. PlantTribes2运行的详细参数
 用de novo转录组组装得到的Trinity.fasta文件来演示PlantTribes2运行流程。
@@ -268,6 +276,7 @@ GeneFamilyClassifier Pipeline 对预测得到的蛋白编码序列进行基因�
 - 输出文件：
 - geneFamilyPhylogenies_dir/orthogroups_tree/ - orthogroup phylogenetic trees directory
 ### 7.7.2. 参数
+GeneFamilyPhylogenyBuilder模块建树默认是设定外类群的，通常设定Ambtr1.0.27或Phypa1.6等为外类群，所以获得的树结果可直接用。
 1. 必需参数
 - `--orthogroup_aln`：指定包含基因家族orthogroups alignment files的目录。
 - `--tree_inference`：系统发育树推断方法。RAxML：raxml；FastTree：fasttree。
