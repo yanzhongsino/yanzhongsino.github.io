@@ -14,10 +14,10 @@ tags:
 - nucleotide pair frequencies
 - Ti
 - Tv
-description: 本文介绍用MEGA软件对比对好的核苷酸序列做两两成对的突变频谱计算的方法。
+description: 本文介绍用MEGA软件计算比对好的核苷酸序列的两两成对的突变频谱的方法。
 ---
 
-<div align="middle"></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5056815&auto=1&height=32"></iframe></div>
 
 # 1. 序列比对和MEGA的简单介绍
 - 序列比对的知识可以参考另一篇博文的内容。Sequence Alignment：https://yanzhongsino.github.io/2021/09/06/bioinfo_alignment_align_intro/
@@ -33,7 +33,7 @@ description: 本文介绍用MEGA软件对比对好的核苷酸序列做两两成
 
 # 3. 用MEGA统计成对突变频率
 ## 3.1. 准备文件
-- 需要的文件是已经比对好的多序列或两条序列的文件，fasta格式或meg格式可用。
+1. 需要的文件是已经比对好的多序列或两条序列的文件，fasta格式或meg格式都可用。
 ## 3.2. 统计的操作
 ### 3.2.1. 在MEGA导入多序列比对文件
 1. 在MEGA中打开fasta或meg格式的比对文件；

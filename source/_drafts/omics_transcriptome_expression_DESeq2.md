@@ -2,14 +2,16 @@
 title: 用DESeq2做差异表达基因的分析
 date: 2024-10-25
 categories: 
-- bioinfo
-- DEA
-- DESeq2
+- omics
+- transcriptome
+- expression
+- Differential expression analysis
 tags:
 - map
 - Differential expression analysis
 - DEA
 - hisat2
+- DESeq2
 description: 记录用DESeq2对RNA-Illumina-seq数据做差异表达分析的流程。
 ---
 

@@ -1,136 +1,124 @@
 ---
-title: 用DESeq2做差异表达基因的分析
-date: 2024-10-25
+title: transcript assembly
+date: 2024-10-30
 categories: 
-- bioinfo
-- DEA
-- DESeq2
+- omics
+- transcriptome
+- assembly
 tags:
-- map
-- Differential expression analysis
-- DEA
-- hisat2
-description: 记录用DESeq2对RNA-Illumina-seq数据做差异表达分析的流程。
+- Trinity
+
+description: 
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5255807&auto=1&height=32"></iframe></div>
+<div align="middle"><music URL></div>
 
-本文记录从原始下机数据，到差异表达分析的全流程。
-1. 原始数据前处理
-- 原始RNA-seq数据的质控【fastp/FastQC/Trimmomatic】
-- clean数据比对【HISAT2/STAR】
-- 生成计数矩阵【featureCounts/HTSeq-count】
-2. 差异表达分析【DESeq2】
-- 安装和加载 DESeq2
-- 构建 DESeqDataSet：生成的基因计数矩阵（行：基因，列：样本）和样本信息（如样本条件）数据框准备好。
-- 数据预处理： 过滤掉低表达基因，通常只保留在至少某些样本中有可检测信号的基因。
-- 差异表达分析： 调用主函数 DESeq() 进行归一化和差异分析。
-- 提取结果： 使用 results() 提取差异表达结果，并应用适当的 p 值校正（如 Benjamini-Hochberg 法）控制假阳性率。
-3. 结果可视化
-- 可视化：使用 MA 图、火山图等可视化数据。
-- 查看显著差异基因： 对结果进行筛选，通常依据调整后的 p 值 (padj) < 0.05 并且 |log2FoldChange| > 1。
-4. 后续分析
-- 对显著差异表达基因可进行功能注释、通路分析等，了解其生物学意义。
+# 组装转录组
+## 组装
+1. Trinity无参考组装
 
-# 原始数据的前处理
-## RNA-seq的QC和map
-首先对原始测序的RNA-Illumina-seq数据进行质控和比对，生成BAM/SAM文件用于计数。
-1. QC
-- `fastp -i rna1_raw_R1.fq -I rna1_raw_R2.fq -o rna1_clean_R1.fq rna1_clean_R2.fq -q 20 -l 50 -w 12`
-- `fastp -i rna2_raw_R1.fq -I rna2_raw_R2.fq -o rna2_clean_R1.fq rna2_clean_R2.fq -q 20 -l 50 -w 12`
-2. mapping
-- `hisat2-build ref.fa ref.hisat` # 建索引
-- `hisat2 --dta -p 8 -x ref.hisat -1 rna1_clean_R1.fa -2 rna1_clean_R2.fa 2>rna1_hisat.log |samtools sort -O BAM -@ 12 > rna1_hisat.bam &` #样品1，保存日志到rna1_hisat.log文件。
-- `hisat2 --dta -p 8 -x ref.hisat -1 rna2_clean_R1.fa -2 rna2_clean_R2.fa 2>rna2_hisat.log |samtools sort -O BAM -@ 12 > rna2_hisat.bam &` #样品2，保存日志到rna2_hisat.log文件。
+nohup Trinity --seqType fq --max_memory 100G --left/disk1/zhongyan/project/20220630_Melastoma.candidum/input/Medinilla_magnifica/WWQZ-read_1.fq --right /disk1/zhongyan/project/20220630_Melastoma.candidum/input/Medinilla_magnifica/WWQZ-read_2.fq --CPU 24 --output trinity > Medinilla_magnifica_trinity.log 2>&1 &
 
-## 生成计数矩阵
-1. featureCounts 是 Subread 软件包的一部分，用于从比对好的 BAM 文件中提取计数。它支持多线程，可以处理大数据集。
+## 去冗余
+1. cd-hit-est去冗余
+nohup cd-hit-est -i ../trinity/Trinity.fasta -o ./trinity_cd-hit-est.fa -c 0.95 -d 0 -M 64000 -T 12 > cd-hit-est.log 2>&1 &
 
-```shell
-conda install bioconda::subread
-featureCounts -T 4 -a genes.gtf -o counts.txt sample1.bam sample2.bam sample3.bam
+2. trinity自带脚提取最长转录本
+Trinity-v2.11.0/util/misc/get_longest_isoform_seq_per_trinity_gene.pl Trinity.fasta > Trinity_unigene.fa
+
+## 
+3. transdecoder鉴定orf
+TransDecoder.LongOrfs -t trinity_cd-hit-est.fa  -O ./
+TransDecoder.Predict -t trinity_cd-hit-est.fa -O ./
+
+# 计算Ks
+## blastp自我比对
+makeblastdb -in sample.transdecoder.pep -dbtype prot -out index/sample.pep
+blastp -query sample.transdecoder.pep -db index/sample.pep -out sample.pep.blast -evalue 1e-5 -num_threads 12 -outfmt "7 std qlen slen"
+
+## 计算Ks
+https://github.com/EndymionCooper/KSPlotting/blob/master/kSPlotter.py
+
+kSPlotter.py脚本的运行步骤是：
+1. 使用mcl-blastline pipeline基于blastp输出的比对情况进行简单的聚类，构建基因家族。
+2. 用MUSCLE对每个基因家族进行比对。
+3. 用PAML包的codeml计算每个基因家族中的所有基因对的最大似然估计Ks值。
+4. 对每个基因家族内的Ks值进行去冗余，保留基因复制事件的Ks值。
+- 去冗余的方法有两种（M1和M2），可以用-R参数指定，具体细节在软件的github页面有解释，个人倾向于选择M2。
+
+### 运行
+`nohup python2 kSPlotter.py -b sample.pep.blast -aa sample.pep -nt sample.cds -o sample -R M2 > ksplotter.log 2>&1 &`
+
+一个Trinity组装出来200Mb，CD-HIT去冗余留下155Mb的转录组，运行kSPlotter用时约32小时。
+
+### 结果
+
+1. sample_ALL_KS.txt：所有基因对的Ks
+
+```
+CL100001	TRINITY_DN10006_c0_g1_i4.p1	TRINITY_DN10006_c0_g1_i2.p1	0.2759
+CL100002	TRINITY_DN10008_c0_g1_i6.p1	TRINITY_DN10008_c0_g1_i1.p1	0.0788
+...
+CL107822	TRINITY_DN35_c0_g2_i9.p3	TRINITY_DN35_c0_g2_i5.p3	0.0000
+CL107822	TRINITY_DN35_c0_g2_i10.p3	TRINITY_DN35_c0_g2_i5.p3	0.0000
 ```
 
-- -T 指定使用的线程数。
-- -a 指定 GTF 或 GFF 格式的注释文件。
-- -o 指定输出文件名。
-- 后面依次列出需要处理的 BAM 文件。
+2. sample_KS_by_cluster.txt：去冗余后聚类的Ks
 
-2. HTSeq-count 是 HTSeq 软件包的一部分，可以用来从 BAM 文件中生成计数。
-
-```shell
-conda install bioconda::htseq # 安装HTSeq
-htseq-count -f bam -r pos -s no -i gene_id sample1.bam genes.gtf > counts.txt
+```
+CL106371 ['0.0217', '0.6017']
+CL107615 ['0.0000', '1.961']
+CL106451 ['0.0990', '0.2423', '4.29865', '34.351']
 ```
 
-- -f 指定输入文件格式，通常为 bam。
-- -r 指定输入文件中排序的方式，常用 pos（位置排序）或 name（名称排序）。
-- -s 指定是否有链特异性（strand-specific），可以是 yes、no 或 reverse。
-- -i 指定在注释文件 GTF 中用作计数的特征属性（例如 gene_id）。
-- <input_file.bam> 是 BAM 格式的输入文件。
-- <annotation_file.gtf> 是 GTF 格式的注释文件。
+3. sample_REDUCED_KS.txt：去冗余后的Ks，可用于画Ks分布图
 
-# 差异表达分析
-1. 在R中安装DESeq2
-
-```shell
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("DESeq2")
+```
+0.0217
+0.6017
+0.0000
+1.961
+0.0990
 ```
 
-2. 加载DESeq2并导入数据
-```shell
-library(DESeq2)
+4. samplelog.txt
 
-# 导入计数矩阵和元数据
-countData <- read.table("counts.txt", header = TRUE, row.names = 1)
-colData <- read.csv("colData.csv", header = TRUE, row.names = 1)
+# 正态分布拟合
+## 背景
+在Lynch和Conery在2000年发表在Science的论文中，他们证明了小规模基因复制的Ks分布是L型，而在L型分布背景上叠加的峰则是来自于演化历史中某个突然的大规模复制事件。
+L型分布（呈指数分布, exponential distribution)的峰可能是近期的串联复制引起，随着时间推移基因丢失，形成一个向下的坡。正态分布(normal distribution)的峰则是由全基因组复制引起。
 
-# 确保样本顺序匹配
-all(rownames(colData) == colnames(countData)) # 应该返回 TRUE
+这就意味着我们可以根据ks频率分布图的正态分布峰来判断物种历史上发生过的全基因组复制事件，并通过ks值拟合峰值获得WGD事件发生的时间。
+
+## 模型
+用高斯混合模型对Ks进行正态分布拟合，排除假阳性峰。
+
+R包mclust可以实现
+
+```R
+install.packages("mclust") # 安装
+library(mclust) # 加载
+data<-read.csv(sample_REDUCED_KS.txt,header=F)
+data<-data[data$V1>0.05,,drop=F] #只保留>0.05的数据
+data<-data[data$V1<5,,drop=F] #只保留<5的数据
+mb=Mclust(data) # 分组数G默认是1:9；待拟合的模型modelNames默认是所有14种模型；评估最佳模型和最佳分组的标准默认是BIC(Bayesian Information Criterion)。
+summary(mb,parameters=TRUE)
 ```
 
-3. 构建DESeqDataSet对象
 
-```shell
-dds <- DESeqDataSetFromMatrix(countData = countData,
-                              colData = colData,
-                              design = ~ condition)
+# 画Ks分布图，找峰值
+
+```R
+library(ggplot2)
+library(ggpmisc)
+data <- read.table("sample_REDUCED_KS.txt",header=F)
+p <- ggplot(data, aes(V1)) + geom_density(size=1,color="black")+xlab("Synonymous substitution rate(Ks)")+ylab("Percent of Total Paralogs")+theme_classic()+scale_x_continuous(name="Ks", limits=c(0,2),breaks = seq(0,2,0.1))
+ggsave(file="Ks.pdf",plot=p,width=10,height=5)
 ```
-
-4. 数据预处理
-- 过滤低计数的基因：
-```shell
-dds <- dds[rowSums(counts(dds)) > 1, ]
-```
-
-5. 运行差异表达分析
-- `dds <- DESeq(dds)`
-6. 提取结果
-- 提取对比分析结果（例如，条件"B" 对比 "A"）：`res <- results(dds, contrast = c("condition", "B", "A"))`
-
-7. 检查和总结结果
-- 可视化 p 值和对数折叠变化：
-+
-```shell
-# 评估调整后的 p 值小于 0.05 的显著基因
-summary(res)
-# 绘制火山图（Volcano Plot）
-plot(log2FoldChange ~ -log10(padj), data = as.data.frame(res), pch = 20, main = "Volcano Plot")
-```
-
-8. 结果导出
-- 将结果导出到 CSV 文件中：`write.csv(as.data.frame(res), file = "DESeq2_results.csv")`
-
-
-- 在数据导入和处理阶段需要确保数据的正确性，特别是样本名称和条件应该一致。
-- 根据具体实验设计，可能需要修改 design 参数以反映更复杂的实验结构。
-- 在解释结果时，要考虑生物学背景以及统计结果。
 
 -------
 
 - 欢迎关注微信公众号：**生信技工**
 - 公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。
 
-<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" 
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
