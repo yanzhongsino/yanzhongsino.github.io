@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-10-28T09:50:51.398Z</updated>
+  <updated>2024-10-30T08:49:33.854Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2024/10/28/omics_transcriptome_expression_RSEM/"/>
     <id>http://example.com/2024/10/28/omics_transcriptome_expression_RSEM/</id>
     <published>2024-10-27T16:00:00.000Z</published>
-    <updated>2024-10-28T09:50:51.398Z</updated>
+    <updated>2024-10-30T08:49:33.854Z</updated>
     
     
     <summary type="html">本文记录软件RSEM（RNA-Seq by Expectation-Maximization）进行转录本定量分析。</summary>
@@ -54,7 +54,7 @@
     <link href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
     <id>http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
     <published>2024-10-27T16:00:00.000Z</published>
-    <updated>2024-10-30T08:45:15.801Z</updated>
+    <updated>2024-10-30T08:49:12.756Z</updated>
     
     
     <summary type="html">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</summary>
@@ -126,9 +126,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
-    
     <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
+    
+    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
