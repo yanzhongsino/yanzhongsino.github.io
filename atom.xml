@@ -159,9 +159,9 @@
     
     <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
     
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
     <category term="tree" scheme="http://example.com/tags/tree/"/>
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
     
     <category term="tools" scheme="http://example.com/tags/tools/"/>
     
@@ -223,9 +223,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -258,9 +258,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -295,9 +295,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -330,9 +330,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -343,6 +343,33 @@
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>正交和反交在遗传学中的应用</title>
+    <link href="http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/"/>
+    <id>http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/</id>
+    <published>2024-06-17T16:00:00.000Z</published>
+    <updated>2024-06-18T04:33:07.449Z</updated>
+    
+    
+    <summary type="html">介绍了正交和反交的定义，以及利用正交和反交解决遗传中的哪些问题。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="genetics" scheme="http://example.com/categories/bio/genetics/"/>
+    
+    <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
+    
+    
+    <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
+    <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
+    
+    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
     
   </entry>
   
@@ -380,33 +407,6 @@
     <category term="zip" scheme="http://example.com/tags/zip/"/>
     
     <category term="rar" scheme="http://example.com/tags/rar/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>正交和反交在遗传学中的应用</title>
-    <link href="http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/"/>
-    <id>http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/</id>
-    <published>2024-06-17T16:00:00.000Z</published>
-    <updated>2024-06-18T04:33:07.449Z</updated>
-    
-    
-    <summary type="html">介绍了正交和反交的定义，以及利用正交和反交解决遗传中的哪些问题。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="genetics" scheme="http://example.com/categories/bio/genetics/"/>
-    
-    <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
-    
-    
-    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
-    
-    <category term="bio" scheme="http://example.com/tags/bio/"/>
-    
-    <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
     
   </entry>
   
