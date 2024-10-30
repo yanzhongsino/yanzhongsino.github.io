@@ -54,7 +54,7 @@
     <link href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
     <id>http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
     <published>2024-10-27T16:00:00.000Z</published>
-    <updated>2024-10-30T07:47:39.951Z</updated>
+    <updated>2024-10-30T08:45:15.801Z</updated>
     
     
     <summary type="html">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</summary>
@@ -159,9 +159,9 @@
     
     <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
     
-    <category term="tree" scheme="http://example.com/tags/tree/"/>
-    
     <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="tree" scheme="http://example.com/tags/tree/"/>
     
     <category term="tools" scheme="http://example.com/tags/tools/"/>
     

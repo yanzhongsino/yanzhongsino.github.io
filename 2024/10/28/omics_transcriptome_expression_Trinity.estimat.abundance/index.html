@@ -28,7 +28,7 @@
 <meta property="og:description" content="本文记录Trinity的转录本定量分析脚本&#96;align_and_estimate_abundance.pl&#96;的使用。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-10-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-30T07:47:39.951Z">
+<meta property="article:modified_time" content="2024-10-30T08:45:15.801Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="Trinity">
 <meta property="article:tag" content="expression analysis">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-10-30 15:47:39" itemprop="dateModified" datetime="2024-10-30T15:47:39+08:00">2024-10-30</time>
+                <time title="Modified: 2024-10-30 16:45:15" itemprop="dateModified" datetime="2024-10-30T16:45:15+08:00">2024-10-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,13 +295,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>3.1k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>3 mins.</span>
+              <span>4 mins.</span>
             </span>
             <div class="post-description">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</div>
 
@@ -341,7 +341,8 @@
 <li>命令</li>
 </ol>
 <ul>
-<li><code>nohup align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --left sample.clean_R1.fq.gz --right sample.clean_R2.fq.gz --est_method RSEM --aln_method bowtie2 --thread_count 12 --debug --prep_reference --trinity_mode --output_dir &gt; bowtie.out 2&gt;&amp;1 &amp;</code></li>
+<li><code>nohup align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --left sample.clean_R1.fq.gz --right sample.clean_R2.fq.gz --est_method RSEM --aln_method bowtie2 --thread_count 12 --debug --prep_reference --trinity_mode --output_dir &gt; abundance_bowtie2.log 2&gt;&amp;1 &amp;</code></li>
+<li>nohup是用于避免终端意外导致运行中断，<code>&gt; abundance_bowtie2.log 2&gt;&amp;1</code>把运行时屏幕输出保存到log文件，方便查看比对率等信息。</li>
 </ul>
 <ol start="2">
 <li>必要参数：</li>
@@ -349,10 +350,10 @@
 <ul>
 <li>–transcripts: 指定 TRINITY 组装的转录本 fasta 文件，一般是Trinity.fasta。</li>
 <li>–seqType: 指定序列类型（fq或fa），fq 表示 fastq 格式。</li>
-<li>指定测序reads：–samples_file指定文本文件，可包含多个样品多个生物学重复。单个样品的双端测序reads也可以指定–left 和 –right；单端测序reads指定–single。reads需要进行QC（FastQC,Trimmomatic或fastp等）之后再使用，定量分析结果更准确。</li>
+<li>指定测序reads：<code>--samples_file sample.txt</code>指定文本文件，可包含多个样品多个生物学重复。单个样品的双端测序reads也可以指定–left 和 –right；单端测序reads指定–single。reads需要进行QC（FastQC,Trimmomatic或fastp等）之后再使用，定量分析结果更准确。</li>
 <li>–est_method: 选择用于估算丰度的方法(基于alignment的RSEM, eXpress(最新版本不支持)，不基于alignmetn的更快，有kallisto, salmon)，这里使用 RSEM。</li>
 </ul>
-<p>–samples_file指定的文本文件格式如下(代表cond_A和cond_B两个样本，各包含三个生物学重复。如果是单端测序reads，第四列留空即可。)：</p>
+<p>sample.txt文本文件格式如下(代表cond_A和cond_B两个样本，各包含三个生物学重复。如果是单端测序reads，第四列留空即可。)：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cond_A    cond_A_rep1    A_rep1_left.fq    A_rep1_right.fq</span><br><span class="line">cond_A    cond_A_rep2    A_rep2_left.fq    A_rep2_right.fq</span><br><span class="line">cond_A    cond_A_rep3    A_rep3_left.fq    A_rep3_right.fq</span><br><span class="line">cond_B    cond_B_rep1    B_rep1_left.fq    B_rep1_right.fq</span><br><span class="line">cond_B    cond_B_rep2    B_rep2_left.fq    B_rep2_right.fq</span><br><span class="line">cond_B    cond_B_rep3    B_rep3_left.fq    B_rep3_right.fq</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
@@ -365,7 +366,7 @@
 <li>–debug：保留中间文件。</li>
 <li>–gene_trans_map <string>：包含基因和转录本关系的文件，每一行’gene(tab)transcript’ identifiers，来生成基于基因的定量表达结果。</li>
 <li>–trinity_mode: 如果–transcripts是用trinity软件得到的转录本，可以用这个参数代替–gene_trans_map，会自动生成gene_trans_map需要的文件，并生成基于基因的定量表达结果。</li>
-<li>–prep_reference: 准备参考文件时需要使用的参数（构建目标的索引）。</li>
+<li>–prep_reference: 自动为转录组建立索引。</li>
 <li>–SS_lib_type <string>：指定链特异性建库类型。paired(‘RF’ or ‘FR’), single(‘F’ or ‘R’)。</li>
 <li>–samples_idx <int>：限制对样本条目的处理（索引从1开始）</li>
 <li>另外还有一些调用软件（bowtie, bowtie2，RSEM，kallisto，salmon）用的参数也可以设定。</li>
@@ -410,8 +411,16 @@
 <li>如果使用–debug则会保留中间文件在这个文件夹。</li>
 </ul>
 <p>生成的这些结果文件最常用于后续的差异表达分析、功能注释和生物学解释。</p>
-<h1 id="5-reference"><a href="#5-reference" class="headerlink" title="5. reference"></a>5. reference</h1><ol>
+<h1 id="5-准备差异表达分析的输入文件（表达矩阵文件）"><a href="#5-准备差异表达分析的输入文件（表达矩阵文件）" class="headerlink" title="5. 准备差异表达分析的输入文件（表达矩阵文件）"></a>5. 准备差异表达分析的输入文件（表达矩阵文件）</h1><p>如果有多个样品，每个样品会生成一个文件夹，都包含一套结果文件。</p>
+<p>后续还需要做差异表达分析，可以这样准备表达矩阵文件。</p>
+<ol>
+<li><code>ls */sample.isoforms.results &gt; countfile.txt</code>: 列出所有样本的定量表达结果。这里用转录本isoform水平的结果，也可以选择gene水平的结果。</li>
+<li><code>abundance_estimates_to_matrix.pl --est_method RSEM --gene_trans_map --quant_files countfile.txt --name_sample_by_basedir</code>：用Trinity自带的另一个脚本abundance_estimates_to_matrix.pl来生成表达矩阵文件。–name_sample_by_basedir 让表达矩阵中的样本名与文件夹一致。生成的<code>sample.isoform.counts.matrix</code> 就是差异表达分析时需要用到的原始表达矩阵了。</li>
+<li><code>cut -f 1,2 sample.txt &gt; sample_dea.txt</code>：sample_dea.txt 可用于后续的样本质量检查和差异表达分析。</li>
+</ol>
+<h1 id="6-reference"><a href="#6-reference" class="headerlink" title="6. reference"></a>6. reference</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Transcript-Quantification">https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Transcript-Quantification</a></li>
+<li><a target="_blank" rel="noopener" href="https://biojuse.com/2022/12/11/%E6%AF%94%E8%BE%83%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94%20%E8%BD%AC%E5%BD%95%E6%9C%AC%E5%AE%9A%E9%87%8F%E4%B8%8E%E5%B7%AE%E5%BC%82%E8%A1%A8%E8%BE%BE%E5%88%86%E6%9E%90/">https://biojuse.com/2022/12/11/%E6%AF%94%E8%BE%83%E8%BD%AC%E5%BD%95%E7%BB%84%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94%20%E8%BD%AC%E5%BD%95%E6%9C%AC%E5%AE%9A%E9%87%8F%E4%B8%8E%E5%B7%AE%E5%BC%82%E8%A1%A8%E8%BE%BE%E5%88%86%E6%9E%90/</a></li>
 </ol>
 <hr>
 <ul>
@@ -535,7 +544,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%BD%AC%E5%BD%95%E6%9C%AC%E8%A1%A8%E8%BE%BE%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">1. 转录本表达定量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-text">2. 软件安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E8%BD%AC%E5%BD%95%E6%9C%AC%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">3. 转录本定量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">4. 结果文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-reference"><span class="nav-text">5. reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%BD%AC%E5%BD%95%E6%9C%AC%E8%A1%A8%E8%BE%BE%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">1. 转录本表达定量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-text">2. 软件安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E8%BD%AC%E5%BD%95%E6%9C%AC%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">3. 转录本定量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">4. 结果文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%87%86%E5%A4%87%E5%B7%AE%E5%BC%82%E8%A1%A8%E8%BE%BE%E5%88%86%E6%9E%90%E7%9A%84%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6%EF%BC%88%E8%A1%A8%E8%BE%BE%E7%9F%A9%E9%98%B5%E6%96%87%E4%BB%B6%EF%BC%89"><span class="nav-text">5. 准备差异表达分析的输入文件（表达矩阵文件）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-reference"><span class="nav-text">6. reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -616,12 +625,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">693k</span>
+    <span title="Symbols count total">694k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:30</span>
+    <span title="Reading time total">10:31</span>
 </div>
 
         
