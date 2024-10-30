@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文记录Trinity的转录本定量分析脚本&#96;align_and_estimate_abundance.pl&#96;的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Trinity的脚本进行转录本定量分析">
+<meta property="og:url" content="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="本文记录Trinity的转录本定量分析脚本&#96;align_and_estimate_abundance.pl&#96;的使用。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-30T07:47:39.951Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Trinity">
+<meta property="article:tag" content="expression analysis">
+<meta property="article:tag" content="RSEM">
+<meta property="article:tag" content="expression abundance">
+<meta property="article:tag" content="transcript">
+<meta property="article:tag" content="align_and_estimate_abundance.pl">
+<meta property="article:tag" content="bowtie2">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用Trinity的脚本进行转录本定量分析 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用Trinity的脚本进行转录本定量分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-10-28 00:00:00" itemprop="dateCreated datePublished" datetime="2024-10-28T00:00:00+08:00">2024-10-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-30 15:47:39" itemprop="dateModified" datetime="2024-10-30T15:47:39+08:00">2024-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/transcriptome/" itemprop="url" rel="index"><span itemprop="name">transcriptome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/transcriptome/express/" itemprop="url" rel="index"><span itemprop="name">express</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=486310963&auto=1&height=32"></iframe></div>
+
+<h1 id="1-转录本表达定量分析"><a href="#1-转录本表达定量分析" class="headerlink" title="1. 转录本表达定量分析"></a>1. 转录本表达定量分析</h1><p>转录本表达定量分析基本原理：通过测序获得的RNA-seq数据mapping到组装好的转录组上，通过mapped reads的数量（reads count）可以判断表达量的高低。</p>
+<ol>
+<li>因为reads count还受到测序深度（测序越深，count越高）和转录本长度（越短count越高）的影响，通常还需要进行标准化，消除测序深度和转录本长度的影响，标准化指标常用CPM,FPKM,TPM等。标准化后的指标可用于不同样品间的比较。</li>
+<li>如果测序获得了不同处理&#x2F;不同性状的样品的数据，最常用的转录本定量分析后的运用是进行差异表达分析。通过鉴定差异表达基因来判断与性状相关的基因。</li>
+</ol>
+<p>转录本表达定量分析（transcript expression quantification）又叫转录本表达丰度分析（transcript expression abundance）。</p>
+<p>转录组本定量分析的脚本<code>align_and_estimate_abundance.pl</code>直接支持调用基于比对的定量分析软件RESE，超快非比对软件kallisto和wicked-fast软件salmon。</p>
+<h1 id="2-软件安装"><a href="#2-软件安装" class="headerlink" title="2. 软件安装"></a>2. 软件安装</h1><ol>
+<li>脚本位置</li>
+</ol>
+<ul>
+<li>安装Trinity后即拥有各种下游分析脚本，转录组本定量分析脚本<code>align_and_estimate_abundance.pl</code>位置在trinityrnaseq-v2.15.2&#x2F;util&#x2F;下。</li>
+</ul>
+<ol start="2">
+<li>RSEM安装</li>
+</ol>
+<ul>
+<li>RSEM是用于分析转录本定量表达的软件。</li>
+<li>关于RSEM可参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2024/10/28/omics_transcriptome_expression_RSEM/">用RSEM进行转录本定量分析</a>。</li>
+</ul>
+<h1 id="3-转录本定量分析"><a href="#3-转录本定量分析" class="headerlink" title="3. 转录本定量分析"></a>3. 转录本定量分析</h1><p>Trinity软件自带转录组组装后的下游分析脚本，本文记录转录组本定量分析的脚本<code>align_and_estimate_abundance.pl</code>的使用。</p>
+<ol>
+<li>命令</li>
+</ol>
+<ul>
+<li><code>nohup align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --left sample.clean_R1.fq.gz --right sample.clean_R2.fq.gz --est_method RSEM --aln_method bowtie2 --thread_count 12 --debug --prep_reference --trinity_mode --output_dir &gt; bowtie.out 2&gt;&amp;1 &amp;</code></li>
+</ul>
+<ol start="2">
+<li>必要参数：</li>
+</ol>
+<ul>
+<li>–transcripts: 指定 TRINITY 组装的转录本 fasta 文件，一般是Trinity.fasta。</li>
+<li>–seqType: 指定序列类型（fq或fa），fq 表示 fastq 格式。</li>
+<li>指定测序reads：–samples_file指定文本文件，可包含多个样品多个生物学重复。单个样品的双端测序reads也可以指定–left 和 –right；单端测序reads指定–single。reads需要进行QC（FastQC,Trimmomatic或fastp等）之后再使用，定量分析结果更准确。</li>
+<li>–est_method: 选择用于估算丰度的方法(基于alignment的RSEM, eXpress(最新版本不支持)，不基于alignmetn的更快，有kallisto, salmon)，这里使用 RSEM。</li>
+</ul>
+<p>–samples_file指定的文本文件格式如下(代表cond_A和cond_B两个样本，各包含三个生物学重复。如果是单端测序reads，第四列留空即可。)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cond_A    cond_A_rep1    A_rep1_left.fq    A_rep1_right.fq</span><br><span class="line">cond_A    cond_A_rep2    A_rep2_left.fq    A_rep2_right.fq</span><br><span class="line">cond_A    cond_A_rep3    A_rep3_left.fq    A_rep3_right.fq</span><br><span class="line">cond_B    cond_B_rep1    B_rep1_left.fq    B_rep1_right.fq</span><br><span class="line">cond_B    cond_B_rep2    B_rep2_left.fq    B_rep2_right.fq</span><br><span class="line">cond_B    cond_B_rep3    B_rep3_left.fq    B_rep3_right.fq</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>可选参数</li>
+</ol>
+<ul>
+<li>–aln_method: 选择比对工具，如 bowtie2或bowtie。</li>
+<li>–output_dir：指定输出文件保存的目录</li>
+<li>–thread_count：线程数，默认4。</li>
+<li>–debug：保留中间文件。</li>
+<li>–gene_trans_map <string>：包含基因和转录本关系的文件，每一行’gene(tab)transcript’ identifiers，来生成基于基因的定量表达结果。</li>
+<li>–trinity_mode: 如果–transcripts是用trinity软件得到的转录本，可以用这个参数代替–gene_trans_map，会自动生成gene_trans_map需要的文件，并生成基于基因的定量表达结果。</li>
+<li>–prep_reference: 准备参考文件时需要使用的参数（构建目标的索引）。</li>
+<li>–SS_lib_type <string>：指定链特异性建库类型。paired(‘RF’ or ‘FR’), single(‘F’ or ‘R’)。</li>
+<li>–samples_idx <int>：限制对样本条目的处理（索引从1开始）</li>
+<li>另外还有一些调用软件（bowtie, bowtie2，RSEM，kallisto，salmon）用的参数也可以设定。</li>
+</ul>
+<h1 id="4-结果文件"><a href="#4-结果文件" class="headerlink" title="4. 结果文件"></a>4. 结果文件</h1><ol>
+<li><sample>.genes.results：包含基因水平的表达估算结果。</li>
+</ol>
+<ul>
+<li>主要列包括gene_id    transcript_id(s)    length    effective_length    expected_count  TPM    FPKM。</li>
+</ul>
+<ol start="2">
+<li><sample>.isoforms.results：包含转录本水平的表达估算结果。</li>
+</ol>
+<ul>
+<li>主要列包括transcript_id    gene_id    length    effective_length    expected_count    TPM   FPKM    IsoPct。</li>
+</ul>
+<ol start="3">
+<li><sample>.isoforms.sorted.bam（可选的输出文件）：</li>
+</ol>
+<ul>
+<li>RSEM 对每个样本生成的比对后的 BAM 文件，包含转录本序列的比对信息。</li>
+<li>这些 BAM 文件可以用于后续的可视化或其他分析。</li>
+</ul>
+<ol start="4">
+<li><sample>.stat 文件夹</li>
+</ol>
+<ul>
+<li>包括三个文件：<sample>.cnt,<sample>.model,<sample>.theta。</li>
+<li>包含关于 RSEM 运行的一些统计信息和估算结果的总结。</li>
+<li>包括比对率、有效比对质量等信息。</li>
+</ul>
+<ol start="5">
+<li><sample>.transcript.bam（如果没有使用 –no-bam-output则生成）：</li>
+</ol>
+<ul>
+<li>默认情况下生成的 BAM 文件，可用于直接查看与转录本的比对。</li>
+</ul>
+<ol start="6">
+<li><sample>.temp 文件夹</li>
+</ol>
+<ul>
+<li>如果使用–debug则会保留中间文件在这个文件夹。</li>
+</ul>
+<p>生成的这些结果文件最常用于后续的差异表达分析、功能注释和生物学解释。</p>
+<h1 id="5-reference"><a href="#5-reference" class="headerlink" title="5. reference"></a>5. reference</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Transcript-Quantification">https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Transcript-Quantification</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<p>&lt;img src&#x3D;”<a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true&quot;">https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true&quot;</a> width&#x3D;20% title&#x3D;”wechat_public_QRcode.png” </p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Trinity/" rel="tag"># Trinity</a>
+              <a href="/tags/expression-analysis/" rel="tag"># expression analysis</a>
+              <a href="/tags/RSEM/" rel="tag"># RSEM</a>
+              <a href="/tags/expression-abundance/" rel="tag"># expression abundance</a>
+              <a href="/tags/transcript/" rel="tag"># transcript</a>
+              <a href="/tags/align-and-estimate-abundance-pl/" rel="tag"># align_and_estimate_abundance.pl</a>
+              <a href="/tags/bowtie2/" rel="tag"># bowtie2</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/30/bioinfo_alignment_prot_miniprot/" rel="prev" title="用miniprot做蛋白序列和基因组序列间的比对">
+      <i class="fa fa-chevron-left"></i> 用miniprot做蛋白序列和基因组序列间的比对
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/10/28/omics_transcriptome_expression_RSEM/" rel="next" title="用RSEM进行转录本定量分析">
+      用RSEM进行转录本定量分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%BD%AC%E5%BD%95%E6%9C%AC%E8%A1%A8%E8%BE%BE%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">1. 转录本表达定量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="nav-text">2. 软件安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E8%BD%AC%E5%BD%95%E6%9C%AC%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">3. 转录本定量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">4. 结果文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-reference"><span class="nav-text">5. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">77</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">454</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">691k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yanzhongsino.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/";
+    this.page.identifier = "2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/";
+    this.page.title = "用Trinity的脚本进行转录本定量分析";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yanzhongsino.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

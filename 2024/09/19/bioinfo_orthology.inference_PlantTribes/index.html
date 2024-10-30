@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-09-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-09T11:59:55.937Z">
+<meta property="article:modified_time" content="2024-10-30T05:14:53.317Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="orthology">
 <meta property="article:tag" content="PlantTribes">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-10-09 19:59:55" itemprop="dateModified" datetime="2024-10-09T19:59:55+08:00">2024-10-09</time>
+                <time title="Modified: 2024-10-30 13:14:53" itemprop="dateModified" datetime="2024-10-30T13:14:53+08:00">2024-10-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -291,13 +291,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>21k</span>
+              <span>22k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>19 mins.</span>
+              <span>20 mins.</span>
             </span>
             <div class="post-description">简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka/Ks等的用法。</div>
 
@@ -393,8 +393,10 @@
 </ul>
 <h1 id="6-PlantTribes2快速使用"><a href="#6-PlantTribes2快速使用" class="headerlink" title="6. PlantTribes2快速使用"></a>6. PlantTribes2快速使用</h1><h2 id="6-1-标准运行"><a href="#6-1-标准运行" class="headerlink" title="6.1. 标准运行"></a>6.1. 标准运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --dereplicate --min_length 100 --num_threads 12 &amp; # 预测转录本的CDS区域</span><br><span class="line">nohup GeneFamilyClassifier --proteins assemblyPostProcessing_dir/transcripts.cleaned.nr.pep --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --classifier both --num_threads 24 --orthogroup_fasta --coding_sequences assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &amp; # 转录本分类到orthologs</span><br><span class="line">nohup GeneFamilyIntegrator --orthogroup_fasta geneFamilyClassification_dir/orthogroups_fasta/ --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder &amp; # 匹配scaffolds中的orthologs</span><br><span class="line">nohup GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft --codon_alignments --num_threads 24 &amp; # orthogroups序列比对</span><br><span class="line">nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --tree_inference raxml --bootstrap_replicates 100 --num_threads 24 &amp; # 建ML树</span><br></pre></td></tr></table></figure>
 
-<h2 id="6-2-focus-on目标基因的运行"><a href="#6-2-focus-on目标基因的运行" class="headerlink" title="6.2. focus on目标基因的运行"></a>6.2. focus on目标基因的运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">预测转录本的CDS区域，并组装RRRgenes_orthogroups.ids文件中指定的orthogroups家族的基因。</span></span><br><span class="line">nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --gene_family_search RRRgenes_orthogroups.ids --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --dereplicate --min_length 100 --num_threads 12 &amp; </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从组装好的转录组中提取目标转录本</span></span><br><span class="line">mkdir RRRgenes &amp;&amp; cd RRRgenes &amp;&amp; mkdir genefamily</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/$&#123;i&#125;.faa |seqkit seq -w 0|grep -v &quot;&gt;&quot; &gt;$&#123;i&#125;.pep &amp;&amp; seqkit grep -s -f $&#123;i&#125;.pep ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep &gt; ./genefamily/$&#123;i&#125;.faa &amp;&amp; rm *.pep;done # 更换蛋白序列的ID</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/$&#123;i&#125;.fna |seqkit seq -w 0|grep -v &quot;&gt;&quot; &gt;$&#123;i&#125;.nucl &amp;&amp; seqkit grep -s -f $&#123;i&#125;.nucl ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &gt; ./genefamily/$&#123;i&#125;.fna &amp;&amp; rm *.nucl;done # 更换DNA的CDS序列</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">整合目标基因的orthogroups成员</span></span><br><span class="line">nohup GeneFamilyIntegrator --orthogroup_fasta ./genefamily/ --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder &amp; # 匹配scaffolds中的orthologs</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">目标基因的orthogroups序列比对</span></span><br><span class="line">nohup GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft --codon_alignments --num_threads 24 &amp;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">建目标基因的ML树</span></span><br><span class="line">nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --tree_inference raxml --bootstrap_replicates 1000 --num_threads 24 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="6-2-focus-on目标基因的运行"><a href="#6-2-focus-on目标基因的运行" class="headerlink" title="6.2. focus on目标基因的运行"></a>6.2. focus on目标基因的运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">预测转录本的CDS区域，并组装RRRgenes_orthogroups.ids文件中指定的orthogroups家族的基因。</span></span><br><span class="line">nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --gene_family_search RRRgenes_orthogroups.ids --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --dereplicate --min_length 100 --num_threads 12 &amp; </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从组装好的转录组中提取目标转录本</span></span><br><span class="line">mkdir RRRgenes &amp;&amp; cd RRRgenes &amp;&amp; mkdir genefamily</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/$&#123;i&#125;.faa |seqkit seq -w 0|grep -v &quot;&gt;&quot; &gt;$&#123;i&#125;.pep &amp;&amp; seqkit grep -s -f $&#123;i&#125;.pep ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep &gt; ./genefamily/$&#123;i&#125;.faa &amp;&amp; rm *.pep;done # 更换蛋白序列的ID</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/$&#123;i&#125;.fna |seqkit seq -w 0|grep -v &quot;&gt;&quot; &gt;$&#123;i&#125;.nucl &amp;&amp; seqkit grep -s -f $&#123;i&#125;.nucl ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &gt; ./genefamily/$&#123;i&#125;.fna &amp;&amp; rm *.nucl;done # 更换DNA的CDS序列的ID</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do seqkit seq -n $i.fna &gt;$i.id &amp;&amp; seqkit seq -n $i.faa &gt;&gt;$i.id &amp;&amp; seqkit grep -r -f $i.id ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &gt;$i.fna &amp;&amp; seqkit grep -r -f $i.id ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep &gt;$i.faa &amp;&amp; rm $i.id;done #统一CDS序列和蛋白序列</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># notes：有时做完上面几步后仍然有序列没有被提取（可能是因为组装的指定id的基因与预测的转录本序列并非所有碱基都完全对应），生成了空文件，这时需要检查和手动提取。</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">整合目标基因的orthogroups成员</span></span><br><span class="line">nohup GeneFamilyIntegrator --orthogroup_fasta ./genefamily/ --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder &amp; # 匹配scaffolds中的orthologs</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">目标基因的orthogroups序列比对</span></span><br><span class="line">nohup GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft --codon_alignments --num_threads 24 &amp;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">建目标基因的ML树</span></span><br><span class="line">nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --tree_inference raxml --bootstrap_replicates 1000 --num_threads 24 &amp;</span><br></pre></td></tr></table></figure>
 
+<p><strong>个人经验</strong>：这种运行方式focus on目标基因，去掉了GeneFamilyClassifier模块的使用，计算量小很多，能很快的得到目标基因的结果。虽然能够尽可能地拼接出目标基因的转录本，但是可能包含更多假阳性结果。</p>
+<p><strong>推荐</strong>：在使用AssemblyPostProcessor模块并且–gene_family_search参数指定目标基因id的list，获得转录本CDS区域后，就按照标准运行流程依次使用GeneFamilyClassifier模块、GeneFamilyIntegrator模块、GeneFamilyAligner模块、GeneFamilyPhylogenyBuilder模块来进行直系同源转录本的推断，结果更可靠。<br>同时建议对GeneFamilyAligner模块获得的align比对好的序列进行手动和肉眼检查，看是否有假阳性的结果（明显比对不上的转录本序列被放进了结果）。</p>
 <h1 id="7-PlantTribes2运行的详细参数"><a href="#7-PlantTribes2运行的详细参数" class="headerlink" title="7. PlantTribes2运行的详细参数"></a>7. PlantTribes2运行的详细参数</h1><p>用de novo转录组组装得到的Trinity.fasta文件来演示PlantTribes2运行流程。</p>
 <h2 id="7-1-准备数据"><a href="#7-1-准备数据" class="headerlink" title="7.1. 准备数据"></a>7.1. 准备数据</h2><ul>
 <li>下载你想用的PlantTribes_scaffold数据库，从数据库网址（<a target="_blank" rel="noopener" href="http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/%EF%BC%89%E4%B8%AD%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD%EF%BC%8C%E6%A3%80%E6%9F%A5%E5%B9%B6%E8%A7%A3%E5%8E%8B%E7%BC%A9%60wget">http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/）中选择一个数据库下载，检查并解压缩`wget</a> <a target="_blank" rel="noopener" href="http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/22Gv1.1.tar.bz2%60,%60md5sum">http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/22Gv1.1.tar.bz2`,`md5sum</a> 22Gv1.1.tar.bz<code>,</code>tar -xjvf 22Gv1.1.tar.bz2&#96;。</li>
@@ -640,7 +642,7 @@
 <ul>
 <li><code>PlantTribes/pipelines/GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln_faa --tree_inference fasttree</code></li>
 <li>输出文件：</li>
-<li>geneFamilyPhylogenies_dir&#x2F;orthogroups_tree&#x2F; - orthogroup phylogenetic trees directory<h3 id="7-7-2-参数"><a href="#7-7-2-参数" class="headerlink" title="7.7.2. 参数"></a>7.7.2. 参数</h3></li>
+<li>geneFamilyPhylogenies_dir&#x2F;orthogroups_tree&#x2F; - orthogroup phylogenetic trees directory<h3 id="7-7-2-参数"><a href="#7-7-2-参数" class="headerlink" title="7.7.2. 参数"></a>7.7.2. 参数</h3>GeneFamilyPhylogenyBuilder模块建树默认是设定外类群的，通常设定Ambtr1.0.27或Phypa1.6等为外类群，所以获得的树结果可直接用。</li>
 </ul>
 <ol>
 <li>必需参数</li>
@@ -880,20 +882,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">447</span>
+        <span class="site-state-item-count">454</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -947,12 +949,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">683k</span>
+    <span title="Symbols count total">691k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:21</span>
+    <span title="Reading time total">10:28</span>
 </div>
 
         

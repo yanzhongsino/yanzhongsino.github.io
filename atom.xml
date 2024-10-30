@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-10-09T02:43:39.100Z</updated>
+  <updated>2024-10-28T09:50:51.398Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,74 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用RSEM进行转录本定量分析</title>
+    <link href="http://example.com/2024/10/28/omics_transcriptome_expression_RSEM/"/>
+    <id>http://example.com/2024/10/28/omics_transcriptome_expression_RSEM/</id>
+    <published>2024-10-27T16:00:00.000Z</published>
+    <updated>2024-10-28T09:50:51.398Z</updated>
+    
+    
+    <summary type="html">本文记录软件RSEM（RNA-Seq by Expectation-Maximization）进行转录本定量分析。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="transcriptome" scheme="http://example.com/categories/omics/transcriptome/"/>
+    
+    <category term="express" scheme="http://example.com/categories/omics/transcriptome/express/"/>
+    
+    
+    <category term="Trinity" scheme="http://example.com/tags/Trinity/"/>
+    
+    <category term="expression analysis" scheme="http://example.com/tags/expression-analysis/"/>
+    
+    <category term="RSEM" scheme="http://example.com/tags/RSEM/"/>
+    
+    <category term="RNA-Seq by Expectation-Maximization" scheme="http://example.com/tags/RNA-Seq-by-Expectation-Maximization/"/>
+    
+    <category term="Simulation" scheme="http://example.com/tags/Simulation/"/>
+    
+    <category term="EBSeq" scheme="http://example.com/tags/EBSeq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Trinity的脚本进行转录本定量分析</title>
+    <link href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
+    <id>http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
+    <published>2024-10-27T16:00:00.000Z</published>
+    <updated>2024-10-30T07:47:39.951Z</updated>
+    
+    
+    <summary type="html">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="transcriptome" scheme="http://example.com/categories/omics/transcriptome/"/>
+    
+    <category term="express" scheme="http://example.com/categories/omics/transcriptome/express/"/>
+    
+    
+    <category term="Trinity" scheme="http://example.com/tags/Trinity/"/>
+    
+    <category term="expression analysis" scheme="http://example.com/tags/expression-analysis/"/>
+    
+    <category term="RSEM" scheme="http://example.com/tags/RSEM/"/>
+    
+    <category term="expression abundance" scheme="http://example.com/tags/expression-abundance/"/>
+    
+    <category term="transcript" scheme="http://example.com/tags/transcript/"/>
+    
+    <category term="align_and_estimate_abundance.pl" scheme="http://example.com/tags/align-and-estimate-abundance-pl/"/>
+    
+    <category term="bowtie2" scheme="http://example.com/tags/bowtie2/"/>
+    
+  </entry>
   
   <entry>
     <title>用miniprot做蛋白序列和基因组序列间的比对</title>
@@ -46,7 +114,7 @@
     <link href="http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/"/>
     <id>http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/</id>
     <published>2024-09-18T16:00:00.000Z</published>
-    <updated>2024-10-09T11:59:55.937Z</updated>
+    <updated>2024-10-30T05:14:53.317Z</updated>
     
     
     <summary type="html">简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka/Ks等的用法。</summary>
@@ -102,37 +170,6 @@
   </entry>
   
   <entry>
-    <title>二代和三代reads的常规map操作</title>
-    <link href="http://example.com/2024/08/27/bioinfo_basic_map/"/>
-    <id>http://example.com/2024/08/27/bioinfo_basic_map/</id>
-    <published>2024-08-26T16:00:00.000Z</published>
-    <updated>2024-08-27T08:54:27.368Z</updated>
-    
-    
-    <summary type="html">记录用bwa对二代reads、用minimap2对三代reads进行mapping的常规操作。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="basic" scheme="http://example.com/categories/bioinfo/basic/"/>
-    
-    <category term="map" scheme="http://example.com/categories/bioinfo/basic/map/"/>
-    
-    
-    <category term="map" scheme="http://example.com/tags/map/"/>
-    
-    <category term="operation" scheme="http://example.com/tags/operation/"/>
-    
-    <category term="bwa" scheme="http://example.com/tags/bwa/"/>
-    
-    <category term="minimap2" scheme="http://example.com/tags/minimap2/"/>
-    
-    <category term="samtools" scheme="http://example.com/tags/samtools/"/>
-    
-  </entry>
-  
-  <entry>
     <title>多序列比对的整体可视化</title>
     <link href="http://example.com/2024/08/02/bioinfo_alignment_align_MSA_visualization/"/>
     <id>http://example.com/2024/08/02/bioinfo_alignment_align_MSA_visualization/</id>
@@ -153,11 +190,11 @@
     <category term="MSA" scheme="http://example.com/categories/bioinfo/alignment/align/MSA/"/>
     
     
+    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
+    
     <category term="Multiple Sequence Alignment" scheme="http://example.com/tags/Multiple-Sequence-Alignment/"/>
     
     <category term="MSA" scheme="http://example.com/tags/MSA/"/>
-    
-    <category term="alignment" scheme="http://example.com/tags/alignment/"/>
     
     <category term="visualization" scheme="http://example.com/tags/visualization/"/>
     
@@ -186,9 +223,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -221,9 +258,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -258,9 +295,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -293,9 +330,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -306,33 +343,6 @@
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>正交和反交在遗传学中的应用</title>
-    <link href="http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/"/>
-    <id>http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/</id>
-    <published>2024-06-17T16:00:00.000Z</published>
-    <updated>2024-06-18T04:33:07.449Z</updated>
-    
-    
-    <summary type="html">介绍了正交和反交的定义，以及利用正交和反交解决遗传中的哪些问题。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="genetics" scheme="http://example.com/categories/bio/genetics/"/>
-    
-    <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
-    
-    
-    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
-    
-    <category term="bio" scheme="http://example.com/tags/bio/"/>
-    
-    <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
     
   </entry>
   
@@ -370,6 +380,33 @@
     <category term="zip" scheme="http://example.com/tags/zip/"/>
     
     <category term="rar" scheme="http://example.com/tags/rar/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>正交和反交在遗传学中的应用</title>
+    <link href="http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/"/>
+    <id>http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/</id>
+    <published>2024-06-17T16:00:00.000Z</published>
+    <updated>2024-06-18T04:33:07.449Z</updated>
+    
+    
+    <summary type="html">介绍了正交和反交的定义，以及利用正交和反交解决遗传中的哪些问题。</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="genetics" scheme="http://example.com/categories/bio/genetics/"/>
+    
+    <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
+    
+    
+    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
+    
+    <category term="bio" scheme="http://example.com/tags/bio/"/>
+    
+    <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
     
   </entry>
   
@@ -676,43 +713,6 @@
     <category term="hexo" scheme="http://example.com/tags/hexo/"/>
     
     <category term="RSS" scheme="http://example.com/tags/RSS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>samtools faidx创建fasta/fastq格式文件的.fai格式索引文件</title>
-    <link href="http://example.com/2023/11/24/bioinfo_fileformat_fa_fai/"/>
-    <id>http://example.com/2023/11/24/bioinfo_fileformat_fa_fai/</id>
-    <published>2023-11-23T16:00:00.000Z</published>
-    <updated>2023-11-24T03:51:30.310Z</updated>
-    
-    
-    <summary type="html">介绍用samtools faidx为fasta/fastq格式文件创建.fai格式索引文件，并详细介绍.fai格式索引文件内容。</summary>
-    
-    
-    
-    <category term="bioinfo" scheme="http://example.com/categories/bioinfo/"/>
-    
-    <category term="fileformat" scheme="http://example.com/categories/bioinfo/fileformat/"/>
-    
-    <category term="fasta" scheme="http://example.com/categories/bioinfo/fileformat/fasta/"/>
-    
-    
-    <category term="samtools" scheme="http://example.com/tags/samtools/"/>
-    
-    <category term="faidx" scheme="http://example.com/tags/faidx/"/>
-    
-    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
-    
-    <category term="fas" scheme="http://example.com/tags/fas/"/>
-    
-    <category term="fa" scheme="http://example.com/tags/fa/"/>
-    
-    <category term="fastq" scheme="http://example.com/tags/fastq/"/>
-    
-    <category term="fq" scheme="http://example.com/tags/fq/"/>
-    
-    <category term="fai" scheme="http://example.com/tags/fai/"/>
     
   </entry>
   

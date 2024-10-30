@@ -29,20 +29,20 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-07-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-11-10T03:30:30.447Z">
+<meta property="article:modified_time" content="2024-10-25T03:22:19.014Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="mitogenome">
 <meta property="article:tag" content="organelle">
 <meta property="article:tag" content="genome">
-<meta property="article:tag" content="minimap2">
 <meta property="article:tag" content="quality assessment">
 <meta property="article:tag" content="mapping">
 <meta property="article:tag" content="sam">
 <meta property="article:tag" content="bam">
-<meta property="article:tag" content="transcriptome">
 <meta property="article:tag" content="plastome">
-<meta property="article:tag" content="HiSat2">
+<meta property="article:tag" content="transcriptome">
 <meta property="article:tag" content="BWA">
+<meta property="article:tag" content="HiSat2">
+<meta property="article:tag" content="minimap2">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-10 11:30:30" itemprop="dateModified" datetime="2023-11-10T11:30:30+08:00">2023-11-10</time>
+                <time title="Modified: 2024-10-25 11:22:19" itemprop="dateModified" datetime="2024-10-25T11:22:19+08:00">2024-10-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +302,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>3.4k</span>
+              <span>3.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -383,6 +383,12 @@
 </ol>
 <ul>
 <li><code>bwa mem -t 4 ref.fa R1.clean.fq r2.clean.fq | samtools sort -@ 4 -m 4G &gt; illumina.bam &amp;</code></li>
+</ul>
+<ol start="3">
+<li>建bam的索引文件</li>
+</ol>
+<ul>
+<li><code>samtools index sample.bam</code> # 为sample.bam建立索引，生成索引文件sample.bam.bai。在IGV等软件查看必须要有索引文件。</li>
 </ul>
 <h2 id="2-2-PacBio-x2F-Nanopore-reads：minimap2"><a href="#2-2-PacBio-x2F-Nanopore-reads：minimap2" class="headerlink" title="2.2. PacBio&#x2F;Nanopore reads：minimap2"></a>2.2. PacBio&#x2F;Nanopore reads：minimap2</h2><p>用minimap2对三代reads进行mapping</p>
 <ol>
@@ -520,15 +526,15 @@
               <a href="/tags/mitogenome/" rel="tag"># mitogenome</a>
               <a href="/tags/organelle/" rel="tag"># organelle</a>
               <a href="/tags/genome/" rel="tag"># genome</a>
-              <a href="/tags/minimap2/" rel="tag"># minimap2</a>
               <a href="/tags/quality-assessment/" rel="tag"># quality assessment</a>
               <a href="/tags/mapping/" rel="tag"># mapping</a>
               <a href="/tags/sam/" rel="tag"># sam</a>
               <a href="/tags/bam/" rel="tag"># bam</a>
-              <a href="/tags/transcriptome/" rel="tag"># transcriptome</a>
               <a href="/tags/plastome/" rel="tag"># plastome</a>
-              <a href="/tags/HiSat2/" rel="tag"># HiSat2</a>
+              <a href="/tags/transcriptome/" rel="tag"># transcriptome</a>
               <a href="/tags/BWA/" rel="tag"># BWA</a>
+              <a href="/tags/HiSat2/" rel="tag"># HiSat2</a>
+              <a href="/tags/minimap2/" rel="tag"># minimap2</a>
           </div>
 
         
@@ -537,12 +543,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/07/20/omics_genome_quality.assessment_LAI/" rel="prev" title="基因组质量评估：（四）用LAI评估基因组组装的连贯性">
-      <i class="fa fa-chevron-left"></i> 基因组质量评估：（四）用LAI评估基因组组装的连贯性
+    <a href="/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/" rel="prev" title="基因组质量评估：（五）mapping法：2. samtools计算mapping rate">
+      <i class="fa fa-chevron-left"></i> 基因组质量评估：（五）mapping法：2. samtools计算mapping rate
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/07/23/omics_genome_quality.assessment_mapping_rate_samtools/" rel="next" title="基因组质量评估：（五）mapping法：2. samtools计算mapping rate">
-      基因组质量评估：（五）mapping法：2. samtools计算mapping rate <i class="fa fa-chevron-right"></i>
+    <a href="/2022/07/27/omics_genome_quality.assessment_mapping_depth_samtools/" rel="next" title="基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布">
+      基因组质量评估：（五）mapping法：3. 统计mapped reads的深度分布 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -623,20 +629,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">447</span>
+        <span class="site-state-item-count">454</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -690,12 +696,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">683k</span>
+    <span title="Symbols count total">691k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:21</span>
+    <span title="Reading time total">10:28</span>
 </div>
 
         

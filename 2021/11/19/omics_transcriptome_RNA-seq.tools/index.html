@@ -23,7 +23,7 @@
   <meta name="description" content="RNA-sequencing数据分析工具的比较，学习文章内容的笔记。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RNA-sequencing数据分析工具比较">
-<meta property="og:url" content="http://example.com/2021/11/19/omics_transcriptome.RNA-seq/index.html">
+<meta property="og:url" content="http://example.com/2021/11/19/omics_transcriptome_RNA-seq.tools/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="RNA-sequencing数据分析工具的比较，学习文章内容的笔记。">
 <meta property="og:locale" content="en_US">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig7_HTML.jpg?as=webp">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-11-19T12:50:00.000Z">
-<meta property="article:modified_time" content="2024-06-15T03:56:24.348Z">
+<meta property="article:modified_time" content="2024-10-28T07:38:39.550Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="RNA-sequencing">
 <meta property="article:tag" content="RNA-seq">
@@ -49,10 +49,11 @@
 <meta property="article:tag" content="Salmon-SMEM">
 <meta property="article:tag" content="DESeq2">
 <meta property="article:tag" content="GATK">
+<meta property="article:tag" content="Trinity">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41467-017-00050-4/MediaObjects/41467_2017_50_Fig1_HTML.jpg?as=webp">
 
-<link rel="canonical" href="http://example.com/2021/11/19/omics_transcriptome.RNA-seq/">
+<link rel="canonical" href="http://example.com/2021/11/19/omics_transcriptome_RNA-seq.tools/">
 
 
 <script id="page-configurations">
@@ -232,7 +233,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/19/omics_transcriptome.RNA-seq/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/19/omics_transcriptome_RNA-seq.tools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -262,7 +263,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-15 11:56:24" itemprop="dateModified" datetime="2024-06-15T11:56:24+08:00">2024-06-15</time>
+                <time title="Modified: 2024-10-28 15:38:39" itemprop="dateModified" datetime="2024-10-28T15:38:39+08:00">2024-10-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,8 +295,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2021/11/19/omics_transcriptome.RNA-seq/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/19/omics_transcriptome.RNA-seq/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2021/11/19/omics_transcriptome_RNA-seq.tools/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/11/19/omics_transcriptome_RNA-seq.tools/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -339,7 +340,7 @@
 <h1 id="2-比较结果总结"><a href="#2-比较结果总结" class="headerlink" title="2. 比较结果总结"></a>2. 比较结果总结</h1><ol>
 <li>比对工具：<strong>HISAT2</strong>在准确性和运算速度上表现最好值得推荐，STAR和TopHat在剪切位点总数上表现更好。</li>
 <li>有参组装工具：<strong>StringTie</strong>在组装的转录本数量，转录本水平的准确性和运行速度上都表现最好，Cufflinks表现一般，isoform detection and prediction(IDP)在基因水平准确性上表现最好。</li>
-<li>从头组装工具：Trinity转录本长，灵敏度高；SOAPdenovo-Trans转录本多，准确性高；<strong>Oases</strong>鉴定长转录本有优势，能够较好地涵盖到低表达的基因。</li>
+<li>从头组装工具：<strong>Trinity</strong>转录本长，灵敏度高；SOAPdenovo-Trans转录本多，准确性高；<strong>Oases</strong>鉴定长转录本有优势，能够较好地涵盖到低表达的基因。</li>
 <li>三代测序错误纠正工具：<strong>LoRDEC</strong>在纠错质量和速度上更有优势，LSC在纠正后reads比对率的改善上表现更好。</li>
 <li>全长转录本亚型检测工具：注重质量选GMAP，注重速度选<strong>STARlong</strong>。</li>
 <li>转录本的定量：<strong>Salmon-SMEM</strong>(不经过比对)运行速度和表现都更好；StringTie(基于基因组)的定量结果更接近于不基于基因组比对的工具结果。</li>
@@ -555,6 +556,7 @@
               <a href="/tags/Salmon-SMEM/" rel="tag"># Salmon-SMEM</a>
               <a href="/tags/DESeq2/" rel="tag"># DESeq2</a>
               <a href="/tags/GATK/" rel="tag"># GATK</a>
+              <a href="/tags/Trinity/" rel="tag"># Trinity</a>
           </div>
 
         
@@ -649,20 +651,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">447</span>
+        <span class="site-state-item-count">454</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -716,12 +718,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">683k</span>
+    <span title="Symbols count total">691k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:21</span>
+    <span title="Reading time total">10:28</span>
 </div>
 
         
@@ -813,8 +815,8 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2021/11/19/omics_transcriptome.RNA-seq/";
-    this.page.identifier = "2021/11/19/omics_transcriptome.RNA-seq/";
+    this.page.url = "http://example.com/2021/11/19/omics_transcriptome_RNA-seq.tools/";
+    this.page.identifier = "2021/11/19/omics_transcriptome_RNA-seq.tools/";
     this.page.title = "RNA-sequencing数据分析工具比较";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
