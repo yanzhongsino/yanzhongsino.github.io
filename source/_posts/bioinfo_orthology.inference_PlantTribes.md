@@ -153,7 +153,7 @@ AssemblyPostProcessor Pipeline 对de novo组装的转录本进行蛋白编码区
 - `--prediction_method`：coding regions的预测方法，ESTScan方法（参数：estscan）或者TransDecoder方法（参数：transdecoder）。
 - `--score_matrices`：如果预测方法选的ESTScan则为必需参数，(i.e. Arabidopsis_thaliana.smat, Oryza_sativa.smat, Zea_mays.smat)。
 2. 目标基因家族组装的参数：
-- `--gene_family_search`：目标orthogroup identifiers的list文件。需要"--scaffold" and "--method"两个参数。如果有目标基因想要分析（比如有个课题分析RRR基因），那么一定要指定以得到更有针对性的转录本。scaffold数据库文件里的22Gv1.1/annot/orthofinder.list保存所有orthogroup IDs（如果使用orthofinder的话）。目标list文件可以通过目标基因的拟南芥或者其他21个物种的ID来搜索orthofinder.list文件，搜索到的第一列即为目标orthogroup IDs。
+- `--gene_family_search`：目标orthogroup identifiers的list文件。需要"--scaffold" and "--method"两个参数。如果有目标基因想要分析（比如有个课题分析RRR基因），那么一定要指定以得到更有针对性的转录本。scaffold数据库文件里的22Gv1.1/annot/orthofinder.list保存所有orthogroup IDs（如果使用orthofinder的话）。目标list文件可以通过目标基因的拟南芥或者其他21个物种的ID来搜索orthofinder.list文件，搜索到的第一列（数字）即为目标orthogroup IDs。
 - `--scaffold`：Orthogroups或者gene families proteins scaffold文件。用绝对路径指定。eg. /home/scaffolds/22Gv1.1
 - `--method`：蛋白聚类方法。GFam：gfam；OrthoFinder：orthofinder；OrthoMCL：orthomcl；其他非PlantTribes方法：methodname。
 - `--gap_trimming`：在alignments里移除gappy sites，默认0.1，代表移除含有90% gaps的sites。
