@@ -30,10 +30,10 @@
 <meta property="og:image" content="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-09-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-30T05:14:53.317Z">
+<meta property="article:modified_time" content="2024-11-04T03:38:45.806Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="PlantTribes">
 <meta property="article:tag" content="orthology">
+<meta property="article:tag" content="PlantTribes">
 <meta property="article:tag" content="Ka&#x2F;Ks">
 <meta property="article:tag" content="orthofinder">
 <meta name="twitter:card" content="summary">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-10-30 13:14:53" itemprop="dateModified" datetime="2024-10-30T13:14:53+08:00">2024-10-30</time>
+                <time title="Modified: 2024-11-04 11:38:45" itemprop="dateModified" datetime="2024-11-04T11:38:45+08:00">2024-11-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -444,7 +444,7 @@
 <li>目标基因家族组装的参数：</li>
 </ol>
 <ul>
-<li><code>--gene_family_search</code>：目标orthogroup identifiers的list文件。需要”–scaffold” and “–method”两个参数。如果有目标基因想要分析（比如有个课题分析RRR基因），那么一定要指定以得到更有针对性的转录本。scaffold数据库文件里的22Gv1.1&#x2F;annot&#x2F;orthofinder.list保存所有orthogroup IDs（如果使用orthofinder的话）。目标list文件可以通过目标基因的拟南芥或者其他21个物种的ID来搜索orthofinder.list文件，搜索到的第一列即为目标orthogroup IDs。</li>
+<li><code>--gene_family_search</code>：目标orthogroup identifiers的list文件。需要”–scaffold” and “–method”两个参数。如果有目标基因想要分析（比如有个课题分析RRR基因），那么一定要指定以得到更有针对性的转录本。scaffold数据库文件里的22Gv1.1&#x2F;annot&#x2F;orthofinder.list保存所有orthogroup IDs（如果使用orthofinder的话）。目标list文件可以通过目标基因的拟南芥或者其他21个物种的ID来搜索orthofinder.list文件，搜索到的第一列（数字）即为目标orthogroup IDs。</li>
 <li><code>--scaffold</code>：Orthogroups或者gene families proteins scaffold文件。用绝对路径指定。eg. &#x2F;home&#x2F;scaffolds&#x2F;22Gv1.1</li>
 <li><code>--method</code>：蛋白聚类方法。GFam：gfam；OrthoFinder：orthofinder；OrthoMCL：orthomcl；其他非PlantTribes方法：methodname。</li>
 <li><code>--gap_trimming</code>：在alignments里移除gappy sites，默认0.1，代表移除含有90% gaps的sites。</li>
@@ -784,8 +784,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/PlantTribes/" rel="tag"># PlantTribes</a>
               <a href="/tags/orthology/" rel="tag"># orthology</a>
+              <a href="/tags/PlantTribes/" rel="tag"># PlantTribes</a>
               <a href="/tags/Ka-Ks/" rel="tag"># Ka/Ks</a>
               <a href="/tags/orthofinder/" rel="tag"># orthofinder</a>
           </div>

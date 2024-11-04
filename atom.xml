@@ -114,7 +114,7 @@
     <link href="http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/"/>
     <id>http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/</id>
     <published>2024-09-18T16:00:00.000Z</published>
-    <updated>2024-10-30T05:14:53.317Z</updated>
+    <updated>2024-11-04T03:38:45.806Z</updated>
     
     
     <summary type="html">简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka/Ks等的用法。</summary>
@@ -126,9 +126,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
-    
     <category term="orthology" scheme="http://example.com/tags/orthology/"/>
+    
+    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
