@@ -83,6 +83,10 @@ tar -xzf SPAdes-4.0.0-Linux.tar.gz # 解压缩
 - <output_dir>/contigs.paths：contains paths in the assembly graph corresponding to contigs.fasta
 - <output_dir>/scaffolds.paths：contains paths in the assembly graph corresponding to scaffolds.fasta
 
+# tips
+1. 内存不够报错：如果默认的250Gb内存不够，会在log文件出现报错信息：
+- `ERROR   General                 (mmapped_reader.hpp  :  52)   mmap(2) failed. Reason: Cannot allocate memory. Error code: 12。`
+2. 这时，用`nohup spades.py -o /path/to/output_directory/ -t 16 -m 500 --restart-from last --checkpoints last 2>&1 > spades.log &`命令重新运行，并指定500Gb内存。（不能用--continue而用--restart-from last是因为要改变参数，--continue不接受-o参数以外的其他所有参数）
 
 # 5. reference
 1. github：https://github.com/ablab/spades
