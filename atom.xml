@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-11-05T07:38:12.236Z</updated>
+  <updated>2024-11-05T08:52:05.408Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2024/11/05/omics_genome.assembly_NGS_SPAdes/"/>
     <id>http://example.com/2024/11/05/omics_genome.assembly_NGS_SPAdes/</id>
     <published>2024-11-04T16:00:00.000Z</published>
-    <updated>2024-11-05T07:38:12.236Z</updated>
+    <updated>2024-11-05T08:52:05.408Z</updated>
     
     
     <summary type="html">在只有Illumina二代测序数据时，用SPAdes对Illumina二代测序数据进行基因组预组装，得到较长的contigs和scaffolds。</summary>
@@ -657,31 +657,6 @@
   </entry>
   
   <entry>
-    <title>Linux系统服务器清理缓存</title>
-    <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_cache.release/"/>
-    <id>http://example.com/2024/01/09/linux_operation.and.maintenance_cache.release/</id>
-    <published>2024-01-08T16:00:00.000Z</published>
-    <updated>2024-01-09T07:57:25.761Z</updated>
-    
-    
-    <summary type="html">Linux系统服务器释放缓存的操作。</summary>
-    
-    
-    
-    <category term="linux" scheme="http://example.com/categories/linux/"/>
-    
-    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
-    
-    <category term="cache" scheme="http://example.com/categories/linux/operation-and-maintenance/cache/"/>
-    
-    
-    <category term="server" scheme="http://example.com/tags/server/"/>
-    
-    <category term="cache" scheme="http://example.com/tags/cache/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Linux系统服务器用户账号的管理</title>
     <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/"/>
     <id>http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/</id>
@@ -719,6 +694,31 @@
     <category term="groupdel" scheme="http://example.com/tags/groupdel/"/>
     
     <category term="newgrp" scheme="http://example.com/tags/newgrp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux系统服务器清理缓存</title>
+    <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_cache.release/"/>
+    <id>http://example.com/2024/01/09/linux_operation.and.maintenance_cache.release/</id>
+    <published>2024-01-08T16:00:00.000Z</published>
+    <updated>2024-01-09T07:57:25.761Z</updated>
+    
+    
+    <summary type="html">Linux系统服务器释放缓存的操作。</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
+    
+    <category term="cache" scheme="http://example.com/categories/linux/operation-and-maintenance/cache/"/>
+    
+    
+    <category term="server" scheme="http://example.com/tags/server/"/>
+    
+    <category term="cache" scheme="http://example.com/tags/cache/"/>
     
   </entry>
   
