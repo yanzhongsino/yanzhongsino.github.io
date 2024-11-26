@@ -207,7 +207,9 @@ $$基因组大小G=总k-mer数量N/k-mer期望深度D$$
 
 # 3. k-mer分析软件
 ## 3.1. k-mer分析软件简介
-k-mer分析分为**k-mer频数统计**和**基因组特征评估**两步。此外，Smudgeplot还可以用k-mer分析评估物种的倍性。
+k-mer分析分为**k-mer频数统计**和**基因组特征评估**两步。软件KmerGenie一行命令同时实现两步，软件gce两行命令分别实现两步，jellyfish+genomescope两个软件分别实现两步。KmerGenie，gce和jellyfish软件第一步获取的频数分布表，都可用于genomescope和gce软件第二步骤的分析。
+
+此外，Smudgeplot还可以用k-mer分析评估物种的倍性。
 
 1. jellyfish
 - jellyfish可以实现第一步k-mer频数统计。
@@ -226,7 +228,25 @@ k-mer分析分为**k-mer频数统计**和**基因组特征评估**两步。此�
 - KmerGenie可以同时实现k-mer频数统计和基因组特征评估两步。
 - 最大优点在于可以实现在多个预设k-mer下的自动分析，除了进行常规的k-mer频数统计之外，还能够基于不同k-mer自动计算基因组大小，并为基因组组装评估一个最佳组装k-mer数值作为备选。
 
-## 3.2. 一些使用软件的经验总结
+## 3.2. 基因组特征评估
+已获取频数分布表，进行基因组特征的评估，也可以用R脚本来绘制频数分布图来实现。
+
+1. R脚本绘制k-mer频数分布曲线初步查看基因组特征
+
+```R
+#R 脚本示例
+kmer <- read.table('sample.histo')
+kmer <- subset(kmer, V1 >=5 & V1 <=500) #对频数范围5-500的数据进行绘制 
+Frequency <- kmer$V1
+Number <- kmer$V2
+png('kmer_plot.png')
+plot(Frequency, Number, type = 'l', col = 'blue')
+dev.off()
+```
+
+获得kmer_plot.png为频数分布曲线，可查看曲线峰值对基因组大小进行计算和预估。
+
+## 3.3. 一些使用软件的经验总结
 - 【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。
 - k-mer长度常用17/21。
 - 软件KmerGenie，GCE和jellyfish获取的频数分布表，都可用于软件genomescope和GCE第二步骤的分析。

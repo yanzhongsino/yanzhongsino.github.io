@@ -85,9 +85,10 @@ paml常规方法只适用于核苷酸数据；
 - 此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。
 
 #### 3.3.1.2. input.phy - 多序列比对文件（phylip格式）
-- PAML要求输入的Phylip格式，其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。
-- python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。
-- 推荐用`echo $(cat input.align.fa) |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g" >input.phy`手动转化align好的fas格式文件；再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。
+- PAML要求输入的Phylip格式（支持phylip-relaxed格式），其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。
+- python的SeqIO的转换格式模块获得的phylip和nexus格式都不行；EMBOSS的seqret工具只能转phylip，不支持phylip-relaxed格式也不行（物种名超过10个字母时会只保留前10个字母，并且物种名和序列之间无空格）。
+- 推荐用`echo $(seqkit seq -w 0 input.align.fa) |sed "s/ >/\n/g" |sed "s/>//g"|sed "s/ /  /g" >input.phy`手动转化align好的fas格式文件；
+- 再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。
 
 如果有**多个区域的序列**，比如exon和intron，LSC、SSC和IR，不同的基因，密码子的第一二三位，需要不同的模型分开估算，那可以把各自区域分别align之后制作多个phy文件，再合并到一起，用空行隔开，组成input.phy文件。（此时mcmctree.ctl的ndata值为区域的个数）。
 

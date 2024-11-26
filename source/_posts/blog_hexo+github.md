@@ -415,6 +415,8 @@ next主题的同步稍微有点麻烦，在理解git的各种命令的含义的�
 添加了攥写blog时插入图片或背景音乐教程的小节，并添加了BGM
 
 ——2021.03.25 Yan Zhong in Guangzhou
+发现disqus突然给github pages每篇博客后面插入了广告，所以取消了评论系统disqus。
+——2024.11.13 Yan Zhong in Guangzhou
 
 -------
 

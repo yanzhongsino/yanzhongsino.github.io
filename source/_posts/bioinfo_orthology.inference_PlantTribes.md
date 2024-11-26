@@ -289,6 +289,13 @@ GeneFamilyPhylogenyBuilder模块建树默认是设定外类群的，通常设定
 - `--rooting_order`：list文件，包含与分类群 (包括 scaffold taxa) 中物种序列标识符匹配的字符串片段列表，用于确定定根树中orthogroups的最基部类群。
 - `--bootstrap_replicates`：rapid bootstrap分析的重复次数，需要`--tree_inference raxml`，默认100。
 - `--num_threads`：用于RAxML的线程，默认1。
+### debug
+1. 结果目录是空目录，没有生成结果文件
+- 可能是序列中有中间终止密码子。在log文件中会出现。
+- 查看序列中是否有.符号，要么删除有中间终止密码子的序列，要么把中间终止密码子符号（.）换成gap符号（-）：`sed "s/\./-/g" old.fa >new.fa`。
+2. 结果目录是空目录
+- log文件中出现`Skipping sequence MLP_m64284e_210910_055234/158926758/ccs_MP021065 in orthogroup 3510 not in codon frame`。cds序列和pep序列不一致，这个提示代表pep序列有但cds序列没有。
+- 删除
 
 ## 7.8. KaKsAnalysis模块
 ### 7.8.1. 运行

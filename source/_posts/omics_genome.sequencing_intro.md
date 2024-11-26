@@ -22,6 +22,7 @@ tags:
 - Nanopore
 - subreads
 - fasta
+- fastq
 description: 介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。
 ---
 

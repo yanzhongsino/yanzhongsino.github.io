@@ -716,8 +716,8 @@ theme_config:
 
   # Disqus
   disqus:
-    enable: true
-    shortname: yanzhongsino
+    enable: false
+    shortname: 
     count: true
     #post_meta_order: 0
 
