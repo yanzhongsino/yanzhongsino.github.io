@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-11-05T08:52:05.408Z</updated>
+  <updated>2024-11-26T12:32:05.102Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二代测序数据的前处理</title>
+    <link href="http://example.com/2024/11/26/omics_genome.sequencing_NGS_data.preprocessing/"/>
+    <id>http://example.com/2024/11/26/omics_genome.sequencing_NGS_data.preprocessing/</id>
+    <published>2024-11-25T16:00:00.000Z</published>
+    <updated>2024-11-26T12:32:05.102Z</updated>
+    
+    
+    <summary type="html">对二代测序进行预处理。包括从NCBI下载SRA格式数据，把SRA格式转为fastq格式。对二代测序的下机数据的质控，包括fastp去除接头和低质量序列，fastqc获取质量报告，trimmomatic去除接头和低质量序列，fastuniq为genome survey等情况去除重复序列。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
+    
+    <category term="next generation sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/next-generation-sequencing/"/>
+    
+    
+    <category term="genome survey" scheme="http://example.com/tags/genome-survey/"/>
+    
+    <category term="fastq" scheme="http://example.com/tags/fastq/"/>
+    
+    <category term="quality control" scheme="http://example.com/tags/quality-control/"/>
+    
+    <category term="QC" scheme="http://example.com/tags/QC/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    
+    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
+    
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
+    
+    <category term="prefetch" scheme="http://example.com/tags/prefetch/"/>
+    
+    <category term="fastq-dump" scheme="http://example.com/tags/fastq-dump/"/>
+    
+    <category term="fasterq-dump" scheme="http://example.com/tags/fasterq-dump/"/>
+    
+    <category term="fastp" scheme="http://example.com/tags/fastp/"/>
+    
+    <category term="trimmomatic" scheme="http://example.com/tags/trimmomatic/"/>
+    
+    <category term="fastqc" scheme="http://example.com/tags/fastqc/"/>
+    
+    <category term="fastuniq" scheme="http://example.com/tags/fastuniq/"/>
+    
+    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
+    
+  </entry>
   
   <entry>
     <title>用SPAdes对Illumina二代测序数据进行基因组预组装</title>
@@ -37,11 +96,11 @@
     
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
     <category term="SPAdes" scheme="http://example.com/tags/SPAdes/"/>
     
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="contig" scheme="http://example.com/tags/contig/"/>
     
@@ -147,7 +206,7 @@
     <link href="http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/"/>
     <id>http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/</id>
     <published>2024-09-18T16:00:00.000Z</published>
-    <updated>2024-11-04T03:38:45.806Z</updated>
+    <updated>2024-11-15T08:12:14.778Z</updated>
     
     
     <summary type="html">简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka/Ks等的用法。</summary>
@@ -256,9 +315,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -291,9 +350,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -328,9 +387,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -363,9 +422,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -507,6 +566,8 @@
     
     <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
     
+    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
+    
     <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
     
     <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
@@ -521,8 +582,6 @@
     
     <category term="subreads" scheme="http://example.com/tags/subreads/"/>
     
-    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
-    
   </entry>
   
   <entry>
@@ -530,7 +589,7 @@
     <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
     <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
     <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-06-04T09:45:49.694Z</updated>
+    <updated>2024-11-26T07:49:33.582Z</updated>
     
     
     <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
@@ -546,7 +605,7 @@
     
     <category term="fasta" scheme="http://example.com/tags/fasta/"/>
     
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    <category term="fastq" scheme="http://example.com/tags/fastq/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -555,6 +614,10 @@
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
     <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
     
@@ -571,8 +634,6 @@
     <category term="subreads" scheme="http://example.com/tags/subreads/"/>
     
     <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
-    
-    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
     
     <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
     
@@ -653,47 +714,6 @@
     <category term="server" scheme="http://example.com/tags/server/"/>
     
     <category term="log" scheme="http://example.com/tags/log/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux系统服务器用户账号的管理</title>
-    <link href="http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/"/>
-    <id>http://example.com/2024/01/09/linux_operation.and.maintenance_user.account/</id>
-    <published>2024-01-08T16:00:00.000Z</published>
-    <updated>2024-01-10T02:35:22.563Z</updated>
-    
-    
-    <summary type="html">Linux系统服务器用户账号的管理相关操作，包括添加新的用户账号、删除账号、修改账号，用户口令（密码）的管理，以及用户组的新增、删除和修改属性。</summary>
-    
-    
-    
-    <category term="linux" scheme="http://example.com/categories/linux/"/>
-    
-    <category term="operation and maintenance" scheme="http://example.com/categories/linux/operation-and-maintenance/"/>
-    
-    <category term="user" scheme="http://example.com/categories/linux/operation-and-maintenance/user/"/>
-    
-    
-    <category term="server" scheme="http://example.com/tags/server/"/>
-    
-    <category term="user" scheme="http://example.com/tags/user/"/>
-    
-    <category term="useradd" scheme="http://example.com/tags/useradd/"/>
-    
-    <category term="usermod" scheme="http://example.com/tags/usermod/"/>
-    
-    <category term="userdel" scheme="http://example.com/tags/userdel/"/>
-    
-    <category term="passwd" scheme="http://example.com/tags/passwd/"/>
-    
-    <category term="groupadd" scheme="http://example.com/tags/groupadd/"/>
-    
-    <category term="groupmod" scheme="http://example.com/tags/groupmod/"/>
-    
-    <category term="groupdel" scheme="http://example.com/tags/groupdel/"/>
-    
-    <category term="newgrp" scheme="http://example.com/tags/newgrp/"/>
     
   </entry>
   

@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2021-03-25T08:50:00.000Z">
-<meta property="article:modified_time" content="2024-06-15T03:50:06.101Z">
+<meta property="article:modified_time" content="2024-11-25T04:44:50.964Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="phylogeny">
@@ -251,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-15 11:50:06" itemprop="dateModified" datetime="2024-06-15T11:50:06+08:00">2024-06-15</time>
+                <time title="Modified: 2024-11-25 12:44:50" itemprop="dateModified" datetime="2024-11-25T12:44:50+08:00">2024-11-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -351,9 +351,10 @@
 <li>此外，Newick格式的树尾部一定要有分号，没有的话程序可能不能正常运行。</li>
 </ul>
 <h4 id="3-3-1-2-input-phy-多序列比对文件（phylip格式）"><a href="#3-3-1-2-input-phy-多序列比对文件（phylip格式）" class="headerlink" title="3.3.1.2. input.phy - 多序列比对文件（phylip格式）"></a>3.3.1.2. input.phy - 多序列比对文件（phylip格式）</h4><ul>
-<li>PAML要求输入的Phylip格式，其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。</li>
-<li>python的SeqIO的转换格式模块获得的phylip和nexus格式都不行。</li>
-<li>推荐用<code>echo $(cat input.align.fa) |sed &quot;s/ &gt;/\n/g&quot; |sed &quot;s/&gt;//g&quot;|sed &quot;s/ /  /g&quot; &gt;input.phy</code>手动转化align好的fas格式文件；再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。</li>
+<li>PAML要求输入的Phylip格式（支持phylip-relaxed格式），其物种名和后面的序列之间至少间隔两个空格（是为了允许物种名的属名和种名之间有一个空格）。</li>
+<li>python的SeqIO的转换格式模块获得的phylip和nexus格式都不行；EMBOSS的seqret工具只能转phylip，不支持phylip-relaxed格式也不行（物种名超过10个字母时会只保留前10个字母，并且物种名和序列之间无空格）。</li>
+<li>推荐用<code>echo $(seqkit seq -w 0 input.align.fa) |sed &quot;s/ &gt;/\n/g&quot; |sed &quot;s/&gt;//g&quot;|sed &quot;s/ /  /g&quot; &gt;input.phy</code>手动转化align好的fas格式文件；</li>
+<li>再在首行添加两个数值，空格隔开，物种数量和碱基数量；实现fasta2phylip。</li>
 </ul>
 <p>如果有<strong>多个区域的序列</strong>，比如exon和intron，LSC、SSC和IR，不同的基因，密码子的第一二三位，需要不同的模型分开估算，那可以把各自区域分别align之后制作多个phy文件，再合并到一起，用空行隔开，组成input.phy文件。（此时mcmctree.ctl的ndata值为区域的个数）。</p>
 <p>写了一个脚本来制作多区域的phylip文件，其中OG.length包含两列，一列OGID，一列比对后序列长度。</p>
@@ -652,20 +653,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">130</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-count">79</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">463</span>
+        <span class="site-state-item-count">475</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -719,12 +720,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">697k</span>
+    <span title="Symbols count total">705k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:34</span>
+    <span title="Reading time total">10:41</span>
 </div>
 
         

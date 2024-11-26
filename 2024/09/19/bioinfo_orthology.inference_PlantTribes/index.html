@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-09-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-04T03:38:45.806Z">
+<meta property="article:modified_time" content="2024-11-15T08:12:14.778Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="orthology">
 <meta property="article:tag" content="PlantTribes">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-04 11:38:45" itemprop="dateModified" datetime="2024-11-04T11:38:45+08:00">2024-11-04</time>
+                <time title="Modified: 2024-11-15 16:12:14" itemprop="dateModified" datetime="2024-11-15T16:12:14+08:00">2024-11-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -648,7 +648,21 @@
 <li><code>--min_orthogroup_size</code>：orthogroup比对的最小序列数量。</li>
 <li><code>--rooting_order</code>：list文件，包含与分类群 (包括 scaffold taxa) 中物种序列标识符匹配的字符串片段列表，用于确定定根树中orthogroups的最基部类群。</li>
 <li><code>--bootstrap_replicates</code>：rapid bootstrap分析的重复次数，需要<code>--tree_inference raxml</code>，默认100。</li>
-<li><code>--num_threads</code>：用于RAxML的线程，默认1。</li>
+<li><code>--num_threads</code>：用于RAxML的线程，默认1。<h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3></li>
+</ul>
+<ol>
+<li>结果目录是空目录，没有生成结果文件</li>
+</ol>
+<ul>
+<li>可能是序列中有中间终止密码子。在log文件中会出现。</li>
+<li>查看序列中是否有.符号，要么删除有中间终止密码子的序列，要么把中间终止密码子符号（.）换成gap符号（-）：<code>sed &quot;s/\./-/g&quot; old.fa &gt;new.fa</code>。</li>
+</ul>
+<ol start="2">
+<li>结果目录是空目录</li>
+</ol>
+<ul>
+<li>log文件中出现<code>Skipping sequence MLP_m64284e_210910_055234/158926758/ccs_MP021065 in orthogroup 3510 not in codon frame</code>。cds序列和pep序列不一致，这个提示代表pep序列有但cds序列没有。</li>
+<li>删除</li>
 </ul>
 <h2 id="7-8-KaKsAnalysis模块"><a href="#7-8-KaKsAnalysis模块" class="headerlink" title="7.8. KaKsAnalysis模块"></a>7.8. KaKsAnalysis模块</h2><h3 id="7-8-1-运行"><a href="#7-8-1-运行" class="headerlink" title="7.8.1. 运行"></a>7.8.1. 运行</h3><ol>
 <li>进行旁系同源分析</li>
@@ -847,7 +861,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90-orthology-%E6%8E%A8%E6%96%AD"><span class="nav-text">1. 直系同源(orthology)推断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E6%8E%A8%E6%96%AD"><span class="nav-text">1.1. 直系同源推断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PlantTribes2%E4%BB%8B%E7%BB%8D"><span class="nav-text">2. PlantTribes2介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PlantTribes-scaffold%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">3. PlantTribes_scaffold数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-PlantTribes2%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-text">4. PlantTribes2的模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-AssemblyPostProcessor%E6%A8%A1%E5%9D%97"><span class="nav-text">4.1. AssemblyPostProcessor模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-GeneFamilyClassifier%E6%A8%A1%E5%9D%97"><span class="nav-text">4.2. GeneFamilyClassifier模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-PhylogenomicsAnalysis%E6%A8%A1%E5%9D%97-legacy-pipeline"><span class="nav-text">4.3. PhylogenomicsAnalysis模块 (legacy pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-GeneFamilyIntegrator%E6%A8%A1%E5%9D%97"><span class="nav-text">4.4. GeneFamilyIntegrator模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-GeneFamilyAligner%E6%A8%A1%E5%9D%97"><span class="nav-text">4.5. GeneFamilyAligner模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-GeneFamilyPhylogenyBuilder%E6%A8%A1%E5%9D%97"><span class="nav-text">4.6. GeneFamilyPhylogenyBuilder模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-KaKsAnalysis%E6%A8%A1%E5%9D%97"><span class="nav-text">4.7. KaKsAnalysis模块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-PlantTribes2%E5%AE%89%E8%A3%85"><span class="nav-text">5. PlantTribes2安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-PlantTribes2%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8"><span class="nav-text">6. PlantTribes2快速使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E6%A0%87%E5%87%86%E8%BF%90%E8%A1%8C"><span class="nav-text">6.1. 标准运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-focus-on%E7%9B%AE%E6%A0%87%E5%9F%BA%E5%9B%A0%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="nav-text">6.2. focus on目标基因的运行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-PlantTribes2%E8%BF%90%E8%A1%8C%E7%9A%84%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0"><span class="nav-text">7. PlantTribes2运行的详细参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-text">7.1. 准备数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E7%BB%84%E8%A3%85%E5%90%8E%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97%EF%BC%9AAssemblyPostProcessor-Pipeline"><span class="nav-text">7.2. 组装后处理模块：AssemblyPostProcessor Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.2.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.2.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-%E5%9F%BA%E5%9B%A0%E5%AE%B6%E6%97%8F%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9D%97%EF%BC%9AGeneFamilyClassifier-Pipeline"><span class="nav-text">7.3. 基因家族分类模块：GeneFamilyClassifier Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.3.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.3.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-PhylogenomicsAnalysis%E6%A8%A1%E5%9D%97-%E8%BF%87%E6%97%B6%E7%9A%84%E6%B5%81%E7%A8%8B%EF%BC%8Clegacy-pipeline"><span class="nav-text">7.4. PhylogenomicsAnalysis模块 (过时的流程，legacy pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-5-GeneFamilyIntegrator%E6%A8%A1%E5%9D%97"><span class="nav-text">7.5. GeneFamilyIntegrator模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-6-GeneFamilyAligner%E6%A8%A1%E5%9D%97"><span class="nav-text">7.6. GeneFamilyAligner模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.6.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.6.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-7-GeneFamilyPhylogenyBuilder%E6%A8%A1%E5%9D%97"><span class="nav-text">7.7. GeneFamilyPhylogenyBuilder模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.7.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.7.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-8-KaKsAnalysis%E6%A8%A1%E5%9D%97"><span class="nav-text">7.8. KaKsAnalysis模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.8.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.8.2. 参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-references"><span class="nav-text">8. references</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90-orthology-%E6%8E%A8%E6%96%AD"><span class="nav-text">1. 直系同源(orthology)推断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E6%8E%A8%E6%96%AD"><span class="nav-text">1.1. 直系同源推断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PlantTribes2%E4%BB%8B%E7%BB%8D"><span class="nav-text">2. PlantTribes2介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PlantTribes-scaffold%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">3. PlantTribes_scaffold数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-PlantTribes2%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-text">4. PlantTribes2的模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-AssemblyPostProcessor%E6%A8%A1%E5%9D%97"><span class="nav-text">4.1. AssemblyPostProcessor模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-GeneFamilyClassifier%E6%A8%A1%E5%9D%97"><span class="nav-text">4.2. GeneFamilyClassifier模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-PhylogenomicsAnalysis%E6%A8%A1%E5%9D%97-legacy-pipeline"><span class="nav-text">4.3. PhylogenomicsAnalysis模块 (legacy pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-GeneFamilyIntegrator%E6%A8%A1%E5%9D%97"><span class="nav-text">4.4. GeneFamilyIntegrator模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-GeneFamilyAligner%E6%A8%A1%E5%9D%97"><span class="nav-text">4.5. GeneFamilyAligner模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-GeneFamilyPhylogenyBuilder%E6%A8%A1%E5%9D%97"><span class="nav-text">4.6. GeneFamilyPhylogenyBuilder模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-KaKsAnalysis%E6%A8%A1%E5%9D%97"><span class="nav-text">4.7. KaKsAnalysis模块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-PlantTribes2%E5%AE%89%E8%A3%85"><span class="nav-text">5. PlantTribes2安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-PlantTribes2%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8"><span class="nav-text">6. PlantTribes2快速使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E6%A0%87%E5%87%86%E8%BF%90%E8%A1%8C"><span class="nav-text">6.1. 标准运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-focus-on%E7%9B%AE%E6%A0%87%E5%9F%BA%E5%9B%A0%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="nav-text">6.2. focus on目标基因的运行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-PlantTribes2%E8%BF%90%E8%A1%8C%E7%9A%84%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0"><span class="nav-text">7. PlantTribes2运行的详细参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-text">7.1. 准备数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E7%BB%84%E8%A3%85%E5%90%8E%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97%EF%BC%9AAssemblyPostProcessor-Pipeline"><span class="nav-text">7.2. 组装后处理模块：AssemblyPostProcessor Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.2.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.2.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-%E5%9F%BA%E5%9B%A0%E5%AE%B6%E6%97%8F%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9D%97%EF%BC%9AGeneFamilyClassifier-Pipeline"><span class="nav-text">7.3. 基因家族分类模块：GeneFamilyClassifier Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.3.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.3.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-PhylogenomicsAnalysis%E6%A8%A1%E5%9D%97-%E8%BF%87%E6%97%B6%E7%9A%84%E6%B5%81%E7%A8%8B%EF%BC%8Clegacy-pipeline"><span class="nav-text">7.4. PhylogenomicsAnalysis模块 (过时的流程，legacy pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-5-GeneFamilyIntegrator%E6%A8%A1%E5%9D%97"><span class="nav-text">7.5. GeneFamilyIntegrator模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-6-GeneFamilyAligner%E6%A8%A1%E5%9D%97"><span class="nav-text">7.6. GeneFamilyAligner模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.6.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.6.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-7-GeneFamilyPhylogenyBuilder%E6%A8%A1%E5%9D%97"><span class="nav-text">7.7. GeneFamilyPhylogenyBuilder模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.7.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.7.2. 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug"><span class="nav-text">debug</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-8-KaKsAnalysis%E6%A8%A1%E5%9D%97"><span class="nav-text">7.8. KaKsAnalysis模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.8.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.8.2. 参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-references"><span class="nav-text">8. references</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -861,20 +875,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">130</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-count">79</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">463</span>
+        <span class="site-state-item-count">475</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -928,12 +942,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">697k</span>
+    <span title="Symbols count total">705k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:34</span>
+    <span title="Reading time total">10:41</span>
 </div>
 
         
