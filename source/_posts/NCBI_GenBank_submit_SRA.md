@@ -8,54 +8,74 @@ categories:
 - SRA
 tags:
 - SRA
+- Sequence Read Archive
 - Unassembled sequence reads
 - submit
 - GenBank
 - NGS
 - TGS
-description: 记录上传原始测序reads数据（二代数据和三代数据）到NCBI的步骤。
+- Illumina
+- PacBio
+description: 记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1392871582&auto=1&height=32"></iframe></div>
 
-# 准备上传的文件
-1. 基因组fasta文件
-2. 注释tbl格式文件
+# 1. 上传的原始测序数据
+二代或三代测序的原始序列读数应提交至Sequence Read Archive(SRA)：https://www.ncbi.nlm.nih.gov/sra。
 
-tbl格式文件推荐用GB2sequin来准备。
+# 2. 上传前准备
+建议先注册和登录NCBI账号再进行上传，之后的所有提交记录都会保存在你的账号下，在这里可以查看提交记录：https://submit.ncbi.nlm.nih.gov/subs/。
 
-参考博客-转换GenBank文件为tbl格式：https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。
-
-
-# 上传步骤
-## 上传工具
-BankIt：https://www.ncbi.nlm.nih.gov/WebSub/index.cgi
-
-使用BankIt在线上传，允许一次提交多个细胞器基因组序列。
-
-## 上传步骤
-1. 选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：
-- Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组
-- Transcriptome Shotgun Assembly (TSA)：组装好的转录组
+# 3. 上传步骤
+## 3.1. 选择数据类型
+1. 打开BankIt网址：https://www.ncbi.nlm.nih.gov/WebSub。登录NCBI账号。
+2. 选择上传的数据类别：
 - Unassembled sequence reads (SRA)：未组装的测序reads
-- Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids...：其他测序数据，细胞器基因组选这个。
-2. Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区/省份，邮编，国家，和接收上传信息的邮箱【重要】。
-3. Reference：填写提供序列的作者和出版信息。
-4. Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。
-5. Nucleotide：填写序列的信息。
-- 序列发布的时间，可以指定日期，也可以一通过上传审核就发布。
-- 分子类型（Molecule Type）：细胞器基因组选的genomic DNA
-- 拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。
-- 是否是完整的细胞器基因组：yes/no。
-- 核苷酸序列格式：fasta或者alignment，选的fasta
-- 上传细胞器基因组的fasta文件
-6. Organism：填写Organism name信息，可填物种的学名。
-7. Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。
-8. Source Modifiers：资源信息。
-- Organelle/Location: 叶绿体/线粒体/其他器官。
-- Source Modifier可以填写Country；对应的value填写China。
-9.  Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。
-10. Review and Correct：回顾和确认填写的信息，即可完成提交。
+## 3.2. 进入Submission Portal门户网站
+选完数据类型，会自动进入Submission Portal门户网站
+1. 提交者信息Submitter
+- 包括姓名First and Last name，邮箱Email，单位Submitting organization(学校)，部门Department(学院)，街道Street，城市City，省/州State/Province，邮编Postal code，国家Country。
+- 在最后可以选择**Update my contact information in profile**会更新填写的信息到账号，下一次新填写就默认填入提交者信息了。
+2. 一般性的信息General info
+- BioProject和BioSample是所有提交到GenBank都需要的，属于哪个项目，用了哪个样本。
+- 可以先注册这两项再在这里提供accession number；也可以选择还未注册提交之后会增加填写BioProject和BioSample信息的步骤然后自动注册新的；
+- 同一个项目同一个样品多个测序文件，比如基因组测序最常见的方案（Illumina PE的 DNA-Seq和RNA-Seq，以及PacBio SMRT），可以在一次提交中一同提交。
+- 释放日期Release date可以指定日期，也可以提交通过后立即释放；释放日期可以提交后发邮件更改的；
+3. Project info【如果2填了没有已有的BioProject就会出现这一项】
+- 提供创建新的BioProject的信息
+- 项目题目Project title，项目描述Project description，和领域Relevance 
+- 可选项：相关的外部链接External links，基金grants
+4. BioSample Type【如果2填了没有已有的BioSample就会出现这一项】
+- NCBI packages：样品类型，选Plant。可以填学名来筛选。
+5. BioSample Attributes【如果2填了没有已有的BioSample就会出现这一项】
+- 如果是批量提交，可以用excel或csv表格提交多个BioSamples信息。
+- 样品名称Sample Name：区别于其他样品的唯一名称。可以用lab惯用的样品命名，比如YZ_Mc_01。
+- 生物名称Organism，填物种学名；
+- 个体描述isolate/栽培名称cultivar/生态型ecotype三选一填，填样本个体的唯一标识符ID。
+- 年龄age/发育阶段development stage二选一填。
+- 地理位置geographic location：可以填国家China
+- 组织tissue：填写取样部位，eg. leaf，flower，root，stem.
+6. SRA Metadata
+- 如果是批量提交，可以用excel或csv表格提交多条信息。
+- 样品名称Sample Name：选择BioSample Attributes中填的。
+- Library ID：测序前建库的ID，是独一无二的。
+- Title：通常用这种形式：{methodology} of {organism}:{sample info}，如RNA-Seq of Bauhinia variegata: mature flower。
+- Library strategy：建库策略，二代和三代测序选全基因组测序**WGS**。
+- Library source：DNA-Seq和RNA-Seq通常Genomic或Transcriptomic。
+- Library selection：二代和三代测序选RANDOM
+- Library layout：单端 single或双端 paired
+- Platform：测序平台，Illumina或Pacbio_SMRT等。
+- Instrument model：具体的测序仪器型号。
+- Design description：建库方法的简短描述。如TruSeq library preparation from genomic DNA。
+- Filetype：fastq或bam等。
+- Filename：文件名。如果双端测序就两个文件名。
+7. Files
+- 提交SRA文件，fastq格式
+- FTP或Aspera命令行上传文件夹(>10GB)，或者网页提交(<2GB)或Aspera Connect plugin(2-10GB)上传文件
+- 提交之后会检查信息是否错误，按提示修改。
+8. Review&Submit：最后检查一遍信息没错误就确认提交。
+
 
 没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。
 

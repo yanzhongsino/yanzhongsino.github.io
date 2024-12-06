@@ -16,7 +16,7 @@ description: 记录了上传细胞器基因组的组装和注释数据到NCBI的
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
 
-# 准备上传的文件
+# 1. 准备上传的文件
 1. 基因组fasta文件
 2. 注释tbl格式文件
 
@@ -24,14 +24,13 @@ tbl格式文件推荐用GB2sequin来准备。
 
 参考博客-转换GenBank文件为tbl格式：https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。
 
-
-# 上传步骤
-## 上传工具
+# 2. 上传步骤
+## 2.1. 上传工具
 BankIt：https://www.ncbi.nlm.nih.gov/WebSub/index.cgi
 
 使用BankIt在线上传，允许一次提交多个细胞器基因组序列。
 
-## 上传步骤
+## 2.2. 上传步骤
 1. 选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：
 - Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组
 - Transcriptome Shotgun Assembly (TSA)：组装好的转录组
