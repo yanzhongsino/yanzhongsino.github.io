@@ -66,13 +66,16 @@ description: 记录上传原始测序reads数据（二代数据和三代数据�
 - Library selection：二代和三代测序选RANDOM
 - Library layout：单端 single或双端 paired
 - Platform：测序平台，Illumina或Pacbio_SMRT等。
-- Instrument model：具体的测序仪器型号。
+- Instrument model：具体的测序仪器型号。如Illumina NovaSeq 6000和PacBio RS II。
 - Design description：建库方法的简短描述。如TruSeq library preparation from genomic DNA。
-- Filetype：fastq或bam等。
-- Filename：文件名。如果双端测序就两个文件名。
+- Filetype：fastq或bam等。如果选择bam格式，会被认为是比对文件，需要填写比对用的参考基因组。
+- Reference FASTA File：上传bam格式文件时才需要填写，填bam文件比对用的参考序列的文件名。
+- Reference assembly：上传bam格式文件时才需要填写，填bam文件比对用的参考序列的组装。如果上传的是未aligned的bam文件（比如PacBio三代测序原始数据，常用bam格式，但没有做比对），在这一栏填unaligned即可。
+- Filename：文件名，包含文件后缀。如果双端测序就两个文件名。
 7. Files
-- 提交SRA文件，fastq格式
-- FTP或Aspera命令行上传文件夹(>10GB)，或者网页提交(<2GB)或Aspera Connect plugin(2-10GB)上传文件
+- 提交SRA文件，fastq格式或者bam格式等格式的文件，支持fq.gz压缩格式。
+- 多种上传方式：FTP或Aspera命令行上传文件夹(10-100GB)，或者网页提交(<2GB)或Aspera Connect plugin(2-10GB)上传文件。有上传说明，按说明做即可。
+- Aspera命令行上传：(1)把要上传的文件全部放在一个文件夹下；(2)下载和安装Aspera Connect software；(3)下载key file文件；(4) 运行命令 `ascp -i <path/to/key_file> -QT -l100m -k1 -d <path/to/folder/containing files> subasp@upload.ncbi.nlm.nih.gov:uploads/xx_xx_xx_gmail.com_DbE9nqDQ`;其中key file必须是绝对路径，`-l100m`参数是指定最大传输速度为100 meg/s。(5)上传好了就回到这个界面，选择上传的文件夹，继续提交。
 - 提交之后会检查信息是否错误，按提示修改。
 8. Review&Submit：最后检查一遍信息没错误就确认提交。
 
