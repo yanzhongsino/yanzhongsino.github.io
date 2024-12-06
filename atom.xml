@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-12-06T13:20:50.625Z</updated>
+  <updated>2024-12-06T14:26:59.739Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/"/>
     <id>http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/</id>
     <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-06T13:20:50.625Z</updated>
+    <updated>2024-12-06T14:26:59.739Z</updated>
     
     
     <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</summary>
