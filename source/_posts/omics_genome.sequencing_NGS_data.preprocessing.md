@@ -38,7 +38,7 @@ description: 对二代测序进行预处理。包括从NCBI下载SRA格式数据
 - 去掉接头（adapter）序列；
 - 去掉质量较低的reads
 - 去掉被细菌或其他生物污染产生的reads
-1. 进行质控过滤低质量reads后的序列通常被称为clean reads。
+4. 进行质控过滤低质量reads后的序列通常被称为clean reads。
 
 # 2. NCBI下载二代数据raw reads和预处理
 如果是使用NCBI等公共数据库的raw reads数据，则需要先下载SRA格式文件和转换为fastq格式文件。
@@ -63,6 +63,7 @@ description: 对二代测序进行预处理。包括从NCBI下载SRA格式数据
 - SRA Toolkit解压缩即可使用：`tar -xvzf sratoolkit.current-ubuntu64.tar.gz`
 5. SRA Toolkit的命令
 - SRA Toolkit包括下载SRA数据的命令`prefetch`,将SRA格式的数据转换为FASTQ格式的命令`fastq-dump`,`fasterq-dump`，检索SRA数据文件中的元数据的`vdb-dump`,将SRA文件直接转换为SAM格式（如果记录在数据库中有对映/SAM信息）的`sam-dump`。
+
 ## 2.3. 下载SRA文件和转换格式
 ### 2.3.1. 查找SRR编号
 1. 在NCBI网站 https://www.ncbi.nlm.nih.gov/sra 搜索物种名等信息，获取SRR编号；
@@ -74,6 +75,7 @@ description: 对二代测序进行预处理。包括从NCBI下载SRA格式数据
 1. prefetch调取下载
 - 先在NCBI查询需要下载的数据的SRR编号，再使用编号信息下载SRA文件:`prefetch SRR1234567 SRR7654321`命令会下载SRA Normalized格式文件，支持多个SRR编号参数，依次下载。
 - 多个SRA数据下载，也可以把SRR编号保存在文件中，一个编号一行（同SraAccList.csv表格文件）。然后用--option-file参数指定保存了编号的文件，来依次下载多个SRA数据：`prefetch --option-file SraAccList.csv`
+- 为每个数据生成SRR编号命名的文件夹，里面只有一个以SRR1234567.sra命名的文件。
 - 其他参数：
   - -X|--max-size: 设置最大下载文件大小，默认20G。
   - -p|--progress: 显示下载进度。
@@ -81,6 +83,7 @@ description: 对二代测序进行预处理。包括从NCBI下载SRA格式数据
 
 2. wget下载
 - 复制下载网址之后用wget下载：`wget -c http:url`
+- 下载完成后，如果是SRA Normalized格式，则生成SRR1234567文件；如果是SRA Lite格式，则生成SRR1234567.lite.1文件。
 
 ### 2.3.3. SRA格式转为fastq格式
 SRA Toolkit有两个命令可以将SRA格式转为fastq格式：fastq-dump和fasterq-dump。
@@ -100,7 +103,7 @@ SRA Toolkit有两个命令可以将SRA格式转为fastq格式：fastq-dump和fas
   - -X 1000：仅导出前1000条reads，用于测试。
 
 2. fasterq-dump
--`fasterq-dump --split-3 ./SRR1234567 -p -e 12`
+- `fasterq-dump --split-3 ./SRR1234567 -p -e 12`
 - 参数：
   - -s|--split-spot: 将双端测序分为两份,放在一个文件中。
   - -S|--split-files: 将双端测序分为两份,放在两个文件，对于一方有而一方没有的reads直接丢弃。
@@ -116,9 +119,7 @@ SRA Toolkit有两个命令可以将SRA格式转为fastq格式：fastq-dump和fas
 ## 3.1. fastp快速方案（fastp速度=trimmomatic速度*5）
 fastp可以提供快速高效的FASTQ文件预处理和质控，包括过滤低质量读段、去除接头、质量剪切等功能，同时可以提供质量报告。
 1. 命令
-
-`time fastp -c -l 50 -q 20 -w 8 -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.clean.fq.gz -O sample_2.clean.fq.gz -h sample_fastp.html -j sample_fastp.json`
-
+- `time fastp -c -l 50 -q 20 -w 8 -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.clean.fq.gz -O sample_2.clean.fq.gz -h sample_fastp.html -j sample_fastp.json`
 2. 常用参数-输入输出
 - -i, -I 分别指定双端测序的raw reads文件，支持.fq.gz格式。
 - -o, -O 分别指定质控后生成的双端测序的clean reads文件，支持.fq.gz格式。
@@ -158,6 +159,7 @@ Trimmomatic则用于reads修剪和过滤，包括接头去除和质量剪切，�
 - Per sequence GC content: 存在于读段中的GC含量的分布。
 - Per base N content: 每个位置N碱基的比例。
 - Sequence Length Distribution: 序列长度的分布。
+
 ### 3.2.2. Trimmomatic 质控
 Trimmomatic 可以去除接头，低质量序列和被污染序列。
 1. trimmomatic 命令
@@ -184,6 +186,7 @@ trimmomatic是一个对Illumina NGS data进行trim的工具
 - CROP:<length> 保留reads到指定的长度。
 - HEADCROP:<length> 在reads的首端切除指定的长度。
 - AVGQUAL:20 最低质量阈值。被切除后的read平均质量低于20，则丢弃此条read。
+
 ### 3.2.3. FastQC 获取clean reads的质量报告
 FastQC 获取clean reads的质量报告，可以与raw reads的报告对比着看。
 - `time fastqc sample_clean.R1.fq.gz -t 8 -o sample_clean`
@@ -195,6 +198,7 @@ FastQC 获取clean reads的质量报告，可以与raw reads的报告对比着�
 [Duplication占比问题的解释](http://blog.sciencenet.cn/blog-3406804-1215719.html)
 2. 去重一般操作比对到基因组上并排序完成的bam文件，利用基因组的位置信息进行去重，效率较高。
 3. 若没有参考基因组的情况，比如**genome survey分析前的数据预处理，可以直接对clean reads进行去重**。
+
 ## 4.2. Fastuniq去重操作
 1. 命令
 

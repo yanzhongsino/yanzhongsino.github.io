@@ -157,8 +157,8 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
 ```
 
 ## 3.3. 执行codeML
-1. 零假设模型(null model)的运算——**one ratio model**
-- 在基础的配置参数上修改以下参数，保存为codeml_null.ctl
+### 零假设模型(null model)的运算——**one ratio model**
+1. 在基础的配置参数上修改以下参数，保存为codeml_null.ctl
 
 ```
         model = 0 * model = 0 代表零假设（即所有分支的 ω 值都一样）
@@ -167,14 +167,19 @@ description: 使用PAML的codeML程序包中的分支模型branch model来计算
       outfile = out_null.txt      
 ```
 
-- 执行命令`codeml codeml_null.ctl`
-- 结果文件out_null.txt，这个模型得到的 ω 值代表整个系统发育树上的平均 ω 值。
+2. 执行命令`codeml codeml_null.ctl`
+3. 结果文件out_null.txt，这个模型得到的 ω 值代表整个系统发育树上的平均 ω 值。
 
-2. 备择假设模型(branch model)的运算———**two ratio model**
-- 标记前景分支：在树文件tree.newick的基础上标记前景分支，保存为tree_branch.newick文件。
-- 标记方法：标记某一支为前景支 (#1)，标记某一支及所有子分支都为前景支（$1）。如只标记A和B的祖先枝为前景支，则可用`((((A,B)$1,C),D),E);`；标记A和B祖先支以及A、B分支都为前景支：`((((A,B)$1,C),D),E);`。
+### 备择假设模型(branch model)的运算———**two ratio model**
+1. 标记前景分支
+- 在树文件tree.newick的基础上标记前景分支，保存为tree_branch.newick文件。
+2. 标记前景分支的方法
+- 标记某一支为前景支 (#1)，标记某一支及所有子分支都为前景支（$1）。
+- 如只标记A和B的祖先枝为前景支，则可用`((((A,B) #1,C),D),E);`；
+- 标记A和B祖先支以及A、B分支都为前景支：`((((A,B) $1,C),D),E);`；等同于`((((A #1,B #1) #1,C),D),E);`。
+- 多个标记的优先级：**#1** 标记比 **$1**标记的优先级更高；tips端标记比祖先节点的标记的优先级更高。
 - 如果需要标记多个前景分支，则分别使用#1,#2,...（或者$1,$2,...）来标记。做过测试，同时标记多个前景支来运算和只标记一个前景支单独运算多次的结果是很接近的。
-- 在基础的配置参数上修改以下参数，保存为codeml_branch.ctl
+3. 在基础的配置参数上修改以下参数，保存为codeml_branch.ctl
 
 ```
         model = 2 * model = 2 代表备择假设（不同分支的 ω 值有2种或以上的类别）
