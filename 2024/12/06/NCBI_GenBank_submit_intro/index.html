@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="上传生物数据到NCBI的GenBank数据库的操作。">
+  <meta name="description" content="介绍NCBI,GenBank和向GenBank上传核苷酸序列。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用BankIt提交生物数据到NCBI的GenBank">
+<meta property="og:title" content="提交核苷酸序列到NCBI的GenBank的介绍">
 <meta property="og:url" content="http://example.com/2024/12/06/NCBI_GenBank_submit_intro/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="上传生物数据到NCBI的GenBank数据库的操作。">
+<meta property="og:description" content="介绍NCBI,GenBank和向GenBank上传核苷酸序列。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-12-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-06T09:25:09.756Z">
+<meta property="article:modified_time" content="2024-12-06T13:21:29.407Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="SRA">
 <meta property="article:tag" content="Unassembled sequence reads">
@@ -37,6 +37,14 @@
 <meta property="article:tag" content="GenBank">
 <meta property="article:tag" content="NGS">
 <meta property="article:tag" content="TGS">
+<meta property="article:tag" content="table2asn">
+<meta property="article:tag" content="NCBI">
+<meta property="article:tag" content="NLM">
+<meta property="article:tag" content="WGS">
+<meta property="article:tag" content="TSA">
+<meta property="article:tag" content="TPA">
+<meta property="article:tag" content="TLS">
+<meta property="article:tag" content="BankIt">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
@@ -53,7 +61,7 @@
   };
 </script>
 
-  <title>使用BankIt提交生物数据到NCBI的GenBank | 生信技工</title>
+  <title>提交核苷酸序列到NCBI的GenBank的介绍 | 生信技工</title>
   
 
 
@@ -233,7 +241,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          使用BankIt提交生物数据到NCBI的GenBank
+          提交核苷酸序列到NCBI的GenBank的介绍
         </h1>
 
         <div class="post-meta">
@@ -244,7 +252,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-12-06 00:00:00 / Modified: 17:25:09" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
+              <time title="Created: 2024-12-06 00:00:00 / Modified: 21:21:29" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -276,7 +284,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>4.4k</span>
+              <span>4.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -284,7 +292,7 @@
               </span>
               <span>4 mins.</span>
             </span>
-            <div class="post-description">上传生物数据到NCBI的GenBank数据库的操作。</div>
+            <div class="post-description">介绍NCBI,GenBank和向GenBank上传核苷酸序列。</div>
 
         </div>
       </header>
@@ -295,16 +303,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1392871583&auto=1&height=32"></iframe></div>
 
-<h1 id="NCBI和GenBank介绍"><a href="#NCBI和GenBank介绍" class="headerlink" title="NCBI和GenBank介绍"></a>NCBI和GenBank介绍</h1><ol>
+<h1 id="1-NCBI和GenBank介绍"><a href="#1-NCBI和GenBank介绍" class="headerlink" title="1. NCBI和GenBank介绍"></a>1. NCBI和GenBank介绍</h1><ol>
 <li>NCBI</li>
 </ol>
 <ul>
 <li>NCBI：National Center for Biotechnology Information，美国国家生物技术信息中心。它是美国国家卫生机构 (National Institutes of Health, NIH) 的分支机构 国家医药馆 (National Library of Medicine, NLM) 的一部分。</li>
 <li>NCBI 拥有一系列与生物技术和生物医学相关的数据库，是生物信息学工具和服务的重要资源。可以上传、下载、检索、学习、分析和研究生物和医药相关数据，并支持开发API和代码库。</li>
 <li>NCBI由大卫-利普曼（David Lipman）领导，他是BLAST序列比对程序的原作者之一，也是生物信息学领域广受尊敬的人物。</li>
-<li>NCIBI的网站是：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/%E3%80%82">https://www.ncbi.nlm.nih.gov/。</a></li>
+<li>NCBI的网站是：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/%E3%80%82">https://www.ncbi.nlm.nih.gov/。</a></li>
 </ul>
 <ol start="2">
 <li>NCBI 的数据库</li>
@@ -330,11 +338,11 @@
 <li>GenBank 接受原始生物序列的上传和下载，目前是全世界生物和医学领域最完整和最常用的核苷酸序列数据库。</li>
 <li>GenBank的网址是：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank">https://www.ncbi.nlm.nih.gov/genbank</a></li>
 </ul>
-<h1 id="向GenBank上传序列"><a href="#向GenBank上传序列" class="headerlink" title="向GenBank上传序列"></a>向GenBank上传序列</h1><h2 id="上传序列的类型"><a href="#上传序列的类型" class="headerlink" title="上传序列的类型"></a>上传序列的类型</h2><p><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/submit_types/">https://www.ncbi.nlm.nih.gov/genbank/submit_types/</a> 提供了向GenBank上传序列的类型说明。</p>
+<h1 id="2-向GenBank上传序列"><a href="#2-向GenBank上传序列" class="headerlink" title="2. 向GenBank上传序列"></a>2. 向GenBank上传序列</h1><h2 id="2-1-上传序列的类型"><a href="#2-1-上传序列的类型" class="headerlink" title="2.1. 上传序列的类型"></a>2.1. 上传序列的类型</h2><p><a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/submit_types/">https://www.ncbi.nlm.nih.gov/genbank/submit_types/</a> 提供了向GenBank上传序列的类型说明。</p>
 <p>GenBank只接受由上传者直接生成的转录组或基因组序列，通常要求包括生物源信息和序列的注释。</p>
 <p>下面两种情况应选择NCBI的其他数据库：</p>
 <ul>
-<li>二代测序平台的原始序列读数应提交至Sequence Read Archive(SRA)：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a></li>
+<li>二代或三代测序平台的原始序列读数应提交至Sequence Read Archive(SRA)：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a></li>
 <li>非由提交者直接获得的序列数据应提交到Third Party Annotation database （第三方注释数据库）：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/tpa">https://www.ncbi.nlm.nih.gov/genbank/tpa</a></li>
 </ul>
 <ol>
@@ -397,69 +405,74 @@
 <li>无实体对应物的序列（一致性序列，consensus sequences）</li>
 <li>长度小于 200 个核苷酸的序列</li>
 </ul>
-<h2 id="上传序列的工具"><a href="#上传序列的工具" class="headerlink" title="上传序列的工具"></a>上传序列的工具</h2><ol>
+<h2 id="2-2-上传序列的工具"><a href="#2-2-上传序列的工具" class="headerlink" title="2.2. 上传序列的工具"></a>2.2. 上传序列的工具</h2><ol>
 <li>BankIt 【推荐】</li>
 </ol>
 <ul>
-<li>基于WWW的提交工具，有向导指引提交过程。</li>
+<li>基于WWW网络的提交工具，有向导指引提交过程。</li>
+<li>BankIt网址：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/">https://www.ncbi.nlm.nih.gov/WebSub/</a></li>
 </ul>
 <ol start="2">
-<li>Submission Portal：</li>
+<li>Submission Portal</li>
 </ol>
 <ul>
-<li>一个适用于多种数据类型的提交门户系统。</li>
-<li>目前，只有核糖体 RNA (rRNA)、rRNA-ITS、metazoan 线粒体 COX1、真核细胞核 mRNA、流感、诺如病毒、登革热或 SARS-CoV-2 序列可以通过该工具的 GenBank 组件提交。</li>
-<li>基因组和转录组数据可以分别通过基因组门户网站和 TSA 门户网站提交。</li>
+<li>Submission Portal网址：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/">https://submit.ncbi.nlm.nih.gov/</a></li>
+<li>Submission Portal是一个适用于多种数据类型的提交门户系统。</li>
+<li>目前，核糖体 RNA (rRNA)、rRNA-ITS、metazoan 线粒体 COX1、真核细胞核 mRNA、流感、诺如病毒、登革热或 SARS-CoV-2 序列只可以通过Submission Portal的 GenBank 组件提交。</li>
 <li>这个工具今后还将扩展到其他类型的 GenBank 提交。</li>
 </ul>
 <ol start="3">
-<li>table2asn</li>
+<li>Sequin：旧版提交工具 【不推荐】</li>
 </ol>
 <ul>
-<li>table2asn：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/table2asn/">https://www.ncbi.nlm.nih.gov/genbank/table2asn/</a></li>
-<li>table2asn是一个命令行程序，可取代旧版工具 tbl2asn。</li>
-<li>用于自动创建序列记录，为提交序列到 GenBank 做前期准备。</li>
-<li>它主要用于提交注释的基因组和大批量序列，把注释的table格式文件转为asn文件，可通过 FTP 在 MAC、PC 和 Unix 平台上使用。</li>
+<li>Sequin是以前常被使用的旧版GenBank提交工具，在2021.01退役，原来的界面也404了：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/Sequin%E3%80%82">https://www.ncbi.nlm.nih.gov/Sequin。</a></li>
+<li>Sequin 是 NCBI 开发的一款独立软件工具，用于向 GenBank、EMBL 和 DDBJ 数据库提交和更新序列。 Sequin 能够处理长序列和序列集（分段条目以及种群、系统发育和突变研究）。 它还允许序列编辑和更新，并提供复杂的注释功能。 此外，Sequin 还包含许多内置的验证功能，以加强质量保证。</li>
 </ul>
-<p>更新或修订 GenBank 序列<br>提交者可随时对 GenBank 条目进行修订或更新。 关于不同类型更新的正确格式，请参阅更新指南页面。 将更新和修订发送至 <a href="mailto:&#103;&#98;&#45;&#x61;&#100;&#x6d;&#105;&#110;&#64;&#x6e;&#99;&#x62;&#105;&#x2e;&#x6e;&#x6c;&#x6d;&#x2e;&#110;&#x69;&#104;&#46;&#103;&#111;&#118;">&#103;&#98;&#45;&#x61;&#100;&#x6d;&#105;&#110;&#64;&#x6e;&#99;&#x62;&#105;&#x2e;&#x6e;&#x6c;&#x6d;&#x2e;&#110;&#x69;&#104;&#46;&#103;&#111;&#118;</a> 。 请务必在主题行注明要更新序列的登录号。</p>
-<p>只能向 GenBank 提交原始序列。 直接向 GenBank 提交序列可使用 BankIt（一种基于网络的表格）或独立提交程序 Sequin。 收到提交的序列后，GenBank 工作人员会检查数据的原创性，为序列分配登录号，并进行质量保证检查。 然后，提交的序列将被发布到公共数据库中，这些条目可通过 Entrez 检索或通过 FTP 下载。 表达序列标签（EST）、序列标记位点（STS）、基因组调查序列（GSS）和高通量基因组序列（HTGS）数据的批量提交通常由大型测序中心提交。 GenBank 直接提交组也处理完整的微生物基因组序列。</p>
-<h1 id="上传步骤"><a href="#上传步骤" class="headerlink" title="上传步骤"></a>上传步骤</h1><h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>BankIt：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
-<p>使用BankIt在线上传，允许一次提交多个细胞器基因组序列。</p>
-<h2 id="上传步骤-1"><a href="#上传步骤-1" class="headerlink" title="上传步骤"></a>上传步骤</h2><ol>
-<li>选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：</li>
+<ol start="4">
+<li>table2asn：一个提交序列的准备工具</li>
 </ol>
 <ul>
-<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组</li>
+<li>它主要用于提交注释的基因组和大批量序列的前期准备，把注释的table格式文件转为asn文件。</li>
+<li>它会生成不符合GenBank要求的注释说明，所以还可以用于基因组注释错误的检测。</li>
+<li>可以查看博客【提交基因组到公共数据库】：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/03/22/NCBI_GenBank_submit_genome/%E3%80%82%E9%87%8C%E9%9D%A2%E8%AE%B0%E5%BD%95%E4%BA%86table2asn%E7%9A%84%E5%85%B7%E4%BD%93%E7%94%A8%E6%B3%95%E3%80%82">https://yanzhongsino.github.io/2022/03/22/NCBI_GenBank_submit_genome/。里面记录了table2asn的具体用法。</a></li>
+<li>table2asn网址：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/table2asn/">https://www.ncbi.nlm.nih.gov/genbank/table2asn/</a></li>
+<li>table2asn是一个命令行程序，可取代旧版工具 tbl2asn。</li>
+</ul>
+<h1 id="3-上传序列后"><a href="#3-上传序列后" class="headerlink" title="3. 上传序列后"></a>3. 上传序列后</h1><ol>
+<li>收到提交的序列后，GenBank 工作人员会检查数据的原创性，为序列分配ID（accession number），并进行质量检查。</li>
+<li>然后，提交的序列将被发布到公共数据库中，这些条目可通过 Entrez 检索或通过 FTP 下载。</li>
+<li>在学术论文或其他地方，可以提供accession number来引用生物序列数据。</li>
+</ol>
+<h1 id="4-更新或修订-GenBank-序列"><a href="#4-更新或修订-GenBank-序列" class="headerlink" title="4. 更新或修订 GenBank 序列"></a>4. 更新或修订 GenBank 序列</h1><ol>
+<li>提交者可随时对 GenBank 条目进行修订或更新。 </li>
+<li>关于不同类型更新的正确格式，请参阅更新指南页面:<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/update/%E3%80%82">https://www.ncbi.nlm.nih.gov/genbank/update/。</a></li>
+<li>将更新和修订发送至 <a href="mailto:&#x67;&#98;&#x2d;&#97;&#x64;&#x6d;&#105;&#x6e;&#x40;&#110;&#99;&#x62;&#x69;&#x2e;&#110;&#x6c;&#x6d;&#x2e;&#110;&#105;&#104;&#46;&#103;&#111;&#x76;">&#x67;&#98;&#x2d;&#97;&#x64;&#x6d;&#105;&#x6e;&#x40;&#110;&#99;&#x62;&#x69;&#x2e;&#110;&#x6c;&#x6d;&#x2e;&#110;&#105;&#104;&#46;&#103;&#111;&#x76;</a>。请务必在邮件主题行注明要更新序列的登录号。</li>
+</ol>
+<h1 id="5-用BankIt的上传步骤"><a href="#5-用BankIt的上传步骤" class="headerlink" title="5. 用BankIt的上传步骤"></a>5. 用BankIt的上传步骤</h1><p>BankIt：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub">https://www.ncbi.nlm.nih.gov/WebSub</a></p>
+<p>建议先注册和登录NCBI账号，之后的所有提交记录都会保存在你的账号下，在这里可以查看提交记录：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/%E3%80%82">https://submit.ncbi.nlm.nih.gov/subs/。</a></p>
+<h2 id="5-1-选择上传的数据类别"><a href="#5-1-选择上传的数据类别" class="headerlink" title="5.1. 选择上传的数据类别"></a>5.1. 选择上传的数据类别</h2><p>下面列几个常用的：</p>
+<ul>
+<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组，可以是未注释的。</li>
 <li>Transcriptome Shotgun Assembly (TSA)：组装好的转录组</li>
 <li>Unassembled sequence reads (SRA)：未组装的测序reads</li>
 <li>Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids…：其他测序数据，细胞器基因组选这个。</li>
 </ul>
+<p>不同的数据类型，上传步骤需要填写的内容不同。</p>
+<h2 id="5-2-以上传SRA数据为例，大概说明一下BankIt上传数据的步骤和要填的内容"><a href="#5-2-以上传SRA数据为例，大概说明一下BankIt上传数据的步骤和要填的内容" class="headerlink" title="5.2. 以上传SRA数据为例，大概说明一下BankIt上传数据的步骤和要填的内容"></a>5.2. 以上传SRA数据为例，大概说明一下BankIt上传数据的步骤和要填的内容</h2><ol>
+<li>提交者信息Submitter</li>
+</ol>
+<ul>
+<li>包括姓名First and Last name，邮箱Email，单位Submitting organization(学校)，部门Department(学院)，街道Street，城市City，省&#x2F;州State&#x2F;Province，邮编Postal code，国家Country。</li>
+<li>在最后可以选择<strong>Update my contact information in profile</strong>会更新填写的信息到账号，下一次新填写就默认填入提交者信息了。</li>
+</ul>
 <ol start="2">
-<li>Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区&#x2F;省份，邮编，国家，和接收上传信息的邮箱【重要】。</li>
-<li>Reference：填写提供序列的作者和出版信息。</li>
-<li>Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。</li>
-<li>Nucleotide：填写序列的信息。</li>
-</ol>
-<ul>
-<li>序列发布的时间，可以指定日期，也可以一通过上传审核就发布。</li>
-<li>分子类型（Molecule Type）：细胞器基因组选的genomic DNA</li>
-<li>拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。</li>
-<li>是否是完整的细胞器基因组：yes&#x2F;no。</li>
-<li>核苷酸序列格式：fasta或者alignment，选的fasta</li>
-<li>上传细胞器基因组的fasta文件</li>
-</ul>
-<ol start="6">
-<li>Organism：填写Organism name信息，可填物种的学名。</li>
-<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
-<li>Source Modifiers：资源信息。</li>
-</ol>
-<ul>
-<li>Organelle&#x2F;Location: 叶绿体&#x2F;线粒体&#x2F;其他器官。</li>
-<li>Source Modifier可以填写Country；对应的value填写China。</li>
-</ul>
-<ol start="9">
-<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
-<li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
+<li>General info</li>
+<li>Project info</li>
+<li>BioSample Type</li>
+<li>BioSample Attributes</li>
+<li>SRA Metadata</li>
+<li>Files：上传文件。</li>
+<li>Review&amp;Submit：最后检查一遍信息没错误就确认提交。</li>
 </ol>
 <p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
 <hr>
@@ -502,6 +515,14 @@
               <a href="/tags/GenBank/" rel="tag"># GenBank</a>
               <a href="/tags/NGS/" rel="tag"># NGS</a>
               <a href="/tags/TGS/" rel="tag"># TGS</a>
+              <a href="/tags/table2asn/" rel="tag"># table2asn</a>
+              <a href="/tags/NCBI/" rel="tag"># NCBI</a>
+              <a href="/tags/NLM/" rel="tag"># NLM</a>
+              <a href="/tags/WGS/" rel="tag"># WGS</a>
+              <a href="/tags/TSA/" rel="tag"># TSA</a>
+              <a href="/tags/TPA/" rel="tag"># TPA</a>
+              <a href="/tags/TLS/" rel="tag"># TLS</a>
+              <a href="/tags/BankIt/" rel="tag"># BankIt</a>
           </div>
 
         
@@ -575,7 +596,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NCBI%E5%92%8CGenBank%E4%BB%8B%E7%BB%8D"><span class="nav-text">NCBI和GenBank介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%91GenBank%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97"><span class="nav-text">向GenBank上传序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">上传序列的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-text">上传序列的工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">上传步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7"><span class="nav-text">上传工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4-1"><span class="nav-text">上传步骤</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-NCBI%E5%92%8CGenBank%E4%BB%8B%E7%BB%8D"><span class="nav-text">1. NCBI和GenBank介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%90%91GenBank%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97"><span class="nav-text">2. 向GenBank上传序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">2.1. 上传序列的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-text">2.2. 上传序列的工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97%E5%90%8E"><span class="nav-text">3. 上传序列后</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%9B%B4%E6%96%B0%E6%88%96%E4%BF%AE%E8%AE%A2-GenBank-%E5%BA%8F%E5%88%97"><span class="nav-text">4. 更新或修订 GenBank 序列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E7%94%A8BankIt%E7%9A%84%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">5. 用BankIt的上传步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E9%80%89%E6%8B%A9%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%88%AB"><span class="nav-text">5.1. 选择上传的数据类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E4%BB%A5%E4%B8%8A%E4%BC%A0SRA%E6%95%B0%E6%8D%AE%E4%B8%BA%E4%BE%8B%EF%BC%8C%E5%A4%A7%E6%A6%82%E8%AF%B4%E6%98%8E%E4%B8%80%E4%B8%8BBankIt%E4%B8%8A%E4%BC%A0%E6%95%B0%E6%8D%AE%E7%9A%84%E6%AD%A5%E9%AA%A4%E5%92%8C%E8%A6%81%E5%A1%AB%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-text">5.2. 以上传SRA数据为例，大概说明一下BankIt上传数据的步骤和要填的内容</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -602,7 +623,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">476</span>
+        <span class="site-state-item-count">483</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -656,12 +677,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">711k</span>
+    <span title="Symbols count total">712k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:47</span>
+    <span title="Reading time total">10:48</span>
 </div>
 
         

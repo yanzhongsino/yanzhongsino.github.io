@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-12-06T09:25:11.363Z</updated>
+  <updated>2024-12-06T13:20:50.625Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/"/>
     <id>http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/</id>
     <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-06T09:25:11.363Z</updated>
+    <updated>2024-12-06T13:20:50.625Z</updated>
     
     
-    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到NCBI的步骤。</summary>
+    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</summary>
     
     
     
@@ -39,6 +39,8 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
     <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
     
     <category term="submit" scheme="http://example.com/tags/submit/"/>
@@ -49,17 +51,21 @@
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
+    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
   </entry>
   
   <entry>
-    <title>使用BankIt提交生物数据到NCBI的GenBank</title>
+    <title>提交核苷酸序列到NCBI的GenBank的介绍</title>
     <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_intro/"/>
     <id>http://example.com/2024/12/06/NCBI_GenBank_submit_intro/</id>
     <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-06T09:25:09.756Z</updated>
+    <updated>2024-12-06T13:21:29.407Z</updated>
     
     
-    <summary type="html">上传生物数据到NCBI的GenBank数据库的操作。</summary>
+    <summary type="html">介绍NCBI,GenBank和向GenBank上传核苷酸序列。</summary>
     
     
     
@@ -81,6 +87,22 @@
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    
+    <category term="NLM" scheme="http://example.com/tags/NLM/"/>
+    
+    <category term="WGS" scheme="http://example.com/tags/WGS/"/>
+    
+    <category term="TSA" scheme="http://example.com/tags/TSA/"/>
+    
+    <category term="TPA" scheme="http://example.com/tags/TPA/"/>
+    
+    <category term="TLS" scheme="http://example.com/tags/TLS/"/>
+    
+    <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
     
   </entry>
   
@@ -111,6 +133,8 @@
     
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    
     <category term="fastq" scheme="http://example.com/tags/fastq/"/>
     
     <category term="quality control" scheme="http://example.com/tags/quality-control/"/>
@@ -120,8 +144,6 @@
     <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
     
     <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
-    
-    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
     <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
@@ -162,52 +184,17 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
-    <category term="SPAdes" scheme="http://example.com/tags/SPAdes/"/>
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
+    
+    <category term="SPAdes" scheme="http://example.com/tags/SPAdes/"/>
     
     <category term="contig" scheme="http://example.com/tags/contig/"/>
     
     <category term="scaffold" scheme="http://example.com/tags/scaffold/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Trinity的脚本进行转录本定量分析</title>
-    <link href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
-    <id>http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
-    <published>2024-10-27T16:00:00.000Z</published>
-    <updated>2024-10-30T08:49:12.756Z</updated>
-    
-    
-    <summary type="html">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="transcriptome" scheme="http://example.com/categories/omics/transcriptome/"/>
-    
-    <category term="express" scheme="http://example.com/categories/omics/transcriptome/express/"/>
-    
-    
-    <category term="Trinity" scheme="http://example.com/tags/Trinity/"/>
-    
-    <category term="expression analysis" scheme="http://example.com/tags/expression-analysis/"/>
-    
-    <category term="expression abundance" scheme="http://example.com/tags/expression-abundance/"/>
-    
-    <category term="transcript" scheme="http://example.com/tags/transcript/"/>
-    
-    <category term="align_and_estimate_abundance.pl" scheme="http://example.com/tags/align-and-estimate-abundance-pl/"/>
-    
-    <category term="RSEM" scheme="http://example.com/tags/RSEM/"/>
-    
-    <category term="bowtie2" scheme="http://example.com/tags/bowtie2/"/>
     
   </entry>
   
@@ -241,6 +228,41 @@
     <category term="Simulation" scheme="http://example.com/tags/Simulation/"/>
     
     <category term="EBSeq" scheme="http://example.com/tags/EBSeq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Trinity的脚本进行转录本定量分析</title>
+    <link href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
+    <id>http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
+    <published>2024-10-27T16:00:00.000Z</published>
+    <updated>2024-10-30T08:49:12.756Z</updated>
+    
+    
+    <summary type="html">本文记录Trinity的转录本定量分析脚本`align_and_estimate_abundance.pl`的使用。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="transcriptome" scheme="http://example.com/categories/omics/transcriptome/"/>
+    
+    <category term="express" scheme="http://example.com/categories/omics/transcriptome/express/"/>
+    
+    
+    <category term="Trinity" scheme="http://example.com/tags/Trinity/"/>
+    
+    <category term="expression analysis" scheme="http://example.com/tags/expression-analysis/"/>
+    
+    <category term="RSEM" scheme="http://example.com/tags/RSEM/"/>
+    
+    <category term="expression abundance" scheme="http://example.com/tags/expression-abundance/"/>
+    
+    <category term="transcript" scheme="http://example.com/tags/transcript/"/>
+    
+    <category term="align_and_estimate_abundance.pl" scheme="http://example.com/tags/align-and-estimate-abundance-pl/"/>
+    
+    <category term="bowtie2" scheme="http://example.com/tags/bowtie2/"/>
     
   </entry>
   
@@ -286,9 +308,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
-    
     <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
+    
+    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
@@ -385,17 +407,17 @@
     
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
     <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
     
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
   </entry>
   
@@ -420,17 +442,17 @@
     
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
     <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
     
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
     <category term="ONT" scheme="http://example.com/tags/ONT/"/>
     
@@ -457,17 +479,17 @@
     
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
     <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
     
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
   </entry>
   
@@ -492,17 +514,17 @@
     
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
     <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
     
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
   </entry>
   
@@ -604,55 +626,6 @@
   </entry>
   
   <entry>
-    <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
-    <link href="http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/"/>
-    <id>http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/</id>
-    <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-06-05T06:26:45.037Z</updated>
-    
-    
-    <summary type="html">介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/third-generation-sequencing/"/>
-    
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
-    
-    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
-    
-    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
-    
-    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
-    
-    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
-    
-    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
-    
-    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
-    
-    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
-    
-    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
-    
-  </entry>
-  
-  <entry>
     <title>基因组测序简介</title>
     <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
     <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
@@ -675,17 +648,70 @@
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
     <category term="fasta" scheme="http://example.com/tags/fasta/"/>
     
     <category term="fastq" scheme="http://example.com/tags/fastq/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
     <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
     
     <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
+    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
+    
+    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
+    
+    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
+    
+    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
+    
+    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
+    
+    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
+    
+    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
+    
+    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
+    
+    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
+    <link href="http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/"/>
+    <id>http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/</id>
+    <published>2024-06-03T16:00:00.000Z</published>
+    <updated>2024-06-05T06:26:45.037Z</updated>
+    
+    
+    <summary type="html">介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/third-generation-sequencing/"/>
+    
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
+    
+    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
     
     <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
     
@@ -700,10 +726,6 @@
     <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
     
     <category term="subreads" scheme="http://example.com/tags/subreads/"/>
-    
-    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
-    
-    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
     
   </entry>
   

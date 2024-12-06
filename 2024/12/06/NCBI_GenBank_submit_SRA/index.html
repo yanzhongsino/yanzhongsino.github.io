@@ -20,23 +20,26 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录上传原始测序reads数据（二代数据和三代数据）到NCBI的步骤。">
+  <meta name="description" content="记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用BankIt提交原始测序数据到NCBI的GenBank">
 <meta property="og:url" content="http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/index.html">
 <meta property="og:site_name" content="生信技工">
-<meta property="og:description" content="记录上传原始测序reads数据（二代数据和三代数据）到NCBI的步骤。">
+<meta property="og:description" content="记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-12-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-06T09:25:11.363Z">
+<meta property="article:modified_time" content="2024-12-06T13:20:50.625Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="SRA">
+<meta property="article:tag" content="Sequence Read Archive">
 <meta property="article:tag" content="Unassembled sequence reads">
 <meta property="article:tag" content="submit">
 <meta property="article:tag" content="GenBank">
 <meta property="article:tag" content="NGS">
 <meta property="article:tag" content="TGS">
+<meta property="article:tag" content="Illumina">
+<meta property="article:tag" content="PacBio">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
@@ -244,7 +247,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-12-06 00:00:00 / Modified: 17:25:11" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
+              <time title="Created: 2024-12-06 00:00:00 / Modified: 21:20:50" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,15 +283,15 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>1.4k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>1 mins.</span>
+              <span>2 mins.</span>
             </span>
-            <div class="post-description">记录上传原始测序reads数据（二代数据和三代数据）到NCBI的步骤。</div>
+            <div class="post-description">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</div>
 
         </div>
       </header>
@@ -299,51 +302,87 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1392871582&auto=1&height=32"></iframe></div>
 
-<h1 id="准备上传的文件"><a href="#准备上传的文件" class="headerlink" title="准备上传的文件"></a>准备上传的文件</h1><ol>
-<li>基因组fasta文件</li>
-<li>注释tbl格式文件</li>
-</ol>
-<p>tbl格式文件推荐用GB2sequin来准备。</p>
-<p>参考博客-转换GenBank文件为tbl格式：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。</a></p>
-<h1 id="上传步骤"><a href="#上传步骤" class="headerlink" title="上传步骤"></a>上传步骤</h1><h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>BankIt：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
-<p>使用BankIt在线上传，允许一次提交多个细胞器基因组序列。</p>
-<h2 id="上传步骤-1"><a href="#上传步骤-1" class="headerlink" title="上传步骤"></a>上传步骤</h2><ol>
-<li>选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：</li>
+<h1 id="1-上传的原始测序数据"><a href="#1-上传的原始测序数据" class="headerlink" title="1. 上传的原始测序数据"></a>1. 上传的原始测序数据</h1><p>二代或三代测序的原始序列读数应提交至Sequence Read Archive(SRA)：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/sra%E3%80%82">https://www.ncbi.nlm.nih.gov/sra。</a></p>
+<h1 id="2-上传前准备"><a href="#2-上传前准备" class="headerlink" title="2. 上传前准备"></a>2. 上传前准备</h1><p>建议先注册和登录NCBI账号再进行上传，之后的所有提交记录都会保存在你的账号下，在这里可以查看提交记录：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/%E3%80%82">https://submit.ncbi.nlm.nih.gov/subs/。</a></p>
+<h1 id="3-上传步骤"><a href="#3-上传步骤" class="headerlink" title="3. 上传步骤"></a>3. 上传步骤</h1><h2 id="3-1-选择数据类型"><a href="#3-1-选择数据类型" class="headerlink" title="3.1. 选择数据类型"></a>3.1. 选择数据类型</h2><ol>
+<li>打开BankIt网址：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub%E3%80%82%E7%99%BB%E5%BD%95NCBI%E8%B4%A6%E5%8F%B7%E3%80%82">https://www.ncbi.nlm.nih.gov/WebSub。登录NCBI账号。</a></li>
+<li>选择上传的数据类别：</li>
 </ol>
 <ul>
-<li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组</li>
-<li>Transcriptome Shotgun Assembly (TSA)：组装好的转录组</li>
-<li>Unassembled sequence reads (SRA)：未组装的测序reads</li>
-<li>Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids…：其他测序数据，细胞器基因组选这个。</li>
+<li>Unassembled sequence reads (SRA)：未组装的测序reads<h2 id="3-2-进入Submission-Portal门户网站"><a href="#3-2-进入Submission-Portal门户网站" class="headerlink" title="3.2. 进入Submission Portal门户网站"></a>3.2. 进入Submission Portal门户网站</h2>选完数据类型，会自动进入Submission Portal门户网站</li>
+</ul>
+<ol>
+<li>提交者信息Submitter</li>
+</ol>
+<ul>
+<li>包括姓名First and Last name，邮箱Email，单位Submitting organization(学校)，部门Department(学院)，街道Street，城市City，省&#x2F;州State&#x2F;Province，邮编Postal code，国家Country。</li>
+<li>在最后可以选择<strong>Update my contact information in profile</strong>会更新填写的信息到账号，下一次新填写就默认填入提交者信息了。</li>
 </ul>
 <ol start="2">
-<li>Contact：填写上传人的信息，包括姓名，学院，学校，地址，城市，地区&#x2F;省份，邮编，国家，和接收上传信息的邮箱【重要】。</li>
-<li>Reference：填写提供序列的作者和出版信息。</li>
-<li>Sequencing Technology：填写测序方法信息，包括测序平台，是否是组装的数据，组装软件和版本，组装样品名称，覆盖度。</li>
-<li>Nucleotide：填写序列的信息。</li>
+<li>一般性的信息General info</li>
 </ol>
 <ul>
-<li>序列发布的时间，可以指定日期，也可以一通过上传审核就发布。</li>
-<li>分子类型（Molecule Type）：细胞器基因组选的genomic DNA</li>
-<li>拓扑结构（Topology）：线型分子（Linear）还是环形分子（Circular）。</li>
-<li>是否是完整的细胞器基因组：yes&#x2F;no。</li>
-<li>核苷酸序列格式：fasta或者alignment，选的fasta</li>
-<li>上传细胞器基因组的fasta文件</li>
+<li>BioProject和BioSample是所有提交到GenBank都需要的，属于哪个项目，用了哪个样本。</li>
+<li>可以先注册这两项再在这里提供accession number；也可以选择还未注册提交之后会增加填写BioProject和BioSample信息的步骤然后自动注册新的；</li>
+<li>同一个项目同一个样品多个测序文件，比如基因组测序最常见的方案（Illumina PE的 DNA-Seq和RNA-Seq，以及PacBio SMRT），可以在一次提交中一同提交。</li>
+<li>释放日期Release date可以指定日期，也可以提交通过后立即释放；释放日期可以提交后发邮件更改的；</li>
+</ul>
+<ol start="3">
+<li>Project info【如果2填了没有已有的BioProject就会出现这一项】</li>
+</ol>
+<ul>
+<li>提供创建新的BioProject的信息</li>
+<li>项目题目Project title，项目描述Project description，和领域Relevance </li>
+<li>可选项：相关的外部链接External links，基金grants</li>
+</ul>
+<ol start="4">
+<li>BioSample Type【如果2填了没有已有的BioSample就会出现这一项】</li>
+</ol>
+<ul>
+<li>NCBI packages：样品类型，选Plant。可以填学名来筛选。</li>
+</ul>
+<ol start="5">
+<li>BioSample Attributes【如果2填了没有已有的BioSample就会出现这一项】</li>
+</ol>
+<ul>
+<li>如果是批量提交，可以用excel或csv表格提交多个BioSamples信息。</li>
+<li>样品名称Sample Name：区别于其他样品的唯一名称。可以用lab惯用的样品命名，比如YZ_Mc_01。</li>
+<li>生物名称Organism，填物种学名；</li>
+<li>个体描述isolate&#x2F;栽培名称cultivar&#x2F;生态型ecotype三选一填，填样本个体的唯一标识符ID。</li>
+<li>年龄age&#x2F;发育阶段development stage二选一填。</li>
+<li>地理位置geographic location：可以填国家China</li>
+<li>组织tissue：填写取样部位，eg. leaf，flower，root，stem.</li>
 </ul>
 <ol start="6">
-<li>Organism：填写Organism name信息，可填物种的学名。</li>
-<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
-<li>Source Modifiers：资源信息。</li>
+<li>SRA Metadata</li>
 </ol>
 <ul>
-<li>Organelle&#x2F;Location: 叶绿体&#x2F;线粒体&#x2F;其他器官。</li>
-<li>Source Modifier可以填写Country；对应的value填写China。</li>
+<li>如果是批量提交，可以用excel或csv表格提交多条信息。</li>
+<li>样品名称Sample Name：选择BioSample Attributes中填的。</li>
+<li>Library ID：测序前建库的ID，是独一无二的。</li>
+<li>Title：通常用这种形式：{methodology} of {organism}:{sample info}，如RNA-Seq of Bauhinia variegata: mature flower。</li>
+<li>Library strategy：建库策略，二代和三代测序选全基因组测序<strong>WGS</strong>。</li>
+<li>Library source：DNA-Seq和RNA-Seq通常Genomic或Transcriptomic。</li>
+<li>Library selection：二代和三代测序选RANDOM</li>
+<li>Library layout：单端 single或双端 paired</li>
+<li>Platform：测序平台，Illumina或Pacbio_SMRT等。</li>
+<li>Instrument model：具体的测序仪器型号。</li>
+<li>Design description：建库方法的简短描述。如TruSeq library preparation from genomic DNA。</li>
+<li>Filetype：fastq或bam等。</li>
+<li>Filename：文件名。如果双端测序就两个文件名。</li>
 </ul>
-<ol start="9">
-<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
-<li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
+<ol start="7">
+<li>Files</li>
+</ol>
+<ul>
+<li>提交SRA文件，fastq格式</li>
+<li>FTP或Aspera命令行上传文件夹(&gt;10GB)，或者网页提交(&lt;2GB)或Aspera Connect plugin(2-10GB)上传文件</li>
+<li>提交之后会检查信息是否错误，按提示修改。</li>
+</ul>
+<ol start="8">
+<li>Review&amp;Submit：最后检查一遍信息没错误就确认提交。</li>
 </ol>
 <p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
 <hr>
@@ -381,11 +420,14 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/SRA/" rel="tag"># SRA</a>
+              <a href="/tags/Sequence-Read-Archive/" rel="tag"># Sequence Read Archive</a>
               <a href="/tags/Unassembled-sequence-reads/" rel="tag"># Unassembled sequence reads</a>
               <a href="/tags/submit/" rel="tag"># submit</a>
               <a href="/tags/GenBank/" rel="tag"># GenBank</a>
               <a href="/tags/NGS/" rel="tag"># NGS</a>
               <a href="/tags/TGS/" rel="tag"># TGS</a>
+              <a href="/tags/Illumina/" rel="tag"># Illumina</a>
+              <a href="/tags/PacBio/" rel="tag"># PacBio</a>
           </div>
 
         
@@ -394,8 +436,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/12/06/NCBI_GenBank_submit_intro/" rel="prev" title="使用BankIt提交生物数据到NCBI的GenBank">
-      <i class="fa fa-chevron-left"></i> 使用BankIt提交生物数据到NCBI的GenBank
+    <a href="/2024/12/06/NCBI_GenBank_submit_intro/" rel="prev" title="提交核苷酸序列到NCBI的GenBank的介绍">
+      <i class="fa fa-chevron-left"></i> 提交核苷酸序列到NCBI的GenBank的介绍
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -456,7 +498,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">准备上传的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">上传步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7"><span class="nav-text">上传工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4-1"><span class="nav-text">上传步骤</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%B8%8A%E4%BC%A0%E7%9A%84%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE"><span class="nav-text">1. 上传的原始测序数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%B8%8A%E4%BC%A0%E5%89%8D%E5%87%86%E5%A4%87"><span class="nav-text">2. 上传前准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">3. 上传步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">3.1. 选择数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%9B%E5%85%A5Submission-Portal%E9%97%A8%E6%88%B7%E7%BD%91%E7%AB%99"><span class="nav-text">3.2. 进入Submission Portal门户网站</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -483,7 +525,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">476</span>
+        <span class="site-state-item-count">483</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -537,12 +579,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">711k</span>
+    <span title="Symbols count total">712k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:47</span>
+    <span title="Reading time total">10:48</span>
 </div>
 
         
