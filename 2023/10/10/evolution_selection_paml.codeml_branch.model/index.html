@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2023-10-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-28T09:33:06.581Z">
+<meta property="article:modified_time" content="2024-12-02T08:20:06.886Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="biosoft">
 <meta property="article:tag" content="bioinfo">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-28 17:33:06" itemprop="dateModified" datetime="2024-08-28T17:33:06+08:00">2024-08-28</time>
+                <time title="Modified: 2024-12-02 16:20:06" itemprop="dateModified" datetime="2024-12-02T16:20:06+08:00">2024-12-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -292,7 +292,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>6.7k</span>
+              <span>6.8k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -359,27 +359,34 @@
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">      seqfile = cds_aln.phy * sequence data filename</span><br><span class="line">     treefile = tree.newick      * tree structure file name</span><br><span class="line">      outfile = out.txt           * main result file name</span><br><span class="line"></span><br><span class="line">        noisy = 9  * 0,1,2,3,9: how much rubbish on the screen；控制屏幕输出的信息量</span><br><span class="line">      verbose = 1  * 0: concise; 1: detailed, 2: too much；控制输出文件中的信息量</span><br><span class="line">      runmode = 0  * 0: user tree;  1: semi-automatic;  2: automatic</span><br><span class="line">                   * 3: StepwiseAddition; (4,5):PerturbationNNI; -2: pairwise ; 代表使用用户提供的树拓扑(0)，或者codeML根据序列自行计算(2)</span><br><span class="line"></span><br><span class="line">      seqtype = 2  * 1:codons; 2:AAs; 3:codons--&gt;AAs ；输入序列数据类型</span><br><span class="line">    CodonFreq = 2  * 0:1/61 each, 1:F1X4, 2:F3X4, 3:codon table；密码子频率（CodonFreq）可以相等（0：每个1/61）或者不同，以解释密码子使用偏差。默认是2：F3X4，会根据序列决定密码子频率。FmutSel模型(CodonFreq = 7)为通用遗传密码的每个密码子分配了60(= 61-1)个密码子适应度参数(Yang and Nielsen 2008)。FmutSel0模型(CodonFreq = 6)是FmutSel的特例，它对同义密码子赋予相同的适应度值，因此只使用19(= 20-1)个氨基酸适应度参数。该模型假设氨基酸频率由蛋白质的功能需求决定，但同义密码子的相对频率仅由突变偏倚参数决定。</span><br><span class="line">        ndata = 1 * 基因或比对的数量</span><br><span class="line">        clock = 0  * 0:no clock, 1:clock; 2:local clock; 3:CombinedAnalysis；指定分子钟，不假设分子钟(0)，严格分子钟(1)，本地分子钟(2)，和联合分析(3)。这里选0不假设分子钟，则需要使用无根树（大部分情况是这样）。</span><br><span class="line">       aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a</span><br><span class="line">   aaRatefile = ../dat/jones.dat  * only used for aa seqs with model=empirical(_F)</span><br><span class="line">                   * dayhoff.dat, jones.dat, wag.dat, mtmam.dat, or your own</span><br><span class="line"></span><br><span class="line">        model = 2 * 根据进行的分析和假设来选择</span><br><span class="line">                   * models for codons:</span><br><span class="line">                       * 0:one, 1:b, 2:2 or more dN/dS ratios for branches</span><br><span class="line">                   * models for AAs or codon-translated AAs:</span><br><span class="line">                       * 0:poisson, 1:proportional, 2:Empirical, 3:Empirical+F</span><br><span class="line">                       * 6:FromCodon, 7:AAClasses, 8:REVaa_0, 9:REVaa(nr=189)</span><br><span class="line"></span><br><span class="line">      NSsites = 0  * 0:one w;1:neutral;2:selection; 3:discrete;4:freqs;</span><br><span class="line">                   * 5:gamma;6:2gamma;7:beta;8:beta&amp;w;9:beta&amp;gamma;</span><br><span class="line">                   * 10:beta&amp;gamma+1; 11:beta&amp;normal&gt;1; 12:0&amp;2normal&gt;1;</span><br><span class="line">                   * 13:3normal&gt;0</span><br><span class="line"></span><br><span class="line">        icode = 0  * 0:universal code; 1:mammalian mt; 2-10:see below ； 编码方式</span><br><span class="line">        Mgene = 0</span><br><span class="line">                   * codon: 0:rates, 1:separate; 2:diff pi, 3:diff kapa, 4:all diff</span><br><span class="line">                   * AA: 0:rates, 1:separate</span><br><span class="line"></span><br><span class="line">    fix_kappa = 0  * 1: kappa fixed, 0: kappa to be estimated ；0代表从给的序列推断kappa，kappa是转换/颠换的比率。</span><br><span class="line">        kappa = 2  * initial or fixed kappa</span><br><span class="line">    fix_omega = 0  * 1: omega or omega_1 fixed, 0: estimate ；0代表计算omega</span><br><span class="line">        omega = .4 * initial or fixed omega, for codons or codon-based AAs ；当fix_omega = 0 ,我们需要计算omega时，这个初始omega值便随意设置都ok。</span><br><span class="line"></span><br><span class="line">    fix_alpha = 1  * 0: estimate gamma shape parameter; 1: fix it at alpha</span><br><span class="line">        alpha = 0. * initial or fixed alpha, 0:infinity (constant rate)</span><br><span class="line">       Malpha = 0  * different alphas for genes</span><br><span class="line">        ncatG = 8  * # of categories in dG of NSsites models</span><br><span class="line"></span><br><span class="line">        getSE = 0  * 0: don&#x27;t want them, 1: want S.E.s of estimates</span><br><span class="line"> RateAncestor = 1  * (0,1,2): rates (alpha&gt;0) or ancestral states (1 or 2)</span><br><span class="line"></span><br><span class="line">   Small_Diff = .5e-6</span><br><span class="line">    cleandata = 1  * remove sites with ambiguity data (1:yes, 0:no)? 歧义数据和比对间隙的位点要保留(0)或删除(1)，建议自行删除歧义和gaps数据，并在这里选保留(0)。</span><br><span class="line">*  fix_blength = 1  * 0: ignore, -1: random, 1: initial, 2: fixed, 3: proportional</span><br><span class="line">       method = 0  * Optimization method 0: simultaneous; 1: one branch a time</span><br><span class="line"></span><br><span class="line">* Genetic codes: 0:universal, 1:mammalian mt., 2:yeast mt., 3:mold mt.,</span><br><span class="line">* 4: invertebrate mt., 5: ciliate nuclear, 6: echinoderm mt., </span><br><span class="line">* 7: euplotid mt., 8: alternative yeast nu. 9: ascidian mt., </span><br><span class="line">* 10: blepharisma nu.</span><br><span class="line">* These codes correspond to transl_table 1 to 11 of GENEBANK.</span><br></pre></td></tr></table></figure>
 
-<h2 id="3-3-执行codeML"><a href="#3-3-执行codeML" class="headerlink" title="3.3. 执行codeML"></a>3.3. 执行codeML</h2><ol>
-<li>零假设模型(null model)的运算——<strong>one ratio model</strong></li>
-</ol>
-<ul>
+<h2 id="3-3-执行codeML"><a href="#3-3-执行codeML" class="headerlink" title="3.3. 执行codeML"></a>3.3. 执行codeML</h2><h3 id="零假设模型-null-model-的运算——one-ratio-model"><a href="#零假设模型-null-model-的运算——one-ratio-model" class="headerlink" title="零假设模型(null model)的运算——one ratio model"></a>零假设模型(null model)的运算——<strong>one ratio model</strong></h3><ol>
 <li>在基础的配置参数上修改以下参数，保存为codeml_null.ctl</li>
-</ul>
+</ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   model = 0 * model = 0 代表零假设（即所有分支的 ω 值都一样）</span><br><span class="line"> NSsites = 0</span><br><span class="line">treefile = tree.newick</span><br><span class="line"> outfile = out_null.txt      </span><br></pre></td></tr></table></figure>
 
-<ul>
+<ol start="2">
 <li>执行命令<code>codeml codeml_null.ctl</code></li>
 <li>结果文件out_null.txt，这个模型得到的 ω 值代表整个系统发育树上的平均 ω 值。</li>
-</ul>
-<ol start="2">
-<li>备择假设模型(branch model)的运算———<strong>two ratio model</strong></li>
+</ol>
+<h3 id="备择假设模型-branch-model-的运算———two-ratio-model"><a href="#备择假设模型-branch-model-的运算———two-ratio-model" class="headerlink" title="备择假设模型(branch model)的运算———two ratio model"></a>备择假设模型(branch model)的运算———<strong>two ratio model</strong></h3><ol>
+<li>标记前景分支</li>
 </ol>
 <ul>
-<li>标记前景分支：在树文件tree.newick的基础上标记前景分支，保存为tree_branch.newick文件。</li>
-<li>标记方法：标记某一支为前景支 (#1)，标记某一支及所有子分支都为前景支（$1）。如只标记A和B的祖先枝为前景支，则可用<code>((((A,B)$1,C),D),E);</code>；标记A和B祖先支以及A、B分支都为前景支：<code>((((A,B)$1,C),D),E);</code>。</li>
-<li>如果需要标记多个前景分支，则分别使用#1,#2,…（或者$1,$2,…）来标记。做过测试，同时标记多个前景支来运算和只标记一个前景支单独运算多次的结果是很接近的。</li>
-<li>在基础的配置参数上修改以下参数，保存为codeml_branch.ctl</li>
+<li>在树文件tree.newick的基础上标记前景分支，保存为tree_branch.newick文件。</li>
 </ul>
+<ol start="2">
+<li>标记前景分支的方法</li>
+</ol>
+<ul>
+<li>标记某一支为前景支 (#1)，标记某一支及所有子分支都为前景支（$1）。</li>
+<li>如只标记A和B的祖先枝为前景支，则可用<code>((((A,B) #1,C),D),E);</code>；</li>
+<li>标记A和B祖先支以及A、B分支都为前景支：<code>((((A,B) $1,C),D),E);</code>；等同于<code>((((A #1,B #1) #1,C),D),E);</code>。</li>
+<li>多个标记的优先级：**#1** 标记比 <strong>$1</strong>标记的优先级更高；tips端标记比祖先节点的标记的优先级更高。</li>
+<li>如果需要标记多个前景分支，则分别使用#1,#2,…（或者$1,$2,…）来标记。做过测试，同时标记多个前景支来运算和只标记一个前景支单独运算多次的结果是很接近的。</li>
+</ul>
+<ol start="3">
+<li>在基础的配置参数上修改以下参数，保存为codeml_branch.ctl</li>
+</ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   model = 2 * model = 2 代表备择假设（不同分支的 ω 值有2种或以上的类别）</span><br><span class="line"> NSsites = 0</span><br><span class="line">treefile = tree_branch.newick</span><br><span class="line"> outfile = out_branch.txt</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -493,8 +500,8 @@
       <i class="fa fa-chevron-left"></i> 用PAML的codeML进行选择分析：（一）概况
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/10/20/evolution_selection_HyPhy_RELAX/" rel="next" title="用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松">
-      用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/10/20/evolution_selection_HyPhy_intro/" rel="next" title="用HyPhy分析自然选择：（一）介绍HyPhy">
+      用HyPhy分析自然选择：（一）介绍HyPhy <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -554,7 +561,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="nav-text">1. 背景知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model-%E9%80%89%E6%8B%A9%E5%88%86%E6%9E%90%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="nav-text">2. 分支模型 (branch model) 选择分析的目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8PAML%E7%9A%84codeML%E4%B8%AD%E7%9A%84%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model-%E6%9D%A5%E6%A3%80%E6%B5%8B%E5%88%86%E6%94%AF%E7%9A%84%E9%80%89%E6%8B%A9%E6%96%B9%E5%90%91%E5%92%8C%E5%BC%BA%E5%BA%A6"><span class="nav-text">3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%81%87%E8%AE%BE"><span class="nav-text">3.1. 假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.2. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%89%A7%E8%A1%8CcodeML"><span class="nav-text">3.3. 执行codeML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%9C"><span class="nav-text">3.4. 比较结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E4%BC%BC%E7%84%B6%E7%8E%87%E6%A3%80%E9%AA%8C-Likelihood-Ratio-Test-LRT"><span class="nav-text">3.4.1. 似然率检验 (Likelihood Ratio Test,LRT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E7%94%A8%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C-chi-2-%E8%AE%A1%E7%AE%97p%E5%80%BC%EF%BC%8C%E5%88%86%E6%9E%90%E4%BC%BC%E7%84%B6%E5%80%BC%E5%B7%AE%E5%BC%82%E7%9A%84%E6%98%BE%E8%91%97%E6%80%A7"><span class="nav-text">3.4.2. 用卡方检验(chi^2)计算p值，分析似然值差异的显著性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-omega-%CF%89-%E5%80%BC"><span class="nav-text">3.4.3. omega(ω) 值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-reference"><span class="nav-text">4. reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="nav-text">1. 背景知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model-%E9%80%89%E6%8B%A9%E5%88%86%E6%9E%90%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="nav-text">2. 分支模型 (branch model) 选择分析的目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8PAML%E7%9A%84codeML%E4%B8%AD%E7%9A%84%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B-branch-model-%E6%9D%A5%E6%A3%80%E6%B5%8B%E5%88%86%E6%94%AF%E7%9A%84%E9%80%89%E6%8B%A9%E6%96%B9%E5%90%91%E5%92%8C%E5%BC%BA%E5%BA%A6"><span class="nav-text">3. 使用PAML的codeML中的分支模型 (branch model) 来检测分支的选择方向和强度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%81%87%E8%AE%BE"><span class="nav-text">3.1. 假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%87%86%E5%A4%87%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.2. 准备输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%89%A7%E8%A1%8CcodeML"><span class="nav-text">3.3. 执行codeML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%B6%E5%81%87%E8%AE%BE%E6%A8%A1%E5%9E%8B-null-model-%E7%9A%84%E8%BF%90%E7%AE%97%E2%80%94%E2%80%94one-ratio-model"><span class="nav-text">零假设模型(null model)的运算——one ratio model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E6%8B%A9%E5%81%87%E8%AE%BE%E6%A8%A1%E5%9E%8B-branch-model-%E7%9A%84%E8%BF%90%E7%AE%97%E2%80%94%E2%80%94%E2%80%94two-ratio-model"><span class="nav-text">备择假设模型(branch model)的运算———two ratio model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%9C"><span class="nav-text">3.4. 比较结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E4%BC%BC%E7%84%B6%E7%8E%87%E6%A3%80%E9%AA%8C-Likelihood-Ratio-Test-LRT"><span class="nav-text">3.4.1. 似然率检验 (Likelihood Ratio Test,LRT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E7%94%A8%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C-chi-2-%E8%AE%A1%E7%AE%97p%E5%80%BC%EF%BC%8C%E5%88%86%E6%9E%90%E4%BC%BC%E7%84%B6%E5%80%BC%E5%B7%AE%E5%BC%82%E7%9A%84%E6%98%BE%E8%91%97%E6%80%A7"><span class="nav-text">3.4.2. 用卡方检验(chi^2)计算p值，分析似然值差异的显著性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-omega-%CF%89-%E5%80%BC"><span class="nav-text">3.4.3. omega(ω) 值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-reference"><span class="nav-text">4. reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -635,12 +642,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">705k</span>
+    <span title="Symbols count total">706k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:41</span>
+    <span title="Reading time total">10:42</span>
 </div>
 
         
