@@ -1,15 +1,19 @@
 ---
-title: 使用BankIt提交细胞器基因组组装和注释到NCBI
-date: 2022-06-30
+title: 使用BankIt提交原始测序数据到NCBI的GenBank
+date: 2024-12-06
 categories: 
-- omics
-- organelle
-tags:
-- mitogenome
-- plastome
+- NCBI
+- GenBank
 - submit
-
-description: 记录了上传细胞器基因组的组装和注释数据到NCBI的步骤。
+- SRA
+tags:
+- SRA
+- Unassembled sequence reads
+- submit
+- GenBank
+- NGS
+- TGS
+description: 记录上传原始测序reads数据（二代数据和三代数据）到NCBI的步骤。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=509092165&auto=1&height=32"></iframe></div>

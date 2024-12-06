@@ -2,7 +2,9 @@
 title: 提交基因组到公共数据库 —— 以GenBank为例
 date: 2022-03-22 21:30:00
 categories:
-- omics
+- NCBI
+- GenBank
+- submit
 - genome
 tags:
 - genome
