@@ -1,5 +1,5 @@
 ---
-title: 使用BankIt提交原始测序数据到NCBI的GenBank
+title: 提交原始测序数据到NCBI的GenBank
 date: 2024-12-06
 categories: 
 - NCBI
@@ -29,7 +29,11 @@ description: 记录上传原始测序reads数据（二代数据和三代数据�
 
 # 3. 上传步骤
 ## 3.1. 选择数据类型
-1. 打开BankIt网址：https://www.ncbi.nlm.nih.gov/WebSub。登录NCBI账号。
+1. 打开提交入口，Submission Portal或BankIt都可以，登录NCBI账号。
+- Submission Portal提交入口：https://submit.ncbi.nlm.nih.gov/
+- Submission Portal历史提交记录：https://submit.ncbi.nlm.nih.gov/subs/
+- BankIt提交入口：https://www.ncbi.nlm.nih.gov/WebSub
+- BankIt历史提交记录：https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&form=history
 2. 选择上传的数据类别：
 - Unassembled sequence reads (SRA)：未组装的测序reads
 ## 3.2. 进入Submission Portal门户网站
@@ -74,8 +78,9 @@ description: 记录上传原始测序reads数据（二代数据和三代数据�
 - Filename：文件名，包含文件后缀。如果双端测序就两个文件名。
 7. Files
 - 提交SRA文件，fastq格式或者bam格式等格式的文件，支持fq.gz压缩格式。
-- 多种上传方式：FTP或Aspera命令行上传文件夹(10-100GB)，或者网页提交(<2GB)或Aspera Connect plugin(2-10GB)上传文件。有上传说明，按说明做即可。
-- Aspera命令行上传：(1)把要上传的文件全部放在一个文件夹下；(2)下载和安装Aspera Connect software；(3)下载key file文件；(4) 运行命令 `ascp -i <path/to/key_file> -QT -l100m -k1 -d <path/to/folder/containing files> subasp@upload.ncbi.nlm.nih.gov:uploads/xx_xx_xx_gmail.com_DbE9nqDQ`;其中key file必须是绝对路径，`-l100m`参数是指定最大传输速度为100 meg/s。(5)上传好了就回到这个界面，选择上传的文件夹，继续提交。
+- 多种上传方式：FTP或Aspera命令行上传文件夹(10-100GB)，或者网页提交(<2GB)或Aspera Connect plugin(2-10GB)上传文件。其中Aspera命令行上传最快。
+- Linux系统下推荐Aspera命令行上传：(1)把要上传的文件全部放在一个文件夹下；(2)下载和安装Aspera Connect software；(3)下载key file文件；(4) 运行命令 `ascp -i <path/to/key_file> -QT -l100m -k1 -d <path/to/folder/containing files> subasp@upload.ncbi.nlm.nih.gov:uploads/xx_xx_xx_gmail.com_DbE9nqDQ`;其中key file必须是绝对路径，`-l100m`参数是指定最大传输速度为100 meg/s；实测大概是50分钟传了20Gb数据。(5)上传好了就回到这个界面，选择上传的文件夹，继续提交。
+- 有时文件较大需要等待较长时间，可以选择自动完成提交（Autofinish submission），选择后在上传文件完成后自动检查，没有问题就自动提交。
 - 提交之后会检查信息是否错误，按提示修改。
 8. Review&Submit：最后检查一遍信息没错误就确认提交。
 

@@ -22,13 +22,16 @@ description: 记录了上传细胞器基因组的组装和注释数据到NCBI的
 
 tbl格式文件推荐用GB2sequin来准备。
 
-参考博客-转换GenBank文件为tbl格式：https://yanzhongsino.github.io/2022/06/16/biosoft_fileformat_gb2tbl/。
+参考博客-转换GenBank文件为tbl格式：https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/。
 
 # 2. 上传步骤
 ## 2.1. 上传工具
-BankIt：https://www.ncbi.nlm.nih.gov/WebSub/index.cgi
+BankIt提交入口：https://www.ncbi.nlm.nih.gov/WebSub/index.cgi
 
-使用BankIt在线上传，允许一次提交多个细胞器基因组序列。
+目前好像只支持用BankIt上传细胞器基因组，允许一次提交多个细胞器基因组序列。
+
+提交之后可以在这里查询提交记录：
+- BankIt历史提交记录：https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&form=history
 
 ## 2.2. 上传步骤
 1. 选择上传的数据类别。细胞器基因组选择Sequence data not listed above：organelle。下面列几个常用的：

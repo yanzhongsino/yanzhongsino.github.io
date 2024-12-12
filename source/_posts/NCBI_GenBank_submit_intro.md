@@ -90,14 +90,18 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 - 长度小于 200 个核苷酸的序列
 
 ## 2.2. 上传序列的工具
-1. BankIt 【推荐】
-- 基于WWW网络的提交工具，有向导指引提交过程。
-- BankIt网址：https://www.ncbi.nlm.nih.gov/WebSub/
-2. Submission Portal
-- Submission Portal网址：https://submit.ncbi.nlm.nih.gov/
+推荐 Submission Portal 和 BankIt 两个提交工具，要注意，两者的**提交入口**和**历史提交记录**保存的路径不同。
+1. Submission Portal【推荐】
+- Submission Portal提交入口：https://submit.ncbi.nlm.nih.gov/
+- Submission Portal历史提交记录：https://submit.ncbi.nlm.nih.gov/subs/
 - Submission Portal是一个适用于多种数据类型的提交门户系统。
 - 目前，核糖体 RNA (rRNA)、rRNA-ITS、metazoan 线粒体 COX1、真核细胞核 mRNA、流感、诺如病毒、登革热或 SARS-CoV-2 序列只可以通过Submission Portal的 GenBank 组件提交。
 - 这个工具今后还将扩展到其他类型的 GenBank 提交。
+2. BankIt【推荐】
+- BankIt提交入口：https://www.ncbi.nlm.nih.gov/WebSub
+- BankIt历史提交记录：https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&form=history
+- BankIt是基于WWW网络的提交工具，有向导指引提交过程。
+- 细胞器基因组目前只能通过BankIt提交。
 3. Sequin：旧版提交工具 【不推荐】
 - Sequin是以前常被使用的旧版GenBank提交工具，在2021.01退役，原来的界面也404了：https://www.ncbi.nlm.nih.gov/Sequin。
 - Sequin 是 NCBI 开发的一款独立软件工具，用于向 GenBank、EMBL 和 DDBJ 数据库提交和更新序列。 Sequin 能够处理长序列和序列集（分段条目以及种群、系统发育和突变研究）。 它还允许序列编辑和更新，并提供复杂的注释功能。 此外，Sequin 还包含许多内置的验证功能，以加强质量保证。
@@ -119,10 +123,8 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 3. 将更新和修订发送至 gb-admin@ncbi.nlm.nih.gov。请务必在邮件主题行注明要更新序列的登录号。
 
 # 5. 用BankIt的上传步骤
-
-BankIt：https://www.ncbi.nlm.nih.gov/WebSub
-
-建议先注册和登录NCBI账号，之后的所有提交记录都会保存在你的账号下，在这里可以查看提交记录：https://submit.ncbi.nlm.nih.gov/subs/。
+- BankIt提交入口：https://www.ncbi.nlm.nih.gov/WebSub
+- BankIt提交历史记录：https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&form=history
 
 ## 5.1. 选择上传的数据类别
 下面列几个常用的：
@@ -142,9 +144,15 @@ BankIt：https://www.ncbi.nlm.nih.gov/WebSub
 4. BioSample Type
 5. BioSample Attributes
 6. SRA Metadata
-7. Files：上传文件。
+7. Files：上传文件。多种途径，试过Aspera命令上传是最快的，且可以断电续传，推荐。
+- (1) Web browser upload via HTTP or Aspera Connect plugin
+- 通过浏览器网页直接上传。
+- 只能上传10GB以内、以及300个文件以内的数据。
+- (2) FTP or Aspera Command Line file preload
+- 通过FTP传输软件或者Aspera命令上传。
+- 所有上传文件都需要放在一个文件夹下。
+- (3) AWS or GCP bucket：通过亚马逊云（AWS）或谷歌云（GCP）上传，我还没试过。
 8. Review&Submit：最后检查一遍信息没错误就确认提交。
-
 
 没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。
 
