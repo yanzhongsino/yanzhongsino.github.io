@@ -22,14 +22,14 @@
 
   <meta name="description" content="记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用BankIt提交原始测序数据到NCBI的GenBank">
+<meta property="og:title" content="提交原始测序数据到NCBI的GenBank">
 <meta property="og:url" content="http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/index.html">
 <meta property="og:site_name" content="生信技工">
 <meta property="og:description" content="记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-12-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-06T14:26:59.739Z">
+<meta property="article:modified_time" content="2024-12-12T07:29:15.594Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="SRA">
 <meta property="article:tag" content="Sequence Read Archive">
@@ -56,7 +56,7 @@
   };
 </script>
 
-  <title>使用BankIt提交原始测序数据到NCBI的GenBank | 生信技工</title>
+  <title>提交原始测序数据到NCBI的GenBank | 生信技工</title>
   
 
 
@@ -236,7 +236,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          使用BankIt提交原始测序数据到NCBI的GenBank
+          提交原始测序数据到NCBI的GenBank
         </h1>
 
         <div class="post-meta">
@@ -245,10 +245,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-12-06 00:00:00 / Modified: 22:26:59" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
+              <time title="Created: 2024-12-06 00:00:00" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 15:29:15" itemprop="dateModified" datetime="2024-12-12T15:29:15+08:00">2024-12-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -283,7 +289,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.9k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -307,7 +313,15 @@
 <h1 id="1-上传的原始测序数据"><a href="#1-上传的原始测序数据" class="headerlink" title="1. 上传的原始测序数据"></a>1. 上传的原始测序数据</h1><p>二代或三代测序的原始序列读数应提交至Sequence Read Archive(SRA)：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/sra%E3%80%82">https://www.ncbi.nlm.nih.gov/sra。</a></p>
 <h1 id="2-上传前准备"><a href="#2-上传前准备" class="headerlink" title="2. 上传前准备"></a>2. 上传前准备</h1><p>建议先注册和登录NCBI账号再进行上传，之后的所有提交记录都会保存在你的账号下，在这里可以查看提交记录：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/%E3%80%82">https://submit.ncbi.nlm.nih.gov/subs/。</a></p>
 <h1 id="3-上传步骤"><a href="#3-上传步骤" class="headerlink" title="3. 上传步骤"></a>3. 上传步骤</h1><h2 id="3-1-选择数据类型"><a href="#3-1-选择数据类型" class="headerlink" title="3.1. 选择数据类型"></a>3.1. 选择数据类型</h2><ol>
-<li>打开BankIt网址：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub%E3%80%82%E7%99%BB%E5%BD%95NCBI%E8%B4%A6%E5%8F%B7%E3%80%82">https://www.ncbi.nlm.nih.gov/WebSub。登录NCBI账号。</a></li>
+<li>打开提交入口，Submission Portal或BankIt都可以，登录NCBI账号。</li>
+</ol>
+<ul>
+<li>Submission Portal提交入口：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/">https://submit.ncbi.nlm.nih.gov/</a></li>
+<li>Submission Portal历史提交记录：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/">https://submit.ncbi.nlm.nih.gov/subs/</a></li>
+<li>BankIt提交入口：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub">https://www.ncbi.nlm.nih.gov/WebSub</a></li>
+<li>BankIt历史提交记录：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&amp;form=history">https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&amp;form=history</a></li>
+</ul>
+<ol start="2">
 <li>选择上传的数据类别：</li>
 </ol>
 <ul>
@@ -380,8 +394,9 @@
 </ol>
 <ul>
 <li>提交SRA文件，fastq格式或者bam格式等格式的文件，支持fq.gz压缩格式。</li>
-<li>多种上传方式：FTP或Aspera命令行上传文件夹(10-100GB)，或者网页提交(&lt;2GB)或Aspera Connect plugin(2-10GB)上传文件。有上传说明，按说明做即可。</li>
-<li>Aspera命令行上传：(1)把要上传的文件全部放在一个文件夹下；(2)下载和安装Aspera Connect software；(3)下载key file文件；(4) 运行命令 <code>ascp -i &lt;path/to/key_file&gt; -QT -l100m -k1 -d &lt;path/to/folder/containing files&gt; subasp@upload.ncbi.nlm.nih.gov:uploads/xx_xx_xx_gmail.com_DbE9nqDQ</code>;其中key file必须是绝对路径，<code>-l100m</code>参数是指定最大传输速度为100 meg&#x2F;s。(5)上传好了就回到这个界面，选择上传的文件夹，继续提交。</li>
+<li>多种上传方式：FTP或Aspera命令行上传文件夹(10-100GB)，或者网页提交(&lt;2GB)或Aspera Connect plugin(2-10GB)上传文件。其中Aspera命令行上传最快。</li>
+<li>Linux系统下推荐Aspera命令行上传：(1)把要上传的文件全部放在一个文件夹下；(2)下载和安装Aspera Connect software；(3)下载key file文件；(4) 运行命令 <code>ascp -i &lt;path/to/key_file&gt; -QT -l100m -k1 -d &lt;path/to/folder/containing files&gt; subasp@upload.ncbi.nlm.nih.gov:uploads/xx_xx_xx_gmail.com_DbE9nqDQ</code>;其中key file必须是绝对路径，<code>-l100m</code>参数是指定最大传输速度为100 meg&#x2F;s；实测大概是50分钟传了20Gb数据。(5)上传好了就回到这个界面，选择上传的文件夹，继续提交。</li>
+<li>有时文件较大需要等待较长时间，可以选择自动完成提交（Autofinish submission），选择后在上传文件完成后自动检查，没有问题就自动提交。</li>
 <li>提交之后会检查信息是否错误，按提示修改。</li>
 </ul>
 <ol start="8">
@@ -442,7 +457,10 @@
     <a href="/2024/12/06/NCBI_GenBank_submit_intro/" rel="prev" title="提交核苷酸序列到NCBI的GenBank的介绍">
       <i class="fa fa-chevron-left"></i> 提交核苷酸序列到NCBI的GenBank的介绍
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/10/omics_organelle_assembly_Bandage.operation/" rel="next" title="细胞器基因组组装过程中常用软件Bandage的操作">
+      细胞器基因组组装过程中常用软件Bandage的操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -515,20 +533,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">135</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">86</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">483</span>
+        <span class="site-state-item-count">492</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -582,12 +600,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">713k</span>
+    <span title="Symbols count total">720k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:48</span>
+    <span title="Reading time total">10:55</span>
 </div>
 
         

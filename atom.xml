@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-12-06T14:26:59.739Z</updated>
+  <updated>2024-12-12T12:53:10.187Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,85 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>使用BankIt提交原始测序数据到NCBI的GenBank</title>
+    <title>用GetOrganelle组装细胞器基因组和核基因组的核糖体RNA序列</title>
+    <link href="http://example.com/2024/12/12/omics_organelle_assembly_GetOrganelle/"/>
+    <id>http://example.com/2024/12/12/omics_organelle_assembly_GetOrganelle/</id>
+    <published>2024-12-11T16:00:00.000Z</published>
+    <updated>2024-12-12T12:53:10.187Z</updated>
+    
+    
+    <summary type="html">介绍GetOrganelle，使用GetOrganelle基于whole genome skimming data组装植物质体、植物线粒体、动物线粒体、真菌线粒体、核基因组的核糖体RNA（18S-ITS1-5.8S-ITS2-26S）等序列。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="organelle" scheme="http://example.com/categories/omics/organelle/"/>
+    
+    <category term="assembly" scheme="http://example.com/categories/omics/organelle/assembly/"/>
+    
+    
+    <category term="mitogenome" scheme="http://example.com/tags/mitogenome/"/>
+    
+    <category term="organelle" scheme="http://example.com/tags/organelle/"/>
+    
+    <category term="WGS" scheme="http://example.com/tags/WGS/"/>
+    
+    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
+    
+    <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
+    
+    <category term="mitochondria" scheme="http://example.com/tags/mitochondria/"/>
+    
+    <category term="assembly" scheme="http://example.com/tags/assembly/"/>
+    
+    <category term="fastg" scheme="http://example.com/tags/fastg/"/>
+    
+    <category term="nuclear ribosomal RNA" scheme="http://example.com/tags/nuclear-ribosomal-RNA/"/>
+    
+    <category term="5.8S" scheme="http://example.com/tags/5-8S/"/>
+    
+    <category term="18S" scheme="http://example.com/tags/18S/"/>
+    
+    <category term="26S" scheme="http://example.com/tags/26S/"/>
+    
+    <category term="ITS" scheme="http://example.com/tags/ITS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>细胞器基因组组装过程中常用软件Bandage的操作</title>
+    <link href="http://example.com/2024/12/10/omics_organelle_assembly_Bandage.operation/"/>
+    <id>http://example.com/2024/12/10/omics_organelle_assembly_Bandage.operation/</id>
+    <published>2024-12-09T16:00:00.000Z</published>
+    <updated>2024-12-10T09:59:44.565Z</updated>
+    
+    
+    <summary type="html">记录细胞器基因组组装过程中常用软件Bandage的操作。</summary>
+    
+    
+    
+    <category term="omics" scheme="http://example.com/categories/omics/"/>
+    
+    <category term="organelle" scheme="http://example.com/categories/omics/organelle/"/>
+    
+    <category term="assembly" scheme="http://example.com/categories/omics/organelle/assembly/"/>
+    
+    
+    <category term="mitogenome" scheme="http://example.com/tags/mitogenome/"/>
+    
+    <category term="organelle" scheme="http://example.com/tags/organelle/"/>
+    
+    <category term="Bandage" scheme="http://example.com/tags/Bandage/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>提交原始测序数据到NCBI的GenBank</title>
     <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/"/>
     <id>http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/</id>
     <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-06T14:26:59.739Z</updated>
+    <updated>2024-12-12T07:29:15.594Z</updated>
     
     
     <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</summary>
@@ -62,7 +136,7 @@
     <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_intro/"/>
     <id>http://example.com/2024/12/06/NCBI_GenBank_submit_intro/</id>
     <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-06T13:21:29.407Z</updated>
+    <updated>2024-12-12T07:29:22.666Z</updated>
     
     
     <summary type="html">介绍NCBI,GenBank和向GenBank上传核苷酸序列。</summary>
@@ -308,9 +382,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
-    
     <category term="orthology" scheme="http://example.com/tags/orthology/"/>
+    
+    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
@@ -626,61 +700,6 @@
   </entry>
   
   <entry>
-    <title>基因组测序简介</title>
-    <link href="http://example.com/2024/06/04/omics_genome.sequencing_intro/"/>
-    <id>http://example.com/2024/06/04/omics_genome.sequencing_intro/</id>
-    <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-11-26T07:49:33.582Z</updated>
-    
-    
-    <summary type="html">介绍基因组测序技术的分类（包括第一代、第二代和第三代测序技术）、原理、优缺点和应用。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
-    
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
-    
-    <category term="fastq" scheme="http://example.com/tags/fastq/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
-    
-    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
-    
-    <category term="sanger sequencing" scheme="http://example.com/tags/sanger-sequencing/"/>
-    
-    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
-    
-    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
-    
-    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
-    
-    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
-    
-    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
-    
-    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
-    
-    <category term="Nanopore" scheme="http://example.com/tags/Nanopore/"/>
-    
-    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
-    
-  </entry>
-  
-  <entry>
     <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
     <link href="http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/"/>
     <id>http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/</id>
@@ -726,59 +745,6 @@
     <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
     
     <category term="subreads" scheme="http://example.com/tags/subreads/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>质体的分类、角色和转换</title>
-    <link href="http://example.com/2024/05/31/bio_plastid_typesandroles/"/>
-    <id>http://example.com/2024/05/31/bio_plastid_typesandroles/</id>
-    <published>2024-05-30T16:00:00.000Z</published>
-    <updated>2024-06-04T09:43:49.519Z</updated>
-    
-    
-    <summary type="html">介绍植物细胞内质体的分类、角色和转换。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="plastid" scheme="http://example.com/categories/bio/plastid/"/>
-    
-    
-    <category term="plastid" scheme="http://example.com/tags/plastid/"/>
-    
-    <category term="质体" scheme="http://example.com/tags/%E8%B4%A8%E4%BD%93/"/>
-    
-    <category term="proplastid" scheme="http://example.com/tags/proplastid/"/>
-    
-    <category term="原质体" scheme="http://example.com/tags/%E5%8E%9F%E8%B4%A8%E4%BD%93/"/>
-    
-    <category term="leucoplast" scheme="http://example.com/tags/leucoplast/"/>
-    
-    <category term="白质体" scheme="http://example.com/tags/%E7%99%BD%E8%B4%A8%E4%BD%93/"/>
-    
-    <category term="amyloplast" scheme="http://example.com/tags/amyloplast/"/>
-    
-    <category term="elaioplast" scheme="http://example.com/tags/elaioplast/"/>
-    
-    <category term="proteinoplast" scheme="http://example.com/tags/proteinoplast/"/>
-    
-    <category term="chromoplast" scheme="http://example.com/tags/chromoplast/"/>
-    
-    <category term="色质体" scheme="http://example.com/tags/%E8%89%B2%E8%B4%A8%E4%BD%93/"/>
-    
-    <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
-    
-    <category term="叶绿体" scheme="http://example.com/tags/%E5%8F%B6%E7%BB%BF%E4%BD%93/"/>
-    
-    <category term="etioplast" scheme="http://example.com/tags/etioplast/"/>
-    
-    <category term="黄化体" scheme="http://example.com/tags/%E9%BB%84%E5%8C%96%E4%BD%93/"/>
-    
-    <category term="gerontoplast" scheme="http://example.com/tags/gerontoplast/"/>
-    
-    <category term="老年体" scheme="http://example.com/tags/%E8%80%81%E5%B9%B4%E4%BD%93/"/>
     
   </entry>
   

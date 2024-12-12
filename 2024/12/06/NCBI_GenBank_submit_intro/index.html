@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-12-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-06T13:21:29.407Z">
+<meta property="article:modified_time" content="2024-12-12T07:29:22.666Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="SRA">
 <meta property="article:tag" content="Unassembled sequence reads">
@@ -250,10 +250,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-12-06 00:00:00 / Modified: 21:21:29" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
+              <time title="Created: 2024-12-06 00:00:00" itemprop="dateCreated datePublished" datetime="2024-12-06T00:00:00+08:00">2024-12-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 15:29:22" itemprop="dateModified" datetime="2024-12-12T15:29:22+08:00">2024-12-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -284,13 +290,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>4.5k</span>
+              <span>5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>4 mins.</span>
+              <span>5 mins.</span>
             </span>
             <div class="post-description">介绍NCBI,GenBank和向GenBank上传核苷酸序列。</div>
 
@@ -405,21 +411,25 @@
 <li>无实体对应物的序列（一致性序列，consensus sequences）</li>
 <li>长度小于 200 个核苷酸的序列</li>
 </ul>
-<h2 id="2-2-上传序列的工具"><a href="#2-2-上传序列的工具" class="headerlink" title="2.2. 上传序列的工具"></a>2.2. 上传序列的工具</h2><ol>
-<li>BankIt 【推荐】</li>
+<h2 id="2-2-上传序列的工具"><a href="#2-2-上传序列的工具" class="headerlink" title="2.2. 上传序列的工具"></a>2.2. 上传序列的工具</h2><p>推荐 Submission Portal 和 BankIt 两个提交工具，要注意，两者的<strong>提交入口</strong>和<strong>历史提交记录</strong>保存的路径不同。</p>
+<ol>
+<li>Submission Portal【推荐】</li>
 </ol>
 <ul>
-<li>基于WWW网络的提交工具，有向导指引提交过程。</li>
-<li>BankIt网址：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/">https://www.ncbi.nlm.nih.gov/WebSub/</a></li>
-</ul>
-<ol start="2">
-<li>Submission Portal</li>
-</ol>
-<ul>
-<li>Submission Portal网址：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/">https://submit.ncbi.nlm.nih.gov/</a></li>
+<li>Submission Portal提交入口：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/">https://submit.ncbi.nlm.nih.gov/</a></li>
+<li>Submission Portal历史提交记录：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/">https://submit.ncbi.nlm.nih.gov/subs/</a></li>
 <li>Submission Portal是一个适用于多种数据类型的提交门户系统。</li>
 <li>目前，核糖体 RNA (rRNA)、rRNA-ITS、metazoan 线粒体 COX1、真核细胞核 mRNA、流感、诺如病毒、登革热或 SARS-CoV-2 序列只可以通过Submission Portal的 GenBank 组件提交。</li>
 <li>这个工具今后还将扩展到其他类型的 GenBank 提交。</li>
+</ul>
+<ol start="2">
+<li>BankIt【推荐】</li>
+</ol>
+<ul>
+<li>BankIt提交入口：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub">https://www.ncbi.nlm.nih.gov/WebSub</a></li>
+<li>BankIt历史提交记录：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&amp;form=history">https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&amp;form=history</a></li>
+<li>BankIt是基于WWW网络的提交工具，有向导指引提交过程。</li>
+<li>细胞器基因组目前只能通过BankIt提交。</li>
 </ul>
 <ol start="3">
 <li>Sequin：旧版提交工具 【不推荐】</li>
@@ -446,10 +456,12 @@
 <h1 id="4-更新或修订-GenBank-序列"><a href="#4-更新或修订-GenBank-序列" class="headerlink" title="4. 更新或修订 GenBank 序列"></a>4. 更新或修订 GenBank 序列</h1><ol>
 <li>提交者可随时对 GenBank 条目进行修订或更新。 </li>
 <li>关于不同类型更新的正确格式，请参阅更新指南页面:<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/genbank/update/%E3%80%82">https://www.ncbi.nlm.nih.gov/genbank/update/。</a></li>
-<li>将更新和修订发送至 <a href="mailto:&#x67;&#98;&#x2d;&#97;&#x64;&#x6d;&#105;&#x6e;&#x40;&#110;&#99;&#x62;&#x69;&#x2e;&#110;&#x6c;&#x6d;&#x2e;&#110;&#105;&#104;&#46;&#103;&#111;&#x76;">&#x67;&#98;&#x2d;&#97;&#x64;&#x6d;&#105;&#x6e;&#x40;&#110;&#99;&#x62;&#x69;&#x2e;&#110;&#x6c;&#x6d;&#x2e;&#110;&#105;&#104;&#46;&#103;&#111;&#x76;</a>。请务必在邮件主题行注明要更新序列的登录号。</li>
+<li>将更新和修订发送至 <a href="mailto:&#103;&#x62;&#45;&#x61;&#x64;&#x6d;&#x69;&#110;&#64;&#x6e;&#99;&#98;&#105;&#46;&#110;&#108;&#x6d;&#46;&#110;&#x69;&#104;&#46;&#x67;&#111;&#x76;">&#103;&#x62;&#45;&#x61;&#x64;&#x6d;&#x69;&#110;&#64;&#x6e;&#99;&#98;&#105;&#46;&#110;&#108;&#x6d;&#46;&#110;&#x69;&#104;&#46;&#x67;&#111;&#x76;</a>。请务必在邮件主题行注明要更新序列的登录号。</li>
 </ol>
-<h1 id="5-用BankIt的上传步骤"><a href="#5-用BankIt的上传步骤" class="headerlink" title="5. 用BankIt的上传步骤"></a>5. 用BankIt的上传步骤</h1><p>BankIt：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub">https://www.ncbi.nlm.nih.gov/WebSub</a></p>
-<p>建议先注册和登录NCBI账号，之后的所有提交记录都会保存在你的账号下，在这里可以查看提交记录：<a target="_blank" rel="noopener" href="https://submit.ncbi.nlm.nih.gov/subs/%E3%80%82">https://submit.ncbi.nlm.nih.gov/subs/。</a></p>
+<h1 id="5-用BankIt的上传步骤"><a href="#5-用BankIt的上传步骤" class="headerlink" title="5. 用BankIt的上传步骤"></a>5. 用BankIt的上传步骤</h1><ul>
+<li>BankIt提交入口：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub">https://www.ncbi.nlm.nih.gov/WebSub</a></li>
+<li>BankIt提交历史记录：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&amp;form=history">https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank&amp;form=history</a></li>
+</ul>
 <h2 id="5-1-选择上传的数据类别"><a href="#5-1-选择上传的数据类别" class="headerlink" title="5.1. 选择上传的数据类别"></a>5.1. 选择上传的数据类别</h2><p>下面列几个常用的：</p>
 <ul>
 <li>Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组，可以是未注释的。</li>
@@ -471,7 +483,18 @@
 <li>BioSample Type</li>
 <li>BioSample Attributes</li>
 <li>SRA Metadata</li>
-<li>Files：上传文件。</li>
+<li>Files：上传文件。多种途径，试过Aspera命令上传是最快的，且可以断电续传，推荐。</li>
+</ol>
+<ul>
+<li>(1) Web browser upload via HTTP or Aspera Connect plugin</li>
+<li>通过浏览器网页直接上传。</li>
+<li>只能上传10GB以内、以及300个文件以内的数据。</li>
+<li>(2) FTP or Aspera Command Line file preload</li>
+<li>通过FTP传输软件或者Aspera命令上传。</li>
+<li>所有上传文件都需要放在一个文件夹下。</li>
+<li>(3) AWS or GCP bucket：通过亚马逊云（AWS）或谷歌云（GCP）上传，我还没试过。</li>
+</ul>
+<ol start="8">
 <li>Review&amp;Submit：最后检查一遍信息没错误就确认提交。</li>
 </ol>
 <p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
@@ -535,8 +558,8 @@
       <i class="fa fa-chevron-left"></i> 二代测序数据的前处理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/12/06/NCBI_GenBank_submit_SRA/" rel="next" title="使用BankIt提交原始测序数据到NCBI的GenBank">
-      使用BankIt提交原始测序数据到NCBI的GenBank <i class="fa fa-chevron-right"></i>
+    <a href="/2024/12/06/NCBI_GenBank_submit_SRA/" rel="next" title="提交原始测序数据到NCBI的GenBank">
+      提交原始测序数据到NCBI的GenBank <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -610,20 +633,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">135</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">86</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">483</span>
+        <span class="site-state-item-count">492</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -677,12 +700,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">713k</span>
+    <span title="Symbols count total">720k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:48</span>
+    <span title="Reading time total">10:55</span>
 </div>
 
         
