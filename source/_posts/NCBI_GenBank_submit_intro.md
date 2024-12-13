@@ -144,13 +144,14 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 4. BioSample Type
 5. BioSample Attributes
 6. SRA Metadata
-7. Files：上传文件。多种途径，试过Aspera命令上传是最快的，且可以断电续传，推荐。
+7. Files：上传文件。多种途径，试过Aspera命令上传是最快的，且可以断点续传，推荐。
 - (1) Web browser upload via HTTP or Aspera Connect plugin
 - 通过浏览器网页直接上传。
 - 只能上传10GB以内、以及300个文件以内的数据。
 - (2) FTP or Aspera Command Line file preload
 - 通过FTP传输软件或者Aspera命令上传。
 - 所有上传文件都需要放在一个文件夹下。
+- 注意Aspera命令上传的是包含所有文件的**文件夹**，不是文件，上传文件是无效的。
 - (3) AWS or GCP bucket：通过亚马逊云（AWS）或谷歌云（GCP）上传，我还没试过。
 8. Review&Submit：最后检查一遍信息没错误就确认提交。
 

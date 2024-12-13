@@ -181,6 +181,7 @@ table2asn用于把基因组和其他信息转换成NCBI的GenBank认可的ASN.1 
 另外差异报告文件sample.dr中标注为FATAL的错误也需要修正。
 
 下面是一个sample.stats文件的例子：
+
 ```
 Total messages:		86696
 
