@@ -14,8 +14,8 @@ description: 记录中国常见海洋高等植物类型
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1304261116&auto=1&height=32"></iframe></div>
 
-# 海洋植物（seaweed）
-海洋植物包括海草、红树、大型海藻。
+# 海洋植物（marine plants/seaweed）
+海洋植物包括海草、红树、大型海藻三大类。
 
 海草床和红树林是全球重要的两大海洋生态系统。
 

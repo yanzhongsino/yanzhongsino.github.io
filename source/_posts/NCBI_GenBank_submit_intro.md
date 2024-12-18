@@ -90,7 +90,7 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 - 长度小于 200 个核苷酸的序列
 
 ## 2.2. 上传序列的工具
-推荐 Submission Portal 和 BankIt 两个提交工具，要注意，两者的**提交入口**和**历史提交记录**保存的路径不同。
+推荐  **Submission Portal** 和 BankIt 两个提交工具，要注意，即使是同一账户下两个工具的**提交入口**和**历史提交记录**保存的路径也不同。除了细胞器基因组上传只能用BankIt外，其他序列上传都优先选择Submission Portal，因为上传之后管理数据和上传记录比BankIt更方便。
 1. Submission Portal【推荐】
 - Submission Portal提交入口：https://submit.ncbi.nlm.nih.gov/
 - Submission Portal历史提交记录：https://submit.ncbi.nlm.nih.gov/subs/
@@ -131,11 +131,11 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 - Eukaryotic and Prokaryotic Genomes(WGS or Complete): 组装好的真核和原核物种的基因组，可以是未注释的。
 - Transcriptome Shotgun Assembly (TSA)：组装好的转录组
 - Unassembled sequence reads (SRA)：未组装的测序reads
-- Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids...：其他测序数据，细胞器基因组选这个。
+- Sequence data not listed above：mRNA, genomic DNA, organelle, ncRNA, plasmids...：其他测序数据，上传细胞器基因组选这个。
 
 不同的数据类型，上传步骤需要填写的内容不同。
 
-## 5.2. 以上传SRA数据为例，大概说明一下BankIt上传数据的步骤和要填的内容
+## 5.2. 以上传SRA数据为例，大概说明一下上传数据的步骤和要填的内容
 1. 提交者信息Submitter
 - 包括姓名First and Last name，邮箱Email，单位Submitting organization(学校)，部门Department(学院)，街道Street，城市City，省/州State/Province，邮编Postal code，国家Country。
 - 在最后可以选择**Update my contact information in profile**会更新填写的信息到账号，下一次新填写就默认填入提交者信息了。
@@ -144,7 +144,7 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 4. BioSample Type
 5. BioSample Attributes
 6. SRA Metadata
-7. Files：上传文件。多种途径，试过Aspera命令上传是最快的，且可以断点续传，推荐。
+7. Files：上传文件。多种途径，尝试过Aspera命令上传是最快的，且可以断点续传，优先选择**Aspera命令上传**方式。
 - (1) Web browser upload via HTTP or Aspera Connect plugin
 - 通过浏览器网页直接上传。
 - 只能上传10GB以内、以及300个文件以内的数据。
@@ -152,10 +152,13 @@ GenBank只接受由上传者直接生成的转录组或基因组序列，通常�
 - 通过FTP传输软件或者Aspera命令上传。
 - 所有上传文件都需要放在一个文件夹下。
 - 注意Aspera命令上传的是包含所有文件的**文件夹**，不是文件，上传文件是无效的。
+- NCBI网站写着是上传10-100GB的数据，但实测400多GB的数据通过Aspera命令也是可以上传成功的。
 - (3) AWS or GCP bucket：通过亚马逊云（AWS）或谷歌云（GCP）上传，我还没试过。
 8. Review&Submit：最后检查一遍信息没错误就确认提交。
 
 没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。
+
+如果序列或者注释有问题，会收到通知邮件，简单问题可以回复邮件请GenBank工作人员帮忙修改，复杂问题通常会要求修改后重新提交（resubmit），重新提交的时候可以在最后Review时勾选resubmit的选项，并附上上一次提交的BankIt ID或者SUB number。
 
 -------
 

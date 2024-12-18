@@ -79,6 +79,7 @@ description: 记录上传原始测序reads数据（二代数据和三代数据�
 7. Files
 - 提交SRA文件，fastq格式或者bam格式等格式的文件，支持fq.gz压缩格式。
 - 多种上传方式：FTP或Aspera命令行上传文件夹(10-100GB)，或者网页提交(<2GB)或Aspera Connect plugin(2-10GB)上传文件。其中Aspera命令行上传最快。
+- NCBI网站写着FTP或Aspera命令行上传10-100GB的数据，但实测400多GB的数据通过Aspera命令也是可以上传成功的。
 - Linux系统下推荐Aspera命令行上传：(1)把要上传的文件全部放在一个文件夹下；(2)下载和安装Aspera Connect software；(3)下载key file文件；(4) 运行命令 `ascp -i <path/to/key_file> -QT -l100m -k1 -d <path/to/folder/containing files> subasp@upload.ncbi.nlm.nih.gov:uploads/xx_xx_xx_gmail.com_DaE3nqDQ`;其中`-i <path/to/key_file>`必须是绝对路径；`-d <path/to/folder/containing files>`-d后面跟的是包含所有文件的**文件夹**，而不是文件，上传文件在后面的步骤是无效的;`-l100m`参数是指定最大传输速度为100 meg/s；实测大概是50分钟传了20Gb数据。(5)上传好了就回到这个界面，选择上传的文件夹，继续提交。
 - 有时文件较大需要等待较长时间，可以选择自动完成提交（Autofinish submission），选择后在上传文件完成后自动检查，没有问题就自动提交。
 - 提交之后会检查信息是否错误，按提示修改。
