@@ -29,11 +29,13 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2022-06-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-12T07:13:58.920Z">
+<meta property="article:modified_time" content="2024-12-16T02:54:57.782Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="mitogenome">
 <meta property="article:tag" content="submit">
 <meta property="article:tag" content="plastome">
+<meta property="article:tag" content="tbl">
+<meta property="article:tag" content="feature table">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 
@@ -247,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-12 15:13:58" itemprop="dateModified" datetime="2024-12-12T15:13:58+08:00">2024-12-12</time>
+                <time title="Modified: 2024-12-16 10:54:57" itemprop="dateModified" datetime="2024-12-16T10:54:57+08:00">2024-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,13 +285,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>1.5k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>1 mins.</span>
+              <span>3 mins.</span>
             </span>
             <div class="post-description">记录了上传细胞器基因组的组装和注释数据到NCBI的步骤。</div>
 
@@ -306,10 +308,15 @@
 
 <h1 id="1-准备上传的文件"><a href="#1-准备上传的文件" class="headerlink" title="1. 准备上传的文件"></a>1. 准备上传的文件</h1><ol>
 <li>基因组fasta文件</li>
-<li>注释tbl格式文件</li>
+<li>注释tbl(feature table file)格式文件</li>
 </ol>
-<p>tbl格式文件推荐用GB2sequin来准备。</p>
-<p>参考博客-转换GenBank文件为tbl格式：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/。</a></p>
+<ul>
+<li>tbl格式文件是用tab作为列分隔符的五列的文本格式文件。</li>
+<li>推荐用GB2sequin来准备。</li>
+<li>参考博客-转换GenBank文件为tbl格式：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/。</a></li>
+<li>tbl文件格式：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html">https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html</a></li>
+<li>tbl文件的官方定义：<a target="_blank" rel="noopener" href="https://www.insdc.org/submitting-standards/feature-table/">https://www.insdc.org/submitting-standards/feature-table/</a></li>
+</ul>
 <h1 id="2-上传步骤"><a href="#2-上传步骤" class="headerlink" title="2. 上传步骤"></a>2. 上传步骤</h1><h2 id="2-1-上传工具"><a href="#2-1-上传工具" class="headerlink" title="2.1. 上传工具"></a>2.1. 上传工具</h2><p>BankIt提交入口：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/index.cgi">https://www.ncbi.nlm.nih.gov/WebSub/index.cgi</a></p>
 <p>目前好像只支持用BankIt上传细胞器基因组，允许一次提交多个细胞器基因组序列。</p>
 <p>提交之后可以在这里查询提交记录：</p>
@@ -341,7 +348,7 @@
 </ul>
 <ol start="6">
 <li>Organism：填写Organism name信息，可填物种的学名。</li>
-<li>Submission Category：测序reads是上传者测序的还是使用的其他已上传序列数据。如果是使用其他已上传reads进行的组装则需要提供已上传reads的accession number。</li>
+<li>Submission Category：细胞器基因组是上传者首次上传的还是其他已上传数据。如果是首次上传就选Original Submission; 如果是使用其他已上传数据，只是提交新的注释信息，则选择Third Party Annotation (TPA)，并且需要提供已上传数据的accession number。</li>
 <li>Source Modifiers：资源信息。</li>
 </ol>
 <ul>
@@ -349,10 +356,54 @@
 <li>Source Modifier可以填写Country；对应的value填写China。</li>
 </ul>
 <ol start="9">
-<li>Features：提供注释信息，可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
+<li>Features</li>
+</ol>
+<ul>
+<li>提供基因注释信息。</li>
+<li>可以选择tbl文件或者手动填写注释表格，tbl文件的ID和提交的序列ID需要一致。</li>
+<li>最好包含CDS注释信息，否则可能被检查，CDS的注释是包含一个基因的所有exons的位置的，用这样的方式连接所有位置区间：<code>join(100..200,complement(480..360),520..600)</code>。</li>
+<li>BankIt会自动识别上传的tbl注释信息是否有错误，比如注释的区间超过了染色体长度，比如中间终止密码子，并给出Error和Warning提示信息，可以根据提示信息检查注释的问题，修正后再次上传。</li>
+<li>比如错误提示：Error: Intervals specified for this feature extend beyond the sequence length. Please correct your intervals so it is within the sequence length.</li>
+</ul>
+<ol start="10">
 <li>Review and Correct：回顾和确认填写的信息，即可完成提交。</li>
 </ol>
 <p>没什么问题的话，两个工作日内会发邮件告知GenBank accession numbers，可用于文章引用。</p>
+<p>如果序列或者注释有问题，会收到通知邮件，简单问题可以回复邮件请GenBank工作人员帮忙修改，复杂问题通常会要求修改后重新提交（resubmit），重新提交的时候可以在最后Review时勾选resubmit的选项，并附上上一次提交的BankIt ID。</p>
+<h1 id="注释的tbl文件的一些规范"><a href="#注释的tbl文件的一些规范" class="headerlink" title="注释的tbl文件的一些规范"></a>注释的tbl文件的一些规范</h1><ol>
+<li>tbl文件</li>
+</ol>
+<ul>
+<li>tbl文件格式：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html">https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html</a></li>
+<li>tbl文件的官方定义：<a target="_blank" rel="noopener" href="https://www.insdc.org/submitting-standards/feature-table/">https://www.insdc.org/submitting-standards/feature-table/</a></li>
+</ul>
+<ol start="2">
+<li>格式转换的脚本</li>
+</ol>
+<ul>
+<li>参考博客-转换GenBank文件为tbl格式：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/%E3%80%82">https://yanzhongsino.github.io/2022/06/16/bioinfo_fileformat_gb2tbl/。</a></li>
+<li>参考脚本-转换Excel文件为tbl格式：<a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/convert_excel_to_tbl.py">https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/convert_excel_to_tbl.py</a></li>
+</ul>
+<ol start="3">
+<li>常见注释方式</li>
+</ol>
+<ul>
+<li>多个exons的CDS的注释</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1080    1315    gene</span><br><span class="line">                gene    atp1</span><br><span class="line">1080    1210    CDS</span><br><span class="line">1276    1315</span><br><span class="line">                product atp1</span><br><span class="line">                note    atp1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基因片段的注释</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3453    3215    gene fragment</span><br><span class="line">                    gene fragment   atp6*</span><br><span class="line">                    note            atp6*</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>常见报错和修改方法</li>
+</ol>
+<ul>
+<li><code>Error: Intervals specified for this feature extend beyond the sequence length. Please correct your intervals so it is within the sequence length.</code>：注释的区间超过了fasta文件的序列长度，修改错误注释。</li>
+<li>如果有特殊情况，例如RNA editing或者序列异质性，导致CDS区域不是3的倍数（indels的异质性），可以在note行写上特殊情况说明。参考MZ269392-MZ269412的注释。</li>
+</ul>
 <hr>
 <ul>
 <li>欢迎关注微信公众号：<strong>生信技工</strong></li>
@@ -390,6 +441,8 @@
               <a href="/tags/mitogenome/" rel="tag"># mitogenome</a>
               <a href="/tags/submit/" rel="tag"># submit</a>
               <a href="/tags/plastome/" rel="tag"># plastome</a>
+              <a href="/tags/tbl/" rel="tag"># tbl</a>
+              <a href="/tags/feature-table/" rel="tag"># feature table</a>
           </div>
 
         
@@ -463,7 +516,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">1. 准备上传的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">2. 上传步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7"><span class="nav-text">2.1. 上传工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">2.2. 上传步骤</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">1. 准备上传的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">2. 上传步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7"><span class="nav-text">2.1. 上传工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%B8%8A%E4%BC%A0%E6%AD%A5%E9%AA%A4"><span class="nav-text">2.2. 上传步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E7%9A%84tbl%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A7%84%E8%8C%83"><span class="nav-text">注释的tbl文件的一些规范</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,7 +543,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">492</span>
+        <span class="site-state-item-count">493</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -544,12 +597,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">721k</span>
+    <span title="Symbols count total">722k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:55</span>
+    <span title="Reading time total">10:57</span>
 </div>
 
         
