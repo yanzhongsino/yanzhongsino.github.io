@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-12-12T14:01:45.393Z</updated>
+  <updated>2025-04-21T04:11:17.391Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>加拿大工作签证办理流程：LMIA-Exempt Work Permit</title>
+    <link href="http://example.com/2025/04/15/affair_Canada_visa/"/>
+    <id>http://example.com/2025/04/15/affair_Canada_visa/</id>
+    <published>2025-04-14T16:00:00.000Z</published>
+    <updated>2025-04-21T04:11:17.391Z</updated>
+    
+    
+    <summary type="html">记录2025年上半年申请加拿大的工作签证的流程，加拿大博士后属于雇主指定工作许可（Employer-specific Work Permit）中的豁免劳动力市场影响评估的工作签证（LMIA-Exempt Work Permit）。</summary>
+    
+    
+    
+    <category term="affair" scheme="http://example.com/categories/affair/"/>
+    
+    <category term="Canada" scheme="http://example.com/categories/affair/Canada/"/>
+    
+    <category term="visa" scheme="http://example.com/categories/affair/Canada/visa/"/>
+    
+    
+    <category term="visa" scheme="http://example.com/tags/visa/"/>
+    
+    <category term="Canada" scheme="http://example.com/tags/Canada/"/>
+    
+    <category term="work permit" scheme="http://example.com/tags/work-permit/"/>
+    
+    <category term="LMIA" scheme="http://example.com/tags/LMIA/"/>
+    
+  </entry>
   
   <entry>
     <title>用GetOrganelle组装细胞器基因组或核基因组的核糖体RNA序列</title>
@@ -479,9 +508,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -514,9 +543,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -551,9 +580,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -586,9 +615,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
     <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -696,55 +725,6 @@
     <category term="quotes" scheme="http://example.com/tags/quotes/"/>
     
     <category term="string" scheme="http://example.com/tags/string/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理</title>
-    <link href="http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/"/>
-    <id>http://example.com/2024/06/04/omics_genome.sequencing_TGS_data.preprocessing/</id>
-    <published>2024-06-03T16:00:00.000Z</published>
-    <updated>2024-06-05T06:26:45.037Z</updated>
-    
-    
-    <summary type="html">介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/third-generation-sequencing/"/>
-    
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="fasta" scheme="http://example.com/tags/fasta/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
-    
-    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
-    
-    <category term="long read sequencing" scheme="http://example.com/tags/long-read-sequencing/"/>
-    
-    <category term="continuous long reads" scheme="http://example.com/tags/continuous-long-reads/"/>
-    
-    <category term="CLR" scheme="http://example.com/tags/CLR/"/>
-    
-    <category term="circular consensus sequencing" scheme="http://example.com/tags/circular-consensus-sequencing/"/>
-    
-    <category term="CCS" scheme="http://example.com/tags/CCS/"/>
-    
-    <category term="SMRT" scheme="http://example.com/tags/SMRT/"/>
-    
-    <category term="subreads" scheme="http://example.com/tags/subreads/"/>
     
   </entry>
   
