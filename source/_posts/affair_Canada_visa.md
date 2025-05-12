@@ -13,7 +13,7 @@ tags:
 description: 记录2025年上半年申请加拿大的工作签证的流程，加拿大博士后属于雇主指定工作许可（Employer-specific Work Permit）中的豁免劳动力市场影响评估的工作签证（LMIA-Exempt Work Permit）。
 ---
 
-<div align="middle"></div>
+<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2645850301&auto=1&height=32"></iframe></div>
 
 # 1. 常见的加拿大工作签证类别
 1. 雇主指定工作许可（Employer-specific Work Permit），通常说的**封闭工签（close work permit）**：
