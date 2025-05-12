@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-04-21T04:11:17.391Z</updated>
+  <updated>2025-05-12T08:29:55.222Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2025/04/15/affair_Canada_visa/"/>
     <id>http://example.com/2025/04/15/affair_Canada_visa/</id>
     <published>2025-04-14T16:00:00.000Z</published>
-    <updated>2025-04-21T04:11:17.391Z</updated>
+    <updated>2025-05-12T08:29:55.222Z</updated>
     
     
     <summary type="html">记录2025年上半年申请加拿大的工作签证的流程，加拿大博士后属于雇主指定工作许可（Employer-specific Work Permit）中的豁免劳动力市场影响评估的工作签证（LMIA-Exempt Work Permit）。</summary>
@@ -191,6 +191,8 @@
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
     <category term="NLM" scheme="http://example.com/tags/NLM/"/>
@@ -204,8 +206,6 @@
     <category term="TLS" scheme="http://example.com/tags/TLS/"/>
     
     <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
-    
-    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
     
   </entry>
   
@@ -508,9 +508,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -543,9 +543,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -580,9 +580,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
@@ -615,9 +615,9 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
