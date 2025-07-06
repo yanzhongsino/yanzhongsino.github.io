@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录从NCBI的SRA数据库下载原始测序reads数据（二代数据和三代数据），并转换为fastq格式的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从NCBI的SRA数据库下载原始测序数据">
+<meta property="og:url" content="http://example.com/2025/07/04/NCBI_SRA_download/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录从NCBI的SRA数据库下载原始测序reads数据（二代数据和三代数据），并转换为fastq格式的方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2025-07-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-06T01:21:51.660Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="SRA">
+<meta property="article:tag" content="Sequence Read Archive">
+<meta property="article:tag" content="SRA Toolkit">
+<meta property="article:tag" content="NGS">
+<meta property="article:tag" content="TGS">
+<meta property="article:tag" content="Illumina">
+<meta property="article:tag" content="PacBio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2025/07/04/NCBI_SRA_download/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>从NCBI的SRA数据库下载原始测序数据 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/07/04/NCBI_SRA_download/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从NCBI的SRA数据库下载原始测序数据
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2025-07-05T00:00:00+08:00">2025-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-07-06 09:21:51" itemprop="dateModified" datetime="2025-07-06T09:21:51+08:00">2025-07-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NCBI/" itemprop="url" rel="index"><span itemprop="name">NCBI</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NCBI/SRA/" itemprop="url" rel="index"><span itemprop="name">SRA</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NCBI/SRA/download/" itemprop="url" rel="index"><span itemprop="name">download</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">记录从NCBI的SRA数据库下载原始测序reads数据（二代数据和三代数据），并转换为fastq格式的方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="https://open.spotify.com/embed/track/054NrUrqsXqh1WfZ9sbNdI?utm_source=generator"></iframe></div>
+
+<h1 id="1-下载原始测序数据"><a href="#1-下载原始测序数据" class="headerlink" title="1. 下载原始测序数据"></a>1. 下载原始测序数据</h1><p>二代或三代测序的原始序列读数可以从NCBI的Sequence Read Archive(SRA)数据库下载：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/sra%E3%80%82">https://www.ncbi.nlm.nih.gov/sra。</a></p>
+<h1 id="2-快速上手"><a href="#2-快速上手" class="headerlink" title="2. 快速上手"></a>2. 快速上手</h1><p>从NCBI等公共数据库下载原始测序的raw reads数据，先下载SRA格式文件，然后转换为fastq格式文件。使用NCBI官方工具SRA Toolkit里的prefetch和fasterq-dump命令来下载和转换。</p>
+<p>找到NCBI数据的SRR序列号，然后prefetch下载SRA格式数据，fasterq-dump转SRA格式为fastq格式。</p>
+<ul>
+<li><code>prefetch SRR1234567 -p</code></li>
+<li><code>fasterq-dump --split-3 ./SRR1234567 -p -e 12</code></li>
+</ul>
+<h1 id="3-SRA和SRA-Toolkit简介"><a href="#3-SRA和SRA-Toolkit简介" class="headerlink" title="3. SRA和SRA Toolkit简介"></a>3. SRA和SRA Toolkit简介</h1><h2 id="3-1-SRA"><a href="#3-1-SRA" class="headerlink" title="3.1. SRA"></a>3.1. SRA</h2><ol>
+<li>SRA格式</li>
+</ol>
+<ul>
+<li>SRA（Sequence Read Archive）格式是NCBI专用的储存高通量测序数据的格式，可以处理各种类型的测序技术生成的数据，包括Illumina、Ion Torrent、454、PacBio等。</li>
+</ul>
+<ol start="2">
+<li>SRA Normalized和SRA Lite格式的区别</li>
+</ol>
+<ul>
+<li>SRA Normalized是SRA的标准化格式，大部分情况下使用这个格式。</li>
+<li>SRA Lite是把SRA Normalized的质量分数（quality scores）进行简化，将碱基质量得分分为了pass和reject两种，pass统一给分为30，而reject统一给分为3。 </li>
+<li>下载得到的SRA Normalized文件名为SRR1234567；下载得到的SRA Lite文件名为SRR1234567.lite.1（文件更小）。</li>
+<li>SRA转为fastq格式的操作对两种格式都有效。<h2 id="3-2-SRA-Toolkit"><a href="#3-2-SRA-Toolkit" class="headerlink" title="3.2. SRA Toolkit"></a>3.2. SRA Toolkit</h2><h3 id="3-2-1-SRA-Toolkit介绍"><a href="#3-2-1-SRA-Toolkit介绍" class="headerlink" title="3.2.1. SRA Toolkit介绍"></a>3.2.1. SRA Toolkit介绍</h3></li>
+</ul>
+<ol>
+<li>SRA Toolkit是由NCBI提供的一组工具，用于访问、下载和处理存储在SRA（Sequence Read Archive）中的高通量测序数据。这个工具套件允许用户从SRA数据库中检索数据、将数据格式转换为更常用的格式（如FASTQ）以及其他数据处理任务。</li>
+<li>SRA Toolkit软件的使用manual： <a target="_blank" rel="noopener" href="https://github.com/ncbi/sra-tools/wiki">https://github.com/ncbi/sra-tools/wiki</a><h3 id="3-2-2-SRA-Toolkit下载和安装"><a href="#3-2-2-SRA-Toolkit下载和安装" class="headerlink" title="3.2.2. SRA Toolkit下载和安装"></a>3.2.2. SRA Toolkit下载和安装</h3></li>
+<li>conda安装：<code>conda install bioconda::sra-tools</code></li>
+<li>手动安装</li>
+</ol>
+<ul>
+<li>官方网站：<a target="_blank" rel="noopener" href="https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit">https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit</a></li>
+<li>在网站上找到对应版本，复制链接；然后在linux系统用命令下载和解压缩即可使用</li>
+<li>下载：<code>wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.2.1/sratoolkit.3.2.1-ubuntu64.tar.gz</code>；解压缩：<code>tar -vxzf sratoolkit.tar.gz</code></li>
+<li>命令在<code>PWD/sratoolkit.3.0.0-mac64/bin</code>目录下</li>
+</ul>
+<ol start="3">
+<li>确认安装正确</li>
+</ol>
+<ul>
+<li>查看命令：<code>which fastq-dump</code></li>
+<li>测试命令：<code>fastq-dump --stdout -X 2 SRR390728</code>；如果列出序列数据，则代表命令安装正确。<h3 id="3-2-3-SRA-Toolkit的命令"><a href="#3-2-3-SRA-Toolkit的命令" class="headerlink" title="3.2.3. SRA Toolkit的命令"></a>3.2.3. SRA Toolkit的命令</h3></li>
+<li>SRA Toolkit包括下载SRA数据的命令<code>prefetch</code>,将SRA格式的数据转换为FASTQ格式的命令<code>fastq-dump</code>,<code>fasterq-dump</code>，检索SRA数据文件中的元数据的<code>vdb-dump</code>,将SRA文件直接转换为SAM格式（如果记录在数据库中有对映&#x2F;SAM信息）的<code>sam-dump</code>。</li>
+</ul>
+<h1 id="4-下载原始测序文件和转换格式"><a href="#4-下载原始测序文件和转换格式" class="headerlink" title="4. 下载原始测序文件和转换格式"></a>4. 下载原始测序文件和转换格式</h1><h2 id="4-1-查找SRA-accessions编号（SRR-6位数字组成的序列号）"><a href="#4-1-查找SRA-accessions编号（SRR-6位数字组成的序列号）" class="headerlink" title="4.1. 查找SRA-accessions编号（SRR+6位数字组成的序列号）"></a>4.1. 查找SRA-accessions编号（SRR+6位数字组成的序列号）</h2><ol>
+<li>在NCBI网站 <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/sra">https://www.ncbi.nlm.nih.gov/sra</a> 搜索物种名等信息，查询需要下载的原始测序数据，获取数据的SRA编号；</li>
+<li>可选择多个搜索结果，然后Send to-File-RunInfo下载SraRunInfo.csv表格文件，里面有非常完整的上传人填写的测序相关信息，包括SRA Lite格式的download_path；</li>
+<li>选择多个搜索结果，然后Send to-File-Acdession List下载SraAccList.csv表格文件。</li>
+<li>点击进入一个搜索结果，然后点击SRR号，再点击Data access栏，在SRA archive data栏就能看到两种格式的SRA数据的下载网址。</li>
+</ol>
+<h2 id="4-2-下载SRA文件"><a href="#4-2-下载SRA文件" class="headerlink" title="4.2. 下载SRA文件"></a>4.2. 下载SRA文件</h2><ol>
+<li>prefetch调取下载</li>
+</ol>
+<ul>
+<li>先在NCBI查询需要下载的数据的SRR编号，再使用编号信息下载SRA文件:<code>prefetch SRR1234567 SRR7654321</code>命令会下载SRA Normalized格式文件，支持多个SRR编号参数，依次下载。</li>
+<li>多个SRA数据下载，也可以把SRR编号保存在文件中，一个编号一行（同SraAccList.csv表格文件）。然后用–option-file参数指定保存了编号的文件，来依次下载多个SRA数据：<code>prefetch --option-file SraAccList.csv</code></li>
+<li>为每个数据生成SRR编号命名的文件夹，里面只有一个以SRR1234567.sra命名的文件。</li>
+<li>prefetch默认单个文件最大20Gb，如果超过20Gb会被跳过，可以用<code>--max-size 100G</code>参数修改允许的最大文件大小。</li>
+<li>在同一目录下多次运行，prefetch会自动检查已下载的文件，跳过下载好的文件。所以算是支持断点续传。</li>
+<li>其他参数：<ul>
+<li>-X|–max-size: 设置最大下载文件大小，默认20G。</li>
+<li>-p|–progress: 显示下载进度。</li>
+<li>–eliminate-quals：下载SRA-Lite格式文件。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>wget下载</li>
+</ol>
+<ul>
+<li>复制下载网址之后用wget下载：<code>wget -c http:url</code></li>
+<li>下载完成后，如果是SRA Normalized格式，则生成SRR1234567文件；如果是SRA Lite格式，则生成SRR1234567.lite.1文件。</li>
+</ul>
+<h2 id="4-3-SRA格式转为fastq格式"><a href="#4-3-SRA格式转为fastq格式" class="headerlink" title="4.3. SRA格式转为fastq格式"></a>4.3. SRA格式转为fastq格式</h2><p>SRA Toolkit有两个命令可以将SRA格式转为fastq格式：fastq-dump和fasterq-dump。</p>
+<p>区别主要是：</p>
+<ul>
+<li>fastq-dump只能单线程运行，但支持-gzip和-bzip2参数输出压缩格式的fastq文件。</li>
+<li>fasterq-dump可以多线程运行，但不支持压缩格式的参数。</li>
+</ul>
+<ol>
+<li>fastq-dump</li>
+</ol>
+<ul>
+<li><code>fastq-dump --split-files SRR1234567</code></li>
+<li>参数：<ul>
+<li>–split-spot: 将双端测序分为两份,放在一个文件中。</li>
+<li>–split-files: 将双端测序分为两份,放在两个文件，对于一方有而一方没有的reads直接丢弃。</li>
+<li>–split-3 : 将双端测序分为两份,放在两个文件，对于一方有而一方没有的reads（unpaired reads）会单独放在一个文件夹里。</li>
+<li>–gzip：进行gzip压缩，输出fastq.gz文件</li>
+<li>–bz2：进行bzip2压缩，输出fastq.bz2文件</li>
+<li>-X 1000：仅导出前1000条reads，用于测试。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>fasterq-dump</li>
+</ol>
+<ul>
+<li><code>fasterq-dump --split-3 ./SRR1234567 -p -e 12</code></li>
+<li>参数：<ul>
+<li>-s|–split-spot: 将双端测序分为两份,放在一个文件中。</li>
+<li>-S|–split-files: 将双端测序分为两份,放在两个文件，对于一方有而一方没有的reads直接丢弃。</li>
+<li>-3|–split-3 : 将双端测序分为两份,放在两个文件，对于一方有而一方没有的reads（unpaired reads）会单独放在一个文件夹里。</li>
+<li>-p：显示进程。</li>
+<li>-e 24：指定线程，默认6。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SRA/" rel="tag"># SRA</a>
+              <a href="/tags/Sequence-Read-Archive/" rel="tag"># Sequence Read Archive</a>
+              <a href="/tags/SRA-Toolkit/" rel="tag"># SRA Toolkit</a>
+              <a href="/tags/NGS/" rel="tag"># NGS</a>
+              <a href="/tags/TGS/" rel="tag"># TGS</a>
+              <a href="/tags/Illumina/" rel="tag"># Illumina</a>
+              <a href="/tags/PacBio/" rel="tag"># PacBio</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/07/04/linux_basics_PATH_correction/" rel="prev" title="Linux系统中所有环境变量失效的修复方案">
+      <i class="fa fa-chevron-left"></i> Linux系统中所有环境变量失效的修复方案
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%B8%8B%E8%BD%BD%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%95%B0%E6%8D%AE"><span class="nav-text">1. 下载原始测序数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="nav-text">2. 快速上手</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SRA%E5%92%8CSRA-Toolkit%E7%AE%80%E4%BB%8B"><span class="nav-text">3. SRA和SRA Toolkit简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-SRA"><span class="nav-text">3.1. SRA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-SRA-Toolkit"><span class="nav-text">3.2. SRA Toolkit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-SRA-Toolkit%E4%BB%8B%E7%BB%8D"><span class="nav-text">3.2.1. SRA Toolkit介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-SRA-Toolkit%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%AE%89%E8%A3%85"><span class="nav-text">3.2.2. SRA Toolkit下载和安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-SRA-Toolkit%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-text">3.2.3. SRA Toolkit的命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%B8%8B%E8%BD%BD%E5%8E%9F%E5%A7%8B%E6%B5%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E5%92%8C%E8%BD%AC%E6%8D%A2%E6%A0%BC%E5%BC%8F"><span class="nav-text">4. 下载原始测序文件和转换格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%9F%A5%E6%89%BESRA-accessions%E7%BC%96%E5%8F%B7%EF%BC%88SRR-6%E4%BD%8D%E6%95%B0%E5%AD%97%E7%BB%84%E6%88%90%E7%9A%84%E5%BA%8F%E5%88%97%E5%8F%B7%EF%BC%89"><span class="nav-text">4.1. 查找SRA-accessions编号（SRR+6位数字组成的序列号）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E4%B8%8B%E8%BD%BDSRA%E6%96%87%E4%BB%B6"><span class="nav-text">4.2. 下载SRA文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-SRA%E6%A0%BC%E5%BC%8F%E8%BD%AC%E4%B8%BAfastq%E6%A0%BC%E5%BC%8F"><span class="nav-text">4.3. SRA格式转为fastq格式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">731k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:05</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
