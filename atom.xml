@@ -93,9 +93,9 @@
     
     <category term="organelle" scheme="http://example.com/tags/organelle/"/>
     
-    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
-    
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
+    
+    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
     
     <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
     
@@ -145,47 +145,6 @@
   </entry>
   
   <entry>
-    <title>提交原始测序数据到NCBI的GenBank</title>
-    <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_SRA/"/>
-    <id>http://example.com/2024/12/05/NCBI_GenBank_submit_SRA/</id>
-    <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-15T06:46:31.552Z</updated>
-    
-    
-    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</summary>
-    
-    
-    
-    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
-    
-    <category term="GenBank" scheme="http://example.com/categories/NCBI/GenBank/"/>
-    
-    <category term="submit" scheme="http://example.com/categories/NCBI/GenBank/submit/"/>
-    
-    <category term="SRA" scheme="http://example.com/categories/NCBI/GenBank/submit/SRA/"/>
-    
-    
-    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
-    
-    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
-    
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
-    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-  </entry>
-  
-  <entry>
     <title>提交核苷酸序列到NCBI的GenBank的介绍</title>
     <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_intro/"/>
     <id>http://example.com/2024/12/05/NCBI_GenBank_submit_intro/</id>
@@ -206,21 +165,19 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
-    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
-    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
     
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
     <category term="NLM" scheme="http://example.com/tags/NLM/"/>
+    
+    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
     
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
     
@@ -232,6 +189,45 @@
     
     <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
     
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>提交原始测序数据到NCBI的SRA数据库</title>
+    <link href="http://example.com/2024/12/05/NCBI_SRA_submit/"/>
+    <id>http://example.com/2024/12/05/NCBI_SRA_submit/</id>
+    <published>2024-12-05T16:00:00.000Z</published>
+    <updated>2025-07-06T00:34:31.869Z</updated>
+    
+    
+    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到SRA数据库的步骤。</summary>
+    
+    
+    
+    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
+    
+    <category term="SRA" scheme="http://example.com/categories/NCBI/SRA/"/>
+    
+    <category term="submit" scheme="http://example.com/categories/NCBI/SRA/submit/"/>
+    
+    
+    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
+    
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
+    
   </entry>
   
   <entry>
@@ -239,7 +235,7 @@
     <link href="http://example.com/2024/11/25/omics_genome.sequencing_NGS_data.preprocessing/"/>
     <id>http://example.com/2024/11/25/omics_genome.sequencing_NGS_data.preprocessing/</id>
     <published>2024-11-25T16:00:00.000Z</published>
-    <updated>2024-11-27T02:49:27.336Z</updated>
+    <updated>2025-07-06T01:17:14.026Z</updated>
     
     
     <summary type="html">对二代测序进行预处理。包括从NCBI下载SRA格式数据，把SRA格式转为fastq格式。对二代测序的下机数据的质控，包括fastp去除接头和低质量序列，fastqc获取质量报告，trimmomatic去除接头和低质量序列，fastuniq为genome survey等情况去除重复序列。</summary>
@@ -255,11 +251,13 @@
     <category term="next generation sequencing" scheme="http://example.com/categories/omics/genome/genome-sequencing/next-generation-sequencing/"/>
     
     
-    <category term="genome survey" scheme="http://example.com/tags/genome-survey/"/>
-    
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
+    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="genome survey" scheme="http://example.com/tags/genome-survey/"/>
     
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
@@ -272,8 +270,6 @@
     <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
     
     <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
-    
-    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
     <category term="prefetch" scheme="http://example.com/tags/prefetch/"/>
     
@@ -312,11 +308,11 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="SPAdes" scheme="http://example.com/tags/SPAdes/"/>
     
@@ -436,9 +432,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
-    
     <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
+    
+    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
@@ -533,13 +529,13 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -568,13 +564,13 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -605,13 +601,13 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
@@ -640,13 +636,13 @@
     <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
     
     
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
+    
+    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
     
     <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
     
