@@ -1,22 +1,20 @@
 ---
-title: 提交原始测序数据到NCBI的GenBank
+title: 提交原始测序数据到NCBI的SRA数据库
 date: 2024-12-06
 categories: 
 - NCBI
-- GenBank
-- submit
 - SRA
+- submit
 tags:
 - SRA
 - Sequence Read Archive
 - Unassembled sequence reads
 - submit
-- GenBank
 - NGS
 - TGS
 - Illumina
 - PacBio
-description: 记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。
+description: 记录上传原始测序reads数据（二代数据和三代数据）到SRA数据库的步骤。
 ---
 
 <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1392871582&auto=1&height=32"></iframe></div>
