@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文记录软件RSEM（RNA-Seq by Expectation-Maximization）进行转录本定量分析。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用RSEM进行转录本定量分析">
+<meta property="og:url" content="http://example.com/2024/10/27/omics_transcriptome_expression_RSEM/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="本文记录软件RSEM（RNA-Seq by Expectation-Maximization）进行转录本定量分析。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/bli25/RSEM_tutorial/raw/master/images/Ccl6_transcript_wiggle.png">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2024-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-30T08:49:33.854Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Trinity">
+<meta property="article:tag" content="expression analysis">
+<meta property="article:tag" content="RSEM">
+<meta property="article:tag" content="RNA-Seq by Expectation-Maximization">
+<meta property="article:tag" content="Simulation">
+<meta property="article:tag" content="EBSeq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/bli25/RSEM_tutorial/raw/master/images/Ccl6_transcript_wiggle.png">
+
+<link rel="canonical" href="http://example.com/2024/10/27/omics_transcriptome_expression_RSEM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用RSEM进行转录本定量分析 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/27/omics_transcriptome_expression_RSEM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用RSEM进行转录本定量分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-10-28 00:00:00" itemprop="dateCreated datePublished" datetime="2024-10-28T00:00:00+08:00">2024-10-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-30 16:49:33" itemprop="dateModified" datetime="2024-10-30T16:49:33+08:00">2024-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/transcriptome/" itemprop="url" rel="index"><span itemprop="name">transcriptome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/transcriptome/express/" itemprop="url" rel="index"><span itemprop="name">express</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>5 mins.</span>
+            </span>
+            <div class="post-description">本文记录软件RSEM（RNA-Seq by Expectation-Maximization）进行转录本定量分析。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1400229069&auto=1&height=32"></iframe></div>
+
+<p><strong>写在前面</strong>：如果是Trinity组装的转录组，可以直接在Trinity自带脚本<code>align_and_estimate_abundance.pl</code>中实现转录本的定量分析，调用RSEM，更方便快捷，参考博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/">用Trinity的脚本进行转录本定量分析</a>。</p>
+<h1 id="1-常用的转录本定量分析软件"><a href="#1-常用的转录本定量分析软件" class="headerlink" title="1. 常用的转录本定量分析软件"></a>1. 常用的转录本定量分析软件</h1><p>常用的转录本定量分析软件包括RSEM, Salmon, Kallisto, FeatureCounts等。</p>
+<ol>
+<li>RSEM是基于比对进行的转录本表达定量分析</li>
+</ol>
+<ul>
+<li>优点是<strong>高精度定量</strong>和<strong>详细的输出指标</strong>。RSEM支持有参和无参，基因和转录本，多种比对软件（Bowtie, Bowtie2, STAR），输出更详细的定量信息（包括reads count, TPM, FPKM等定量指标）。</li>
+<li>缺点是基于比对，所以运算速度较慢，需要更多计算资源，更适应小规模数据集。</li>
+</ul>
+<ol start="2">
+<li>Salmon和Kallisto两者都是采用伪比对技术，不需要比对，速度更快。</li>
+</ol>
+<ul>
+<li>优点是速度快，适合大规模数据集。</li>
+<li>缺点是对序列的准确性要求更高，输出文件的信息相对RSEM较少，只包含reads count，TPM。</li>
+</ul>
+<ol start="3">
+<li>FeatureCounts直接从已比对的BAM文件中进行read计数，只适用于有参考基因组的情况，需要自行使用hisat2或bowtie2比对。</li>
+</ol>
+<h1 id="2-RSEM简介"><a href="#2-RSEM简介" class="headerlink" title="2. RSEM简介"></a>2. RSEM简介</h1><p>RSEM（RNA-Seq by Expectation-Maximization）是从RNA-Seq数据定量估计基因和转录本表达水平的软件包。</p>
+<ol>
+<li>RSEM的特点</li>
+</ol>
+<ul>
+<li>RSEM包提供了一个用户友好的界面，支持并行计算EM算法的线程，单端和双端reads，质量评分，长reads读取和RSPD估计。</li>
+<li>此外，它还提供了表达水平的后验均值和95%可信区间估计。</li>
+<li>RSEM也有自己的脚本来生成pdf格式的文本阅读深度图。RSEM的独特之处在于，读取深度图可以堆叠，黑色表示对唯一读取的贡献，红色表示对多读取的贡献。</li>
+<li>此外，从数据中学习到的模型也可以可视化。</li>
+</ul>
+<ol start="2">
+<li>RSEM包含的功能和模块</li>
+</ol>
+<ul>
+<li>计算定量表达结果，包括reads count, TPM, FPKM。</li>
+<li>可视化表达结果，包括bam2gbam，可以生成转录坐标和基因组坐标的BAM和Wiggle文件，Wiggle图。基因组坐标文件可以通过UCSC基因组浏览器和Broad研究所的IGV可视化。转录坐标文件可以通过IGV可视化。</li>
+<li>建模 (Simulation)：还可以用<code>rsem-simulate-reads</code>模块基于参数建模，生成RNA-seq数据。</li>
+<li>差异表达分析：RSEM推荐用软件EBSeq来进行差异表达分析。常用的差异表达分析工具，如 edgeR 和 DESeq，并没有考虑到reads映射不确定性造成的变异。 EBSeq 是UW-Madison开发的一种经验贝叶斯差异表达分析工具，它可以根据父基因的同工型数量对同工型进行分组，从而将读图映射不确定性造成的变异考虑在内。 此外，它对异常值也有更强的鲁棒性。 有关 EBSeq 的更多信息，请访问 EBSeq 网站：<a target="_blank" rel="noopener" href="https://www.biostat.wisc.edu/~kendzior/EBSEQ/%E3%80%82RSEM%E5%B8%A6%E6%9C%89EBSeq%E5%8C%85%EF%BC%8C%E5%8F%AA%E9%9C%80%E5%AE%89%E8%A3%85%60make">https://www.biostat.wisc.edu/~kendzior/EBSEQ/。RSEM带有EBSeq包，只需安装`make</a> ebseq&#96;即可使用EBSeq。</li>
+<li>先验增强的RSEM(Prior-Enhanced RSEM, pRSEM)：pRSEM使用更多的数据（如 ChIP-seq 数据，scRNA-seq数据）来分配 RNA-seq 多映射片段。 在 pRSEM 子文件夹以及 RSEM 的 rsem-prepare-reference 和 rsem-calculate-expression 脚本中包含了 pRSEM 代码。</li>
+</ul>
+<h1 id="3-RSEM安装"><a href="#3-RSEM安装" class="headerlink" title="3. RSEM安装"></a>3. RSEM安装</h1><ol>
+<li>依赖</li>
+</ol>
+<ul>
+<li>C++编译器：如GCC。</li>
+<li>Perl：用于运行一些脚本。</li>
+<li>R：用于数据分析和可视化。</li>
+<li>Python（可选）：如果需要使用–gff3选项。</li>
+<li>Bowtie&#x2F;Bowtie2&#x2F;STAR&#x2F;HISAT2（可选）：如果需要使用这些比对工具。</li>
+</ul>
+<ol start="2">
+<li>RSEM安装</li>
+</ol>
+<ul>
+<li>conda安装：<code>conda install bioconda::rsem</code></li>
+<li>github下载和安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/deweylab/RSEM.git</span><br><span class="line">cd RSEM</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>添加到环境变量</li>
+</ol>
+<ul>
+<li>添加之后，如果可以使用<code>rsem-calculate-expression</code>命令则表示安装成果。</li>
+</ul>
+<h1 id="4-RSEM使用"><a href="#4-RSEM使用" class="headerlink" title="4. RSEM使用"></a>4. RSEM使用</h1><h2 id="4-1-建立转录组的索引文件"><a href="#4-1-建立转录组的索引文件" class="headerlink" title="4.1. 建立转录组的索引文件"></a>4.1. 建立转录组的索引文件</h2><ol>
+<li>有参考基因组</li>
+</ol>
+<ul>
+<li>提供参考基因组genome.fa序列和GTF注释文件genome.annotation.gtf（或者用<code>-gff3 genome.annotation.gff3</code>指定gff3格式的注释文件），RSEM则会通过GTF注释文件从参考基因组序列中提取出各个转录本的序列，然后利用Bowtie2 or STAR等软件来建索引，索引文件前缀ref。</li>
+<li><code>rsem-prepare-reference -gtf genome.annotation.gtf --bowtie2 genome.fa ref</code></li>
+<li>生成提取的转录本序列文件，和bowtie2生成的索引文件ref.bt2</li>
+</ul>
+<ol start="2">
+<li>无参考基因组</li>
+</ol>
+<ul>
+<li>没有参考基因组的情况，可以用Trinity无参组装的转录本文件Trinity.fasta，生成转录组的索引，索引文件前缀Trinity_ref。</li>
+<li><code>rsem-prepare-reference --bowtie2 Trinity.fasta Trinity_ref</code></li>
+<li><ul>
+<li>用bowtie2生成索引文件Trinity_ref.bt2</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>其他参数</li>
+</ol>
+<ul>
+<li><code>--bowtie2</code>：指定建立索引文件的软件，可选<code>--bowtie</code>,<code>--bowtie2</code>,<code>--star</code>。</li>
+<li><code>--transcript-to-gene-map map.txt</code>：如果想生成基于基因水平的定量结果，则需要加上这个参数指定包含转录本和基因的对应关系的map.txt文件，文件包含两列gene_id transcript_id。指定这个参数后，除了生成transcript的定量结果，还会生成gene（一个基因有多个转录本）的定量结果。推荐使用。RSEM还提供了脚本从Trinity的结果生成map.txt文件，<code>extract-transcript-to-gene-map-from-trinity Trinity.fasta map.txt</code>。</li>
+</ul>
+<h2 id="4-2-计算表达量"><a href="#4-2-计算表达量" class="headerlink" title="4.2. 计算表达量"></a>4.2. 计算表达量</h2><ol>
+<li>命令</li>
+</ol>
+<ul>
+<li><code>rsem-calculate-expression --bowtie2 --paired-end -p 12 read_1.fastq read_2.fastq Trinity_ref sample_output</code></li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>–bowtie2: 指定使用 Bowtie2 进行比对。</li>
+<li>–paired-end: 数据是PE测序的。</li>
+<li>-p 12: 指定使用 12 个线程进行计算。</li>
+<li>read_1.fastq read_2.fastq: 输入的配对 RNA-Seq 读段文件。</li>
+<li>Trinity_ref: RSEM 参考数据索引文件的前缀，上一步的ref或Trinity_ref。</li>
+<li>sample_output: 指定输出文件的前缀。</li>
+</ul>
+<ol start="3">
+<li>常用参数</li>
+</ol>
+<ul>
+<li>–estimate-rspd: 估算每个转录本的reads位置分布，默认启用。estimate the read start position distribution，看是否有positional biases。</li>
+<li>–calc-ci: 计算转录本丰度的置信区间。</li>
+<li>–append-names：用于在结果中附加上gene name和transcript name。</li>
+<li>–seed-length: 设置用于比对的种子长度，默认是 25。</li>
+<li>–output-genome-bam: 输出基于基因的 bam 文件（默认基于转录本的bam文件）。</li>
+<li>–no-bam-output: 不输出 BAM 文件。</li>
+<li>–time: 显示命令执行时间。</li>
+</ul>
+<ol start="4">
+<li>bowtie2的参数</li>
+</ol>
+<ul>
+<li>RSEM调用bowtie2的参数可以通过–bowtie2-mismatch-rate，–bowtie2-k以及–bowtie2-sensitivity-level来设定。</li>
+<li>默认参数是：<code>bowtie2 -q --phred33 --sensitive --dpad 0 --gbar 99999999 --mp 1,1 --np 1 --score-min L,0,-0.1 -I 1 -X 1000 --no-mixed --no-discordant -p 6 -k 200 -x /path/to/index/ -1 RNA-seq.clean_1.fastq -2 RNA-seq.clean_2.fastq | samtools view -S -b -o sample.bam</code></li>
+<li>默认参数中：–gbar表示，RSEM不支持有gap的比对；–no-mixed则表示RSEM不支持单个reads的比对；–no-discordant则告诉我们RSEM也不支持paired reads discordant的比对; -k 200表明RSEM希望bowtie2输出最佳的200个比对结果。</li>
+</ul>
+<ol start="5">
+<li>输出文件</li>
+</ol>
+<ul>
+<li>sample_output.genes.results: 包含基因水平的表达定量结果。</li>
+<li>sample_output.isoforms.results: 包含转录本水平的表达定量结果。</li>
+<li>sample_output.transcript.bam: 如果没有使用 –no-bam-output，会生成基于转录本比对的 BAM 文件。</li>
+<li>sample_output.genome.bam: 如果用 –output-genome-bam，会生成基于基因的比对的 BAM 文件。</li>
+<li>sample_output.stat：文件夹，包含一些统计结果。</li>
+</ul>
+<h2 id="4-3-一些解释"><a href="#4-3-一些解释" class="headerlink" title="4.3. 一些解释"></a>4.3. 一些解释</h2><ol>
+<li>结果文件sample_output.isoforms.results的每一列</li>
+</ol>
+<ul>
+<li>第1，2列分别是transcript id和gene id，如果像我一样设置了–append-names参数，那么在ID后面还会附上transcript name和gene name（以下划线_分隔）</li>
+<li>第3，4列分别是transcript length和effective_length，这里是length是没有包括转录本的poly(A) tail的，而effective_length则是指可以有fragment覆盖的区域，计算公式：transcript length - mean fragment length + 1；如果是.genes.results中的length，则是所有transcript length的加权平均数</li>
+<li>第4，5，6列则分别是expected_count，TPM，FPKM；expected_count比较复杂，跟一般的count数定义有点不一样，是指the sum of the posterior probability of each read comes from this transcript over all reads，RSEM给出的解释是（复制黏贴了）：Because (1) each read aligning to this transcript has a probability of being generated from background noise; (2) RSEM may filter some alignable low quality reads, the sum of expected counts for all transcript are generally less than the total number of reads aligned；TPM和FPKM则比较常见了</li>
+<li>第7列则是IsoPct，其含义是转录本上的丰度占其基因上的丰度的百分比。</li>
+</ul>
+<ol start="2">
+<li>multimapping reads（多重比对reads）的处理</li>
+</ol>
+<ul>
+<li>RSEM官方教程中提到，以Ccl6基因的3个转录本的比对结果为例，其第2个转录本全长与第1个转录本重叠，所以在这重叠区域会产生大量的multimapping reads。RSEM的处理方法是这样的：RSEM先尽量让第1个转录本在其重叠区域的reads（包括unique reads和multimapping reads）分布趋于平滑？因此再将在区域的剩下multimapping reads算在第2个转录本上；至于第3个转录本，其没有reads比对上，所以就空的。</li>
+</ul>
+<img src="https://github.com/bli25/RSEM_tutorial/raw/master/images/Ccl6_transcript_wiggle.png" width=80% title="Cc16基因的例子" align=center/>
+
+<p><strong><p align="center">Ccl6_transcript_wiggle.pdf</p></strong></p>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li>官方教程：<a target="_blank" rel="noopener" href="https://deweylab.github.io/RSEM/">https://deweylab.github.io/RSEM/</a></li>
+<li>github：<a target="_blank" rel="noopener" href="https://github.com/deweylab/RSEM">https://github.com/deweylab/RSEM</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.plob.org/article/22918.html">https://www.plob.org/article/22918.html</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Trinity/" rel="tag"># Trinity</a>
+              <a href="/tags/expression-analysis/" rel="tag"># expression analysis</a>
+              <a href="/tags/RSEM/" rel="tag"># RSEM</a>
+              <a href="/tags/RNA-Seq-by-Expectation-Maximization/" rel="tag"># RNA-Seq by Expectation-Maximization</a>
+              <a href="/tags/Simulation/" rel="tag"># Simulation</a>
+              <a href="/tags/EBSeq/" rel="tag"># EBSeq</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/10/27/omics_transcriptome_expression_Trinity.estimat.abundance/" rel="prev" title="用Trinity的脚本进行转录本定量分析">
+      <i class="fa fa-chevron-left"></i> 用Trinity的脚本进行转录本定量分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/04/omics_genome.assembly_NGS_SPAdes/" rel="next" title="用SPAdes对Illumina二代测序数据进行基因组预组装">
+      用SPAdes对Illumina二代测序数据进行基因组预组装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%B8%B8%E7%94%A8%E7%9A%84%E8%BD%AC%E5%BD%95%E6%9C%AC%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90%E8%BD%AF%E4%BB%B6"><span class="nav-text">1. 常用的转录本定量分析软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-RSEM%E7%AE%80%E4%BB%8B"><span class="nav-text">2. RSEM简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-RSEM%E5%AE%89%E8%A3%85"><span class="nav-text">3. RSEM安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-RSEM%E4%BD%BF%E7%94%A8"><span class="nav-text">4. RSEM使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%BB%BA%E7%AB%8B%E8%BD%AC%E5%BD%95%E7%BB%84%E7%9A%84%E7%B4%A2%E5%BC%95%E6%96%87%E4%BB%B6"><span class="nav-text">4.1. 建立转录组的索引文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E8%AE%A1%E7%AE%97%E8%A1%A8%E8%BE%BE%E9%87%8F"><span class="nav-text">4.2. 计算表达量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E4%B8%80%E4%BA%9B%E8%A7%A3%E9%87%8A"><span class="nav-text">4.3. 一些解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

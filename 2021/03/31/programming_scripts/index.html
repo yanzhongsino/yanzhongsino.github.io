@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="store some scripts using in biology and bioinformatics">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scripts">
+<meta property="og:url" content="http://example.com/2021/03/31/programming_scripts/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="store some scripts using in biology and bioinformatics">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2021-04-01T02:56:00.000Z">
+<meta property="article:modified_time" content="2023-11-08T07:45:24.365Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="scripts">
+<meta property="article:tag" content="batch_run.sh">
+<meta property="article:tag" content="ROUSFinder2.0.py">
+<meta property="article:tag" content="extract_intron_info.pl">
+<meta property="article:tag" content="multi-transcriptome_assembly_with_ref.sh">
+<meta property="article:tag" content="extract_single_copy_genes.sh">
+<meta property="article:tag" content="concat_msa_with_differenct_species.sh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/03/31/programming_scripts/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>scripts | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/programming_scripts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          scripts
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-01 10:56:00" itemprop="dateCreated datePublished" datetime="2021-04-01T10:56:00+08:00">2021-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-08 15:45:24" itemprop="dateModified" datetime="2023-11-08T15:45:24+08:00">2023-11-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index"><span itemprop="name">programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/programming/scripts/" itemprop="url" rel="index"><span itemprop="name">scripts</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>10 mins.</span>
+            </span>
+            <div class="post-description">store some scripts using in biology and bioinformatics</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=476751845&auto=1&height=32"></iframe></div>
+
+<h1 id="1-我写的脚本"><a href="#1-我写的脚本" class="headerlink" title="1. 我写的脚本"></a>1. 我写的脚本</h1><h2 id="1-1-多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测"><a href="#1-1-多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测" class="headerlink" title="1.1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测"></a>1.1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测</h2><p><a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/multi-transcriptome_assembly_with_ref.sh">multi-transcriptome_assembly_with_ref.sh</a></p>
+<h2 id="1-2-提取，合并，和比对单拷贝基因和蛋白"><a href="#1-2-提取，合并，和比对单拷贝基因和蛋白" class="headerlink" title="1.2. 提取，合并，和比对单拷贝基因和蛋白"></a>1.2. 提取，合并，和比对单拷贝基因和蛋白</h2><p><a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/extract_single_copy_genes.sh">extract_single_copy_genes.sh</a></p>
+<h2 id="1-3-合并不同物种数量的多序列比对文件，保持序列的比对"><a href="#1-3-合并不同物种数量的多序列比对文件，保持序列的比对" class="headerlink" title="1.3. 合并不同物种数量的多序列比对文件，保持序列的比对"></a>1.3. 合并不同物种数量的多序列比对文件，保持序列的比对</h2><p><a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/my_scripts/concat_msa_with_differenct_species.sh">concat_msa_with_differenct_species.sh</a></p>
+<h1 id="2-我修改的脚本（其他人写的）"><a href="#2-我修改的脚本（其他人写的）" class="headerlink" title="2. 我修改的脚本（其他人写的）"></a>2. 我修改的脚本（其他人写的）</h1><h2 id="2-1-从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息"><a href="#2-1-从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息" class="headerlink" title="2.1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息"></a>2.1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息</h2><p><a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/modifiedscripts/extract_intron_info.pl">extract_intron_info.pl</a></p>
+<h1 id="3-保存的脚本"><a href="#3-保存的脚本" class="headerlink" title="3. 保存的脚本"></a>3. 保存的脚本</h1><h2 id="3-1-batch-run-sh-——-多线程并行运行批量化命令"><a href="#3-1-batch-run-sh-——-多线程并行运行批量化命令" class="headerlink" title="3.1. batch_run.sh —— 多线程并行运行批量化命令"></a>3.1. batch_run.sh —— 多线程并行运行批量化命令</h2><p><a target="_blank" rel="noopener" href="https://github.com/yanzhongsino/bioscripts/blob/main/saved_scripts/batch_run.sh">batch_run.sh</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">batch_run.sh脚本用于多线程并行批量化循环命令，并控制并行数量始终为<span class="variable">$&#123;thread&#125;</span>。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">usage: 修改thread=后的值为想要设定的并行线程数，把需要并行的命令替换23行的run something。运行脚本batch_run.sh，实现并行运行循环任务。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ref：网上找的脚本，来源找不到了，侵删。</span></span><br><span class="line"></span><br><span class="line">thread=16</span><br><span class="line"></span><br><span class="line">start_time=`date +%s`              # 定义脚本运行的开始时间</span><br><span class="line">echo $&#123;start_time&#125;</span><br><span class="line">tmpFifo=/tmp/$$.fifo # 声明管道名称，$$表示脚本当前运行的进程PID</span><br><span class="line">mkfifo $&#123;tmpFifo&#125; # 创建有名管道</span><br><span class="line">exec 3&lt;&gt;$&#123;tmpFifo&#125;                   #创建文件描述符，以可读（&lt;）可写（&gt;）的方式关联管道文件，这时候文件描述符3就有了有名管道文件的所有特性</span><br><span class="line">rm -rf $&#123;tmpFifo&#125;                    #关联后的文件描述符拥有管道文件的所有特性,所以这时候管道文件可以删除，我们留下文件描述符来用就可以了</span><br><span class="line">for ((i=1;i&lt;=$&#123;thread&#125;;i++))</span><br><span class="line">do</span><br><span class="line">        echo &quot;&quot; &gt;&amp;3                   #&amp;3代表引用文件描述符3，这条命令代表往管道里面放入了一个&quot;令牌&quot;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">for sample in $(cat sample_list.txt) #并行运行的循环</span><br><span class="line">do</span><br><span class="line">        read -u3                           #代表从管道中读取一个令牌</span><br><span class="line">        &#123;</span><br><span class="line">                echo $&#123;sample&#125;</span><br><span class="line">                run something # 需要并行运行的真实命令</span><br><span class="line">                echo &#x27;success&#x27; $&#123;sample&#125;       </span><br><span class="line">                echo &quot;&quot; &gt;&amp;3                   #代表我这一次命令执行到最后，把令牌放回管道</span><br><span class="line">        &#125; &amp;</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># ps:可以使用while read line; do echo $line; done &lt; file.txt代替for i in $(cat file.txt);do echo $i; done循环。但是不能用cat file.txt | while read line; do echo $line; done代替。</span></span></span><br><span class="line"></span><br><span class="line">wait</span><br><span class="line"> </span><br><span class="line">stop_time=`date +%s`  #定义脚本运行的结束时间</span><br><span class="line"> </span><br><span class="line">echo &quot;TIME:`expr $stop_time - $start_time`&quot;</span><br><span class="line">exec 3&lt;&amp;-                       #关闭文件描述符的读</span><br><span class="line">exec 3&gt;&amp;-                       #关闭文件描述符的写</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-infernal-tblout2gff-pl-——-基因组ncRNA的infernal注释结果tblout格式转换成gff格式"><a href="#3-2-infernal-tblout2gff-pl-——-基因组ncRNA的infernal注释结果tblout格式转换成gff格式" class="headerlink" title="3.2. infernal-tblout2gff.pl —— 基因组ncRNA的infernal注释结果tblout格式转换成gff格式"></a>3.2. infernal-tblout2gff.pl —— 基因组ncRNA的infernal注释结果tblout格式转换成gff格式</h2><ol>
+<li>背景<br>用Infernal注释基因组的ncRNA，得到的结果可以用脚本整理成gff3格式。</li>
+</ol>
+<p>脚本来源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jessepeng/p/15392809.html">https://www.cnblogs.com/jessepeng/p/15392809.html</a></p>
+<ol start="2">
+<li>脚本</li>
+</ol>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env perl</span></span><br><span class="line"><span class="comment"># infernal-tblout2gff.pl: convert cmsearch or cmscan tblout files to GFF format</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># an important point of above ref:</span></span><br><span class="line"><span class="comment"># &quot;Start is always less than or equal to end&quot;</span></span><br><span class="line"><span class="comment"># EPN, Fri Jun  7 11:07:38 2019</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="keyword">use</span> strict;</span><br><span class="line"><span class="keyword">use</span> warnings;</span><br><span class="line"><span class="keyword">use</span> Getopt::Long;</span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span> $in_tblout  = <span class="string">&quot;&quot;</span>;   <span class="comment"># name of input tblout file</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span> $usage;</span><br><span class="line">$usage  = <span class="string">&quot;infernal-tblout2gff.pl\n\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;Usage:\n\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;infernal-tblout2gff.pl [OPTIONS] &lt;cmsearch tblout file&gt;\n\tOR\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;infernal-tblout2gff.pl --cmscan [OPTIONS] &lt;cmscan tblout file&gt;\n\tOR\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;infernal-tblout2gff.pl --cmscan --fmt2 [OPTIONS] &lt;cmscan --fmt 2 tblout file&gt;\n\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\tOPTIONS:\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t-T &lt;n&gt;       : minimum bit score to include is &lt;n&gt;\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t-E &lt;x&gt;       : maximum E-value to include is &lt;x&gt;\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--cmscan     : tblout file was created by cmscan\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--source &lt;s&gt; : specify &#x27;source&#x27; field should be &lt;s&gt; (e.g. tRNAscan-SE)\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--fmt2       : tblout file was created with cmscan --fmt 2 option\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--all        : output all info in &#x27;attributes&#x27; column   [default: E-value]\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--none       : output no info in &#x27;attributes&#x27; column    [default: E-value]\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--desc       : output desc field in &#x27;attributes&#x27; column [default: E-value]\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--version &lt;s&gt;: append \&quot;-&lt;s&gt;\&quot; to &#x27;source&#x27; column\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--extra &lt;s&gt;  : append \&quot;&lt;s&gt;;\&quot; to &#x27;attributes&#x27; column\n&quot;</span>;</span><br><span class="line">$usage .= <span class="string">&quot;\t\t--hidedesc   : do not includ \&quot;desc\:\&quot; prior to desc value in &#x27;attributes&#x27; column\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span> $do_minscore = <span class="number">0</span>;       <span class="comment"># set to &#x27;1&#x27; if -T used</span></span><br><span class="line"><span class="keyword">my</span> $do_maxevalue = <span class="number">0</span>;      <span class="comment"># set to &#x27;1&#x27; if -E used</span></span><br><span class="line"><span class="keyword">my</span> $minscore   = <span class="keyword">undef</span>;    <span class="comment"># defined if if -T used</span></span><br><span class="line"><span class="keyword">my</span> $maxevalue  = <span class="keyword">undef</span>;    <span class="comment"># defined if -E used</span></span><br><span class="line"><span class="keyword">my</span> $do_cmscan  = <span class="number">0</span>;        <span class="comment"># set to &#x27;1&#x27; if --cmscan used</span></span><br><span class="line"><span class="keyword">my</span> $do_fmt2    = <span class="number">0</span>;        <span class="comment"># set to &#x27;1&#x27; if --fmt</span></span><br><span class="line"><span class="keyword">my</span> $do_all_attributes = <span class="number">0</span>; <span class="comment"># set to &#x27;1&#x27; if --all</span></span><br><span class="line"><span class="keyword">my</span> $do_no_attributes  = <span class="number">0</span>; <span class="comment"># set to &#x27;1&#x27; if --none</span></span><br><span class="line"><span class="keyword">my</span> $do_de_attributes  = <span class="number">0</span>; <span class="comment"># set to &#x27;1&#x27; if --desc</span></span><br><span class="line"><span class="keyword">my</span> $version = <span class="keyword">undef</span>;       <span class="comment"># defined if --version used</span></span><br><span class="line"><span class="keyword">my</span> $extra = <span class="keyword">undef</span>;         <span class="comment"># defined if --extra used</span></span><br><span class="line"><span class="keyword">my</span> $do_hidedesc = <span class="number">0</span>;       <span class="comment"># set to 1 if --hidedesc used</span></span><br><span class="line"><span class="keyword">my</span> $opt_source = <span class="keyword">undef</span>;    <span class="comment"># set to &lt;s&gt; if --source &lt;s&gt; used</span></span><br><span class="line"></span><br><span class="line">&amp;GetOptions( <span class="string">&quot;T=s&quot;</span>       =&gt; \$minscore,</span><br><span class="line">             <span class="string">&quot;E=s&quot;</span>       =&gt; \$maxevalue,</span><br><span class="line">             <span class="string">&quot;cmscan&quot;</span>    =&gt; \$do_cmscan,</span><br><span class="line">             <span class="string">&quot;source=s&quot;</span>  =&gt; \$opt_source,</span><br><span class="line">             <span class="string">&quot;fmt2&quot;</span>      =&gt; \$do_fmt2,</span><br><span class="line">             <span class="string">&quot;all&quot;</span>       =&gt; \$do_all_attributes,</span><br><span class="line">             <span class="string">&quot;none&quot;</span>      =&gt; \$do_no_attributes,</span><br><span class="line">             <span class="string">&quot;desc&quot;</span>      =&gt; \$do_de_attributes,</span><br><span class="line">             <span class="string">&quot;version=s&quot;</span> =&gt; \$version, </span><br><span class="line">             <span class="string">&quot;extra=s&quot;</span>   =&gt; \$extra,</span><br><span class="line">             <span class="string">&quot;hidedesc&quot;</span>  =&gt; \$do_hidedesc);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">scalar</span>(@ARGV) != <span class="number">1</span>) &#123; <span class="keyword">die</span> $usage; &#125;</span><br><span class="line"><span class="keyword">my</span> ($tblout_file) = @ARGV;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">defined</span> $minscore)  &#123; $do_minscore  = <span class="number">1</span>; &#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">defined</span> $maxevalue) &#123; $do_maxevalue = <span class="number">1</span>; &#125;</span><br><span class="line"><span class="keyword">if</span>($do_minscore &amp;&amp; $do_maxevalue) &#123; </span><br><span class="line">  <span class="keyword">die</span> <span class="string">&quot;ERROR, -T and -E cannot be used in combination. Pick one.&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(($do_all_attributes) &amp;&amp; ($do_no_attributes)) &#123; </span><br><span class="line">  <span class="keyword">die</span> <span class="string">&quot;ERROR, --all and --none cannot be used in combination. Pick one.&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(($do_all_attributes) &amp;&amp; ($do_de_attributes)) &#123; </span><br><span class="line">  <span class="keyword">die</span> <span class="string">&quot;ERROR, --all and --desc cannot be used in combination. Pick one.&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(($do_no_attributes) &amp;&amp; ($do_de_attributes)) &#123; </span><br><span class="line">  <span class="keyword">die</span> <span class="string">&quot;ERROR, --none and --desc cannot be used in combination. Pick one.&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(($do_fmt2) &amp;&amp; (! $do_cmscan)) &#123; </span><br><span class="line">  <span class="keyword">die</span> <span class="string">&quot;ERROR, --fmt2 only makes sense in combination with --cmscan&quot;</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>((<span class="keyword">defined</span> $opt_source) &amp;&amp; (<span class="keyword">defined</span> $version)) &#123; </span><br><span class="line">  <span class="keyword">die</span> <span class="string">&quot;ERROR, --source and --version are incompatible&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(! -e $tblout_file) &#123; <span class="keyword">die</span> <span class="string">&quot;ERROR tblout file $tblout_file does not exist&quot;</span>; &#125;</span><br><span class="line"><span class="keyword">if</span>(! -s $tblout_file) &#123; <span class="keyword">die</span> <span class="string">&quot;ERROR tblout file $tblout_file is empty&quot;</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span> $source = ($do_cmscan) ? <span class="string">&quot;cmscan&quot;</span> : <span class="string">&quot;cmsearch&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">defined</span> $version)    &#123; $source .= <span class="string">&quot;-&quot;</span> . $version; &#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">defined</span> $opt_source) &#123; $source = $opt_source; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span>(IN, $tblout_file) || <span class="keyword">die</span> <span class="string">&quot;ERROR unable to open $tblout_file for reading&quot;</span>; </span><br><span class="line"><span class="keyword">my</span> $line;</span><br><span class="line"><span class="keyword">my</span> $i;</span><br><span class="line"><span class="keyword">while</span>($line = &lt;IN&gt;) &#123; </span><br><span class="line">  <span class="keyword">if</span>($line !~ <span class="regexp">m/^\#/</span>) &#123; </span><br><span class="line">    <span class="keyword">chomp</span> $line;</span><br><span class="line">    <span class="keyword">my</span> @el_A = <span class="keyword">split</span>(<span class="regexp">/\s+/</span>, $line);</span><br><span class="line">    <span class="keyword">my</span> $nfields = <span class="keyword">scalar</span>(@el_A);</span><br><span class="line">    <span class="keyword">if</span>((! $do_fmt2) &amp;&amp; ($nfields &lt; <span class="number">18</span>)) &#123; </span><br><span class="line">      <span class="keyword">die</span> <span class="string">&quot;ERROR expected at least 18 space delimited fields in tblout line (fmt 1, default) but got $nfields on line:\n$line\n&quot;</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(($do_fmt2) &amp;&amp; ($nfields &lt; <span class="number">27</span>)) &#123; </span><br><span class="line">      <span class="keyword">die</span> <span class="string">&quot;ERROR expected at least 27 space delimited fields in tblout line (fmt 2, --fmt2) but got $nfields on line:\n$line\n&quot;</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># ref Infernal 1.1.2 user guide, pages 59-61</span></span><br><span class="line">    <span class="keyword">my</span> $idx     = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $seqname = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $seqaccn = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $mdlname = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $mdlaccn = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $clan    = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $mdl     = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $mdlfrom = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $mdlto   = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $seqfrom = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $seqto   = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $strand  = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $trunc   = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $pass    = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $gc      = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $bias    = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $score   = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $evalue  = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $inc     = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $olp     = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $anyidx  = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $anyfrct1= <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $anyfrct2= <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $winidx  = <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $winfrct1= <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $winfrct2= <span class="keyword">undef</span>;</span><br><span class="line">    <span class="keyword">my</span> $desc    = <span class="keyword">undef</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>($do_fmt2) &#123; <span class="comment"># 27 fields</span></span><br><span class="line">      $idx     = $el_A[<span class="number">0</span>];</span><br><span class="line">      $seqname = ($do_cmscan) ? $el_A[<span class="number">3</span>] : $el_A[<span class="number">1</span>];</span><br><span class="line">      $seqaccn = ($do_cmscan) ? $el_A[<span class="number">4</span>] : $el_A[<span class="number">2</span>];</span><br><span class="line">      $mdlname = ($do_cmscan) ? $el_A[<span class="number">1</span>] : $el_A[<span class="number">3</span>];</span><br><span class="line">      $mdlaccn = ($do_cmscan) ? $el_A[<span class="number">2</span>] : $el_A[<span class="number">4</span>];</span><br><span class="line">      $clan    = $el_A[<span class="number">5</span>];</span><br><span class="line">      $mdl     = $el_A[<span class="number">6</span>];</span><br><span class="line">      $mdlfrom = $el_A[<span class="number">7</span>];</span><br><span class="line">      $mdlto   = $el_A[<span class="number">8</span>];</span><br><span class="line">      $seqfrom = $el_A[<span class="number">9</span>];</span><br><span class="line">      $seqto   = $el_A[<span class="number">10</span>];</span><br><span class="line">      $strand  = $el_A[<span class="number">11</span>];</span><br><span class="line">      $trunc   = $el_A[<span class="number">12</span>];</span><br><span class="line">      $pass    = $el_A[<span class="number">13</span>];</span><br><span class="line">      $gc      = $el_A[<span class="number">14</span>];</span><br><span class="line">      $bias    = $el_A[<span class="number">15</span>];</span><br><span class="line">      $score   = $el_A[<span class="number">16</span>];</span><br><span class="line">      $evalue  = $el_A[<span class="number">17</span>];</span><br><span class="line">      $inc     = $el_A[<span class="number">18</span>];</span><br><span class="line">      $olp     = $el_A[<span class="number">19</span>];</span><br><span class="line">      $anyidx  = $el_A[<span class="number">20</span>];</span><br><span class="line">      $anyfrct1= $el_A[<span class="number">21</span>];</span><br><span class="line">      $anyfrct2= $el_A[<span class="number">22</span>];</span><br><span class="line">      $winidx  = $el_A[<span class="number">23</span>];</span><br><span class="line">      $winfrct1= $el_A[<span class="number">24</span>];</span><br><span class="line">      $winfrct2= $el_A[<span class="number">25</span>];</span><br><span class="line">      $desc    = $el_A[<span class="number">26</span>]; </span><br><span class="line">      <span class="keyword">for</span>($i = <span class="number">27</span>; $i &lt; $nfields; $i++) &#123; $desc .= <span class="string">&quot;_&quot;</span> . $el_A[$i]; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123; <span class="comment"># fmt 1, default</span></span><br><span class="line">      $seqname = ($do_cmscan) ? $el_A[<span class="number">2</span>] : $el_A[<span class="number">0</span>];</span><br><span class="line">      $seqaccn = ($do_cmscan) ? $el_A[<span class="number">3</span>] : $el_A[<span class="number">1</span>];</span><br><span class="line">      $mdlname = ($do_cmscan) ? $el_A[<span class="number">0</span>] : $el_A[<span class="number">2</span>];</span><br><span class="line">      $mdlaccn = ($do_cmscan) ? $el_A[<span class="number">1</span>] : $el_A[<span class="number">3</span>];</span><br><span class="line">      $mdl     = $el_A[<span class="number">4</span>];</span><br><span class="line">      $mdlfrom = $el_A[<span class="number">5</span>];</span><br><span class="line">      $mdlto   = $el_A[<span class="number">6</span>];</span><br><span class="line">      $seqfrom = $el_A[<span class="number">7</span>];</span><br><span class="line">      $seqto   = $el_A[<span class="number">8</span>];</span><br><span class="line">      $strand  = $el_A[<span class="number">9</span>];</span><br><span class="line">      $trunc   = $el_A[<span class="number">10</span>];</span><br><span class="line">      $pass    = $el_A[<span class="number">11</span>];</span><br><span class="line">      $gc      = $el_A[<span class="number">12</span>];</span><br><span class="line">      $bias    = $el_A[<span class="number">13</span>];</span><br><span class="line">      $score   = $el_A[<span class="number">14</span>];</span><br><span class="line">      $evalue  = $el_A[<span class="number">15</span>];</span><br><span class="line">      $inc     = $el_A[<span class="number">16</span>];</span><br><span class="line">      $desc    = $el_A[<span class="number">17</span>]; </span><br><span class="line">      <span class="keyword">for</span>($i = <span class="number">18</span>; $i &lt; $nfields; $i++) &#123; $desc .= <span class="string">&quot;_&quot;</span> . $el_A[$i]; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># one sanity check, strand should make sense</span></span><br><span class="line">    <span class="keyword">if</span>(($strand <span class="keyword">ne</span> <span class="string">&quot;+&quot;</span>) &amp;&amp; ($strand <span class="keyword">ne</span> <span class="string">&quot;-&quot;</span>)) &#123; </span><br><span class="line">      <span class="keyword">if</span>(($do_fmt2) &amp;&amp; (($seqfrom eq <span class="string">&quot;+&quot;</span>) || ($seqfrom eq <span class="string">&quot;-&quot;</span>))) &#123; </span><br><span class="line">        <span class="keyword">die</span> <span class="string">&quot;ERROR problem parsing, you specified --fmt2 but tblout file appears to have NOT been created with --fmt 2, retry without --fmt2\nproblematic line:\n$line\n&quot;</span>; </span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>((! $do_fmt2) &amp;&amp; (($pass eq <span class="string">&quot;+&quot;</span>) || ($pass eq <span class="string">&quot;-&quot;</span>))) &#123; </span><br><span class="line">        <span class="keyword">die</span> <span class="string">&quot;ERROR problem parsing, you did not specify --fmt2 but tblout file appears to have been created with --fmt 2, retry with --fmt2\nproblematic line:\n$line\n&quot;</span>; </span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">die</span> <span class="string">&quot;ERROR unable to parse, problematic line:\n$line\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(($do_minscore) &amp;&amp; ($score &lt; $minscore)) &#123; </span><br><span class="line">      ; <span class="comment"># skip</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">elsif</span>(($do_maxevalue) &amp;&amp; ($evalue &gt; $maxevalue)) &#123; </span><br><span class="line">      ; <span class="comment"># skip</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123; </span><br><span class="line">      <span class="keyword">my</span> $attributes = <span class="string">&quot;evalue=&quot;</span> . $evalue; <span class="comment"># default to just evalue</span></span><br><span class="line">      <span class="keyword">if</span>($do_all_attributes) &#123; </span><br><span class="line">        <span class="keyword">if</span>($do_fmt2) &#123; </span><br><span class="line">          $attributes .= <span class="keyword">sprintf</span>(<span class="string">&quot;;idx=$idx;seqaccn=$seqaccn;mdlaccn=$mdlaccn;clan=$clan;mdl=$mdl;mdlfrom=$mdlfrom;mdlto=$mdlto;trunc=$trunc;pass=$pass;gc=$gc;bias=$bias;inc=$inc;olp=$olp;anyidx=$anyidx;anyfrct1=$anyfrct1;anyfrct2=$anyfrct2;winidx=$winidx;winfrct1=$winfrct1;winfrct2=$winfrct2;%s$desc&quot;</span>, ($do_hidedesc ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;desc=&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123; </span><br><span class="line">          $attributes .= <span class="keyword">sprintf</span>(<span class="string">&quot;;seqaccn=$seqaccn;mdlaccn=$mdlaccn;mdl=$mdl;mdlfrom=$mdlfrom;mdlto=$mdlto;trunc=$trunc;pass=$pass;gc=$gc;bias=$bias;inc=$inc;%s$desc&quot;</span>, ($do_hidedesc ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;desc=&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">elsif</span>($do_no_attributes) &#123; </span><br><span class="line">        $attributes = <span class="string">&quot;-&quot;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">elsif</span>($do_de_attributes) &#123; </span><br><span class="line">        $attributes = $desc;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(<span class="keyword">defined</span> $extra) &#123; </span><br><span class="line">        <span class="keyword">if</span>($attributes eq <span class="string">&quot;-&quot;</span>)       &#123; $attributes = <span class="string">&quot;&quot;</span>; &#125;</span><br><span class="line">        <span class="keyword">elsif</span>($attributes !~ <span class="regexp">m/\;$/</span>) &#123; $attributes .= <span class="string">&quot;;&quot;</span>; &#125;</span><br><span class="line">        $attributes .= $extra . <span class="string">&quot;;&quot;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">printf</span>(<span class="string">&quot;%s\t%s\t%s\t%d\t%d\t%.1f\t%s\t%s\t%s\n&quot;</span>, </span><br><span class="line">             $seqname,                             <span class="comment"># token 1: &#x27;sequence&#x27; (sequence name)</span></span><br><span class="line">             $source,                              <span class="comment"># token 2: &#x27;source&#x27;</span></span><br><span class="line">             $mdlname,                             <span class="comment"># token 3: &#x27;feature&#x27; (model name) you may want to change this to &#x27;ncRNA&#x27;</span></span><br><span class="line">             ($strand eq <span class="string">&quot;+&quot;</span>) ? $seqfrom : $seqto, <span class="comment"># token 4: &#x27;start&#x27; in coordinate space [1..seqlen], must be &lt;= &#x27;end&#x27;</span></span><br><span class="line">             ($strand eq <span class="string">&quot;+&quot;</span>) ? $seqto : $seqfrom, <span class="comment"># token 5: &#x27;end&#x27; in coordinate space [1..seqlen], must be &gt;= &#x27;start&#x27;</span></span><br><span class="line">             $score,                               <span class="comment"># token 6: &#x27;score&#x27; bit score</span></span><br><span class="line">             $strand,                              <span class="comment"># token 7: &#x27;strand&#x27; (&#x27;+&#x27; or &#x27;-&#x27;)</span></span><br><span class="line">             <span class="string">&quot;.&quot;</span>,                                  <span class="comment"># token 8: &#x27;phase&#x27; irrelevant for noncoding RNAs</span></span><br><span class="line">             $attributes);                         <span class="comment"># token 9: attributes, currently only E-value, unless --all, --none or --desc</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>运行<br><code>perl infernal-tblout2gff.pl --cmscan --fmt2 genome.tblout &gt;genome.infernal.ncRNA.gff3</code></li>
+</ol>
+<p>输入是Infernal的table格式输出文件，输出是gff3格式的ncRNA注释文件。</p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=50% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/scripts/" rel="tag"># scripts</a>
+              <a href="/tags/batch-run-sh/" rel="tag"># batch_run.sh</a>
+              <a href="/tags/ROUSFinder2-0-py/" rel="tag"># ROUSFinder2.0.py</a>
+              <a href="/tags/extract-intron-info-pl/" rel="tag"># extract_intron_info.pl</a>
+              <a href="/tags/multi-transcriptome-assembly-with-ref-sh/" rel="tag"># multi-transcriptome_assembly_with_ref.sh</a>
+              <a href="/tags/extract-single-copy-genes-sh/" rel="tag"># extract_single_copy_genes.sh</a>
+              <a href="/tags/concat-msa-with-differenct-species-sh/" rel="tag"># concat_msa_with_differenct_species.sh</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/27/bio_experiment/" rel="prev" title="分子生物学实验">
+      <i class="fa fa-chevron-left"></i> 分子生物学实验
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/20/linux_basics_PATH_intro/" rel="next" title="在Linux系统中设置环境变量PATH">
+      在Linux系统中设置环境变量PATH <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%88%91%E5%86%99%E7%9A%84%E8%84%9A%E6%9C%AC"><span class="nav-text">1. 我写的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%A4%9A%E4%B8%AARNA-seq%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%9F%BA%E4%BA%8E%E5%8F%82%E8%80%83%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%9A%84%E8%BD%AC%E5%BD%95%E6%9C%AC%E7%BB%84%E8%A3%85%E5%92%8CORF%E9%A2%84%E6%B5%8B"><span class="nav-text">1.1. 多个RNA-seq数据，基于参考基因组的转录本组装和ORF预测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%8F%90%E5%8F%96%EF%BC%8C%E5%90%88%E5%B9%B6%EF%BC%8C%E5%92%8C%E6%AF%94%E5%AF%B9%E5%8D%95%E6%8B%B7%E8%B4%9D%E5%9F%BA%E5%9B%A0%E5%92%8C%E8%9B%8B%E7%99%BD"><span class="nav-text">1.2. 提取，合并，和比对单拷贝基因和蛋白</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%90%88%E5%B9%B6%E4%B8%8D%E5%90%8C%E7%89%A9%E7%A7%8D%E6%95%B0%E9%87%8F%E7%9A%84%E5%A4%9A%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E6%96%87%E4%BB%B6%EF%BC%8C%E4%BF%9D%E6%8C%81%E5%BA%8F%E5%88%97%E7%9A%84%E6%AF%94%E5%AF%B9"><span class="nav-text">1.3. 合并不同物种数量的多序列比对文件，保持序列的比对</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%88%91%E4%BF%AE%E6%94%B9%E7%9A%84%E8%84%9A%E6%9C%AC%EF%BC%88%E5%85%B6%E4%BB%96%E4%BA%BA%E5%86%99%E7%9A%84%EF%BC%89"><span class="nav-text">2. 我修改的脚本（其他人写的）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BB%8E%E5%8C%85%E5%90%ABmRNA%E5%92%8CCDS%E7%9A%84gff%E6%B3%A8%E9%87%8A%E6%96%87%E4%BB%B6%E4%B8%AD%E6%8F%90%E5%8F%96intron%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%92%8C%E9%95%BF%E5%BA%A6%E4%BF%A1%E6%81%AF"><span class="nav-text">2.1. 从包含mRNA和CDS的gff注释文件中提取intron的位置和长度信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BF%9D%E5%AD%98%E7%9A%84%E8%84%9A%E6%9C%AC"><span class="nav-text">3. 保存的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-batch-run-sh-%E2%80%94%E2%80%94-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E8%A1%8C%E8%BF%90%E8%A1%8C%E6%89%B9%E9%87%8F%E5%8C%96%E5%91%BD%E4%BB%A4"><span class="nav-text">3.1. batch_run.sh —— 多线程并行运行批量化命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-infernal-tblout2gff-pl-%E2%80%94%E2%80%94-%E5%9F%BA%E5%9B%A0%E7%BB%84ncRNA%E7%9A%84infernal%E6%B3%A8%E9%87%8A%E7%BB%93%E6%9E%9Ctblout%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%88%90gff%E6%A0%BC%E5%BC%8F"><span class="nav-text">3.2. infernal-tblout2gff.pl —— 基因组ncRNA的infernal注释结果tblout格式转换成gff格式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

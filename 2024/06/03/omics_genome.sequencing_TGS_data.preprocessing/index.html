@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三代基因组测序PacBio CLR和CCS模式下机数据的预处理">
+<meta property="og:url" content="http://example.com/2024/06/03/omics_genome.sequencing_TGS_data.preprocessing/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cehs.mit.edu/sites/default/files/images/3Part_Reads_Def_0.png">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2024-06-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-05T06:26:45.037Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="TGS">
+<meta property="article:tag" content="PacBio">
+<meta property="article:tag" content="fasta">
+<meta property="article:tag" content="third generation sequencing">
+<meta property="article:tag" content="genome sequencing">
+<meta property="article:tag" content="data preprocessing">
+<meta property="article:tag" content="long read sequencing">
+<meta property="article:tag" content="continuous long reads">
+<meta property="article:tag" content="CLR">
+<meta property="article:tag" content="circular consensus sequencing">
+<meta property="article:tag" content="CCS">
+<meta property="article:tag" content="SMRT">
+<meta property="article:tag" content="subreads">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cehs.mit.edu/sites/default/files/images/3Part_Reads_Def_0.png">
+
+<link rel="canonical" href="http://example.com/2024/06/03/omics_genome.sequencing_TGS_data.preprocessing/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>三代基因组测序PacBio CLR和CCS模式下机数据的预处理 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/03/omics_genome.sequencing_TGS_data.preprocessing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          三代基因组测序PacBio CLR和CCS模式下机数据的预处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-06-04 00:00:00" itemprop="dateCreated datePublished" datetime="2024-06-04T00:00:00+08:00">2024-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-05 14:26:45" itemprop="dateModified" datetime="2024-06-05T14:26:45+08:00">2024-06-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/genome-sequencing/" itemprop="url" rel="index"><span itemprop="name">genome sequencing</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/genome-sequencing/third-generation-sequencing/" itemprop="url" rel="index"><span itemprop="name">third generation sequencing</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>2 mins.</span>
+            </span>
+            <div class="post-description">介绍三代基因组测序PacBio CLR和CCS下机数据，命令规则，预处理方式。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=105136&auto=1&height=32"></iframe></div>
+
+<h1 id="1-SMRT测序模式"><a href="#1-SMRT测序模式" class="headerlink" title="1. SMRT测序模式"></a>1. SMRT测序模式</h1><p>PacBio sequel II平台支持CLR（Continuous Long Reads）和CCS（Circular Consensus Sequencing）两种测序模式。 （sequel平台好像只支持CLR模式）</p>
+<ol>
+<li>CLR模式适用超长插入片段文库（&gt;20kb），存储有效数据的文件一般命名为* .subreads.bam。对subreads不再进行后续处理。</li>
+<li>CCS模式则适用于普通长度插入片段文库(1-20kb)，存储数据的* .subreads.bam文件（<strong>subreads</strong>）需要一致性校正后生成CCS reads或HiFi reads用于下游分析。</li>
+</ol>
+<h1 id="2-CLR模式"><a href="#2-CLR模式" class="headerlink" title="2. CLR模式"></a>2. CLR模式</h1><ol>
+<li>CLR模式下机数据</li>
+</ol>
+<ul>
+<li>*subreads.bam是以bam格式存储CLR测序数据的下机原始数据。</li>
+<li>因为每条插入片段只测了一次，不需要进行reads的一致性校正，生成consenses reads这一步骤（Pacbio CCS模式生成的subreads则需要合并生成CCS reads才能用于下游分析）。</li>
+</ul>
+<ol start="2">
+<li>CLR模式数据文件命名规则</li>
+</ol>
+<ul>
+<li>文件名：P01TYD19110566-1_r64031_20191018_094227_2_B01.subreads.bam的含义</li>
+<li>P01TYD19110566-1：文库号，即library ID。</li>
+<li>r64031_20191018_094227：样本所在run的ID号码，编号唯一，格式为”r机器号_日期_时间”。</li>
+<li>2_B01：cell编号。</li>
+</ul>
+<ol start="3">
+<li>CLR模式数据预处理</li>
+</ol>
+<ul>
+<li>CLR的subreads没有单碱基质量数据，所以bam文件转化为fa文件即可（而不必转为fq文件）。</li>
+<li>可以用<code>bam2fasta</code>直接把*subreads.bam转换成fasta格式文件用于后续分析。<code>bam2fasta sample.subreads.bam -c 9 -o sample.subreads</code>命令会生成sample.subreads.fasta.gz文件，<code>-c 9</code>代表压缩程度为9。</li>
+</ul>
+<h1 id="3-CCS模式"><a href="#3-CCS模式" class="headerlink" title="3. CCS模式"></a>3. CCS模式</h1><ol>
+<li>CCS模式下机数据</li>
+</ol>
+<ul>
+<li>拿到PacBio CCS模式测序数据时，例如下载公共数据尤其是早期数据时，一定要弄清楚是subreads，还是HiFi reads。</li>
+<li>对于近期从测序服务商那里得到的数据一般都是运行完CCS软件后的HiFi reads。（文件为下机的ccs.bam或者hifi_reads.bam），可直接用于下游分析。</li>
+<li>需要注意的是，如果拿到的是subreads.bam数据，则subreads数据需要通过一致性校正后（intra-molecular consensus），得到一条唯一的read，称为<strong>CCS read</strong>，再用于下游分析。这个校正过程会显著提升测序准确率。</li>
+</ul>
+<ol start="2">
+<li>CCS模式数据的几种类型reads</li>
+</ol>
+<ul>
+<li>polymerase reads：对环状的SMRTbell文库分子测序得到的reads，可能多次读取环状分子。（保存在zmws.bam文件）</li>
+<li>subreads：从polymerase reads序列中去掉哑铃状的测序接头序列，可以得到多条subreads序列。（保存在subreads.bam文件，被废弃的adapter和低质量序列保存在scraps.bam文件）</li>
+<li>CCS reads：环状一致性序列，从一个polymerase reads上的多条subreads序列，进行一致性校正得到的一条准确率更高的序列。（保存在CCS.bam文件）</li>
+<li>HiFi reads (High fidelity reads)：质量值大于Q20的CCS reads，即为HiFi reads。（保存在hifi_reads.bam文件）</li>
+</ul>
+<img src="https://cehs.mit.edu/sites/default/files/images/3Part_Reads_Def_0.png" title="CCS reads处理" width="50%" align=center/>
+
+<p><strong><p align="center">Figure 1. CCS reads处理，图片来源： <a target="_blank" rel="noopener" href="https://cehs.mit.edu/pacific-biosciences-sequel">https://cehs.mit.edu/pacific-biosciences-sequel</a></p></strong></p>
+<ol start="3">
+<li>一致性校正（subreads to CCS reads）</li>
+</ol>
+<ul>
+<li>如果拿到的是subreads数据，则需要进行一致性校正，把数据转化为CCS reads。</li>
+<li>PacBio官方smrtlink软件中的CCS工具可将subrads.bam转换为ccs.bam，命令如下:<code>ccs *.subreads.bam  *.ccs.bam</code>。</li>
+<li>分割文件并行转换可以加速，下面代码示例为分成10份运行：：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ccs *.subreads.bam *.ccs.1.bam --chunk 1/10 -j &lt;THREADS&gt;</span><br><span class="line">ccs *.subreads.bam *.ccs.2.bam --chunk 2/10 -j &lt;THREADS&gt;</span><br><span class="line">...</span><br><span class="line">ccs *.subreads.bam *.ccs.10.bam --chunk 10/10 -j &lt;THREADS&gt;</span><br><span class="line">pbmerge -o *.ccs.bam movie.ccs.*.bam</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>CCS模式数据预处理</li>
+</ol>
+<ul>
+<li>使用CCS read或HiFi reads（通常做一致性校正后reads质量都大于Q20，所以CCS reads就是HiFi reads）可以进行下游分析，有时下游分析需要fa格式。</li>
+<li>CCS reads没有单碱基质量数据，所以bam文件转化为fa文件即可（而不必转为fq文件）。</li>
+<li>可以用<code>bam2fasta</code>直接把*ccs.bam转换成fasta格式文件用于后续分析。<code>bam2fasta sample.ccs.bam -c 9 -o sample.ccs</code>命令会生成sample.ccs.fasta.gz文件，<code>-c 9</code>代表压缩程度为9。</li>
+</ul>
+<h1 id="references"><a href="#references" class="headerlink" title="references"></a>references</h1><ol>
+<li>一致性校正：<a target="_blank" rel="noopener" href="https://freewechat.com/a/MzA3MjM5NTE4Mg==/2247483719/1">https://freewechat.com/a/MzA3MjM5NTE4Mg==/2247483719/1</a></li>
+<li>CCS模式测序：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2346853">https://cloud.tencent.com/developer/article/2346853</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TGS/" rel="tag"># TGS</a>
+              <a href="/tags/PacBio/" rel="tag"># PacBio</a>
+              <a href="/tags/fasta/" rel="tag"># fasta</a>
+              <a href="/tags/third-generation-sequencing/" rel="tag"># third generation sequencing</a>
+              <a href="/tags/genome-sequencing/" rel="tag"># genome sequencing</a>
+              <a href="/tags/data-preprocessing/" rel="tag"># data preprocessing</a>
+              <a href="/tags/long-read-sequencing/" rel="tag"># long read sequencing</a>
+              <a href="/tags/continuous-long-reads/" rel="tag"># continuous long reads</a>
+              <a href="/tags/CLR/" rel="tag"># CLR</a>
+              <a href="/tags/circular-consensus-sequencing/" rel="tag"># circular consensus sequencing</a>
+              <a href="/tags/CCS/" rel="tag"># CCS</a>
+              <a href="/tags/SMRT/" rel="tag"># SMRT</a>
+              <a href="/tags/subreads/" rel="tag"># subreads</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/05/30/bio_plastid_typesandroles/" rel="prev" title="质体的分类、角色和转换">
+      <i class="fa fa-chevron-left"></i> 质体的分类、角色和转换
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/03/omics_genome.sequencing_intro/" rel="next" title="基因组测序简介">
+      基因组测序简介 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SMRT%E6%B5%8B%E5%BA%8F%E6%A8%A1%E5%BC%8F"><span class="nav-text">1. SMRT测序模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-CLR%E6%A8%A1%E5%BC%8F"><span class="nav-text">2. CLR模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-CCS%E6%A8%A1%E5%BC%8F"><span class="nav-text">3. CCS模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-text">references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

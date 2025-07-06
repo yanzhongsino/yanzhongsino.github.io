@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松">
+<meta property="og:url" content="http://example.com/2023/10/19/evolution_selection_HyPhy_RELAX/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/mbe/32/3/10.1093_molbev_msu400/2/msu400f1p.jpeg?Expires=1736163661&Signature=ohsqtggkLnzfBg93gTMDMkQyXGTWmqvmEQs-4cgfnzLpZbw862pt2c-fij-Y3F~VvPhfQBxxZI8DnHFGB66fe5EMkrGjNmkMYzuucTws5TwD1qRRWfKOTFkh~N7QAI6Z9RhCLxgKIkxDT2EKw2deJBIGBVZKYAe~6GtP8J5hFozscOWYRtGmJQsEa~Or21Q~2wfjwqtYMb61Rrl3QXADahYKQ0yz9bSayXd0Guh1bo0Cpei3cTN-szB4RzWVh~WlqKZAjjoU2lmHTrUumPWpc7N2JRQwnK-7PWUh0Y-zUVq1ZEfozlCv-8K3mlJUYjqe88jsFoUTTf7CB~6lxicD6Q__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-10-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-02T11:45:58.861Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="bioinfo">
+<meta property="article:tag" content="selection">
+<meta property="article:tag" content="HyPhy">
+<meta property="article:tag" content="RELAX">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/mbe/32/3/10.1093_molbev_msu400/2/msu400f1p.jpeg?Expires=1736163661&Signature=ohsqtggkLnzfBg93gTMDMkQyXGTWmqvmEQs-4cgfnzLpZbw862pt2c-fij-Y3F~VvPhfQBxxZI8DnHFGB66fe5EMkrGjNmkMYzuucTws5TwD1qRRWfKOTFkh~N7QAI6Z9RhCLxgKIkxDT2EKw2deJBIGBVZKYAe~6GtP8J5hFozscOWYRtGmJQsEa~Or21Q~2wfjwqtYMb61Rrl3QXADahYKQ0yz9bSayXd0Guh1bo0Cpei3cTN-szB4RzWVh~WlqKZAjjoU2lmHTrUumPWpc7N2JRQwnK-7PWUh0Y-zUVq1ZEfozlCv-8K3mlJUYjqe88jsFoUTTf7CB~6lxicD6Q__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA">
+
+<link rel="canonical" href="http://example.com/2023/10/19/evolution_selection_HyPhy_RELAX/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/19/evolution_selection_HyPhy_RELAX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-20T00:00:00+08:00">2023-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-02 19:45:58" itemprop="dateModified" datetime="2024-12-02T19:45:58+08:00">2024-12-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/" itemprop="url" rel="index"><span itemprop="name">evolution</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/selection/" itemprop="url" rel="index"><span itemprop="name">selection</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">介绍HyPhy软件，以及用HyPhy的RELAX模型检测自然选择在系统发育树上指定分支的变化趋势，通常用来检测负选择的放松或加强。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1934103823&auto=1&height=32"></iframe></div>
+
+<h1 id="1-HyPhy的简介"><a href="#1-HyPhy的简介" class="headerlink" title="1. HyPhy的简介"></a>1. HyPhy的简介</h1><p>HyPhy的介绍可以参考博客<strong>用HyPhy分析自然选择：（一）介绍HyPhy</strong>：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2023/10/20/evolution_selection_HyPhy_intro">https://yanzhongsino.github.io/2023/10/20/evolution_selection_HyPhy_intro</a></p>
+<ul>
+<li>HyPhy的全称是Hypothesis Testing using Phylogenies，是一款近些年受到广泛使用和关注的一款用于选择压力分析的软件。</li>
+<li>相较经典的选择分析软件PAML的codeML，HyPhy操作更简单一点，并且支持多线程运行，并使用了更新的模型，模型数量也更多。</li>
+</ul>
+<h1 id="2-HyPhy的RELAX模型"><a href="#2-HyPhy的RELAX模型" class="headerlink" title="2. HyPhy的RELAX模型"></a>2. HyPhy的RELAX模型</h1><h2 id="RELAX"><a href="#RELAX" class="headerlink" title="RELAX"></a>RELAX</h2><ol>
+<li>HyPhy的RELAX模型是用来检测系统发育树上的指定分支是否经历了负选择的放松或加强的模型。</li>
+<li>RELAX检测选择压力与一组指定的 “前景(foreground)&#x2F;测试 （TEST）”分支的放松（正选择和负选择都变弱）或加强（正选择和负选择都变强）。RELAX方法不适用于检测正选择。<h2 id="RELAX原理"><a href="#RELAX原理" class="headerlink" title="RELAX原理"></a>RELAX原理</h2></li>
+<li>RELAX对放松选择的检验原理是基于放松选择对小于 1 的 ω 值（代表纯化选择）和大于 1 的 ω 值（代表正向选择）的不同影响。 当放松选择时，小于 1 的 ω 值会向 1 增大，而大于 1 的 ω 值会向 1 减小； ω 值的分布会向 1 集中。相反，当选择压力增强时， ω 值的分布会更加分散。</li>
+<li>在<strong>分支位点模型</strong>中（不同分支不同的位点有不同的 ω 值），放松选择的这种趋势可能有两种的影响： （1）推断出的选择类别的 ω 值可能趋向于 1，和&#x2F;或 （2）属于不同类别的位点比例可能发生变化，从而使更多的位点被分配到 ω 值更接近于 1 的类别。这与PAML检测放松选择不同，PAML使用<strong>分支模型</strong>。</li>
+</ol>
+<img src="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/mbe/32/3/10.1093_molbev_msu400/2/msu400f1p.jpeg?Expires=1736163661&Signature=ohsqtggkLnzfBg93gTMDMkQyXGTWmqvmEQs-4cgfnzLpZbw862pt2c-fij-Y3F~VvPhfQBxxZI8DnHFGB66fe5EMkrGjNmkMYzuucTws5TwD1qRRWfKOTFkh~N7QAI6Z9RhCLxgKIkxDT2EKw2deJBIGBVZKYAe~6GtP8J5hFozscOWYRtGmJQsEa~Or21Q~2wfjwqtYMb61Rrl3QXADahYKQ0yz9bSayXd0Guh1bo0Cpei3cTN-szB4RzWVh~WlqKZAjjoU2lmHTrUumPWpc7N2JRQwnK-7PWUh0Y-zUVq1ZEfozlCv-8K3mlJUYjqe88jsFoUTTf7CB~6lxicD6Q__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA" title="强化选择和放松选择的模型效应" width="60%"/>
+
+<p><strong><p align="center">Figure 1. 强化选择和放松选择的模型效应。强化选择使所有类别的 ω 远离中性（ω &#x3D; 1），而放松选择使所有类别的 ω 向中性（ω &#x3D; 1）靠拢。净化选择下的位点用蓝色表示，正选择下的位点用红色表示。 图源：<a target="_blank" rel="noopener" href="https://academic.oup.com/mbe/article/32/3/820/981440">RELAX paper</a></p></strong></p>
+<ol start="3">
+<li>RELAX需要一组指定的 “前景&#x2F;测试”分支与第二组 “背景&#x2F;参考”分支进行比较。RELAX首先对整个系统发育过程拟合一个具有三类 ω 的密码子模型（空模型）。然后，RELAX通过引入作为选择强度参数的参数 k（其中k ≥ 0）作为推断 ω 值的指数：ωk来测试放松&#x2F;强化选择。具体来说，RELAX固定推断的ω值（都是ωk &lt;1,2,3&gt;），并对测试分支推断出一个将比率调整为ωk&lt;1,2,3&gt;的k值（替代模型）。然后，RELAX进行似然比检验（LRT），比较替代模型和空模型来检测结果的显著性。</li>
+</ol>
+<h1 id="3-HyPhy的RELAX模型检测选择放松或加强"><a href="#3-HyPhy的RELAX模型检测选择放松或加强" class="headerlink" title="3. HyPhy的RELAX模型检测选择放松或加强"></a>3. HyPhy的RELAX模型检测选择放松或加强</h1><h2 id="3-1-安装HyPhy"><a href="#3-1-安装HyPhy" class="headerlink" title="3.1. 安装HyPhy"></a>3.1. 安装HyPhy</h2><p><code>conda install -c bioconda hyphy</code></p>
+<h2 id="3-2-输入文件"><a href="#3-2-输入文件" class="headerlink" title="3.2. 输入文件"></a>3.2. 输入文件</h2><ol>
+<li>samples.aln：fasta或phylip格式的序列比对文件</li>
+<li>tree.nw：newick格式的树文件</li>
+</ol>
+<ul>
+<li>RELAX模块的分析需要指定前景支（foreground）&#x2F;测试支（TEST），其余支是参考支(reference，默认，无需标记)。</li>
+<li>标记方法：前景支(类比codeml的branch model的前景支)的分支名和支长（如果存在）之间标注{FG}；如果要标记某一支及其包含的所有支，则需要标注多个{FG}。</li>
+<li>可以用 HyPhy官网的phylotree在线工具（<a target="_blank" rel="noopener" href="http://phylotree.hyphy.org/%EF%BC%89%E5%AF%B9%E7%B3%BB%E7%BB%9F%E6%A0%91%E8%BF%9B%E8%A1%8C%E6%A0%87%E6%B3%A8%E3%80%82">http://phylotree.hyphy.org/）对系统树进行标注。</a></li>
+<li>A支做前景支的标记实例：<code>((((A&#123;FG&#125;:0.14,B:0.15):0.23,C:0.69):0.47,D:0.26):0.11,E:0.20);</code>。</li>
+<li>A+B+C所在的所有支做前景支的标记实例：<code>((((A&#123;FG&#125;:0.14,B&#123;FG&#125;:0.15)&#123;FG&#125;:0.23,C&#123;FG&#125;:0.69)&#123;FG&#125;:0.47,D:0.26):0.11,E:0.20);</code></li>
+</ul>
+<h2 id="3-3-运行"><a href="#3-3-运行" class="headerlink" title="3.3. 运行"></a>3.3. 运行</h2><p><code>nohup HYPHYMPI relax --alignment aln.fas --tree tree.nw --test FG --output relax.json &gt; relax.log 2&gt;&amp;1 &amp;</code></p>
+<h2 id="3-4-参数"><a href="#3-4-参数" class="headerlink" title="3.4. 参数"></a>3.4. 参数</h2><ol>
+<li>–alignment：比对好的codon文件，可以是fas格式，也可以是phylip格式。</li>
+<li>–tree：newick格式的树文件，如有test支标记在树文件里（标记方法见输入文件）</li>
+<li>–test：RELAX模块指定树文件中标记的分支为测试支</li>
+<li>–output：指定输出json文件名称，默认是输入比对文件加json后缀，aln.fas.json</li>
+<li>–rates 3： ω 值(dN&#x2F;dS)的类别，可设置2-10类 ω 值，默认是3类。数字越大，运行越耗时。</li>
+<li>屏幕输出的是markdown格式，建议保存为relax.log文件。</li>
+</ol>
+<h2 id="3-5-结果文件"><a href="#3-5-结果文件" class="headerlink" title="3.5. 结果文件"></a>3.5. 结果文件</h2><ol>
+<li>relax.json：json格式，可以在网站<a target="_blank" rel="noopener" href="http://vision.hyphy.org/RELAX">http://vision.hyphy.org/RELAX</a> 上传这个结果文件进行可视化，直观展示。结果中site的数量代表的是密码子的数量，是碱基数量的1&#x2F;3。</li>
+<li>relax.log：屏幕输出的markdown格式，直接查看方便。</li>
+</ol>
+<h2 id="3-6-结果展示"><a href="#3-6-结果展示" class="headerlink" title="3.6. 结果展示"></a>3.6. 结果展示</h2><ol>
+<li>结果解释</li>
+</ol>
+<ul>
+<li>主要看<strong>K值</strong>和LRT检验的<strong>P值</strong>。</li>
+<li>K&gt;1表示选择强度加强（intensification），K&lt;1表示选择放松（relaxation）。</li>
+<li>P值小于0.001表示结果显著（significant），否则不显著。</li>
+</ul>
+<ol start="2">
+<li>结果可视化可以在网站 <a target="_blank" rel="noopener" href="http://vision.hyphy.org/">http://vision.hyphy.org/</a> 上上传json格式文件，然后交互式的展示结果。</li>
+</ol>
+<ul>
+<li>结果中会根据K值显示放松或加强，并根据p值标注是否显著。</li>
+<li>json格式的结果具体的介绍可以参考<a target="_blank" rel="noopener" href="https://www.hyphy.org/resources/json-fields.pdf%E3%80%82">https://www.hyphy.org/resources/json-fields.pdf。</a></li>
+</ul>
+<ol start="3">
+<li>也可以在relax.log文件中搜索K值：<strong>Relaxation&#x2F;intensification parameter (K) &#x3D; 1.05</strong>和LRT检验的P值：<strong>Likelihood ratio test p &#x3D;   0.4564</strong>。</li>
+</ol>
+<p>ps：有些物种，不能简单的根据ω值或K值判断选择的放松或加强，有时ω值或K值的结果不一致，还要进一步看dN和dS来判断。</p>
+<h1 id="4-reference"><a href="#4-reference" class="headerlink" title="4. reference"></a>4. reference</h1><ol>
+<li>HyPhy官网：<a target="_blank" rel="noopener" href="https://www.hyphy.org/">https://www.hyphy.org/</a></li>
+<li>HyPhy的github：<a target="_blank" rel="noopener" href="https://github.com/veg/hyphy-analyses/tree/master">https://github.com/veg/hyphy-analyses/tree/master</a></li>
+<li>介绍HyPhy的博客：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2e8f7f7d545a">https://www.jianshu.com/p/2e8f7f7d545a</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/bioinfo/" rel="tag"># bioinfo</a>
+              <a href="/tags/selection/" rel="tag"># selection</a>
+              <a href="/tags/HyPhy/" rel="tag"># HyPhy</a>
+              <a href="/tags/RELAX/" rel="tag"># RELAX</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/09/evolution_selection_paml.codeml_branch.model/" rel="prev" title="用PAML的codeML进行选择分析：（二）分支模型">
+      <i class="fa fa-chevron-left"></i> 用PAML的codeML进行选择分析：（二）分支模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/19/evolution_selection_HyPhy_intro/" rel="next" title="用HyPhy分析自然选择：（一）介绍HyPhy">
+      用HyPhy分析自然选择：（一）介绍HyPhy <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-HyPhy%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="nav-text">1. HyPhy的简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-HyPhy%E7%9A%84RELAX%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. HyPhy的RELAX模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RELAX"><span class="nav-text">RELAX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RELAX%E5%8E%9F%E7%90%86"><span class="nav-text">RELAX原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-HyPhy%E7%9A%84RELAX%E6%A8%A1%E5%9E%8B%E6%A3%80%E6%B5%8B%E9%80%89%E6%8B%A9%E6%94%BE%E6%9D%BE%E6%88%96%E5%8A%A0%E5%BC%BA"><span class="nav-text">3. HyPhy的RELAX模型检测选择放松或加强</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%AE%89%E8%A3%85HyPhy"><span class="nav-text">3.1. 安装HyPhy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">3.2. 输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E8%BF%90%E8%A1%8C"><span class="nav-text">3.3. 运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%8F%82%E6%95%B0"><span class="nav-text">3.4. 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">3.5. 结果文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="nav-text">3.6. 结果展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-reference"><span class="nav-text">4. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

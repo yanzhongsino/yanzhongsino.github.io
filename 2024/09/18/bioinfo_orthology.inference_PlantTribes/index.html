@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka&#x2F;Ks等的用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用PlantTribes做直系同源推断">
+<meta property="og:url" content="http://example.com/2024/09/18/bioinfo_orthology.inference_PlantTribes/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka&#x2F;Ks等的用法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2024-09-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-11-15T08:12:14.778Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="orthology">
+<meta property="article:tag" content="PlantTribes">
+<meta property="article:tag" content="Ka&#x2F;Ks">
+<meta property="article:tag" content="orthofinder">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">
+
+<link rel="canonical" href="http://example.com/2024/09/18/bioinfo_orthology.inference_PlantTribes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用PlantTribes做直系同源推断 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/18/bioinfo_orthology.inference_PlantTribes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用PlantTribes做直系同源推断
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-09-19 00:00:00" itemprop="dateCreated datePublished" datetime="2024-09-19T00:00:00+08:00">2024-09-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-15 16:12:14" itemprop="dateModified" datetime="2024-11-15T16:12:14+08:00">2024-11-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/orthology-inference/" itemprop="url" rel="index"><span itemprop="name">orthology inference</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>20 mins.</span>
+            </span>
+            <div class="post-description">简单介绍了软件PlantTribes，以及使用PlantTribes2进行推断编码序列，局部组装目标基因家族，直系同源序列推断(orthology inference)，orthogroups的多序列比对和建树，以及估算Ka/Ks等的用法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1959437612&auto=1&height=32"></iframe></div>
+
+<h1 id="1-直系同源-orthology-推断"><a href="#1-直系同源-orthology-推断" class="headerlink" title="1. 直系同源(orthology)推断"></a>1. 直系同源(orthology)推断</h1><h2 id="1-1-直系同源推断"><a href="#1-1-直系同源推断" class="headerlink" title="1.1. 直系同源推断"></a>1.1. 直系同源推断</h2><p>直系同源(orthology)是指直系同源基因的直系同源这种属性，相关的概念可以参考<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/06/23/concept_homology/">博文-同源性相关概念</a>。</p>
+<p>直系同源推断(orthology inference)常常在多个物种间进行，通常是获取多个物种的直系同源群(orthogroups)和直系同源群间的关系。</p>
+<p>直系同源基因判定的方法有两种：</p>
+<ul>
+<li>一种是将物种的直系同源基因两两比较，不同物种的每一对都是直系同源，但存在基因重复，使得用这种方法找到的同源关系是不具有传递性的（A和B是同源的，B和C是同源的，但是A和C不是同源的）。multiparanoid和OMA方法都是这个原理。所以需要每个同源基因都在多个集合中存在才行，进行两两比较。</li>
+<li>另一种是识别完整的正交群，一个同源组orthogroup包含所有物种共同祖先基因，同时包含直系／旁系同源基因，OrthoMCL是这个原理，它是通过正交组做推断，用BLAST计算多个物种序列之间的序列相似性得分，然后用MCL聚类算法，识别该数据集中高度相似的序列组。</li>
+</ul>
+<p>这篇博文主要介绍一个新工具PlantTribes2。</p>
+<h1 id="2-PlantTribes2介绍"><a href="#2-PlantTribes2介绍" class="headerlink" title="2. PlantTribes2介绍"></a>2. PlantTribes2介绍</h1><p>PlantTribes 是用于比较植物基因组学的自动化基因家族分析流程的集合。PlantTribes通过模块对植物基因组中完整蛋白质序列聚类来进行比较进化研究。 模块功能包括：将从头组装的转录本处理为推断的编码序列及其相应的氨基酸翻译序列，局部组装目标基因家族，推断直系同源基因，并进行基因家族多序列比对和构建相应的系统发育树，以及估算一组基因序列的旁系&#x2F;直系同源的成对同义&#x2F;非同义替换率。</p>
+<h1 id="3-PlantTribes-scaffold数据库"><a href="#3-PlantTribes-scaffold数据库" class="headerlink" title="3. PlantTribes_scaffold数据库"></a>3. PlantTribes_scaffold数据库</h1><p>PlantTribes2 (v1.0.4) 基于过去发表的系统基因组学研究提供了几个植物基因家族scaffolds数据库，包含了预先构建的多序列比对和orthogroups，下载网址是：<a target="_blank" rel="noopener" href="http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/">http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/</a></p>
+<ol>
+<li>单子叶植物数据库：12Gv1.0（代表12个物种的scaffolds）</li>
+<li>被子植物数据库的四个版本：22Gv1.1, 26Gv1.0, 26Gv2.0, and 37Gv1.0</li>
+</ol>
+<h1 id="4-PlantTribes2的模块"><a href="#4-PlantTribes2的模块" class="headerlink" title="4. PlantTribes2的模块"></a>4. PlantTribes2的模块</h1><p>PlantTribes2一共有7个模块，每个模块是独立的功能，也可以联合使用。</p>
+<img src="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg" width=80% title="PlantTribes2 analysis workflow" alt="PlantTribes2 analysis workflow" align=center/>
+
+<p><strong><p align="center">Figure 1. PlantTribes2 analysis workflow</strong><br>from <a target="_blank" rel="noopener" href="https://www.frontiersin.org/files/Articles/1011199/fpls-13-1011199-HTML-r1/image_m/fpls-13-1011199-g001.jpg">PlantTribes2 analysis workflow</a></p></p>
+<h2 id="4-1-AssemblyPostProcessor模块"><a href="#4-1-AssemblyPostProcessor模块" class="headerlink" title="4.1. AssemblyPostProcessor模块"></a>4.1. AssemblyPostProcessor模块</h2><ol>
+<li>运行 ESTScan 编码区域预测</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/AssemblyPostProcessor  --transcripts transcripts.fasta --prediction_method estscan --score_matrices /path/to/score/matrices/Arabidopsis_thaliana.smat</code></li>
+</ul>
+<h2 id="4-2-GeneFamilyClassifier模块"><a href="#4-2-GeneFamilyClassifier模块" class="headerlink" title="4.2. GeneFamilyClassifier模块"></a>4.2. GeneFamilyClassifier模块</h2><ol>
+<li>用22Gv1.1 scaffolds，orthomcl 聚类法 和blastp 分类器运行</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyClassifier --proteins proteins.fasta --scaffold 22Gv1.1 --method orthomcl --classifier blastp</code></li>
+</ul>
+<h2 id="4-3-PhylogenomicsAnalysis模块-legacy-pipeline"><a href="#4-3-PhylogenomicsAnalysis模块-legacy-pipeline" class="headerlink" title="4.3. PhylogenomicsAnalysis模块 (legacy pipeline)"></a>4.3. PhylogenomicsAnalysis模块 (legacy pipeline)</h2><ol>
+<li>用22Gv1.1 scaffolds，orthomcl 聚类法 和raxml建树法运行</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl  --add_alignments  --tree_inference raxml</code></li>
+</ul>
+<h2 id="4-4-GeneFamilyIntegrator模块"><a href="#4-4-GeneFamilyIntegrator模块" class="headerlink" title="4.4. GeneFamilyIntegrator模块"></a>4.4. GeneFamilyIntegrator模块</h2><ol>
+<li>用22Gv1.1 scaffolds，orthomcl 聚类法运行</li>
+</ol>
+<ul>
+<li><code>GeneFamilyIntegrator --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl</code></li>
+</ul>
+<h2 id="4-5-GeneFamilyAligner模块"><a href="#4-5-GeneFamilyAligner模块" class="headerlink" title="4.5. GeneFamilyAligner模块"></a>4.5. GeneFamilyAligner模块</h2><ol>
+<li>用22Gv1.1 scaffolds，orthomcl 聚类法和mafft比对软件运行</li>
+</ol>
+<ul>
+<li><code>GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft</code></li>
+</ul>
+<h2 id="4-6-GeneFamilyPhylogenyBuilder模块"><a href="#4-6-GeneFamilyPhylogenyBuilder模块" class="headerlink" title="4.6. GeneFamilyPhylogenyBuilder模块"></a>4.6. GeneFamilyPhylogenyBuilder模块</h2><ol>
+<li>用22Gv1.1 scaffolds，orthomcl 聚类法和fastree建树软件运行</li>
+</ol>
+<ul>
+<li><code>GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --tree_inference fasttree</code></li>
+</ul>
+<h2 id="4-7-KaKsAnalysis模块"><a href="#4-7-KaKsAnalysis模块" class="headerlink" title="4.7. KaKsAnalysis模块"></a>4.7. KaKsAnalysis模块</h2><ol>
+<li>进行旁系同源分析</li>
+</ol>
+<ul>
+<li><code>KaKsAnalysis --coding_sequences_species_1 species1.fna --proteins_species_1 species1.faa --comparison paralogs --num_threads 4</code></li>
+</ul>
+<h1 id="5-PlantTribes2安装"><a href="#5-PlantTribes2安装" class="headerlink" title="5. PlantTribes2安装"></a>5. PlantTribes2安装</h1><ol>
+<li>conda安装：PhylogenomicsAnalysis模块无法通过conda安装</li>
+</ol>
+<ul>
+<li>AssemblyPostProcessor模块：<code>conda install bioconda::plant_tribes_assembly_post_processor</code></li>
+<li>GeneFamilyAligner模块：<code>conda install bioconda::plant_tribes_gene_family_aligner</code></li>
+<li>GeneFamilyClassifier模块：<code>conda install bioconda::plant_tribes_gene_family_classifier</code></li>
+<li>GeneFamilyIntegrator模块：<code>conda install bioconda::plant_tribes_gene_family_integrator</code></li>
+<li>GeneFamilyPhylogenyBuilder模块：<code>conda install bioconda::plant_tribes_gene_family_phylogeny_builder</code></li>
+<li>KaKsAnalysis模块：<code>conda install bioconda::plant_tribes_kaks_analysis</code></li>
+</ul>
+<ol start="2">
+<li>下载安装</li>
+</ol>
+<ul>
+<li>确保依赖软件都已安装</li>
+<li>下载PlantTribes的github库：<code>git clone https://github.com/dePamphilis/PlantTribes.git</code></li>
+<li>PlantTribes的可执行文件在pipelines子目录下</li>
+</ul>
+<h1 id="6-PlantTribes2快速使用"><a href="#6-PlantTribes2快速使用" class="headerlink" title="6. PlantTribes2快速使用"></a>6. PlantTribes2快速使用</h1><h2 id="6-1-标准运行"><a href="#6-1-标准运行" class="headerlink" title="6.1. 标准运行"></a>6.1. 标准运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --dereplicate --min_length 100 --num_threads 12 &amp; # 预测转录本的CDS区域</span><br><span class="line">nohup GeneFamilyClassifier --proteins assemblyPostProcessing_dir/transcripts.cleaned.nr.pep --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --classifier both --num_threads 24 --orthogroup_fasta --coding_sequences assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &amp; # 转录本分类到orthologs</span><br><span class="line">nohup GeneFamilyIntegrator --orthogroup_fasta geneFamilyClassification_dir/orthogroups_fasta/ --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder &amp; # 匹配scaffolds中的orthologs</span><br><span class="line">nohup GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft --codon_alignments --num_threads 24 &amp; # orthogroups序列比对</span><br><span class="line">nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --tree_inference raxml --bootstrap_replicates 100 --num_threads 24 &amp; # 建ML树</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-2-focus-on目标基因的运行"><a href="#6-2-focus-on目标基因的运行" class="headerlink" title="6.2. focus on目标基因的运行"></a>6.2. focus on目标基因的运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">预测转录本的CDS区域，并组装RRRgenes_orthogroups.ids文件中指定的orthogroups家族的基因。</span></span><br><span class="line">nohup AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --gene_family_search RRRgenes_orthogroups.ids --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --dereplicate --min_length 100 --num_threads 12 &amp; </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从组装好的转录组中提取目标转录本</span></span><br><span class="line">mkdir RRRgenes &amp;&amp; cd RRRgenes &amp;&amp; mkdir genefamily</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/$&#123;i&#125;.faa |seqkit seq -w 0|grep -v &quot;&gt;&quot; &gt;$&#123;i&#125;.pep &amp;&amp; seqkit grep -s -f $&#123;i&#125;.pep ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep &gt; ./genefamily/$&#123;i&#125;.faa &amp;&amp; rm *.pep;done # 更换蛋白序列的ID</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do cat ../assemblyPostProcessing_dir/targeted_gene_family_assemblies/$&#123;i&#125;.fna |seqkit seq -w 0|grep -v &quot;&gt;&quot; &gt;$&#123;i&#125;.nucl &amp;&amp; seqkit grep -s -f $&#123;i&#125;.nucl ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &gt; ./genefamily/$&#123;i&#125;.fna &amp;&amp; rm *.nucl;done # 更换DNA的CDS序列的ID</span><br><span class="line">for i in $(cat ../../../RRRgenes_orthogroups.ids);do seqkit seq -n $i.fna &gt;$i.id &amp;&amp; seqkit seq -n $i.faa &gt;&gt;$i.id &amp;&amp; seqkit grep -r -f $i.id ../assemblyPostProcessing_dir/transcripts.cleaned.nr.cds &gt;$i.fna &amp;&amp; seqkit grep -r -f $i.id ../assemblyPostProcessing_dir/transcripts.cleaned.nr.pep &gt;$i.faa &amp;&amp; rm $i.id;done #统一CDS序列和蛋白序列</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># notes：有时做完上面几步后仍然有序列没有被提取（可能是因为组装的指定id的基因与预测的转录本序列并非所有碱基都完全对应），生成了空文件，这时需要检查和手动提取。</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">整合目标基因的orthogroups成员</span></span><br><span class="line">nohup GeneFamilyIntegrator --orthogroup_fasta ./genefamily/ --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder &amp; # 匹配scaffolds中的orthologs</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">目标基因的orthogroups序列比对</span></span><br><span class="line">nohup GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft --codon_alignments --num_threads 24 &amp;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">建目标基因的ML树</span></span><br><span class="line">nohup GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln --scaffold /path/to/PlantTribes_scaffolds/22Gv1.1 --method orthofinder --tree_inference raxml --bootstrap_replicates 1000 --num_threads 24 &amp;</span><br></pre></td></tr></table></figure>
+
+<p><strong>个人经验</strong>：这种运行方式focus on目标基因，去掉了GeneFamilyClassifier模块的使用，计算量小很多，能很快的得到目标基因的结果。虽然能够尽可能地拼接出目标基因的转录本，但是可能包含更多假阳性结果。</p>
+<p><strong>推荐</strong>：在使用AssemblyPostProcessor模块并且–gene_family_search参数指定目标基因id的list，获得转录本CDS区域后，就按照标准运行流程依次使用GeneFamilyClassifier模块、GeneFamilyIntegrator模块、GeneFamilyAligner模块、GeneFamilyPhylogenyBuilder模块来进行直系同源转录本的推断，结果更可靠。<br>同时建议对GeneFamilyAligner模块获得的align比对好的序列进行手动和肉眼检查，看是否有假阳性的结果（明显比对不上的转录本序列被放进了结果）。</p>
+<h1 id="7-PlantTribes2运行的详细参数"><a href="#7-PlantTribes2运行的详细参数" class="headerlink" title="7. PlantTribes2运行的详细参数"></a>7. PlantTribes2运行的详细参数</h1><p>用de novo转录组组装得到的Trinity.fasta文件来演示PlantTribes2运行流程。</p>
+<h2 id="7-1-准备数据"><a href="#7-1-准备数据" class="headerlink" title="7.1. 准备数据"></a>7.1. 准备数据</h2><ul>
+<li>下载你想用的PlantTribes_scaffold数据库，从数据库网址（<a target="_blank" rel="noopener" href="http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/%EF%BC%89%E4%B8%AD%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD%EF%BC%8C%E6%A3%80%E6%9F%A5%E5%B9%B6%E8%A7%A3%E5%8E%8B%E7%BC%A9%60wget">http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/）中选择一个数据库下载，检查并解压缩`wget</a> <a target="_blank" rel="noopener" href="http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/22Gv1.1.tar.bz2%60,%60md5sum">http://bigdata.bx.psu.edu/PlantTribes_scaffolds/data/22Gv1.1.tar.bz2`,`md5sum</a> 22Gv1.1.tar.bz<code>,</code>tar -xjvf 22Gv1.1.tar.bz2&#96;。</li>
+<li>下载Arabidopsis_thaliana.smat矩阵文件，<code>wget https://github.com/dePamphilis/PlantTribes/raw/master/test/Arabidopsis_thaliana.smat.gz &amp;&amp; gzip -d Arabidopsis_thaliana.smat.gz</code></li>
+</ul>
+<h2 id="7-2-组装后处理模块：AssemblyPostProcessor-Pipeline"><a href="#7-2-组装后处理模块：AssemblyPostProcessor-Pipeline" class="headerlink" title="7.2. 组装后处理模块：AssemblyPostProcessor Pipeline"></a>7.2. 组装后处理模块：AssemblyPostProcessor Pipeline</h2><p>AssemblyPostProcessor Pipeline 对de novo组装的转录本进行蛋白编码区域预测，获得CDS区域和去除冗余后的转录组序列，用于后续分析。</p>
+<h3 id="7-2-1-运行"><a href="#7-2-1-运行" class="headerlink" title="7.2.1. 运行"></a>7.2.1. 运行</h3><ol>
+<li>用ESTScan预测coding region</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method estscan --score_matrices /path/to/score/matrices/Arabidopsis_thaliana.smat --strand_specific --dereplicate --min_length 200 --num_threads 12</code></li>
+</ul>
+<ol start="2">
+<li>用TransDecoder预测coding region</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --strand_specific --dereplicate --min_length 200 --num_threads 12</code></li>
+<li>输出文件包括：</li>
+<li>assemblyPostProcessing_dir&#x2F;transcripts.cds</li>
+<li>assemblyPostProcessing_dir&#x2F;transcripts.pep</li>
+<li>assemblyPostProcessing_dir&#x2F;transcripts.cleaned.cds</li>
+<li>assemblyPostProcessing_dir&#x2F;transcripts.cleaned.pep</li>
+<li>assemblyPostProcessing_dir&#x2F;transcripts.cleaned.nr.cds：用BLASTp(evalue&#x3D;1e-5)把transcripts跟NCBI的NR库比对去除非植物的污染序列之后的序列。</li>
+<li>assemblyPostProcessing_dir&#x2F;transcripts.cleaned.nr.pep：用BLASTp(evalue&#x3D;1e-5)把transcripts跟NCBI的NR库比对去除非植物的污染序列之后的序列。</li>
+</ul>
+<ol start="3">
+<li>用TransDecoder预测coding region，并指定目标基因家族选项</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/AssemblyPostProcessor --transcripts Trinity.fasta --prediction_method transdecoder --strand_specific --dereplicate --min_length 200 --num_threads 12 --gene_family_search targetOrthos.ids --scaffold 22Gv1.1 --method orthofinder</code></li>
+<li>输出文件除了上面的，还包括：</li>
+<li>assemblyPostProcessing_dir&#x2F;targeted_gene_family_assemblies.stats</li>
+<li>assemblyPostProcessing_dir&#x2F;targeted_gene_family_assemblies&#x2F;目录下包括以targetOrthos.ids命名的fasta, fna, 和 faa文件。（faa是氨基酸序列，其他两个是核苷酸序列）</li>
+<li>notes：实际运行发现，使用了<code>--gene_family_search</code>指定目标基因家族后，会额外组装目标基因家族的转录本，获得更长的目标基因家族的转录本，以及更多转录本数量的转录组数据。<h3 id="7-2-2-参数"><a href="#7-2-2-参数" class="headerlink" title="7.2.2. 参数"></a>7.2.2. 参数</h3></li>
+</ul>
+<ol>
+<li>必需参数：</li>
+</ol>
+<ul>
+<li><code>--transcripts</code>：de novo 转录组组装的 fasta 文件</li>
+<li><code>--prediction_method</code>：coding regions的预测方法，ESTScan方法（参数：estscan）或者TransDecoder方法（参数：transdecoder）。</li>
+<li><code>--score_matrices</code>：如果预测方法选的ESTScan则为必需参数，(i.e. Arabidopsis_thaliana.smat, Oryza_sativa.smat, Zea_mays.smat)。</li>
+</ul>
+<ol start="2">
+<li>目标基因家族组装的参数：</li>
+</ol>
+<ul>
+<li><code>--gene_family_search</code>：目标orthogroup identifiers的list文件。需要”–scaffold” and “–method”两个参数。如果有目标基因想要分析（比如有个课题分析RRR基因），那么一定要指定以得到更有针对性的转录本。scaffold数据库文件里的22Gv1.1&#x2F;annot&#x2F;orthofinder.list保存所有orthogroup IDs（如果使用orthofinder的话）。目标list文件可以通过目标基因的拟南芥或者其他21个物种的ID来搜索orthofinder.list文件，搜索到的第一列（数字）即为目标orthogroup IDs。</li>
+<li><code>--scaffold</code>：Orthogroups或者gene families proteins scaffold文件。用绝对路径指定。eg. &#x2F;home&#x2F;scaffolds&#x2F;22Gv1.1</li>
+<li><code>--method</code>：蛋白聚类方法。GFam：gfam；OrthoFinder：orthofinder；OrthoMCL：orthomcl；其他非PlantTribes方法：methodname。</li>
+<li><code>--gap_trimming</code>：在alignments里移除gappy sites，默认0.1，代表移除含有90% gaps的sites。</li>
+<li><code>--min_coverage</code>：在orthogroup trimmed蛋白多序列比对中最小序列覆盖度。默认0.0。推荐设置至少覆盖平均backbone orthogroup gene models。目标基因家族组装汇总统计输出文件中有细节说明。</li>
+</ul>
+<ol start="3">
+<li>其他参数：</li>
+</ol>
+<ul>
+<li><code>--strand_specific</code>：如果转录组是链特异性的de novo组装的，则加上这个参数，用strand_specific库运行。</li>
+<li><code>--dereplicate</code>：在预测的蛋白编码区域移除重复序列。</li>
+<li><code>--min_length</code>：预测的蛋白编码区域的最短序列长度。</li>
+<li><code>--num_threads</code>：线程，CPU数量，默认1。</li>
+</ul>
+<h2 id="7-3-基因家族分类模块：GeneFamilyClassifier-Pipeline"><a href="#7-3-基因家族分类模块：GeneFamilyClassifier-Pipeline" class="headerlink" title="7.3. 基因家族分类模块：GeneFamilyClassifier Pipeline"></a>7.3. 基因家族分类模块：GeneFamilyClassifier Pipeline</h2><p>GeneFamilyClassifier Pipeline 对预测得到的蛋白编码序列进行基因家族分类，输入文件是AssemblyPostProcessor Pipeline得到的转录本蛋白序列，使用PlantTribes搜集的22Gv1.1作为scaffolds数据库。</p>
+<h3 id="7-3-1-运行"><a href="#7-3-1-运行" class="headerlink" title="7.3.1. 运行"></a>7.3.1. 运行</h3><ol>
+<li>用22Gv1.1 scaffolds数据库，orthomcl 聚类法 和hmmscan分类器运行</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyClassifier --proteins assemblyPostProcessing_dir/transcripts.cleaned.nr.pep --scaffold /path/to/22Gv1.1 --method orthomcl --classifier hmmscan --num_threads 10</code></li>
+<li>输出文件包括：</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.hmmscan.22Gv1.1</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.hmmscan.22Gv1.1.bestOrthos</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.hmmscan.22Gv1.1.bestOrthos.summary</li>
+</ul>
+<ol start="2">
+<li>参数<code>--classifier both</code>同时使用hmmscan和blastp</li>
+</ol>
+<ul>
+<li>输出文件包括</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.blastp.22Gv1.1</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.blastp.22Gv1.1.bestOrthos</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.hmmscan.22Gv1.1</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.hmmscan.22Gv1.1.bestOrthos</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.both.22Gv1.1.bestOrthos</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.both.22Gv1.1.bestOrthos.summary</li>
+</ul>
+<ol start="3">
+<li>按分类单元自主选择单拷贝&#x2F;低拷贝基因家族</li>
+</ol>
+<ul>
+<li>方法一：加上参数<code>--single_copy_custom</code></li>
+<li>方法二：加上参数<code>--single_copy_taxa 20 --taxa_present 21</code></li>
+<li>输出文件除了上面的，还包括：</li>
+<li>geneFamilyClassification_dir&#x2F;proteins.both.22Gv1.1.bestOrthos.summary.singleCopy</li>
+</ul>
+<ol start="4">
+<li>生成基因家族fasta文件</li>
+</ol>
+<ul>
+<li>加上参数<code>--orthogroup_fasta --coding_sequences assemblyPostProcessing_dir/transcripts.cleaned.nr.cds</code></li>
+<li>输出文件除了上面，还包括：</li>
+<li>geneFamilyClassification_dir&#x2F;orthogroups_fasta - transcriptome assembly orthogroup fasta directory</li>
+<li>geneFamilyClassification_dir&#x2F;single_copy_fasta - transcriptome assembly single&#x2F;low copy orthogroup fasta directory<h3 id="7-3-2-参数"><a href="#7-3-2-参数" class="headerlink" title="7.3.2. 参数"></a>7.3.2. 参数</h3></li>
+</ul>
+<ol>
+<li>必需参数：</li>
+</ol>
+<ul>
+<li><code>--proteins</code>：AssemblyPostProcessor Pipeline得到的氨基酸序列。</li>
+<li><code>--scaffold</code>：Orthogroups或者gene families proteins scaffold文件。用绝对路径指定。eg. &#x2F;home&#x2F;scaffolds&#x2F;22Gv1.1</li>
+<li><code>--method</code>：蛋白聚类方法。GFam：gfam；OrthoFinder：orthofinder；OrthoMCL：orthomcl；其他非PlantTribes方法：methodname。</li>
+<li><code>--classifier</code>：蛋白分类方法。BLASTP：blastp；HMMScan：hmmscan；BLASTP+HMMScan：both。BLASTP更快，HMMScan对远源homologs更敏感，both则更全面。</li>
+</ul>
+<ol start="2">
+<li>其他参数：</li>
+</ol>
+<ul>
+<li><code>--config_dir</code>：【optional】设置scaffold的配置文件的目录的绝对路径。例如，&#x2F;home&#x2F;config&#x2F;22gv1.1。如果不设置这个参数，默认配置文件所在目录为~home&#x2F;config。</li>
+<li><code>--num_threads</code>：线程，CPU数量，默认1。用在设置BLASTP，HMMScan，MAFFT。</li>
+<li><code>--super_orthogroups</code>：SuperOthogroups MCL聚类，所有orthogroups对之间的blastp e-value矩阵。If minimum e-value：min_evalue (default)；If average e-value: avg_evalue。</li>
+<li><code>--single_copy_custom</code>：自定义选择单拷贝orthogroup的配置文件。与–single_copy_taxa不兼容。需要绝对路径，默认。</li>
+<li><code>--single_copy_taxa</code>：在orthogroup中需要的最少的单拷贝taxa数量，与–single_copy_custom不兼容。</li>
+<li><code>--taxa_present</code>：在单拷贝orthogroup中需要的最少taxa数量，与–single_copy_taxa共用。</li>
+<li><code>--orthogroup_fasta</code>：生成orthogroup fasta文件，需要–coding_sequences生成CDS orthogoup fasta序列。</li>
+<li><code>--coding_sequences</code>：对应的coding sequences (CDS) fasta 序列。</li>
+</ul>
+<h2 id="7-4-PhylogenomicsAnalysis模块-过时的流程，legacy-pipeline"><a href="#7-4-PhylogenomicsAnalysis模块-过时的流程，legacy-pipeline" class="headerlink" title="7.4. PhylogenomicsAnalysis模块 (过时的流程，legacy pipeline)"></a>7.4. PhylogenomicsAnalysis模块 (过时的流程，legacy pipeline)</h2><ol>
+<li>整合scaffolds基因家族序列和分类好的转录本序列</li>
+</ol>
+<ul>
+<li><code>PlantTribes/legacy/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl --orthogroup_fna</code></li>
+<li>输出文件：</li>
+<li>phylogenomicsAnalysis_dir&#x2F;orthogroups_fasta&#x2F;  - orthogroup fasta directory</li>
+</ul>
+<ol start="2">
+<li>用MAFFT L-INS-i模式生成多序列比对MSA文件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/legacy/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl --create_alignments</code></li>
+</ul>
+<ol start="3">
+<li>把未比对的转录组组装序列加入预先计算的scaffold基因家族多序列比对MSA文件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/legacy/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl --add_alignments</code></li>
+</ul>
+<ol start="4">
+<li>用PASTA方法（适合更大的数据集）生成多序列比对MSA文件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/legacy/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl --pasta_alignments</code></li>
+<li>输出文件：</li>
+<li>phylogenomicsAnalysis_dir&#x2F;orthogroups_fasta&#x2F; - orthogroup fasta directory</li>
+<li>phylogenomicsAnalysis_dir&#x2F;orthogroups_aln&#x2F; - orthogroup multiple sequence alignments directory</li>
+</ul>
+<ol start="5">
+<li>用RAxML构建ML基因家族系统树</li>
+</ol>
+<ul>
+<li><code>PlantTribes/legacy/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl --pasta_alignments --tree_inference raxml</code></li>
+</ul>
+<ol start="6">
+<li>用FastTree构建approximately-maximum-likelihood基因家族树（更快）</li>
+</ol>
+<ul>
+<li><code>PlantTribes/legacy/PhylogenomicsAnalysis --orthogroup_faa geneFamilyClassification_dir/orthogroups_fasta --scaffold 22Gv1.1  --method orthomcl --pasta_alignments --tree_inference fasttree</code></li>
+<li>输出文件：</li>
+<li>phylogenomicsAnalysis_dir&#x2F;orthogroups_fasta&#x2F; - orthogroup fasta directory</li>
+<li>phylogenomicsAnalysis_dir&#x2F;orthogroups_aln&#x2F; - orthogroup multiple sequence alignments directory</li>
+<li>phylogenomicsAnalysis_dir&#x2F;orthogroups_tree&#x2F; - orthogroup phylogenetic trees directory</li>
+</ul>
+<h2 id="7-5-GeneFamilyIntegrator模块"><a href="#7-5-GeneFamilyIntegrator模块" class="headerlink" title="7.5. GeneFamilyIntegrator模块"></a>7.5. GeneFamilyIntegrator模块</h2><ol>
+<li>用22Gv1.1 scaffolds，orthomcl 聚类法，整合分类好的转录组序列和scaffold基因家族序列</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyIntegrator --orthogroup_fasta geneFamilyClassification_dir/orthogroups_fasta/ --scaffold 22Gv1.1  --method orthomcl</code></li>
+<li>输出文件：integratedGeneFamilies_dir&#x2F; - orthogroup fasta directory</li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li><code>--orthogroup_fasta</code>：指定包含基因家族分类orthogroups fasta files的目录。</li>
+<li><code>--scaffold</code>：指定scaffold文件。</li>
+<li><code>--method</code>：蛋白聚类方法。GFam：gfam；OrthoFinder：orthofinder；OrthoMCL：orthomcl；其他非PlantTribes方法：methodname。</li>
+</ul>
+<h2 id="7-6-GeneFamilyAligner模块"><a href="#7-6-GeneFamilyAligner模块" class="headerlink" title="7.6. GeneFamilyAligner模块"></a>7.6. GeneFamilyAligner模块</h2><h3 id="7-6-1-运行"><a href="#7-6-1-运行" class="headerlink" title="7.6.1. 运行"></a>7.6.1. 运行</h3><ol>
+<li>用MAFFT L-INS-i模式生成基因家族多序列比对MSA文件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method mafft</code></li>
+</ul>
+<ol start="2">
+<li>用PASTA软件（适合更大的数据集）生成基因家族多序列比对MSA文件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyAligner --orthogroup_faa integratedGeneFamilies_dir --alignment_method pasta --pasta_script_path /path/to/pasta-code/pasta/run_pasta.py</code></li>
+<li>输出文件：</li>
+<li>geneFamilyAlignments_dir&#x2F;orthogroups_aln_faa - orthogroup multiple sequence alignments directory<h3 id="7-6-2-参数"><a href="#7-6-2-参数" class="headerlink" title="7.6.2. 参数"></a>7.6.2. 参数</h3></li>
+</ul>
+<ol>
+<li>必需参数</li>
+</ol>
+<ul>
+<li><code>--orthogroup_faa</code>：指定包含基因家族分类orthogroups fasta files的目录。</li>
+<li><code>--alignment_method</code>：多序列比对MSA方法。MAFFT：mafft；PASTA：pasta。</li>
+</ul>
+<ol start="2">
+<li>codon alignments参数</li>
+</ol>
+<ul>
+<li><code>--codon_alignments</code>：构建orthogroup multiple codon比对，对应基因家族分类。orthogroups CDS文件需在orthogroups蛋白fasta文件同一目录下。</li>
+</ul>
+<ol start="3">
+<li>MSA质控参数</li>
+</ol>
+<ul>
+<li><code>--automated_trimming</code>：用trimAl进行trims。</li>
+<li><code>--gap_trimming</code>：在alignments中移除gappy位点。</li>
+<li><code>--remove_sequences</code>：在alignments中移除gappy序列。</li>
+<li><code>--iterative_realignment</code>：<code>--remove_sequences</code>移除时迭代的最大次数。</li>
+</ul>
+<ol start="4">
+<li>其他参数</li>
+</ol>
+<ul>
+<li><code>--num_threads</code>：用于MAFFT或PASTA的线程数，默认是1。</li>
+<li><code>--max_memory</code>：最大可用内存。</li>
+<li><code>--pasta_iter_limit</code>：PASTA算法迭代的最大次数。</li>
+<li><code>--pasta_script_path</code>：用于PASTA的脚本run_pasta.py的位置。</li>
+</ul>
+<h2 id="7-7-GeneFamilyPhylogenyBuilder模块"><a href="#7-7-GeneFamilyPhylogenyBuilder模块" class="headerlink" title="7.7. GeneFamilyPhylogenyBuilder模块"></a>7.7. GeneFamilyPhylogenyBuilder模块</h2><h3 id="7-7-1-运行"><a href="#7-7-1-运行" class="headerlink" title="7.7.1. 运行"></a>7.7.1. 运行</h3><ol>
+<li>用RAxML构建ML基因家族系统树</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln_faa --scaffold 22Gv1.1  --method orthomcl --tree_inference raxml</code></li>
+<li>输出文件：</li>
+<li>geneFamilyPhylogenies_dir&#x2F;phylip_aln&#x2F; - orthogroup phylip multiple sequence alignments directory</li>
+<li>geneFamilyPhylogenies_dir&#x2F;orthogroups_tree&#x2F; - orthogroup phylogenetic trees directory</li>
+</ul>
+<ol start="2">
+<li>用FastTree构建approximately-maximum-likelihood基因家族树（更快）</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/GeneFamilyPhylogenyBuilder --orthogroup_aln geneFamilyAlignments_dir/orthogroups_aln_faa --tree_inference fasttree</code></li>
+<li>输出文件：</li>
+<li>geneFamilyPhylogenies_dir&#x2F;orthogroups_tree&#x2F; - orthogroup phylogenetic trees directory<h3 id="7-7-2-参数"><a href="#7-7-2-参数" class="headerlink" title="7.7.2. 参数"></a>7.7.2. 参数</h3>GeneFamilyPhylogenyBuilder模块建树默认是设定外类群的，通常设定Ambtr1.0.27或Phypa1.6等为外类群，所以获得的树结果可直接用。</li>
+</ul>
+<ol>
+<li>必需参数</li>
+</ol>
+<ul>
+<li><code>--orthogroup_aln</code>：指定包含基因家族orthogroups alignment files的目录。</li>
+<li><code>--tree_inference</code>：系统发育树推断方法。RAxML：raxml；FastTree：fasttree。</li>
+</ul>
+<ol start="2">
+<li>其他参数</li>
+</ol>
+<ul>
+<li><code>--scaffold</code>：orthogroups或者基因家族蛋白scaffold。可以用绝对路径指定scaffold文件。</li>
+<li><code>--method</code>：蛋白聚类方法。GFam：gfam；OrthoFinder：orthofinder；OrthoMCL：orthomcl；其他非PlantTribes方法：methodname。</li>
+<li><code>--config_dir</code>：包含默认配置文件的绝对路径。</li>
+<li><code>--max_orthogroup_size</code>：orthogroup比对的最大序列数量。</li>
+<li><code>--min_orthogroup_size</code>：orthogroup比对的最小序列数量。</li>
+<li><code>--rooting_order</code>：list文件，包含与分类群 (包括 scaffold taxa) 中物种序列标识符匹配的字符串片段列表，用于确定定根树中orthogroups的最基部类群。</li>
+<li><code>--bootstrap_replicates</code>：rapid bootstrap分析的重复次数，需要<code>--tree_inference raxml</code>，默认100。</li>
+<li><code>--num_threads</code>：用于RAxML的线程，默认1。<h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3></li>
+</ul>
+<ol>
+<li>结果目录是空目录，没有生成结果文件</li>
+</ol>
+<ul>
+<li>可能是序列中有中间终止密码子。在log文件中会出现。</li>
+<li>查看序列中是否有.符号，要么删除有中间终止密码子的序列，要么把中间终止密码子符号（.）换成gap符号（-）：<code>sed &quot;s/\./-/g&quot; old.fa &gt;new.fa</code>。</li>
+</ul>
+<ol start="2">
+<li>结果目录是空目录</li>
+</ol>
+<ul>
+<li>log文件中出现<code>Skipping sequence MLP_m64284e_210910_055234/158926758/ccs_MP021065 in orthogroup 3510 not in codon frame</code>。cds序列和pep序列不一致，这个提示代表pep序列有但cds序列没有。</li>
+<li>删除</li>
+</ul>
+<h2 id="7-8-KaKsAnalysis模块"><a href="#7-8-KaKsAnalysis模块" class="headerlink" title="7.8. KaKsAnalysis模块"></a>7.8. KaKsAnalysis模块</h2><h3 id="7-8-1-运行"><a href="#7-8-1-运行" class="headerlink" title="7.8.1. 运行"></a>7.8.1. 运行</h3><ol>
+<li>进行旁系同源分析</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/KaKsAnalysis --coding_sequences_species_1 PlantTribes/test/species1.fna --proteins_species_1 PlantTribes/test/species1.faa --comparison paralogs --min_ks 0.02 --max_ks 4.0 --num_threads 10</code></li>
+<li>输出文件：</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna - species1 input coding sequences (CDS)</li>
+<li>kaksAnalysis_dir&#x2F;species1.faa - species1 input amino acids (proteins)</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs - species1 self blastn results</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs.rbhb - species1 paralogous pairs</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs.rbhb.kaks - species1 ka&#x2F;ks analysis results</li>
+</ul>
+<ol start="2">
+<li>进行直系同源分析</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/KaKsAnalysis --coding_sequences_species_1 PlantTribes/test/species1.fna --proteins_species_1 PlantTribes/test/species1.faa --comparison orthologs --coding_sequences_species_2 PlantTribes/test/species2.fna --proteins_species_2 PlantTribes/test/species2.faa --min_ks 0.02 --max_ks 4.0 --num_threads 10</code></li>
+<li>输出文件：</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna - species1 input coding sequences (CDS)</li>
+<li>kaksAnalysis_dir&#x2F;species1.faa - species1 input amino acids (proteins)</li>
+<li>kaksAnalysis_dir&#x2F;species2.fna - species2 input coding sequences (CDS)</li>
+<li>kaksAnalysis_dir&#x2F;species2.faa - species2 input amino acids (proteins)</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.orthologs - species1 vs species2.blastdb blastn results</li>
+<li>kaksAnalysis_dir&#x2F;species2.fna.blastn.orthologs - species2 vs species1.blastdb blastn results</li>
+<li>kaksAnalysis_dir&#x2F;species1and2.fna.blastn.orthologs.rbhb - species1 vs species2 orthologous pairs</li>
+<li>kaksAnalysis_dir&#x2F;species1and2.fna.blastn.orthologs.rbhb.kaks - species1 vs species2 ka&#x2F;ks analysis results</li>
+</ul>
+<ol start="3">
+<li>进行旁系同源分析，拟合至多4个多元正态成分的混合模型，以确定基因组中显著的重复事件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/KaKsAnalysis --coding_sequences_species_1 PlantTribes/test/species1.fna --proteins_species_1 PlantTribes/test/species1.faa --comparison paralogs --fit_components --num_of_components 4 --min_ks 0.02 --max_ks 4.0 --num_threads 10</code></li>
+<li>输出文件：</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna - species1 input coding sequences (CDS)</li>
+<li>kaksAnalysis_dir&#x2F;species1.faa - species1 input amino acids (proteins)</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs - species1 self blastn results</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs.rbhb - species1 paralogous pairs</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs.rbhb.kaks - species1 ka&#x2F;ks analysis results</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.paralogs.rbhb.kaks.components - significant components in the ks distribution of species1</li>
+</ul>
+<ol start="4">
+<li>进行直系同源分析，拟合至多4个多元正态成分的混合模型，以确定基因组中显著的重复事件</li>
+</ol>
+<ul>
+<li><code>PlantTribes/pipelines/KaKsAnalysis --coding_sequences_species_1 PlantTribes/test/species1.fna --proteins_species_1 PlantTribes/test/species1.faa --comparison orthologs --coding_sequences_species_2 PlantTribes/test/species2.fna --proteins_species_2 PlantTribes/test/species2.faa --fit_components --num_of_components 4 --min_ks 0.02 --max_ks 4.0 --num_threads 10</code></li>
+<li>输出文件：</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna - species1 input coding sequences (CDS)</li>
+<li>kaksAnalysis_dir&#x2F;species1.faa - species1 input amino acids (proteins)</li>
+<li>kaksAnalysis_dir&#x2F;species2.fna - species2 input coding sequences (CDS)</li>
+<li>kaksAnalysis_dir&#x2F;species2.faa - species2 input amino acids (proteins)</li>
+<li>kaksAnalysis_dir&#x2F;species1.fna.blastn.orthologs - species1 vs species2.blastdb blastn results</li>
+<li>kaksAnalysis_dir&#x2F;species2.fna.blastn.orthologs - species2 vs species1.blastdb blastn results</li>
+<li>kaksAnalysis_dir&#x2F;species1and2.fna.blastn.orthologs.rbhb - species1 vs species2 orthologous pairs</li>
+<li>kaksAnalysis_dir&#x2F;species1and2.fna.blastn.orthologs.rbhb.kaks - species1 vs species2 ka&#x2F;ks analysis results</li>
+<li>kaksAnalysis_dir&#x2F;species1and2.fna.blastn.orthologs.rbhb.kaks.components - significant components in the ks distribution of species1 vs species2 analysis results<h3 id="7-8-2-参数"><a href="#7-8-2-参数" class="headerlink" title="7.8.2. 参数"></a>7.8.2. 参数</h3></li>
+</ul>
+<ol>
+<li>必需参数</li>
+</ol>
+<ul>
+<li><code>--coding_sequences_species_1</code>：第一个物种的CDS fasta序列文件。</li>
+<li><code>--proteins_species_1</code>：第一个物种的蛋白fasta序列文件。</li>
+<li><code>--comparison</code>：成对序列比较以决定homolgous pairs。如果物种内比较：paralogs；如果物种间比较：orthologs（需要第二个物种数据）。</li>
+</ul>
+<ol start="2">
+<li>其他参数</li>
+</ol>
+<ul>
+<li><code>--coding_sequences_species_2</code>：当<code>--comparison orthologs</code>时，第二个物种的CDS fasta序列文件。</li>
+<li><code>--proteins_species_2</code>：当<code>--comparison orthologs</code>时，第二个物种的蛋白fasta序列文件。</li>
+<li><code>--crb_blast</code>：当<code>--comparison orthologs</code>时，使用条件reciprocal best BLAST来确定跨物种orthologs，而不是默认的reciprocal best BLAST。</li>
+<li><code>--min_coverage</code>：同源对之间的成对序列覆盖长度的最小值。</li>
+<li><code>--recalibration_rate</code>：重新校准ks。-主要适用于paralogous ks分析</li>
+<li><code>--codeml_ctl_file</code>：PAML’s codeml control file用了执蛋白编码序列的ML分析</li>
+<li><code>--fit_components</code>：拟合一个多正态组分的混合模型，用于确认ks分布。</li>
+<li><code>--num_of_components</code>：多正态组分的数量。需要<code>--fit_components</code>。</li>
+<li><code>--min_ks</code>：ks的下限。</li>
+<li><code>--max_ks</code>：ks的上限。</li>
+<li><code>--num_threads</code>：线程，默认1。</li>
+</ul>
+<h1 id="8-references"><a href="#8-references" class="headerlink" title="8. references"></a>8. references</h1><ol>
+<li>tutorial：<a target="_blank" rel="noopener" href="https://github.com/dePamphilis/PlantTribes/blob/master/docs/Tutorial.md">https://github.com/dePamphilis/PlantTribes/blob/master/docs/Tutorial.md</a></li>
+<li>github：<a target="_blank" rel="noopener" href="https://github.com/dePamphilis/PlantTribes">https://github.com/dePamphilis/PlantTribes</a></li>
+<li>cite paper：<a target="_blank" rel="noopener" href="https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1011199/full#h3">https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1011199/full#h3</a></li>
+<li>paper：<a target="_blank" rel="noopener" href="https://academic.oup.com/gbe/article/15/1/evac183/6965378#394016961">https://academic.oup.com/gbe/article/15/1/evac183/6965378#394016961</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/orthology/" rel="tag"># orthology</a>
+              <a href="/tags/PlantTribes/" rel="tag"># PlantTribes</a>
+              <a href="/tags/Ka-Ks/" rel="tag"># Ka/Ks</a>
+              <a href="/tags/orthofinder/" rel="tag"># orthofinder</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/29/bio_evolution_tree_NewickUtilities/" rel="prev" title="进化树处理和可视化工具Newick Utilities">
+      <i class="fa fa-chevron-left"></i> 进化树处理和可视化工具Newick Utilities
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/09/29/bioinfo_alignment_prot_miniprot/" rel="next" title="用miniprot做蛋白序列和基因组序列间的比对">
+      用miniprot做蛋白序列和基因组序列间的比对 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90-orthology-%E6%8E%A8%E6%96%AD"><span class="nav-text">1. 直系同源(orthology)推断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%9B%B4%E7%B3%BB%E5%90%8C%E6%BA%90%E6%8E%A8%E6%96%AD"><span class="nav-text">1.1. 直系同源推断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PlantTribes2%E4%BB%8B%E7%BB%8D"><span class="nav-text">2. PlantTribes2介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PlantTribes-scaffold%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">3. PlantTribes_scaffold数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-PlantTribes2%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-text">4. PlantTribes2的模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-AssemblyPostProcessor%E6%A8%A1%E5%9D%97"><span class="nav-text">4.1. AssemblyPostProcessor模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-GeneFamilyClassifier%E6%A8%A1%E5%9D%97"><span class="nav-text">4.2. GeneFamilyClassifier模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-PhylogenomicsAnalysis%E6%A8%A1%E5%9D%97-legacy-pipeline"><span class="nav-text">4.3. PhylogenomicsAnalysis模块 (legacy pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-GeneFamilyIntegrator%E6%A8%A1%E5%9D%97"><span class="nav-text">4.4. GeneFamilyIntegrator模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-GeneFamilyAligner%E6%A8%A1%E5%9D%97"><span class="nav-text">4.5. GeneFamilyAligner模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-GeneFamilyPhylogenyBuilder%E6%A8%A1%E5%9D%97"><span class="nav-text">4.6. GeneFamilyPhylogenyBuilder模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-KaKsAnalysis%E6%A8%A1%E5%9D%97"><span class="nav-text">4.7. KaKsAnalysis模块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-PlantTribes2%E5%AE%89%E8%A3%85"><span class="nav-text">5. PlantTribes2安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-PlantTribes2%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8"><span class="nav-text">6. PlantTribes2快速使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E6%A0%87%E5%87%86%E8%BF%90%E8%A1%8C"><span class="nav-text">6.1. 标准运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-focus-on%E7%9B%AE%E6%A0%87%E5%9F%BA%E5%9B%A0%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="nav-text">6.2. focus on目标基因的运行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-PlantTribes2%E8%BF%90%E8%A1%8C%E7%9A%84%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0"><span class="nav-text">7. PlantTribes2运行的详细参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-text">7.1. 准备数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E7%BB%84%E8%A3%85%E5%90%8E%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97%EF%BC%9AAssemblyPostProcessor-Pipeline"><span class="nav-text">7.2. 组装后处理模块：AssemblyPostProcessor Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.2.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.2.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-%E5%9F%BA%E5%9B%A0%E5%AE%B6%E6%97%8F%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9D%97%EF%BC%9AGeneFamilyClassifier-Pipeline"><span class="nav-text">7.3. 基因家族分类模块：GeneFamilyClassifier Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.3.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.3.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-PhylogenomicsAnalysis%E6%A8%A1%E5%9D%97-%E8%BF%87%E6%97%B6%E7%9A%84%E6%B5%81%E7%A8%8B%EF%BC%8Clegacy-pipeline"><span class="nav-text">7.4. PhylogenomicsAnalysis模块 (过时的流程，legacy pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-5-GeneFamilyIntegrator%E6%A8%A1%E5%9D%97"><span class="nav-text">7.5. GeneFamilyIntegrator模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-6-GeneFamilyAligner%E6%A8%A1%E5%9D%97"><span class="nav-text">7.6. GeneFamilyAligner模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.6.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.6.2. 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-7-GeneFamilyPhylogenyBuilder%E6%A8%A1%E5%9D%97"><span class="nav-text">7.7. GeneFamilyPhylogenyBuilder模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.7.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.7.2. 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug"><span class="nav-text">debug</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-8-KaKsAnalysis%E6%A8%A1%E5%9D%97"><span class="nav-text">7.8. KaKsAnalysis模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">7.8.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-2-%E5%8F%82%E6%95%B0"><span class="nav-text">7.8.2. 参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-references"><span class="nav-text">8. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

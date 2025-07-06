@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录使用iqtree2来构建最大似然树。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建系统发育进化树：iqtree2构建最大似然树">
+<meta property="og:url" content="http://example.com/2023/09/25/bioinfo_phylogeny_iqtree/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录使用iqtree2来构建最大似然树。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-09-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-28T04:51:08.331Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="phylogeny">
+<meta property="article:tag" content="evolutionary tree">
+<meta property="article:tag" content="phylogeny inference">
+<meta property="article:tag" content="iqtree2">
+<meta property="article:tag" content="maximum likelihood tree">
+<meta property="article:tag" content="ML tree">
+<meta property="article:tag" content="Bayesian information criterion">
+<meta property="article:tag" content="BIC">
+<meta property="article:tag" content="ultrafast bootstrap approximation">
+<meta property="article:tag" content="UFBoot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/09/25/bioinfo_phylogeny_iqtree/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>构建系统发育进化树：iqtree2构建最大似然树 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/25/bioinfo_phylogeny_iqtree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          构建系统发育进化树：iqtree2构建最大似然树
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-09-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-26T00:00:00+08:00">2023-09-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-28 12:51:08" itemprop="dateModified" datetime="2023-09-28T12:51:08+08:00">2023-09-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/phylogeny/" itemprop="url" rel="index"><span itemprop="name">phylogeny</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/phylogeny/phylogeny-inference/" itemprop="url" rel="index"><span itemprop="name">phylogeny inference</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 mins.</span>
+            </span>
+            <div class="post-description">记录使用iqtree2来构建最大似然树。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1304261116&auto=1&height=32"></iframe></div>
+
+<h1 id="1-建树的原料——输入文件"><a href="#1-建树的原料——输入文件" class="headerlink" title="1. 建树的原料——输入文件"></a>1. 建树的原料——输入文件</h1><ol>
+<li>数据类型</li>
+</ol>
+<ul>
+<li>通常是使用分子数据的比对文件进行建树，可以是DNA序列、RNA序列、氨基酸序列；</li>
+<li>也可以用二进制数据binary alignments（0和1），形态数据morphological data（0-9和A-Z表示）。</li>
+</ul>
+<ol start="2">
+<li>使用**多序列比对(Multiple Sequence Alignment,MSA)**文件来建树</li>
+</ol>
+<ul>
+<li>关于MSA可以参考这篇博客(<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/09/06/bioinfo_align_MSA/)%E3%80%82">https://yanzhongsino.github.io/2021/09/06/bioinfo_align_MSA/)。</a></li>
+</ul>
+<ol start="3">
+<li>MSA文件（sample_aln.fas）的准备</li>
+</ol>
+<ul>
+<li>如果是组学数据（大数据量），推荐使用MAFFT比对，再用trimAI过滤，以获取比对良好的sample_aln.fas文件。</li>
+<li>如果是一个或几个基因数据，则可以使用MEGA等软件带的MUSCLE或Clustal软件进行比对，比对完成后一定要手动检查所有比对区域并调整。</li>
+<li>注意如果是CDS区域，使用CODON模式进行三碱基联合的比对。</li>
+</ul>
+<h1 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h1><p><code>nohup iqtree -s samples_aln.fas -o OUTGROUP -T AUTO -m MFP -p partition.nex -b 1000 -alrt 1000 --prefix samples &amp;</code></p>
+<h1 id="3-参数解释"><a href="#3-参数解释" class="headerlink" title="3. 参数解释"></a>3. 参数解释</h1><ol>
+<li>-s samples_aln.fas：指定多序列比对文件，可以是FASTA&#x2F;PHYLIP&#x2F;NEXUS&#x2F;CLUSTAL&#x2F;MSF格式</li>
+<li>-o OUTGROUP：指定外类群（只在最后生成树文件时生效），指定多个物种时用逗号隔开</li>
+<li>-T AUTO：指定线程，推荐系统自动检测最佳线程数（AUTO），有时用户设定的会出现过高或过低的情况</li>
+<li>-m MFP：指定模型，MFP代表调用iqtree2内置的ModelFinder Plus鉴定最佳模型，默认使用BIC分数最小的模型</li>
+<li>-p partition.nex：指定分区文件，支持NEXUS格式或RAxML-style格式。如果需要对多个分区进行独立的模型指定，则使用分区文件partition.nex来指定分区。</li>
+</ol>
+<ul>
+<li>如果partition.nex文件中指定了比对文件，则可以省略-s samples_aln.fas参数。</li>
+<li>下面是分区文件partition.nex的NEXUS格式示例，可以指定多个文件和一个文件的多个区域。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">nexus</span></span><br><span class="line">begin sets;</span><br><span class="line">        charset part1 = sample1_aln.fas:1-860; # 指定part1对应sample1_aln.fas文件的第1-860个碱基</span><br><span class="line">        charset part2 = sample1_aln.fas:980-1128; # 指定part1对应sample1_aln.fas文件的第980-1128个碱基</span><br><span class="line">        charset part3 = sample2_aln.phy; # 指定part3对应sample2_aln.phy文件的所有碱基位点</span><br><span class="line">		charpartition mine = HKY:part1, GTR+I+G:part2, WAG+I+G:part3; # 这行为每个part指定不同的模型</span><br><span class="line">end;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>-b 1000：使用bootstrap自展法计算节点支持率，最少100次，建议1000次或以上。推荐数据量少时用，更准确。</li>
+<li>-B 1000 –bnni：使用超快速bootstrap自展法（ultrafast bootstrap approximation, UFBoot）计算节点支持率，最少1000次，建议5000次或以上。推荐数据量大时用，比-b快10倍左右。一般推荐加上–bnni参数，代表使用NNI优化超快速bootstrap的树。</li>
+<li>-alrt 1000：使用SH近似似然比检验计算节点支持率，最小1000次，可以和-b或-B一起使用，同时计算两个支持率。</li>
+<li>–prefix samples：指定生成的结果文件的前缀为samples。</li>
+</ol>
+<h1 id="4-其他常用参数"><a href="#4-其他常用参数" class="headerlink" title="4. 其他常用参数"></a>4. 其他常用参数</h1><ol>
+<li>-m MFP+ASC：当使用的输入数据是不包含恒定位点（constant sites）的比对文件时（比如SNP数据，比如形态学数据），开发者建议使用+ASC模型（ascertainment bias correction）来矫正因缺乏恒定位点（constant sites）所导致的系统发育树分枝长度过长与祖先结构错误等问题（具体解释见后文）。</li>
+</ol>
+<ul>
+<li>+ASC模型要求输入的数据必须是variable sites（定义看后面的解释），如果比对文件（如包含SNP位点的比对文件）出现constant sites，则报错<code>ERROR: Invalid use of +ASC because of 46145 invariant sites in the alignment</code>，并生成去除constant sites的samples_aln.fas.varsites.phy。</li>
+<li>如果报错中断，可以用-s指定新生成的variable位点序列samples_aln.fas.varsites.phy，其他参数不变，继续运行建树即可。</li>
+</ul>
+<ol start="2">
+<li>–mem 100G：最大可使用内存，单位为G、M或百分数%。</li>
+<li>-st DNA：指定序列的数据类型，可选DNA&#x2F;CODON&#x2F;AA&#x2F;BIN等，默认是自动检测数据类型。</li>
+<li>-redo：iqtree2会生成每一步的结果文件，如果iqtree运行命令被中断，重新运行一样命令则会默认从断点开始运行。如果想要重新运行，则需要加上-redo参数。</li>
+<li>-cmax 15：如果你的序列足够长，开发者建议增加-cmax设定值，默认是10，这主要是考虑计算资源。</li>
+<li>-keep-ident：默认在建树过程中会删除相同序列的样本，待建树完成后再添加，以节省分析时间。但这也会使输出文件中的样本数不足。如果群体中可能包含相同序列，使用-keep-ident参数可以保留序列相同的样本，使输出样本数与输入样本数保持一致。</li>
+<li>-fast：此参数仅使用 最大简约（maximum parsimony）和 BIONJ 2 种方法构建系统发育树，仅进行 2 轮树的优化（-nstop&#x3D;2），且无 OPTIMIZING CANDIDATE TREE SET 步骤。否则（不使用 -fast 参数）使用 100 种构建方法（default -ninit&#x3D;100），并至多迭代 100 次（default -nstop&#x3D;100）进行树的优化。</li>
+</ol>
+<h1 id="5-结果文件"><a href="#5-结果文件" class="headerlink" title="5. 结果文件"></a>5. 结果文件</h1><ol>
+<li><code>-s</code>参数指定序列后会生成几个基本的结果文件：</li>
+</ol>
+<ul>
+<li>samples.iqtree：预测的树结果，包含最终树的文本格式，可直接查看文本看到树的拓扑结构。</li>
+<li>samples.treefile：NEWICK格式的ML树，可用iTOL或FigTree等树可视化软件查看。</li>
+<li>samples.log：运行log文件。</li>
+</ul>
+<ol start="2">
+<li><code>-m</code>参数运行模型选择，生成额外的文件：</li>
+</ol>
+<ul>
+<li>samples.best_scheme.nex：最佳模型（包含碱基替换模型）文件，默认是选择BIC最小的模型为最佳模型，也可以通过参数<code>-AIC</code>或<code>-AICc</code>选AIC或AICc最小的作为最佳模型。</li>
+<li>samples.model.gz：所有测试模型的对数似然，它充当checkpoint文件来恢复中断的模型选择。</li>
+<li>sample.best_model.nex：最佳模型。</li>
+<li>samples.best_scheme：分区情况。</li>
+</ul>
+<ol start="3">
+<li><code>-B</code>参数指定超快速自展法评估支持率</li>
+</ol>
+<ul>
+<li>samples.contree：具有指定分支的一致树(consensus tree)支持在原始比对序列上优化分支长度</li>
+<li>samples.splits.nex：以百分比表示的所有splits（二分区）的支持值，以引导树中的出现频率计算。该文件可以用 SplitsTree 程序查看，以探索数据中的冲突信号。因此，它比一致树的信息量更大。例如，这个文件可以看到第二好的冲突split的支持率有多高，即使第二好的拓扑没有被选入一致树。</li>
+<li>samples.ufboot</li>
+</ul>
+<ol start="4">
+<li>其他结果文件</li>
+</ol>
+<ul>
+<li>samples.ckp.gz：iqtree自动生成的checkpoint文件，用于恢复中断的运行。使用相同的命令行再次调用iqtree，有这个文件将从上次停止点恢复分析，从而节省之前完成的所有计算时间。</li>
+<li>samples.mldist：似然距离。</li>
+<li>samples.boottrees</li>
+<li>samples.bionj</li>
+</ul>
+<h1 id="6-结果解释"><a href="#6-结果解释" class="headerlink" title="6. 结果解释"></a>6. 结果解释</h1><ol>
+<li>多支持率情况</li>
+</ol>
+<ul>
+<li>如果同时使用-b或-B和-alrt两种方法计算支持率，samples.iqtree文件的支持率在括号中同时展示：（SH-aLRT支持率&#x2F;UFBoot支持率）</li>
+</ul>
+<ol start="2">
+<li>支持率的可信度：不同算法的支持率代表的可信度不一样，一般按下面的标准认为分支具有可信度，iqtree开发者推荐同时满足 UFboot &gt;&#x3D; 95% 和 SH-aLRT &gt;&#x3D; 80% 两个标准的分支可信。</li>
+</ol>
+<ul>
+<li>-B的支持率 UFboot &gt;&#x3D; 95%</li>
+<li>-b的支持率 BS support &gt;&#x3D; 80%</li>
+<li>-alrt的支持率 SH-aLRT &gt;&#x3D; 80%</li>
+</ul>
+<h1 id="7-iqtree使用的一些原理"><a href="#7-iqtree使用的一些原理" class="headerlink" title="7. iqtree使用的一些原理"></a>7. iqtree使用的一些原理</h1><h2 id="7-1-iqtree对碱基位点（site）类型的定义"><a href="#7-1-iqtree对碱基位点（site）类型的定义" class="headerlink" title="7.1. iqtree对碱基位点（site）类型的定义"></a>7.1. iqtree对碱基位点（site）类型的定义</h2><p>iqtree 构建系统发育树时，informative sites 用于推断树的拓扑结构与分枝长度，uninformative site 则用于矫正。</p>
+<ol>
+<li>iqtree 将位点（site）分为 3 类：constant（invariant）、singleton、informative（variable）。</li>
+<li>constant site 指位点在所有样本中只包含 1 种碱基；singleton site 指位点包含 2 种类型碱基，但突变仅出现 1 次；informative site 指位点包含 2 种类型碱基，且每种碱基出现至少 2 次。</li>
+<li>从算法角度来说，iqtree 无法利用 singleton 对样本分群，即无法提供分群信息，所以 constant 与 singleton 位点属于 uninformative site 。</li>
+<li>iqtree 对歧义位点（Ambiguous site）采用交集（intersection）形式分析：如果交集非空则忽略歧义碱基，若为空则视为 variant，同列中歧义碱基不堆叠。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">site        1234567</span><br><span class="line">species_1   CCCCCCC</span><br><span class="line">species_2   RTCYRCC</span><br><span class="line">species_3   CYTYYRT</span><br><span class="line">species_4   CCCYCRT</span><br><span class="line"></span><br><span class="line">site1 is singleton, because R=&#123;A or G&#125;, which exclude C, uninformative.</span><br><span class="line">site2 is singleton, because Y=&#123;C or T&#125;, which include C, ignore Y, uninformative.</span><br><span class="line">site3 is singleton, uninformative.</span><br><span class="line">site4 is constant, because Y=&#123;C or T&#125;, which include C, ignore Y, uninformative.</span><br><span class="line">site5 is singleton, because R=&#123;A or G&#125;, which exclude C, Y=&#123;C or T&#125;, which include C, ignore Y, uninformative.</span><br><span class="line">site6 is singleton, because R=&#123;A or G&#125;, which exclude C, uninformative.</span><br><span class="line">site7 is informative.</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>由于歧义位点的交集策略，当同列中仅包含非空歧义碱基时，位点会被判定为 constant site（如上例中 site 4）。因此 SNP 数据从 vcf 转 phylip 后存在部分 site 被判定为 constant 的情况。</li>
+</ol>
+<h2 id="7-2-ASC模型用于SNP数据或形态学数据的原理"><a href="#7-2-ASC模型用于SNP数据或形态学数据的原理" class="headerlink" title="7.2. +ASC模型用于SNP数据或形态学数据的原理"></a>7.2. +ASC模型用于SNP数据或形态学数据的原理</h2><ol>
+<li>缺乏恒定位点（constant sites）的数据（例如SNP数据&#x2F;形态学数据）带来的问题</li>
+</ol>
+<ul>
+<li>由于个体间固定长度区间内 SNP 越多，说明个体间积累的突变越多，分离的时间越长。所以 SNP 构成的 Fasta 数据大幅增加了突变的密度，使个体间分离时间大幅提前，导致分枝过长。 </li>
+<li>同时，分枝过长会压缩祖先之间的分枝长度，降低祖先之间拓扑结构推断的准确性。因为祖先与个体之间时间跨度越长，祖先的可能性就越多，如果祖先对应一个概率分布，则祖先与祖先之间的分布交集就越大。 </li>
+<li>例如 A &#x2F; B 的祖先是 D，C 的祖先是 E，D &#x2F; E 的祖先是 F，如果 A &#x2F; B &#x2F; C 与 D &#x2F; E 的距离越远，D &#x2F; E 的可能序列就越多，D &#x2F; E 分布重合的区间就越大；因为 D &#x2F; E 间相似度高，所以 D &#x2F; E 与 F 的距离会缩短，即压缩 D &#x2F; E 与祖先 F 之间的分枝长度，降低树结构预测的准确性。</li>
+</ul>
+<ol start="2">
+<li><p>为了矫正缺乏恒定位点（constant sites）的数据导致发育树分枝过长的情况，iqtree 提供 +ASC 参数（ascertainment bias correction）。   </p>
+</li>
+<li><p>有人分别测评了 GTR+F+G4 和 GTR+F+G4+ASC 两种替换模型下的树结构，结果参见下节（Test 2&amp;3）。+ASC 虽然对 Log-likelihood 影响较小（1.2%&#x3D;1-79848&#x2F;80786），但对树结构影响较大（23.3%&#x3D;1-5.536&#x2F;7.216），且能够大幅提高稳定性（148%-&gt;0%）。</p>
+</li>
+<li><p>不同参数的性能测试</p>
+</li>
+</ol>
+<table><thead><tr><th>Test</th><th>input</th><th>model</th><th>optimize</th><th>Log-likelihood</th><th>Total tree length</th><th>Sum of internal branch lengths (ratio)</th><th>near-zero internal branches</th><th>Lmap not informative ratio</th></tr></thead><tbody><tr><td>1</td><td>min4.phy</td><td>GTR+F+G4</td><td>fast</td><td>-95636</td><td>3.751</td><td>0.799 (21%)</td><td>93</td><td>8.48%</td></tr><tr><td>2</td><td>varsites.phy</td><td>GTR+F+G4</td><td>fast</td><td>-80786</td><td>7.216</td><td>1.549 (21%)</td><td>97</td><td>14.82%</td></tr><tr><td>3</td><td>varsites.phy</td><td>GTR+F+G4+ASC</td><td>fast</td><td>-79848</td><td>5.536</td><td>1.185 (21%)</td><td>101</td><td>0%</td></tr><tr><td>4</td><td>varsites.phy</td><td>GTR+F+R6+ASC</td><td>fast</td><td>-77426</td><td>1.327</td><td>0.269 (20%)</td><td>263</td><td>0%</td></tr><tr><td>5</td><td>varsites.phy</td><td>GTR+F+R6+ASC</td><td>complete</td><td>-77239</td><td>1.079</td><td>0.210 (19%)</td><td>316</td><td>0%</td></tr></tbody></table>
+
+<ul>
+<li>Test 1&amp;2：使用 iqtree 过滤 SNP 数据集中的 constant site 后再输入 iqtree，不仅可以使用 +ASC 提高模型精度，还能减少建树时间（min4 299s，varsites 50s）。</li>
+<li>Test 2&amp;3：ASC 使树的分枝长度大幅降低（23.3%&#x3D;1-5.536&#x2F;7.216），且能够大幅提高稳定性（148%-&gt;0%），但对似然值改变较小（1.2%&#x3D;1-79848&#x2F;80786）。 </li>
+<li>Test 3&amp;4：更换模型使树的分枝长度大幅降低（75%&#x3D;1-1.328&#x2F;5.536），但似然值改变较小（3%&#x3D;1-77426&#x2F;79848）。</li>
+<li>Test 4&amp;5：多轮迭代 使树的 分枝长度 大幅降低（20%&#x3D;1-1.079&#x2F;1.328），但似然值改变微小（3‰&#x3D;1-77239&#x2F;77426）。 </li>
+<li>Test all：所有模型中中间分枝（internal branch）长度占总枝长比例基本固定（约 20%），near-zero 与 tree length 相关性较高，当发育树整体分枝长度增加时，内部分枝长度也相应增加，其中近 0 分枝数量减少。中间分枝长度占比 20 % 说明 80% 的枝长分布在 末端分枝，个体间距离较大，分离时间较早。部分祖先间的进化关系太紧密（near-zero），用多叉树描述可能更符合这些节点。</li>
+</ul>
+<h1 id="8-reference"><a href="#8-reference" class="headerlink" title="8. reference"></a>8. reference</h1><ol>
+<li>iqtree manual：<a target="_blank" rel="noopener" href="http://www.iqtree.org/doc/">http://www.iqtree.org/doc/</a></li>
+<li>iqtree常见问题官方解答：<a target="_blank" rel="noopener" href="http://www.iqtree.org/doc/Frequently-Asked-Questions#how-do-i-interpret-ultrafast-bootstrap-ufboot-support-values">http://www.iqtree.org/doc/Frequently-Asked-Questions#how-do-i-interpret-ultrafast-bootstrap-ufboot-support-values</a></li>
+<li>ASC模型解释：<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_41621566/article/details/125427326">https://blog.csdn.net/sinat_41621566/article/details/125427326</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/phylogeny/" rel="tag"># phylogeny</a>
+              <a href="/tags/evolutionary-tree/" rel="tag"># evolutionary tree</a>
+              <a href="/tags/phylogeny-inference/" rel="tag"># phylogeny inference</a>
+              <a href="/tags/iqtree2/" rel="tag"># iqtree2</a>
+              <a href="/tags/maximum-likelihood-tree/" rel="tag"># maximum likelihood tree</a>
+              <a href="/tags/ML-tree/" rel="tag"># ML tree</a>
+              <a href="/tags/Bayesian-information-criterion/" rel="tag"># Bayesian information criterion</a>
+              <a href="/tags/BIC/" rel="tag"># BIC</a>
+              <a href="/tags/ultrafast-bootstrap-approximation/" rel="tag"># ultrafast bootstrap approximation</a>
+              <a href="/tags/UFBoot/" rel="tag"># UFBoot</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/05/10/tools_academia_EndNote/" rel="prev" title="参考文献管理软件EndNote的中英文混排技巧">
+      <i class="fa fa-chevron-left"></i> 参考文献管理软件EndNote的中英文混排技巧
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/09/29/bioinfo_alignment_trim_Gblocks/" rel="next" title="用Gblocks对序列比对进行过滤">
+      用Gblocks对序列比对进行过滤 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BB%BA%E6%A0%91%E7%9A%84%E5%8E%9F%E6%96%99%E2%80%94%E2%80%94%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">1. 建树的原料——输入文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">2. 常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="nav-text">3. 参数解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-text">4. 其他常用参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">5. 结果文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E7%BB%93%E6%9E%9C%E8%A7%A3%E9%87%8A"><span class="nav-text">6. 结果解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-iqtree%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8E%9F%E7%90%86"><span class="nav-text">7. iqtree使用的一些原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-iqtree%E5%AF%B9%E7%A2%B1%E5%9F%BA%E4%BD%8D%E7%82%B9%EF%BC%88site%EF%BC%89%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">7.1. iqtree对碱基位点（site）类型的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-ASC%E6%A8%A1%E5%9E%8B%E7%94%A8%E4%BA%8ESNP%E6%95%B0%E6%8D%AE%E6%88%96%E5%BD%A2%E6%80%81%E5%AD%A6%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-text">7.2. +ASC模型用于SNP数据或形态学数据的原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-reference"><span class="nav-text">8. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

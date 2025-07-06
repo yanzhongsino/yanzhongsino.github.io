@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文介绍用MEGA软件计算比对好的核苷酸序列的两两成对的突变频谱的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用MEGA统计序列比对的成对突变频谱">
+<meta property="og:url" content="http://example.com/2023/11/10/bioinfo_alignment_statistics_nucleotide.pair.frequencies.with.MEGA/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="本文介绍用MEGA软件计算比对好的核苷酸序列的两两成对的突变频谱的方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-11-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-30T07:58:37.154Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Multiple Sequence Alignment">
+<meta property="article:tag" content="MSA">
+<meta property="article:tag" content="sequence alignment">
+<meta property="article:tag" content="Molecular Evolutionary Genetics Analysis">
+<meta property="article:tag" content="MEGA">
+<meta property="article:tag" content="nucleotide pair frequencies">
+<meta property="article:tag" content="Ti">
+<meta property="article:tag" content="Tv">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/11/10/bioinfo_alignment_statistics_nucleotide.pair.frequencies.with.MEGA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用MEGA统计序列比对的成对突变频谱 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/10/bioinfo_alignment_statistics_nucleotide.pair.frequencies.with.MEGA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用MEGA统计序列比对的成对突变频谱
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-11-11T00:00:00+08:00">2023-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-30 15:58:37" itemprop="dateModified" datetime="2024-10-30T15:58:37+08:00">2024-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/alignment/" itemprop="url" rel="index"><span itemprop="name">alignment</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/alignment/statistics/" itemprop="url" rel="index"><span itemprop="name">statistics</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>2 mins.</span>
+            </span>
+            <div class="post-description">本文介绍用MEGA软件计算比对好的核苷酸序列的两两成对的突变频谱的方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5056815&auto=1&height=32"></iframe></div>
+
+<h1 id="1-序列比对和MEGA的简单介绍"><a href="#1-序列比对和MEGA的简单介绍" class="headerlink" title="1. 序列比对和MEGA的简单介绍"></a>1. 序列比对和MEGA的简单介绍</h1><ul>
+<li>序列比对的知识可以参考另一篇博文的内容。Sequence Alignment：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2021/09/06/bioinfo_alignment_align_intro/">https://yanzhongsino.github.io/2021/09/06/bioinfo_alignment_align_intro/</a></li>
+<li>MEGA软件的全称是Molecular Evolutionary Genetics Analysis，是用于对序列进行操作、比对、统计、系统发育和进化分析的一个软件包，拥有非常多的功能。</li>
+<li>MEGA官方网站是：<a target="_blank" rel="noopener" href="https://www.megasoftware.net/%EF%BC%8C%E7%8E%B0%E5%9C%A8%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC%E6%98%AFMEGA">https://www.megasoftware.net/，现在最新版本是MEGA</a> 11。</li>
+</ul>
+<h1 id="2-成对突变频谱"><a href="#2-成对突变频谱" class="headerlink" title="2. 成对突变频谱"></a>2. 成对突变频谱</h1><p>突变频谱是指序列间突变的类型和总数的统计。</p>
+<ol>
+<li>两条比对好的序列的碱基是一一对应的，序列的差异被认为是点突变的证据。如果考虑突变方向，点突变共有12种类型；如果不考虑突变方向，点突变共有6种类型。</li>
+<li>在两条序列间，对每种类型的点突变的总数进行统计，还可以根据突变类型计算Ti，Tv以及Ti&#x2F;Tv ratio (Ts&#x2F;Tv ratio)。</li>
+<li>在多序列比对中，也可以计算两两的成对序列的点突变的类型和数量，即成对突变频谱。</li>
+</ol>
+<h1 id="3-用MEGA统计成对突变频率"><a href="#3-用MEGA统计成对突变频率" class="headerlink" title="3. 用MEGA统计成对突变频率"></a>3. 用MEGA统计成对突变频率</h1><h2 id="3-1-准备文件"><a href="#3-1-准备文件" class="headerlink" title="3.1. 准备文件"></a>3.1. 准备文件</h2><ol>
+<li>需要的文件是已经比对好的多序列或两条序列的文件，fasta格式或meg格式都可用。<h2 id="3-2-统计的操作"><a href="#3-2-统计的操作" class="headerlink" title="3.2. 统计的操作"></a>3.2. 统计的操作</h2><h3 id="3-2-1-在MEGA导入多序列比对文件"><a href="#3-2-1-在MEGA导入多序列比对文件" class="headerlink" title="3.2.1. 在MEGA导入多序列比对文件"></a>3.2.1. 在MEGA导入多序列比对文件</h3></li>
+<li>在MEGA中打开fasta或meg格式的比对文件；</li>
+<li>弹出对话框【How would you like to open this fasta file?】，选【Analyze】；</li>
+<li>弹出对话框【Input Data Options】，选对应的数据类型，DNA序列选【Nucleotide Sequences】；</li>
+<li>弹出对话框【Confirmation-Protein-coding nucleotide sequence data】，如果是蛋白编码序列coding sequences就选【Yes】，否则选【No】；<h3 id="3-2-2-选择需要统计的序列"><a href="#3-2-2-选择需要统计的序列" class="headerlink" title="3.2.2. 选择需要统计的序列"></a>3.2.2. 选择需要统计的序列</h3></li>
+<li>此时打开了比对文件，点击MEGA界面操作栏下面的第一个小方块（显示TA，右边第二个小方块是Close Data），打开界面【Sequence Data Explorer】；此界面可以对导入的比对序列进行统计分析。</li>
+<li>界面【Sequence Data Explorer】中包含了导入的多序列比对文件的序列信息，默认选择所有序列（所有序列前的勾是勾上的），可以根据需要选择至少两条序列进行突变频谱的统计。如果选择了三条及以上序列，则突变频谱的统计结果是两两序列突变数量的平均值。</li>
+<li>在界面【Sequence Data Explorer】选择【Statistics】-【Nucleotide Pair Frequencies】-【Directional (16 Pairs)..】或【Undirectional (10 Pairs)..】。</li>
+</ol>
+<ul>
+<li>【Directional】代表进行有方向的突变频谱的统计，界面【Sequence Data Explorer】中勾选的序列的顺序决定了方向，代表从前面的序列到后面的序列的突变频谱。可以在选择序列时更改序列的顺序，来计算相应方向的突变频谱。</li>
+<li>【Undirectional (10 Pairs)..】则代表进行无方向的突变频谱统计，与有方向的类似，但把A-T和T-A的突变合并，依此类推。</li>
+<li>有方向的突变频谱包含12种突变类型，无方向的突变频谱包含6种突变类型，这里的统计还包含A-A,T-T,C-C,G-G四种无突变类型的数量，所以分别是16 pairs和10 pairs。</li>
+</ul>
+<ol start="4">
+<li>弹出对话框【Select Output Format】，根据需要选择输出文件格式（XLSX,XLS,TXT,CSV,ODS），以及直接展示结果（Display Results）还是保存结果到文件（Save to Disk）。</li>
+</ol>
+<h2 id="3-3-结果文件"><a href="#3-3-结果文件" class="headerlink" title="3.3. 结果文件"></a>3.3. 结果文件</h2><p>TXT格式的结果文件示例，这里选择了Liriodendron, Amborella, Nymphaea三条序列进行统计。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Data Filename: samples.fa</span><br><span class="line">Data Title: fasta file</span><br><span class="line">Nucleotide Pair Frequencies</span><br><span class="line">Sites Used: All selected</span><br><span class="line">No. of sequences used: 3</span><br><span class="line">Sequences used</span><br><span class="line">  Liriodendron</span><br><span class="line">  Amborella</span><br><span class="line">  Nymphaea</span><br><span class="line">All frequencies are averages (rounded) over all taxa.</span><br><span class="line">ii = Identical Pairs</span><br><span class="line">si = Transitionsal Pairs</span><br><span class="line">sv = Transversional Pairs</span><br><span class="line">R  = si/sv</span><br><span class="line">Domain       ii    si    sv    R     TT    TC    TA    TG    CT    CC    CA    CG    AT    AC    AA    AG    GT    GC    GA    GG Total  Domain Info</span><br><span class="line">   1. Avg 23254   276   573   0.5  7099    62    67    82    86  4567   150    24    62    87  6299    65    80    21    63  5289 24102.3  Data</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multiple-Sequence-Alignment/" rel="tag"># Multiple Sequence Alignment</a>
+              <a href="/tags/MSA/" rel="tag"># MSA</a>
+              <a href="/tags/sequence-alignment/" rel="tag"># sequence alignment</a>
+              <a href="/tags/Molecular-Evolutionary-Genetics-Analysis/" rel="tag"># Molecular Evolutionary Genetics Analysis</a>
+              <a href="/tags/MEGA/" rel="tag"># MEGA</a>
+              <a href="/tags/nucleotide-pair-frequencies/" rel="tag"># nucleotide pair frequencies</a>
+              <a href="/tags/Ti/" rel="tag"># Ti</a>
+              <a href="/tags/Tv/" rel="tag"># Tv</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/02/evolution_ancestral.state.reconstruction_paml.baseml/" rel="prev" title="祖先状态重建：用PAML的baseML重建祖先序列">
+      <i class="fa fa-chevron-left"></i> 祖先状态重建：用PAML的baseML重建祖先序列
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/15/bioinfo_alignment_align_mafft_add/" rel="next" title="用MAFFT在现有多序列比对中添加新序列">
+      用MAFFT在现有多序列比对中添加新序列 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E5%92%8CMEGA%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="nav-text">1. 序列比对和MEGA的简单介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%88%90%E5%AF%B9%E7%AA%81%E5%8F%98%E9%A2%91%E8%B0%B1"><span class="nav-text">2. 成对突变频谱</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%94%A8MEGA%E7%BB%9F%E8%AE%A1%E6%88%90%E5%AF%B9%E7%AA%81%E5%8F%98%E9%A2%91%E7%8E%87"><span class="nav-text">3. 用MEGA统计成对突变频率</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%87%86%E5%A4%87%E6%96%87%E4%BB%B6"><span class="nav-text">3.1. 准备文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%BB%9F%E8%AE%A1%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-text">3.2. 统计的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%9C%A8MEGA%E5%AF%BC%E5%85%A5%E5%A4%9A%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E6%96%87%E4%BB%B6"><span class="nav-text">3.2.1. 在MEGA导入多序列比对文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E9%80%89%E6%8B%A9%E9%9C%80%E8%A6%81%E7%BB%9F%E8%AE%A1%E7%9A%84%E5%BA%8F%E5%88%97"><span class="nav-text">3.2.2. 选择需要统计的序列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">3.3. 结果文件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

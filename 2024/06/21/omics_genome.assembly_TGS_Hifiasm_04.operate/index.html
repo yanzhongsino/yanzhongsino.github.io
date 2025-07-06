@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的详细讲解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Hifiasm组装基因组：（四）用Hifiasm软件组装基因组的操作">
+<meta property="og:url" content="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_04.operate/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的详细讲解。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2024-06-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-22T02:56:38.824Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Hi-C">
+<meta property="article:tag" content="genome assembly">
+<meta property="article:tag" content="TGS">
+<meta property="article:tag" content="PacBio">
+<meta property="article:tag" content="third generation sequencing">
+<meta property="article:tag" content="Hifiasm">
+<meta property="article:tag" content="HiFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_04.operate/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用Hifiasm组装基因组：（四）用Hifiasm软件组装基因组的操作 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_04.operate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用Hifiasm组装基因组：（四）用Hifiasm软件组装基因组的操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-22 00:00:00 / Modified: 10:56:38" itemprop="dateCreated datePublished" datetime="2024-06-22T00:00:00+08:00">2024-06-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/genome-assembly/" itemprop="url" rel="index"><span itemprop="name">genome assembly</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 mins.</span>
+            </span>
+            <div class="post-description">基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的详细讲解。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2153862323&auto=1&height=32"></iframe></div>
+
+<h1 id="1-Hifiasm基本用法"><a href="#1-Hifiasm基本用法" class="headerlink" title="1. Hifiasm基本用法"></a>1. Hifiasm基本用法</h1><h2 id="1-1-安装Hifiasm"><a href="#1-1-安装Hifiasm" class="headerlink" title="1.1. 安装Hifiasm"></a>1.1. 安装Hifiasm</h2><ol>
+<li>git安装</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/chhylp123/hifiasm</span><br><span class="line">cd hifisam &amp;&amp; make</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>conda安装</li>
+</ol>
+<ul>
+<li><code>conda install -c bioconda hifiasm</code></li>
+</ul>
+<h2 id="1-2-Hifiasm的基础命令"><a href="#1-2-Hifiasm的基础命令" class="headerlink" title="1.2. Hifiasm的基础命令"></a>1.2. Hifiasm的基础命令</h2><ol>
+<li>命令</li>
+</ol>
+<ul>
+<li><code>nohup hifiasm -o sample_prefix -t 32 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2&gt;&amp;1 &gt; hifiasm.log &amp;</code></li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-o指定输出文件前缀；-t指定线程；–h1和–h2指定Hi-C数据；后接HiFi数据。</li>
+<li>用<code>2&gt;&amp;1 &gt;hifiasm.log</code>保存日志和报错内容到hifiasm.log文件。这个log文件用于后续判断是否需要调整参数。</li>
+</ul>
+<ol start="3">
+<li>运行时效</li>
+</ol>
+<ul>
+<li>300Mb基因组，48线程，组装耗时3.5小时。</li>
+</ul>
+<h2 id="1-3-Hifiasm的输出文件"><a href="#1-3-Hifiasm的输出文件" class="headerlink" title="1.3. Hifiasm的输出文件"></a>1.3. Hifiasm的输出文件</h2><h3 id="1-3-1-输出文件"><a href="#1-3-1-输出文件" class="headerlink" title="1.3.1. 输出文件"></a>1.3.1. 输出文件</h3><ol>
+<li>Hifiasm生成gfa格式的组装图（assembly graphs），常见输出文件：</li>
+</ol>
+<ul>
+<li>prefix.r_utg.gfa: haplotype-resolved raw unitig graph. 这个组装图保留了所有单倍型信息。</li>
+<li>prefix.p_utg.gfa: haplotype-resolved processed unitig graph without small bubbles. 小bubbles可能是体细胞突变或者数据污染造成，不是真实的单倍型信息。Hifiasm 会基于coverage自动清除那样的小bubbles。参数–hom-cov会影响这个结果。参数-p强制清除bubbles。</li>
+<li>prefix.p_ctg.gfa: assembly graph of primary contigs. This graph includes a complete assembly with long stretches of phased blocks. 主要contigs的组装图。</li>
+<li>prefix.a_ctg.gfa: assembly graph of alternate contigs. This graph consists of all contigs that are discarded in primary contig graph. 可选contigs的组装图。</li>
+<li>prefix.hap_n.p_ctg.gfa: phased contig graph. 分型contig图。</li>
+</ul>
+<ol start="2">
+<li>Hifiasm生成的其他格式文件</li>
+</ol>
+<ul>
+<li>prefix.ec.bin：二进制文件，保持了纠错reads。</li>
+<li>prefix.ovlp.source.bin 和 prefix.ovlp.reverse.bin：保存了重叠。</li>
+</ul>
+<ol start="3">
+<li>trio-binning模式还会输出以下文件</li>
+</ol>
+<ul>
+<li>prefix.dip.hap1.p_ctg.gfa：完全分型的父本&#x2F;单倍型1的contig图，保留了分型的父本&#x2F;单倍型1的组装。</li>
+<li>prefix.dip.hap2.p_ctg.gfa：完全分型的母本&#x2F;单倍型2的contig图，保留了分型的母本&#x2F;单倍型2的组装。</li>
+</ul>
+<ol start="4">
+<li>Hi-C partition模式还会输出以下文件</li>
+</ol>
+<ul>
+<li>prefix.hic.p_ctg.gfa：primary contigs的组装图。</li>
+<li>prefix.hic.hap1.p_ctg.gfa：完全分型的单倍型1的contig图，每个contig都被完全分型。</li>
+<li>prefix.hic.hap2.p_ctg.gfa：完全分型的单倍型2的contig图，每个contig都被完全分型。</li>
+<li>prefix.hic.a_ctg.gfa：可选（alternate）contigs的组装图。（–primary参数下生成）</li>
+</ul>
+<ol start="5">
+<li>HiFi only模式才会输出的文件</li>
+</ol>
+<ul>
+<li>prefix.bp.p_ctg.gfa：primary contigs的组装图。</li>
+<li>prefix.bp.hap1.p_ctg.gfa：单倍型1的部分分型的contig图。</li>
+<li>prefix.bp.hap2.p_ctg.gfa：单倍型2的部分分型的contig图。</li>
+</ul>
+<ol start="6">
+<li>–primary或者-l0参数下输出的文件</li>
+</ol>
+<ul>
+<li>prefix.p_ctg.gfa：primary contigs的组装图。</li>
+<li>prefix.a_ctg.gfa：可选（alternate）contigs的组装图。</li>
+</ul>
+<p>对于输出的每个图（graph），Hifiasm也会输出一个简化版本（xx_nnoseq_xx.gfa），这个版本没有易于可视化的序列。低质量区域的坐标会以bed格式写入lowQ.bed文件中。</p>
+<h3 id="1-3-2-输出文件格式"><a href="#1-3-2-输出文件格式" class="headerlink" title="1.3.2. 输出文件格式"></a>1.3.2. 输出文件格式</h3><p>Hifiasm输出的gfa格式的组装图文件，大致遵循<a target="_blank" rel="noopener" href="https://github.com/GFA-spec/GFA-spec/blob/master/GFA1.md">GFA 1.0格式规范</a>，但有几个Hifiasm特有的内容。</p>
+<p>gfa文件第一列表示序列图的类型（通常有S,L,A几种类型）。<br>S表示Segment，L表示Link。Hifiasm输出的gfa格式还有一种特有的A类型的行，用来保存用于构建contig&#x2F;unitig的reads的信息。</p>
+<ol>
+<li>S (Segment) 行：</li>
+</ol>
+<ul>
+<li>S 行示例：<code>S ptg000001l   ATTTGG...  LN:i:17404864   rd:i:41</code></li>
+<li>其中第二列，<code>ptg000001l</code>是contig&#x2F;unitig的ID。</li>
+<li>第三列是序列的碱基，通常比较长。</li>
+<li>第四列是序列长度。<code>LN:i:17404864</code>中LN表示序列长度（segment length）标签，i表示数据类型是整数(int)，17404864表示序列长度。</li>
+<li>第五列是read覆盖度。<code>rd:i::41</code>中rd是read coverage标签，i表示数据类型是整数(int)，41表示read覆盖度值，这个值使用相同的contig&#x2F;unitig的reads计算而来。</li>
+</ul>
+<ol start="2">
+<li>A行保存了用于构建contig&#x2F;unitig的reads的信息。</li>
+</ol>
+<ul>
+<li>A行示例： <code>A    ptg000001l    0    -    m84075_240209_054407_s3/1115221/ccs    0    13485    id:i:711340    HG:A:a</code></li>
+<li>A行的每一列的含义如下：</li>
+</ul>
+<table>
+    <thead>
+        <tr>
+            <th class="head"><p>Col</p></th>
+            <th class="head"><p>Type</p></th>
+            <th class="head"><p>Description</p></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><p>1</p></td>
+            <td><p>string</p></td>
+            <td><p>Should be always <code><span>A</span></code></p></td>
+        </tr>
+        <tr>
+            <td><p>2</p></td>
+            <td><p>string</p></td>
+            <td><p>Contig/unitig name</p></td>
+        </tr>
+        <tr>
+            <td><p>3</p></td>
+            <td><p>int</p></td>
+            <td><p>Contig/unitig start coordinate of subregion constructed by read</p></td>
+        </tr>
+        <tr>
+            <td><p>4</p></td>
+            <td><p>char</p></td>
+            <td><p>Read strand: “+” or “-”</p></td>
+        </tr>
+        <tr>
+            <td><p>5</p></td>
+            <td><p>string</p></td>
+            <td><p>Read name</p></td>
+        </tr>
+        <tr>
+            <td><p>6</p></td>
+            <td><p>int</p></td>
+            <td><p>Read start coordinate of subregion which is used to construct contig/unitig</p></td>
+        </tr>
+        <tr>
+            <td><p>7</p></td>
+            <td><p>int</p></td>
+            <td><p>Read end coordinate of subregion which is used to construct contig/unitig</p></td>
+        </tr>
+        <tr>
+            <td><p>8</p></td>
+            <td><p>id:i:int</p></td>
+            <td><p>Read ID</p></td>
+        </tr>
+        <tr>
+            <td><p>9</p></td>
+            <td><p>HG:A:char</p></td>
+            <td><p>Haplotype status of read. <code><span>HG:A:a</span></code>, <code><span>HG:A:p</span></code>, <code><span>HG:A:m</span></code> indicate read is non-binnable, father/hap1-specific and mother/hap2-specific, respectively.</p></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="1-4-组装后格式转换"><a href="#1-4-组装后格式转换" class="headerlink" title="1.4. 组装后格式转换"></a>1.4. 组装后格式转换</h2><ul>
+<li><code>awk &#39;/^S/&#123;print &quot;&gt;&quot;$2;print $3&#125;&#39; test.bp.p_ctg.gfa &gt; test.p_ctg.fa</code></li>
+<li>用awk从gfa文件提取主要的contigs（第一列为S的contigs），生成fasta格式的基因组文件。</li>
+</ul>
+<h1 id="2-建议这样跑Hifiasm组装二倍体物种"><a href="#2-建议这样跑Hifiasm组装二倍体物种" class="headerlink" title="2. 建议这样跑Hifiasm组装二倍体物种"></a>2. 建议这样跑Hifiasm组装二倍体物种</h1><p>一般来说，使用Hifiasm的默认参数进行组装就可以达到大部分情况的要求，但根据不同样本的情况，可以调整参数。</p>
+<p>熟读官方manual后，总结了下面一套跑法，来确定参数和检验组装结果。</p>
+<ol>
+<li>先用默认参数跑一遍</li>
+</ol>
+<ul>
+<li><code>nohup hifiasm -o sample_prefix -t 48 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2&gt;&amp;1 &gt; hifiasm.log &amp;</code></li>
+</ul>
+<ol start="2">
+<li>查看hifiasm.log文件，如果k-mer plot只有一个峰代表是纯合子样本，则加-l0参数关闭purge duplication步骤，再跑一遍。</li>
+</ol>
+<ul>
+<li><code>nohup hifiasm -o sample_prefix -t 48 -l0 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2&gt;&amp;1 &gt; hifiasm.log &amp;</code></li>
+</ul>
+<ol start="3">
+<li>查看hifiasm.log文件，如果k-mer plot有两个峰代表是杂合子样本。</li>
+</ol>
+<ul>
+<li>首先，确定纯合子覆盖值（Ho_coverage值，即homozygous read coverage threshold）是否判断正确，接近k-mer图中的较大的峰值Ho_peak值即为判断正确。</li>
+<li>然后，检查碱基数量是否异常。Hi-C模式下，纯合碱基比杂合碱基要多即为异常，则会错误判断纯合子覆盖度值。</li>
+<li>如果有问题，需要使用参数–hom-cov指定纯合子覆盖度为纯合峰值（Ho_peak值，比如90）重跑一遍。</li>
+<li><code>nohup hifiasm -o sample_prefix -t 48 --hom-cov 90 --h1 sample_HiC_1.fq.gz --h2 sample_HiC_2.fq.gz Hifi.fastq.gz 2&gt;&amp;1 &gt; hifiasm.log &amp;</code></li>
+</ul>
+<ol start="4">
+<li>检查组装结果是否异常，调整参数</li>
+</ol>
+<ul>
+<li>组装的基因组大小是否符合预期（genome survey估计的或者流式细胞仪测定的基因组大小）：组装的基因组过大或过小通常是由于hifiasm判断错了纯合子覆盖值。检查日志文件，如果判断错了，用参数–hom-cov指定，重跑一遍。</li>
+<li>分型的两套基因组大小是否相差不大：如果两套基因组差别过大，可能是做purge的程度不够，可以调低-s值（默认0.55）来改善。</li>
+<li>组装的基因组序列是否足够长：如果序列不够长，片段化明显，则可以尝试增加 -D 和 -N, 会提高重复区域的分辨率，同时也会增加运行时间。</li>
+<li>是否存在错误组装：如果后续的Hi-C，或者BioNano发现hifiasm组装结果有比较多错误组装，则可以适当降低 –purge-max, -s和 -O。或者设置 -u 关闭post-join 步骤，hifiasm通过该步骤提高组装的连续性。</li>
+</ul>
+<ol start="5">
+<li>还有几个Hi-C辅助组装（Hi-C integrated assembly）的参数。调高以下参数可能改善结果，但增加耗时。</li>
+</ol>
+<ul>
+<li>–n-weight：rounds of reweighting Hi-C links。默认是3轮。</li>
+<li>–n-perturb：rounds of perturbation。默认是10000。</li>
+<li>–f-perturb：fraction to flip for perturbation。默认是0.1。</li>
+<li>–l-msjoin：detect misjoined unitigs of &gt;&#x3D;INT in size。默认是500000，这个参数非常棘手，尽量不调整。</li>
+</ul>
+<h1 id="3-Hifiasm作者建议"><a href="#3-Hifiasm作者建议" class="headerlink" title="3. Hifiasm作者建议"></a>3. Hifiasm作者建议</h1><ol>
+<li>Hifiasm默认运行清除单倍型重复（purges haplotig duplications）的步骤（Trio-binning模式默认不运行）。对于纯合基因组（inbred or homozygous genomes），需要用-l0参数禁止运行清除步骤。</li>
+<li>旧的HiFi reads可能在两端包含短的接头（adapter）序列。可以用-z20参数修剪掉reads两端的20bp序列。</li>
+<li>对于小的基因组，可以使用-f0参数禁止初始过滤步骤（initial bloom filter）来节约内存，这个步骤在程序早期消耗16GB内存。</li>
+<li>对于比人基因组（3Gb）大得多的基因组，使用-f38或-f39参数来节约k-mer计算的内存。</li>
+</ol>
+<h1 id="4-log文件解释（debug）"><a href="#4-log文件解释（debug）" class="headerlink" title="4. log文件解释（debug）"></a>4. log文件解释（debug）</h1><p>Hifiasm在log文件（前面生成的hifiasm.log）中打印的几个信息可用于debug，主要是判断Hifiasm是否根据k-mer频数分布图正确判断了纯合子覆盖度值。</p>
+<ol>
+<li>k-mer频数分布图（k-mer plot）（这与做genome survey时原理一致）</li>
+</ol>
+<ul>
+<li>log文件会先打印一个k-mer plot，如果指定了Hi-C数据，还会再接着打印几轮校正（round 1，2，3，finally）的k-mer plot。我们做debug关注第一个总的k-mer plot即可。</li>
+<li>对于纯合子样本（homozygous samples），k-mers 频数分布图应该有一个峰（代表纯合reads的频数分布中心），峰值位置k-mer频数用Ho_peak来代表。</li>
+<li>对于杂合子样本（heterozygous samples），k-mers 频数分布图应该有两个峰。 频数大一点的峰代表纯合reads覆盖和分布中心（峰值位置k-mer频数用Ho_peak代表）；频数小一点的峰代表杂合reads覆盖和分布中心（峰值位置k-mer频数用He_peak代表）。</li>
+<li>如果出现非典型的单峰或双峰的k-mer频数分布图，那么可能是样本污染导致。</li>
+</ul>
+<ol start="2">
+<li>纯合子覆盖度（homozygous coverage）</li>
+</ol>
+<ul>
+<li>log文件会在打印完k-mer plot后，打印一行：<code>[M::purge_dups] homozygous read coverage threshold: 90.</code> </li>
+<li>这个90是hifiasm确定的纯合子覆盖度值（用Ho_coverage代表）。要检查Ho_coverage值是否接近k-mer plot中确定的纯合峰值Ho_peak值，如果不接近（比如更接近He_peak值）那表明hifiasm错误地确定了纯合子覆盖度值，此时组装的基因组要么太大，要么太小。要用–homo-cov参数设置纯合子覆盖度值为Ho_peak值。</li>
+</ul>
+<ol start="3">
+<li>纯合&#x2F;杂合碱基数量（number of het&#x2F;hom bases）</li>
+</ol>
+<ul>
+<li>log文件会在打印一行：<code>[M::stat] # heterozygous bases: 437440353; # homozygous bases: 93698357</code></li>
+<li>分别代表在Hi-C定向组装（Hi-C phased assembly）时，unitig graph中多少碱基是纯合的（homozygous bases），多少碱基是杂合的（heterozygous bases）。</li>
+<li>对于杂合子样本，通常杂合碱基比纯合碱基数量多。如果log文件中显示纯合碱基数量比杂合碱基数量还多，代表hifiasm错误地确定了纯合子覆盖度值（Ho_coverage），需要用–homo-cov参数设置纯合子覆盖度值为Ho_peak值。</li>
+</ul>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li>hifiasm manual：<a target="_blank" rel="noopener" href="https://hifiasm.readthedocs.io/_/downloads/en/latest/pdf/">https://hifiasm.readthedocs.io/_/downloads/en/latest/pdf/</a></li>
+<li><a target="_blank" rel="noopener" href="http://xuzhougeng.com/archives/assemble-hifi-pacbio-with-hifiasm">http://xuzhougeng.com/archives/assemble-hifi-pacbio-with-hifiasm</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hi-C/" rel="tag"># Hi-C</a>
+              <a href="/tags/genome-assembly/" rel="tag"># genome assembly</a>
+              <a href="/tags/TGS/" rel="tag"># TGS</a>
+              <a href="/tags/PacBio/" rel="tag"># PacBio</a>
+              <a href="/tags/third-generation-sequencing/" rel="tag"># third generation sequencing</a>
+              <a href="/tags/Hifiasm/" rel="tag"># Hifiasm</a>
+              <a href="/tags/HiFi/" rel="tag"># HiFi</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/" rel="prev" title="用Hifiasm组装基因组：（三）Hifiasm软件组装基因组的多种模式">
+      <i class="fa fa-chevron-left"></i> 用Hifiasm组装基因组：（三）Hifiasm软件组装基因组的多种模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/08/01/bioinfo_alignment_align_MSA_visualization/" rel="next" title="多序列比对的整体可视化">
+      多序列比对的整体可视化 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Hifiasm%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-text">1. Hifiasm基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%89%E8%A3%85Hifiasm"><span class="nav-text">1.1. 安装Hifiasm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Hifiasm%E7%9A%84%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2. Hifiasm的基础命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Hifiasm%E7%9A%84%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6"><span class="nav-text">1.3. Hifiasm的输出文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6"><span class="nav-text">1.3.1. 输出文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-text">1.3.2. 输出文件格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E7%BB%84%E8%A3%85%E5%90%8E%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="nav-text">1.4. 组装后格式转换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%BB%BA%E8%AE%AE%E8%BF%99%E6%A0%B7%E8%B7%91Hifiasm%E7%BB%84%E8%A3%85%E4%BA%8C%E5%80%8D%E4%BD%93%E7%89%A9%E7%A7%8D"><span class="nav-text">2. 建议这样跑Hifiasm组装二倍体物种</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Hifiasm%E4%BD%9C%E8%80%85%E5%BB%BA%E8%AE%AE"><span class="nav-text">3. Hifiasm作者建议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-log%E6%96%87%E4%BB%B6%E8%A7%A3%E9%87%8A%EF%BC%88debug%EF%BC%89"><span class="nav-text">4. log文件解释（debug）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

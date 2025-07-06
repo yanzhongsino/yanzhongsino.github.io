@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍GetOrganelle，使用GetOrganelle基于whole genome skimming data组装植物质体、植物线粒体、动物线粒体、真菌线粒体、核基因组的核糖体RNA（18S-ITS1-5.8S-ITS2-26S）等序列。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用GetOrganelle组装细胞器基因组或核基因组的核糖体RNA序列">
+<meta property="og:url" content="http://example.com/2024/12/11/omics_organelle_assembly_GetOrganelle/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍GetOrganelle，使用GetOrganelle基于whole genome skimming data组装植物质体、植物线粒体、动物线粒体、真菌线粒体、核基因组的核糖体RNA（18S-ITS1-5.8S-ITS2-26S）等序列。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://user-images.githubusercontent.com/8598031/83836465-85afa080-a6c1-11ea-8b08-b08623d974f4.png">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2024-12-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-12T14:01:45.393Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="mitogenome">
+<meta property="article:tag" content="organelle">
+<meta property="article:tag" content="WGS">
+<meta property="article:tag" content="plastome">
+<meta property="article:tag" content="chloroplast">
+<meta property="article:tag" content="mitochondria">
+<meta property="article:tag" content="assembly">
+<meta property="article:tag" content="fastg">
+<meta property="article:tag" content="nuclear ribosomal RNA">
+<meta property="article:tag" content="5.8S">
+<meta property="article:tag" content="18S">
+<meta property="article:tag" content="26S">
+<meta property="article:tag" content="ITS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/8598031/83836465-85afa080-a6c1-11ea-8b08-b08623d974f4.png">
+
+<link rel="canonical" href="http://example.com/2024/12/11/omics_organelle_assembly_GetOrganelle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用GetOrganelle组装细胞器基因组或核基因组的核糖体RNA序列 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/11/omics_organelle_assembly_GetOrganelle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用GetOrganelle组装细胞器基因组或核基因组的核糖体RNA序列
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-12-12 00:00:00 / Modified: 22:01:45" itemprop="dateCreated datePublished" datetime="2024-12-12T00:00:00+08:00">2024-12-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/organelle/" itemprop="url" rel="index"><span itemprop="name">organelle</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/organelle/assembly/" itemprop="url" rel="index"><span itemprop="name">assembly</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>5.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>5 mins.</span>
+            </span>
+            <div class="post-description">介绍GetOrganelle，使用GetOrganelle基于whole genome skimming data组装植物质体、植物线粒体、动物线粒体、真菌线粒体、核基因组的核糖体RNA（18S-ITS1-5.8S-ITS2-26S）等序列。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1312166694&auto=1&height=32"></iframe></div>
+
+<h1 id="1-GetOrganelle简介"><a href="#1-GetOrganelle简介" class="headerlink" title="1. GetOrganelle简介"></a>1. GetOrganelle简介</h1><p>GetOrganelle是开发用Illumina reads（双端测序&#x2F;单端测序）来组装细胞器基因组的软件，可以组装植物质体、植物线粒体、动物线粒体、真菌线粒体等细胞器基因组。</p>
+<h1 id="2-GetOrganelle-工作流"><a href="#2-GetOrganelle-工作流" class="headerlink" title="2. GetOrganelle 工作流"></a>2. GetOrganelle 工作流</h1><img src="https://user-images.githubusercontent.com/8598031/83836465-85afa080-a6c1-11ea-8b08-b08623d974f4.png" title="GetOrganelle flowchart" width="60%"/>
+
+<p><strong><p align="center">Figure 1. GetOrganelle flowchart 图源：<a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelle">https://github.com/Kinggerm/GetOrganelle</a></p></strong></p>
+<h1 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h1><ol>
+<li>conda 安装：<code>conda install bioconda::getorganelle</code></li>
+</ol>
+<h1 id="4-下载和配置数据库"><a href="#4-下载和配置数据库" class="headerlink" title="4. 下载和配置数据库"></a>4. 下载和配置数据库</h1><ol>
+<li>下载和配置高等植物质体和线粒体基因组库：<code>get_organelle_config.py --add embplant_pt</code></li>
+<li>所有库</li>
+</ol>
+<ul>
+<li>get_organelle_config.py –add embplant_pt       #配置高等植物质体基因组库</li>
+<li>get_organelle_config.py –add embplant_mt      #配置高等植物线粒体基因组库</li>
+<li>get_organelle_config.py –add other_pt              #配置其他植物质体基因组库</li>
+<li>get_organelle_config.py –add fungus_mt           #配置真菌线粒体基因组库</li>
+<li>get_organelle_config.py –add animal_mt           #配置动物线粒体基因组库</li>
+<li>get_organelle_config.py –add embplant_nr       #配置高等植物核糖体DNA库</li>
+<li>get_organelle_config.py –add fungus_nr            #配置真菌核糖体DNA库</li>
+</ul>
+<h1 id="5-测试安装的运行"><a href="#5-测试安装的运行" class="headerlink" title="5. 测试安装的运行"></a>5. 测试安装的运行</h1><ol>
+<li>下载一个模拟的拟南芥WGS数据</li>
+</ol>
+<ul>
+<li><code>wget https://github.com/Kinggerm/GetOrganelleGallery/raw/master/Test/reads/Arabidopsis_simulated.1.fq.gz</code></li>
+<li><code>wget https://github.com/Kinggerm/GetOrganelleGallery/raw/master/Test/reads/Arabidopsis_simulated.2.fq.gz</code></li>
+</ul>
+<ol start="2">
+<li>检查数据完整性</li>
+</ol>
+<ul>
+<li><code>md5sum Arabidopsis_simulated.*.fq.gz</code></li>
+<li><code># 935589bc609397f1bfc9c40f571f0f19  Arabidopsis_simulated.1.fq.gz</code></li>
+<li><code># d0f62eed78d2d2c6bed5f5aeaf4a2c11  Arabidopsis_simulated.2.fq.gz</code></li>
+</ul>
+<ol start="3">
+<li>组装质体</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 Arabidopsis_simulated.1.fq.gz -2 Arabidopsis_simulated.2.fq.gz -t 1 -o Arabidopsis_simulated.plastome -F embplant_pt -R 10</code></li>
+</ul>
+<ol start="4">
+<li>结果</li>
+</ol>
+<ul>
+<li>得到的结果文件同这个网址一致：<a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelleGallery/tree/master/Test/results/Arabidopsis_simulated.plastome">https://github.com/Kinggerm/GetOrganelleGallery/tree/master/Test/results/Arabidopsis_simulated.plastome</a></li>
+</ul>
+<h1 id="6-组装细胞器基因组"><a href="#6-组装细胞器基因组" class="headerlink" title="6. 组装细胞器基因组"></a>6. 组装细胞器基因组</h1><h2 id="6-1-输入数据-reads"><a href="#6-1-输入数据-reads" class="headerlink" title="6.1. 输入数据-reads"></a>6.1. 输入数据-reads</h2><ol>
+<li>双端测序和单端测序的Illumina reads都支持。</li>
+<li>开发者建议使用未进行质控但去除了接头序列(adapter-trimmed)的raw reads进行组装。</li>
+<li>大部分被子植物的质体只需要 &gt; 1G per end 的数据量，大部分线粒体只需要 &gt; 5G per end 的数据量。</li>
+</ol>
+<h2 id="6-2-参数"><a href="#6-2-参数" class="headerlink" title="6.2. 参数"></a>6.2. 参数</h2><p>参考 <a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelle/wiki/FAQ">https://github.com/Kinggerm/GetOrganelle/wiki/FAQ</a> 微调参数。</p>
+<ol>
+<li>常用参数</li>
+</ol>
+<ul>
+<li>-1 FQ_FILE_1          Input file with forward paired-end reads (*.fq&#x2F;.gz&#x2F;.tar.gz).</li>
+<li>-2 FQ_FILE_2          Input file with reverse paired-end reads (*.fq&#x2F;.gz&#x2F;.tar.gz).</li>
+<li>-u UNPAIRED_FQ_FILES  Input file(s) with unpaired (single-end) reads.</li>
+<li>-o OUTPUT_BASE        Output directory.</li>
+<li>-s SEED_FILE          Input fasta format file as initial seed. Default:&#x2F;home&#x2F;zhongyan&#x2F;.GetOrganelle&#x2F;SeedDatabase&#x2F;*.fasta 用相近物种的完整细胞器基因组序列作为种子有助于组装（如降解的DNA样本，动物&#x2F;真菌的快速进化样本等）。</li>
+<li>-w WORD_SIZE          Word size (W) for extension. Default: auto-estimated  虽然自动估计的word size不能确保最佳性能或最佳结果，但如果生成的是完整&#x2F;圆形细胞器基因组组装，则无需调整此参数 (-w)，因为 GetOrganelle 生成的圆形结果在不同参数和种子下高度一致。在某些动物有丝分裂基因组数据中，由于覆盖率估计不准确，自动估计的word size可能会出现问题，这时您需要对其进行微调。</li>
+<li>-R MAX_ROUNDS         Maximum extension rounds (suggested: &gt;&#x3D;2). Default: 15 (embplant_pt)</li>
+<li>-F ORGANELLE_TYPE     Target organelle genome type(s): embplant_pt&#x2F;other_pt&#x2F;embplant_mt&#x2F;embplant_nr&#x2F;animal_mt&#x2F;fungus_mt&#x2F;fungus_nr&#x2F;anonym&#x2F;embplant_pt,embplant_mt&#x2F;other_pt,embplant_mt,fungus_mt</li>
+<li>–max-reads：在每个文件中使用reads的最大数量. Default:1.5E7 (-F embplant_pt&#x2F;embplant_nr&#x2F;fungus_mt&#x2F;fungus_nr); 7.5E7 (-F embplant_mt&#x2F;other_pt&#x2F;anonym); 3E8 (-F animal_mt)。可以设置<code>--max-reads inf</code>来尽量使用文件中所有reads。</li>
+<li>–fast FAST_STRATEGY  &#x3D;”-R 10 -t 4 -J 5 -M 7 –max-n-words 3E7 –larger-auto-ws –disentangle-time-limit 360”</li>
+<li>-k SPADES_KMER        SPAdes kmer settings. Default: 21,55,85,115 最佳kmer值。越多kmer值耗时越长。但建议使用范围宽的kmer，至少包含21和85。</li>
+<li>-t THREADS：使用的最大线程数。Default: 1</li>
+<li>-P PRE_GROUPED        Pre-grouping value. Default: 200000</li>
+<li>-v, –version         show program’s version number and exit</li>
+<li>-h：查看常用参数的简短介绍。</li>
+<li>–help：查看所有参数的详细介绍。</li>
+</ul>
+<ol start="2">
+<li>参数的常用用法</li>
+</ol>
+<ul>
+<li><code>--max-reads inf --reduce-reads-for-coverage inf</code>：使用文件中所有reads。如果细胞器基因组上有许多异质性，则会有很多低频reads需要被用于组装，这时使用所有reads会帮助增加组装的完整性。</li>
+</ul>
+<h2 id="6-3-运行组装"><a href="#6-3-运行组装" class="headerlink" title="6.3. 运行组装"></a>6.3. 运行组装</h2><ol>
+<li>组装有胚植物质体基因组：<code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -o plastome_output -R 15 -k 21,45,65,85,105 -F embplant_pt</code></li>
+<li>组装有胚植物线粒体基因组</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -o mitochondria_output -R 20 -k 21,45,65,85,105 -P 1000000 -F embplant_mt</code></li>
+<li>(1) 使用 FASTG 文件用于下游手动调整的输出文件。目前植物线粒体基因组的大量重复序列很容易使得输出的FASTA格式有问题。</li>
+<li>(2) 由于植物线粒体基因组的复杂性，GetOrganelle论文中没有测试 embplant_mt 模式。</li>
+</ul>
+<ol start="3">
+<li>组装有胚植物的核糖体RNA（18S-ITS1-5.8S-ITS2-26S）</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -o nr_output -R 10 -k 35,85,115 -F embplant_nr</code></li>
+<li>参考指引 FAQ：<a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#why-does-getorganelle-generate-a-circular-genome-or-not-for-embplant_nrfungus_nr%60">https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#why-does-getorganelle-generate-a-circular-genome-or-not-for-embplant_nrfungus_nr`</a></li>
+</ul>
+<ol start="4">
+<li>非有胚生物的细胞器基因组可能与有胚生物的不同</li>
+</ol>
+<ul>
+<li>有一个内置的 other_pt 模式和为非有胚生物质体准备的默认数据库。</li>
+</ul>
+<ol start="5">
+<li>组装真菌线粒体基因组</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F fungus_mt -o fungus_mt_out</code></li>
+</ul>
+<ol start="6">
+<li>组装真菌核糖体RNA（18S-ITS1-5.8S-ITS2-28S）</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F fungus_nr -o fungus_nr_out</code></li>
+</ul>
+<ol start="7">
+<li>组装动物线粒体基因组</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F animal_mt -o animal_mt_out</code></li>
+</ul>
+<h2 id="6-4-结果"><a href="#6-4-结果" class="headerlink" title="6.4. 结果"></a>6.4. 结果</h2><ol>
+<li>主要结果文件</li>
+</ol>
+<ul>
+<li>*.path_sequence.fasta, each fasta file represents one type of genome structure</li>
+<li>*.selected_graph.gfa, the organelle-only assembly graph</li>
+<li>get_org.log.txt, the log file</li>
+<li>extended_K*.assembly_graph.fastg, the raw assembly graph</li>
+<li>extended_K*.assembly_graph.fastg.extend_embplant_pt-embplant_mt.fastg, a simplified assembly graph</li>
+<li>extended_K*.assembly_graph.fastg.extend_embplant_pt-embplant_mt.csv, a tab-format contig label file for bandage visualization</li>
+</ul>
+<ol start="2">
+<li>结果的处理</li>
+</ol>
+<ul>
+<li>如果生成的基因组是完整的（在日志文件和 *.fasta 名称中显示），可以删除上述以外的其他文件。 </li>
+<li>如果 GetOrganelle 无法生成完整的环状基因组（生成 *scaffolds*path_sequence.fasta），可以按照：<a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#what-should-i-do-with-incomplete-resultbroken-assembly-graph">https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#what-should-i-do-with-incomplete-resultbroken-assembly-graph</a> 中Output部分的指引调整参数进行第二次运行。</li>
+<li>实在无法组装出完整的细胞器基因组，也可以使用不完整序列进行下游分析。</li>
+</ul>
+<h1 id="7-用Assembly-Graph组装"><a href="#7-用Assembly-Graph组装" class="headerlink" title="7. 用Assembly Graph组装"></a>7. 用Assembly Graph组装</h1><ol>
+<li>用Assembly Graph组装的情况</li>
+</ol>
+<ul>
+<li>通常我们使用raw reads进行组装，但有些复杂的细胞器基因组（如植物线粒体基因组）可能不能通过一次组装得到完整的基因组。这时，可以使用组装图（assembly graph）来组装。</li>
+<li>组装图通常是*.fastg格式或gfa格式文件，可以从之前的组装中获取，比如使用Bandage手动调整后导出的fastg文件或gfa文件，或者从三代测序reads中获取。</li>
+</ul>
+<ol start="2">
+<li>从组装图中提取质粒基因组的命令</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_assembly.py -F embplant_pt -g ONT_assembly_graph.gfa</code></li>
+</ul>
+<h1 id="8-references"><a href="#8-references" class="headerlink" title="8. references"></a>8. references</h1><ol>
+<li>github：<a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelle">https://github.com/Kinggerm/GetOrganelle</a></li>
+<li>paper：<a target="_blank" rel="noopener" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02154-5">https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02154-5</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mitogenome/" rel="tag"># mitogenome</a>
+              <a href="/tags/organelle/" rel="tag"># organelle</a>
+              <a href="/tags/WGS/" rel="tag"># WGS</a>
+              <a href="/tags/plastome/" rel="tag"># plastome</a>
+              <a href="/tags/chloroplast/" rel="tag"># chloroplast</a>
+              <a href="/tags/mitochondria/" rel="tag"># mitochondria</a>
+              <a href="/tags/assembly/" rel="tag"># assembly</a>
+              <a href="/tags/fastg/" rel="tag"># fastg</a>
+              <a href="/tags/nuclear-ribosomal-RNA/" rel="tag"># nuclear ribosomal RNA</a>
+              <a href="/tags/5-8S/" rel="tag"># 5.8S</a>
+              <a href="/tags/18S/" rel="tag"># 18S</a>
+              <a href="/tags/26S/" rel="tag"># 26S</a>
+              <a href="/tags/ITS/" rel="tag"># ITS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/09/omics_organelle_assembly_Bandage.operation/" rel="prev" title="细胞器基因组组装过程中常用软件Bandage的操作">
+      <i class="fa fa-chevron-left"></i> 细胞器基因组组装过程中常用软件Bandage的操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/14/affair_Canada_visa/" rel="next" title="加拿大工作签证办理流程：LMIA-Exempt Work Permit">
+      加拿大工作签证办理流程：LMIA-Exempt Work Permit <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-GetOrganelle%E7%AE%80%E4%BB%8B"><span class="nav-text">1. GetOrganelle简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GetOrganelle-%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-text">2. GetOrganelle 工作流</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85"><span class="nav-text">3. 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%B8%8B%E8%BD%BD%E5%92%8C%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">4. 下载和配置数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%B5%8B%E8%AF%95%E5%AE%89%E8%A3%85%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="nav-text">5. 测试安装的运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E7%BB%84%E8%A3%85%E7%BB%86%E8%83%9E%E5%99%A8%E5%9F%BA%E5%9B%A0%E7%BB%84"><span class="nav-text">6. 组装细胞器基因组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE-reads"><span class="nav-text">6.1. 输入数据-reads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E5%8F%82%E6%95%B0"><span class="nav-text">6.2. 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-%E8%BF%90%E8%A1%8C%E7%BB%84%E8%A3%85"><span class="nav-text">6.3. 运行组装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-%E7%BB%93%E6%9E%9C"><span class="nav-text">6.4. 结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E7%94%A8Assembly-Graph%E7%BB%84%E8%A3%85"><span class="nav-text">7. 用Assembly Graph组装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-references"><span class="nav-text">8. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

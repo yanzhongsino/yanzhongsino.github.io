@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍参考文献管理软件EndNote的中英文混排技巧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="参考文献管理软件EndNote的中英文混排技巧">
+<meta property="og:url" content="http://example.com/2023/05/10/tools_academia_EndNote/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍参考文献管理软件EndNote的中英文混排技巧。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-b2557ffb99bf0743123d02ca539185ca_r.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-0ac5695cfe8180233993929c00c15bec_r.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-2415ffab7677257fc3e16474c89a6c27_r.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-cb026088966e21676868136d33f7e051_r.jpg">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-05-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-15T04:01:53.747Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="EndNote">
+<meta property="article:tag" content="中英文混排">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic3.zhimg.com/v2-b2557ffb99bf0743123d02ca539185ca_r.jpg">
+
+<link rel="canonical" href="http://example.com/2023/05/10/tools_academia_EndNote/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>参考文献管理软件EndNote的中英文混排技巧 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/10/tools_academia_EndNote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          参考文献管理软件EndNote的中英文混排技巧
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-05-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-11T00:00:00+08:00">2023-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-15 12:01:53" itemprop="dateModified" datetime="2024-06-15T12:01:53+08:00">2024-06-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tools/academia/" itemprop="url" rel="index"><span itemprop="name">academia</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tools/academia/EndNote/" itemprop="url" rel="index"><span itemprop="name">EndNote</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>2 mins.</span>
+            </span>
+            <div class="post-description">介绍参考文献管理软件EndNote的中英文混排技巧。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=399341112&auto=1&height=32"></iframe></div>
+
+<h1 id="1-EndNote的中英文混排"><a href="#1-EndNote的中英文混排" class="headerlink" title="1. EndNote的中英文混排"></a>1. EndNote的中英文混排</h1><h2 id="1-1-添加EndNote的【中文文献】类型"><a href="#1-1-添加EndNote的【中文文献】类型" class="headerlink" title="1.1. 添加EndNote的【中文文献】类型"></a>1.1. 添加EndNote的【中文文献】类型</h2><ul>
+<li>在EndNote中选择【Edit】-【References】，找到【Reference Types】选项；</li>
+<li>【Default Reference Type】选择【unused】1&#x2F;2&#x2F;3中的任意一个之前未被修改过的，然后选择【Modify Reference Types】；</li>
+<li>在弹出的【Modify Reference Types】对话框中按照下面的图片输入每项内容。包括【Generic】命名为【中文文献】，【Author】填入【Author】，【Year】填入【Year】，【Title】填入【Title】，【Secondary Author】填入【Secondary Author】，【Secondary Title】要填入【Journal】，【Volume】填入【Volume】，【Number of Volumes】填入【Issue】，【Pages】填入【Pages】，其他都一致，点击【OK】后就添加了【中文文献】的参考文献类型。</li>
+</ul>
+<img src="https://pic3.zhimg.com/v2-b2557ffb99bf0743123d02ca539185ca_r.jpg" title="Modify Reference Types" width="60%"/>
+
+<p><strong><p align="center">图 1. Modify Reference Types 对话框 图源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/312093759">https://zhuanlan.zhihu.com/p/312093759</a></p></strong></p>
+<h2 id="1-2-EndNote的文献目录-Bibliography-的中英文混排"><a href="#1-2-EndNote的文献目录-Bibliography-的中英文混排" class="headerlink" title="1.2. EndNote的文献目录(Bibliography)的中英文混排"></a>1.2. EndNote的文献目录(Bibliography)的中英文混排</h2><h3 id="1-2-1-文献目录-Bibliography-的中英文顺序"><a href="#1-2-1-文献目录-Bibliography-的中英文顺序" class="headerlink" title="1.2.1. 文献目录(Bibliography)的中英文顺序"></a>1.2.1. 文献目录(Bibliography)的中英文顺序</h3><ul>
+<li>在EndNote中选择【Edit】-【Output Styles】-【Edit **】，选择需要编辑的参考文献Styles；</li>
+<li>在【Bibliography】- 【Sort Order】中选择文献目录(Bibliography)的显示排序规则；</li>
+<li>需要英文在前，中文在后的，则选择【Other…】，然后依次选择排序标准，推荐选择【Language】+【Author】+【Title】，然后保存设置。</li>
+<li>注意每一条参考文献的【Language】字段，中文可以设置成【Chinese】，英文设置成【English】或不设置。</li>
+</ul>
+<h3 id="1-2-2-文献目录-Bibliography-的作者的et-al-和-等-混排"><a href="#1-2-2-文献目录-Bibliography-的作者的et-al-和-等-混排" class="headerlink" title="1.2.2. 文献目录(Bibliography)的作者的et al. 和**等.**混排"></a>1.2.2. 文献目录(Bibliography)的作者的<strong>et al.</strong> 和**等.**混排</h3><ul>
+<li>基于已添加【中文文献】类型下操作；</li>
+<li>在EndNote中选择【Edit】-【Output Styles】-【Edit **】，选择需要编辑的参考文献Styles；</li>
+<li>在【Bibliography】-【Templates】的【Reference Type】中添加【中文文献】的类型；</li>
+</ul>
+<img src="https://pic1.zhimg.com/v2-0ac5695cfe8180233993929c00c15bec_r.jpg" title="在Templates中添加中文文献类型" width="90%"/>
+
+<p><strong><p align="center">图 2. 在Templates中添加中文文献类型 图源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/312093759">https://zhuanlan.zhihu.com/p/312093759</a></p></strong></p>
+<ul>
+<li>将【Journal Article】里的参考格式复制到【中文文献】里，再在Author前面加上Secondary，注意Secondary和Author之间打一个空格，显示为一个点.。</li>
+</ul>
+<img src="https://pic4.zhimg.com/v2-2415ffab7677257fc3e16474c89a6c27_r.jpg" title="在Templates中添加中文文献类型2" width="90%"/>
+
+<p><strong><p align="center">图 3. 在Templates中添加中文文献类型2 图源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/312093759">https://zhuanlan.zhihu.com/p/312093759</a></p></strong> </p>
+<ul>
+<li>在【Bibliography】-【Author List】中，对于显示作者人数进行设置，多作者的缩写默认为【，et al.】，这里代表英文文献多作者在文献目录(Bibliography)中的显示规则；</li>
+<li>在【Bibliography】-【Editor List】中，对于显示作者人数进行设置，多作者的缩写改为【，等.】，这里代表中文文献多作者在文献目录(Bibliography)中的显示规则；</li>
+</ul>
+<img src="https://pic2.zhimg.com/v2-cb026088966e21676868136d33f7e051_r.jpg" title="修改中文文献的多作者显示" width="90%"/>
+
+<p><strong><p align="center">图 4. 修改中文文献的多作者显示 图源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/312093759">https://zhuanlan.zhihu.com/p/312093759</a></p></strong> </p>
+<ul>
+<li>EndNote导入的中文文献可选择【中文文献】这种类型，然后把【Author】这项内容复制到【Secondary Author】，这样就会遵循【中文文献】的引用的显示规则。</li>
+</ul>
+<p>ref：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/312093759">https://zhuanlan.zhihu.com/p/312093759</a></p>
+<h2 id="1-3-EndNote的正文引用的中英文混排"><a href="#1-3-EndNote的正文引用的中英文混排" class="headerlink" title="1.3. EndNote的正文引用的中英文混排"></a>1.3. EndNote的正文引用的中英文混排</h2><h3 id="1-3-1-作者的et-al-和-等-混排"><a href="#1-3-1-作者的et-al-和-等-混排" class="headerlink" title="1.3.1. 作者的et al. 和**等.**混排"></a>1.3.1. 作者的<strong>et al.</strong> 和**等.**混排</h3><ol>
+<li>手动修改中文文献的<strong>et al.<strong>成</strong>等.</strong></li>
+</ol>
+<ul>
+<li>在Word正文的EndNote引用文献(张三 et al. 2023)中右键，选择【edit citations】-【more】；</li>
+<li>然后在【Edit &amp; Manage Citations】对话框中把这一条参考文献的【Formatting】从【Default】改成【Exclude Author】，这样正文会不显示作者；</li>
+<li>继续在【Prefix】中手动添加前缀，这里填写【张三等，】，则正文会显示(张三等，2023);</li>
+<li>依次修改正文中每一条参考文献。</li>
+</ul>
+<p>ref：<a target="_blank" rel="noopener" href="https://www.baishujun.com/archives/7634.html">https://www.baishujun.com/archives/7634.html</a></p>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tools/" rel="tag"># tools</a>
+              <a href="/tags/EndNote/" rel="tag"># EndNote</a>
+              <a href="/tags/%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E6%8E%92/" rel="tag"># 中英文混排</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/23/linux_operation.and.maintenance_auto.mount/" rel="prev" title="Linux系统的服务器开机自动挂载硬盘的设置">
+      <i class="fa fa-chevron-left"></i> Linux系统的服务器开机自动挂载硬盘的设置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/09/25/bioinfo_phylogeny_iqtree/" rel="next" title="构建系统发育进化树：iqtree2构建最大似然树">
+      构建系统发育进化树：iqtree2构建最大似然树 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-EndNote%E7%9A%84%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E6%8E%92"><span class="nav-text">1. EndNote的中英文混排</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%B7%BB%E5%8A%A0EndNote%E7%9A%84%E3%80%90%E4%B8%AD%E6%96%87%E6%96%87%E7%8C%AE%E3%80%91%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.1. 添加EndNote的【中文文献】类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-EndNote%E7%9A%84%E6%96%87%E7%8C%AE%E7%9B%AE%E5%BD%95-Bibliography-%E7%9A%84%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E6%8E%92"><span class="nav-text">1.2. EndNote的文献目录(Bibliography)的中英文混排</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E6%96%87%E7%8C%AE%E7%9B%AE%E5%BD%95-Bibliography-%E7%9A%84%E4%B8%AD%E8%8B%B1%E6%96%87%E9%A1%BA%E5%BA%8F"><span class="nav-text">1.2.1. 文献目录(Bibliography)的中英文顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E6%96%87%E7%8C%AE%E7%9B%AE%E5%BD%95-Bibliography-%E7%9A%84%E4%BD%9C%E8%80%85%E7%9A%84et-al-%E5%92%8C-%E7%AD%89-%E6%B7%B7%E6%8E%92"><span class="nav-text">1.2.2. 文献目录(Bibliography)的作者的et al. 和**等.**混排</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-EndNote%E7%9A%84%E6%AD%A3%E6%96%87%E5%BC%95%E7%94%A8%E7%9A%84%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E6%8E%92"><span class="nav-text">1.3. EndNote的正文引用的中英文混排</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E4%BD%9C%E8%80%85%E7%9A%84et-al-%E5%92%8C-%E7%AD%89-%E6%B7%B7%E6%8E%92"><span class="nav-text">1.3.1. 作者的et al. 和**等.**混排</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

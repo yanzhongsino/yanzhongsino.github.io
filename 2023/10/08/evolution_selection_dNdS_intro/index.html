@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录了KAKS、dNdS、DnDs，以及omega(ω)的定义和含义，区别和算法，以及ω检测选择压的含义。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文说清K&lt;sub&gt;A&lt;&#x2F;sub&gt;K&lt;sub&gt;S&lt;&#x2F;sub&gt;、d&lt;sub&gt;N&lt;&#x2F;sub&gt;d&lt;sub&gt;S&lt;&#x2F;sub&gt;、D&lt;sub&gt;n&lt;&#x2F;sub&gt;D&lt;sub&gt;s&lt;&#x2F;sub&gt;，以及omega(ω)">
+<meta property="og:url" content="http://example.com/2023/10/08/evolution_selection_dNdS_intro/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了KAKS、dNdS、DnDs，以及omega(ω)的定义和含义，区别和算法，以及ω检测选择压的含义。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-10-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-09T14:05:41.700Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="bio">
+<meta property="article:tag" content="selection">
+<meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="d&lt;sub&gt;N&lt;&#x2F;sub&gt;&#x2F;d&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;A&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;A&lt;&#x2F;sub&gt;K&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="K&lt;sub&gt;A&lt;&#x2F;sub&gt;&#x2F;K&lt;sub&gt;S&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="D&lt;sub&gt;n&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="D&lt;sub&gt;s&lt;&#x2F;sub&gt;">
+<meta property="article:tag" content="omega(ω)">
+<meta property="article:tag" content="omega">
+<meta property="article:tag" content="ω">
+<meta property="article:tag" content="positive selection">
+<meta property="article:tag" content="negative selection">
+<meta property="article:tag" content="purifying selection">
+<meta property="article:tag" content="neutral selection">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/10/08/evolution_selection_dNdS_intro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一文说清K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及omega(ω) | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/08/evolution_selection_dNdS_intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一文说清K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及omega(ω)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-10-09 00:00:00 / Modified: 22:05:41" itemprop="dateCreated datePublished" datetime="2023-10-09T00:00:00+08:00">2023-10-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/" itemprop="url" rel="index"><span itemprop="name">evolution</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/selection/" itemprop="url" rel="index"><span itemprop="name">selection</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 mins.</span>
+            </span>
+            <div class="post-description">记录了K<sub>A</sub>K<sub>S</sub>、d<sub>N</sub>d<sub>S</sub>、D<sub>n</sub>D<sub>s</sub>，以及omega(ω)的定义和含义，区别和算法，以及ω检测选择压的含义。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=21178392&auto=1&height=32"></iframe></div>
+
+<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><ol>
+<li>木村资生（Masahiko Kimura）为代表的群体遗传学家划时代地提出了中性漂变理论，在分子进化领域得到了越来越多的证据。简单来说，就是在当时掌握的基因序列中，同义突变远多于非同义突变。为了更好地研究中性理论和自然选择在基因进化上所起的作用，非同义突变和同义突变的定量化研究显得十分迫切。</li>
+<li>在这一领域，三位来自九州大学的学者率先进行了有益的尝试和探索。接下来，两组来自美国德州大学奥斯汀分校（University of Texas, Houston）的科学家做出了重要的贡献。其中一组包括台湾著名学者李文雄（Wen-Hsiung Li）和吴仲义（Chung-I Wu）描述的K<sub>A</sub>K<sub>S</sub>，另一组是根井正利（Masatoshi Nei）和五条堀孝（Gojobori Takashi）描述的d<sub>N</sub>d<sub>S</sub>。</li>
+<li>在这些工作的基础上，发展出使用omega(ω)&#x3D;d<sub>N</sub>&#x2F;d<sub>S</sub>(K<sub>A</sub>&#x2F;K<sub>S</sub>)进行选择压检验的方法。</li>
+</ol>
+<h1 id="2-概念"><a href="#2-概念" class="headerlink" title="2. 概念"></a>2. 概念</h1><ol>
+<li><strong>替换(substitution)</strong></li>
+</ol>
+<ul>
+<li>进化过程中基因组上一个位点从一个碱基突变成另一个碱基的过程，与点突变的含义相近。</li>
+<li>在这篇博客中，特指基因编码序列的替换，可能造成或不造成氨基酸产物的变化。</li>
+</ul>
+<ol start="2">
+<li><strong>同义替换(synonymous substitution)</strong></li>
+</ol>
+<ul>
+<li>基因编码序列中一个位点的替换，没有造成氨基酸产物的变化，这种替换被称为同义替换。</li>
+</ul>
+<ol start="3">
+<li><strong>非同义替换(non-synonymous substitution)</strong></li>
+</ol>
+<ul>
+<li>基因编码序列中一个位点的替换，造成氨基酸产物的变化，这种替换被称为非同义替换。</li>
+</ul>
+<ol start="4">
+<li><strong>同义替换率(synonymous substitutions rate, d<sub>S</sub>或K<sub>S</sub>)</strong></li>
+</ol>
+<ul>
+<li>定义：每同义位点的同义碱基替代数 (the number of synonymous substitutions per synonymous site)，用d<sub>S</sub>或K<sub>S</sub>表示。</li>
+<li>通常是通过对两条蛋白编码序列进行比较，用发生同义突变的位点数目比上可能发生同义突变的所有位点总数，比值用来估计同义替换率。</li>
+</ul>
+<ol start="5">
+<li><strong>非同义替换率(non-synonymous substitutions rate, d<sub>N</sub>或K<sub>A</sub>)</strong></li>
+</ol>
+<ul>
+<li>定义：每非同义位点的非同义碱基替代数 (the number of non-synonymous substitutions per non-synonymous site)，用d<sub>N</sub>或K<sub>A</sub>表示。</li>
+<li>通常是通过对两条蛋白编码序列进行比较，用发生非同义突变的位点数目比上可能发生非同义突变的所有位点总数，比值用来估计非同义替换率。</li>
+</ul>
+<ol start="6">
+<li><strong>omega(ω) 值(d<sub>N</sub>&#x2F;d<sub>S</sub>或K<sub>A</sub>&#x2F;K<sub>S</sub>比值的估计)</strong></li>
+</ol>
+<ul>
+<li>同义替换率与非同义替换率的比值，能够反映基因的选择压力。</li>
+<li>通常是通过对两条基因编码序列进行比较，用计算得到的同义替换率比上非同义替换率，得到d<sub>N</sub>&#x2F;d<sub>S</sub>或K<sub>A</sub>&#x2F;K<sub>S</sub>的估值ω 值。</li>
+</ul>
+<ol start="7">
+<li><strong>同义替换数(D<sub>s</sub>)</strong></li>
+</ol>
+<ul>
+<li>与d<sub>S</sub>不同，代表的是发生了同义替换的碱基数目。</li>
+</ul>
+<ol start="8">
+<li><strong>非同义替换数(D<sub>n</sub>)</strong></li>
+</ol>
+<ul>
+<li>与d<sub>N</sub>不同，代表的是发生了非同义替换的碱基数目。</li>
+</ul>
+<h1 id="3-KA和KS、dN和dS，以及Dn和Ds之间的区别"><a href="#3-KA和KS、dN和dS，以及Dn和Ds之间的区别" class="headerlink" title="3. KA和KS、dN和dS，以及Dn和Ds之间的区别"></a>3. K<sub>A</sub>和K<sub>S</sub>、d<sub>N</sub>和d<sub>S</sub>，以及D<sub>n</sub>和D<sub>s</sub>之间的区别</h1><ol>
+<li>d<sub>N</sub>和d<sub>S</sub>与K<sub>A</sub>和K<sub>S</sub>含义是一样的，可相互替代使用</li>
+</ol>
+<ul>
+<li>K<sub>A</sub>和K<sub>S</sub>与d<sub>N</sub>和d<sub>S</sub>是两组科学家对每个位点的非同义和同义替换数目的不同的描述：李文雄和吴仲义使用的是K<sub>A</sub>和K<sub>S</sub>，而根井正利和五条堀孝则将同样的概念命名为d<sub>N</sub>和d<sub>S</sub>。</li>
+</ul>
+<ol start="2">
+<li>d<sub>N</sub>和d<sub>S</sub>(K<sub>A</sub>和K<sub>S</sub>)与D<sub>n</sub>和D<sub>s</sub>是不同的</li>
+</ol>
+<ul>
+<li>D<sub>n</sub>和D<sub>s</sub>是替换数量的估计，分别代表非同义替换位点和同义替换位点的数目，即计算d<sub>N</sub>和d<sub>S</sub>的分子。</li>
+<li>d<sub>N</sub>和d<sub>S</sub>(K<sub>A</sub>和K<sub>S</sub>)则是替换率的估计，分别代表非同义替换率和同义替换率。</li>
+</ul>
+<h1 id="4-计算KA和KS-dN和dS-的算法模型"><a href="#4-计算KA和KS-dN和dS-的算法模型" class="headerlink" title="4. 计算KA和KS(dN和dS)的算法模型"></a>4. 计算K<sub>A</sub>和K<sub>S</sub>(d<sub>N</sub>和d<sub>S</sub>)的算法模型</h1><ol>
+<li>目前计算K<sub>A</sub>和K<sub>S</sub>(d<sub>N</sub>和d<sub>S</sub>)通常是使用两条或多条现存类群的基因编码序列，并可以结合系统发育树来共同推断进化过程中发生的碱基替换情况。</li>
+<li>计算K<sub>A</sub>和K<sub>S</sub>的算法有非常多，可分为三类：**近似法(Approximate methods)<strong>、</strong>最大似然法(Maximum-likelihood methods)<strong>和</strong>计数法(Counting methods)**。</li>
+<li>在使用软件进行具体计算时，常用的包括最大似然法的代表模型YN(Yang and Nielsen,2000)，NG(Nei 1986)等。</li>
+<li>然而，除非要比较的序列关系很远（在这种情况下，最大似然法占优势），否则所使用的算法类别对所获得的结果影响很小。只要有足够的数据，三种方法都会得出相同的结果。更重要的是所选方法中隐含的假设。</li>
+</ol>
+<h2 id="4-1-近似法-Approximate-methods"><a href="#4-1-近似法-Approximate-methods" class="headerlink" title="4.1. 近似法(Approximate methods)"></a>4.1. 近似法(Approximate methods)</h2><ol>
+<li>近似法的三个基本步骤</li>
+</ol>
+<ul>
+<li>计算两个序列中同义和非同义位点的数量，或通过序列长度乘以每类替换的比例来估算这一数量；</li>
+<li>计算同义和非同义替换的数量；</li>
+<li>纠正多次替换(multiple substitutions)的情况。</li>
+</ul>
+<ol start="2">
+<li>近似法的特点</li>
+</ol>
+<ul>
+<li>三个基本步骤，尤其是后两步，需要做出简单的假设，才能计算；</li>
+<li>由于最后考虑（第三步），不可能精确确定多次替换的数量。</li>
+</ul>
+<h2 id="4-2-最大似然法-Maximum-likelihood-methods"><a href="#4-2-最大似然法-Maximum-likelihood-methods" class="headerlink" title="4.2. 最大似然法(Maximum-likelihood methods)"></a>4.2. 最大似然法(Maximum-likelihood methods)</h2><ol>
+<li>最大似然法特点</li>
+</ol>
+<ul>
+<li>最大似然法利用概率论同时完成近似法的所有三个步骤。</li>
+<li>它通过推导出产生输入数据的最可能值来估算关键参数，包括序列之间的分歧度(divergence)和转换&#x2F;颠换比率(transition&#x2F;transversion ratio)。</li>
+</ul>
+<h2 id="4-3-计数法-Counting-methods"><a href="#4-3-计数法-Counting-methods" class="headerlink" title="4.3. 计数法(Counting methods)"></a>4.3. 计数法(Counting methods)</h2><ul>
+<li>为了量化替换的数量，我们可以重建祖先序列并记录推断出的位点变化（直接对现存物种序列差异进行计数可能会低估）；</li>
+<li>将位点的替换率拟合到预先确定的类别中（贝叶斯方法；对于小数据集效果不佳）；为每个密码子生成单独的替换率（计算成本高）。</li>
+</ul>
+<h1 id="5-dN和dS-KA和KS-和-omega-ω-的计算过程"><a href="#5-dN和dS-KA和KS-和-omega-ω-的计算过程" class="headerlink" title="5. dN和dS(KA和KS)和 omega(ω) 的计算过程"></a>5. d<sub>N</sub>和d<sub>S</sub>(K<sub>A</sub>和K<sub>S</sub>)和 omega(ω) 的计算过程</h1><p>由于算法的多样性，计算过程也有多种多样。以根井正利所著的经典书目《分子进化与系统发育》中的进化路径法(Evolutionary Pathway Methods)为例，对K<sub>A</sub>和K<sub>S</sub>(d<sub>N</sub>和d<sub>S</sub>)的计算过程加以简单介绍。</p>
+<h2 id="5-1-命名变量"><a href="#5-1-命名变量" class="headerlink" title="5.1. 命名变量"></a>5.1. 命名变量</h2><p>同义替换率 d<sub>S</sub>或K<sub>S</sub> &#x3D; 同义替换数 D<sub>s</sub> &#x2F; 同义替换位点总数 Ts<br>非同义替换率 d<sub>N</sub>或K<sub>A</sub> &#x3D; 非同义替换数 D<sub>n</sub> &#x2F; 非同义替换位点总数 Tn</p>
+<h2 id="5-2-以TTT-Phe-转变为GTA-Val-为例"><a href="#5-2-以TTT-Phe-转变为GTA-Val-为例" class="headerlink" title="5.2. 以TTT(Phe)转变为GTA(Val)为例"></a>5.2. 以TTT(Phe)转变为GTA(Val)为例</h2><ol>
+<li>先考虑TTT的序列替换的所有可能：</li>
+</ol>
+<ul>
+<li>查看密码子表可知，TTT的前两个位点的任意变化，都将导致氨基酸的变化，而第三个位点的突变，有2&#x2F;3的可能性会导致氨基酸变化（只有TTT变为TTC都是编码苯丙氨酸Phe）。</li>
+<li>所以，对于TTT，非同义替换位点总数 Tn &#x3D; 2 + 2&#x2F;3 &#x3D; 8&#x2F;3，而同义替换位点总数 Ts &#x3D; 0 + 1&#x2F;3 &#x3D; 1&#x2F;3。</li>
+</ul>
+<ol start="2">
+<li>再比较TTT到GTA变化的简约路径，共有两条：</li>
+</ol>
+<ul>
+<li>TTT(Phe)-GTT(Val)-GTA(Val)</li>
+<li>TTT(Phe)-TTA(Leu)-GTA(Val)</li>
+</ul>
+<ol start="3">
+<li>假设以上两条路径概率相等，那么非同义替换数 D<sub>n</sub> &#x3D; (1+2)&#x2F;2 &#x3D; 1.5，同义替换数 D<sub>s</sub> &#x3D; (1+0)&#x2F;2 &#x3D; 0.5。</li>
+<li>于是，非同义替换率 d<sub>N</sub> &#x3D; 非同义替换数 D<sub>n</sub> &#x2F; 非同义替换位点总数 Tn &#x3D; 1.5&#x2F;(8&#x2F;3) &#x3D; 0.56，同义替换率 d<sub>S</sub> &#x3D; 同义替换数 D<sub>s</sub> &#x2F; 同义替换位点总数 Ts &#x3D;  &#x3D; 0.5&#x2F;(1&#x2F;3) &#x3D; 1.5。</li>
+<li>最后 omega(ω) &#x3D; d<sub>N</sub>&#x2F;d<sub>S</sub> &#x3D; 0.56&#x2F;1.5 &#x3D; 0.37。</li>
+</ol>
+<h2 id="5-3-实际计算"><a href="#5-3-实际计算" class="headerlink" title="5.3. 实际计算"></a>5.3. 实际计算</h2><p>以上是使用其中一种算法计算 omega(ω) 的过程，实际的计算过程常常借助开发的整合了相应算法的程序，比如PAML的codeML，KaKs_Calculator等，在这些程序中计算 omega(ω) 是通过对d<sub>N</sub>&#x2F;d<sub>S</sub>的估计进行计算的。</p>
+<h1 id="6-omega-ω-dN-x2F-dS或KA-x2F-KS的估值-用于检测选择压"><a href="#6-omega-ω-dN-x2F-dS或KA-x2F-KS的估值-用于检测选择压" class="headerlink" title="6. omega(ω) (dN&#x2F;dS或KA&#x2F;KS的估值) 用于检测选择压"></a>6. omega(ω) (d<sub>N</sub>&#x2F;d<sub>S</sub>或K<sub>A</sub>&#x2F;K<sub>S</sub>的估值) 用于检测选择压</h1><ol>
+<li>omega(ω) 的含义</li>
+</ol>
+<ul>
+<li>omega(ω) &#x3D; d<sub>N</sub>&#x2F;d<sub>S</sub>(K<sub>A</sub>&#x2F;K<sub>S</sub>)</li>
+</ul>
+<ol start="2">
+<li>omega(ω) 可用于推断作用于蛋白质编码基因的自然选择的方向和程度</li>
+</ol>
+<ul>
+<li>当 ω &gt; 1 时，意味着正选择 (positive selection)；</li>
+<li>当 0 &lt; ω &lt; 1 意味着负选择 (negative selection，也叫净化选择或纯化选择 purifying selection)；</li>
+<li>当 ω &#x3D; 1 则表示中性进化(neutral selection)，即不受选择。</li>
+</ul>
+<ol start="3">
+<li>背景知识</li>
+</ol>
+<ul>
+<li>通常，由于未改变编码氨基酸，大多数同义突变都是中性的，即没有受到正选择或者负选择；由于改变了编码氨基酸，大多数非同义突变受到负选择，没有保留下来。</li>
+<li>所以，在现存类群中，观察到的同义突变数量比非同义突变数量会高得多，通常d<sub>N</sub> &lt; d<sub>S</sub>。计算现存类群间 ω 时，结果通常在0.05-0.40之间，只有很少数的基因(e.g. MHC)发现 ω &gt; 1。</li>
+</ul>
+<ol start="4">
+<li>可能的误差</li>
+</ol>
+<ul>
+<li>在基因的不同位点或进化的不同时期，正选择和负选择的组合可能会相互抵消。</li>
+<li>由此产生的平均值可能会掩盖其中一种选择的存在，并降低另一种选择的似然程度。</li>
+</ul>
+<ol start="5">
+<li>统计分析</li>
+</ol>
+<ul>
+<li>有必要进行统计分析，以确定 ω 的结果是否与 1 有显著差异，或是否由于数据集有限而出现任何明显差异。</li>
+<li>近似法的适当统计检验包括用正态近似值对 dN - dS 进行近似，并确定 0 是否位于近似值的中心区域。</li>
+<li>可以使用更复杂的似然法来分析最大似然分析的结果，通过进行卡方检验来区分空模型（Ka&#x2F;Ks &#x3D; 1）和观测结果。</li>
+</ul>
+<ol start="6">
+<li>omega(ω) 结果解读</li>
+</ol>
+<ul>
+<li>由于绝大多数基因 ω &lt; 1，代表受到正选择的基因(ω &gt; 1)是很少见的。</li>
+<li>结合系统发育树，通常可以分析 ω 在进化树上的变化，如果树上的 ω 都小于1，但某一支比其他所有支的 ω 都要小，这也说明这一支受到的负选择在放松。</li>
+</ul>
+<h1 id="7-reference"><a href="#7-reference" class="headerlink" title="7. reference"></a>7. reference</h1><ol>
+<li>wiki-Ka&#x2F;Ks ratio: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ka/Ks_ratio">https://en.wikipedia.org/wiki/Ka/Ks_ratio</a></li>
+<li>KaKs和dNdS的区别和算法：<a target="_blank" rel="noopener" href="https://ibook.antpedia.com/x/147335.html">https://ibook.antpedia.com/x/147335.html</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bio/" rel="tag"># bio</a>
+              <a href="/tags/selection/" rel="tag"># selection</a>
+              <a href="/tags/d-sub-N-sub/" rel="tag"># d<sub>N</sub></a>
+              <a href="/tags/d-sub-S-sub/" rel="tag"># d<sub>S</sub></a>
+              <a href="/tags/d-sub-N-sub-d-sub-S-sub/" rel="tag"># d<sub>N</sub>d<sub>S</sub></a>
+              <a href="/tags/d-sub-N-sub-d-sub-S-sub/" rel="tag"># d<sub>N</sub>/d<sub>S</sub></a>
+              <a href="/tags/K-sub-A-sub/" rel="tag"># K<sub>A</sub></a>
+              <a href="/tags/K-sub-S-sub/" rel="tag"># K<sub>S</sub></a>
+              <a href="/tags/K-sub-A-sub-K-sub-S-sub/" rel="tag"># K<sub>A</sub>K<sub>S</sub></a>
+              <a href="/tags/K-sub-A-sub-K-sub-S-sub/" rel="tag"># K<sub>A</sub>/K<sub>S</sub></a>
+              <a href="/tags/D-sub-n-sub/" rel="tag"># D<sub>n</sub></a>
+              <a href="/tags/D-sub-s-sub/" rel="tag"># D<sub>s</sub></a>
+              <a href="/tags/omega-%CF%89/" rel="tag"># omega(ω)</a>
+              <a href="/tags/omega/" rel="tag"># omega</a>
+              <a href="/tags/%CF%89/" rel="tag"># ω</a>
+              <a href="/tags/positive-selection/" rel="tag"># positive selection</a>
+              <a href="/tags/negative-selection/" rel="tag"># negative selection</a>
+              <a href="/tags/purifying-selection/" rel="tag"># purifying selection</a>
+              <a href="/tags/neutral-selection/" rel="tag"># neutral selection</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/29/bioinfo_alignment_trim_Gblocks/" rel="prev" title="用Gblocks对序列比对进行过滤">
+      <i class="fa fa-chevron-left"></i> 用Gblocks对序列比对进行过滤
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/09/evolution_selection_paml.codeml_intro/" rel="next" title="用PAML的codeML进行选择分析：（一）概况">
+      用PAML的codeML进行选择分析：（一）概况 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%83%8C%E6%99%AF"><span class="nav-text">1. 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%A6%82%E5%BF%B5"><span class="nav-text">2. 概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-KA%E5%92%8CKS%E3%80%81dN%E5%92%8CdS%EF%BC%8C%E4%BB%A5%E5%8F%8ADn%E5%92%8CDs%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">3. KA和KS、dN和dS，以及Dn和Ds之间的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E8%AE%A1%E7%AE%97KA%E5%92%8CKS-dN%E5%92%8CdS-%E7%9A%84%E7%AE%97%E6%B3%95%E6%A8%A1%E5%9E%8B"><span class="nav-text">4. 计算KA和KS(dN和dS)的算法模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E8%BF%91%E4%BC%BC%E6%B3%95-Approximate-methods"><span class="nav-text">4.1. 近似法(Approximate methods)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E6%B3%95-Maximum-likelihood-methods"><span class="nav-text">4.2. 最大似然法(Maximum-likelihood methods)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E8%AE%A1%E6%95%B0%E6%B3%95-Counting-methods"><span class="nav-text">4.3. 计数法(Counting methods)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-dN%E5%92%8CdS-KA%E5%92%8CKS-%E5%92%8C-omega-%CF%89-%E7%9A%84%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B"><span class="nav-text">5. dN和dS(KA和KS)和 omega(ω) 的计算过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E5%91%BD%E5%90%8D%E5%8F%98%E9%87%8F"><span class="nav-text">5.1. 命名变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E4%BB%A5TTT-Phe-%E8%BD%AC%E5%8F%98%E4%B8%BAGTA-Val-%E4%B8%BA%E4%BE%8B"><span class="nav-text">5.2. 以TTT(Phe)转变为GTA(Val)为例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E5%AE%9E%E9%99%85%E8%AE%A1%E7%AE%97"><span class="nav-text">5.3. 实际计算</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-omega-%CF%89-dN-x2F-dS%E6%88%96KA-x2F-KS%E7%9A%84%E4%BC%B0%E5%80%BC-%E7%94%A8%E4%BA%8E%E6%A3%80%E6%B5%8B%E9%80%89%E6%8B%A9%E5%8E%8B"><span class="nav-text">6. omega(ω) (dN&#x2F;dS或KA&#x2F;KS的估值) 用于检测选择压</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-reference"><span class="nav-text">7. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

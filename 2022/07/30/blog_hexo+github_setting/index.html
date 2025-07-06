@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在hexo+github.io建好博客网站的基础上，在网站中添加自定义网页（包括简历、about me、404等页面）的步骤。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把简历部署到网站上">
+<meta property="og:url" content="http://example.com/2022/07/30/blog_hexo+github_setting/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="在hexo+github.io建好博客网站的基础上，在网站中添加自定义网页（包括简历、about me、404等页面）的步骤。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-07-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-15T03:54:28.890Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="markdown">
+<meta property="article:tag" content="resume">
+<meta property="article:tag" content="readme">
+<meta property="article:tag" content="404 page">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/07/30/blog_hexo+github_setting/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>把简历部署到网站上 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/30/blog_hexo+github_setting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          把简历部署到网站上
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-31T00:00:00+08:00">2022-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-15 11:54:28" itemprop="dateModified" datetime="2024-06-15T11:54:28+08:00">2024-06-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 mins.</span>
+            </span>
+            <div class="post-description">在hexo+github.io建好博客网站的基础上，在网站中添加自定义网页（包括简历、about me、404等页面）的步骤。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5284273&auto=1&height=32"></iframe><music URL></div>
+
+<p>在根据博客<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2018/06/05/blog_hexo.github/">hexo建站，github.io发布，多终端同步</a>配置了hexo网站（使用next主题）的基础上，记录了添加自定义网页（包括简历、about me、404等页面）的设置技巧。</p>
+<h1 id="1-添加自定义网页"><a href="#1-添加自定义网页" class="headerlink" title="1. 添加自定义网页"></a>1. 添加自定义网页</h1><p>添加自定义网页，自定义网页包括简历、404、About页面等，这里以添加<strong>简历</strong>为例。</p>
+<h2 id="1-1-制作简历"><a href="#1-1-制作简历" class="headerlink" title="1.1. 制作简历"></a>1.1. 制作简历</h2><ol>
+<li>现状</li>
+</ol>
+<ul>
+<li>网上的博客在线简历相关教程大多是开发了一个专门用于简历展示的博客主题，需要博客使用这个主题以实现制作简历和在线显示的目的。</li>
+<li>但我的博客用的是hexo的next主题，不想换。</li>
+<li>所以最后决定用模板的html文件自己修改制作简历html。</li>
+</ul>
+<ol start="2">
+<li>操作</li>
+</ol>
+<ul>
+<li>在网上找喜欢的简历模板，提取html文件。</li>
+<li>比如我的简历参考的是这个模板：<a target="_blank" rel="noopener" href="https://github.com/mtics/hexo-mtics-resume">https://github.com/mtics/hexo-mtics-resume</a></li>
+<li>在模板的demo：<a target="_blank" rel="noopener" href="https://mtics.netlify.app/%EF%BC%8C%E5%8F%B3%E9%94%AE**%E6%9F%A5%E7%9C%8B%E7%BD%91%E9%A1%B5%E6%BA%90%E4%BB%A3%E7%A0%81**%EF%BC%8C%E7%84%B6%E5%90%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E4%BF%9D%E5%AD%98html%E4%BB%A3%E7%A0%81%E5%88%B0index.html%E3%80%82">https://mtics.netlify.app/，右键**查看网页源代码**，然后复制和保存html代码到index.html。</a></li>
+<li>修改index.html的信息为自己的简历内容，即可使用。</li>
+<li>同时为了达到同样的渲染效果，把模板<a target="_blank" rel="noopener" href="https://github.com/mtics/hexo-mtics-resume/tree/master/source%E9%87%8C%E7%9A%84%E4%B8%89%E4%B8%AAcss%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E4%B8%8B%E6%9D%A5%EF%BC%8Cimg/avatar.jpg%E6%96%87%E4%BB%B6%E6%94%B9%E6%88%90%E8%87%AA%E5%B7%B1%E7%9A%84%E5%A4%B4%E5%83%8F%E7%85%A7%E7%89%87%E3%80%82">https://github.com/mtics/hexo-mtics-resume/tree/master/source里的三个css文件下载下来，img/avatar.jpg文件改成自己的头像照片。</a></li>
+</ul>
+<h2 id="1-2-添加简历"><a href="#1-2-添加简历" class="headerlink" title="1.2. 添加简历"></a>1.2. 添加简历</h2><ol>
+<li>在hexo&#x2F;source目录下创建文件夹，例如resume。（如果添加about页面就创建about文件夹）</li>
+<li>然后把制作好的简历网页文件index.html放在resume文件夹下。</li>
+<li>简历引用了的css或js文件和图片文件，也放在resume文件夹下。</li>
+</ol>
+<h2 id="1-3-跳过渲染"><a href="#1-3-跳过渲染" class="headerlink" title="1.3. 跳过渲染"></a>1.3. 跳过渲染</h2><p>因为hexo应用的主题给每个网页都进行相同的渲染，所以需要对自定义网页设置跳过默认的渲染，有以下两种方法。</p>
+<ol>
+<li>在index.html设置</li>
+</ol>
+<ul>
+<li>在网页文件index.html的开头添加下面代码设置跳过渲染的指令，这样通过<code>hexo g</code>生成网页时会跳过index.html文件，不受hexo主题渲染，而完全是一个独立的网页。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">layout: false</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在_config.yml文件中设置</li>
+</ol>
+<p>在hexo目录的_config.yml文件设置skip_render参数来设置不渲染的文件&#x2F;文件夹。</p>
+<ul>
+<li>屏蔽指定文件：<code>skip_render：./resume/index.html</code></li>
+<li>屏蔽指定文件夹的所有文件：<code>skip_render: ./resume/*</code></li>
+<li>屏蔽指定文件夹所有文件包括子文件夹和子文件夹下的文件：<code>skip_render: ./resume/**</code></li>
+<li>屏蔽多个路径：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">skip_render:</span><br><span class="line">    - ./resume/index.html</span><br><span class="line">    - ./resume/image.png</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-设置主页显示"><a href="#1-4-设置主页显示" class="headerlink" title="1.4. 设置主页显示"></a>1.4. 设置主页显示</h2><p>在博客首页的菜单栏中增加简历项的设置。</p>
+<ol>
+<li>在主题下的设置文件中<code>./themes/next/_config.yml</code>文件中的menu项中添加简历行<code>resume: /resume/index.html || fa fa-file-user</code>，这样可以在博客首页的菜单栏中增加简历项。</li>
+<li>其中<code>resume</code>会显示在博客主页</li>
+<li><code>/resume/index.html</code>指定自定义网页文件</li>
+<li><code>fa fa-file-user</code>定义图标，可以在<a target="_blank" rel="noopener" href="https://fontawesome.com/icons?from=io%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84%E5%9B%BE%E6%A0%87%E4%BD%BF%E7%94%A8%E3%80%82">https://fontawesome.com/icons?from=io选择合适的图标使用。</a></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || fa fa-home</span><br><span class="line">  about: /about/ || fa fa-user</span><br><span class="line">  tags: /tags/ || fa fa-tags</span><br><span class="line">  categories: /categories/ || fa fa-th</span><br><span class="line">  archives: /archives/ || fa fa-archive</span><br><span class="line">  #schedule: /schedule/ || fa fa-calendar</span><br><span class="line">  #sitemap: /sitemap.xml || fa fa-sitemap</span><br><span class="line">  #commonweal: /404/ || fa fa-heartbeat</span><br><span class="line">  resume: /resume/index.html || fa fa-file-user</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-5-简历成品"><a href="#1-5-简历成品" class="headerlink" title="1.5. 简历成品"></a>1.5. 简历成品</h2><p>最后的效果可以参考我的简历：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/resume/index.html">https://yanzhongsino.github.io/resume/index.html</a></p>
+<h1 id="2-添加about页面"><a href="#2-添加about页面" class="headerlink" title="2. 添加about页面"></a>2. 添加about页面</h1><p>与上面的添加简历页面类似：</p>
+<ol>
+<li>在hexo&#x2F;source目录下创建文件夹about</li>
+<li>在about文件夹下创建index.md文件写入about显示内容</li>
+<li>如果使用hexo的主题显示，则无需跳过渲染</li>
+<li>把主题下的设置文件中<code>./themes/next/_config.yml</code>文件中的menu项中的about信息行的注释符#删除，表示在博客主页显示about项进入页面</li>
+</ol>
+<h1 id="3-添加404页面"><a href="#3-添加404页面" class="headerlink" title="3. 添加404页面"></a>3. 添加404页面</h1><p>404页面是在域名下访问不存在的地址时出现的页面。</p>
+<ol>
+<li>在博客主题的source下（比如我的.&#x2F;themes&#x2F;next&#x2F;source&#x2F;）创建404.html文件</li>
+<li>在404.html文件中写入想要在404页面展示的内容</li>
+<li>推荐把腾讯公益404页面的代码写入404页面，为传播失踪儿童信息贡献一点微薄之力。</li>
+</ol>
+<ul>
+<li>下面的**homePageUrl&#x3D;”<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io&quot;**用于设置网站首页地址,需要改成自己的网站首页网址./">https://yanzhongsino.github.io&quot;**用于设置网站首页地址，需要改成自己的网站首页网址。</a></li>
+<li>**homePageName&#x3D;”返回主页（您可以进入首页继续搜索）”**设置引导词，可以替换成引导用户回到网站首页的引导语。</li>
+<li>腾讯公益404页面的js地址可能会更新，可以以腾讯官方代码：<a target="_blank" rel="noopener" href="https://news.qq.com/404/%EF%BC%8C%E5%8F%91%E5%B8%83%E7%9A%84%E4%B8%BA%E5%87%86%E3%80%82">https://news.qq.com/404/，发布的为准。</a></li>
+<li>404.html示例：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8;&quot;/&gt;</span><br><span class="line">  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot; /&gt;</span><br><span class="line">  &lt;meta name=&quot;robots&quot; content=&quot;all&quot; /&gt;</span><br><span class="line">  &lt;meta name=&quot;robots&quot; content=&quot;index,follow&quot;/&gt;</span><br><span class="line">  &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://qzone.qq.com/gy/404/style/404style.css&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;script type=&quot;text/plain&quot; src=&quot;http://www.qq.com/404/search_children.js&quot;</span><br><span class="line">          charset=&quot;utf-8&quot; homePageUrl=&quot;https://yanzhongsino.github.io&quot;</span><br><span class="line">          homePageName=&quot;返回主页（您可以进入首页继续搜索）&quot;&gt;</span><br><span class="line">  &lt;/script&gt;</span><br><span class="line">  &lt;script src=&quot;https://qzone.qq.com/gy/404/data.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;script src=&quot;https://qzone.qq.com/gy/404/page.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>接着正常部署博客即可。</li>
+<li>测试404页面。在网页域名下输入一个不存在的地址（比如<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/111%EF%BC%89%EF%BC%8C%E7%9C%8B404%E9%A1%B5%E9%9D%A2%E6%98%AF%E5%90%A6%E6%9B%B4%E6%96%B0%E6%88%90%E5%8A%9F%E3%80%82">https://yanzhongsino.github.io/111），看404页面是否更新成功。</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/blog/" rel="tag"># blog</a>
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+              <a href="/tags/github/" rel="tag"># github</a>
+              <a href="/tags/markdown/" rel="tag"># markdown</a>
+              <a href="/tags/resume/" rel="tag"># resume</a>
+              <a href="/tags/readme/" rel="tag"># readme</a>
+              <a href="/tags/404-page/" rel="tag"># 404 page</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/30/omics_genome_quality.assessment_mapping_mosdepth/" rel="prev" title="基因组质量评估：（五）mapping法：7. 用软件mosdepth统计BAM文件的深度">
+      <i class="fa fa-chevron-left"></i> 基因组质量评估：（五）mapping法：7. 用软件mosdepth统计BAM文件的深度
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/01/bioinfo_variation_SV_Assemblytics/" rel="next" title="结构变异分析软件：Assemblytics">
+      结构变异分析软件：Assemblytics <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BD%91%E9%A1%B5"><span class="nav-text">1. 添加自定义网页</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%88%B6%E4%BD%9C%E7%AE%80%E5%8E%86"><span class="nav-text">1.1. 制作简历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%B7%BB%E5%8A%A0%E7%AE%80%E5%8E%86"><span class="nav-text">1.2. 添加简历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%B7%B3%E8%BF%87%E6%B8%B2%E6%9F%93"><span class="nav-text">1.3. 跳过渲染</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A1%B5%E6%98%BE%E7%A4%BA"><span class="nav-text">1.4. 设置主页显示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E7%AE%80%E5%8E%86%E6%88%90%E5%93%81"><span class="nav-text">1.5. 简历成品</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%B7%BB%E5%8A%A0about%E9%A1%B5%E9%9D%A2"><span class="nav-text">2. 添加about页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0404%E9%A1%B5%E9%9D%A2"><span class="nav-text">3. 添加404页面</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

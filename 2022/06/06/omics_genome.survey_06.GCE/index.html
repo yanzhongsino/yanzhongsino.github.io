@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍GCE，用GCE的kmerfreq做基因组调查(genome survey)的k-mer频数统计，GCE的gce做基因组特征评估。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用k-mer分析进行基因组调查：（六）用GCE分步实现">
+<meta property="og:url" content="http://example.com/2022/06/06/omics_genome.survey_06.GCE/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍GCE，用GCE的kmerfreq做基因组调查(genome survey)的k-mer频数统计，GCE的gce做基因组特征评估。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-06-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-15T03:53:30.725Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="genome survey">
+<meta property="article:tag" content="genome">
+<meta property="article:tag" content="k-mer">
+<meta property="article:tag" content="GCE">
+<meta property="article:tag" content="kmerfreq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/06/06/omics_genome.survey_06.GCE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用k-mer分析进行基因组调查：（六）用GCE分步实现 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/06/omics_genome.survey_06.GCE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用k-mer分析进行基因组调查：（六）用GCE分步实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-07T00:00:00+08:00">2022-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-15 11:53:30" itemprop="dateModified" datetime="2024-06-15T11:53:30+08:00">2024-06-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/" itemprop="url" rel="index"><span itemprop="name">omics</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/" itemprop="url" rel="index"><span itemprop="name">genome</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/omics/genome/genome-survey/" itemprop="url" rel="index"><span itemprop="name">genome survey</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 mins.</span>
+            </span>
+            <div class="post-description">介绍GCE，用GCE的kmerfreq做基因组调查(genome survey)的k-mer频数统计，GCE的gce做基因组特征评估。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=283100&auto=1&height=32"></iframe></div>
+
+<p><strong>用k-mer分析进行基因组调查系列：</strong></p>
+<ul>
+<li>（一）基本原理：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/">https://yanzhongsino.github.io/2022/05/25/omics_genome.survey_01.intro/</a></li>
+<li>（二）用Smudgeplot估计倍性：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/">https://yanzhongsino.github.io/2022/12/31/omics_genome.survey_02.Smudgeplot/</a></li>
+<li>（三）用jellyfish进行k-mer频数统计：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/">https://yanzhongsino.github.io/2022/05/27/omics_genome.survey_03.jellyfish/</a></li>
+<li>（四）用KMC进行k-mer频数统计：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/">https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_04.KMC/</a></li>
+<li>（五）用GenomeScope评估基因组特征：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/">https://yanzhongsino.github.io/2022/06/05/omics_genome.survey_05.GenomeScope/</a></li>
+<li>（六）用GCE分步实现：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/">https://yanzhongsino.github.io/2022/06/07/omics_genome.survey_06.GCE/</a></li>
+<li>（七）用KmerGenie一步实现：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/">https://yanzhongsino.github.io/2022/06/19/omics_genome.survey_07.KmerGenie/</a></li>
+</ul>
+<p><strong>【推荐】用Smudgeplot评估物种倍性后，用组合jellyfish+GenomeScope1.0做二倍体物种的基因组调查，用组合KMC+GenomeScope2.0做多倍体物种的基因组调查。</strong></p>
+<h1 id="1-k-mer进行基因组调查的软件"><a href="#1-k-mer进行基因组调查的软件" class="headerlink" title="1. k-mer进行基因组调查的软件"></a>1. k-mer进行基因组调查的软件</h1><p>k-mer进行基因组调查分为<strong>k-mer频数统计</strong>和<strong>基因组特征评估</strong>两步。</p>
+<ul>
+<li>GCE可以分步实现两步。第一步k-mer频数统计和第二步基因组特征评估。</li>
+<li>GCE第一步的结果sample.histo可以用在GenomeScope和其他基因组特征评估的软件上，实现第二步。</li>
+</ul>
+<h1 id="2-GCE-简介"><a href="#2-GCE-简介" class="headerlink" title="2. GCE 简介"></a>2. GCE 简介</h1><p>GCE (genomic charactor estimator)是华大基因在2013年开发的一款基于贝叶斯模型的用于基因组调查的软件，在2020年发布了版本v2。</p>
+<h1 id="3-GCE-安装"><a href="#3-GCE-安装" class="headerlink" title="3. GCE 安装"></a>3. GCE 安装</h1><h2 id="3-1-GCE-下载"><a href="#3-1-GCE-下载" class="headerlink" title="3.1. GCE 下载"></a>3.1. GCE 下载</h2><ul>
+<li>GCE主要托管在BGI的ftp站点：<a href="ftp://ftp.genomics.org.cn/pub/gce%E3%80%82">ftp://ftp.genomics.org.cn/pub/gce。</a></li>
+<li>也可以在GCE github：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/GCE%E4%B8%8A%E6%89%BE%E5%88%B0%E3%80%82">https://github.com/fanagislab/GCE上找到。</a></li>
+</ul>
+<h2 id="3-2-GCE-安装"><a href="#3-2-GCE-安装" class="headerlink" title="3.2. GCE 安装"></a>3.2. GCE 安装</h2><ol>
+<li><p>已编译【推荐】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:fanagislab/GCE.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>未编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp.genomics.org.cn/pub/gce/gce-1.0.2.tar.gz</span><br><span class="line">tar -xzvf gce-1.0.2.tar.gz #解压缩和解包</span><br><span class="line">make #编译</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>文件夹下有<code>kmerfreq</code>和<code>gce</code>两个命令。</p>
+<p>老版本是<code>kmer_freq_hash</code>代替<code>kmerfreq</code>命令。</p>
+<h1 id="4-GCE-运行"><a href="#4-GCE-运行" class="headerlink" title="4. GCE 运行"></a>4. GCE 运行</h1><p>GCE软件里包含两个主要的命令，<code>kmerfreq</code>用来完成第一步k-mer频数统计，<code>gce</code>用来完成第二步基因组特征评估。</p>
+<h2 id="4-1-k-mer频数统计"><a href="#4-1-k-mer频数统计" class="headerlink" title="4.1. k-mer频数统计"></a>4.1. k-mer频数统计</h2><h3 id="4-1-1-运行"><a href="#4-1-1-运行" class="headerlink" title="4.1.1. 运行"></a>4.1.1. 运行</h3><ol>
+<li>命令</li>
+</ol>
+<p><code>/path/gce-1.0.2/kmerfreq -k 17 -t 24 -p sample input.path &amp;&gt; kmer_freq.log</code></p>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-k 17：k-mer size</li>
+<li>-t 24：线程</li>
+<li>-p prefix：输出文件的前缀</li>
+<li>input.path：输入数据的路径保存在input.path文本文件</li>
+</ul>
+<h3 id="4-1-2-输出文件"><a href="#4-1-2-输出文件" class="headerlink" title="4.1.2. 输出文件"></a>4.1.2. 输出文件</h3><ol>
+<li><strong>sample.kmer.freq.stat</strong>：结果文件</li>
+</ol>
+<ul>
+<li>结果文件sample.kmer.freq.stat，记录了每个k-mer频数的统计信息，用于生成GCE的输入文件。</li>
+<li>之前的版本，该文件只统计到第255行，第255行之后的数据合并至第255行，表示k-mer出现频数&gt;&#x3D;255的片段总数。</li>
+<li>现在这个版本(gce-1.0.2)上限变成了65534。</li>
+</ul>
+<ol start="2">
+<li><strong>kmer_freq.log</strong>：运行日志文件</li>
+</ol>
+<ul>
+<li>老版本的日志文件还对测序数据进行了简要统计。</li>
+<li>在该文件的最下方，统计了k-mer片段总数、k-mer种类数、k-mer平均频数、碱基总数、reads平均长度、基因组大小的粗略估计等信息。</li>
+</ul>
+<h2 id="4-2-基因组特征评估"><a href="#4-2-基因组特征评估" class="headerlink" title="4.2. 基因组特征评估"></a>4.2. 基因组特征评估</h2><h3 id="4-2-1-获取参数"><a href="#4-2-1-获取参数" class="headerlink" title="4.2.1. 获取参数"></a>4.2.1. 获取参数</h3><ol>
+<li>获取k-mer总数</li>
+</ol>
+<p><code>less sample.kmer.freq.stat | grep &quot;#Kmer indivdual number&quot;</code> </p>
+<p>用于gce的-g参数</p>
+<ol start="2">
+<li>获取k-mer深度分布表</li>
+</ol>
+<p><code>less sample.kmer.freq.stat | perl -ne &#39;next if(/^#/ || /^\s/); print; &#39; | awk &#39;&#123;print $1&quot;\t&quot;$2&#125;&#39; &gt; sample.kmer.freq.stat.2colum</code></p>
+<ul>
+<li>sample.kmer.freq.stat.2colum文件包含两列数据，第一列是k-mer频数，第二列是频数对应的k-mer的种类数量。</li>
+<li>预期第二列数据是泊松分布，有明显峰值；频数最小的(比如小于5)的那几列对应的k-mer数量高是测序错误造成的，频数最大的那列对应的k-mer数量高是把所有大于该列的频数进行合计数量造成的，两端都可以忽略。</li>
+</ul>
+<h3 id="4-2-2-运行gce"><a href="#4-2-2-运行gce" class="headerlink" title="4.2.2. 运行gce"></a>4.2.2. 运行gce</h3><ol>
+<li>纯合模式</li>
+</ol>
+<p><code>gce -f sample.kmer.freq.stat.2colum -g 173854609857 &gt; gce.table 2&gt; gce.log</code></p>
+<ol start="2">
+<li>杂合模式</li>
+</ol>
+<p><code>gce -f sample.kmer.freq.stat.2colum -g 173854609857 -H 1 -c 75 &gt; gce2.table 2&gt; gce2.log</code></p>
+<ol start="3">
+<li>开发者建议</li>
+</ol>
+<p>对于不能判断纯合还是杂合的数据，可以先运行纯合模式，获得初始峰值(raw_peak)，即k-mer的期望深度，用作<code>-c</code>参数。</p>
+<p>然后再用<code>-c</code>参数和<code>-H 1</code>参数运行杂合模式。最后比较两种模式的结果，从而判断哪种更适用当前数据。</p>
+<h3 id="4-2-3-gce的参数"><a href="#4-2-3-gce的参数" class="headerlink" title="4.2.3. gce的参数"></a>4.2.3. gce的参数</h3><p>-f和-g是必需参数，其他都为可选参数。</p>
+<ul>
+<li>-f sample.freq.stat.2colum：k-mer频数分布表。</li>
+<li>-g 173854609857：k-mer片段总数，通过上面命令获取，或者查看kmer_freq.log获取。</li>
+<li>-H 1：默认是0。homozygous mode 纯合模式(0)，heterozgyous mode 杂合模式(1)。</li>
+<li>-c 75：独特的k-mer的期望深度，通过肉眼检查sample.gce.table的峰值获取。</li>
+<li>-b 1：有bias(1)，无(0)bias，默认是0。</li>
+<li>-m 1：评估模型，离散模型(0)，连续模型(1)，默认是0。</li>
+<li>-M 1500：设置最大深度，默认1500，大于1500的会被忽略。</li>
+<li>-D 1：期望值的精度，默认是1。</li>
+</ul>
+<h3 id="4-2-4-结果"><a href="#4-2-4-结果" class="headerlink" title="4.2.4. 结果"></a>4.2.4. 结果</h3><p>生成两个文件：<strong>gce.table</strong>和<strong>gce.log</strong>。gce.table保存了用于作图的数据，gce.log日志文件最后记录了基因组特征评估结果的统计。</p>
+<ol>
+<li>gce.log文件最后记录了如下内容：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">raw_peak        effective_kmer_species  effective_kmer_individuals      coverage_depth  genome_size     a[1]    b[1]</span><br><span class="line">75      742400596       168346645871    75.8021 2.22087e+09     0.663012        0.271515</span><br></pre></td></tr></table></figure>
+
+<p>含义：</p>
+<ul>
+<li>raw_peak： 覆盖度为 75 的 kmer 的种类数最多，为主峰。</li>
+<li>effective_kmer_species：真实的k-mer种类的总数(去除测序错误造成的低频k-mers)</li>
+<li>effective_kmer_individuals：真实的k-mer个体的总数(去除测序错误造成的低频k-mers)</li>
+<li>coverage_depth：估算出的真实k-mers的覆盖深度</li>
+<li>genome_size：基因组大小。</li>
+</ul>
+<p><strong>genome_size &#x3D; effective_kmer_individuals &#x2F; coverage_depth</strong></p>
+<ul>
+<li>a[1]： uniqe kmers (在基因组上仅出现 1 次的 kmer ) 的种类数占总种类数的比例。</li>
+<li>b[1]： uniqe kmers (在基因组上仅出现 1 次的 kmer ) 的个体数占总个体数的比例。该值代表着基因组上拷贝数为 1 的序列比例。</li>
+</ul>
+<ol start="2">
+<li>如果使用杂合模式<code>-H 1</code>，则会在gce.log文件最后额外得到下面信息：</li>
+</ol>
+<ul>
+<li>a[1&#x2F;2]：a[1&#x2F;2]&#x3D;0.223671表示在所有的 uniqe kmers 种类中，有 0.223671 比例的 kmer 属于杂合 kmer 。</li>
+<li>b[1&#x2F;2]：a[1&#x2F;2]&#x3D;0.326934 表示在所有的 uniqe kmers 个体中，有 0.326934 比例的 kmer 属于杂合 kmer 。<br>通过计算，还可以获得的信息：</li>
+<li>k-mer种类的杂合率 kmer-species heterozygous ratio &#x3D; 0.125918，0.125918 是由 a[1&#x2F;2] 计算出来的。</li>
+</ul>
+<p>$$0.125918 &#x3D; a[1&#x2F;2] &#x2F; （ 2- a[1&#x2F;2] )$$ </p>
+<ul>
+<li>重复序列的含量 &#x3D; $$1 - b[1&#x2F;2] - b[1]$$</li>
+</ul>
+<h1 id="5-references"><a href="#5-references" class="headerlink" title="5. references"></a>5. references</h1><ol>
+<li>GCE github：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/GCE">https://github.com/fanagislab/GCE</a></li>
+<li>kmerfreq：<a target="_blank" rel="noopener" href="https://github.com/fanagislab/kmerfreq">https://github.com/fanagislab/kmerfreq</a></li>
+<li>GCE paper：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1308.2012">https://arxiv.org/abs/1308.2012</a></li>
+<li>GCE blog：<a target="_blank" rel="noopener" href="http://www.chenlianfu.com/?p=2335">http://www.chenlianfu.com/?p=2335</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
+              <a href="/tags/genome/" rel="tag"># genome</a>
+              <a href="/tags/k-mer/" rel="tag"># k-mer</a>
+              <a href="/tags/GCE/" rel="tag"># GCE</a>
+              <a href="/tags/kmerfreq/" rel="tag"># kmerfreq</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/04/omics_genome.survey_05.GenomeScope/" rel="prev" title="用k-mer分析进行基因组调查：（五）用GenomeScope评估基因组特征">
+      <i class="fa fa-chevron-left"></i> 用k-mer分析进行基因组调查：（五）用GenomeScope评估基因组特征
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/06/15/bioinfo_fileformat_gb2tbl/" rel="next" title="转换GenBank文件为tbl格式，为提交注释做准备">
+      转换GenBank文件为tbl格式，为提交注释做准备 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-k-mer%E8%BF%9B%E8%A1%8C%E5%9F%BA%E5%9B%A0%E7%BB%84%E8%B0%83%E6%9F%A5%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">1. k-mer进行基因组调查的软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GCE-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. GCE 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-GCE-%E5%AE%89%E8%A3%85"><span class="nav-text">3. GCE 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-GCE-%E4%B8%8B%E8%BD%BD"><span class="nav-text">3.1. GCE 下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-GCE-%E5%AE%89%E8%A3%85"><span class="nav-text">3.2. GCE 安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-GCE-%E8%BF%90%E8%A1%8C"><span class="nav-text">4. GCE 运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-k-mer%E9%A2%91%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="nav-text">4.1. k-mer频数统计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E8%BF%90%E8%A1%8C"><span class="nav-text">4.1.1. 运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6"><span class="nav-text">4.1.2. 输出文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%89%B9%E5%BE%81%E8%AF%84%E4%BC%B0"><span class="nav-text">4.2. 基因组特征评估</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-text">4.2.1. 获取参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E8%BF%90%E8%A1%8Cgce"><span class="nav-text">4.2.2. 运行gce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-3-gce%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-text">4.2.3. gce的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-4-%E7%BB%93%E6%9E%9C"><span class="nav-text">4.2.4. 结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-references"><span class="nav-text">5. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

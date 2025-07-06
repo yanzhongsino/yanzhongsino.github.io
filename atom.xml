@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-05-12T08:29:55.222Z</updated>
+  <updated>2025-07-06T00:15:33.828Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,9 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux系统中所有环境变量失效的修复方案</title>
+    <link href="http://example.com/2025/07/04/linux_basics_PATH_correction/"/>
+    <id>http://example.com/2025/07/04/linux_basics_PATH_correction/</id>
+    <published>2025-07-04T16:00:00.000Z</published>
+    <updated>2025-07-06T00:15:33.828Z</updated>
+    
+    
+    <summary type="html">Linux系统下环境变量PATH设置错误导致所有环境变量异常，所有命令失效，记录修复方案。</summary>
+    
+    
+    
+    <category term="linux" scheme="http://example.com/categories/linux/"/>
+    
+    <category term="basics" scheme="http://example.com/categories/linux/basics/"/>
+    
+    <category term="PATH" scheme="http://example.com/categories/linux/basics/PATH/"/>
+    
+    
+    <category term="linux" scheme="http://example.com/tags/linux/"/>
+    
+    <category term="PATH" scheme="http://example.com/tags/PATH/"/>
+    
+  </entry>
+  
+  <entry>
     <title>加拿大工作签证办理流程：LMIA-Exempt Work Permit</title>
-    <link href="http://example.com/2025/04/15/affair_Canada_visa/"/>
-    <id>http://example.com/2025/04/15/affair_Canada_visa/</id>
+    <link href="http://example.com/2025/04/14/affair_Canada_visa/"/>
+    <id>http://example.com/2025/04/14/affair_Canada_visa/</id>
     <published>2025-04-14T16:00:00.000Z</published>
     <updated>2025-05-12T08:29:55.222Z</updated>
     
@@ -47,8 +72,8 @@
   
   <entry>
     <title>用GetOrganelle组装细胞器基因组或核基因组的核糖体RNA序列</title>
-    <link href="http://example.com/2024/12/12/omics_organelle_assembly_GetOrganelle/"/>
-    <id>http://example.com/2024/12/12/omics_organelle_assembly_GetOrganelle/</id>
+    <link href="http://example.com/2024/12/11/omics_organelle_assembly_GetOrganelle/"/>
+    <id>http://example.com/2024/12/11/omics_organelle_assembly_GetOrganelle/</id>
     <published>2024-12-11T16:00:00.000Z</published>
     <updated>2024-12-12T14:01:45.393Z</updated>
     
@@ -94,8 +119,8 @@
   
   <entry>
     <title>细胞器基因组组装过程中常用软件Bandage的操作</title>
-    <link href="http://example.com/2024/12/10/omics_organelle_assembly_Bandage.operation/"/>
-    <id>http://example.com/2024/12/10/omics_organelle_assembly_Bandage.operation/</id>
+    <link href="http://example.com/2024/12/09/omics_organelle_assembly_Bandage.operation/"/>
+    <id>http://example.com/2024/12/09/omics_organelle_assembly_Bandage.operation/</id>
     <published>2024-12-09T16:00:00.000Z</published>
     <updated>2024-12-10T09:59:44.565Z</updated>
     
@@ -120,50 +145,9 @@
   </entry>
   
   <entry>
-    <title>提交原始测序数据到NCBI的GenBank</title>
-    <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/"/>
-    <id>http://example.com/2024/12/06/NCBI_GenBank_submit_SRA/</id>
-    <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-15T06:46:31.552Z</updated>
-    
-    
-    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</summary>
-    
-    
-    
-    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
-    
-    <category term="GenBank" scheme="http://example.com/categories/NCBI/GenBank/"/>
-    
-    <category term="submit" scheme="http://example.com/categories/NCBI/GenBank/submit/"/>
-    
-    <category term="SRA" scheme="http://example.com/categories/NCBI/GenBank/submit/SRA/"/>
-    
-    
-    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
-    
-    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
-    
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
-    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-  </entry>
-  
-  <entry>
     <title>提交核苷酸序列到NCBI的GenBank的介绍</title>
-    <link href="http://example.com/2024/12/06/NCBI_GenBank_submit_intro/"/>
-    <id>http://example.com/2024/12/06/NCBI_GenBank_submit_intro/</id>
+    <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_intro/"/>
+    <id>http://example.com/2024/12/05/NCBI_GenBank_submit_intro/</id>
     <published>2024-12-05T16:00:00.000Z</published>
     <updated>2024-12-15T14:40:19.870Z</updated>
     
@@ -185,17 +169,15 @@
     
     <category term="submit" scheme="http://example.com/tags/submit/"/>
     
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    
+    <category term="NLM" scheme="http://example.com/tags/NLM/"/>
+    
     <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
     
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
-    
-    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
-    
-    <category term="NLM" scheme="http://example.com/tags/NLM/"/>
     
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
     
@@ -207,12 +189,55 @@
     
     <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
     
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>提交原始测序数据到NCBI的GenBank</title>
+    <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_SRA/"/>
+    <id>http://example.com/2024/12/05/NCBI_GenBank_submit_SRA/</id>
+    <published>2024-12-05T16:00:00.000Z</published>
+    <updated>2024-12-15T06:46:31.552Z</updated>
+    
+    
+    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到GenBank的步骤。</summary>
+    
+    
+    
+    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
+    
+    <category term="GenBank" scheme="http://example.com/categories/NCBI/GenBank/"/>
+    
+    <category term="submit" scheme="http://example.com/categories/NCBI/GenBank/submit/"/>
+    
+    <category term="SRA" scheme="http://example.com/categories/NCBI/GenBank/submit/SRA/"/>
+    
+    
+    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
+    
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
+    
+    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
+    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
   </entry>
   
   <entry>
     <title>二代测序数据的前处理</title>
-    <link href="http://example.com/2024/11/26/omics_genome.sequencing_NGS_data.preprocessing/"/>
-    <id>http://example.com/2024/11/26/omics_genome.sequencing_NGS_data.preprocessing/</id>
+    <link href="http://example.com/2024/11/25/omics_genome.sequencing_NGS_data.preprocessing/"/>
+    <id>http://example.com/2024/11/25/omics_genome.sequencing_NGS_data.preprocessing/</id>
     <published>2024-11-25T16:00:00.000Z</published>
     <updated>2024-11-27T02:49:27.336Z</updated>
     
@@ -234,9 +259,9 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="fastq" scheme="http://example.com/tags/fastq/"/>
     
@@ -270,8 +295,8 @@
   
   <entry>
     <title>用SPAdes对Illumina二代测序数据进行基因组预组装</title>
-    <link href="http://example.com/2024/11/05/omics_genome.assembly_NGS_SPAdes/"/>
-    <id>http://example.com/2024/11/05/omics_genome.assembly_NGS_SPAdes/</id>
+    <link href="http://example.com/2024/11/04/omics_genome.assembly_NGS_SPAdes/"/>
+    <id>http://example.com/2024/11/04/omics_genome.assembly_NGS_SPAdes/</id>
     <published>2024-11-04T16:00:00.000Z</published>
     <updated>2024-11-05T08:52:05.408Z</updated>
     
@@ -303,8 +328,8 @@
   
   <entry>
     <title>用RSEM进行转录本定量分析</title>
-    <link href="http://example.com/2024/10/28/omics_transcriptome_expression_RSEM/"/>
-    <id>http://example.com/2024/10/28/omics_transcriptome_expression_RSEM/</id>
+    <link href="http://example.com/2024/10/27/omics_transcriptome_expression_RSEM/"/>
+    <id>http://example.com/2024/10/27/omics_transcriptome_expression_RSEM/</id>
     <published>2024-10-27T16:00:00.000Z</published>
     <updated>2024-10-30T08:49:33.854Z</updated>
     
@@ -336,8 +361,8 @@
   
   <entry>
     <title>用Trinity的脚本进行转录本定量分析</title>
-    <link href="http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
-    <id>http://example.com/2024/10/28/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
+    <link href="http://example.com/2024/10/27/omics_transcriptome_expression_Trinity.estimat.abundance/"/>
+    <id>http://example.com/2024/10/27/omics_transcriptome_expression_Trinity.estimat.abundance/</id>
     <published>2024-10-27T16:00:00.000Z</published>
     <updated>2024-10-30T08:49:12.756Z</updated>
     
@@ -371,8 +396,8 @@
   
   <entry>
     <title>用miniprot做蛋白序列和基因组序列间的比对</title>
-    <link href="http://example.com/2024/09/30/bioinfo_alignment_prot_miniprot/"/>
-    <id>http://example.com/2024/09/30/bioinfo_alignment_prot_miniprot/</id>
+    <link href="http://example.com/2024/09/29/bioinfo_alignment_prot_miniprot/"/>
+    <id>http://example.com/2024/09/29/bioinfo_alignment_prot_miniprot/</id>
     <published>2024-09-29T16:00:00.000Z</published>
     <updated>2024-10-09T02:43:39.100Z</updated>
     
@@ -396,8 +421,8 @@
   
   <entry>
     <title>用PlantTribes做直系同源推断</title>
-    <link href="http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/"/>
-    <id>http://example.com/2024/09/19/bioinfo_orthology.inference_PlantTribes/</id>
+    <link href="http://example.com/2024/09/18/bioinfo_orthology.inference_PlantTribes/"/>
+    <id>http://example.com/2024/09/18/bioinfo_orthology.inference_PlantTribes/</id>
     <published>2024-09-18T16:00:00.000Z</published>
     <updated>2024-11-15T08:12:14.778Z</updated>
     
@@ -423,8 +448,8 @@
   
   <entry>
     <title>进化树处理和可视化工具Newick Utilities</title>
-    <link href="http://example.com/2024/08/30/bio_evolution_tree_NewickUtilities/"/>
-    <id>http://example.com/2024/08/30/bio_evolution_tree_NewickUtilities/</id>
+    <link href="http://example.com/2024/08/29/bio_evolution_tree_NewickUtilities/"/>
+    <id>http://example.com/2024/08/29/bio_evolution_tree_NewickUtilities/</id>
     <published>2024-08-29T16:00:00.000Z</published>
     <updated>2024-08-30T10:10:07.238Z</updated>
     
@@ -456,8 +481,8 @@
   
   <entry>
     <title>多序列比对的整体可视化</title>
-    <link href="http://example.com/2024/08/02/bioinfo_alignment_align_MSA_visualization/"/>
-    <id>http://example.com/2024/08/02/bioinfo_alignment_align_MSA_visualization/</id>
+    <link href="http://example.com/2024/08/01/bioinfo_alignment_align_MSA_visualization/"/>
+    <id>http://example.com/2024/08/01/bioinfo_alignment_align_MSA_visualization/</id>
     <published>2024-08-01T16:00:00.000Z</published>
     <updated>2024-08-30T10:25:30.153Z</updated>
     
@@ -491,8 +516,8 @@
   
   <entry>
     <title>用Hifiasm组装基因组：（四）用Hifiasm软件组装基因组的操作</title>
-    <link href="http://example.com/2024/06/22/omics_genome.assembly_TGS_Hifiasm_04.operate/"/>
-    <id>http://example.com/2024/06/22/omics_genome.assembly_TGS_Hifiasm_04.operate/</id>
+    <link href="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_04.operate/"/>
+    <id>http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_04.operate/</id>
     <published>2024-06-21T16:00:00.000Z</published>
     <updated>2024-06-22T02:56:38.824Z</updated>
     
@@ -526,8 +551,8 @@
   
   <entry>
     <title>用Hifiasm组装基因组：（三）Hifiasm软件组装基因组的多种模式</title>
-    <link href="http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_03.modes/"/>
-    <id>http://example.com/2024/06/21/omics_genome.assembly_TGS_Hifiasm_03.modes/</id>
+    <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/"/>
+    <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/</id>
     <published>2024-06-20T16:00:00.000Z</published>
     <updated>2024-06-21T02:35:19.187Z</updated>
     
@@ -563,8 +588,8 @@
   
   <entry>
     <title>用Hifiasm组装基因组：（二）Hifiasm软件的算法</title>
-    <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/"/>
-    <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_02.algorithm/</id>
+    <link href="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_02.algorithm/"/>
+    <id>http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_02.algorithm/</id>
     <published>2024-06-19T16:00:00.000Z</published>
     <updated>2024-06-21T02:19:01.791Z</updated>
     
@@ -598,8 +623,8 @@
   
   <entry>
     <title>用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据</title>
-    <link href="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/"/>
-    <id>http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_01.intro/</id>
+    <link href="http://example.com/2024/06/18/omics_genome.assembly_TGS_Hifiasm_01.intro/"/>
+    <id>http://example.com/2024/06/18/omics_genome.assembly_TGS_Hifiasm_01.intro/</id>
     <published>2024-06-18T16:00:00.000Z</published>
     <updated>2024-06-20T13:06:39.738Z</updated>
     
@@ -633,8 +658,8 @@
   
   <entry>
     <title>正交和反交在遗传学中的应用</title>
-    <link href="http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/"/>
-    <id>http://example.com/2024/06/18/bio_genetics_hybridization_reciprocal.cross/</id>
+    <link href="http://example.com/2024/06/17/bio_genetics_hybridization_reciprocal.cross/"/>
+    <id>http://example.com/2024/06/17/bio_genetics_hybridization_reciprocal.cross/</id>
     <published>2024-06-17T16:00:00.000Z</published>
     <updated>2024-06-18T04:33:07.449Z</updated>
     
@@ -660,8 +685,8 @@
   
   <entry>
     <title>linux系统的压缩/解压缩和打包/解包工具</title>
-    <link href="http://example.com/2024/06/18/linux_command_compress/"/>
-    <id>http://example.com/2024/06/18/linux_command_compress/</id>
+    <link href="http://example.com/2024/06/17/linux_command_compress/"/>
+    <id>http://example.com/2024/06/17/linux_command_compress/</id>
     <published>2024-06-17T16:00:00.000Z</published>
     <updated>2024-06-18T04:15:58.823Z</updated>
     
@@ -692,39 +717,6 @@
     <category term="zip" scheme="http://example.com/tags/zip/"/>
     
     <category term="rar" scheme="http://example.com/tags/rar/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python脚本中字符串内的引号需要转义</title>
-    <link href="http://example.com/2024/06/05/python_syntax_string_quetos/"/>
-    <id>http://example.com/2024/06/05/python_syntax_string_quetos/</id>
-    <published>2024-06-04T16:00:00.000Z</published>
-    <updated>2024-06-05T09:24:04.866Z</updated>
-    
-    
-    <summary type="html">记录使用python脚本时发现的一个语法错误。</summary>
-    
-    
-    
-    <category term="programming" scheme="http://example.com/categories/programming/"/>
-    
-    <category term="python" scheme="http://example.com/categories/programming/python/"/>
-    
-    <category term="syntax" scheme="http://example.com/categories/programming/python/syntax/"/>
-    
-    <category term="string" scheme="http://example.com/categories/programming/python/syntax/string/"/>
-    
-    
-    <category term="python" scheme="http://example.com/tags/python/"/>
-    
-    <category term="syntax" scheme="http://example.com/tags/syntax/"/>
-    
-    <category term="error" scheme="http://example.com/tags/error/"/>
-    
-    <category term="quotes" scheme="http://example.com/tags/quotes/"/>
-    
-    <category term="string" scheme="http://example.com/tags/string/"/>
     
   </entry>
   

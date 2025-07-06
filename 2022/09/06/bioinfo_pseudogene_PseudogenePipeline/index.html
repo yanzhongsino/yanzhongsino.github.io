@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录用PseudogenePipeline软件鉴定全基因组范围内的假基因，并解析结果，简要记录了后续假基因和对应真基因的Ks计算，以及与WGD的关系的分析。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用PseudogenePipeline鉴定假基因及后续分析">
+<meta property="og:url" content="http://example.com/2022/09/06/bioinfo_pseudogene_PseudogenePipeline/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录用PseudogenePipeline软件鉴定全基因组范围内的假基因，并解析结果，简要记录了后续假基因和对应真基因的Ks计算，以及与WGD的关系的分析。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2022-09-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-15T03:51:54.715Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="Ks">
+<meta property="article:tag" content="pseudogene">
+<meta property="article:tag" content="PseudogenePipeline">
+<meta property="article:tag" content="假基因">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2022/09/06/bioinfo_pseudogene_PseudogenePipeline/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用PseudogenePipeline鉴定假基因及后续分析 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/06/bioinfo_pseudogene_PseudogenePipeline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用PseudogenePipeline鉴定假基因及后续分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-09-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-09-07T00:00:00+08:00">2022-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-15 11:51:54" itemprop="dateModified" datetime="2024-06-15T11:51:54+08:00">2024-06-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/" itemprop="url" rel="index"><span itemprop="name">bioinfo</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bioinfo/pseudogene/" itemprop="url" rel="index"><span itemprop="name">pseudogene</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>11 mins.</span>
+            </span>
+            <div class="post-description">记录用PseudogenePipeline软件鉴定全基因组范围内的假基因，并解析结果，简要记录了后续假基因和对应真基因的Ks计算，以及与WGD的关系的分析。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=95370&auto=1&height=32"></iframe></div>
+
+<h1 id="1-假基因"><a href="#1-假基因" class="headerlink" title="1. 假基因"></a>1. 假基因</h1><p>假基因(pseudogene)是类似与功能基因的非功能性DNA片段。大多数是功能基因的多余拷贝，通常是由于移码突变或提前的终止密码子被鉴定为假基因。</p>
+<p>由于可能含有启动子元件，假基因有可能产生低水平的转录生成RNA，但通常无法产生功能性的最终蛋白产物。</p>
+<h1 id="2-PseudogenePipeline-简介"><a href="#2-PseudogenePipeline-简介" class="headerlink" title="2. PseudogenePipeline 简介"></a>2. PseudogenePipeline 简介</h1><p>PseudogenePipeline是Shiulab开发的一个鉴定假基因的流程包，v1.0.0版本基于python2，v2.0.0版本基于python3。</p>
+<h1 id="3-PseudogenePipeline-原理"><a href="#3-PseudogenePipeline-原理" class="headerlink" title="3. PseudogenePipeline 原理"></a>3. PseudogenePipeline 原理</h1><p>在基因组未被注释到基因的区域（基因间隔区）查找与基因相似的片段，大多是没有完整ORF区域或者基因的片段。使用tblastn进行基因转录翻译生成的氨基酸序列和基因组上基因间隔区的比对。</p>
+<h1 id="4-PseudogenePipeline-安装"><a href="#4-PseudogenePipeline-安装" class="headerlink" title="4. PseudogenePipeline 安装"></a>4. PseudogenePipeline 安装</h1><h2 id="4-1-依赖-requirements"><a href="#4-1-依赖-requirements" class="headerlink" title="4.1. 依赖-requirements"></a>4.1. 依赖-requirements</h2><ol>
+<li>python</li>
+<li>RepeatMasker</li>
+<li>tfasty：是fasta36包的一部分，version 36及以上 （<a target="_blank" rel="noopener" href="https://faculty.virginia.edu/wrpearson/fasta/%EF%BC%89%EF%BC%8C%E5%AE%9E%E6%B5%8B%E7%94%A8%E7%9A%84fasta-36.3.8h%E7%89%88%E6%9C%AC%E3%80%82%E4%B8%8B%E8%BD%BD%E8%A7%A3%E5%8E%8B%E5%8D%B3%E5%8F%AF%E3%80%82">https://faculty.virginia.edu/wrpearson/fasta/），实测用的fasta-36.3.8h版本。下载解压即可。</a></li>
+</ol>
+<h2 id="4-2-下载"><a href="#4-2-下载" class="headerlink" title="4.2. 下载"></a>4.2. 下载</h2><p>在 <a target="_blank" rel="noopener" href="https://github.com/ShiuLab/PseudogenePipeline">https://github.com/ShiuLab/PseudogenePipeline</a> 直接下载PseudogenePipeline，是python脚本包，无需安装即可使用。</p>
+<h1 id="5-PseudogenePipeline-使用"><a href="#5-PseudogenePipeline-使用" class="headerlink" title="5. PseudogenePipeline 使用"></a>5. PseudogenePipeline 使用</h1><h2 id="5-1-文件准备"><a href="#5-1-文件准备" class="headerlink" title="5.1. 文件准备"></a>5.1. 文件准备</h2><p>文件包括：</p>
+<ol>
+<li>genome.fa：基因组文件，建议用repeats.gff为基因组的重复序列做mask后使用genome.repeatmask.fa，以减少计算量</li>
+<li>sample.protein.fa：注释的基因对应的蛋白组</li>
+<li>tblastn.out：genome.repeatmask.fa和sample.protein.fa进行tblastn获得的输出文件</li>
+<li>sample.gff3：基因组的蛋白编码基因注释文件，有具体的格式要求</li>
+</ol>
+<h3 id="5-1-1-genome-mask文件"><a href="#5-1-1-genome-mask文件" class="headerlink" title="5.1.1. genome mask文件"></a>5.1.1. genome mask文件</h3><p>用注释的重复序列repeats.gff为基因组做genome mask，把重复序列所在位置的序列替换成N，减少假基因注释的计算量。获得masked的基因组文件genome.repeatmask.fa。</p>
+<h3 id="5-1-2-tblastn-out文件"><a href="#5-1-2-tblastn-out文件" class="headerlink" title="5.1.2. tblastn.out文件"></a>5.1.2. tblastn.out文件</h3><p>用<code>tblastn</code>为mask的基因组和注释的基因组蛋白序列做比对，比对结果用作PseudogenePipeline的输入。</p>
+<ol>
+<li>运行</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">makeblastdb -in genome.repeatmask.fa -dbtype nucl -out sample # 建库</span><br><span class="line">tblastn -db dample -query sample.proteins.fa -num_threads 4 -out tblastn.out -outfmt 6 # tblastn比对，输出tblastn.out</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>notes</li>
+</ol>
+<ul>
+<li>可能由于基因组大(6G)，多线程会中断，只能单线程，可以把蛋白文件sample.proteins.fa切分成多份，分别单线程tblastn，然后把结果合并。</li>
+<li>注意蛋白文件和基因组文件的序列id不能有空格，否则自动去除空格和空格后内容。</li>
+</ul>
+<h3 id="5-1-3-sample-gff3文件"><a href="#5-1-3-sample-gff3文件" class="headerlink" title="5.1.3. sample.gff3文件"></a>5.1.3. sample.gff3文件</h3><p>gff3文件格式类似普通的gff3格式，共九列。但有很具体的要求，主要是对第九列内容的要求，可参照软件给的例子进行增添修改以符合要求。</p>
+<p>具体格式要求：</p>
+<ul>
+<li>gene行，第九列包含<code>Name=信息</code>，值可与<code>ID=信息</code>一致</li>
+<li>mRNA行，第九列包含<code>longest=1</code>或者<code>longest=0</code>信息，用于可变剪切筛选，1代表最长可变剪切，0代表非最长可变剪切。</li>
+<li>mRNA,exon,CDS,UTR行，第九列都包含<code>pacid=信息</code>，值可与<code>Parent=信息</code>一致，一个gene内部的所有pacid值应相同。</li>
+</ul>
+<h2 id="5-2-用PseudogenePipeline鉴定假基因"><a href="#5-2-用PseudogenePipeline鉴定假基因" class="headerlink" title="5.2. 用PseudogenePipeline鉴定假基因"></a>5.2. 用PseudogenePipeline鉴定假基因</h2><ol>
+<li>参数文件parameter_file示例</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">b_out=/path/to/tblastn.out # 前面准备的tblastn.out文件，&lt;tblastn_output_file&gt;</span><br><span class="line">p_seq=/path/to/sample.proteins.fa # 蛋白序列，&lt;protein_sequence_FASTA_file&gt;</span><br><span class="line">g_seq=/genome.repeatmask.fa # 基因组序列（最好是mask过的） &lt;genome_sequence_FASTA_File&gt;</span><br><span class="line">b_filter=y # 是否做blastout的filter，&lt;filter blastouput? y/n&gt;</span><br><span class="line">b_data=tabular # &lt;define type of blastdata: tabular, blastall, blastplus&gt;</span><br><span class="line">p_codes=/path/to/PseudogenePipeline-master/_pipeline_scripts #&lt;path to ../_pipeline_scripts&gt;</span><br><span class="line">o_codes=/path/to/PseudogenePipeline-master/_pipeline_scripts #&lt;path to ../_pipeline_scripts&gt;</span><br><span class="line">f_dir=/path/to/fasta-36.3.8h/bin #&lt;path to FASTA package install&gt;</span><br><span class="line">f_prog=tfasty36 #&lt;tfasty program name&gt;</span><br><span class="line">blosum=/path/to/PseudogenePipeline-master/_example_files/blosum50.matrix #&lt;path to blosum matrilx file&gt;</span><br><span class="line">gff=/path/to/sample.gff3 # gff3注释文件 &lt;gff_file&gt;</span><br><span class="line">repCut=300 #&lt;RepeatMasker cutoff; integer, recommended 300&gt;</span><br><span class="line">repDiv=30 #&lt;RepeatMakser divergence; integer, recommended 30&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行</li>
+</ol>
+<ul>
+<li><code>python2 PseudogenePipeline-master/_wrapper_scripts/CombinedPseudoWrapper.py parameter_file</code></li>
+</ul>
+<h2 id="5-3-PseudogenePipeline运行结果"><a href="#5-3-PseudogenePipeline运行结果" class="headerlink" title="5.3. PseudogenePipeline运行结果"></a>5.3. PseudogenePipeline运行结果</h2><h3 id="5-3-1-结果文件"><a href="#5-3-1-结果文件" class="headerlink" title="5.3.1. 结果文件"></a>5.3.1. 结果文件</h3><p>在生成的结果目录result下，保存了结果文件，包括三个文件夹。result&#x2F;_intermediate保存着中间文件，result&#x2F;_logs保存着log文件，result&#x2F;_results保存着高置信并通过RepeatMasker过滤的鉴定出来的假基因结果文件。</p>
+<h4 id="5-3-1-1-results文件夹中的文件"><a href="#5-3-1-1-results文件夹中的文件" class="headerlink" title="5.3.1.1. _results文件夹中的文件"></a>5.3.1.1. _results文件夹中的文件</h4><p>result&#x2F;_results中的结果文件包括以下文件，每个文件第一行都是以<code>#python</code>开始的生成此文件的命令，其余行才保存了假基因的信息：</p>
+<ol>
+<li>sample.4col.true.RMfilt.hiConf</li>
+</ol>
+<ul>
+<li>第一行<code>#python</code>开头的是生成此文件运行的命令。</li>
+<li>其余行是假基因和位置信息，共四列。第一列是假基因对应的真基因的ID（gene38168）加上假基因位置信息（ctg947|625093-625785）加上其他比对信息，分号分隔；第二列是染色体ID；第三第四列是start和end的坐标。</li>
+<li><code>gene38168;ctg947|625093-625785;336-566:693-4;4|0|0|0</code>表示在染色体<code>ctg947</code>的<code>625093-625785</code>位置有一个假基因pseudogene。</li>
+<li>对应的真基因是<code>gene38168</code>；<code>336-566</code>和<code>693-4</code>分别是指真基因序列和假基因序列比对上的区域；比对的信息是从tblastn的比对结果中获取的。</li>
+<li>真基因<code>gene38168</code>的<strong>氨基酸</strong>序列的<code>336-566</code>位置。</li>
+<li>假基因的<code>693-4</code>位置是指在染色体<code>ctg947</code>的<code>625093-625785</code>位置的假基因核酸序列上的第4到693个碱基，由于起始位置比终止位置大，所以是4-693位置的反向互补序列。</li>
+<li>下面是文件的部分内容。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gene38168;ctg947|625093-625785;336-566:693-4;4|0|0|0	ctg947	625785	625096</span><br><span class="line">gene04393;ctg8706|272998-273192;228-290:190-4;2|0|1|0	ctg8706	273187	273001</span><br><span class="line">gene10546;ctg5903|105682-105807;115-156:126-4;1|0|0|0	ctg5903	105807	105685</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>sample.4col.true.RMfilt.hiConf.cdnm</li>
+</ol>
+<ul>
+<li>同文件sample.4col.true.RMfilt.hiConf的内容基本一致，区别在于第一列的内容，这里是假基因ID（Ps000001）和对应的真基因ID（gene38168）。</li>
+<li>第一行<code>#python</code>开头的是生成此文件运行的命令。</li>
+<li>其余行是假基因和位置信息，共四列。</li>
+<li>下面是文件的部分内容。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ps000001_gene38168	ctg947	625785	625096</span><br><span class="line">Ps000003_gene04393	ctg8706	273187	273001</span><br><span class="line">Ps000004_gene10546	ctg5903	105807	105685</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>sample.4col.true.RMfilt.hiConf.cdnm.gff</li>
+</ol>
+<ul>
+<li>第一行<code>#python</code>开头的是生成此文件运行的命令。</li>
+<li>其余行是假基因的注释信息，gff格式，共九列。</li>
+<li>下面是文件的部分内容。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ctg947	ShiuLab	pseudogene	625096	625785	.	-	.	ID=Ps000001;Name=Ps000001_gene38168;Derives_from=gene38168;Note=pseudogene_evidence_code_4,0,0,0</span><br><span class="line">ctg8706	ShiuLab	pseudogene	273001	273187	.	-	.	ID=Ps000003;Name=Ps000003_gene04393;Derives_from=gene04393;Note=pseudogene_evidence_code_2,0,1,0</span><br><span class="line">ctg5903	ShiuLab	pseudogene	105685	105807	.	-	.	ID=Ps000004;Name=Ps000004_evm.model.ctg10546.26;Derives_from=gene10546;Note=pseudogene_evidence_code_1,0,0,0</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>sample.4col.true.fa.RMfilt.hiConf</li>
+</ol>
+<ul>
+<li>第一行<code>#python</code>开头的是生成此文件运行的命令。</li>
+<li>其余行是假基因的序列信息，fasta格式，序列ID是假基因对应的真基因的ID（gene38168）加上假基因位置信息（ctg947|625093-625785）加上其他比对信息，分号分隔。序列ID同文件sample.4col.true.RMfilt.hiConf的第一列内容一致。</li>
+<li>下面是文件的部分内容。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;gene38168;ctg947|625093-625785;336-566:693-4;4|0|0|0</span><br><span class="line">TTGCAGGTTGCAATTTTGATGTCCAAGGACCAAGCACTATATTACGCATGGTTGTTCTCCCTAATAATTTATGAATTACTTAGAAAACCTACCTTGCGCAATGTAGAAGCGTTAGTGCAAACATGGCTCCGTGTCACACAATGCATGTCACGGTCAATTAACTTTAAGAAGGTAGCAAATCGTAAAAGGAGTTGGGAGCGTAGGAGAGCATGAGCTTATCCATGACCCCAGAGGTTTCTTGAGTGCTTTTTGTTGAGTGCATATAATGCAAACATGTTCAAATGTCGCTTGTGAGTGAGTAGAGAAACCTTCCAATACGTATGTGGCAAGGTCTCTCTTGCAATGAAGAAGGTGAGCACAAACATGCGTGTTCCACTTAGTATGGAAACAAAACTGGCAATAGCTCTCAGTAGGCTAGCTTTAGGTGCAGGGCTTGAGATGTTGGGTGGTTTGCATGGCTGTGCAAAGAGCACAAGTTGTAAAGTAGTGATTGATTTTTGTAAGGCAATTGTTACATCAGGTCTTAGGGATTTGTACATTAGGTGGCCTGCCCTCTCATGGCTAGAGACACTAGCAAGTGAGTTTCAAGCTTCAAGATGCATCCCCTTTGTTGCTAGAGCCATAGACAGTTCTCACATCCCTATCATCGCCCCAAGAGACAATCACGTAGATTATTTCAATTGAAAAGGG</span><br><span class="line">&gt;gene04393;ctg8706|272998-273192;228-290:190-4;2|0|1|0</span><br><span class="line">TATATGTCGTGATATCACAGCAATCAATCTATCATTAGAGAACTTAGATGATTTGTATAAGGTGTGTGGGTTCATACATGGCTTGGACATGAAGTACAAGCACAACATACGTACTCAAAACCCCAAAGACCCCATAGATGCTATTTAAGGTTCTCAAATCTATAATGACTCTCTTGATAAGAGGAGC</span><br><span class="line">&gt;gene10546;ctg5903|105682-105807;115-156:126-4;1|0|0|0</span><br><span class="line">GGCATGGATGATGACCAATTTCTTTCTTTCTTGGACCTCAAGCAGAGGAGGTGGTATGAGGACCGCCATTGCTCCAAAGCATAGTCACGTTGTTCCACTCCTTCAGAGTCTCCAACTGCTTTG</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>sample.4col.true.fa.RMfilt.hiConf.cdnm</li>
+</ol>
+<ul>
+<li>第一行<code>#python</code>开头的是生成此文件运行的命令。</li>
+<li>其余行是假基因的序列信息，fasta格式，序列ID是假基因ID（Ps000001）和对应的真基因ID（gene38168）。序列ID同文件sample.4col.true.RMfilt.hiConf.cdnm的第一列内容一致。</li>
+<li>下面是文件的部分内容。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;Ps000001_gene38168</span><br><span class="line">TTGCAGGTTGCAATTTTGATGTCCAAGGACCAAGCACTATATTACGCATGGTTGTTCTCCCTAATAATTTATGAATTACTTAGAAAACCTACCTTGCGCAATGTAGAAGCGTTAGTGCAAACATGGCTCCGTGTCACACAATGCATGTCACGGTCAATTAACTTTAAGAAGGTAGCAAATCGTAAAAGGAGTTGGGAGCGTAGGAGAGCATGAGCTTATCCATGACCCCAGAGGTTTCTTGAGTGCTTTTTGTTGAGTGCATATAATGCAAACATGTTCAAATGTCGCTTGTGAGTGAGTAGAGAAACCTTCCAATACGTATGTGGCAAGGTCTCTCTTGCAATGAAGAAGGTGAGCACAAACATGCGTGTTCCACTTAGTATGGAAACAAAACTGGCAATAGCTCTCAGTAGGCTAGCTTTAGGTGCAGGGCTTGAGATGTTGGGTGGTTTGCATGGCTGTGCAAAGAGCACAAGTTGTAAAGTAGTGATTGATTTTTGTAAGGCAATTGTTACATCAGGTCTTAGGGATTTGTACATTAGGTGGCCTGCCCTCTCATGGCTAGAGACACTAGCAAGTGAGTTTCAAGCTTCAAGATGCATCCCCTTTGTTGCTAGAGCCATAGACAGTTCTCACATCCCTATCATCGCCCCAAGAGACAATCACGTAGATTATTTCAATTGAAAAGGG</span><br><span class="line">&gt;Ps000003_gene04393</span><br><span class="line">TATATGTCGTGATATCACAGCAATCAATCTATCATTAGAGAACTTAGATGATTTGTATAAGGTGTGTGGGTTCATACATGGCTTGGACATGAAGTACAAGCACAACATACGTACTCAAAACCCCAAAGACCCCATAGATGCTATTTAAGGTTCTCAAATCTATAATGACTCTCTTGATAAGAGGAGC</span><br><span class="line">&gt;Ps000004_gene10546</span><br><span class="line">GGCATGGATGATGACCAATTTCTTTCTTTCTTGGACCTCAAGCAGAGGAGGTGGTATGAGGACCGCCATTGCTCCAAAGCATAGTCACGTTGTTCCACTCCTTCAGAGTCTCCAACTGCTTTG</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-3-1-2-intermediate文件夹中的文件"><a href="#5-3-1-2-intermediate文件夹中的文件" class="headerlink" title="5.3.1.2. _intermediate文件夹中的文件"></a>5.3.1.2. _intermediate文件夹中的文件</h4><p><code>result/_intermediate</code>中的结果文件包括以下文件，许多文件第一行都是以<code>#python</code>开始的生成此文件的命令，其余行才保存了信息：</p>
+<ol>
+<li>sample.fullyFiltered.disable_count</li>
+</ol>
+<ul>
+<li>第一行都是以<code>#python</code>开始的生成此文件的命令</li>
+<li>保存着假基因和对应真基因的氨基酸的比对好的序列</li>
+</ul>
+<ol start="2">
+<li>sample.fullyFiltered.disable_count.RMfilt</li>
+</ol>
+<ul>
+<li>前两行都是以<code>#python</code>开始的生成此文件的命令</li>
+<li>保存着假基因和对应真基因的氨基酸的比对好的序列</li>
+</ul>
+<h3 id="5-3-2-notes"><a href="#5-3-2-notes" class="headerlink" title="5.3.2. notes"></a>5.3.2. notes</h3><ul>
+<li>注释到的假基因之间是没有重叠的，一个位置的序列只能被注释为一个假基因。</li>
+<li>建议做一个长度的过滤，比如长度大于300bp的假基因才被鉴定为假基因，进入到下一步的分析流程。</li>
+<li>result&#x2F;_intermediate文件夹中保存着额外的文件，比如sample.fullyFiltered.disable_count.RMfilt文件保存着假基因和对应真基因比对好的蛋白质序列。</li>
+</ul>
+<h2 id="5-4-PseudogenePipeline运行的一个例子"><a href="#5-4-PseudogenePipeline运行的一个例子" class="headerlink" title="5.4. PseudogenePipeline运行的一个例子"></a>5.4. PseudogenePipeline运行的一个例子</h2><p>运行相关数据：</p>
+<ul>
+<li>6Gb大小的蕨类基因组，跑了70h。</li>
+<li>70000个注释的真基因，软件结果中有222,372个假基因，其中长度大于300bp的为93594条。</li>
+</ul>
+<h1 id="6-假基因后续分析"><a href="#6-假基因后续分析" class="headerlink" title="6. 假基因后续分析"></a>6. 假基因后续分析</h1><p>鉴定假基因后，可以通过进一步的分析来获取更多认识。</p>
+<h2 id="6-1-批量计算pseudogene和功能性gene之间的Ks"><a href="#6-1-批量计算pseudogene和功能性gene之间的Ks" class="headerlink" title="6.1. 批量计算pseudogene和功能性gene之间的Ks"></a>6.1. 批量计算pseudogene和功能性gene之间的Ks</h2><p>通过计算pseudogene和功能性基因（真基因）间的Ks，可以判断是否与其他进化事件的Ks重合（比如WGD），也可以通过Ks计算假基因产生的时间的分布。</p>
+<h3 id="6-1-1-背景"><a href="#6-1-1-背景" class="headerlink" title="6.1.1. 背景"></a>6.1.1. 背景</h3><ol>
+<li>Ks只能计算ORF区域的（即完整密码子，3的倍数的碱基），并遇到stop codon停止。</li>
+<li>根据假基因的注释信息，找到pseudogene和对应真基因的序列，并把pseudogene和对应真基因的ORF区域提取出来。</li>
+<li>若pseudogene比对到了intron区域，删除这部分，并从真基因密码子首位开始匹配pseudogene，提取完整密码子（3的倍数个碱基）。</li>
+<li>只需要比对上的密码子区域，并要求3的倍数的碱基；而假基因常常包含许多中间的终止密码子，所以这些中间终止密码子和对应位置的真基因的三个碱基也需要删除。（还有一种策略是从第一个终止密码子处截断，之后的序列全都不要，但这种策略常常会使得提取出来的序列太短，造成更大误差，所以不推荐。）</li>
+</ol>
+<p>准备以下三个输入文件，就可以根据 <strong>博客：批量计算Ka和Ks：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/09/07/bioinfo_Ks_batch.calculation.Ks">https://yanzhongsino.github.io/2022/09/07/bioinfo_Ks_batch.calculation.Ks</a></strong> 进行Ks的批量计算。</p>
+<h3 id="6-1-2-准备sample-pairs文件"><a href="#6-1-2-准备sample-pairs文件" class="headerlink" title="6.1.2. 准备sample.pairs文件"></a>6.1.2. 准备sample.pairs文件</h3><p>sample.pairs保存着两列数据，tab分隔，第一列是假基因的ID，第二列是对应的真基因的ID。</p>
+<p>可以用下面的命令从结果文件中提取假基因和对应的真基因的ID，获得sample.pairs。</p>
+<p><code>cat ./_results/sample.4col.true.RMfilt.hiConf.cdnm  |grep -v &quot;#&quot;|sed -e &quot;s/\t.*//g&quot; -e &quot;s/_/\t/&quot; &gt;sample.pairs </code></p>
+<h3 id="6-1-3-准备用于计算Ks的CDS序列文件-all-cds-和氨基酸序列文件-all-pep"><a href="#6-1-3-准备用于计算Ks的CDS序列文件-all-cds-和氨基酸序列文件-all-pep" class="headerlink" title="6.1.3. 准备用于计算Ks的CDS序列文件(all.cds)和氨基酸序列文件(all.pep)"></a>6.1.3. 准备用于计算Ks的CDS序列文件(all.cds)和氨基酸序列文件(all.pep)</h3><p>用于计算Ks的CDS序列文件需要包括所有假基因和对应真基因的CDS序列，用于计算Ks的氨基酸序列文件需要包括所有假基因和对应真基因的氨基酸序列。</p>
+<p>注意：all.cds和all.pep可以包含多余的序列但不能少。因为是根据sample.pairs文件的指定序列对计算Ks的。</p>
+<ol>
+<li>提取cds序列</li>
+</ol>
+<ul>
+<li>用cufflinks的gffread工具从gff文件提取CDS序列: <code>gffread sample.4col.true.RMfilt.hiConf.cdnm.gff -g genome.fa -x pseudo.cds</code></li>
+<li>另一种方法直接从结果文件中提取cds序列：<code>cat sample.4col.true.fa.RMfilt.hiConf.cdnm |grep -v &quot;#&quot; &gt;pseudo.cds</code></li>
+</ul>
+<ol start="2">
+<li>合并假基因CDS序列和基因组所有真基因的CDS序列（sample.cds）到一个文件all.cds</li>
+</ol>
+<ul>
+<li><code>cat pseudo.cds sample.cds &gt; all.cds</code></li>
+</ul>
+<ol start="3">
+<li>用cufflinks的gffread工具从gff文件提取pep序列</li>
+</ol>
+<ul>
+<li><code>gffread sample.4col.true.RMfilt.hiConf.cdnm.gff -g genome.fa -y pseudo.pep</code></li>
+</ul>
+<ol start="4">
+<li>合并假基因氨基酸序列和基因组所有真基因的氨基酸序列（sample.pep）到一个文件all.pep</li>
+</ol>
+<ul>
+<li><code>cat pseudo.pep sample.pep &gt; all.pep</code></li>
+</ul>
+<h3 id="6-1-4-计算Ks"><a href="#6-1-4-计算Ks" class="headerlink" title="6.1.4. 计算Ks"></a>6.1.4. 计算Ks</h3><p>准备好以上三个文件：sample.pair, all.cds, all.pep 即可用ParaAT.pl和KaKs_Calculator2.0两个软件，参考<strong>博客：批量计算Ka和Ks：<a target="_blank" rel="noopener" href="https://yanzhongsino.github.io/2022/09/07/bioinfo_Ks_batch.calculation.Ks">https://yanzhongsino.github.io/2022/09/07/bioinfo_Ks_batch.calculation.Ks</a></strong>的步骤计算假基因和对应真基因间的Ks，从而获知遗传上的分化及分布。</p>
+<h2 id="6-2-检测假基因和共线性区块的关系"><a href="#6-2-检测假基因和共线性区块的关系" class="headerlink" title="6.2. 检测假基因和共线性区块的关系"></a>6.2. 检测假基因和共线性区块的关系</h2><p>在2022年08月在GBE上发表的荷叶铁线蕨基因组的文章（<a target="_blank" rel="noopener" href="https://academic.oup.com/gbe/article/14/8/evac127/6659224%EF%BC%89%E4%B8%AD%E7%9A%84%E4%B8%80%E4%B8%AA%E5%BA%94%E7%94%A8%EF%BC%8C%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AFpseudogene%E9%80%A0%E6%88%90%E5%85%B1%E7%BA%BF%E6%80%A7blocks%E5%8F%98%E7%9F%AD%EF%BC%8C%E7%94%A8%E5%88%B0%E7%9A%84%E6%96%B9%E6%B3%95%E7%BB%86%E8%8A%82%E8%AE%B0%E5%BD%95%E5%9C%A8%E6%AD%A4%E3%80%82">https://academic.oup.com/gbe/article/14/8/evac127/6659224）中的一个应用，判断是否是pseudogene造成共线性blocks变短，用到的方法细节记录在此。</a></p>
+<ol>
+<li>分析MCScanX结果中找到的共线性blocks，看blocks是否有成对出现在同一个contig上的，两对出现在同一contig上的blocks是否分别有共线性对应。</li>
+</ol>
+<ul>
+<li>结果是不存在符合条件的两对blocks。</li>
+<li>原因是contig的长度短造成的，contig长度在1-2Mbp，一个block含5个及以上基因，就占据了一条contig的全长，所以同一个contig上有多个block出现的概率变小。</li>
+</ul>
+<ol start="2">
+<li>在最长的blocks里找pseudogene造成blocks内部gene无共线性的例子。即block内部无共线性的gene对应block上对面位置是否有这个gene的pseudogene存在。</li>
+</ol>
+<ul>
+<li>结果是在超过7个gene的blocks里找到5个blocks存在这种情况。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Alignment 288: ctg4124-ctg7158：Ane23910-Ane23911之间有Ane41918的pseudogene(ctg4124 6381349 6381618)；Ane23909-Ane23910之间有Ane41900的pseudogene（重排）；</span><br><span class="line">Alignment 102： ctg11329-ctg6741：Ane66914-Ane66915之间有Ane38759的pseudogene；Ane66920-Ane66921之间有Ane38765的pseudogene(ctg11329        2818519 2817964)；</span><br><span class="line">Alignment 139: ctg1252-ctg4677：Ane27375-Ane27376之间有Ane07597的pseudogene；</span><br><span class="line">Alignment 422: ctg7700-ctg9700：Ane46157-Ane461158之间有Ane57929的pseudogene（重排）(ctg7700 2107090 2106980)；</span><br><span class="line">Alignment 396: ctg6709-ctg8004：Ane38599-Ane38600之间有Ane47496的pseudogene（重排）(ctg6709 1117953 1117655)；</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-3-非批量计算Ks"><a href="#6-3-非批量计算Ks" class="headerlink" title="6.3. 非批量计算Ks"></a>6.3. 非批量计算Ks</h2><p>如果只有少量样本对（关注的假基因和对应真基因）需要计算Ks，可以手动进行。比如上面的共线性区块分析中找到的5个blocks中的少量样本对。</p>
+<h3 id="6-3-1-提取序列"><a href="#6-3-1-提取序列" class="headerlink" title="6.3.1. 提取序列"></a>6.3.1. 提取序列</h3><p>通过PseudogenePipeline运行结果的比对信息提取假基因和对应的真基因比对上的ORF区域，并提取3的倍数的碱基，以计算Ks。</p>
+<ol>
+<li>拿<code>_results/sample.4col.true.fa.RMfilt.hiConf</code>中的一条pseudogene序列的ID举例说明位置的含义</li>
+</ol>
+<ul>
+<li><code>gene38168;ctg947|625093-625785;336-566:693-4;4|0|0|0    ctg947    625785    625096</code>表示在染色体<code>ctg947</code>的<code>625093-625785</code>位置有一个假基因pseudogene。</li>
+<li>对应的真基因是<code>gene38168</code>；<code>336-566</code>和<code>693-4</code>分别是指真基因序列和假基因序列比对上的区域；比对的信息是从tblastn的比对结果中获取的。</li>
+<li>真基因<code>gene38168</code>的<strong>氨基酸</strong>序列的<code>336-566</code>位置。</li>
+<li>假基因的<code>693-4</code>位置是指在染色体<code>ctg947</code>的<code>625093-625785</code>位置的假基因核酸序列上的第4到693个碱基，由于起始位置比终止位置大，所以是4-693位置的反向互补序列。</li>
+</ul>
+<ol start="2">
+<li>根据pseudogene的序列位置和对应的真基因的位置信息，提取两者比对上的cds序列</li>
+</ol>
+<ul>
+<li>先从<code>_results/sample.4col.true.fa.RMfilt.hiConf</code>中提取出<code>gene38168</code>对应的假基因pseudogene；</li>
+<li>根据假基因的比对位置<code>693-4</code>提取染色体<code>ctg947</code>的<code>625093-625785</code>位置的<code>4-693</code>的核酸，由于起始位置比终止位置大，所以是<code>4-693</code>位置的反向互补序列。</li>
+<li>再根据真基因的ID<code>gene38168</code>提取真基因的cds序列；</li>
+<li>根据真基因的蛋白比对位<code>336-566</code>，通过计算起始位置$$336*3-2&#x3D;1008$$，和终止位置$$566*3&#x3D;1698$$，找到cds对应的<code>1008-1698</code>位置提取出来。</li>
+</ul>
+<ol start="3">
+<li>比对和删改</li>
+</ol>
+<ul>
+<li>把两者序列保存在一个fasta文件，并用mafft&#x2F;muscle等工具做align；</li>
+<li>以真基因序列为参考，根据align结果对提取的假基因序列进行删除和修改。比如删除比对到intron的部分；若是假基因中包含indel，则在indel处找到上一个密码子的第三位，在这个位置删除对应密码子；最终使得两条序列都包含3的倍数的对应密码子的orf序列。</li>
+<li>删改好后再做一次align，每个假基因和对应真基因保存成一个文件；</li>
+</ul>
+<h3 id="6-3-2-计算Ks"><a href="#6-3-2-计算Ks" class="headerlink" title="6.3.2. 计算Ks"></a>6.3.2. 计算Ks</h3><ol>
+<li>改格式</li>
+</ol>
+<ul>
+<li><code>AXTConvertor gene_pseudo.fa gene_pseudo.axt</code></li>
+<li>KaKs_Calculator的改格式工具，改比对后的fas格式（gene_pseudo.fa）为axt（gene_pseudo.axt）。</li>
+<li>axt格式包括三行，第一行两个序列ID之间用短横杠-相连，第二行第一条序列，第三行第二条序列。</li>
+</ul>
+<ol start="2">
+<li>计算Ks</li>
+</ol>
+<ul>
+<li><code>KaKs_Calculator -i gene_pseudo.axt -o gene_pseudo.kaks -m PN</code></li>
+<li>计算KaKs，用PN模型；结果就在gene_pseudo.kaks文件中。</li>
+</ul>
+<ol start="3">
+<li>合并所有计算的ks结果</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>gene-pseudo</th>
+<th>Ka</th>
+<th>Ks</th>
+<th>Ka&#x2F;Ks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ane07597-Ane07597.pseudo</td>
+<td>0.166453</td>
+<td>0.830702</td>
+<td>0.200376</td>
+</tr>
+<tr>
+<td>Ane38759-Ane38759.pseudo</td>
+<td>0.0068327</td>
+<td>0.0579878</td>
+<td>0.11783</td>
+</tr>
+<tr>
+<td>Ane38765-Ane38765.pseudo</td>
+<td>0.0181923</td>
+<td>0.0594878</td>
+<td>0.305815</td>
+</tr>
+<tr>
+<td>Ane41900-Ane41900.pseudo</td>
+<td>0.356588</td>
+<td>1.23697</td>
+<td>0.288276</td>
+</tr>
+<tr>
+<td>Ane41918-Ane41918.pseudo</td>
+<td>0.0304071</td>
+<td>0.033778</td>
+<td>0.900203</td>
+</tr>
+<tr>
+<td>Ane47496-Ane47496.pseudo</td>
+<td>0.025231</td>
+<td>0.210919</td>
+<td>0.119624</td>
+</tr>
+<tr>
+<td>Ane57929-Ane57929.pseudo</td>
+<td>0.0380011</td>
+<td>0.0703679</td>
+<td>0.540034</td>
+</tr>
+</tbody></table>
+<ul>
+<li>从结果中看出，Ane38759，Ane38765，Ane579290三个基因和它们的假基因之间的Ks接近WGD分析中计算的WGD所在的Ks&#x3D;0.06；可以作为共线性blocks内部假基因的证据。</li>
+</ul>
+<h1 id="7-references"><a href="#7-references" class="headerlink" title="7. references"></a>7. references</h1><ol>
+<li>wiki:pseudogene:<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Pseudogene">https://en.wikipedia.org/wiki/Pseudogene</a></li>
+<li>PseudogenePipeline github：<a target="_blank" rel="noopener" href="https://github.com/ShiuLab/PseudogenePipeline">https://github.com/ShiuLab/PseudogenePipeline</a></li>
+<li>2022年08月在GBE上发表的荷叶铁线蕨基因组的文章：<a target="_blank" rel="noopener" href="https://academic.oup.com/gbe/article/14/8/evac127/6659224">https://academic.oup.com/gbe/article/14/8/evac127/6659224</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ks/" rel="tag"># Ks</a>
+              <a href="/tags/pseudogene/" rel="tag"># pseudogene</a>
+              <a href="/tags/PseudogenePipeline/" rel="tag"># PseudogenePipeline</a>
+              <a href="/tags/%E5%81%87%E5%9F%BA%E5%9B%A0/" rel="tag"># 假基因</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/02/bioinfo_synteny_plot_Rldeogram/" rel="prev" title="使用Rldeogram的ideogram函数画两物种的同线性图">
+      <i class="fa fa-chevron-left"></i> 使用Rldeogram的ideogram函数画两物种的同线性图
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/09/06/bioinfo_Ks_batch.calculation.Ks/" rel="next" title="批量计算Ka和Ks">
+      批量计算Ka和Ks <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%81%87%E5%9F%BA%E5%9B%A0"><span class="nav-text">1. 假基因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PseudogenePipeline-%E7%AE%80%E4%BB%8B"><span class="nav-text">2. PseudogenePipeline 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-PseudogenePipeline-%E5%8E%9F%E7%90%86"><span class="nav-text">3. PseudogenePipeline 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-PseudogenePipeline-%E5%AE%89%E8%A3%85"><span class="nav-text">4. PseudogenePipeline 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E4%BE%9D%E8%B5%96-requirements"><span class="nav-text">4.1. 依赖-requirements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E4%B8%8B%E8%BD%BD"><span class="nav-text">4.2. 下载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-PseudogenePipeline-%E4%BD%BF%E7%94%A8"><span class="nav-text">5. PseudogenePipeline 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-text">5.1. 文件准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-1-genome-mask%E6%96%87%E4%BB%B6"><span class="nav-text">5.1.1. genome mask文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-2-tblastn-out%E6%96%87%E4%BB%B6"><span class="nav-text">5.1.2. tblastn.out文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-3-sample-gff3%E6%96%87%E4%BB%B6"><span class="nav-text">5.1.3. sample.gff3文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E7%94%A8PseudogenePipeline%E9%89%B4%E5%AE%9A%E5%81%87%E5%9F%BA%E5%9B%A0"><span class="nav-text">5.2. 用PseudogenePipeline鉴定假基因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-PseudogenePipeline%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="nav-text">5.3. PseudogenePipeline运行结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-1-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">5.3.1. 结果文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-1-results%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">5.3.1.1. _results文件夹中的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-2-intermediate%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">5.3.1.2. _intermediate文件夹中的文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-2-notes"><span class="nav-text">5.3.2. notes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-PseudogenePipeline%E8%BF%90%E8%A1%8C%E7%9A%84%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-text">5.4. PseudogenePipeline运行的一个例子</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%81%87%E5%9F%BA%E5%9B%A0%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90"><span class="nav-text">6. 假基因后续分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E6%89%B9%E9%87%8F%E8%AE%A1%E7%AE%97pseudogene%E5%92%8C%E5%8A%9F%E8%83%BD%E6%80%A7gene%E4%B9%8B%E9%97%B4%E7%9A%84Ks"><span class="nav-text">6.1. 批量计算pseudogene和功能性gene之间的Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-1-%E8%83%8C%E6%99%AF"><span class="nav-text">6.1.1. 背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-2-%E5%87%86%E5%A4%87sample-pairs%E6%96%87%E4%BB%B6"><span class="nav-text">6.1.2. 准备sample.pairs文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-3-%E5%87%86%E5%A4%87%E7%94%A8%E4%BA%8E%E8%AE%A1%E7%AE%97Ks%E7%9A%84CDS%E5%BA%8F%E5%88%97%E6%96%87%E4%BB%B6-all-cds-%E5%92%8C%E6%B0%A8%E5%9F%BA%E9%85%B8%E5%BA%8F%E5%88%97%E6%96%87%E4%BB%B6-all-pep"><span class="nav-text">6.1.3. 准备用于计算Ks的CDS序列文件(all.cds)和氨基酸序列文件(all.pep)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-4-%E8%AE%A1%E7%AE%97Ks"><span class="nav-text">6.1.4. 计算Ks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E6%A3%80%E6%B5%8B%E5%81%87%E5%9F%BA%E5%9B%A0%E5%92%8C%E5%85%B1%E7%BA%BF%E6%80%A7%E5%8C%BA%E5%9D%97%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">6.2. 检测假基因和共线性区块的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-%E9%9D%9E%E6%89%B9%E9%87%8F%E8%AE%A1%E7%AE%97Ks"><span class="nav-text">6.3. 非批量计算Ks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1-%E6%8F%90%E5%8F%96%E5%BA%8F%E5%88%97"><span class="nav-text">6.3.1. 提取序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-2-%E8%AE%A1%E7%AE%97Ks"><span class="nav-text">6.3.2. 计算Ks</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-references"><span class="nav-text">7. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍自然选择分析软件HyPhy，它的版本，模型和使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用HyPhy分析自然选择：（一）介绍HyPhy">
+<meta property="og:url" content="http://example.com/2023/10/19/evolution_selection_HyPhy_intro/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="介绍自然选择分析软件HyPhy，它的版本，模型和使用。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2023-10-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-21T03:38:59.223Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="biosoft">
+<meta property="article:tag" content="bioinfo">
+<meta property="article:tag" content="PAML">
+<meta property="article:tag" content="selection">
+<meta property="article:tag" content="HyPhy">
+<meta property="article:tag" content="FEL">
+<meta property="article:tag" content="SLAC">
+<meta property="article:tag" content="FUBAR">
+<meta property="article:tag" content="MEME">
+<meta property="article:tag" content="FADE">
+<meta property="article:tag" content="aBSREL">
+<meta property="article:tag" content="BUSTED">
+<meta property="article:tag" content="RELAX">
+<meta property="article:tag" content="codeML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/10/19/evolution_selection_HyPhy_intro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用HyPhy分析自然选择：（一）介绍HyPhy | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/19/evolution_selection_HyPhy_intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用HyPhy分析自然选择：（一）介绍HyPhy
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-20T00:00:00+08:00">2023-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-10-21 11:38:59" itemprop="dateModified" datetime="2023-10-21T11:38:59+08:00">2023-10-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/" itemprop="url" rel="index"><span itemprop="name">evolution</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/evolution/selection/" itemprop="url" rel="index"><span itemprop="name">selection</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 mins.</span>
+            </span>
+            <div class="post-description">介绍自然选择分析软件HyPhy，它的版本，模型和使用。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=486310963&auto=1&height=32"></iframe></div>
+
+<h1 id="1-HyPhy的简介"><a href="#1-HyPhy的简介" class="headerlink" title="1. HyPhy的简介"></a>1. HyPhy的简介</h1><p>HyPhy的全称是Hypothesis Testing using Phylogenies，是一款近些年受到广泛使用和关注的一款用于选择压力分析的软件。</p>
+<p>相较经典的选择分析软件PAML的codeML，HyPhy操作更简单一点，并且支持多线程运行，并使用了更新的模型，模型数量也更多。尤其是HyPhy的BUSTED模型，官方说比PAML的分支-位点模型（branch-site models）更强大和准确。</p>
+<h1 id="2-HyPhy的版本"><a href="#2-HyPhy的版本" class="headerlink" title="2. HyPhy的版本"></a>2. HyPhy的版本</h1><p>HyPhy官网是<a target="_blank" rel="noopener" href="https://www.hyphy.org/%EF%BC%8C%E6%9C%89%E5%BE%88%E5%A4%9A%E7%89%88%E6%9C%AC%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%EF%BC%8C%E5%8C%85%E6%8B%AC%EF%BC%9A">https://www.hyphy.org/，有很多版本可以使用，包括：</a></p>
+<ol>
+<li>网页版（datamonkey）：<a target="_blank" rel="noopener" href="https://www.datamonkey.org/%EF%BC%8C%E5%9C%A8%E7%BD%91%E9%A1%B5(https://www.datamonkey.org/relax)%E4%B8%AD%E4%B8%8A%E4%BC%A0%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90%E3%80%82%E6%9C%80%E7%AE%80%E5%8D%95%E3%80%82">https://www.datamonkey.org/，在网页(https://www.datamonkey.org/relax)中上传序列比对文件进行分析。最简单。</a></li>
+<li>命令行版本</li>
+</ol>
+<ul>
+<li>标准命令行：<a target="_blank" rel="noopener" href="https://www.hyphy.org/tutorials/CLI-tutorial/%EF%BC%9B%E8%BF%99%E7%AF%87%E5%8D%9A%E5%AE%A2%E4%B8%BB%E8%A6%81%E4%BD%BF%E7%94%A8%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%89%88%E6%9C%AC%E3%80%82">https://www.hyphy.org/tutorials/CLI-tutorial/；这篇博客主要使用标准命令行版本。</a></li>
+<li>交互式命令行：<a target="_blank" rel="noopener" href="https://www.hyphy.org/tutorials/CL-prompt-tutorial/">https://www.hyphy.org/tutorials/CL-prompt-tutorial/</a></li>
+</ul>
+<ol start="3">
+<li>本地运行图形界面版本（GUI）：与网页版（datamonkey）操作类似。</li>
+<li>在Galaxy服务器上也可以使用HyPhy的许多方法：galaxy.hyphy.org</li>
+<li>MEGA软件包正在整合HyPhy进界面，已可使用HyPhy部分功能</li>
+<li>还可以通过Python，R和其他程序语言编译HyPhy，并作为可访问的库使用。</li>
+</ol>
+<h1 id="3-HyPhy的分析库和常用检测"><a href="#3-HyPhy的分析库和常用检测" class="headerlink" title="3. HyPhy的分析库和常用检测"></a>3. HyPhy的分析库和常用检测</h1><p>HyPhy的标准分析库共约有100种不同的方法，最常用于测试以下四种进化过程的假说：</p>
+<ol>
+<li>检测选择信号</li>
+<li>评估进化率</li>
+<li>比较不同的进化模型</li>
+<li>将自定义模型拟合到比对序列</li>
+</ol>
+<h1 id="4-HyPhy的模型"><a href="#4-HyPhy的模型" class="headerlink" title="4. HyPhy的模型"></a>4. HyPhy的模型</h1><p>Hyphy的各种模型，基本上都可以分为不指定foreground和指定foreground运行的两种方式，前者对应的是检测pervasive (across the whole phylogeny) positive or purifying selection，即整个系统发育中的普遍的正选择&#x2F;纯化选择，而后者对应的是检测episodic (at a subset of branches) positive or purifying selection，即检测一部分branches的独立正选择&#x2F;纯化选择。</p>
+<p><strong>HyPhy的模型和匹配的选择分析：</strong></p>
+<h2 id="4-1-检测Pervasive-selection的位点模型"><a href="#4-1-检测Pervasive-selection的位点模型" class="headerlink" title="4.1. 检测Pervasive selection的位点模型"></a>4.1. 检测Pervasive selection的位点模型</h2><p>检测个别位点是否受到普遍（整个系统发育树）的正选择或负选择，可选用以下模块：</p>
+<ol>
+<li>FEL（Fixed Effects Likelihood，固定效应似然法）</li>
+</ol>
+<ul>
+<li>适用于中小型数据集。</li>
+<li>使用最大似然(ML)方法来推断每个位点上的非同义(dN)和同义(dS)替换率，用于给定的编码比对和相应的系统发育。</li>
+<li>该方法假设在整个系统发育过程中，每个位点的选择压力是恒定的。</li>
+</ul>
+<ol start="2">
+<li>SLAC（Single-Likelihood Ancestor Counting，单似然祖先计数法）</li>
+</ol>
+<ul>
+<li>是一种近似方法，准确度与 FEL 相似，但适用于较大的数据集。不过，SLAC 不适合高度分歧的序列。</li>
+<li>对于给定的编码比对和相应的系统发育使用最大似然(ML)和计数方法的结合来推断每个位点上的非同义(dN)和同义(dS)替换率。</li>
+<li>像FEL一样，该方法假设在整个系统发育过程中，每个位点的选择压力是恒定的。</li>
+</ul>
+<ol start="3">
+<li>FUBAR（Fast, Unconstrained Bayesian AppRoximation，快速无约束贝叶斯估计法）</li>
+</ol>
+<ul>
+<li>适用于中型到大型数据集，与 FEL 相比，FUBAR 在检测位点的普遍选择方面具有效。FUBAR 是推断pervasive selection的首选方法。</li>
+<li>使用贝叶斯方法来推断给定编码比对和相应系统发育的每个位点上的非同义(dN)和同义(dS)替换率。该方法假设在整个系统发育过程中，每个位点的选择压力是恒定的。<h2 id="4-2-检测episodic-selection的位点模型"><a href="#4-2-检测episodic-selection的位点模型" class="headerlink" title="4.2. 检测episodic selection的位点模型"></a>4.2. 检测episodic selection的位点模型</h2>检测个别位点是否受到偶发性（在分支的子集）的正选择或负选择，可选用以下模块：</li>
+</ul>
+<ol>
+<li>MEME（Mixed Effects Model of Evolution，进化混合效应模型）</li>
+</ol>
+<ul>
+<li>采用混合效应最大似然方法来检验个别位点是否受到episodic positive或多样化选择的影响的假设。换句话说，MEME的目的是检测在一定比例的分支下正选择下进化的位点。</li>
+<li>对于每个位点，MEME推测两种ω值，以及在给定的分支下，以此ω进化的概率。为了推断ω，MEME会推断α(dS) 和两个不同的β(dN),β−和β+。在空模型和备择模型中，MEME强制β−≤α。因此β+是空模型和备择模型不同的关键：在空模型中，β+被限制为≤α，但在备择模型中不受限制。最终，当β+&gt;α时，位点被推断为正选择，并使用似然比检验显示显著。</li>
+<li>需要注意的是，MEME 不接受先验分支规范（v2.3-dev 及更高版本将引入此功能）。</li>
+<li>MEME 是检测单个位点正选择的首选方法。<h2 id="4-3-检测蛋白序列比对的正选择-x2F-定向选择的位点模型"><a href="#4-3-检测蛋白序列比对的正选择-x2F-定向选择的位点模型" class="headerlink" title="4.3. 检测蛋白序列比对的正选择&#x2F;定向选择的位点模型"></a>4.3. 检测蛋白序列比对的正选择&#x2F;定向选择的位点模型</h2></li>
+</ul>
+<ol>
+<li>FADE(FUBAR Aproach to Directional Evolution)</li>
+</ol>
+<ul>
+<li>FADE是一种基于FUBAR引入的贝叶斯框架(Bayesian framework)的方法，用来测试蛋白质比对中的位点是否受定向选择的影响。</li>
+<li>具体地说，FADE将系统地测试，对于比对中的每个位点，与背景分支相比，一组指定的前景分支是否显示对特定氨基酸的替代偏向。</li>
+<li>该偏差参数的高值表明该位点对特定氨基酸的取代作用大大超过预期。使用贝叶斯因子(BF)评估FADE的统计显著性，其中BF&gt;&#x3D;100提供了强有力的证据，表明该位点正在定向选择下进化。</li>
+<li>重要的是，与HyPhy中的大多数方法不同，FADE不使用可逆的马尔可夫模型，因为它的目标是检测定向选择。因此，FADE分析需要一个有根的系统发育。在使用FADE进行分析之前，可以使用基于浏览器的交互工具Phylotree.js（<a target="_blank" rel="noopener" href="http://phylotree.hyphy.org/%EF%BC%89%E6%9D%A5%E5%B8%AE%E5%8A%A9%E5%BB%BA%E7%AB%8B%E6%A0%91%E7%9A%84%E6%A0%B9%E3%80%82">http://phylotree.hyphy.org/）来帮助建立树的根。</a><h2 id="4-4-检测独立分支的episodic-selection-branch-site-model-at-a-subset-of-sites"><a href="#4-4-检测独立分支的episodic-selection-branch-site-model-at-a-subset-of-sites" class="headerlink" title="4.4. 检测独立分支的episodic selection(branch-site model,at a subset of sites)"></a>4.4. 检测独立分支的episodic selection(branch-site model,at a subset of sites)</h2>检测个别分支是否受到偶发性（在部分位点）的正选择或负选择，可选用以下模块：</li>
+</ul>
+<ol>
+<li>aBSREL（adaptive Branch-Site Random Effects Likelihood，自适应分支位点随机效应似然法）</li>
+</ol>
+<ul>
+<li>aBSREL是常见的“Branch-Site”模型的改进版。aBSREL 既可以先验地指定分支（即指定foreground branches）来检验选择，也可以探索性地检验每个世系的选择。（p-value将自动进行BH校正）</li>
+<li>aBSREL 是检测各个分支正选择的首选方法。</li>
+<li>需要注意一点的是，aBSREL是多次独立对指定的每一支进行检验的，也就是说，你指定了许多的branches，实质上和多次指定不同一个branch来多次运行，效果是一样的，而并非将这些branches视为一个整体去做检测<h2 id="4-5-检测一个基因是否在某一分支或一组分支上的任何位点经历了正选择"><a href="#4-5-检测一个基因是否在某一分支或一组分支上的任何位点经历了正选择" class="headerlink" title="4.5. 检测一个基因是否在某一分支或一组分支上的任何位点经历了正选择"></a>4.5. 检测一个基因是否在某一分支或一组分支上的任何位点经历了正选择</h2>检测一个基因是否在特定分支或部分分支的任何位点经历了正选择？</li>
+</ul>
+<ol>
+<li>BUSTED（Branch-Site Unrestricted Statistical Test for Episodic Diversification，分支位点无限制统计检验）</li>
+</ol>
+<ul>
+<li>通过在预先指定的系统树上测试一个基因是否在至少一个分支的至少一个位点上经历了正选择，BUSTED提供了一个全基因(非位点特异性)正选择的测试。当运行BUSTED时，用户可以指定一组前景支来测试正选择(其余分支被指定为“背景”)，或者用户可以测试整个系统发生的正选择。在后一种情况下，整个树被有效地视为前景，正选择的检验考虑整个系统发育。</li>
+<li>这种方法对于相对较小的数据集(少于10个分类单元)特别有用，在这些数据集中，其他方法可能没有足够的功效来检测选择。</li>
+<li>这种方法不适用于确定受正向选择影响的特定位点。</li>
+<li>对于每个系统发育分区（前景和背景分支位点），BUSTED拟合了一个具有三个速率类的密码子模型，约束为ω1≤ω2≤1≤ω3。与其他方法一样，BUSTED同时估计每个分区属于每个ω类的位点的比例。这种模型作为选择检验中的替代模型，被称为无约束模型。然后，BUSTED通过比较这个模型与前景分支上ω3&#x3D;1（即不允许正选择）的空模型的拟合度来测试正选择。这个零模型也被称为约束模型。如果零假设被拒绝，那么就有证据表明，至少有一个位点在前景枝上至少有一部分时间经历了正选择。重要的是，一个显著的结果并不意味着该基因是在整个前景的正选择下进化的。<h2 id="4-6-检测选择压力的放松-x2F-加强"><a href="#4-6-检测选择压力的放松-x2F-加强" class="headerlink" title="4.6. 检测选择压力的放松&#x2F;加强"></a>4.6. 检测选择压力的放松&#x2F;加强</h2>全基因组的选择压力是否随着分支的某个子集而放松或加强？</li>
+</ul>
+<ol>
+<li>RELAX</li>
+</ol>
+<ul>
+<li>RELAX检测选择压力与一组指定的 “测试 （TEST）”分支的放松（如净化选择变得不那么严格）或加强（如净化选择变得更强）。这种方法不适用于检测正选择。</li>
+<li>RELAX是一种假设检验框架，它检测自然选择的强度是否沿着一组指定的测试分支被放松或加强。因此，RELAX不是明确检测正选择的合适方法。相反，RELAX在识别特定基因上自然选择严格程度的趋势和&#x2F;或变化方面最有用。</li>
+<li>RELAX需要一组指定的 “测试 “分支与第二组 “参考 “分支进行比较（注意，不必分配所有的分支，但测试集和参考集各需要一个分支）。RELAX首先对整个系统发育过程拟合一个具有三个ω类的密码子模型（空模型）。然后，RELAX通过引入作为选择强度参数的参数k（其中k≥0）作为推断ω值的指数：ωk来测试放松&#x2F;强化选择。具体来说，RELAX固定推断的ω值（都是ωk&lt;1,2,3&gt;），并对测试分支推断出一个将比率修改为ωk&lt;1,2,3&gt;的k值（替代模型）。然后，RELAX进行似然比检验，比较替代模型和空模型。</li>
+<li>K&gt;1表示选择强度加强，K&lt;1表示选择压力放松。</li>
+</ul>
+<h2 id="4-7-模型的选择"><a href="#4-7-模型的选择" class="headerlink" title="4.7. 模型的选择"></a>4.7. 模型的选择</h2><ol>
+<li>基本选择</li>
+</ol>
+<ul>
+<li>如果检测类似paml中的M8位点模型，最好用FUBAR，如果是小数据，则用FEL，大数据并且分歧度不是很高用SLAC。</li>
+<li>如果检测某个前景支当中正选择位点，最好用MEME。</li>
+<li>如果检测单独的某个branch是否存在正选择，最好用aBSREL。</li>
+<li>如果检测一系列的branches的正选择，即检验你的这个基因，在指定的branches的任意一个位点是否在某段时间经历过正选择，则用BUSTED，BUSTED是不适合检测单独位点的正选择的。</li>
+<li>如果检测选择压力的放松&#x2F;加强，用RELAX。</li>
+<li>如果用蛋白序列来检测氨基酸位点正选择&#x2F;定向选择，用FADE。</li>
+</ul>
+<ol start="2">
+<li>模型选择的其他考虑因素</li>
+</ol>
+<ul>
+<li>几乎所有模型(还有一些没常用的模型没有提到)都可以分为指定前景和不指定前景的模式运行，但根据分析目的不同，会有最优选择。</li>
+<li>当然也可以把某种模型都跑一遍，比如各种位点模型都走个流程。</li>
+<li>还也可以结合paml的模型比较，例如，对于检测Pervasive selection的位点模型，你可以结合paml的M8、M2a来分析。对于检测episodic selection的branch-site，你可以结合paml的branch-site modelA和BUSTED&#x2F;aBSREL来比较分析。</li>
+</ul>
+<h1 id="5-标准命令行版本HyPhy的使用"><a href="#5-标准命令行版本HyPhy的使用" class="headerlink" title="5. 标准命令行版本HyPhy的使用"></a>5. 标准命令行版本HyPhy的使用</h1><h2 id="5-1-安装"><a href="#5-1-安装" class="headerlink" title="5.1. 安装"></a>5.1. 安装</h2><p><code>conda install -c bioconda hyphy</code></p>
+<h2 id="5-2-输入文件"><a href="#5-2-输入文件" class="headerlink" title="5.2. 输入文件"></a>5.2. 输入文件</h2><p>HyPhy的各个模型的输入文件都是下面两个：</p>
+<ol>
+<li>samples.aln：fasta或phylip格式的序列比对文件</li>
+<li>tree.nw：newick格式的树文件</li>
+</ol>
+<ul>
+<li>有些模块的分析可以指定前景支&#x2F;测试支（Foreground&#x2F;TEST），其余支是参考支(reference，默认，无需标记)。</li>
+<li>标记方法：前景支&#x2F;测试支(类比codeml的branch model的前景支)的分支名和支长（如果存在）之间标注{foreground}。</li>
+<li>另外，HyPhy官网的phylotree工具（<a target="_blank" rel="noopener" href="http://phylotree.hyphy.org/%EF%BC%89%E5%8F%AF%E4%BB%A5%E5%9C%A8%E7%BA%BF%E5%AF%B9%E7%B3%BB%E7%BB%9F%E6%A0%91%E8%BF%9B%E8%A1%8C%E6%A0%87%E6%B3%A8%E3%80%82">http://phylotree.hyphy.org/）可以在线对系统树进行标注。</a></li>
+<li>Pig支做前景支的标记实例：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((((Pig&#123;FG&#125;:0.147969,Cow:0.213430):0.085099,Horse:0.165787,Cat:0.264806):0.058611,((RhMonkey:0.002015,Baboon:0.003108):0.022733,(Human:0.004349,Chimp:0.000799):0.011873):0.101856):0.340802,Rat:0.050958,Mouse:0.097950);</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-3-运行"><a href="#5-3-运行" class="headerlink" title="5.3. 运行"></a>5.3. 运行</h2><p>HyPhy各个模型的运行都类似，修改busted为其他模型即可：</p>
+<p><code>nohup HYPHYMPI busted --alignment aln.fas --tree tree.nw --test FG --output busted.json &gt; busted.log 2&gt;&amp;1 &amp;</code></p>
+<h2 id="5-4-参数"><a href="#5-4-参数" class="headerlink" title="5.4. 参数"></a>5.4. 参数</h2><ol>
+<li>–alignment：比对好的codon文件，可以是fas格式，也可以是phylip格式。</li>
+<li>–tree：newick格式的树文件，如有test支标记在树文件里（标记方法见输入文件）</li>
+<li>–branches或–test：指定树文件中标记的分支为前景支，RELAX模块用–test指定，其他模块用–branches指定。</li>
+<li>–output：指定输出json文件名称，默认是输入比对文件加json后缀，如aln.fas.json。</li>
+<li>屏幕输出的是markdown格式，建议保存为relax.log文件</li>
+</ol>
+<h2 id="5-5-多线程实现"><a href="#5-5-多线程实现" class="headerlink" title="5.5. 多线程实现"></a>5.5. 多线程实现</h2><ol>
+<li>方法一(新版本hyphy可以自动根据需求采用多线程，所以线程也可以不设置。)</li>
+</ol>
+<ul>
+<li><code>hyphy slac --alignment alignment.fasta --tree tree.newick --output slac.json</code></li>
+</ul>
+<ol start="2">
+<li>方法二(需要openmp支持)<br><code>HYPHYMPI slac --alignment alignment.fasta --tree tree.newick CPU=interger</code></li>
+<li>方法三<br><code>mpiexec --oversubscribe -n 10（线程数) HYPHYMPI absrel --alignment alignment.fasta --tree tree.newick --branches Foreground</code></li>
+</ol>
+<h2 id="5-6-结果文件"><a href="#5-6-结果文件" class="headerlink" title="5.6. 结果文件"></a>5.6. 结果文件</h2><ol>
+<li>busted.json：json格式，可以在网站<a target="_blank" rel="noopener" href="http://vision.hyphy.org/">http://vision.hyphy.org</a> 上传这个结果文件进行可视化，直观展示。结果中site的数量代表的是密码子的数量，是碱基数量的1&#x2F;3。</li>
+<li>busted.log：markdown格式，直接查看方便。</li>
+</ol>
+<h2 id="5-7-结果展示"><a href="#5-7-结果展示" class="headerlink" title="5.7. 结果展示"></a>5.7. 结果展示</h2><ol>
+<li>json格式的结果具体的介绍可以参考<a target="_blank" rel="noopener" href="https://www.hyphy.org/resources/json-fields.pdf%E3%80%82">https://www.hyphy.org/resources/json-fields.pdf。</a></li>
+<li>结果的可视化可以在网站 <a target="_blank" rel="noopener" href="http://vision.hyphy.org/">http://vision.hyphy.org/</a> 上上传json格式文件，然后交互式的展示结果。</li>
+</ol>
+<h1 id="6-reference"><a href="#6-reference" class="headerlink" title="6. reference"></a>6. reference</h1><ol>
+<li>HyPhy官网：<a target="_blank" rel="noopener" href="https://www.hyphy.org/">https://www.hyphy.org/</a></li>
+<li>HyPhy的github：<a target="_blank" rel="noopener" href="https://github.com/veg/hyphy-analyses/tree/master">https://github.com/veg/hyphy-analyses/tree/master</a></li>
+<li>介绍HyPhy的博客：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2e8f7f7d545a">https://www.jianshu.com/p/2e8f7f7d545a</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/biosoft/" rel="tag"># biosoft</a>
+              <a href="/tags/bioinfo/" rel="tag"># bioinfo</a>
+              <a href="/tags/PAML/" rel="tag"># PAML</a>
+              <a href="/tags/selection/" rel="tag"># selection</a>
+              <a href="/tags/HyPhy/" rel="tag"># HyPhy</a>
+              <a href="/tags/FEL/" rel="tag"># FEL</a>
+              <a href="/tags/SLAC/" rel="tag"># SLAC</a>
+              <a href="/tags/FUBAR/" rel="tag"># FUBAR</a>
+              <a href="/tags/MEME/" rel="tag"># MEME</a>
+              <a href="/tags/FADE/" rel="tag"># FADE</a>
+              <a href="/tags/aBSREL/" rel="tag"># aBSREL</a>
+              <a href="/tags/BUSTED/" rel="tag"># BUSTED</a>
+              <a href="/tags/RELAX/" rel="tag"># RELAX</a>
+              <a href="/tags/codeML/" rel="tag"># codeML</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/19/evolution_selection_HyPhy_RELAX/" rel="prev" title="用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松">
+      <i class="fa fa-chevron-left"></i> 用HyPhy分析自然选择：（二）用RELAX模型检测指定分支的选择是加强或放松
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/02/evolution_ancestral.state.reconstruction_paml.baseml/" rel="next" title="祖先状态重建：用PAML的baseML重建祖先序列">
+      祖先状态重建：用PAML的baseML重建祖先序列 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-HyPhy%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="nav-text">1. HyPhy的简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-HyPhy%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-text">2. HyPhy的版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-HyPhy%E7%9A%84%E5%88%86%E6%9E%90%E5%BA%93%E5%92%8C%E5%B8%B8%E7%94%A8%E6%A3%80%E6%B5%8B"><span class="nav-text">3. HyPhy的分析库和常用检测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-HyPhy%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="nav-text">4. HyPhy的模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%A3%80%E6%B5%8BPervasive-selection%E7%9A%84%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.1. 检测Pervasive selection的位点模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%A3%80%E6%B5%8Bepisodic-selection%E7%9A%84%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.2. 检测episodic selection的位点模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E6%A3%80%E6%B5%8B%E8%9B%8B%E7%99%BD%E5%BA%8F%E5%88%97%E6%AF%94%E5%AF%B9%E7%9A%84%E6%AD%A3%E9%80%89%E6%8B%A9-x2F-%E5%AE%9A%E5%90%91%E9%80%89%E6%8B%A9%E7%9A%84%E4%BD%8D%E7%82%B9%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.3. 检测蛋白序列比对的正选择&#x2F;定向选择的位点模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E6%A3%80%E6%B5%8B%E7%8B%AC%E7%AB%8B%E5%88%86%E6%94%AF%E7%9A%84episodic-selection-branch-site-model-at-a-subset-of-sites"><span class="nav-text">4.4. 检测独立分支的episodic selection(branch-site model,at a subset of sites)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-%E6%A3%80%E6%B5%8B%E4%B8%80%E4%B8%AA%E5%9F%BA%E5%9B%A0%E6%98%AF%E5%90%A6%E5%9C%A8%E6%9F%90%E4%B8%80%E5%88%86%E6%94%AF%E6%88%96%E4%B8%80%E7%BB%84%E5%88%86%E6%94%AF%E4%B8%8A%E7%9A%84%E4%BB%BB%E4%BD%95%E4%BD%8D%E7%82%B9%E7%BB%8F%E5%8E%86%E4%BA%86%E6%AD%A3%E9%80%89%E6%8B%A9"><span class="nav-text">4.5. 检测一个基因是否在某一分支或一组分支上的任何位点经历了正选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-%E6%A3%80%E6%B5%8B%E9%80%89%E6%8B%A9%E5%8E%8B%E5%8A%9B%E7%9A%84%E6%94%BE%E6%9D%BE-x2F-%E5%8A%A0%E5%BC%BA"><span class="nav-text">4.6. 检测选择压力的放松&#x2F;加强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-text">4.7. 模型的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%89%88%E6%9C%ACHyPhy%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">5. 标准命令行版本HyPhy的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E5%AE%89%E8%A3%85"><span class="nav-text">5.1. 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">5.2. 输入文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E8%BF%90%E8%A1%8C"><span class="nav-text">5.3. 运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E5%8F%82%E6%95%B0"><span class="nav-text">5.4. 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="nav-text">5.5. 多线程实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-6-%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6"><span class="nav-text">5.6. 结果文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="nav-text">5.7. 结果展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-reference"><span class="nav-text">6. reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

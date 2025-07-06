@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="linux系统下的压缩工具，以及压缩和解压缩的操作，打包工具，打包和解包操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux系统的压缩&#x2F;解压缩和打包&#x2F;解包工具">
+<meta property="og:url" content="http://example.com/2024/06/17/linux_command_compress/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="linux系统下的压缩工具，以及压缩和解压缩的操作，打包工具，打包和解包操作。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2024-06-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-18T04:15:58.823Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="compress">
+<meta property="article:tag" content="gzip">
+<meta property="article:tag" content="pigz">
+<meta property="article:tag" content="bigz2">
+<meta property="article:tag" content="tar">
+<meta property="article:tag" content="zip">
+<meta property="article:tag" content="rar">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2024/06/17/linux_command_compress/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>linux系统的压缩/解压缩和打包/解包工具 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/17/linux_command_compress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux系统的压缩/解压缩和打包/解包工具
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-18 00:00:00 / Modified: 12:15:58" itemprop="dateCreated datePublished" datetime="2024-06-18T00:00:00+08:00">2024-06-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/command/" itemprop="url" rel="index"><span itemprop="name">command</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/command/compress/" itemprop="url" rel="index"><span itemprop="name">compress</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>6.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 mins.</span>
+            </span>
+            <div class="post-description">linux系统下的压缩工具，以及压缩和解压缩的操作，打包工具，打包和解包操作。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1485931&auto=1&height=32"></iframe></div>
+
+<p><strong>一句话总结</strong></p>
+<p>linux系统下最常见的压缩工具是<strong>gzip（压缩文件格式gz）</strong>，可用<strong>多线程命令pigz</strong>替代。另一个压缩效率更高的常用工具是<strong>bgzip2（压缩文件格式bz2）</strong>。其余的compress（压缩文件格式Z），zip（压缩文件格式zip），rar（压缩文件格式rar）都不常用。另外<strong>打包工具tar</strong>也常常调用压缩工具进行打包和压缩。</p>
+<h1 id="1-linux系统下的压缩和打包命令快查表"><a href="#1-linux系统下的压缩和打包命令快查表" class="headerlink" title="1. linux系统下的压缩和打包命令快查表"></a>1. linux系统下的压缩和打包命令快查表</h1><table>
+    <caption><h4>压缩和打包命令快查表</h4></caption>
+    <thead>
+    <tr>
+        <th>文件格式</th>
+        <th>工具</th>
+        <th>压缩/打包命令</th>
+        <th>解压/解包命令</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>file.gz</td>
+        <td>gzip和gunzip</td>
+        <td>gzip file</td>
+        <td>gzip -d file.gz或gunzip file.gz</td>
+    </tr>
+    <tr>
+        <td>file.gz</td>
+        <td>pigz（多线程的gzip）</td>
+        <td>pigz -p 8 file（用8个线程压缩）</td>
+        <td>pigz -p 8 -d file.gz（用8个线程解压缩）</td>
+    </tr>
+    <tr>
+        <td>file.tar</td>
+        <td>tar（打包/解包）</td>
+        <td>tar cvf file.tar *.jpg (把所有jpg文件打包进tar包，命名为file.tar文件)</td>
+        <td>tar xvf file.tar</td>
+    </tr>
+    <tr>
+        <td>file.tar.gz或file.tgz</td>
+        <td>tar（打包/解包的同时压缩/解压缩）</td>
+        <td>tar zcvf file.tar.gz *.jpg (把所有jpg文件打包压缩进file.tar.gz文件)</td>
+        <td>tar zxvf file.tar.gz</td>
+    </tr>
+    <tr>
+        <td>file.bz2</td>
+        <td>bzip2和bunzip2</td>
+        <td>bzip2 file</td>
+        <td>bzip2 -d file.bz2或bunzip2 file.bz2</td>
+    </tr>
+    <tr>
+        <td>file.Z</td>
+        <td>compress和uncompress</td>
+        <td>compress file</td>
+        <td>uncompress file.Z</td>
+    </tr>
+    <tr>
+        <td>file.zip</td>
+        <td>zip和unzip</td>
+        <td>zip file.zip *.jpg (把所有jpg文件压缩成一个zip包)</td>
+        <td>unzip file.zip</td>
+    </tr>
+    <tr>
+        <td>file.rar</td>
+        <td>rar和unrar （需要下载安装RAR for Linux工具）</td>
+        <td>rar a file *.jpg （把所有jpg文件压缩成一个rar包，名为file.rar）</td>
+        <td>unrar e file.rar （把file.rar中所有文件解压出来）；unrar x file.rar （把file.rar中所有文件解压出来，并按目录层级）</td>
+    </tr>
+    </tbody>
+</table>
+
+<h1 id="2-linux系统下的压缩工具"><a href="#2-linux系统下的压缩工具" class="headerlink" title="2. linux系统下的压缩工具"></a>2. linux系统下的压缩工具</h1><h2 id="2-1-gzip工具（-gz压缩格式）"><a href="#2-1-gzip工具（-gz压缩格式）" class="headerlink" title="2.1. gzip工具（.gz压缩格式）"></a>2.1. gzip工具（.gz压缩格式）</h2><ol>
+<li>gzip</li>
+</ol>
+<ul>
+<li>gzip是linux系统自带的压缩工具，生成压缩文件的后缀为gz（linux最常见的压缩格式）。</li>
+<li>gunzip是gzip的硬连接，与gzip命令几乎没有区别，主要用于解压缩gz格式文件。</li>
+<li>pigz是gzip的多线程并行版本，完全兼容gzip，可以直接替代gzip。</li>
+<li>gz格式常用于压缩生物序列文件，如fq，fa文件。绝大多数生物信息学软件都支持直接读取压缩后的fq.gz和fa.gz文件。</li>
+</ul>
+<ol start="2">
+<li>基础用法</li>
+</ol>
+<ul>
+<li><code>gzip file.txt</code>：压缩file.txt文件。gzip默认生成与原始文件同前缀的压缩后文件file.txt.gz，并删除原始文件file.txt。</li>
+<li><code>gzip -k file.txt</code>：压缩file.txt文件。默认生成与原始文件同前缀的压缩后文件file.txt.gz，<code>-k</code>参数不删除原始文件file.txt。</li>
+<li><code>gzip -c file.txt &gt; sample.gz</code>：指定压缩文件名为sample.gz。此命令把file.txt压缩到sample.gz，并保留原始文件file.txt。<code>-c</code>参数把压缩结果输出到标准输出，并保留原始文件，不会默认生成与原始文件同名压缩文件。</li>
+<li><code>gzip -d file.txt.gz</code>：解压缩file.txt.gz文件。此命令会生成解压缩后文件file.txt，并删除原始文件file.txt.gz。</li>
+<li><code>gzip -r Directory</code>：压缩Directory目录，使用-r参数递归压缩目录中所有文件。</li>
+</ul>
+<ol start="3">
+<li>进阶用法</li>
+</ol>
+<ul>
+<li><code>gzip file1.txt file2.txt file3.txt</code>：分别压缩多个文件。此命令会生成压缩后文件file1.txt.gz，file2.txt.gz，file3.txt.gz，并删除原始文件file1.txt，file2.txt，file3.txt。</li>
+<li><code>cat file1.txt file2.txt | gzip &gt; file.gz</code>或者<code>gzip -c file1.txt file2.txt &gt; file.gz</code>：gzip用于通道。此命令合并多个文件，并压缩合并后文件。如果gzip后不跟文件或者跟着<code>-</code>代表文件，则读取标准输入作为压缩对象。</li>
+<li><code>tar cf - Directory | gzip |ssh user@remotehost &quot;cat &gt; directory.tar.gz&quot;</code>：结合gzip和ssh进行远程备份</li>
+<li><code>cat newdata.txt | gzip &gt;&gt; existingdata.gz</code>：用gzip压缩新的数据并追加到现有压缩文件。</li>
+</ul>
+<ol start="4">
+<li>参数</li>
+</ol>
+<ul>
+<li>-c, –stdout：write on standard output, keep original files unchanged. 结果写到标准输出，原始文件保持不变。想要自行指定压缩文件名或者在管道中使用gzip则需要用这个参数。</li>
+<li>-d：decompress，解压缩。</li>
+<li>-1, -9：压缩级别1到9里面调整，-1压缩快但压缩程度低，-9压缩慢但压缩程度高。默认-6. </li>
+<li>-f：force overwrite of output file and compress links. 默认情况下，如果压缩文件已存在，gzip不会覆盖它。-f参数强制覆盖已有压缩文件，进行强制压缩。</li>
+<li>-k：keep (don’t delete) input files。默认会删除原始文件，-k参数则保留原始文件。</li>
+<li>-r：压缩目录，递归地压缩目录中的所有文件。</li>
+<li>-h：give this help。帮助文档。</li>
+<li>-t：test compressed file integrity. 测试压缩文件的完整性，而不解压。<code>gzip -t file.txt.gz</code>，如果输出显示OK，则表示文件完整无损。</li>
+<li>-l：list compressed file contents。列出压缩文件的内容，而不解压。</li>
+<li>-L：display software license</li>
+<li>-n：do not save or restore the original name and timestamp. 压缩文件时不保存原始文件名和时间戳。</li>
+<li>-N：save or restore the original name and timestamp</li>
+<li>-q：quiet，suppress all warnings</li>
+<li>-S：指定压缩文件的后缀。</li>
+<li>-v, –verbose：以冗长模式输出，会显示每个文件的文件名和压缩率。</li>
+<li>-V, –version：列出软件版本号。</li>
+</ul>
+<h2 id="2-2-pigz-Parallel-Implementation-of-GZip-：多线程的gzip"><a href="#2-2-pigz-Parallel-Implementation-of-GZip-：多线程的gzip" class="headerlink" title="2.2. pigz (Parallel Implementation of GZip) ：多线程的gzip"></a>2.2. pigz (Parallel Implementation of GZip) ：多线程的gzip</h2><ol>
+<li>pigz可以直接替代gzip</li>
+</ol>
+<ul>
+<li>因为gzip只支持单线程运行，所以推荐使用gzip的多线程并行版本pigz，完全兼容gzip。</li>
+<li>pigz支持gzip的所有参数，可以完美替代gzip，使压缩更高效。</li>
+<li>pigz除了支持gzip的参数外，还要自己特有的参数。</li>
+</ul>
+<ol start="2">
+<li>pigz的特有参数</li>
+</ol>
+<ul>
+<li>-p n：指定使用n个线程，默认8线程。</li>
+<li>-0 to -9, -11：压缩级别，除了gzip的1-9，还支持-11的极致压缩。</li>
+<li>-b 128K：指定压缩block size，默认是128K。</li>
+<li>-i, –independent    Compress blocks independently for damage recovery</li>
+<li>-I, –iterations n   Number of iterations for -11 optimization</li>
+<li>-J, –maxsplits n    Maximum number of split blocks for -11</li>
+<li>-Y  –synchronous    Force output file write to permanent storage</li>
+<li>-K, –zip            Compress to PKWare zip (.zip) single entry format</li>
+<li>-z, –zlib           Compress to zlib (.zz) instead of gzip format</li>
+<li>–                   All arguments after “–” are treated as files</li>
+<li>-O  –oneblock       Do not split into smaller blocks for -11</li>
+</ul>
+<ol start="3">
+<li>使用pigz注意事项</li>
+</ol>
+<ul>
+<li>当使用多线程时，pigz可能会消耗大量的CPU资源，因此在负载较重的系统上使用时需谨慎。</li>
+<li>请确保在使用多线程选项时，您的系统具有足够的处理器核心。</li>
+<li>压缩大文件时，pigz的内存消耗可能会增加。</li>
+<li>确保在脚本中使用时正确处理了pigz的退出状态，以便于捕获任何可能的错误。</li>
+</ul>
+<h2 id="2-3-bzip2（-bz2格式）"><a href="#2-3-bzip2（-bz2格式）" class="headerlink" title="2.3. bzip2（.bz2格式）"></a>2.3. bzip2（.bz2格式）</h2><ol>
+<li>bzip2</li>
+</ol>
+<ul>
+<li>bzip2是压缩程度更高，但压缩速度更慢的工具，生成的压缩文件后缀为bz2。</li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-h –help           print this message</li>
+<li>-d –decompress     force decompression. 解压缩</li>
+<li>-z –compress       force compression. 强制压缩</li>
+<li>-k –keep           keep (don’t delete) input files. 保留原始文件</li>
+<li>-f –force          overwrite existing output files. 覆盖已存在的输出文件</li>
+<li>-t –test           test compressed file integrity. 测试压缩文件的完整性</li>
+<li>-c –stdout         output to standard out. 输出结果到标准输出</li>
+<li>-q –quiet          suppress noncritical error messages</li>
+<li>-v –verbose        be verbose (a 2nd -v gives more)</li>
+<li>-L –license        display software version &amp; license</li>
+<li>-V –version        display software version &amp; license</li>
+<li>-s –small          use less memory (at most 2500k). 压缩过程使用更小的内存。</li>
+<li>-1 .. -9            set block size to 100k .. 900k. 压缩级别1到9里面调整，-1压缩快但压缩程度低，-9压缩慢但压缩程度高。</li>
+</ul>
+<h2 id="2-4-compress"><a href="#2-4-compress" class="headerlink" title="2.4. compress"></a>2.4. compress</h2><ol>
+<li>compress</li>
+</ol>
+<ul>
+<li>compress命令生成的压缩文件后缀是Z。</li>
+</ul>
+<ol start="2">
+<li>参数</li>
+</ol>
+<ul>
+<li>-d   If given, decompression is done instead. 解压缩。</li>
+<li>-c   Write output on stdout, don’t remove original.</li>
+<li>-b   Parameter limits the max number of bits&#x2F;code. 压缩效率，9-16之间的数值，数值越大，压缩效率越高。默认是16。</li>
+<li>-f   Forces output file to be generated, even if one already exists, and even if no space is saved by compressing. If -f is not used, the user will be prompted if stdin is a tty, otherwise, the output file will not be overwritten. 强制覆盖已有文件。</li>
+<li>-v   Write compression statistics. 显示命令执行过程。</li>
+<li>-V   Output vesion and compile options. 显示命令版本及默认参数。</li>
+<li>-r   Recursive. If a filename is a directory, descend into it and compress everything in it. 压缩目录时递归压缩。</li>
+</ul>
+<h1 id="3-打包工具：tar"><a href="#3-打包工具：tar" class="headerlink" title="3. 打包工具：tar"></a>3. 打包工具：tar</h1><h2 id="3-1-压缩和打包的区别"><a href="#3-1-压缩和打包的区别" class="headerlink" title="3.1. 压缩和打包的区别"></a>3.1. 压缩和打包的区别</h2><ul>
+<li>打包是指将一大堆文件或目录变成一个总的文件。</li>
+<li>压缩则是将一个大的文件通过一些压缩算法变成一个小文件。</li>
+<li>Linux中很多压缩程序（如gzip bzip2命令）只能针对一个文件进行压缩，这样当你想要压缩一大堆文件时，你得先将这一大堆文件先打成一个包（tar命令），然后再用压缩程序进行压缩（gzip bzip2命令）。</li>
+</ul>
+<h2 id="3-2-打包工具：tar（tape-archive）"><a href="#3-2-打包工具：tar（tape-archive）" class="headerlink" title="3.2. 打包工具：tar（tape archive）"></a>3.2. 打包工具：tar（tape archive）</h2><ul>
+<li>tar命令可以把一大堆的文件和目录全部打包成一个文件，这对于备份文件或将几个文件组合成为一个文件以便于网络传输是非常有用的。</li>
+</ul>
+<h2 id="3-3-参数"><a href="#3-3-参数" class="headerlink" title="3.3. 参数"></a>3.3. 参数</h2><ol>
+<li>常用参数</li>
+</ol>
+<ul>
+<li>-f：filename（文件名），这个参数后只能接文件名，所以一定要放在最后一个参数。</li>
+<li>-c, –create：创建一个新归档（打包）</li>
+<li>-x, –extract, –get：从归档中解出文件（解包）</li>
+<li>-A, –catenate, –concatenate：追加 tar 文件至归档</li>
+<li>-r, –append：追加文件至归档结尾</li>
+<li>-u, –update：仅追加比归档中副本更新的文件</li>
+<li>-d, –diff, –compare：找出归档和文件系统的差异；–delete：从归档(非磁带！)中删除</li>
+<li>-t, –list：列出归档内容；–test-label：测试归档卷标并退出</li>
+<li>-k, –keep-old-files：don’t replace existing files when extracting, treat them as errors. 保留原始文件。</li>
+<li>-O, –to-stdout：解压文件至标准输出</li>
+<li>-C, –directory&#x3D;DIR：解压文件至目录 DIR</li>
+<li>-v, –verbose：详细地列出处理的文件</li>
+</ul>
+<ol start="2">
+<li>压缩参数</li>
+</ol>
+<ul>
+<li>-a, –auto-compress：使用归档后缀名来决定压缩程序</li>
+<li>-I, –use-compress-program&#x3D;PROG：通过 PROG 过滤(必须是能接受 -d选项的程序)</li>
+<li>-z, –gzip, –gunzip, –ungzip：通过 gzip 过滤归档</li>
+<li>-Z, –compress, –uncompress：通过 compress 过滤归档</li>
+<li>-j, –bzip2：通过 bzip2 过滤归档</li>
+<li>-J, –xz：通过 xz 过滤归档</li>
+</ul>
+<ol start="3">
+<li>其他参数</li>
+</ol>
+<ul>
+<li>-p：保留原本文件的属性，如权限。</li>
+<li>–strip-components&#x3D;2：解压时从文件名中清楚2个引导部分。</li>
+</ul>
+<h2 id="3-4-实例"><a href="#3-4-实例" class="headerlink" title="3.4. 实例"></a>3.4. 实例</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">tar -cf files.tar file1.txt file2.txt # 打包file1.txt file2.txt到文件files.tar。仅打包不压缩。</span><br><span class="line">tar -xf files.tar # 解包不解压。</span><br><span class="line"></span><br><span class="line">tar -zcf files.tar.gz file1.txt file2.txt  # 打包并调用gzip压缩file1.txt file2.txt到文件files.tar.gz</span><br><span class="line">tar -zxf files.tar.gz # 解包并调用gzip解压缩</span><br><span class="line"></span><br><span class="line">tar -jcf files.tar.bz2 file1.txt file2.txt # 打包并调用bzip2压缩file1.txt file2.txt到文件files.tar.bz2</span><br><span class="line">tar -jxf files.tar.bz2 # 解包并调用bzip2解压</span><br><span class="line"></span><br><span class="line">tar -tf files.tar # 列出打包文件 files.tar 中的所有文件，但不解包。-t是列出文件的意思。</span><br><span class="line">tar -ztf files.tar.gz # 列出打包压缩文件 files.tar.gz 中的所有文件，但不解压缩也不解包。gz文件需要加上-z参数调用gzip。</span><br><span class="line">tar -zxf files.tar.gz file1.txt # 只将files.tar.gz内的部分文件（如file1.txt）解压出来</span><br><span class="line"></span><br><span class="line">tar -rf all.tar *.gif # 这条命令是将所有.gif的文件增加到all.tar的包里面去。-r是表示增加文件的意思。</span><br><span class="line">tar -uf all.tar logo.gif # 这条命令是更新原来tar包all.tar中logo.gif文件，-u是表示更新文件的意思。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面的实例通常都会加上-v参数详细列出处理文件。</li>
+</ul>
+<h1 id="4-references"><a href="#4-references" class="headerlink" title="4. references"></a>4. references</h1><ol>
+<li>压缩命令：<a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/linux-tar-gz.html">https://www.runoob.com/w3cnote/linux-tar-gz.html</a></li>
+<li>pigz的用法实例：<a target="_blank" rel="noopener" href="https://bashcommandnotfound.cn/article/linux-pigz-command#:~:text=Pigz%E6%98%AF%E4%B8%80%E4%B8%AAgzip%E5%8E%8B%E7%BC%A9,%E7%9A%84%E4%B8%80%E4%B8%AA%E9%AB%98%E6%95%88%E6%9B%BF%E4%BB%A3%E5%93%81%E3%80%82">https://bashcommandnotfound.cn/article/linux-pigz-command#:~:text=Pigz%E6%98%AF%E4%B8%80%E4%B8%AAgzip%E5%8E%8B%E7%BC%A9,%E7%9A%84%E4%B8%80%E4%B8%AA%E9%AB%98%E6%95%88%E6%9B%BF%E4%BB%A3%E5%93%81%E3%80%82</a></li>
+<li>tar用法：<a target="_blank" rel="noopener" href="https://wangchujiang.com/linux-command/c/tar.html">https://wangchujiang.com/linux-command/c/tar.html</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/compress/" rel="tag"># compress</a>
+              <a href="/tags/gzip/" rel="tag"># gzip</a>
+              <a href="/tags/pigz/" rel="tag"># pigz</a>
+              <a href="/tags/bigz2/" rel="tag"># bigz2</a>
+              <a href="/tags/tar/" rel="tag"># tar</a>
+              <a href="/tags/zip/" rel="tag"># zip</a>
+              <a href="/tags/rar/" rel="tag"># rar</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/04/python_syntax_string_quetos/" rel="prev" title="python脚本中字符串内的引号需要转义">
+      <i class="fa fa-chevron-left"></i> python脚本中字符串内的引号需要转义
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/17/bio_genetics_hybridization_reciprocal.cross/" rel="next" title="正交和反交在遗传学中的应用">
+      正交和反交在遗传学中的应用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%92%8C%E6%89%93%E5%8C%85%E5%91%BD%E4%BB%A4%E5%BF%AB%E6%9F%A5%E8%A1%A8"><span class="nav-text">1. linux系统下的压缩和打包命令快查表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">压缩和打包命令快查表</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%B7%A5%E5%85%B7"><span class="nav-text">2. linux系统下的压缩工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-gzip%E5%B7%A5%E5%85%B7%EF%BC%88-gz%E5%8E%8B%E7%BC%A9%E6%A0%BC%E5%BC%8F%EF%BC%89"><span class="nav-text">2.1. gzip工具（.gz压缩格式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-pigz-Parallel-Implementation-of-GZip-%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84gzip"><span class="nav-text">2.2. pigz (Parallel Implementation of GZip) ：多线程的gzip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-bzip2%EF%BC%88-bz2%E6%A0%BC%E5%BC%8F%EF%BC%89"><span class="nav-text">2.3. bzip2（.bz2格式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-compress"><span class="nav-text">2.4. compress</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7%EF%BC%9Atar"><span class="nav-text">3. 打包工具：tar</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%8E%8B%E7%BC%A9%E5%92%8C%E6%89%93%E5%8C%85%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">3.1. 压缩和打包的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7%EF%BC%9Atar%EF%BC%88tape-archive%EF%BC%89"><span class="nav-text">3.2. 打包工具：tar（tape archive）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%8F%82%E6%95%B0"><span class="nav-text">3.3. 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%AE%9E%E4%BE%8B"><span class="nav-text">3.4. 实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-references"><span class="nav-text">4. references</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

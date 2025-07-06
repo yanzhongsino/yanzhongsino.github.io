@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录了冠群和干群及在古生物学和进化生物学上应用的相关概念。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冠群(crown groups)和干群(stem groups)及相关定义">
+<meta property="og:url" content="http://example.com/2021/07/15/concept_crown.and.stem/index.html">
+<meta property="og:site_name" content="生信技工">
+<meta property="og:description" content="记录了冠群和干群及在古生物学和进化生物学上应用的相关概念。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Crown_n_Stem_Groups.svg/330px-Crown_n_Stem_Groups.svg.png">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true">
+<meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
+<meta property="article:published_time" content="2021-07-16T06:30:00.000Z">
+<meta property="article:modified_time" content="2024-06-15T03:58:37.914Z">
+<meta property="article:author" content="南方枝叶">
+<meta property="article:tag" content="concept">
+<meta property="article:tag" content="crown groups">
+<meta property="article:tag" content="stem groups">
+<meta property="article:tag" content="fossil time">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Crown_n_Stem_Groups.svg/330px-Crown_n_Stem_Groups.svg.png">
+
+<link rel="canonical" href="http://example.com/2021/07/15/concept_crown.and.stem/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>冠群(crown groups)和干群(stem groups)及相关定义 | 生信技工</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a7db9ab8b9b3ef3b239a82e4a58e43dc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="生信技工" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">生信技工</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/index.html" rel="section"><i class="fa fa-file fa-fw"></i>resume</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/15/concept_crown.and.stem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南方枝叶">
+      <meta itemprop="description" content="学习生物信息学的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="生信技工">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          冠群(crown groups)和干群(stem groups)及相关定义
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-16 14:30:00" itemprop="dateCreated datePublished" datetime="2021-07-16T14:30:00+08:00">2021-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-15 11:58:37" itemprop="dateModified" datetime="2024-06-15T11:58:37+08:00">2024-06-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/" itemprop="url" rel="index"><span itemprop="name">bio</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bio/concept/" itemprop="url" rel="index"><span itemprop="name">concept</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>1 mins.</span>
+            </span>
+            <div class="post-description">记录了冠群和干群及在古生物学和进化生物学上应用的相关概念。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1842025914&auto=1&height=32"></iframe></div>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Crown_n_Stem_Groups.svg/330px-Crown_n_Stem_Groups.svg.png" title="冠群干群示意图" width="100%" />
+
+<p><strong><p align="center">Figure 1. 冠群干群示意图</strong><br>from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Crown_group">wikipedia: crown group</a></p></p>
+<p>C1&#x2F;C2是冠群，S1是干群；C1和S1组成了泛群&#x2F;总群T1</p>
+<p><strong>泛群(pan-group)&#x3D;冠群(crown groups)+干群(stem groups)</strong></p>
+<h1 id="1-冠群-crown-groups"><a href="#1-冠群-crown-groups" class="headerlink" title="1. 冠群(crown groups)"></a>1. 冠群(crown groups)</h1><p>在种系遗传学(phylogenetics)中，冠群(crown groups)指的是指定的现存生物群体，和它们的最近共同祖先(the most recent common ancestor,最近共祖)，和最近共祖的所有灭绝后代的物种集合。</p>
+<p>同时，这也是进化枝(clade)的其中一种定义方式，即某个最近共祖和它的所有后代（包括现存的和灭绝的）的物种集。<br>如图中红色部分则是两个典型的冠群。</p>
+<h1 id="2-泛群-Pan-group"><a href="#2-泛群-Pan-group" class="headerlink" title="2. 泛群(Pan-group)"></a>2. 泛群(Pan-group)</h1><p>泛群(pan-group)或者总群(total group)是指冠群和比起其他现存生物与冠群更近缘的所有生物的总称。在系统树上，是指冠群和所有回退到与含有现存成员的最近分支分叉的位置(但不包含这个分叉点)的分支。</p>
+<h1 id="3-干群-stem-groups"><a href="#3-干群-stem-groups" class="headerlink" title="3. 干群(stem groups)"></a>3. 干群(stem groups)</h1><p>干群(stem groups)是并系类群，由一个泛群中不包括冠群的成员组成。所有干群成员都是灭绝的，多用于古生物学的化石集合。</p>
+<h1 id="4-邻群-Plesion-group"><a href="#4-邻群-Plesion-group" class="headerlink" title="4. 邻群(Plesion-group)"></a>4. 邻群(Plesion-group)</h1><p>邻群(plesion-group)有几种含义，其中一种是”nearby group”，例如指定类群(可以是冠群，也可以不是)的姐妹群；另一种含义是一个可能是并系的群体，由原始特征(symplesiomorphies，我也不是太明白)定义，通常是指系统发育树的基部类群。<br>就我们的进化学研究我好像没见过这个词，用的不多。</p>
+<h1 id="5-词缀"><a href="#5-词缀" class="headerlink" title="5. 词缀"></a>5. 词缀</h1><p>通常要作区分时，把crown-,stem-,pan-,plesion-作为前缀，比如Crown-Aves指现存所有鸟类，以及它们的最近共祖和最近共祖的所有灭绝后代。</p>
+<h1 id="6-冠-crown-和干-stem-的在系统发育树上的应用"><a href="#6-冠-crown-和干-stem-的在系统发育树上的应用" class="headerlink" title="6. 冠(crown)和干(stem)的在系统发育树上的应用"></a>6. 冠(crown)和干(stem)的在系统发育树上的应用</h1><p>系统发育树在描述分支节点时，有冠节点和干节点的区别，在标定物种的分化时间时，有冠时间点和干时间点的区别，这个其实是对应冠节点和干节点的，冠节点的时间就是冠时间点。</p>
+<p>用例子说明系统发育树上的冠节点和干节点：</p>
+<p>在下面系统发育树示意图(A4,(A3,(A2,A1)B)C)D中，假设A1和A2都属于As类群，A3和A4不属于As类群，那么在这个系统发育树上，As类群的冠节点是B，干节点是C。当描述As与其他物种分化时间时，冠时间指B点的时间，干时间指C点的时间。</p>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images/bioinfo_caculate.divergence.time_phylogeny.jpg?raw=true" title="系统发育树示意图(A4,(A3,(A2,A1)B)C)D" width="100%" />
+
+<p><strong><p align="center">Figure 2. 系统发育树示意图</p></strong></p>
+<p>notes：</p>
+<p>每篇博客的周期都有点超出预期吖~</p>
+<p>2021.08.05写完</p>
+<p><strong>ref：</strong></p>
+<ol>
+<li>wiki: crown group：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Crown_group">https://en.wikipedia.org/wiki/Crown_group</a></li>
+</ol>
+<hr>
+<ul>
+<li>欢迎关注微信公众号：<strong>生信技工</strong></li>
+<li>公众号主要分享生信分析、生信软件、基因组学、转录组学、植物进化、生物学概念等相关内容，包括生物信息学工具的基本原理、操作步骤和学习心得。</li>
+</ul>
+<img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true" width=20% title="wechat_public_QRcode.png" align=center/>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>真诚赞赏，手留余香</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="南方枝叶 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="南方枝叶 Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/concept/" rel="tag"># concept</a>
+              <a href="/tags/crown-groups/" rel="tag"># crown groups</a>
+              <a href="/tags/stem-groups/" rel="tag"># stem groups</a>
+              <a href="/tags/fossil-time/" rel="tag"># fossil time</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/23/concept_homology/" rel="prev" title="同源性(homology)相关概念">
+      <i class="fa fa-chevron-left"></i> 同源性(homology)相关概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/23/omics_genome_quality.assessment_BUSCO/" rel="next" title="基因组质量评估：（三）用BUSCO评估基因组的完整性">
+      基因组质量评估：（三）用BUSCO评估基因组的完整性 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%86%A0%E7%BE%A4-crown-groups"><span class="nav-text">1. 冠群(crown groups)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%B3%9B%E7%BE%A4-Pan-group"><span class="nav-text">2. 泛群(Pan-group)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%B9%B2%E7%BE%A4-stem-groups"><span class="nav-text">3. 干群(stem groups)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E9%82%BB%E7%BE%A4-Plesion-group"><span class="nav-text">4. 邻群(Plesion-group)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E8%AF%8D%E7%BC%80"><span class="nav-text">5. 词缀</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%86%A0-crown-%E5%92%8C%E5%B9%B2-stem-%E7%9A%84%E5%9C%A8%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%82%B2%E6%A0%91%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-text">6. 冠(crown)和干(stem)的在系统发育树上的应用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">南方枝叶</p>
+  <div class="site-description" itemprop="description">学习生物信息学的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/yanzhongsino" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yanzhongsino" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yan.zhong.sino@gmail.com" title="E-Mail → mailto:yan.zhong.sino@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div class="wechat_channel">
+        <br>
+        <!-- 这里添加你的二维码图片 -->
+        <img src ="/images/wechat_channel.jpg?raw=true">
+        <span>欢迎关注微信公众号</span>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南方枝叶</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">730k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:04</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
