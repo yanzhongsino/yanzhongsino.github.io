@@ -12,7 +12,7 @@ tags:
 description: Linux系统下环境变量PATH设置错误导致所有环境变量异常，所有命令失效，记录修复方案。
 ---
 
-<div align="middle"><iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3UrURlJ4FyHTQVPHsQsii9?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+<div align="middle"><iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3UrURlJ4FyHTQVPHsQsii9?utm_source=generator" width="50%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
 
 # 1. 环境变量设置错误导致的异常
 1. 在Linux系统中通常通过修改`~/.bashrc`文件来设置环境变量。有时误操作了.bashrc文件导致所有环境变量异常，甚至常见Linux系统命令（如cat，vim，ls）都无法使用。
