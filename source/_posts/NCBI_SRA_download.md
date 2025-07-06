@@ -16,7 +16,7 @@ tags:
 description: 记录从NCBI的SRA数据库下载原始测序reads数据（二代数据和三代数据），并转换为fastq格式的方法。
 ---
 
-<div align="middle"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="https://open.spotify.com/embed/track/054NrUrqsXqh1WfZ9sbNdI?utm_source=generator"></iframe></div>
+<div align="middle"><iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/054NrUrqsXqh1WfZ9sbNdI?utm_source=generator" width="50%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
 
 # 1. 下载原始测序数据
 二代或三代测序的原始序列读数可以从NCBI的Sequence Read Archive(SRA)数据库下载：https://www.ncbi.nlm.nih.gov/sra。
