@@ -29,12 +29,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-11-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-06T01:17:14.026Z">
+<meta property="article:modified_time" content="2025-07-15T21:11:38.834Z">
 <meta property="article:author" content="南方枝叶">
 <meta property="article:tag" content="genome survey">
 <meta property="article:tag" content="SRA">
-<meta property="article:tag" content="NCBI">
 <meta property="article:tag" content="NGS">
+<meta property="article:tag" content="NCBI">
 <meta property="article:tag" content="SRA Toolkit">
 <meta property="article:tag" content="fastq">
 <meta property="article:tag" content="quality control">
@@ -262,7 +262,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-07-06 09:17:14" itemprop="dateModified" datetime="2025-07-06T09:17:14+08:00">2025-07-06</time>
+                <time title="Modified: 2025-07-16 05:11:38" itemprop="dateModified" datetime="2025-07-16T05:11:38+08:00">2025-07-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,7 +298,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>4.3k</span>
+              <span>4.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -344,7 +344,7 @@
 <li>命令</li>
 </ol>
 <ul>
-<li><code>time fastp -c -l 50 -q 20 -w 8 -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.clean.fq.gz -O sample_2.clean.fq.gz -h sample_fastp.html -j sample_fastp.json</code></li>
+<li><code>time fastp -c -l 50 -q 20 -w 8 --detect_adapter_for_pe -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.clean.fq.gz -O sample_2.clean.fq.gz -h sample_fastp.html -j sample_fastp.json</code></li>
 </ul>
 <ol start="2">
 <li>常用参数-输入输出</li>
@@ -354,6 +354,7 @@
 <li>-o, -O 分别指定质控后生成的双端测序的clean reads文件，支持.fq.gz格式。</li>
 <li>-h 或 –html: 生成质量控制报告的HTML文件。</li>
 <li>-j 或 –json: 生成质量控制报告的JSON文件。</li>
+<li>-h和-j的输出文件也可以用来检验运行有没有被中断。如果运行中断，会生成clean.fq.gz，但不会生成html和json文件。</li>
 </ul>
 <ol start="3">
 <li>常用参数-质控</li>
@@ -374,9 +375,9 @@
 <li>-f 或 –trim_front: 去除序列开头的若干个碱基。</li>
 <li>-t 或 –trim_tail: 去除序列末尾的若干个碱基。</li>
 <li>-b 或 –cut_by_quality3: 启用右端质量控制剪切，去除序列末尾低质量碱基。</li>
-<li>-a 或 –adapter_sequence: 指定单端测序的适配子序列。</li>
-<li>-A 或 –adapter_sequence_r2: 指定双端测序第二条链的适配子序列。</li>
-<li>–detect_adapter_for_pe: 自动检测并剪切双端测序的适配子。</li>
+<li>-a 或 –adapter_sequence, –adapter_sequence_r2: 指定单端&#x2F;双端测序的接头序列。</li>
+<li>–detect_adapter_for_pe: 自动检测接头序列仅对单端reads是默认执行的，用这个参数自动检测双端测序的接头序列。</li>
+<li>-A: 默认执行adapter trimming（去除接头序列），用-A参数则不执行。</li>
 <li>-W 或 –overlap_len_require: 对于双端数据，设置最小重叠长度以进行合并。</li>
 </ul>
 <h2 id="3-2-Trimmomatic-FastQC-经典方案"><a href="#3-2-Trimmomatic-FastQC-经典方案" class="headerlink" title="3.2. Trimmomatic + FastQC 经典方案"></a>3.2. Trimmomatic + FastQC 经典方案</h2><p>Trimmomatic则用于reads修剪和过滤，包括接头去除和质量剪切，但无法提供质控报告。FastQC可以提供详细的质量报告，包括序列质量评分、GC含量分布、序列长度分布等。许多文章都使用这个两个软件组合进行质控和报告的获取。</p>
@@ -509,8 +510,8 @@
           <div class="post-tags">
               <a href="/tags/genome-survey/" rel="tag"># genome survey</a>
               <a href="/tags/SRA/" rel="tag"># SRA</a>
-              <a href="/tags/NCBI/" rel="tag"># NCBI</a>
               <a href="/tags/NGS/" rel="tag"># NGS</a>
+              <a href="/tags/NCBI/" rel="tag"># NCBI</a>
               <a href="/tags/SRA-Toolkit/" rel="tag"># SRA Toolkit</a>
               <a href="/tags/fastq/" rel="tag"># fastq</a>
               <a href="/tags/quality-control/" rel="tag"># quality control</a>
@@ -537,8 +538,8 @@
       <i class="fa fa-chevron-left"></i> 用SPAdes对Illumina二代测序数据进行基因组预组装
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/12/05/NCBI_SRA_submit/" rel="next" title="提交原始测序数据到NCBI的SRA数据库">
-      提交原始测序数据到NCBI的SRA数据库 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/12/05/NCBI_GenBank_submit_intro/" rel="next" title="提交核苷酸序列到NCBI的GenBank的介绍">
+      提交核苷酸序列到NCBI的GenBank的介绍 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -612,20 +613,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-count">95</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">497</span>
+        <span class="site-state-item-count">505</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -679,12 +680,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">731k</span>
+    <span title="Symbols count total">734k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:05</span>
+    <span title="Reading time total">11:08</span>
 </div>
 
         

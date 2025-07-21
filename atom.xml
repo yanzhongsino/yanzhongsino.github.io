@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-06T01:27:52.682Z</updated>
+  <updated>2025-07-17T03:11:48.425Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,70 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Windows自带软件：给语音或视频文件添加同步字幕，以及实时记录语音输入为文本</title>
+    <link href="http://example.com/2025/07/15/software_Windows_built-in_audio2text/"/>
+    <id>http://example.com/2025/07/15/software_Windows_built-in_audio2text/</id>
+    <published>2025-07-15T16:00:00.000Z</published>
+    <updated>2025-07-17T03:11:48.425Z</updated>
+    
+    
+    <summary type="html">介绍Windows系统自带的软件，包括给视频/音频添加同步字幕的软件（快捷键：Windows+Ctrl+L），以及实时转换语音成文本的软件（快捷键：Windows+H）。</summary>
+    
+    
+    
+    <category term="software" scheme="http://example.com/categories/software/"/>
+    
+    <category term="Windows" scheme="http://example.com/categories/software/Windows/"/>
+    
+    <category term="built-in" scheme="http://example.com/categories/software/Windows/built-in/"/>
+    
+    
+    <category term="software" scheme="http://example.com/tags/software/"/>
+    
+    <category term="transcribe" scheme="http://example.com/tags/transcribe/"/>
+    
+    <category term="Windows" scheme="http://example.com/tags/Windows/"/>
+    
+    <category term="subtitle" scheme="http://example.com/tags/subtitle/"/>
+    
+    <category term="translate" scheme="http://example.com/tags/translate/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>离线转录视频/音频成文本的软件</title>
+    <link href="http://example.com/2025/07/15/software_tools_transcribe_audio2text/"/>
+    <id>http://example.com/2025/07/15/software_tools_transcribe_audio2text/</id>
+    <published>2025-07-15T16:00:00.000Z</published>
+    <updated>2025-07-17T03:12:44.045Z</updated>
+    
+    
+    <summary type="html">介绍把语音或视频转录成文本的开源软件 Open AI的Whisper，以及基于Whisper开发的Buzz。</summary>
+    
+    
+    
+    <category term="software" scheme="http://example.com/categories/software/"/>
+    
+    <category term="tools" scheme="http://example.com/categories/software/tools/"/>
+    
+    <category term="transcribe" scheme="http://example.com/categories/software/tools/transcribe/"/>
+    
+    
+    <category term="software" scheme="http://example.com/tags/software/"/>
+    
+    <category term="transcribe" scheme="http://example.com/tags/transcribe/"/>
+    
+    <category term="translate" scheme="http://example.com/tags/translate/"/>
+    
+    <category term="Open AI" scheme="http://example.com/tags/Open-AI/"/>
+    
+    <category term="Whisper" scheme="http://example.com/tags/Whisper/"/>
+    
+    <category term="Buzz" scheme="http://example.com/tags/Buzz/"/>
+    
+  </entry>
   
   <entry>
     <title>从NCBI的SRA数据库下载原始测序数据</title>
@@ -37,17 +101,17 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
-    
-    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
-    
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
   </entry>
   
@@ -81,7 +145,7 @@
     <link href="http://example.com/2025/04/14/affair_Canada_visa/"/>
     <id>http://example.com/2025/04/14/affair_Canada_visa/</id>
     <published>2025-04-14T16:00:00.000Z</published>
-    <updated>2025-05-12T08:29:55.222Z</updated>
+    <updated>2025-07-21T03:34:50.899Z</updated>
     
     
     <summary type="html">记录2025年上半年申请加拿大的工作签证的流程，加拿大博士后属于雇主指定工作许可（Employer-specific Work Permit）中的豁免劳动力市场影响评估的工作签证（LMIA-Exempt Work Permit）。</summary>
@@ -128,9 +192,9 @@
     
     <category term="organelle" scheme="http://example.com/tags/organelle/"/>
     
-    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
-    
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
+    
+    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
     
     <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
     
@@ -180,55 +244,6 @@
   </entry>
   
   <entry>
-    <title>提交核苷酸序列到NCBI的GenBank的介绍</title>
-    <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_intro/"/>
-    <id>http://example.com/2024/12/05/NCBI_GenBank_submit_intro/</id>
-    <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2024-12-15T14:40:19.870Z</updated>
-    
-    
-    <summary type="html">介绍NCBI,GenBank和向GenBank上传核苷酸序列。</summary>
-    
-    
-    
-    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
-    
-    <category term="GenBank" scheme="http://example.com/categories/NCBI/GenBank/"/>
-    
-    <category term="submit" scheme="http://example.com/categories/NCBI/GenBank/submit/"/>
-    
-    
-    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
-    
-    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
-    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
-    
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
-    
-    <category term="NLM" scheme="http://example.com/tags/NLM/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="WGS" scheme="http://example.com/tags/WGS/"/>
-    
-    <category term="TSA" scheme="http://example.com/tags/TSA/"/>
-    
-    <category term="TPA" scheme="http://example.com/tags/TPA/"/>
-    
-    <category term="TLS" scheme="http://example.com/tags/TLS/"/>
-    
-    <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
-    
-  </entry>
-  
-  <entry>
     <title>提交原始测序数据到NCBI的SRA数据库</title>
     <link href="http://example.com/2024/12/05/NCBI_SRA_submit/"/>
     <id>http://example.com/2024/12/05/NCBI_SRA_submit/</id>
@@ -247,17 +262,17 @@
     <category term="submit" scheme="http://example.com/categories/NCBI/SRA/submit/"/>
     
     
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
     <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
     
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
     
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
     
@@ -266,11 +281,60 @@
   </entry>
   
   <entry>
+    <title>提交核苷酸序列到NCBI的GenBank的介绍</title>
+    <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_intro/"/>
+    <id>http://example.com/2024/12/05/NCBI_GenBank_submit_intro/</id>
+    <published>2024-12-05T16:00:00.000Z</published>
+    <updated>2024-12-15T14:40:19.870Z</updated>
+    
+    
+    <summary type="html">介绍NCBI,GenBank和向GenBank上传核苷酸序列。</summary>
+    
+    
+    
+    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
+    
+    <category term="GenBank" scheme="http://example.com/categories/NCBI/GenBank/"/>
+    
+    <category term="submit" scheme="http://example.com/categories/NCBI/GenBank/submit/"/>
+    
+    
+    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
+    
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
+    
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    
+    <category term="NLM" scheme="http://example.com/tags/NLM/"/>
+    
+    <category term="WGS" scheme="http://example.com/tags/WGS/"/>
+    
+    <category term="TSA" scheme="http://example.com/tags/TSA/"/>
+    
+    <category term="TPA" scheme="http://example.com/tags/TPA/"/>
+    
+    <category term="TLS" scheme="http://example.com/tags/TLS/"/>
+    
+    <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
+    
+  </entry>
+  
+  <entry>
     <title>二代测序数据的前处理</title>
     <link href="http://example.com/2024/11/25/omics_genome.sequencing_NGS_data.preprocessing/"/>
     <id>http://example.com/2024/11/25/omics_genome.sequencing_NGS_data.preprocessing/</id>
     <published>2024-11-25T16:00:00.000Z</published>
-    <updated>2025-07-06T01:17:14.026Z</updated>
+    <updated>2025-07-15T21:11:38.834Z</updated>
     
     
     <summary type="html">对二代测序进行预处理。包括从NCBI下载SRA格式数据，把SRA格式转为fastq格式。对二代测序的下机数据的质控，包括fastp去除接头和低质量序列，fastqc获取质量报告，trimmomatic去除接头和低质量序列，fastuniq为genome survey等情况去除重复序列。</summary>
@@ -290,9 +354,9 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
-    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
-    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
     <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
@@ -467,9 +531,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
-    
     <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
+    
+    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
@@ -500,9 +564,9 @@
     
     <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
     
-    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
-    
     <category term="tree" scheme="http://example.com/tags/tree/"/>
+    
+    <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
     
     <category term="tools" scheme="http://example.com/tags/tools/"/>
     
@@ -649,68 +713,6 @@
     <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
     
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Hifiasm组装基因组：（一）简介Hifiasm软件和HiFi数据</title>
-    <link href="http://example.com/2024/06/18/omics_genome.assembly_TGS_Hifiasm_01.intro/"/>
-    <id>http://example.com/2024/06/18/omics_genome.assembly_TGS_Hifiasm_01.intro/</id>
-    <published>2024-06-18T16:00:00.000Z</published>
-    <updated>2024-06-20T13:06:39.738Z</updated>
-    
-    
-    <summary type="html">为啥Hifiasm是用HiFi数据组装基因组的不二选择? 本文简介了HiFi数据，组装基因组的软件选择，以及介绍Hifiasm软件。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
-    
-    
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
-    
-    <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>正交和反交在遗传学中的应用</title>
-    <link href="http://example.com/2024/06/17/bio_genetics_hybridization_reciprocal.cross/"/>
-    <id>http://example.com/2024/06/17/bio_genetics_hybridization_reciprocal.cross/</id>
-    <published>2024-06-17T16:00:00.000Z</published>
-    <updated>2024-06-18T04:33:07.449Z</updated>
-    
-    
-    <summary type="html">介绍了正交和反交的定义，以及利用正交和反交解决遗传中的哪些问题。</summary>
-    
-    
-    
-    <category term="bio" scheme="http://example.com/categories/bio/"/>
-    
-    <category term="genetics" scheme="http://example.com/categories/bio/genetics/"/>
-    
-    <category term="hybridization" scheme="http://example.com/categories/bio/genetics/hybridization/"/>
-    
-    
-    <category term="bio" scheme="http://example.com/tags/bio/"/>
-    
-    <category term="reciprocal cross" scheme="http://example.com/tags/reciprocal-cross/"/>
-    
-    <category term="hybridization" scheme="http://example.com/tags/hybridization/"/>
     
   </entry>
   
