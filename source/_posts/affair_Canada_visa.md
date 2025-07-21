@@ -167,18 +167,20 @@ description: 记录2025年上半年申请加拿大的工作签证的流程，加
 - 生物识别指示信（Biometric Intruction Letter）的复印件：IRCC发邮件时附上的IMM5756文件，上面有IRCC生成的二维码。
 - 加拿大签证申请中心的预约信的复印件：上面有预约时间和IRCC号码，广州的VFS只能在预约时间前15分钟入场，提前去也需要等。
 - 护照原件和护照的生物信息页复印件。
-- 加拿大签证申请中心的**服务同意书**及使用条款：需要签字的原件。
-- **Consent Form同意函**：需要签字的原件，中英双语的一个同意函文件。
-- 在网站：https://visa.vfsglobal.com/chn/en/can/book-an-appointment 下载同意书和同意函（https://assets.ctfassets.net/xxg4p8gt3sg6/2bBHiItTSKCd38LVjMfUAa/673c031bcce157ee4c4b4ce657c6d95d/Consent_Form_version_5.pdf）。
+- 加拿大签证申请**中心服务同意书**及使用条款：需要签字的原件。
+- **《个人信息保护法》Consent Form同意函**：需要签字的原件，中英双语的一个同意函文件。
+- 在网站：https://visa.vfsglobal.com/chn/en/can/book-an-appointment 下载同意书和同意函，可以选择语言为中文，下载的文件就是中文版本。
+- 中心服务同意书：https://assets.ctfassets.net/xxg4p8gt3sg6/1wyH9Y8t38NHGYZAIx5b7O/7e2e7b1e9fce14d6aaf94eeb599af9c7/VFS-ConsentForm_CN.PDF
+- 《个人信息保护法》Consent Form同意函：https://assets.ctfassets.net/xxg4p8gt3sg6/2bBHiItTSKCd38LVjMfUAa/673c031bcce157ee4c4b4ce657c6d95d/Consent_Form_version_5.pdf
 
 <img src="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/images_public/Canada_visa_IRCC/VFS_agree_sample.jpg?raw=true" width=50% title="VFS_agree_sample" align=center/>
 
 **<p align="center">Figure 8. VFS agree sample 同意函的样表</p>**
 
 3. 录指纹
-- 录指纹前，VFS工作人员会询问是否需要vip套餐（元/人），是否需要短信服务（16元/人），我是都没需要。vip是不用排队，我当天排队大概20分钟，短信是除了发邮件通知进度外还会发短信，照顾不用邮件的人。
+- 录指纹前，VFS工作人员会询问是否需要vip套餐（2xx元/人），是否需要短信服务（16元/人），我是都没需要。vip是不用排队，我当天排队大概20分钟，短信是除了发邮件通知进度外还会发短信，照顾不使用邮件的人。
 - 录指纹时，会打开摄像头，询问姓名，出生地等信息，录入指纹和视频。
-- 录完指纹后，会返回一张生物信息采集卡，上面英文的姓名，生日，IRCC码，以及Biometric ID，有效期10年，最好拍照保存好，之后再次申请加拿大签证就不需要录指纹了。
+- 录完指纹后，会返回一张生物信息采集卡，上面英文的姓名，生日，IRCC码，以及Biometric ID，有效期10年，最好拍照保存好，之后再次申请加拿大签证就不需要录指纹了。我是直接贴在了护照里面。
 - 录完指纹后，会发一张“递交贴签申请须知”，根据须知办理递交护照贴签。
 
 ## 2.7. 提交护照给IRCC贴签证

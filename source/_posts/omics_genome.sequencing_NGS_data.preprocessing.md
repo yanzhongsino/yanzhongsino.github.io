@@ -55,12 +55,13 @@ description: 对二代测序进行预处理。包括从NCBI下载SRA格式数据
 ## 3.1. fastp快速方案（fastp速度=trimmomatic速度*5）
 fastp可以提供快速高效的FASTQ文件预处理和质控，包括过滤低质量读段、去除接头、质量剪切等功能，同时可以提供质量报告。
 1. 命令
-- `time fastp -c -l 50 -q 20 -w 8 -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.clean.fq.gz -O sample_2.clean.fq.gz -h sample_fastp.html -j sample_fastp.json`
+- `time fastp -c -l 50 -q 20 -w 8 --detect_adapter_for_pe -i sample_1.raw.fq.gz -I sample_2.raw.fq.gz -o sample_1.clean.fq.gz -O sample_2.clean.fq.gz -h sample_fastp.html -j sample_fastp.json`
 2. 常用参数-输入输出
 - -i, -I 分别指定双端测序的raw reads文件，支持.fq.gz格式。
 - -o, -O 分别指定质控后生成的双端测序的clean reads文件，支持.fq.gz格式。
 - -h 或 --html: 生成质量控制报告的HTML文件。
 - -j 或 --json: 生成质量控制报告的JSON文件。
+- -h和-j的输出文件也可以用来检验运行有没有被中断。如果运行中断，会生成clean.fq.gz，但不会生成html和json文件。
 3. 常用参数-质控
 - -c, --correction：在overlapped区域执行碱基校正（base correction），只对PE数据有效, 默认不执行。
 - -l 50：设置保留reads的最小长度，默认15。
@@ -73,9 +74,9 @@ fastp可以提供快速高效的FASTQ文件预处理和质控，包括过滤低�
 - -f 或 --trim_front: 去除序列开头的若干个碱基。
 - -t 或 --trim_tail: 去除序列末尾的若干个碱基。
 - -b 或 --cut_by_quality3: 启用右端质量控制剪切，去除序列末尾低质量碱基。
-- -a 或 --adapter_sequence: 指定单端测序的适配子序列。
-- -A 或 --adapter_sequence_r2: 指定双端测序第二条链的适配子序列。
-- --detect_adapter_for_pe: 自动检测并剪切双端测序的适配子。
+- -a 或 --adapter_sequence, --adapter_sequence_r2: 指定单端/双端测序的接头序列。
+- --detect_adapter_for_pe: 自动检测接头序列仅对单端reads是默认执行的，用这个参数自动检测双端测序的接头序列。
+- -A: 默认执行adapter trimming（去除接头序列），用-A参数则不执行。
 - -W 或 --overlap_len_require: 对于双端数据，设置最小重叠长度以进行合并。
 
 ## 3.2. Trimmomatic + FastQC 经典方案
