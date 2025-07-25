@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-25T04:32:12.286Z</updated>
+  <updated>2025-07-25T18:32:15.895Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2025/07/23/bio_taxon_life/"/>
     <id>http://example.com/2025/07/23/bio_taxon_life/</id>
     <published>2025-07-23T16:00:00.000Z</published>
-    <updated>2025-07-25T04:32:12.286Z</updated>
+    <updated>2025-07-25T18:32:15.895Z</updated>
     
     
     <summary type="html">地球上现存生命的系统发育关系，以及存在的争议</summary>
@@ -130,13 +130,13 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
-    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
-    
-    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
-    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
     
@@ -273,43 +273,6 @@
   </entry>
   
   <entry>
-    <title>提交原始测序数据到NCBI的SRA数据库</title>
-    <link href="http://example.com/2024/12/05/NCBI_SRA_submit/"/>
-    <id>http://example.com/2024/12/05/NCBI_SRA_submit/</id>
-    <published>2024-12-05T16:00:00.000Z</published>
-    <updated>2025-07-06T00:34:31.869Z</updated>
-    
-    
-    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到SRA数据库的步骤。</summary>
-    
-    
-    
-    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
-    
-    <category term="SRA" scheme="http://example.com/categories/NCBI/SRA/"/>
-    
-    <category term="submit" scheme="http://example.com/categories/NCBI/SRA/submit/"/>
-    
-    
-    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
-    
-    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
-    
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-  </entry>
-  
-  <entry>
     <title>提交核苷酸序列到NCBI的GenBank的介绍</title>
     <link href="http://example.com/2024/12/05/NCBI_GenBank_submit_intro/"/>
     <id>http://example.com/2024/12/05/NCBI_GenBank_submit_intro/</id>
@@ -328,13 +291,13 @@
     <category term="submit" scheme="http://example.com/categories/NCBI/GenBank/submit/"/>
     
     
-    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
+    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
     
-    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
     
     <category term="submit" scheme="http://example.com/tags/submit/"/>
+    
+    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
     <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
     
@@ -342,7 +305,9 @@
     
     <category term="NLM" scheme="http://example.com/tags/NLM/"/>
     
-    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
     
@@ -354,7 +319,42 @@
     
     <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
     
-    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+  </entry>
+  
+  <entry>
+    <title>提交原始测序数据到NCBI的SRA数据库</title>
+    <link href="http://example.com/2024/12/05/NCBI_SRA_submit/"/>
+    <id>http://example.com/2024/12/05/NCBI_SRA_submit/</id>
+    <published>2024-12-05T16:00:00.000Z</published>
+    <updated>2025-07-06T00:34:31.869Z</updated>
+    
+    
+    <summary type="html">记录上传原始测序reads数据（二代数据和三代数据）到SRA数据库的步骤。</summary>
+    
+    
+    
+    <category term="NCBI" scheme="http://example.com/categories/NCBI/"/>
+    
+    <category term="SRA" scheme="http://example.com/categories/NCBI/SRA/"/>
+    
+    <category term="submit" scheme="http://example.com/categories/NCBI/SRA/submit/"/>
+    
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
+    
+    <category term="SRA" scheme="http://example.com/tags/SRA/"/>
+    
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="NGS" scheme="http://example.com/tags/NGS/"/>
+    
+    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
+    
+    <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
+    
+    <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
+    
+    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
     
   </entry>
   
@@ -383,19 +383,21 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
-    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
+    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
-    <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
     <category term="fastq" scheme="http://example.com/tags/fastq/"/>
+    
+    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
+    
+    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
     
     <category term="quality control" scheme="http://example.com/tags/quality-control/"/>
     
     <category term="QC" scheme="http://example.com/tags/QC/"/>
-    
-    <category term="genome sequencing" scheme="http://example.com/tags/genome-sequencing/"/>
     
     <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
     
@@ -412,8 +414,6 @@
     <category term="fastqc" scheme="http://example.com/tags/fastqc/"/>
     
     <category term="fastuniq" scheme="http://example.com/tags/fastuniq/"/>
-    
-    <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
     
   </entry>
   
