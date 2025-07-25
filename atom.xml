@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-25T18:32:15.895Z</updated>
+  <updated>2025-07-25T18:42:44.300Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2025/07/23/bio_taxon_life/"/>
     <id>http://example.com/2025/07/23/bio_taxon_life/</id>
     <published>2025-07-23T16:00:00.000Z</published>
-    <updated>2025-07-25T18:32:15.895Z</updated>
+    <updated>2025-07-25T18:42:44.300Z</updated>
     
     
     <summary type="html">地球上现存生命的系统发育关系，以及存在的争议</summary>
@@ -221,9 +221,9 @@
     
     <category term="organelle" scheme="http://example.com/tags/organelle/"/>
     
-    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
-    
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
+    
+    <category term="plastome" scheme="http://example.com/tags/plastome/"/>
     
     <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
     
@@ -295,11 +295,11 @@
     
     <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
     
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
     <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
     
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
@@ -340,11 +340,11 @@
     <category term="submit" scheme="http://example.com/categories/NCBI/SRA/submit/"/>
     
     
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
     <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
     
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
@@ -395,11 +395,11 @@
     
     <category term="data preprocessing" scheme="http://example.com/tags/data-preprocessing/"/>
     
+    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
+    
     <category term="quality control" scheme="http://example.com/tags/quality-control/"/>
     
     <category term="QC" scheme="http://example.com/tags/QC/"/>
-    
-    <category term="next generation sequencing" scheme="http://example.com/tags/next-generation-sequencing/"/>
     
     <category term="prefetch" scheme="http://example.com/tags/prefetch/"/>
     
@@ -593,9 +593,9 @@
     
     <category term="phylogeny" scheme="http://example.com/tags/phylogeny/"/>
     
-    <category term="tree" scheme="http://example.com/tags/tree/"/>
-    
     <category term="bioinfo" scheme="http://example.com/tags/bioinfo/"/>
+    
+    <category term="tree" scheme="http://example.com/tags/tree/"/>
     
     <category term="tools" scheme="http://example.com/tags/tools/"/>
     
