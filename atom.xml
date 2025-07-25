@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-17T03:11:48.425Z</updated>
+  <updated>2025-07-25T04:32:12.286Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Life on Earth：地球上现存生命的系统发育关系</title>
+    <link href="http://example.com/2025/07/23/bio_taxon_life/"/>
+    <id>http://example.com/2025/07/23/bio_taxon_life/</id>
+    <published>2025-07-23T16:00:00.000Z</published>
+    <updated>2025-07-25T04:32:12.286Z</updated>
+    
+    
+    <summary type="html">地球上现存生命的系统发育关系，以及存在的争议</summary>
+    
+    
+    
+    <category term="bio" scheme="http://example.com/categories/bio/"/>
+    
+    <category term="taxon" scheme="http://example.com/categories/bio/taxon/"/>
+    
+    
+    <category term="Life" scheme="http://example.com/tags/Life/"/>
+    
+    <category term="Archaea" scheme="http://example.com/tags/Archaea/"/>
+    
+    <category term="Eubacteria" scheme="http://example.com/tags/Eubacteria/"/>
+    
+    <category term="Eukaryotes" scheme="http://example.com/tags/Eukaryotes/"/>
+    
+    <category term="Virus" scheme="http://example.com/tags/Virus/"/>
+    
+  </entry>
   
   <entry>
     <title>Windows自带软件：给语音或视频文件添加同步字幕，以及实时记录语音输入为文本</title>
@@ -103,6 +132,8 @@
     
     <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
     
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
+    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
@@ -110,8 +141,6 @@
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
   </entry>
   
@@ -192,9 +221,9 @@
     
     <category term="organelle" scheme="http://example.com/tags/organelle/"/>
     
-    <category term="WGS" scheme="http://example.com/tags/WGS/"/>
-    
     <category term="plastome" scheme="http://example.com/tags/plastome/"/>
+    
+    <category term="WGS" scheme="http://example.com/tags/WGS/"/>
     
     <category term="chloroplast" scheme="http://example.com/tags/chloroplast/"/>
     
@@ -266,10 +295,6 @@
     
     <category term="Sequence Read Archive" scheme="http://example.com/tags/Sequence-Read-Archive/"/>
     
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
@@ -277,6 +302,10 @@
     <category term="Illumina" scheme="http://example.com/tags/Illumina/"/>
     
     <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
+    
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
+    
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
     
   </entry>
   
@@ -301,21 +330,19 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
-    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
-    
-    <category term="submit" scheme="http://example.com/tags/submit/"/>
-    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="TGS" scheme="http://example.com/tags/TGS/"/>
     
-    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
+    <category term="submit" scheme="http://example.com/tags/submit/"/>
     
-    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
+    <category term="Unassembled sequence reads" scheme="http://example.com/tags/Unassembled-sequence-reads/"/>
     
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
     
     <category term="NLM" scheme="http://example.com/tags/NLM/"/>
+    
+    <category term="GenBank" scheme="http://example.com/tags/GenBank/"/>
     
     <category term="WGS" scheme="http://example.com/tags/WGS/"/>
     
@@ -326,6 +353,8 @@
     <category term="TLS" scheme="http://example.com/tags/TLS/"/>
     
     <category term="BankIt" scheme="http://example.com/tags/BankIt/"/>
+    
+    <category term="table2asn" scheme="http://example.com/tags/table2asn/"/>
     
   </entry>
   
@@ -354,11 +383,11 @@
     
     <category term="SRA" scheme="http://example.com/tags/SRA/"/>
     
+    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
+    
     <category term="NGS" scheme="http://example.com/tags/NGS/"/>
     
     <category term="NCBI" scheme="http://example.com/tags/NCBI/"/>
-    
-    <category term="SRA Toolkit" scheme="http://example.com/tags/SRA-Toolkit/"/>
     
     <category term="fastq" scheme="http://example.com/tags/fastq/"/>
     
@@ -531,9 +560,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
-    
     <category term="orthology" scheme="http://example.com/tags/orthology/"/>
+    
+    <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
@@ -678,41 +707,6 @@
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
     
     <category term="ONT" scheme="http://example.com/tags/ONT/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Hifiasm组装基因组：（二）Hifiasm软件的算法</title>
-    <link href="http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_02.algorithm/"/>
-    <id>http://example.com/2024/06/19/omics_genome.assembly_TGS_Hifiasm_02.algorithm/</id>
-    <published>2024-06-19T16:00:00.000Z</published>
-    <updated>2024-06-21T02:19:01.791Z</updated>
-    
-    
-    <summary type="html">介绍基于HiFi数据组装基因组的软件Hifiasm的算法，包括HiFi only模式、有亲本数据的trio-binning模式、Hi-C Integrated assembly模式的算法。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
-    
-    
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
-    
-    <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
     
   </entry>
   
