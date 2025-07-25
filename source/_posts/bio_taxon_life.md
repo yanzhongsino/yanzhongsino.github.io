@@ -40,14 +40,14 @@ description: 地球上现存生命的系统发育关系，以及存在的争议
 - 争议点1：古菌（Archaea）的系统位置
 - 争议点2：病毒（Viruses）等非细胞生命的系统位置
 
-<img src="http://tolweb.org/Public/treeImages/Life_on_Earth.png?x=-386534379" width=50% title="the relationships of the major lineages are controversial" alt="the relationships of the major lineages are controversial" align=center/>
+<img src="/Public/treeImages/Life_on_Earth.png?x=-386534379" width=50% title="the relationships of the major lineages are controversial" alt="the relationships of the major lineages are controversial" align=center/>
 
 **<p align="center">Figure 1. the relationships of the major lineages are controversial 图片来源：http://tolweb.org/Life_on_Earth/1</p>**
 
-2. 古菌（Archaea）的系统位置的两种假说
+1. 古菌（Archaea）的系统位置的两种假说
 - Archaea tree假说：
 
-<img src="http://tolweb.org/tree/ToLimages/archaeatree.png" width=50% title="Archaea tree" alt="Archaea tree" align=center/>
+<img src="http://tolweb.org/tree/ToLimages/archaeatree.png" title="Archaea tree" alt="Archaea tree" align=center/>
 
 **<p align="center">Figure 2. Archaea tree 假说 图片来源：http://tolweb.org/Life_on_Earth/1</p>**
 
