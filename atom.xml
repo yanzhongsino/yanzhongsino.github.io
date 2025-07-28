@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-25T19:02:45.328Z</updated>
+  <updated>2025-07-28T22:52:46.273Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Windows实用工具 —— Always On Top（快捷键：Windows+Ctrl+T）：将窗口固定在其他窗口之上</title>
+    <link href="http://example.com/2025/07/27/software_Windows_shortcut_alwaysontop/"/>
+    <id>http://example.com/2025/07/27/software_Windows_shortcut_alwaysontop/</id>
+    <published>2025-07-27T16:00:00.000Z</published>
+    <updated>2025-07-28T22:52:46.273Z</updated>
+    
+    
+    <summary type="html">介绍Windows系统的实用工具 —— Always On Top（快捷键：Windows+Ctrl+T）：将窗口固定在其他窗口之上。</summary>
+    
+    
+    
+    <category term="software" scheme="http://example.com/categories/software/"/>
+    
+    <category term="Windows" scheme="http://example.com/categories/software/Windows/"/>
+    
+    <category term="shortcut" scheme="http://example.com/categories/software/Windows/shortcut/"/>
+    
+    
+    <category term="Windows" scheme="http://example.com/tags/Windows/"/>
+    
+    <category term="software" scheme="http://example.com/tags/software/"/>
+    
+    <category term="Always On Top" scheme="http://example.com/tags/Always-On-Top/"/>
+    
+  </entry>
   
   <entry>
     <title>Life on Earth：地球上现存生命的系统发育关系</title>
@@ -42,37 +69,6 @@
     <category term="Eukaryotes" scheme="http://example.com/tags/Eukaryotes/"/>
     
     <category term="Virus" scheme="http://example.com/tags/Virus/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Windows自带软件：给语音或视频文件添加同步字幕，以及实时记录语音输入为文本</title>
-    <link href="http://example.com/2025/07/15/software_Windows_built-in_audio2text/"/>
-    <id>http://example.com/2025/07/15/software_Windows_built-in_audio2text/</id>
-    <published>2025-07-15T16:00:00.000Z</published>
-    <updated>2025-07-17T03:11:48.425Z</updated>
-    
-    
-    <summary type="html">介绍Windows系统自带的软件，包括给视频/音频添加同步字幕的软件（快捷键：Windows+Ctrl+L），以及实时转换语音成文本的软件（快捷键：Windows+H）。</summary>
-    
-    
-    
-    <category term="software" scheme="http://example.com/categories/software/"/>
-    
-    <category term="Windows" scheme="http://example.com/categories/software/Windows/"/>
-    
-    <category term="built-in" scheme="http://example.com/categories/software/Windows/built-in/"/>
-    
-    
-    <category term="software" scheme="http://example.com/tags/software/"/>
-    
-    <category term="transcribe" scheme="http://example.com/tags/transcribe/"/>
-    
-    <category term="Windows" scheme="http://example.com/tags/Windows/"/>
-    
-    <category term="subtitle" scheme="http://example.com/tags/subtitle/"/>
-    
-    <category term="translate" scheme="http://example.com/tags/translate/"/>
     
   </entry>
   
@@ -106,6 +102,37 @@
     <category term="Whisper" scheme="http://example.com/tags/Whisper/"/>
     
     <category term="Buzz" scheme="http://example.com/tags/Buzz/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows自带软件：给语音或视频文件添加同步字幕，以及实时记录语音输入为文本</title>
+    <link href="http://example.com/2025/07/15/software_Windows_shortcut_audio2text/"/>
+    <id>http://example.com/2025/07/15/software_Windows_shortcut_audio2text/</id>
+    <published>2025-07-15T16:00:00.000Z</published>
+    <updated>2025-07-28T22:52:38.076Z</updated>
+    
+    
+    <summary type="html">介绍Windows系统自带的软件，包括给视频/音频添加同步字幕的软件（快捷键：Windows+Ctrl+L），以及实时转换语音成文本的软件（快捷键：Windows+H）。</summary>
+    
+    
+    
+    <category term="software" scheme="http://example.com/categories/software/"/>
+    
+    <category term="Windows" scheme="http://example.com/categories/software/Windows/"/>
+    
+    <category term="shortcut" scheme="http://example.com/categories/software/Windows/shortcut/"/>
+    
+    
+    <category term="Windows" scheme="http://example.com/tags/Windows/"/>
+    
+    <category term="software" scheme="http://example.com/tags/software/"/>
+    
+    <category term="transcribe" scheme="http://example.com/tags/transcribe/"/>
+    
+    <category term="translate" scheme="http://example.com/tags/translate/"/>
+    
+    <category term="subtitle" scheme="http://example.com/tags/subtitle/"/>
     
   </entry>
   
@@ -560,9 +587,9 @@
     <category term="orthology inference" scheme="http://example.com/categories/bioinfo/orthology-inference/"/>
     
     
-    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
-    
     <category term="PlantTribes" scheme="http://example.com/tags/PlantTribes/"/>
+    
+    <category term="orthology" scheme="http://example.com/tags/orthology/"/>
     
     <category term="Ka/Ks" scheme="http://example.com/tags/Ka-Ks/"/>
     
@@ -670,43 +697,6 @@
     <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
     
     <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Hifiasm组装基因组：（三）Hifiasm软件组装基因组的多种模式</title>
-    <link href="http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/"/>
-    <id>http://example.com/2024/06/20/omics_genome.assembly_TGS_Hifiasm_03.modes/</id>
-    <published>2024-06-20T16:00:00.000Z</published>
-    <updated>2024-06-21T02:35:19.187Z</updated>
-    
-    
-    <summary type="html">介绍基于三代HiFi reads用软件Hifiasm进行基因组的从头组装的多种模式，以及每种模式的命令。</summary>
-    
-    
-    
-    <category term="omics" scheme="http://example.com/categories/omics/"/>
-    
-    <category term="genome" scheme="http://example.com/categories/omics/genome/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/categories/omics/genome/genome-assembly/"/>
-    
-    
-    <category term="Hi-C" scheme="http://example.com/tags/Hi-C/"/>
-    
-    <category term="genome assembly" scheme="http://example.com/tags/genome-assembly/"/>
-    
-    <category term="TGS" scheme="http://example.com/tags/TGS/"/>
-    
-    <category term="PacBio" scheme="http://example.com/tags/PacBio/"/>
-    
-    <category term="third generation sequencing" scheme="http://example.com/tags/third-generation-sequencing/"/>
-    
-    <category term="Hifiasm" scheme="http://example.com/tags/Hifiasm/"/>
-    
-    <category term="HiFi" scheme="http://example.com/tags/HiFi/"/>
-    
-    <category term="ONT" scheme="http://example.com/tags/ONT/"/>
     
   </entry>
   
