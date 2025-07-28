@@ -4,7 +4,7 @@ date: 2025-07-16
 categories: 
 - software
 - Windows
-- built-in
+- shortcut
 tags: 
 - software
 - transcribe
