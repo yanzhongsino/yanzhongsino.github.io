@@ -8,7 +8,6 @@ tags:
 - linux
 - screen
 - nohup
-- &
 
 description: linux命令放后台运行，以及用screen创建和管理多视窗。
 ---
