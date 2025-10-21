@@ -30,13 +30,13 @@
 <meta property="og:image" content="https://user-images.githubusercontent.com/8598031/83836465-85afa080-a6c1-11ea-8b08-b08623d974f4.png">
 <meta property="og:image" content="https://github.com/yanzhongsino/yanzhongsino.github.io/blob/hexo/source/wechat/Wechat_public_qrcode.jpg?raw=true">
 <meta property="article:published_time" content="2024-12-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-12T14:01:45.393Z">
+<meta property="article:modified_time" content="2025-08-12T20:00:52.026Z">
 <meta property="article:author" content="南方枝叶">
-<meta property="article:tag" content="mitogenome">
-<meta property="article:tag" content="organelle">
-<meta property="article:tag" content="plastome">
 <meta property="article:tag" content="WGS">
+<meta property="article:tag" content="mitogenome">
+<meta property="article:tag" content="plastome">
 <meta property="article:tag" content="chloroplast">
+<meta property="article:tag" content="organelle">
 <meta property="article:tag" content="mitochondria">
 <meta property="article:tag" content="assembly">
 <meta property="article:tag" content="fastg">
@@ -250,10 +250,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-12-12 00:00:00 / Modified: 22:01:45" itemprop="dateCreated datePublished" datetime="2024-12-12T00:00:00+08:00">2024-12-12</time>
+              <time title="Created: 2024-12-12 00:00:00" itemprop="dateCreated datePublished" datetime="2024-12-12T00:00:00+08:00">2024-12-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-13 04:00:52" itemprop="dateModified" datetime="2025-08-13T04:00:52+08:00">2025-08-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -284,13 +290,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>5.4k</span>
+              <span>6.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>5 mins.</span>
+              <span>6 mins.</span>
             </span>
             <div class="post-description">介绍GetOrganelle，使用GetOrganelle基于whole genome skimming data组装植物质体、植物线粒体、动物线粒体、真菌线粒体、核基因组的核糖体RNA（18S-ITS1-5.8S-ITS2-26S）等序列。</div>
 
@@ -425,6 +431,18 @@
 <ul>
 <li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F animal_mt -o animal_mt_out</code></li>
 </ul>
+<ol start="8">
+<li>组装指定序列(custom loci)</li>
+</ol>
+<ul>
+<li><code>get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F anonym -o anonym_out</code></li>
+<li>组装指定序列用<code>-F anonym</code>，并且需要指定<code>-s seed.fasta</code>和<code>--genes label.fasta</code>。</li>
+<li><code>-s seed.fasta</code>指定种子序列，如果组装trnL就把近缘物种的trnL序列作为seed.fasta，可以是单条序列也可以是多条序列。理想情况下，会组装出seed.fasta中的序列集，比如seed.fasta包含5条rbcL序列和2条trnL序列，则最终会组装到一条rbcL序列和一条trnL序列。在seed.fasta的序列中用N屏蔽重复序列可以加快运行。</li>
+<li><code>--genes label.fasta</code>用来标记和过滤组装中的contigs。label.fasta可以和seed.fasta一样。但是label.fasta的序列名称最好遵循&gt;name type - any other info without space的规则，比如&gt;rbcL gene - Amborella_AJ506152</li>
+<li><code>--max-extending-len 100</code>：用这个参数限制大致的read延伸长度。根据你希望GetOrganelle填补的gap&#x2F;diverged bases来设置具体的参数值。</li>
+<li><code>-P 0</code>：以下任一情况都应加上这个参数：1) 与核基因组相比，目标序列是单拷贝或低拷贝的, 2) 所有目标序列都相对较短 (例如&lt; 3000 bp).</li>
+<li>ref：<a target="_blank" rel="noopener" href="https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#how-to-assemble-custom-loci">https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#how-to-assemble-custom-loci</a></li>
+</ul>
 <h2 id="6-4-结果"><a href="#6-4-结果" class="headerlink" title="6.4. 结果"></a>6.4. 结果</h2><ol>
 <li>主要结果文件</li>
 </ol>
@@ -495,11 +513,11 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/mitogenome/" rel="tag"># mitogenome</a>
-              <a href="/tags/organelle/" rel="tag"># organelle</a>
-              <a href="/tags/plastome/" rel="tag"># plastome</a>
               <a href="/tags/WGS/" rel="tag"># WGS</a>
+              <a href="/tags/mitogenome/" rel="tag"># mitogenome</a>
+              <a href="/tags/plastome/" rel="tag"># plastome</a>
               <a href="/tags/chloroplast/" rel="tag"># chloroplast</a>
+              <a href="/tags/organelle/" rel="tag"># organelle</a>
               <a href="/tags/mitochondria/" rel="tag"># mitochondria</a>
               <a href="/tags/assembly/" rel="tag"># assembly</a>
               <a href="/tags/fastg/" rel="tag"># fastg</a>
@@ -595,20 +613,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">143</span>
+          <span class="site-state-item-count">144</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">95</span>
+        <span class="site-state-item-count">96</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">512</span>
+        <span class="site-state-item-count">519</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -662,12 +680,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">737k</span>
+    <span title="Symbols count total">741k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:10</span>
+    <span title="Reading time total">11:13</span>
 </div>
 
         
