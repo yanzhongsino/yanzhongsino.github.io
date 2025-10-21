@@ -106,6 +106,14 @@ GetOrganelle是开发用Illumina reads（双端测序/单端测序）来组装�
 - `get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F fungus_nr -o fungus_nr_out`
 7. 组装动物线粒体基因组
 - `get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F animal_mt -o animal_mt_out`
+8. 组装指定序列(custom loci)
+- `get_organelle_from_reads.py -1 forward.fq -2 reverse.fq -R 10 -k 21,45,65,85,105 -F anonym -o anonym_out`
+- 组装指定序列用`-F anonym`，并且需要指定`-s seed.fasta`和`--genes label.fasta`。
+- `-s seed.fasta`指定种子序列，如果组装trnL就把近缘物种的trnL序列作为seed.fasta，可以是单条序列也可以是多条序列。理想情况下，会组装出seed.fasta中的序列集，比如seed.fasta包含5条rbcL序列和2条trnL序列，则最终会组装到一条rbcL序列和一条trnL序列。在seed.fasta的序列中用N屏蔽重复序列可以加快运行。
+- `--genes label.fasta`用来标记和过滤组装中的contigs。label.fasta可以和seed.fasta一样。但是label.fasta的序列名称最好遵循>name type - any other info without space的规则，比如>rbcL gene - Amborella_AJ506152
+- `--max-extending-len 100`：用这个参数限制大致的read延伸长度。根据你希望GetOrganelle填补的gap/diverged bases来设置具体的参数值。
+- `-P 0`：以下任一情况都应加上这个参数：1) 与核基因组相比，目标序列是单拷贝或低拷贝的, 2) 所有目标序列都相对较短 (例如< 3000 bp).
+- ref：https://github.com/Kinggerm/GetOrganelle/wiki/FAQ#how-to-assemble-custom-loci
 
 ## 6.4. 结果
 1. 主要结果文件
